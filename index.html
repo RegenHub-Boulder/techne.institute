@@ -6,7 +6,7 @@
     <title>Techne Institute | An Integral Technology Learning Center</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
             --void: #08080a;
@@ -56,10 +56,10 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         }
 
-        /* ============ HERO ============ */
+        /* ============ HERO — co-op.us aesthetic ============ */
         .hero {
             min-height: 100vh;
-            background: var(--ink);
+            background: #08080a;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -69,26 +69,32 @@
             overflow: hidden;
         }
 
-        .hero::before {
-            content: '';
+        /* Ambient glow orbs — co-op.us signature */
+        .hero-glow {
             position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse at 20% 80%, var(--ember-glow) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(74, 95, 74, 0.04) 0%, transparent 40%),
-                linear-gradient(180deg, var(--void) 0%, var(--ink) 50%, var(--charcoal) 100%);
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
             pointer-events: none;
+            filter: blur(130px);
+            opacity: 0.07;
         }
 
+        .hero-glow-amber { top: -120px; right: -120px; background: #c4956a; }
+        .hero-glow-teal  { bottom: -120px; left: -120px; background: #7ccfb8; }
+
+        /* Vertical line motif */
         .hero::after {
             content: '';
             position: absolute;
             top: 15%; left: 50%;
             width: 1px; height: 70%;
             background: linear-gradient(180deg,
-                transparent 0%, var(--ember-dim) 20%,
-                var(--ember) 50%, var(--ember-dim) 80%, transparent 100%);
-            opacity: 0.3;
+                transparent 0%,
+                rgba(196, 149, 106, 0.3) 20%,
+                rgba(196, 149, 106, 0.6) 50%,
+                rgba(196, 149, 106, 0.3) 80%,
+                transparent 100%);
         }
 
         .hero-content {
@@ -103,17 +109,17 @@
             font-weight: 300;
             font-size: clamp(4.5rem, 18vw, 10rem);
             letter-spacing: 0.25em;
-            color: var(--cream);
+            color: #ffffff;
             margin-bottom: 0.25rem;
             margin-right: -0.25em;
             opacity: 0;
-            animation: revealText 2s ease-out 0.2s forwards;
-            text-shadow: 0 0 80px rgba(194, 81, 42, 0.2);
+            animation: heroReveal 1.6s ease-out 0.2s forwards;
+            text-shadow: 0 0 100px rgba(196, 149, 106, 0.15);
         }
 
-        @keyframes revealText {
-            from { opacity: 0; transform: translateY(20px); letter-spacing: 0.35em; }
-            to   { opacity: 1; transform: translateY(0);    letter-spacing: 0.25em; }
+        @keyframes heroReveal {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .hero-greek {
@@ -121,15 +127,15 @@
             font-style: italic;
             font-weight: 300;
             font-size: 1.5rem;
-            color: var(--stone);
+            color: #c4956a;
             letter-spacing: 0.3em;
             margin-bottom: 4rem;
             margin-right: -0.3em;
             opacity: 0;
-            animation: fadeIn 1.5s ease-out 0.8s forwards;
+            animation: heroFade 1.2s ease-out 0.6s forwards;
         }
 
-        @keyframes fadeIn {
+        @keyframes heroFade {
             from { opacity: 0; transform: translateY(10px); }
             to   { opacity: 1; transform: translateY(0); }
         }
@@ -138,12 +144,12 @@
             font-family: var(--font-display);
             font-weight: 400;
             font-size: clamp(1.15rem, 2.5vw, 1.5rem);
-            color: var(--bone);
+            color: rgba(255, 255, 255, 0.85);
             max-width: 500px;
             margin: 0 auto 2.5rem;
             line-height: 1.6;
             opacity: 0;
-            animation: fadeIn 1.5s ease-out 1.2s forwards;
+            animation: heroFade 1.2s ease-out 0.9s forwards;
         }
 
         .hero-meta {
@@ -151,25 +157,25 @@
             flex-direction: column;
             gap: 0.5rem;
             opacity: 0;
-            animation: fadeIn 1.5s ease-out 1.6s forwards;
+            animation: heroFade 1.2s ease-out 1.2s forwards;
         }
 
         .hero-location {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
             font-weight: 300;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--stone);
+            color: rgba(255, 255, 255, 0.35);
         }
 
         .hero-status {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
             font-weight: 400;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--ember);
+            color: #c4956a;
         }
 
         /* ============ NAVIGATION ============ */
@@ -858,30 +864,32 @@
             margin-top: 3rem;
         }
 
-        /* ============ FOOTER ============ */
+        /* ============ FOOTER — co-op.us aesthetic ============ */
         footer {
-            background: var(--void);
-            padding: 3rem 2rem;
+            background: #08080a;
+            padding: 2.5rem 2rem;
             text-align: center;
         }
 
         footer p {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
             letter-spacing: 0.1em;
-            color: var(--graphite);
+            color: rgba(255, 255, 255, 0.18);
             max-width: none;
             margin: 0;
         }
 
-        footer a { color: var(--stone); text-decoration: none; transition: color 0.3s ease; }
-        footer a:hover { color: var(--ember); }
+        footer a { color: rgba(255, 255, 255, 0.28); text-decoration: none; transition: color 0.3s ease; }
+        footer a:hover { color: #c4956a; }
     </style>
 </head>
 <body>
 
     <!-- ============ HERO ============ -->
     <section class="hero">
+        <div class="hero-glow hero-glow-amber" aria-hidden="true"></div>
+        <div class="hero-glow hero-glow-teal" aria-hidden="true"></div>
         <div class="hero-content">
             <h1 class="hero-wordmark">TECHNE</h1>
             <p class="hero-greek">&#964;&#941;&#967;&#957;&#951;</p>
