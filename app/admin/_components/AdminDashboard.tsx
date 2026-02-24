@@ -26,6 +26,14 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
+function safeHostname(url: string) {
+  try {
+    return new URL(url).hostname
+  } catch {
+    return url
+  }
+}
+
 export default function AdminDashboard({ cohorts, sessions, resources, activeTab }: Props) {
   const router = useRouter()
   const supabase = createClient()
@@ -233,7 +241,7 @@ export default function AdminDashboard({ cohorts, sessions, resources, activeTab
                         rel="noopener noreferrer"
                         style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--stone)', textDecoration: 'none' }}
                       >
-                        {new URL(r.url).hostname}
+                        {safeHostname(r.url)}
                       </a>
                     </td>
                     <td>

@@ -24,12 +24,15 @@ export default async function CohortPage({
 
   if (!user) redirect('/signin?next=/cohort')
 
-  // Get enrollment + cohort info
-  const { data: enrollment } = await supabase
+  // Get enrollment + cohort info (most recent cohort — v1 shows one cohort per user)
+  const { data: enrollments } = await supabase
     .from('enrollments')
     .select('cohort_id, cohorts(id, name, starts_at, ends_at)')
     .eq('user_id', user.id)
-    .single()
+    .order('enrolled_at', { ascending: false })
+    .limit(1)
+
+  const enrollment = enrollments?.[0] ?? null
 
   if (!enrollment) {
     return (
@@ -65,8 +68,10 @@ export default async function CohortPage({
 
     supabase
       .from('enrollments')
-      .select('profiles(display_name)')
-      .eq('cohort_id', cohort.id),
+      .select('profiles!inner(display_name)')
+      .eq('cohort_id', cohort.id)
+      .eq('profiles.show_in_directory', true)
+      .not('profiles.display_name', 'is', null),
   ])
 
   const sessions = sessionsResult.data ?? []
@@ -74,9 +79,9 @@ export default async function CohortPage({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const directoryMembers = ((directoryResult.data ?? []) as any[])
     .map((e) => ({
-      display_name: (Array.isArray(e.profiles) ? e.profiles[0]?.display_name : e.profiles?.display_name) ?? null,
+      display_name: (Array.isArray(e.profiles) ? e.profiles[0]?.display_name : e.profiles?.display_name) as string,
     }))
-    .filter((m: { display_name: string | null }) => m.display_name)
+    .filter((m) => m.display_name)
 
   function formatDate(iso: string | null) {
     if (!iso) return null

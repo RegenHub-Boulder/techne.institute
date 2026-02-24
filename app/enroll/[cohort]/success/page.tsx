@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation'
-import { stripe } from '@/lib/stripe'
-import { createAdminClient } from '@/lib/supabase/server'
+import { getStripe } from '@/lib/stripe'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -16,43 +15,16 @@ export default async function EnrollSuccessPage({ searchParams }: Props) {
 
   if (!session_id) notFound()
 
-  // Retrieve the Stripe session to get the customer's email
+  // Retrieve the Stripe session to display the customer's email.
+  // The magic link is sent by the webhook handler — this page is display-only.
   let customerEmail: string | null = null
 
   try {
-    const session = await stripe.checkout.sessions.retrieve(session_id)
+    const session = await getStripe().checkout.sessions.retrieve(session_id)
     customerEmail = session.customer_details?.email ?? null
   } catch (err) {
     console.error('Failed to retrieve Stripe session:', err)
     // Non-fatal — we still show the success page
-  }
-
-  // Send magic link to the customer's email so they can access /cohort
-  if (customerEmail) {
-    try {
-      const supabase = createAdminClient()
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://techne.institute'
-
-      await supabase.auth.admin.generateLink({
-        type: 'magiclink',
-        email: customerEmail,
-        options: {
-          redirectTo: `${appUrl}/auth/callback?next=/cohort`,
-        },
-      })
-
-      // Note: generateLink returns the link but doesn't send the email.
-      // Use inviteUserByEmail or signInWithOtp to trigger actual email sending.
-      // For now we use the admin client to find-or-create the user, and the
-      // webhook handles enrollment. The magic link email is sent below.
-
-      await supabase.auth.admin.inviteUserByEmail(customerEmail, {
-        redirectTo: `${appUrl}/auth/callback?next=/cohort`,
-      })
-    } catch (err) {
-      // Non-fatal — user can still sign in manually via /signin
-      console.error('Failed to send magic link:', err)
-    }
   }
 
   return (

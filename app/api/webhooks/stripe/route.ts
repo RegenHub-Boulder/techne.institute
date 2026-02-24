@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { stripe } from '@/lib/stripe'
+import { getStripe } from '@/lib/stripe'
 import { createAdminClient } from '@/lib/supabase/server'
 import type Stripe from 'stripe'
 
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   let event: Stripe.Event
 
   try {
-    event = stripe.webhooks.constructEvent(
+    event = getStripe().webhooks.constructEvent(
       body,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
@@ -35,9 +35,9 @@ export async function POST(request: Request) {
     await processEnrollment(session)
   } catch (err) {
     console.error('Enrollment processing error:', err)
-    // Return 200 anyway to prevent Stripe from retrying immediately
-    // The idempotency check means retries are safe
-    return NextResponse.json({ received: true, error: 'Enrollment processing failed' })
+    // Return 500 so Stripe retries with exponential backoff (up to 72 hours).
+    // Idempotency check at the top of processEnrollment makes retries safe.
+    return NextResponse.json({ error: 'Enrollment processing failed' }, { status: 500 })
   }
 
   return NextResponse.json({ received: true })
@@ -65,14 +65,15 @@ async function processEnrollment(session: Stripe.Checkout.Session) {
     throw new Error(`Missing cohort_id or customer email in session ${session.id}`)
   }
 
-  // Find or create the Supabase user by email
-  const { data: existingUsers } = await supabase.auth.admin.listUsers()
-  let userId: string | undefined = existingUsers?.users.find(
-    (u) => u.email === customerEmail
-  )?.id
+  // Find or create the Supabase user by email.
+  // Uses a security-definer RPC to query auth.users directly — avoids the
+  // listUsers() pagination issue where users beyond page 1 would not be found.
+  const { data: existingUserId } = await supabase
+    .rpc('get_auth_user_id_by_email', { p_email: customerEmail })
+
+  let userId = existingUserId as string | null
 
   if (!userId) {
-    // Create new user account
     const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
       email: customerEmail,
       email_confirm: true,
@@ -96,10 +97,22 @@ async function processEnrollment(session: Stripe.Checkout.Session) {
     // Unique constraint violation = already enrolled — idempotent
     if (enrollError.code === '23505') {
       console.log(`User ${userId} already enrolled in cohort ${cohortId}`)
-      return
+    } else {
+      throw new Error(`Failed to create enrollment: ${enrollError.message}`)
     }
-    throw new Error(`Failed to create enrollment: ${enrollError.message}`)
+  } else {
+    console.log(`Enrolled ${customerEmail} in cohort ${cohortId} via session ${session.id}`)
   }
 
-  console.log(`Enrolled ${customerEmail} in cohort ${cohortId} via session ${session.id}`)
+  // Send magic link so the student can access /cohort without going through /signin manually.
+  // inviteUserByEmail works for both new and existing users.
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://techne.institute'
+  try {
+    await supabase.auth.admin.inviteUserByEmail(customerEmail, {
+      redirectTo: `${appUrl}/auth/callback?next=/cohort`,
+    })
+  } catch (err) {
+    // Non-fatal — student can always sign in manually via /signin
+    console.error(`Failed to send magic link for ${customerEmail}:`, err)
+  }
 }
