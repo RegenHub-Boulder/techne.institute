@@ -30,8 +30,8 @@ export default async function AdminPage({
 
   if (!profile?.is_admin) redirect('/cohort')
 
-  // Load all cohorts, sessions, resources
-  const [cohortsResult, sessionsResult, resourcesResult] = await Promise.all([
+  // Load all cohorts, sessions, resources, and projects
+  const [cohortsResult, sessionsResult, resourcesResult, projectsResult] = await Promise.all([
     supabase
       .from('cohorts')
       .select('id, name, slug')
@@ -49,6 +49,11 @@ export default async function AdminPage({
       .select('id, cohort_id, title, url, resource_type, created_at')
       .order('cohort_id')
       .order('created_at'),
+
+    supabase
+      .from('projects')
+      .select('id, cohort_id, user_id, title, url, description, featured, created_at, profiles(display_name)')
+      .order('created_at', { ascending: false }),
   ])
 
   return (
@@ -69,6 +74,8 @@ export default async function AdminPage({
         cohorts={cohortsResult.data ?? []}
         sessions={sessionsResult.data ?? []}
         resources={resourcesResult.data ?? []}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        projects={(projectsResult.data ?? []) as any[]}
         activeTab={tab}
       />
     </div>

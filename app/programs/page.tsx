@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: 'Open cohorts at Techne Institute. Build with AI in community.',
 }
 
-export const revalidate = 3600 // Re-fetch cohorts every hour
+export const dynamic = 'force-dynamic'
 
 interface Cohort {
   id: string

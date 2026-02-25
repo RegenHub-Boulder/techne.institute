@@ -19,12 +19,10 @@ export default function Nav() {
           <li>
             <Link href="/cohort">Cohort</Link>
           </li>
-          <li>
-            <Link href="/signin" className="nav-signin">
-              Sign In
-            </Link>
-          </li>
         </ul>
+        <Link href="/signin" className="nav-signin">
+          Sign In
+        </Link>
       </div>
     </nav>
   )

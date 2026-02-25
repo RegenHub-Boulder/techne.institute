@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import SessionForm from './SessionForm'
 import ResourceForm from './ResourceForm'
+import ProjectAdminTable from './ProjectAdminTable'
 
 interface Cohort { id: string; name: string; slug: string }
 interface Session {
@@ -14,11 +15,17 @@ interface Session {
 interface Resource {
   id: string; cohort_id: string; title: string; url: string; resource_type: string; created_at: string
 }
+interface AdminProject {
+  id: string; cohort_id: string; user_id: string; title: string
+  url: string | null; description: string | null; featured: boolean; created_at: string
+  profiles: { display_name: string | null } | null
+}
 
 interface Props {
   cohorts: Cohort[]
   sessions: Session[]
   resources: Resource[]
+  projects: AdminProject[]
   activeTab: string
 }
 
@@ -34,7 +41,7 @@ function safeHostname(url: string) {
   }
 }
 
-export default function AdminDashboard({ cohorts, sessions, resources, activeTab }: Props) {
+export default function AdminDashboard({ cohorts, sessions, resources, projects, activeTab }: Props) {
   const router = useRouter()
   const supabase = createClient()
 
@@ -47,6 +54,7 @@ export default function AdminDashboard({ cohorts, sessions, resources, activeTab
 
   const cohortSessions = sessions.filter((s) => s.cohort_id === selectedCohortId)
   const cohortResources = resources.filter((r) => r.cohort_id === selectedCohortId)
+  const cohortProjects = projects.filter((p) => p.cohort_id === selectedCohortId)
 
   async function deleteSession(id: string) {
     if (!confirm('Delete this session? This cannot be undone.')) return
@@ -100,6 +108,13 @@ export default function AdminDashboard({ cohorts, sessions, resources, activeTab
           style={{ background: 'none', border: 'none', cursor: 'pointer' }}
         >
           Resources ({cohortResources.length})
+        </button>
+        <button
+          className={`cohort-tab${tab === 'projects' ? ' active' : ''}`}
+          onClick={() => setTab('projects')}
+          style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+        >
+          Builds ({cohortProjects.length})
         </button>
       </div>
 
@@ -266,6 +281,11 @@ export default function AdminDashboard({ cohorts, sessions, resources, activeTab
             </table>
           )}
         </div>
+      )}
+
+      {/* Builds tab */}
+      {tab === 'projects' && (
+        <ProjectAdminTable projects={cohortProjects} />
       )}
     </div>
   )

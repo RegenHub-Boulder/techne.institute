@@ -5,6 +5,8 @@ import { createClient } from '@/lib/supabase/server'
 import SessionCard from './_components/SessionCard'
 import ResourceList from './_components/ResourceList'
 import CohortDirectory from './_components/CohortDirectory'
+import ProjectSubmitForm from './_components/ProjectSubmitForm'
+import ProjectCard from './_components/ProjectCard'
 
 export const metadata: Metadata = {
   title: 'Cohort',
@@ -49,8 +51,8 @@ export default async function CohortPage({
 
   const cohort = enrollment.cohorts as unknown as { id: string; name: string; starts_at: string | null; ends_at: string | null }
 
-  // Fetch sessions, resources, directory members in parallel
-  const [sessionsResult, resourcesResult, directoryResult] = await Promise.all([
+  // Fetch sessions, resources, directory members, and projects in parallel
+  const [sessionsResult, resourcesResult, directoryResult, projectsResult] = await Promise.all([
     supabase
       .from('sessions')
       .select('id, week_number, title, youtube_url, notes, published_at')
@@ -72,6 +74,13 @@ export default async function CohortPage({
       .eq('cohort_id', cohort.id)
       .eq('profiles.show_in_directory', true)
       .not('profiles.display_name', 'is', null),
+
+    supabase
+      .from('projects')
+      .select('id, user_id, title, description, url, featured, created_at, profiles(display_name)')
+      .eq('cohort_id', cohort.id)
+      .order('featured', { ascending: false })
+      .order('created_at', { ascending: false }),
   ])
 
   const sessions = sessionsResult.data ?? []
@@ -82,6 +91,9 @@ export default async function CohortPage({
       display_name: (Array.isArray(e.profiles) ? e.profiles[0]?.display_name : e.profiles?.display_name) as string,
     }))
     .filter((m) => m.display_name)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const projects = (projectsResult.data ?? []) as any[]
+  const myProject = projects.find((p) => p.user_id === user.id) ?? null
 
   function formatDate(iso: string | null) {
     if (!iso) return null
@@ -129,6 +141,12 @@ export default async function CohortPage({
         >
           Directory
         </Link>
+        <Link
+          href="/cohort?tab=builds"
+          className={`cohort-tab${tab === 'builds' ? ' active' : ''}`}
+        >
+          Builds {projects.length > 0 && `(${projects.length})`}
+        </Link>
       </div>
 
       {tab === 'sessions' && (
@@ -151,6 +169,27 @@ export default async function CohortPage({
       {tab === 'resources' && <ResourceList resources={resources} />}
 
       {tab === 'directory' && <CohortDirectory members={directoryMembers} />}
+
+      {tab === 'builds' && (
+        <div>
+          <ProjectSubmitForm
+            cohortId={cohort.id}
+            userId={user.id}
+            existingProject={myProject}
+          />
+          {projects.length === 0 ? (
+            <div className="empty-state">
+              <p>No builds shared yet. Add yours above.</p>
+            </div>
+          ) : (
+            <div className="projects-grid">
+              {projects.map((p) => (
+                <ProjectCard key={p.id} project={p} isOwn={p.user_id === user.id} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

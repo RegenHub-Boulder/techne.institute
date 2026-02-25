@@ -1485,6 +1485,62 @@ textarea {
   white-space: nowrap;
 }
 
+/* ============ PROJECT SHOWCASE ============ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.project-card {
+  padding: 1.75rem;
+  background: var(--cream);
+  border-bottom: 2px solid var(--bone);
+  transition: border-color 0.3s ease;
+  position: relative;
+}
+
+.project-card:hover { border-color: var(--ember); }
+
+.project-card.featured {
+  border-bottom-color: var(--ember);
+  background: linear-gradient(135deg, rgba(194,81,42,0.04) 0%, var(--cream) 100%);
+}
+
+.project-card-meta {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 0.5rem;
+}
+
+.project-card h4 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--charcoal);
+  margin-bottom: 0.5rem;
+}
+
+.project-card p {
+  font-size: 0.875rem;
+  color: var(--graphite);
+  margin: 0 0 1rem;
+}
+
+a.project-link {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--ember);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+a.project-link:hover { text-decoration: underline; }
+
 /* ============ SUCCESS PAGE ============ */
 .success-container {
   max-width: 520px;
