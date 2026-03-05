@@ -3,349 +3,237 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Before We Sit Down &mdash; RegenHub &amp; Techne</title>
+<title>Techne at 1515 Walnut — Pre-Read</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=IBM+Plex+Mono:wght@300;400&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=IBM+Plex+Mono:wght@300;400&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
 
   :root {
-    --bg:           #faf8f5;
-    --surface:      #f0ece6;
-    --surface-warm: #ede8e0;
-    --border:       #ddd7cd;
-    --primary:      #8a6340;
-    --primary-soft: rgba(138, 99, 64, 0.08);
-    --text:         #2e2a24;
-    --text-bright:  #111010;
-    --text-muted:   #6e665e;
-    --text-faint:   #9e968c;
-    --icon:         #c4b8a8;
-    --accent-warm:  #c49a6c;
+    --bg:           #0a0a0a;
+    --surface:      #141414;
+    --surface2:     #1a1a1a;
+    --border:       #252525;
+    --border2:      #333333;
+    --primary:      #c4956a;
+    --primary-dim:  #8a6545;
+    --primary-glow: rgba(196, 149, 106, 0.07);
+    --text:         #c8c2ba;
+    --text-bright:  #ece6de;
+    --text-muted:   #777777;
+    --text-faint:   #444444;
+    --sage:         #5a7a5a;
     --font-display: 'Cormorant', Georgia, serif;
     --font-body:    'Source Serif 4', Georgia, serif;
     --font-mono:    'IBM Plex Mono', 'SF Mono', monospace;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg:           #0c0b09;
-      --surface:      #161412;
-      --surface-warm: #1a1815;
-      --border:       #2a2622;
-      --primary:      #c4956a;
-      --primary-soft: rgba(196, 149, 106, 0.06);
-      --text:         #c8c2ba;
-      --text-bright:  #ece6de;
-      --text-muted:   #777067;
-      --text-faint:   #3e3830;
-      --icon:         #4a4438;
-      --accent-warm:  #c4956a;
-    }
-  }
-  [data-theme="dark"] {
-    --bg:#0c0b09; --surface:#161412; --surface-warm:#1a1815; --border:#2a2622;
-    --primary:#c4956a; --primary-soft:rgba(196,149,106,0.06);
-    --text:#c8c2ba; --text-bright:#ece6de; --text-muted:#777067;
-    --text-faint:#3e3830; --icon:#4a4438; --accent-warm:#c4956a;
-  }
-  [data-theme="light"] {
-    --bg:#faf8f5; --surface:#f0ece6; --surface-warm:#ede8e0; --border:#ddd7cd;
-    --primary:#8a6340; --primary-soft:rgba(138,99,64,0.08);
-    --text:#2e2a24; --text-bright:#111010; --text-muted:#6e665e;
-    --text-faint:#9e968c; --icon:#c4b8a8; --accent-warm:#c49a6c;
   }
 
   body {
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-body);
-    font-size: 1.15rem;
-    line-height: 1.85;
-    font-weight: 400;
-    padding: 3.5rem 1.5rem 3rem;
-    max-width: 700px;
+    font-size: 1rem;
+    line-height: 1.75;
+    font-weight: 300;
+    padding: 3rem 1.5rem;
+    max-width: 720px;
     margin: 0 auto;
   }
 
-  .header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-  }
-
-  .header-icon {
-    color: var(--accent-warm);
-    margin-bottom: 0.75rem;
-  }
-  .header-icon svg { width: 28px; height: 28px; stroke-width: 1.2; }
-
   h1 {
     font-family: var(--font-display);
-    font-size: 2.1rem;
-    font-weight: 300;
-    font-style: italic;
+    font-size: 2rem;
+    font-weight: 400;
     color: var(--text-bright);
     letter-spacing: -0.02em;
-    margin-bottom: 0.35rem;
-    line-height: 1.25;
+    margin-bottom: 0.25rem;
+    line-height: 1.2;
   }
 
   .subtitle {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--text-muted);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
+    margin-bottom: 2.5rem;
   }
 
   h2 {
     font-family: var(--font-display);
-    font-size: 1.3rem;
+    font-size: 1.35rem;
     font-weight: 400;
     color: var(--primary);
-    margin-top: 2.25rem;
+    margin-top: 2rem;
     margin-bottom: 0.75rem;
     letter-spacing: -0.01em;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
   }
-
-  h2 svg { width: 17px; height: 17px; stroke-width: 1.4; color: var(--icon); }
 
   p { margin-bottom: 1rem; }
 
-  .welcome {
-    font-size: 1.1rem;
-    color: var(--text);
-    margin-bottom: 0.5rem;
+  .highlight {
+    background: var(--surface);
+    border-left: 3px solid var(--primary);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
   }
 
-  .capacity {
+  .highlight p:last-child { margin-bottom: 0; }
+
+  .metric-row {
     display: flex;
-    gap: 0.9rem;
-    align-items: flex-start;
-    margin-bottom: 1.2rem;
-    padding: 0.75rem 0.9rem;
-    background: var(--primary-soft);
+    gap: 1rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
+
+  .metric {
+    flex: 1;
+    min-width: 140px;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 6px;
-  }
-
-  .capacity-icon {
-    flex-shrink: 0;
-    margin-top: 0.15rem;
-    color: var(--icon);
-  }
-  .capacity-icon svg { width: 17px; height: 17px; stroke-width: 1.4; }
-
-  .capacity-text { font-size: 1.05rem; line-height: 1.7; }
-  .capacity-text strong { color: var(--text-bright); font-weight: 600; }
-
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 2rem 0;
-  }
-
-  .ask {
-    background: var(--surface-warm);
-    border-left: 3px solid var(--accent-warm);
-    padding: 1.1rem 1.3rem;
-    margin: 2rem 0;
-    border-radius: 0 5px 5px 0;
-    line-height: 1.7;
-    font-size: 1.05rem;
-  }
-  .ask p:last-child { margin-bottom: 0; }
-
-  .closing {
+    padding: 1rem;
     text-align: center;
+  }
+
+  .metric-value {
     font-family: var(--font-display);
-    font-size: 1.15rem;
-    font-style: italic;
-    color: var(--text-muted);
-    margin: 2rem 0 0.5rem;
-  }
-
-  .further-reading {
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .further-reading h2 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    font-size: 1.15rem;
-  }
-
-  .ref {
-    margin-bottom: 1rem;
-    padding-left: 0.5rem;
-  }
-
-  .ref a {
-    font-family: var(--font-mono);
-    font-size: 0.88rem;
+    font-size: 1.6rem;
+    color: var(--text-bright);
     font-weight: 400;
-    letter-spacing: 0.02em;
-    display: block;
-    margin-bottom: 0.15rem;
   }
 
-  .ref-desc {
-    font-size: 0.95rem;
+  .metric-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
     color: var(--text-muted);
-    line-height: 1.55;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 0.25rem;
   }
 
   .footer {
-    margin-top: 2.5rem;
-    padding-top: 1.25rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
     border-top: 1px solid var(--border);
     font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    letter-spacing: 0.03em;
-    line-height: 1.8;
-    text-align: center;
-  }
-
-  .theme-toggle {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    font-size: 0.72rem;
     color: var(--text-faint);
-    transition: border-color 0.2s;
-    z-index: 100;
+    letter-spacing: 0.03em;
   }
-  .theme-toggle:hover { border-color: var(--primary); color: var(--text-muted); }
-  .theme-toggle svg { width: 14px; height: 14px; stroke-width: 1.5; }
 
   a { color: var(--primary); text-decoration: none; }
   a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  strong { color: var(--text-bright); font-weight: 600; }
-  em { font-style: italic; }
+
+  strong { color: var(--text-bright); font-weight: 500; }
 
   @media (max-width: 500px) {
-    body { padding: 2.5rem 1.15rem 2rem; }
-    h1 { font-size: 1.7rem; }
-    .capacity { padding: 0.6rem 0.75rem; }
+    body { padding: 2rem 1rem; }
+    h1 { font-size: 1.6rem; }
+    .metric-row { flex-direction: column; }
   }
 </style>
 </head>
 <body>
 
-<button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
-  <i data-lucide="moon"></i>
-</button>
+<h1>Techne at 1515 Walnut</h1>
+<div class="subtitle">A brief introduction to RegenHub, LCA &mdash; prepared for Lynn Paul</div>
 
-<div class="header">
-  <div class="header-icon"><i data-lucide="coffee"></i></div>
-  <h1>Before We Sit Down</h1>
-  <div class="subtitle">March 10, 2026 &middot; 1:00 PM &middot; Boulder</div>
-</div>
+<h2>Who We Are</h2>
 
-<p class="welcome">Thank you for making time for lunch. Here's a little context on who we are and what we'd like to talk about.</p>
+<p><strong>RegenHub, LCA</strong> is a Colorado Limited Cooperative Association filed in February 2026, doing business as <strong>Techne</strong>. We are a cooperative venture studio &mdash; a small group of builders, designers, and technologists who share space, infrastructure, and a legal structure that lets us launch technology ventures together.</p>
 
-<h2><i data-lucide="home"></i> RegenHub</h2>
+<p>The cooperative has eight founding organizers:</p>
 
-<p><strong>RegenHub, LCA</strong> is a Colorado Limited Cooperative Association &mdash; the legal and organizational foundation for everything described here. Eight founding organizers, committed investors, and legal counsel in place. RegenHub is a public benefit entity with the stated purpose of <em>cultivating scenius</em> &mdash; the creative intelligence that emerges when skilled people share sustained proximity. RegenHub has operated from 1515 Walnut since May 2024 and continues as the cooperative's home base on the second floor.</p>
+<ul style="margin: 0.5rem 0 1rem 1.5rem; list-style: none;">
+  <li><strong>Kevin Owocki</strong> &mdash; Co-founder of Gitcoin, Managing Partner at Allo Capital. Kevin has been a second-floor tenant at 1515 Walnut for over a year and is the lead investor in Techne's formation.</li>
+  <li><strong>Todd Youngblood</strong> &mdash; Ventures &amp; Operations Steward. Data engineer and information systems builder. Day-to-day operations of the studio and cooperative infrastructure.</li>
+  <li><strong>Aaron G Neyer</strong> &mdash; Financial Systems Committee. Co-owner of commons.id, a knowledge-graph platform for convergence events.</li>
+  <li><strong>Lucian Hymer</strong> &mdash; Organizer and venture owner (Postage).</li>
+  <li><strong>Jonathan Borichevskiy</strong> &mdash; Organizer.</li>
+  <li><strong>Benjamin Ross</strong> &mdash; Organizer.</li>
+  <li><strong>Neil Mackay Yarnal</strong> &mdash; Organizer.</li>
+  <li><strong>Savannah Kruger</strong> &mdash; Organizer.</li>
+</ul>
 
-<h2><i data-lucide="sparkles"></i> Techne</h2>
+<p>Our attorney is Jeff Pote of Pote Law Firm. We operate as a public benefit entity with the stated purpose of <em>cultivating scenius</em> &mdash; the creative intelligence that emerges when skilled people share sustained proximity.</p>
 
-<p><strong>Techne</strong> is what RegenHub is building next &mdash; a venture studio and project ecosystem that opens to the public from the third floor. Techne supports technology education through <strong>LeanVibe.Build</strong>, incubates early-stage ventures, and hosts a rotating calendar of programs and convergences. It is a DBA of RegenHub: same cooperative, new capacity.</p>
+<h2>What Happens on the Third Floor</h2>
 
-<h2><i data-lucide="door-open"></i> What the Third Floor Opens Up</h2>
+<p>The third floor of 1515 Walnut is home to Techne's working studio. Three things happen here daily:</p>
 
-<p>The third floor is where Techne comes to life &mdash; a multi-modal space designed to evolve with what Boulder needs. Three capacities define it:</p>
+<p><strong>Coworking and studio services.</strong> Members and affiliates use the space as their primary workplace. This generates steady monthly revenue through desk memberships, meeting room access, and shared infrastructure.</p>
 
-<div class="capacity">
-  <div class="capacity-icon"><i data-lucide="armchair"></i></div>
-  <div class="capacity-text"><strong>Coworking.</strong> An expanded daily workspace for members and affiliates. Desk memberships, meeting rooms, and shared infrastructure generate steady monthly revenue and bring a working community into the building.</div>
-</div>
+<p><strong>Technology education.</strong> We run cohort-based programs under the name <em>Learn by Build</em> &mdash; intensive courses in AI, software development, and civic technology. These bring foot traffic, talent, and tuition revenue into the building.</p>
 
-<div class="capacity">
-  <div class="capacity-icon"><i data-lucide="calendar-range"></i></div>
-  <div class="capacity-text"><strong>Programs.</strong> A rotating seasonal calendar. First up: <strong>LeanVibe.Build</strong> &mdash; helping people rediscover their love of the craft of code. The space is designed for what comes next: technology cohorts, cultural convergences like Sundance Boulder, civic workshops, and programs at the intersection of bioregioning and civics.</div>
-</div>
+<p><strong>Venture development.</strong> The cooperative incubates early-stage technology ventures. Three are currently active: <strong>Parachute</strong> (voice-first AI tools), <strong>Postage</strong> (blockchain-based email filtering), and <strong>Habitat</strong> (cooperative accounting infrastructure). Each venture contributes a small percentage of equity back to the cooperative, creating a shared basket that compounds over time.</p>
 
-<div class="capacity">
-  <div class="capacity-icon"><i data-lucide="sprout"></i></div>
-  <div class="capacity-text"><strong>Ventures.</strong> The cooperative incubates early-stage technology ventures. Each contributes a minimum 1% annually back to the cooperative, creating a shared basket that compounds over time.</div>
-</div>
-
-<hr class="divider" />
-
-<div class="ask">
-<p>We have committed capital, an operating model, and we're already in the building. We are seeking a lease on the third floor that reflects a long-term partnership &mdash; where the growth of what happens inside benefits everyone connected to it.</p>
-</div>
-
-<p>Over lunch, we'd like to walk through our plan for the third floor and explore the terms of a lease that works for everyone at the table. We come prepared and we come in good faith.</p>
-
-<p class="closing">We look forward to sitting down together.</p>
-
-<div class="further-reading">
-  <h2><i data-lucide="book-open"></i> Further Reading</h2>
-  <div class="ref">
-    <a href="https://allo.capital" target="_blank">allo.capital</a>
-    <span class="ref-desc">Allo Capital is a venture studio and fund focused on open-source public goods infrastructure. Co-founded by Kevin Owocki.</span>
+<div class="metric-row">
+  <div class="metric">
+    <div class="metric-value">8</div>
+    <div class="metric-label">Founding Organizers</div>
   </div>
-  <div class="ref">
-    <a href="https://gitcoin.co" target="_blank">gitcoin.co</a>
-    <span class="ref-desc">Gitcoin has funded over $60M in open-source and public goods projects through quadratic funding and grants. Founded by Kevin Owocki in 2017.</span>
+  <div class="metric">
+    <div class="metric-value">$130k</div>
+    <div class="metric-label">Committed Capital</div>
   </div>
-  <div class="ref">
-    <a href="https://regenhub.xyz" target="_blank">regenhub.xyz</a>
-    <span class="ref-desc">RegenHub &mdash; Boulder's regenerative workspace and the cooperative foundation behind Techne.</span>
+  <div class="metric">
+    <div class="metric-value">3</div>
+    <div class="metric-label">Active Ventures</div>
   </div>
-  <div class="ref">
-    <a href="https://techne.institute" target="_blank">techne.institute</a>
-    <span class="ref-desc">Techne Institute &mdash; the public-facing home for technology education, programs, and the community emerging from the third floor.</span>
+  <div class="metric">
+    <div class="metric-value">3</div>
+    <div class="metric-label">Revenue Streams</div>
   </div>
 </div>
+
+<h2>Who Is Financing the Third Floor</h2>
+
+<p>Techne's formation is backed by committed capital from investors who are also participants in the work:</p>
+
+<ul style="margin: 0.5rem 0 1rem 1.5rem; list-style: none;">
+  <li><strong>Kevin Owocki</strong> &mdash; $50,000 committed. Lead investor, already operating from the building.</li>
+  <li><strong>Jeremy</strong> &mdash; $50,000 committed.</li>
+  <li><strong>Ethereum Foundation</strong> &mdash; $30,000 (verbal commitment).</li>
+</ul>
+
+<p>Total committed and verbal capital: <strong>$130,000</strong>. These funds are earmarked for lease activation, build-out, and first-year operations of the third floor. The investors are not passive &mdash; they are builders who will use the space and participate in the ventures it produces.</p>
+
+<h2>Third Floor Business Model</h2>
+
+<p>The third floor operates on three revenue streams that layer short-term stability with long-term upside:</p>
+
+<p><strong>Space revenue</strong> is the foundation. Coworking desk memberships, dedicated offices, meeting room bookings, and event hosting generate steady monthly income. This is the revenue that covers rent and operating costs. Target: the space pays for itself within the first year of operation.</p>
+
+<p><strong>Service revenue</strong> comes from technology education and studio consulting. Cohort-based programs under the name <em>Learn by Build</em> &mdash; intensive courses in AI, software development, and civic technology &mdash; bring tuition revenue, foot traffic, and talent into the building. Consulting engagements with external clients leverage the studio's collective expertise.</p>
+
+<p><strong>Venture reciprocity</strong> is the long-term play. Each venture incubated in the studio contributes 1% of equity back to the cooperative annually, creating a shared portfolio that compounds over time. Three ventures are currently active: Parachute (voice-first AI tools), Postage (blockchain-based email filtering), and Habitat (cooperative accounting infrastructure). As more ventures launch from the space, this basket grows.</p>
+
+<div class="highlight">
+<p>The goal is straightforward: <strong>space and service revenue cover all operating costs within 12 months</strong>. Venture reciprocity is upside that accrues to the cooperative and, by extension, to everyone invested in the ecosystem &mdash; including the building itself.</p>
+</div>
+
+<h2>Why 1515 Walnut</h2>
+
+<p>Boulder sits at the intersection of a world-class research university, a deep technology talent pool, and a growing interest in cooperative and civic technology. 1515 Walnut is where this work is already happening. The third floor is not a speculative bet &mdash; it is an operating studio with people building every day.</p>
+
+<div class="highlight">
+<p>We are seeking a lease arrangement for the third floor that reflects the long-term relationship we hope to build with the building and its owners. We believe there is an opportunity for a partnership that goes beyond a standard landlord-tenant transaction &mdash; one where the growth of what happens inside the building benefits everyone connected to it.</p>
+</div>
+
+<h2>What We'd Like to Discuss</h2>
+
+<p>We are interested in a conversation about the third floor that starts with straightforward lease terms and explores whether a deeper relationship makes sense for both sides. We have committed capital from investors who share our vision, an attorney structuring the cooperative's agreements, and a clear operating model. We come prepared and we come in good faith.</p>
+
+<p>We look forward to the conversation.</p>
 
 <div class="footer">
   Prepared March 2026 &middot; RegenHub, LCA (DBA Techne) &middot; Boulder, Colorado<br/>
-  Kevin Owocki (Executive Steward, Allo Capital) &amp; Todd Youngblood (Ventures &amp; Operations Steward, RegenHub DBA Techne)
+  Contact: Todd Youngblood &middot; Ventures &amp; Operations Steward
 </div>
 
-<script>
-(function() {
-  var btn = document.getElementById('themeToggle');
-  var stored = localStorage.getItem('preread-theme');
-  if (stored) document.documentElement.setAttribute('data-theme', stored);
-
-  function isDark() {
-    var t = document.documentElement.getAttribute('data-theme');
-    return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
-  function render() {
-    btn.innerHTML = isDark()
-      ? '<i data-lucide="sun"></i>'
-      : '<i data-lucide="moon"></i>';
-    lucide.createIcons();
-  }
-  render();
-  lucide.createIcons();
-
-  btn.addEventListener('click', function() {
-    var next = isDark() ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('preread-theme', next);
-    render();
-  });
-})();
-</script>
 </body>
 </html>
