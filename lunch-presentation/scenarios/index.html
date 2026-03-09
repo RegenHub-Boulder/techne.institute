@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Financial Scenarios &mdash; 1515 Walnut</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --void: #08080a;
+    --ink: #0f0f12;
+    --charcoal: #1a1a1f;
+    --graphite: #2a2a30;
+    --bone: #d8d3c8;
+    --stone: #9a958a;
+    --ember: #c2512a;
+    --ember-dim: #8a3a1f;
+    --sage: #4a5f4a;
+    --sage-light: #6b836b;
+    --warm: #c4956a;
+    --cream: #ebe7df;
+    --font-display: 'Cormorant', serif;
+    --font-body: 'Source Serif 4', serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-mono-alt: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--ink);
+    color: var(--bone);
+    line-height: 1.75;
+    font-size: 17px;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 2rem 4rem;
+  }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--stone); text-decoration: none;
+    margin-bottom: 2rem;
+  }
+  .back-link:hover { color: var(--warm); }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 300; font-size: 2.5rem;
+    color: var(--cream); margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .page-sub {
+    font-family: var(--font-mono-alt);
+    font-size: 0.7rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--warm);
+    margin-bottom: 3rem;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 400; font-size: 1.6rem;
+    color: var(--cream); margin: 3rem 0 1.25rem;
+  }
+
+  p { color: var(--stone); margin-bottom: 1rem; max-width: 65ch; }
+
+  /* ─── STEPWISE ─── */
+  .stepwise {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; margin: 2rem 0 3rem;
+  }
+  @media (max-width: 600px) { .stepwise { grid-template-columns: 1fr; } }
+
+  .step {
+    padding: 1.5rem; border: 1px solid var(--graphite);
+    text-align: center; transition: border-color 0.3s;
+  }
+  .step.active { border-color: var(--warm); }
+
+  .step-label {
+    font-family: var(--font-mono-alt); font-size: 0.6rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--stone); margin-bottom: 0.75rem;
+  }
+  .step.active .step-label { color: var(--warm); }
+
+  .step-value {
+    font-family: var(--font-mono-alt); font-size: 1.6rem;
+    font-weight: 300; color: var(--bone); margin-bottom: 0.35rem;
+  }
+  .step.active .step-value { color: var(--cream); }
+
+  .step-desc { font-size: 0.8rem; color: var(--stone); margin: 0; }
+
+  /* ─── MODEL PANELS ─── */
+  .model-panel {
+    background: var(--charcoal);
+    border: 1px solid var(--graphite);
+    padding: 2rem; margin: 2rem 0;
+  }
+
+  .model-title {
+    font-family: var(--font-mono-alt); font-size: 0.68rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 1.5rem;
+  }
+
+  .model-row {
+    display: grid; grid-template-columns: 1fr 160px;
+    gap: 1rem; align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .model-row:last-child { border-bottom: none; }
+
+  .model-label {
+    font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--stone); letter-spacing: 0.03em;
+  }
+  .model-label small {
+    display: block; font-size: 0.68rem;
+    color: rgba(154,149,138,0.6); margin-top: 0.15rem;
+  }
+
+  .model-value {
+    font-family: var(--font-mono-alt); font-size: 1.1rem;
+    font-weight: 400; color: var(--cream); text-align: right;
+  }
+  .model-value.computed { color: var(--warm); }
+  .model-value.highlight { color: var(--ember); font-size: 1.25rem; }
+  .model-value.equity { color: var(--sage-light); }
+
+  .model-input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--graphite);
+    color: var(--cream);
+    font-family: var(--font-mono-alt); font-size: 1rem;
+    padding: 0.4rem 0.6rem; text-align: right;
+    border-radius: 3px; transition: border-color 0.2s;
+  }
+  .model-input:focus { outline: none; border-color: var(--warm); }
+
+  .model-slider {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 4px;
+    background: var(--graphite); border-radius: 2px;
+    outline: none; margin-top: 0.5rem;
+  }
+  .model-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px;
+    background: var(--warm); border-radius: 50%; cursor: pointer;
+  }
+  .model-slider::-moz-range-thumb {
+    width: 16px; height: 16px; background: var(--warm);
+    border-radius: 50%; cursor: pointer; border: none;
+  }
+
+  .model-divider {
+    border: none; border-top: 1px solid rgba(255,255,255,0.08);
+    margin: 1rem 0;
+  }
+
+  .model-note {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: rgba(154,149,138,0.5); margin-top: 1rem; line-height: 1.6;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    margin-top: 4rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--graphite);
+    font-family: var(--font-mono-alt); font-size: 0.68rem;
+    letter-spacing: 0.1em; color: rgba(255,255,255,0.18);
+    text-align: center;
+  }
+
+  a { color: var(--warm); text-decoration: none; }
+  a:hover { color: var(--ember); }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <a class="back-link" href="/lunch-presentation/">&larr; Back to presentation</a>
+
+  <h1>Financial Scenarios</h1>
+  <p class="page-sub">1515 Walnut &middot; Conversation tool &middot; Not a term sheet</p>
+
+  <p>Every number here is adjustable. Drag any slider, type any number. The goal is to find the shape that works for everyone at the table.</p>
+
+  <!-- ═══ STEPWISE ═══ -->
+  <div class="stepwise">
+    <div class="step active">
+      <p class="step-label">Present</p>
+      <p class="step-value">~$4.5K</p>
+      <p class="step-desc">Monthly cash flow<br/>2nd floor sustained</p>
+    </div>
+    <div class="step">
+      <p class="step-label">Near-term</p>
+      <p class="step-value" id="stepNear">—</p>
+      <p class="step-desc">Investors cover year 1<br/>Cash flow grows</p>
+    </div>
+    <div class="step">
+      <p class="step-label">Horizon</p>
+      <p class="step-value" id="stepHorizon">—</p>
+      <p class="step-desc">Building acquisition<br/>debt service target</p>
+    </div>
+  </div>
+
+  <!-- ═══ LEASE MODEL ═══ -->
+  <h2>Third Floor Lease</h2>
+
+  <div class="model-panel">
+    <p class="model-title">Lease Scenario</p>
+
+    <div class="model-row">
+      <div class="model-label">Monthly lease rate<small>Adjust to explore scenarios</small></div>
+      <div>
+        <input class="model-input" type="text" id="leaseRate" value="5000" />
+        <input class="model-slider" type="range" id="leaseSlider" min="3000" max="8000" step="250" value="5000" />
+      </div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label">Annual lease cost</div>
+      <div class="model-value computed" id="annualLease">$60,000</div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label">Committed capital (year 1)</div>
+      <div class="model-value">$130,000</div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label">Year 1 runway after lease</div>
+      <div class="model-value computed" id="runway">$70,000</div>
+    </div>
+
+    <hr class="model-divider" />
+
+    <div class="model-row">
+      <div class="model-label">Current monthly cash flow (2nd floor)</div>
+      <div class="model-value">~$4,500</div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label">Combined monthly obligation</div>
+      <div class="model-value computed" id="combinedObligation">—</div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label">Monthly cash flow to self-sustain<small>Both floors, no investor subsidy</small></div>
+      <div class="model-value highlight" id="sustainRate">—</div>
+    </div>
+
+    <p class="model-note">All numbers are starting points for a conversation.</p>
+  </div>
+
+  <!-- ═══ ACQUISITION MODEL ═══ -->
+  <h2>Building Acquisition</h2>
+
+  <div class="model-panel">
+    <p class="model-title">Acquisition Scenario</p>
+
+    <div class="model-row">
+      <div class="model-label">Purchase price<small>Pending appraisal</small></div>
+      <div>
+        <input class="model-input" type="text" id="purchasePrice" value="2500000" />
+        <input class="model-slider" type="range" id="purchaseSlider" min="1500000" max="4000000" step="50000" value="2500000" />
+      </div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label">Down payment<small>Percentage</small></div>
+      <div>
+        <input class="model-input" type="text" id="downPct" value="20" />
+        <input class="model-slider" type="range" id="downSlider" min="5" max="40" step="1" value="20" />
+      </div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label">Down payment amount</div>
+      <div class="model-value computed" id="downAmount">$500,000</div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label">Loan amount</div>
+      <div class="model-value computed" id="loanAmount">$2,000,000</div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label">Interest rate<small>Annual</small></div>
+      <div>
+        <input class="model-input" type="text" id="interestRate" value="6.5" />
+        <input class="model-slider" type="range" id="interestSlider" min="4" max="9" step="0.25" value="6.5" />
+      </div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label">Loan term (years)</div>
+      <div>
+        <input class="model-input" type="text" id="loanTerm" value="25" />
+        <input class="model-slider" type="range" id="termSlider" min="10" max="30" step="1" value="25" />
+      </div>
+    </div>
+
+    <hr class="model-divider" />
+
+    <div class="model-row">
+      <div class="model-label">Monthly debt service</div>
+      <div class="model-value highlight" id="monthlyDebt">—</div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label">Annual debt service</div>
+      <div class="model-value computed" id="annualDebt">—</div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label">Cap rate (current estimate)</div>
+      <div class="model-value">7.4%</div>
+    </div>
+
+    <p class="model-note">Based on Arend Accola's (Altos Realty) financial model. All values adjustable.</p>
+  </div>
+
+  <!-- ═══ LYNN EQUITY ═══ -->
+  <h2>Partnership Equity</h2>
+
+  <div class="model-panel">
+    <p class="model-title" style="color: var(--sage-light);">Equity Accrual &mdash; If Lease Discount = Equity Contribution</p>
+
+    <div class="model-row">
+      <div class="model-label" style="color: var(--sage-light);">Monthly discount treated as equity<small>e.g. $7K listed &minus; $5K negotiated = $2K</small></div>
+      <div>
+        <input class="model-input" type="text" id="lynnDiscount" value="2000" style="border-color: var(--sage);" />
+        <input class="model-slider" type="range" id="lynnSlider" min="0" max="4000" step="250" value="2000" />
+      </div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label" style="color: var(--sage-light);">Annual equity accrual</div>
+      <div class="model-value equity" id="lynnAnnual">$24,000</div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label" style="color: var(--sage-light);">3-year equity accrual</div>
+      <div class="model-value equity" id="lynnThreeYear">$72,000</div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-label" style="color: var(--sage-light);">5-year equity accrual</div>
+      <div class="model-value equity" id="lynnFiveYear">$120,000</div>
+    </div>
+
+    <p class="model-note">Concept: if a landlord accepts below-market rent, the difference accrues as equity in the cooperative &mdash; converting a lease relationship into an ownership relationship over time.</p>
+  </div>
+
+  <div class="footer">
+    <p>Internal working document &middot; RegenHub, LCA &middot; March 2026</p>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  var $ = function(id) { return document.getElementById(id); };
+  var fmt = function(n) { return '$' + Math.round(n).toLocaleString('en-US'); };
+
+  function bind(inputId, sliderId, cb) {
+    var inp = $(inputId), sl = $(sliderId);
+    sl.addEventListener('input', function() { inp.value = sl.value; cb(); });
+    inp.addEventListener('input', function() {
+      var v = parseFloat(inp.value.replace(/[^0-9.]/g, ''));
+      if (!isNaN(v)) sl.value = v;
+      cb();
+    });
+  }
+
+  // ─── Lease ───
+  var currentLease = 3000;
+
+  function updateLease() {
+    var rate = parseFloat($('leaseRate').value.replace(/[^0-9]/g, '')) || 0;
+    var annual = rate * 12;
+    var runway = 130000 - annual;
+    var combined = currentLease + rate;
+
+    $('annualLease').textContent = fmt(annual);
+    $('runway').textContent = fmt(runway);
+    $('combinedObligation').textContent = fmt(combined) + '/mo';
+    $('sustainRate').textContent = fmt(combined) + '/mo';
+    $('stepNear').textContent = '~$' + (combined / 1000).toFixed(1) + 'K';
+  }
+
+  bind('leaseRate', 'leaseSlider', updateLease);
+
+  // ─── Acquisition ───
+  function pmt(rate, nper, pv) {
+    if (rate === 0) return pv / nper;
+    var x = Math.pow(1 + rate, nper);
+    return (pv * rate * x) / (x - 1);
+  }
+
+  function updateAcquisition() {
+    var price = parseFloat($('purchasePrice').value.replace(/[^0-9]/g, '')) || 0;
+    var downPct = parseFloat($('downPct').value.replace(/[^0-9.]/g, '')) || 0;
+    var intRate = parseFloat($('interestRate').value.replace(/[^0-9.]/g, '')) || 0;
+    var term = parseInt($('loanTerm').value) || 25;
+
+    var down = price * (downPct / 100);
+    var loan = price - down;
+    var monthlyRate = (intRate / 100) / 12;
+    var nPayments = term * 12;
+    var monthly = pmt(monthlyRate, nPayments, loan);
+    var annual = monthly * 12;
+
+    $('downAmount').textContent = fmt(down);
+    $('loanAmount').textContent = fmt(loan);
+    $('monthlyDebt').textContent = fmt(monthly);
+    $('annualDebt').textContent = fmt(annual);
+    $('stepHorizon').textContent = '~$' + (monthly / 1000).toFixed(1) + 'K';
+  }
+
+  bind('purchasePrice', 'purchaseSlider', updateAcquisition);
+  bind('downPct', 'downSlider', updateAcquisition);
+  bind('interestRate', 'interestSlider', updateAcquisition);
+  bind('loanTerm', 'termSlider', updateAcquisition);
+
+  // ─── Lynn equity ───
+  function updateLynn() {
+    var d = parseFloat($('lynnDiscount').value.replace(/[^0-9]/g, '')) || 0;
+    $('lynnAnnual').textContent = fmt(d * 12);
+    $('lynnThreeYear').textContent = fmt(d * 36);
+    $('lynnFiveYear').textContent = fmt(d * 60);
+  }
+
+  bind('lynnDiscount', 'lynnSlider', updateLynn);
+
+  // Init
+  updateLease();
+  updateAcquisition();
+  updateLynn();
+})();
+</script>
+</body>
+</html>
