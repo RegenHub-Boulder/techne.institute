@@ -28,6 +28,45 @@
     --font-mono-alt: 'JetBrains Mono', monospace;
   }
 
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --parchment: #0c0b09;
+      --cream: #161412;
+      --bone: #2a2622;
+      --stone: #777067;
+      --charcoal: #ece6de;
+      --graphite: #c8c2ba;
+      --ember: #d4724f;
+      --ember-dim: #c4956a;
+      --ember-glow: rgba(212, 114, 79, 0.06);
+      --warm: #c4956a;
+    }
+  }
+  [data-theme="dark"] {
+    --parchment: #0c0b09;
+    --cream: #161412;
+    --bone: #2a2622;
+    --stone: #777067;
+    --charcoal: #ece6de;
+    --graphite: #c8c2ba;
+    --ember: #d4724f;
+    --ember-dim: #c4956a;
+    --ember-glow: rgba(212, 114, 79, 0.06);
+    --warm: #c4956a;
+  }
+  [data-theme="light"] {
+    --parchment: #f7f5f0;
+    --cream: #ebe7df;
+    --bone: #d8d3c8;
+    --stone: #9a958a;
+    --charcoal: #1a1a1f;
+    --graphite: #2a2a30;
+    --ember: #c2512a;
+    --ember-dim: #8a3a1f;
+    --ember-glow: rgba(194, 81, 42, 0.08);
+    --warm: #c4956a;
+  }
+
   html { scroll-behavior: smooth; overflow-x: hidden; }
 
   body {
@@ -317,6 +356,23 @@
     max-width: none; margin: 0;
   }
 
+  /* ─── THEME TOGGLE ─── */
+  .theme-toggle {
+    position: fixed;
+    top: 1rem; right: 1rem;
+    background: var(--cream);
+    border: 1px solid var(--bone);
+    border-radius: 20px;
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--stone);
+    transition: border-color 0.2s;
+    z-index: 300;
+    font-size: 14px; line-height: 1;
+  }
+  .theme-toggle:hover { border-color: var(--ember); color: var(--graphite); }
+
   /* ─── UTILITY ─── */
   a { color: var(--ember); text-decoration: none; }
   a:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -328,6 +384,8 @@
 </style>
 </head>
 <body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">☾</button>
 
 <div class="banner">Under construction &middot; Subject to change</div>
 
@@ -460,5 +518,28 @@
   <p>Prepared March 2026 &middot; RegenHub, LCA (DBA Techne) &middot; Boulder, Colorado</p>
 </footer>
 
+<script>
+(function() {
+  var btn = document.getElementById('themeToggle');
+  var stored = localStorage.getItem('techne-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+
+  function isDark() {
+    var t = document.documentElement.getAttribute('data-theme');
+    return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function render() {
+    btn.textContent = isDark() ? '☀' : '☾';
+  }
+  render();
+
+  btn.addEventListener('click', function() {
+    var next = isDark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('techne-theme', next);
+    render();
+  });
+})();
+</script>
 </body>
 </html>
