@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lunch with Lynn &mdash; RegenHub &amp; Techne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=IBM+Plex+Mono:wght@300;400&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:           #faf8f5;
+    --surface:      #f0ece6;
+    --surface-warm: #ede8e0;
+    --border:       #ddd7cd;
+    --primary:      #8a6340;
+    --primary-soft: rgba(138, 99, 64, 0.08);
+    --text:         #2e2a24;
+    --text-bright:  #111010;
+    --text-muted:   #6e665e;
+    --text-faint:   #9e968c;
+    --icon:         #c4b8a8;
+    --accent-warm:  #c49a6c;
+    --font-display: 'Cormorant', Georgia, serif;
+    --font-body:    'Source Serif 4', Georgia, serif;
+    --font-mono:    'IBM Plex Mono', 'SF Mono', monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:           #0c0b09;
+      --surface:      #161412;
+      --surface-warm: #1a1815;
+      --border:       #2a2622;
+      --primary:      #c4956a;
+      --primary-soft: rgba(196, 149, 106, 0.06);
+      --text:         #c8c2ba;
+      --text-bright:  #ece6de;
+      --text-muted:   #777067;
+      --text-faint:   #3e3830;
+      --icon:         #4a4438;
+      --accent-warm:  #c4956a;
+    }
+  }
+  [data-theme="dark"] {
+    --bg:#0c0b09; --surface:#161412; --surface-warm:#1a1815; --border:#2a2622;
+    --primary:#c4956a; --primary-soft:rgba(196,149,106,0.06);
+    --text:#c8c2ba; --text-bright:#ece6de; --text-muted:#777067;
+    --text-faint:#3e3830; --icon:#4a4438; --accent-warm:#c4956a;
+  }
+  [data-theme="light"] {
+    --bg:#faf8f5; --surface:#f0ece6; --surface-warm:#ede8e0; --border:#ddd7cd;
+    --primary:#8a6340; --primary-soft:rgba(138,99,64,0.08);
+    --text:#2e2a24; --text-bright:#111010; --text-muted:#6e665e;
+    --text-faint:#9e968c; --icon:#c4b8a8; --accent-warm:#c49a6c;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    line-height: 1.85;
+    font-weight: 400;
+    padding: 3.5rem 1.5rem 3rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .header-icon {
+    color: var(--accent-warm);
+    margin-bottom: 0.75rem;
+  }
+  .header-icon svg { width: 28px; height: 28px; stroke-width: 1.2; }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 2.1rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-bright);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.35rem;
+    line-height: 1.25;
+  }
+
+  .subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--primary);
+    margin-top: 2.25rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  h2 svg { width: 17px; height: 17px; stroke-width: 1.4; color: var(--icon); }
+
+  p { margin-bottom: 1rem; }
+
+  .capacity {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+    margin-bottom: 1.2rem;
+    padding: 0.75rem 0.9rem;
+    background: var(--primary-soft);
+    border-radius: 6px;
+  }
+
+  .capacity-icon {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: var(--icon);
+  }
+  .capacity-icon svg { width: 17px; height: 17px; stroke-width: 1.4; }
+
+  .capacity-text { font-size: 1.05rem; line-height: 1.7; }
+  .capacity-text strong { color: var(--text-bright); font-weight: 600; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  .ask {
+    background: var(--surface-warm);
+    border-left: 3px solid var(--accent-warm);
+    padding: 1.1rem 1.3rem;
+    margin: 1.5rem 0;
+    border-radius: 0 5px 5px 0;
+    line-height: 1.7;
+    font-size: 1.05rem;
+  }
+  .ask p:last-child { margin-bottom: 0; }
+
+  .ask-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .closing {
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text-muted);
+    margin: 2rem 0 0.5rem;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .back-link svg { width: 14px; height: 14px; }
+  .back-link:hover { color: var(--primary); text-decoration: none; }
+
+  .footer {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+    line-height: 1.8;
+    text-align: center;
+  }
+
+  .theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-faint);
+    transition: border-color 0.2s;
+    z-index: 100;
+  }
+  .theme-toggle:hover { border-color: var(--primary); color: var(--text-muted); }
+  .theme-toggle svg { width: 14px; height: 14px; stroke-width: 1.5; }
+
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  strong { color: var(--text-bright); font-weight: 600; }
+  em { font-style: italic; }
+
+  @media (max-width: 500px) {
+    body { padding: 2.5rem 1.15rem 2rem; }
+    h1 { font-size: 1.7rem; }
+    .capacity { padding: 0.6rem 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+  <i data-lucide="moon"></i>
+</button>
+
+<a class="back-link" href="/pre-read/"><i data-lucide="arrow-left"></i> Back to overview</a>
+
+<div class="header">
+  <div class="header-icon"><i data-lucide="presentation"></i></div>
+  <h1>The Plan for 1515 Walnut</h1>
+  <div class="subtitle">March 11, 2026 &middot; Lunch &middot; Boulder</div>
+</div>
+
+<!-- ─── WHO WE ARE ─── -->
+
+<h2><i data-lucide="home"></i> Who We Are</h2>
+
+<p><strong>RegenHub, LCA</strong> is a Colorado Limited Cooperative Association &mdash; the legal and organizational foundation for everything described here. Eight founding organizers:</p>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 2rem; margin: 1rem 0 1.25rem; font-size: 0.98rem;">
+  <div><strong>Kevin Owocki</strong> <span style="color: var(--text-muted);">&mdash; serial founder; Allo Capital</span></div>
+  <div><strong>Todd Youngblood</strong> <span style="color: var(--text-muted);">&mdash; operations; formerly U.S. Bank</span></div>
+  <div><strong>Aaron G Neyer</strong> <span style="color: var(--text-muted);">&mdash; software &amp; education; formerly Google</span></div>
+  <div><strong>Lucian Hymer</strong> <span style="color: var(--text-muted);">&mdash; web infrastructure; Gitcoin Passport</span></div>
+  <div><strong>Jonathan Borichevskiy</strong> <span style="color: var(--text-muted);">&mdash; independent software developer</span></div>
+  <div><strong>Savannah Kruger</strong> <span style="color: var(--text-muted);">&mdash; community; Neighborhood Village</span></div>
+  <div><strong>Neil Mackay Yarnal</strong> <span style="color: var(--text-muted);">&mdash; design &amp; creative direction</span></div>
+  <div><strong>Benjamin Ross</strong> <span style="color: var(--text-muted);">&mdash; civic technology; OpenCivics</span></div>
+</div>
+
+<p>RegenHub is a public benefit entity with the stated purpose of <em>cultivating scenius</em> &mdash; the creative intelligence that emerges when skilled people share sustained proximity. We've operated from the second floor of 1515 Walnut since May 2024.</p>
+
+<p><strong>Techne</strong> is what RegenHub is building next &mdash; a venture studio and project ecosystem that opens to the public from the third floor. Techne supports technology education through <strong>LeanVibe.Build</strong>, incubates early-stage ventures, and hosts a rotating calendar of programs and convergences. It is a DBA of RegenHub: same cooperative, new capacity.</p>
+
+<hr class="divider" />
+
+<!-- ─── ASK 1: LEASE TRANSFER ─── -->
+
+<h2><i data-lucide="file-signature"></i> 1. The Lease Transfer</h2>
+
+<p>Our current second-floor lease is held by West Software Services Inc., running through June 2027. We'd like to transfer it to <strong>RegenHub, LCA</strong> &mdash; the cooperative entity that now represents the group operating from this space.</p>
+
+<p>This is largely administrative: same people, same commitment, updated legal structure. The cooperative was filed in February 2026 and formalizes the working group that has occupied this space for nearly two years.</p>
+
+<div class="ask">
+  <span class="ask-label">Where things stand</span>
+  <p>RegenHub currently generates approximately $4,000&ndash;5,000 per month in operating cash flow, which covers the existing lease and enables the cooperative's day-to-day operations. The lease transfer aligns the contract with the entity doing the work.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- ─── ASK 2: THIRD FLOOR ─── -->
+
+<h2><i data-lucide="door-open"></i> 2. The Third Floor</h2>
+
+<p>This is the primary near-term goal. We'd like to lease the third floor and open it as <strong>Techne</strong> &mdash; an expanded workspace, program venue, and venture hub. Three capacities define what it becomes:</p>
+
+<div class="capacity">
+  <div class="capacity-icon"><i data-lucide="armchair"></i></div>
+  <div class="capacity-text"><strong>Coworking.</strong> An expanded daily workspace for members and affiliates. Desk memberships, meeting rooms, and shared infrastructure generate steady monthly revenue and bring a working community into the building.</div>
+</div>
+
+<div class="capacity">
+  <div class="capacity-icon"><i data-lucide="calendar-range"></i></div>
+  <div class="capacity-text"><strong>Programs.</strong> A rotating seasonal calendar. First up: <strong>LeanVibe.Build</strong> &mdash; helping people rediscover the craft of code. The space is designed for what comes next: technology cohorts, cultural convergences like Sundance Boulder, civic workshops, and programs at the intersection of bioregioning and civics.</div>
+</div>
+
+<div class="capacity">
+  <div class="capacity-icon"><i data-lucide="sprout"></i></div>
+  <div class="capacity-text"><strong>Ventures.</strong> The cooperative incubates early-stage technology ventures. Each contributes a minimum 1% annually back to the cooperative, creating a shared basket that compounds over time.</div>
+</div>
+
+<div class="ask">
+  <span class="ask-label">Financing the third floor</span>
+  <p>We have over <strong>$130,000 in committed capital</strong> from investors who are also participants in the work:</p>
+  <p><strong>Kevin Owocki</strong> &mdash; $50,000 committed. Six-time founder, Managing Partner at Allo Capital. Has operated from 1515 Walnut's second floor for over a year.</p>
+  <p><strong>Jeremy</strong> &mdash; $50,000 committed. Motivated by access to the builder community and the creative energy emerging from this space.</p>
+  <p><strong>Ethereum Foundation</strong> &mdash; $30,000 committed. Interested in maintaining a Boulder presence and supporting open-source public goods infrastructure.</p>
+  <p>These investors cover the first year of the third-floor lease, giving cash flow time to grow and sustain it &mdash; the same pattern that proved out on the second floor. We're seeking a lease rate that reflects a long-term partnership: <strong>$5,000 per month</strong>, with immediate occupancy by a stable, mission-aligned tenant already in the building.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- ─── ASK 3: THE LONGER VIEW ─── -->
+
+<h2><i data-lucide="building"></i> 3. The Longer View</h2>
+
+<p>We want to be transparent about where we hope this relationship goes. Over the next two to three years, we'd like to explore a path toward acquiring 1515 Walnut &mdash; a cooperatively-owned building that grows with what happens inside it.</p>
+
+<p>We're not asking for a decision on this now. What we'd welcome is the conversation: understanding your goals for the building, sharing ours, and seeing whether there's a structure that works for everyone over time.</p>
+
+<div class="ask">
+  <span class="ask-label">The stepwise model</span>
+  <p>The pattern is deliberate: visionary investors cover the first year of each expansion, then operating revenue grows to sustain it.</p>
+  <p><strong>Second floor</strong> &mdash; covered. Cash flow sustains the lease today.</p>
+  <p><strong>Third floor</strong> &mdash; investors above are ready to cover year one. Cash flow grows from the expanded space, programs, and memberships.</p>
+  <p><strong>Building</strong> &mdash; at roughly $2.5 million (pending appraisal), debt service would run approximately $11,000&ndash;12,000 per month. That's about three times where we are today. With the third floor open and programs running, it becomes a realistic horizon rather than a speculative one.</p>
+  <p>As a first step, we'd be willing to fund an independent appraisal &mdash; a good-faith signal that we're serious about the long-term path, even as we work together on the near-term terms.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- ─── THE THROUGHLINE ─── -->
+
+<h2><i data-lucide="handshake"></i> The Throughline</h2>
+
+<p>Every investor in this cooperative is also a participant in the work. Kevin works from the second floor. Jeremy shows up at events. The Ethereum Foundation supports the ecosystem these people build in. This is not outside capital looking for a return &mdash; it's people who are here because they believe in what Boulder can be.</p>
+
+<p>That's the kind of relationship we'd like to build with you: not a transaction, but a partnership where the growth of what happens inside 1515 Walnut benefits everyone connected to it.</p>
+
+<p>We'd love to hear about your goals for the building, how you're thinking about its future, and whether there's a way to walk toward that future together.</p>
+
+<p class="closing">We come prepared and we come in good faith.</p>
+
+<div class="footer">
+  Prepared March 2026 &middot; RegenHub, LCA (DBA Techne) &middot; Boulder, Colorado<br/>
+  Kevin Owocki &amp; Todd Youngblood
+</div>
+
+<script>
+(function() {
+  var btn = document.getElementById('themeToggle');
+  var stored = localStorage.getItem('preread-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+
+  function isDark() {
+    var t = document.documentElement.getAttribute('data-theme');
+    return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function render() {
+    btn.innerHTML = isDark()
+      ? '<i data-lucide="sun"></i>'
+      : '<i data-lucide="moon"></i>';
+    lucide.createIcons();
+  }
+  render();
+  lucide.createIcons();
+
+  btn.addEventListener('click', function() {
+    var next = isDark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('preread-theme', next);
+    render();
+  });
+})();
+</script>
+</body>
+</html>

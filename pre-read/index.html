@@ -122,7 +122,13 @@
     margin-bottom: 0.5rem;
   }
 
-  .capacity {
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  .agenda-item {
     display: flex;
     gap: 0.9rem;
     align-items: flex-start;
@@ -132,32 +138,32 @@
     border-radius: 6px;
   }
 
-  .capacity-icon {
+  .agenda-icon {
     flex-shrink: 0;
     margin-top: 0.15rem;
     color: var(--icon);
   }
-  .capacity-icon svg { width: 17px; height: 17px; stroke-width: 1.4; }
+  .agenda-icon svg { width: 17px; height: 17px; stroke-width: 1.4; }
 
-  .capacity-text { font-size: 1.05rem; line-height: 1.7; }
-  .capacity-text strong { color: var(--text-bright); font-weight: 600; }
+  .agenda-text { font-size: 1.05rem; line-height: 1.7; }
+  .agenda-text strong { color: var(--text-bright); font-weight: 600; }
 
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 2rem 0;
-  }
-
-  .ask {
+  .cta {
+    display: block;
+    text-align: center;
+    margin: 2.5rem auto 1rem;
+    padding: 1rem 2rem;
     background: var(--surface-warm);
-    border-left: 3px solid var(--accent-warm);
-    padding: 1.1rem 1.3rem;
-    margin: 2rem 0;
-    border-radius: 0 5px 5px 0;
-    line-height: 1.7;
-    font-size: 1.05rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--primary);
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
   }
-  .ask p:last-child { margin-bottom: 0; }
+  .cta:hover { border-color: var(--primary); background: var(--primary-soft); text-decoration: none; }
 
   .closing {
     text-align: center;
@@ -240,7 +246,7 @@
   @media (max-width: 500px) {
     body { padding: 2.5rem 1.15rem 2rem; }
     h1 { font-size: 1.7rem; }
-    .capacity { padding: 0.6rem 0.75rem; }
+    .agenda-item { padding: 0.6rem 0.75rem; }
   }
 </style>
 </head>
@@ -253,84 +259,65 @@
 <div class="header">
   <div class="header-icon"><i data-lucide="coffee"></i></div>
   <h1>Before We Sit Down</h1>
-  <div class="subtitle">March 10, 2026 &middot; 1:00 PM &middot; Boulder</div>
+  <div class="subtitle">March 11, 2026 &middot; Lunch &middot; Boulder</div>
 </div>
 
-<p class="welcome">Thank you for making time for lunch. Here's a little context on who we are and what we'd like to talk about.</p>
+<p class="welcome">Thank you for making time for lunch. Here's who we are and what we'd like to talk about.</p>
 
-<h2><i data-lucide="home"></i> RegenHub</h2>
+<h2><i data-lucide="home"></i> Who We Are</h2>
 
-<p><strong>RegenHub, LCA</strong> is a Colorado Limited Cooperative Association &mdash; the legal and organizational foundation for everything described here. Eight founding organizers. Committed investors and legal counsel in place.</p>
+<p><strong>RegenHub, LCA</strong> is a Colorado Limited Cooperative Association &mdash; eight founding organizers building a venture studio and project ecosystem from 1515 Walnut. We've been on the second floor since May 2024.</p>
 
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 2rem; margin: 1rem 0 1.25rem; font-size: 0.98rem;">
-  <div><strong>Kevin Owocki</strong> <span style="color: var(--text-muted);">&mdash; serial founder; Allo Capital</span></div>
-  <div><strong>Todd Youngblood</strong> <span style="color: var(--text-muted);">&mdash; operations; formerly U.S. Bank</span></div>
-  <div><strong>Aaron G Neyer</strong> <span style="color: var(--text-muted);">&mdash; software &amp; education; formerly Google</span></div>
-  <div><strong>Lucian Hymer</strong> <span style="color: var(--text-muted);">&mdash; web infrastructure; Gitcoin Passport</span></div>
-  <div><strong>Jonathan Borichevskiy</strong> <span style="color: var(--text-muted);">&mdash; independent software developer</span></div>
-  <div><strong>Savannah Kruger</strong> <span style="color: var(--text-muted);">&mdash; community; Neighborhood Village</span></div>
-  <div><strong>Neil Mackay Yarnal</strong> <span style="color: var(--text-muted);">&mdash; design &amp; creative direction</span></div>
-  <div><strong>Benjamin Ross</strong> <span style="color: var(--text-muted);">&mdash; civic technology; OpenCivics</span></div>
+<p><strong>Techne</strong> is what RegenHub is building next: technology education, venture incubation, and a rotating calendar of programs and convergences. Same cooperative, new capacity &mdash; opening from the third floor.</p>
+
+<h2><i data-lucide="message-circle"></i> Three Conversations</h2>
+
+<p>We have three things on our mind for lunch, each building on the last:</p>
+
+<div class="agenda-item">
+  <div class="agenda-icon"><i data-lucide="file-signature"></i></div>
+  <div class="agenda-text"><strong>The lease transfer.</strong> Moving our second-floor lease from West Software to RegenHub, LCA &mdash; aligning the contract with the cooperative entity now doing the work.</div>
 </div>
 
-<p> RegenHub is a public benefit entity with the stated purpose of <em>cultivating scenius</em> &mdash; the creative intelligence that emerges when skilled people share sustained proximity. RegenHub has operated from 1515 Walnut since May 2024 and continues as the cooperative's home base on the second floor.</p>
-
-<h2><i data-lucide="sparkles"></i> Techne</h2>
-
-<p><strong>Techne</strong> is what RegenHub is building next &mdash; a venture studio and project ecosystem that opens to the public from the third floor. Techne supports technology education through <strong>LeanVibe.Build</strong>, incubates early-stage ventures, and hosts a rotating calendar of programs and convergences. It is a DBA of RegenHub: same cooperative, new capacity.</p>
-
-<h2><i data-lucide="door-open"></i> What the Third Floor Opens Up</h2>
-
-<p>The third floor is where Techne comes to life &mdash; a multi-modal space designed to evolve with what Boulder needs. Three capacities define it:</p>
-
-<div class="capacity">
-  <div class="capacity-icon"><i data-lucide="armchair"></i></div>
-  <div class="capacity-text"><strong>Coworking.</strong> An expanded daily workspace for members and affiliates. Desk memberships, meeting rooms, and shared infrastructure generate steady monthly revenue and bring a working community into the building.</div>
+<div class="agenda-item">
+  <div class="agenda-icon"><i data-lucide="door-open"></i></div>
+  <div class="agenda-text"><strong>The third floor.</strong> Leasing the third floor to open Techne &mdash; coworking, programs, and venture incubation. We have over $130,000 in committed capital from investors who are also participants in the work.</div>
 </div>
 
-<div class="capacity">
-  <div class="capacity-icon"><i data-lucide="calendar-range"></i></div>
-  <div class="capacity-text"><strong>Programs.</strong> A rotating seasonal calendar. First up: <strong>LeanVibe.Build</strong> &mdash; helping people rediscover their love of the craft of code. The space is designed for what comes next: technology cohorts, cultural convergences like Sundance Boulder, civic workshops, and programs at the intersection of bioregioning and civics.</div>
+<div class="agenda-item">
+  <div class="agenda-icon"><i data-lucide="building"></i></div>
+  <div class="agenda-text"><strong>The longer view.</strong> A conversation about the future of 1515 Walnut &mdash; where we hope this partnership goes over the next two to three years.</div>
 </div>
 
-<div class="capacity">
-  <div class="capacity-icon"><i data-lucide="sprout"></i></div>
-  <div class="capacity-text"><strong>Ventures.</strong> The cooperative incubates early-stage technology ventures. Each contributes a minimum 1% annually back to the cooperative, creating a shared basket that compounds over time.</div>
-</div>
+<p>We're not asking for decisions on all three tomorrow. We're sharing the full picture so everyone at the table sees the same horizon.</p>
 
-<hr class="divider" />
+<a class="cta" href="/lunch-presentation/">Read the full plan &rarr;</a>
 
-<div class="ask">
-<p>We have over $100,000 in committed capital from investors who are also participants in the work &mdash; including Kevin Owocki, who has operated from 1515 Walnut's second floor for over a year. We have an operating model designed for space and service revenue to cover operating costs within the first year, with venture reciprocity creating long-term upside. We're already in the building. We are seeking a lease on the third floor that reflects a long-term partnership &mdash; where the growth of what happens inside benefits everyone connected to it.</p>
-</div>
-
-<p>Over lunch, we'd like to walk through our plan for the third floor and explore the terms of a lease that works for everyone at the table. We come prepared and we come in good faith.</p>
-
-<p class="closing">We look forward to sitting down together.</p>
+<p class="closing">We come prepared and we come in good faith.<br/>We look forward to sitting down together.</p>
 
 <div class="further-reading">
   <h2><i data-lucide="book-open"></i> Further Reading</h2>
   <div class="ref">
     <a href="https://allo.capital" target="_blank">allo.capital</a>
-    <span class="ref-desc">Allo Capital is a venture studio and fund focused on open-source public goods infrastructure. Co-founded by Kevin Owocki.</span>
+    <span class="ref-desc">Allo Capital &mdash; venture studio and fund for open-source public goods. Co-founded by Kevin Owocki.</span>
   </div>
   <div class="ref">
     <a href="https://gitcoin.co" target="_blank">gitcoin.co</a>
-    <span class="ref-desc">Gitcoin has funded over $60M in open-source and public goods projects through quadratic funding and grants. Founded by Kevin Owocki in 2017.</span>
+    <span class="ref-desc">Gitcoin &mdash; over $60M in open-source and public goods funding. Founded by Kevin Owocki, 2017.</span>
   </div>
   <div class="ref">
     <a href="https://regenhub.xyz" target="_blank">regenhub.xyz</a>
-    <span class="ref-desc">RegenHub &mdash; Boulder's regenerative workspace and the cooperative foundation behind Techne.</span>
+    <span class="ref-desc">RegenHub &mdash; Boulder's regenerative workspace and cooperative foundation.</span>
   </div>
   <div class="ref">
     <a href="https://techne.institute" target="_blank">techne.institute</a>
-    <span class="ref-desc">Techne Institute &mdash; the public-facing home for technology education, programs, and the community emerging from the third floor.</span>
+    <span class="ref-desc">Techne Institute &mdash; technology education, programs, and community.</span>
   </div>
 </div>
 
 <div class="footer">
   Prepared March 2026 &middot; RegenHub, LCA (DBA Techne) &middot; Boulder, Colorado<br/>
-  Kevin Owocki (Executive Steward, Allo Capital) &amp; Todd Youngblood (Ventures &amp; Operations Steward, RegenHub DBA Techne)
+  Kevin Owocki &amp; Todd Youngblood
 </div>
 
 <script>
