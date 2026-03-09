@@ -33,26 +33,26 @@
       --parchment: #0c0b09;
       --cream: #161412;
       --bone: #2a2622;
-      --stone: #777067;
-      --charcoal: #ece6de;
-      --graphite: #c8c2ba;
-      --ember: #d4724f;
-      --ember-dim: #c4956a;
-      --ember-glow: rgba(212, 114, 79, 0.06);
-      --warm: #c4956a;
+      --stone: #a09890;
+      --charcoal: #f0ebe5;
+      --graphite: #d8d2ca;
+      --ember: #e07850;
+      --ember-dim: #d4a87a;
+      --ember-glow: rgba(224, 120, 80, 0.08);
+      --warm: #d4a87a;
     }
   }
   [data-theme="dark"] {
     --parchment: #0c0b09;
     --cream: #161412;
     --bone: #2a2622;
-    --stone: #777067;
-    --charcoal: #ece6de;
-    --graphite: #c8c2ba;
-    --ember: #d4724f;
-    --ember-dim: #c4956a;
-    --ember-glow: rgba(212, 114, 79, 0.06);
-    --warm: #c4956a;
+    --stone: #a09890;
+    --charcoal: #f0ebe5;
+    --graphite: #d8d2ca;
+    --ember: #e07850;
+    --ember-dim: #d4a87a;
+    --ember-glow: rgba(224, 120, 80, 0.08);
+    --warm: #d4a87a;
   }
   [data-theme="light"] {
     --parchment: #f7f5f0;
@@ -79,16 +79,7 @@
     overflow-x: hidden;
   }
 
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    opacity: 0.12;
-    z-index: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  }
+
 
   /* ─── HEADER ─── */
   .page-header {
