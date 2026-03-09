@@ -11,19 +11,16 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --void: #08080a;
-    --ink: #0f0f12;
-    --charcoal: #1a1a1f;
-    --graphite: #2a2a30;
     --parchment: #f7f5f0;
     --cream: #ebe7df;
     --bone: #d8d3c8;
     --stone: #9a958a;
+    --charcoal: #1a1a1f;
+    --graphite: #2a2a30;
     --ember: #c2512a;
     --ember-dim: #8a3a1f;
     --ember-glow: rgba(194, 81, 42, 0.08);
     --sage: #4a5f4a;
-    --sage-light: #6b836b;
     --warm: #c4956a;
     --font-display: 'Cormorant', serif;
     --font-body: 'Source Serif 4', serif;
@@ -54,82 +51,59 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   }
 
-  /* ─── HERO ─── */
-  .hero {
-    min-height: 60vh;
-    background-color: #08080a;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px);
-    background-size: 28px 28px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 4rem 2rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-glow {
-    position: absolute;
-    width: 500px; height: 500px;
-    border-radius: 50%;
-    pointer-events: none;
-    filter: blur(130px);
-    opacity: 0.07;
-  }
-  .hero-glow-amber { top: -120px; right: -120px; background: #c4956a; }
-  .hero-glow-teal  { bottom: -120px; left: -120px; background: #7ccfb8; }
-
-  .hero-content {
-    max-width: 800px;
+  /* ─── HEADER ─── */
+  .page-header {
     text-align: center;
+    padding: 5rem 2rem 3rem;
+    border-bottom: 1px solid var(--bone);
     position: relative;
-    z-index: 1;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 1px;
+    background: var(--ember);
   }
 
-  .hero-wordmark {
+  .page-header h1 {
     font-family: var(--font-display);
     font-weight: 300;
-    font-size: clamp(3rem, 12vw, 6rem);
-    letter-spacing: 0.25em;
-    color: #ffffff;
-    margin-bottom: 0.25rem;
-    margin-right: -0.25em;
-    opacity: 0;
-    animation: heroReveal 1.6s ease-out 0.2s forwards;
-    text-shadow: 0 0 100px rgba(196, 149, 106, 0.15);
+    font-size: clamp(2.5rem, 7vw, 3.5rem);
+    letter-spacing: 0.15em;
+    color: var(--charcoal);
+    margin-bottom: 0.5rem;
   }
 
-  @keyframes heroReveal {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .hero-sub {
+  .page-header .sub {
     font-family: var(--font-display);
     font-weight: 300;
     font-style: italic;
-    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 2rem;
-    opacity: 0;
-    animation: heroFade 1.2s ease-out 0.6s forwards;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: var(--stone);
+    margin-bottom: 1.5rem;
   }
 
-  .hero-meta {
+  .page-header .meta {
     font-family: var(--font-mono-alt);
     font-size: 0.72rem;
     font-weight: 300;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
-    opacity: 0;
-    animation: heroFade 1.2s ease-out 0.9s forwards;
+    color: var(--bone);
   }
 
-  @keyframes heroFade {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
+  /* ─── BANNER ─── */
+  .banner {
+    background: var(--cream);
+    border-bottom: 1px solid var(--bone);
+    padding: 0.6rem 2rem;
+    text-align: center;
+    font-family: var(--font-mono-alt);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--stone);
   }
 
   /* ─── NAV ─── */
@@ -192,6 +166,23 @@
     padding: 0 2rem;
     position: relative;
   }
+
+  /* Running margin line */
+  .frame::before {
+    content: '';
+    position: absolute;
+    left: -60px;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: repeating-linear-gradient(
+      180deg,
+      var(--bone) 0px, var(--bone) 4px,
+      transparent 4px, transparent 20px
+    );
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  @media (max-width: 1000px) { .frame::before { display: none; } }
 
   section {
     padding: 5rem 0;
@@ -286,258 +277,66 @@
   }
   .investor-detail { font-size: 0.92rem; color: var(--stone); margin: 0; }
 
-  /* ─── FULL-BLEED DARK SECTIONS ─── */
-  .dark-section {
-    background: var(--ink);
-    padding: 5rem 2rem;
-    position: relative;
-  }
-  .dark-section::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 30% 0%, var(--ember-glow) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 100%, rgba(74, 95, 74, 0.05) 0%, transparent 50%);
-    pointer-events: none;
-  }
-  .dark-inner {
-    max-width: 820px; margin: 0 auto; position: relative; z-index: 1;
-  }
-  .dark-section .section-mark { color: var(--stone); }
-  .dark-section .section-mark::after { background: var(--graphite); }
-  .dark-section h2 { color: var(--cream); }
-  .dark-section h3 { color: var(--bone); }
-  .dark-section p { color: var(--stone); }
-  .dark-section .lead { color: var(--bone); }
-  .dark-section strong { color: var(--cream); }
-
-  /* ─── FINANCIAL MODEL ─── */
-  .model-panel {
-    background: var(--charcoal);
-    border: 1px solid var(--graphite);
-    padding: 2rem;
+  /* ─── CALLOUT ─── */
+  .callout {
+    background: var(--cream);
+    border-left: 2px solid var(--warm);
+    padding: 1.5rem 1.75rem;
     margin: 2rem 0;
   }
-
-  .model-title {
-    font-family: var(--font-mono-alt);
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--warm);
-    margin-bottom: 1.5rem;
-  }
-
-  .model-row {
-    display: grid;
-    grid-template-columns: 1fr 140px;
-    gap: 1rem;
-    align-items: center;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .model-row:last-child { border-bottom: none; }
-
-  .model-label {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--stone);
-    letter-spacing: 0.03em;
-  }
-  .model-label small {
-    display: block;
-    font-size: 0.68rem;
-    color: rgba(154,149,138,0.6);
-    margin-top: 0.15rem;
-  }
-
-  .model-value {
-    font-family: var(--font-mono-alt);
-    font-size: 1.1rem;
-    font-weight: 400;
-    color: var(--cream);
-    text-align: right;
-  }
-  .model-value.computed {
-    color: var(--warm);
-  }
-  .model-value.highlight {
-    color: var(--ember);
-    font-size: 1.25rem;
-  }
-  .model-value.equity {
-    color: var(--sage-light);
-  }
-
-  .model-input {
-    width: 100%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--graphite);
-    color: var(--cream);
-    font-family: var(--font-mono-alt);
-    font-size: 1rem;
-    padding: 0.4rem 0.6rem;
-    text-align: right;
-    border-radius: 3px;
-    transition: border-color 0.2s;
-  }
-  .model-input:focus {
-    outline: none;
-    border-color: var(--warm);
-  }
-
-  .model-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 4px;
-    background: var(--graphite);
-    border-radius: 2px;
-    outline: none;
-    margin-top: 0.5rem;
-  }
-  .model-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px; height: 16px;
-    background: var(--warm);
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  .model-slider::-moz-range-thumb {
-    width: 16px; height: 16px;
-    background: var(--warm);
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-  }
-
-  .model-divider {
-    border: none;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    margin: 1rem 0;
-  }
-
-  .model-note {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: rgba(154,149,138,0.5);
-    margin-top: 1rem;
-    line-height: 1.6;
-  }
-
-  /* Stepwise visualization */
-  .stepwise {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin: 2rem 0;
-  }
-  @media (max-width: 600px) { .stepwise { grid-template-columns: 1fr; } }
-
-  .step {
-    padding: 1.5rem;
-    border: 1px solid var(--graphite);
-    text-align: center;
-    transition: border-color 0.3s;
-  }
-  .step.active { border-color: var(--warm); }
-
-  .step-label {
-    font-family: var(--font-mono-alt);
-    font-size: 0.6rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--stone);
-    margin-bottom: 0.75rem;
-  }
-  .step.active .step-label { color: var(--warm); }
-
-  .step-value {
-    font-family: var(--font-mono-alt);
-    font-size: 1.6rem;
-    font-weight: 300;
-    color: var(--bone);
-    margin-bottom: 0.35rem;
-  }
-  .step.active .step-value { color: var(--cream); }
-
-  .step-desc {
-    font-size: 0.8rem;
-    color: var(--stone);
-    margin: 0;
-  }
+  .callout p { margin-bottom: 0.5rem; }
+  .callout p:last-child { margin-bottom: 0; }
 
   /* ─── CLOSING ─── */
-  .closing {
-    background: var(--ink);
-    padding: 5rem 2rem;
+  .closing-section {
     text-align: center;
-    position: relative;
-  }
-  .closing::before {
-    content: ''; position: absolute;
-    top: -30px; left: 50%; transform: translateX(-50%);
-    width: 1px; height: 60px;
-    background: linear-gradient(180deg, var(--bone) 0%, var(--ember) 100%);
+    padding: 5rem 2rem;
+    border-top: 1px solid var(--bone);
   }
   .closing-inner {
-    max-width: 600px; margin: 0 auto; position: relative; z-index: 1;
+    max-width: 600px; margin: 0 auto;
   }
-  .closing h2 {
-    font-family: var(--font-display);
-    font-weight: 300; font-size: 2.25rem;
-    color: var(--cream); margin-bottom: 1.5rem;
+  .closing-inner h2 {
+    text-align: center;
   }
-  .closing p {
-    color: var(--stone); font-size: 1.05rem;
-    max-width: none; margin-bottom: 1.25rem; line-height: 1.8;
+  .closing-inner p {
+    max-width: none;
+    text-align: center;
   }
 
   /* ─── FOOTER ─── */
   footer {
-    background-color: #08080a;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px);
-    background-size: 28px 28px;
-    padding: 2.5rem 2rem;
+    border-top: 1px solid var(--bone);
+    padding: 2rem 2rem;
     text-align: center;
   }
   footer p {
     font-family: var(--font-mono-alt);
     font-size: 0.68rem; letter-spacing: 0.1em;
-    color: rgba(255,255,255,0.18);
+    color: var(--stone);
     max-width: none; margin: 0;
-  }
-
-  /* ─── BANNER ─── */
-  .banner {
-    background: var(--charcoal);
-    border-bottom: 1px solid var(--graphite);
-    padding: 0.6rem 2rem;
-    text-align: center;
-    font-family: var(--font-mono-alt);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--warm);
   }
 
   /* ─── UTILITY ─── */
   a { color: var(--ember); text-decoration: none; }
   a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 500px) {
+    body { font-size: 16px; }
+    .page-header { padding: 3.5rem 1.5rem 2.5rem; }
+  }
 </style>
 </head>
 <body>
 
 <div class="banner">Under construction &middot; Subject to change</div>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero">
-  <div class="hero-glow hero-glow-amber" aria-hidden="true"></div>
-  <div class="hero-glow hero-glow-teal" aria-hidden="true"></div>
-  <div class="hero-content">
-    <h1 class="hero-wordmark">TECHNE</h1>
-    <p class="hero-sub">The Plan for 1515 Walnut</p>
-    <p class="hero-meta">March 11, 2026 · Boulder, Colorado</p>
-  </div>
-</section>
+<!-- ═══ HEADER ═══ -->
+<div class="page-header">
+  <h1>TECHNE</h1>
+  <p class="sub">The Plan for 1515 Walnut</p>
+  <p class="meta">March 11, 2026 &middot; Boulder, Colorado</p>
+</div>
 
 <!-- ═══ NAV ═══ -->
 <nav>
@@ -576,10 +375,8 @@
 
     <p>We've operated from the second floor of 1515 Walnut since May 2024. <strong>Techne</strong> is what RegenHub is building next &mdash; a venture studio and project ecosystem that opens to the public from the third floor.</p>
   </section>
-</div>
 
-<!-- ═══ 02 — LEASE TRANSFER ═══ -->
-<div class="frame">
+  <!-- ═══ 02 — LEASE TRANSFER ═══ -->
   <section id="lease">
     <p class="section-mark">02 &mdash; The Lease Transfer</p>
     <h2>Aligning the Contract</h2>
@@ -588,11 +385,9 @@
 
     <p>Same people. Same commitment. Updated legal structure. The cooperative was filed in February 2026 and formalizes the working group that has been here for nearly two years.</p>
   </section>
-</div>
 
-<!-- ═══ 03 — THIRD FLOOR (dark) ═══ -->
-<section id="third-floor" class="dark-section">
-  <div class="dark-inner">
+  <!-- ═══ 03 — THIRD FLOOR ═══ -->
+  <section id="third-floor">
     <p class="section-mark">03 &mdash; The Third Floor</p>
     <h2>Opening Techne</h2>
 
@@ -635,36 +430,35 @@
     </div>
 
     <p style="margin-top: 1.5rem;">These investors cover the first year of the third-floor lease, giving cash flow time to grow and sustain it &mdash; the same pattern that proved out on the second floor. We're seeking a lease rate that reflects a long-term partnership &mdash; a number we'd like to arrive at together.</p>
-  </div>
-</section>
+  </section>
 
-<!-- ═══ 04 — BUILDING (dark) ═══ -->
-<section id="building" class="dark-section" style="border-top: 1px solid var(--graphite);">
-  <div class="dark-inner">
+  <!-- ═══ 04 — BUILDING ═══ -->
+  <section id="building">
     <p class="section-mark">04 &mdash; The Longer View</p>
     <h2>A Path to Ownership</h2>
 
     <p class="lead">Over the next two to three years, we'd like to explore acquiring 1515 Walnut &mdash; a cooperatively-owned building that grows with what happens inside it. We're not asking for a decision today. We're opening the conversation.</p>
 
-    <p>As a first step, we'd be willing to fund an independent appraisal &mdash; a good-faith signal that we're serious about the long-term path, even as we work together on the near-term terms.</p>
-  </div>
-</section>
+    <div class="callout">
+      <p>As a first step, we'd be willing to fund an independent appraisal &mdash; a good-faith signal that we're serious about the long-term path, even as we work together on the near-term terms.</p>
+    </div>
+  </section>
 
-<!-- ═══ 05 — TOGETHER ═══ -->
-<section id="together" class="closing">
-  <div class="closing-inner">
-    <h2>The Throughline</h2>
-    <p>Every investor in this cooperative is also a participant in the work. Kevin works from the second floor. Jeremy Wood shows up at events. The Ethereum Foundation supports the ecosystem these people build in.</p>
-    <p>This is not outside capital looking for a return. It's people who are here because they believe in what Boulder can be.</p>
-    <p>We'd love to hear about your goals for the building, how you're thinking about its future, and whether there's a way to walk toward that future together.</p>
-    <p style="font-family: var(--font-display); font-style: italic; font-size: 1.2rem; color: var(--warm); margin-top: 2.5rem;">We come prepared and we come in good faith.</p>
-  </div>
-</section>
+  <!-- ═══ 05 — TOGETHER ═══ -->
+  <section id="together" class="closing-section" style="border-bottom: none;">
+    <div class="closing-inner">
+      <h2>The Throughline</h2>
+      <p>Every investor in this cooperative is also a participant in the work. Kevin works from the second floor. Jeremy Wood shows up at events. The Ethereum Foundation supports the ecosystem these people build in.</p>
+      <p>This is not outside capital looking for a return. It's people who are here because they believe in what Boulder can be.</p>
+      <p>We'd love to hear about your goals for the building, how you're thinking about its future, and whether there's a way to walk toward that future together.</p>
+      <p style="font-family: var(--font-display); font-style: italic; font-size: 1.2rem; color: var(--warm); margin-top: 2rem;">We come prepared and we come in good faith.</p>
+    </div>
+  </section>
+</div>
 
 <footer>
   <p>Prepared March 2026 &middot; RegenHub, LCA (DBA Techne) &middot; Boulder, Colorado</p>
 </footer>
-
 
 </body>
 </html>
