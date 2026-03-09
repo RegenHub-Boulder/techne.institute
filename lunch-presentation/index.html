@@ -3,376 +3,892 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Lunch with Lynn &mdash; RegenHub &amp; Techne</title>
+<title>The Plan for 1515 Walnut &mdash; Techne</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=IBM+Plex+Mono:wght@300;400&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg:           #faf8f5;
-    --surface:      #f0ece6;
-    --surface-warm: #ede8e0;
-    --border:       #ddd7cd;
-    --primary:      #8a6340;
-    --primary-soft: rgba(138, 99, 64, 0.08);
-    --text:         #2e2a24;
-    --text-bright:  #111010;
-    --text-muted:   #6e665e;
-    --text-faint:   #9e968c;
-    --icon:         #c4b8a8;
-    --accent-warm:  #c49a6c;
-    --font-display: 'Cormorant', Georgia, serif;
-    --font-body:    'Source Serif 4', Georgia, serif;
-    --font-mono:    'IBM Plex Mono', 'SF Mono', monospace;
+    --void: #08080a;
+    --ink: #0f0f12;
+    --charcoal: #1a1a1f;
+    --graphite: #2a2a30;
+    --parchment: #f7f5f0;
+    --cream: #ebe7df;
+    --bone: #d8d3c8;
+    --stone: #9a958a;
+    --ember: #c2512a;
+    --ember-dim: #8a3a1f;
+    --ember-glow: rgba(194, 81, 42, 0.08);
+    --sage: #4a5f4a;
+    --sage-light: #6b836b;
+    --warm: #c4956a;
+    --font-display: 'Cormorant', serif;
+    --font-body: 'Source Serif 4', serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-mono-alt: 'JetBrains Mono', monospace;
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg:           #0c0b09;
-      --surface:      #161412;
-      --surface-warm: #1a1815;
-      --border:       #2a2622;
-      --primary:      #c4956a;
-      --primary-soft: rgba(196, 149, 106, 0.06);
-      --text:         #c8c2ba;
-      --text-bright:  #ece6de;
-      --text-muted:   #777067;
-      --text-faint:   #3e3830;
-      --icon:         #4a4438;
-      --accent-warm:  #c4956a;
-    }
-  }
-  [data-theme="dark"] {
-    --bg:#0c0b09; --surface:#161412; --surface-warm:#1a1815; --border:#2a2622;
-    --primary:#c4956a; --primary-soft:rgba(196,149,106,0.06);
-    --text:#c8c2ba; --text-bright:#ece6de; --text-muted:#777067;
-    --text-faint:#3e3830; --icon:#4a4438; --accent-warm:#c4956a;
-  }
-  [data-theme="light"] {
-    --bg:#faf8f5; --surface:#f0ece6; --surface-warm:#ede8e0; --border:#ddd7cd;
-    --primary:#8a6340; --primary-soft:rgba(138,99,64,0.08);
-    --text:#2e2a24; --text-bright:#111010; --text-muted:#6e665e;
-    --text-faint:#9e968c; --icon:#c4b8a8; --accent-warm:#c49a6c;
-  }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
 
   body {
-    background: var(--bg);
-    color: var(--text);
     font-family: var(--font-body);
-    font-size: 1.15rem;
-    line-height: 1.85;
+    background: var(--parchment);
+    color: var(--charcoal);
+    line-height: 1.75;
+    font-size: 17px;
     font-weight: 300;
-    padding: 3.5rem 1.5rem 3rem;
-    max-width: 700px;
-    margin: 0 auto;
+    overflow-x: hidden;
   }
 
-  .header {
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    opacity: 0.12;
+    z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 60vh;
+    background-color: #08080a;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px);
+    background-size: 28px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(130px);
+    opacity: 0.07;
+  }
+  .hero-glow-amber { top: -120px; right: -120px; background: #c4956a; }
+  .hero-glow-teal  { bottom: -120px; left: -120px; background: #7ccfb8; }
+
+  .hero-content {
+    max-width: 800px;
     text-align: center;
-    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 1;
   }
 
-  .header-icon {
-    color: var(--accent-warm);
-    margin-bottom: 0.75rem;
-  }
-  .header-icon svg { width: 28px; height: 28px; stroke-width: 1.2; }
-
-  h1 {
+  .hero-wordmark {
     font-family: var(--font-display);
-    font-size: 2.1rem;
+    font-weight: 300;
+    font-size: clamp(3rem, 12vw, 6rem);
+    letter-spacing: 0.25em;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+    margin-right: -0.25em;
+    opacity: 0;
+    animation: heroReveal 1.6s ease-out 0.2s forwards;
+    text-shadow: 0 0 100px rgba(196, 149, 106, 0.15);
+  }
+
+  @keyframes heroReveal {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-sub {
+    font-family: var(--font-display);
     font-weight: 300;
     font-style: italic;
-    color: var(--text-bright);
-    letter-spacing: -0.02em;
-    margin-bottom: 0.35rem;
-    line-height: 1.25;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: heroFade 1.2s ease-out 0.6s forwards;
   }
 
-  .subtitle {
+  .hero-meta {
+    font-family: var(--font-mono-alt);
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    opacity: 0;
+    animation: heroFade 1.2s ease-out 0.9s forwards;
+  }
+
+  @keyframes heroFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    background: var(--parchment);
+    border-bottom: 1px solid var(--bone);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+  nav::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 1px;
+    background: var(--ember);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 960px;
+    margin: 0 auto;
+    height: 56px;
+  }
+  .nav-wordmark {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
+    font-size: 0.75rem; font-weight: 400;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--ember); text-decoration: none;
+  }
+  nav ul { display: flex; list-style: none; gap: 0; flex-wrap: wrap; justify-content: flex-end; }
+  nav ul li a {
+    font-family: var(--font-mono);
+    font-size: 0.65rem; font-weight: 400;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--graphite); text-decoration: none;
+    padding: 0.5rem 0.85rem; display: block;
+    position: relative; transition: color 0.3s ease;
+  }
+  nav ul li a::after {
+    content: ''; position: absolute;
+    bottom: -1px; left: 0.85rem; right: 0.85rem;
+    height: 1px; background: var(--ember);
+    transform: scaleX(0); transition: transform 0.3s ease;
+  }
+  nav ul li a:hover { color: var(--ember); }
+  nav ul li a:hover::after { transform: scaleX(1); }
+
+  @media (max-width: 700px) {
+    .nav-inner { flex-direction: column; height: auto; padding: 0.75rem 0; gap: 0.5rem; }
+    nav ul { justify-content: center; }
+  }
+
+  /* ─── SECTIONS ─── */
+  .frame {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+  }
+
+  section {
+    padding: 5rem 0;
+    border-bottom: 1px solid var(--bone);
+    position: relative;
+  }
+  section:last-child { border-bottom: none; }
+
+  .section-mark {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-mark::after {
+    content: ''; flex: 1; height: 1px;
+    background: var(--bone); max-width: 100px;
   }
 
   h2 {
     font-family: var(--font-display);
-    font-size: 1.3rem;
     font-weight: 400;
-    color: var(--primary);
-    margin-top: 2.25rem;
-    margin-bottom: 0.75rem;
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    color: var(--charcoal);
+    margin-bottom: 1.75rem;
     letter-spacing: -0.01em;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    line-height: 1.2;
   }
 
-  h2 svg { width: 17px; height: 17px; stroke-width: 1.4; color: var(--icon); }
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: var(--graphite);
+    margin: 2.5rem 0 1rem;
+  }
 
-  p { margin-bottom: 1rem; }
+  p { color: var(--graphite); margin-bottom: 1.25rem; max-width: 65ch; }
+  .lead { font-size: 1.1rem; font-weight: 300; color: var(--charcoal); line-height: 1.9; }
+  em { font-style: italic; color: var(--ember-dim); }
+  strong { font-weight: 500; color: var(--charcoal); }
 
+  /* ─── ORGANIZER GRID ─── */
+  .org-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem 2rem;
+    margin: 1.25rem 0 1.5rem;
+    font-size: 0.95rem;
+  }
+  .org-grid strong { font-weight: 500; }
+  .org-grid .muted { color: var(--stone); }
+  @media (max-width: 500px) { .org-grid { grid-template-columns: 1fr; } }
+
+  /* ─── CAPACITY CARDS ─── */
   .capacity {
     display: flex;
-    gap: 0.9rem;
+    gap: 1rem;
     align-items: flex-start;
-    margin-bottom: 1.2rem;
-    padding: 0.75rem 0.9rem;
-    background: var(--primary-soft);
-    border-radius: 6px;
+    margin-bottom: 1.25rem;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--parchment) 100%);
+    border-left: 2px solid var(--ember);
   }
-
   .capacity-icon {
-    flex-shrink: 0;
-    margin-top: 0.15rem;
-    color: var(--icon);
+    flex-shrink: 0; margin-top: 0.1rem;
+    font-family: var(--font-mono); font-size: 0.7rem;
+    color: var(--ember); letter-spacing: 0.08em;
+    text-transform: uppercase; min-width: 80px;
   }
-  .capacity-icon svg { width: 17px; height: 17px; stroke-width: 1.4; }
+  .capacity-text { font-size: 0.98rem; line-height: 1.7; }
+  .capacity-text strong { font-weight: 500; color: var(--charcoal); }
 
-  .capacity-text { font-size: 1.05rem; line-height: 1.7; }
-  .capacity-text strong { color: var(--text-bright); font-weight: 600; }
+  /* ─── INVESTOR CARDS ─── */
+  .investor-card {
+    padding: 1.25rem 1.5rem;
+    background: var(--cream);
+    border-bottom: 2px solid var(--bone);
+    margin-bottom: 1rem;
+    transition: border-color 0.3s;
+  }
+  .investor-card:hover { border-color: var(--ember); }
+  .investor-name {
+    font-family: var(--font-display);
+    font-size: 1.15rem; font-weight: 500;
+    color: var(--charcoal); margin-bottom: 0.25rem;
+  }
+  .investor-detail { font-size: 0.92rem; color: var(--stone); margin: 0; }
 
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
+  /* ─── FULL-BLEED DARK SECTIONS ─── */
+  .dark-section {
+    background: var(--ink);
+    padding: 5rem 2rem;
+    position: relative;
+  }
+  .dark-section::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 0%, var(--ember-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 100%, rgba(74, 95, 74, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .dark-inner {
+    max-width: 820px; margin: 0 auto; position: relative; z-index: 1;
+  }
+  .dark-section .section-mark { color: var(--stone); }
+  .dark-section .section-mark::after { background: var(--graphite); }
+  .dark-section h2 { color: var(--cream); }
+  .dark-section h3 { color: var(--bone); }
+  .dark-section p { color: var(--stone); }
+  .dark-section .lead { color: var(--bone); }
+  .dark-section strong { color: var(--cream); }
+
+  /* ─── FINANCIAL MODEL ─── */
+  .model-panel {
+    background: var(--charcoal);
+    border: 1px solid var(--graphite);
+    padding: 2rem;
     margin: 2rem 0;
   }
 
-  .ask {
-    background: var(--surface-warm);
-    border-left: 3px solid var(--accent-warm);
-    padding: 1.1rem 1.3rem;
-    margin: 1.5rem 0;
-    border-radius: 0 5px 5px 0;
-    line-height: 1.7;
-    font-size: 1.05rem;
-  }
-  .ask p:last-child { margin-bottom: 0; }
-
-  .ask-label {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    color: var(--text-faint);
+  .model-title {
+    font-family: var(--font-mono-alt);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-
-  .closing {
-    text-align: center;
-    font-family: var(--font-display);
-    font-size: 1.15rem;
-    font-style: italic;
-    color: var(--text-muted);
-    margin: 2rem 0 0.5rem;
-  }
-
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    color: var(--text-muted);
+    color: var(--warm);
     margin-bottom: 1.5rem;
   }
-  .back-link svg { width: 14px; height: 14px; }
-  .back-link:hover { color: var(--primary); text-decoration: none; }
 
-  .footer {
-    margin-top: 2.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--border);
+  .model-row {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .model-row:last-child { border-bottom: none; }
+
+  .model-label {
     font-family: var(--font-mono);
     font-size: 0.78rem;
-    color: var(--text-muted);
+    color: var(--stone);
     letter-spacing: 0.03em;
-    line-height: 1.8;
+  }
+  .model-label small {
+    display: block;
+    font-size: 0.68rem;
+    color: rgba(154,149,138,0.6);
+    margin-top: 0.15rem;
+  }
+
+  .model-value {
+    font-family: var(--font-mono-alt);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--cream);
+    text-align: right;
+  }
+  .model-value.computed {
+    color: var(--warm);
+  }
+  .model-value.highlight {
+    color: var(--ember);
+    font-size: 1.25rem;
+  }
+  .model-value.equity {
+    color: var(--sage-light);
+  }
+
+  .model-input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--graphite);
+    color: var(--cream);
+    font-family: var(--font-mono-alt);
+    font-size: 1rem;
+    padding: 0.4rem 0.6rem;
+    text-align: right;
+    border-radius: 3px;
+    transition: border-color 0.2s;
+  }
+  .model-input:focus {
+    outline: none;
+    border-color: var(--warm);
+  }
+
+  .model-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--graphite);
+    border-radius: 2px;
+    outline: none;
+    margin-top: 0.5rem;
+  }
+  .model-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    background: var(--warm);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .model-slider::-moz-range-thumb {
+    width: 16px; height: 16px;
+    background: var(--warm);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+  }
+
+  .model-divider {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin: 1rem 0;
+  }
+
+  .model-note {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: rgba(154,149,138,0.5);
+    margin-top: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Stepwise visualization */
+  .stepwise {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  @media (max-width: 600px) { .stepwise { grid-template-columns: 1fr; } }
+
+  .step {
+    padding: 1.5rem;
+    border: 1px solid var(--graphite);
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+  .step.active { border-color: var(--warm); }
+
+  .step-label {
+    font-family: var(--font-mono-alt);
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.75rem;
+  }
+  .step.active .step-label { color: var(--warm); }
+
+  .step-value {
+    font-family: var(--font-mono-alt);
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--bone);
+    margin-bottom: 0.35rem;
+  }
+  .step.active .step-value { color: var(--cream); }
+
+  .step-desc {
+    font-size: 0.8rem;
+    color: var(--stone);
+    margin: 0;
+  }
+
+  /* ─── CLOSING ─── */
+  .closing {
+    background: var(--ink);
+    padding: 5rem 2rem;
+    text-align: center;
+    position: relative;
+  }
+  .closing::before {
+    content: ''; position: absolute;
+    top: -30px; left: 50%; transform: translateX(-50%);
+    width: 1px; height: 60px;
+    background: linear-gradient(180deg, var(--bone) 0%, var(--ember) 100%);
+  }
+  .closing-inner {
+    max-width: 600px; margin: 0 auto; position: relative; z-index: 1;
+  }
+  .closing h2 {
+    font-family: var(--font-display);
+    font-weight: 300; font-size: 2.25rem;
+    color: var(--cream); margin-bottom: 1.5rem;
+  }
+  .closing p {
+    color: var(--stone); font-size: 1.05rem;
+    max-width: none; margin-bottom: 1.25rem; line-height: 1.8;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background-color: #08080a;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px);
+    background-size: 28px 28px;
+    padding: 2.5rem 2rem;
     text-align: center;
   }
-
-  .theme-toggle {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: var(--text-faint);
-    transition: border-color 0.2s;
-    z-index: 100;
+  footer p {
+    font-family: var(--font-mono-alt);
+    font-size: 0.68rem; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.18);
+    max-width: none; margin: 0;
   }
-  .theme-toggle:hover { border-color: var(--primary); color: var(--text-muted); }
-  .theme-toggle svg { width: 14px; height: 14px; stroke-width: 1.5; }
 
-  a { color: var(--primary); text-decoration: none; }
+  /* ─── UTILITY ─── */
+  a { color: var(--ember); text-decoration: none; }
   a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  strong { color: var(--text-bright); font-weight: 600; }
-  em { font-style: italic; }
-
-  @media (max-width: 500px) {
-    body { padding: 2.5rem 1.15rem 2rem; }
-    h1 { font-size: 1.7rem; }
-    .capacity { padding: 0.6rem 0.75rem; }
-  }
 </style>
 </head>
 <body>
 
-<button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
-  <i data-lucide="moon"></i>
-</button>
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-glow hero-glow-amber" aria-hidden="true"></div>
+  <div class="hero-glow hero-glow-teal" aria-hidden="true"></div>
+  <div class="hero-content">
+    <h1 class="hero-wordmark">TECHNE</h1>
+    <p class="hero-sub">The Plan for 1515 Walnut</p>
+    <p class="hero-meta">March 11, 2026 · Boulder, Colorado</p>
+  </div>
+</section>
 
-<a class="back-link" href="/pre-read/"><i data-lucide="arrow-left"></i> Back to overview</a>
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-wordmark">Techne</a>
+    <ul>
+      <li><a href="#who">Who</a></li>
+      <li><a href="#lease">Lease</a></li>
+      <li><a href="#third-floor">Third Floor</a></li>
+      <li><a href="#building">Building</a></li>
+      <li><a href="#together">Together</a></li>
+    </ul>
+  </div>
+</nav>
 
-<div class="header">
-  <div class="header-icon"><i data-lucide="presentation"></i></div>
-  <h1>The Plan for 1515 Walnut</h1>
-  <div class="subtitle">March 11, 2026 &middot; Lunch &middot; Boulder</div>
+<!-- ═══ 01 — WHO WE ARE ═══ -->
+<div class="frame">
+  <section id="who">
+    <p class="section-mark">01 &mdash; Who We Are</p>
+    <h2>RegenHub &amp; Techne</h2>
+
+    <p class="lead"><strong>RegenHub, LCA</strong> is a Colorado Limited Cooperative Association &mdash; a public benefit entity with the stated purpose of <em>cultivating scenius</em>: the creative intelligence that emerges when skilled people share sustained proximity.</p>
+
+    <p>Eight founding organizers:</p>
+
+    <div class="org-grid">
+      <div><strong>Kevin Owocki</strong> <span class="muted">&mdash; serial founder; Allo Capital</span></div>
+      <div><strong>Todd Youngblood</strong> <span class="muted">&mdash; operations; formerly U.S. Bank</span></div>
+      <div><strong>Aaron G Neyer</strong> <span class="muted">&mdash; software &amp; education; formerly Google</span></div>
+      <div><strong>Lucian Hymer</strong> <span class="muted">&mdash; web infrastructure; Gitcoin Passport</span></div>
+      <div><strong>Jonathan Borichevskiy</strong> <span class="muted">&mdash; independent software developer</span></div>
+      <div><strong>Savannah Kruger</strong> <span class="muted">&mdash; community; Neighborhood Village</span></div>
+      <div><strong>Neil Mackay Yarnal</strong> <span class="muted">&mdash; design &amp; creative direction</span></div>
+      <div><strong>Benjamin Ross</strong> <span class="muted">&mdash; civic technology; OpenCivics</span></div>
+    </div>
+
+    <p>We've operated from the second floor of 1515 Walnut since May 2024. <strong>Techne</strong> is what RegenHub is building next &mdash; a venture studio and project ecosystem that opens to the public from the third floor.</p>
+  </section>
 </div>
 
-<!-- ─── WHO WE ARE ─── -->
+<!-- ═══ 02 — LEASE TRANSFER ═══ -->
+<div class="frame">
+  <section id="lease">
+    <p class="section-mark">02 &mdash; The Lease Transfer</p>
+    <h2>Aligning the Contract</h2>
 
-<h2><i data-lucide="home"></i> Who We Are</h2>
+    <p class="lead">Our current second-floor lease is held by West Software Services Inc., running through June 2027. We'd like to transfer it to <strong>RegenHub, LCA</strong> &mdash; the cooperative entity that now represents the group operating from this space.</p>
 
-<p><strong>RegenHub, LCA</strong> is a Colorado Limited Cooperative Association &mdash; the legal and organizational foundation for everything described here. Eight founding organizers:</p>
-
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 2rem; margin: 1rem 0 1.25rem; font-size: 0.98rem;">
-  <div><strong>Kevin Owocki</strong> <span style="color: var(--text-muted);">&mdash; serial founder; Allo Capital</span></div>
-  <div><strong>Todd Youngblood</strong> <span style="color: var(--text-muted);">&mdash; operations; formerly U.S. Bank</span></div>
-  <div><strong>Aaron G Neyer</strong> <span style="color: var(--text-muted);">&mdash; software &amp; education; formerly Google</span></div>
-  <div><strong>Lucian Hymer</strong> <span style="color: var(--text-muted);">&mdash; web infrastructure; Gitcoin Passport</span></div>
-  <div><strong>Jonathan Borichevskiy</strong> <span style="color: var(--text-muted);">&mdash; independent software developer</span></div>
-  <div><strong>Savannah Kruger</strong> <span style="color: var(--text-muted);">&mdash; community; Neighborhood Village</span></div>
-  <div><strong>Neil Mackay Yarnal</strong> <span style="color: var(--text-muted);">&mdash; design &amp; creative direction</span></div>
-  <div><strong>Benjamin Ross</strong> <span style="color: var(--text-muted);">&mdash; civic technology; OpenCivics</span></div>
+    <p>Same people. Same commitment. Updated legal structure. The cooperative was filed in February 2026 and formalizes the working group that has been here for nearly two years.</p>
+  </section>
 </div>
 
-<p>RegenHub is a public benefit entity with the stated purpose of <em>cultivating scenius</em> &mdash; the creative intelligence that emerges when skilled people share sustained proximity. We've operated from the second floor of 1515 Walnut since May 2024.</p>
+<!-- ═══ 03 — THIRD FLOOR (dark) ═══ -->
+<section id="third-floor" class="dark-section">
+  <div class="dark-inner">
+    <p class="section-mark">03 &mdash; The Third Floor</p>
+    <h2>Opening Techne</h2>
 
-<p><strong>Techne</strong> is what RegenHub is building next &mdash; a venture studio and project ecosystem that opens to the public from the third floor. Techne supports technology education through <strong>LeanVibe.Build</strong>, incubates early-stage ventures, and hosts a rotating calendar of programs and convergences. It is a DBA of RegenHub: same cooperative, new capacity.</p>
+    <p class="lead">We'd like to lease the third floor and open it as Techne &mdash; an expanded workspace, program venue, and venture hub.</p>
 
-<hr class="divider" />
+    <h3>Three Capacities</h3>
 
-<!-- ─── ASK 1: LEASE TRANSFER ─── -->
+    <div class="capacity">
+      <div class="capacity-icon">Cowork</div>
+      <div class="capacity-text"><strong>Coworking.</strong> An expanded daily workspace for members and affiliates. Desk memberships, meeting rooms, and shared infrastructure generate steady monthly revenue.</div>
+    </div>
 
-<h2><i data-lucide="file-signature"></i> 1. The Lease Transfer</h2>
+    <div class="capacity">
+      <div class="capacity-icon">Programs</div>
+      <div class="capacity-text"><strong>Programs.</strong> LeanVibe.Build &mdash; technology cohorts, cultural convergences like Sundance Boulder, civic workshops. A rotating seasonal calendar.</div>
+    </div>
 
-<p>Our current second-floor lease is held by West Software Services Inc., running through June 2027. We'd like to transfer it to <strong>RegenHub, LCA</strong> &mdash; the cooperative entity that now represents the group operating from this space.</p>
+    <div class="capacity">
+      <div class="capacity-icon">Ventures</div>
+      <div class="capacity-text"><strong>Ventures.</strong> Early-stage technology ventures. Each contributes a minimum 1% annually back to the cooperative. A shared basket that compounds.</div>
+    </div>
 
-<p>This is largely administrative: same people, same commitment, updated legal structure. The cooperative was filed in February 2026 and formalizes the working group that has occupied this space for nearly two years.</p>
+    <h3>Who's Behind It</h3>
 
-<div class="ask">
-  <span class="ask-label">Where things stand</span>
-  <p>RegenHub currently generates approximately $4,000&ndash;5,000 per month in operating cash flow, which covers the existing lease and enables the cooperative's day-to-day operations. The lease transfer aligns the contract with the entity doing the work.</p>
-</div>
+    <p>Every investor is also a participant in the work:</p>
 
-<hr class="divider" />
+    <div class="investor-card">
+      <p class="investor-name">Kevin Owocki</p>
+      <p class="investor-detail">Six-time founder, Managing Partner at Allo Capital. Has operated from 1515 Walnut's second floor for over a year.</p>
+    </div>
 
-<!-- ─── ASK 2: THIRD FLOOR ─── -->
+    <div class="investor-card">
+      <p class="investor-name">Jeremy</p>
+      <p class="investor-detail">Motivated by access to the builder community and the creative energy emerging from this space.</p>
+    </div>
 
-<h2><i data-lucide="door-open"></i> 2. The Third Floor</h2>
+    <div class="investor-card">
+      <p class="investor-name">Ethereum Foundation</p>
+      <p class="investor-detail">Maintaining a Boulder presence and supporting open-source public goods infrastructure.</p>
+    </div>
 
-<p>This is the primary near-term goal. We'd like to lease the third floor and open it as <strong>Techne</strong> &mdash; an expanded workspace, program venue, and venture hub. Three capacities define what it becomes:</p>
+    <p style="margin-top: 1.5rem;">These investors cover the first year of the third-floor lease, giving cash flow time to grow and sustain it &mdash; the same pattern that proved out on the second floor.</p>
 
-<div class="capacity">
-  <div class="capacity-icon"><i data-lucide="armchair"></i></div>
-  <div class="capacity-text"><strong>Coworking.</strong> An expanded daily workspace for members and affiliates. Desk memberships, meeting rooms, and shared infrastructure generate steady monthly revenue and bring a working community into the building.</div>
-</div>
+    <!-- ─── LEASE MODEL ─── -->
+    <div class="model-panel">
+      <p class="model-title">Third Floor Lease &mdash; Live Model</p>
 
-<div class="capacity">
-  <div class="capacity-icon"><i data-lucide="calendar-range"></i></div>
-  <div class="capacity-text"><strong>Programs.</strong> A rotating seasonal calendar. First up: <strong>LeanVibe.Build</strong> &mdash; helping people rediscover the craft of code. The space is designed for what comes next: technology cohorts, cultural convergences like Sundance Boulder, civic workshops, and programs at the intersection of bioregioning and civics.</div>
-</div>
+      <div class="model-row">
+        <div class="model-label">Monthly lease rate<small>Adjust to explore scenarios</small></div>
+        <div>
+          <input class="model-input" type="text" id="leaseRate" value="5000" />
+          <input class="model-slider" type="range" id="leaseSlider" min="3000" max="8000" step="250" value="5000" />
+        </div>
+      </div>
 
-<div class="capacity">
-  <div class="capacity-icon"><i data-lucide="sprout"></i></div>
-  <div class="capacity-text"><strong>Ventures.</strong> The cooperative incubates early-stage technology ventures. Each contributes a minimum 1% annually back to the cooperative, creating a shared basket that compounds over time.</div>
-</div>
+      <div class="model-row">
+        <div class="model-label">Annual lease cost</div>
+        <div class="model-value computed" id="annualLease">$60,000</div>
+      </div>
 
-<div class="ask">
-  <span class="ask-label">Financing the third floor</span>
-  <p>We have over <strong>$130,000 in committed capital</strong> from investors who are also participants in the work:</p>
-  <p><strong>Kevin Owocki</strong> &mdash; $50,000 committed. Six-time founder, Managing Partner at Allo Capital. Has operated from 1515 Walnut's second floor for over a year.</p>
-  <p><strong>Jeremy</strong> &mdash; $50,000 committed. Motivated by access to the builder community and the creative energy emerging from this space.</p>
-  <p><strong>Ethereum Foundation</strong> &mdash; $30,000 committed. Interested in maintaining a Boulder presence and supporting open-source public goods infrastructure.</p>
-  <p>These investors cover the first year of the third-floor lease, giving cash flow time to grow and sustain it &mdash; the same pattern that proved out on the second floor. We're seeking a lease rate that reflects a long-term partnership &mdash; a number we'd like to arrive at together, with immediate occupancy by a stable, mission-aligned tenant already in the building.</p>
-</div>
+      <div class="model-row">
+        <div class="model-label">Committed capital (year 1)</div>
+        <div class="model-value">$130,000</div>
+      </div>
 
-<hr class="divider" />
+      <div class="model-row">
+        <div class="model-label">Year 1 runway after lease</div>
+        <div class="model-value computed" id="runway">$70,000</div>
+      </div>
 
-<!-- ─── ASK 3: THE LONGER VIEW ─── -->
+      <hr class="model-divider" />
 
-<h2><i data-lucide="building"></i> 3. The Longer View</h2>
+      <div class="model-row">
+        <div class="model-label">Current monthly cash flow (2nd floor)</div>
+        <div class="model-value">~$4,500</div>
+      </div>
 
-<p>We want to be transparent about where we hope this relationship goes. Over the next two to three years, we'd like to explore a path toward acquiring 1515 Walnut &mdash; a cooperatively-owned building that grows with what happens inside it.</p>
+      <div class="model-row">
+        <div class="model-label">Combined monthly obligation</div>
+        <div class="model-value computed" id="combinedObligation">—</div>
+      </div>
 
-<p>We're not asking for a decision on this now. What we'd welcome is the conversation: understanding your goals for the building, sharing ours, and seeing whether there's a structure that works for everyone over time.</p>
+      <div class="model-row">
+        <div class="model-label">Monthly cash flow needed to self-sustain<small>Both floors, no investor subsidy</small></div>
+        <div class="model-value highlight" id="sustainRate">—</div>
+      </div>
 
-<div class="ask">
-  <span class="ask-label">The stepwise model</span>
-  <p>The pattern is deliberate: visionary investors cover the first year of each expansion, then operating revenue grows to sustain it.</p>
-  <p><strong>Second floor</strong> &mdash; covered. Cash flow sustains the lease today.</p>
-  <p><strong>Third floor</strong> &mdash; investors above are ready to cover year one. Cash flow grows from the expanded space, programs, and memberships.</p>
-  <p><strong>Building</strong> &mdash; pending appraisal, we'd work together to understand the right price and what debt service looks like. With the third floor open and programs running, the cash flow to support acquisition becomes a realistic horizon rather than a speculative one.</p>
-  <p>As a first step, we'd be willing to fund an independent appraisal &mdash; a good-faith signal that we're serious about the long-term path, even as we work together on the near-term terms.</p>
-</div>
+      <p class="model-note">Drag the slider to explore different lease rates. All numbers are starting points for a conversation.</p>
+    </div>
+  </div>
+</section>
 
-<hr class="divider" />
+<!-- ═══ 04 — BUILDING (dark) ═══ -->
+<section id="building" class="dark-section" style="border-top: 1px solid var(--graphite);">
+  <div class="dark-inner">
+    <p class="section-mark">04 &mdash; The Longer View</p>
+    <h2>A Path to Ownership</h2>
 
-<!-- ─── THE THROUGHLINE ─── -->
+    <p class="lead">Over the next two to three years, we'd like to explore acquiring 1515 Walnut &mdash; a cooperatively-owned building that grows with what happens inside it. We're not asking for a decision today. We're opening the conversation.</p>
 
-<h2><i data-lucide="handshake"></i> The Throughline</h2>
+    <!-- STEPWISE VIZ -->
+    <div class="stepwise">
+      <div class="step active">
+        <p class="step-label">Present</p>
+        <p class="step-value" id="stepCurrent">~$4.5K</p>
+        <p class="step-desc">Monthly cash flow<br/>2nd floor sustained</p>
+      </div>
+      <div class="step">
+        <p class="step-label">Near-term</p>
+        <p class="step-value" id="stepNear">—</p>
+        <p class="step-desc">Investors cover year 1<br/>Cash flow grows</p>
+      </div>
+      <div class="step">
+        <p class="step-label">Horizon</p>
+        <p class="step-value" id="stepHorizon">—</p>
+        <p class="step-desc">Building acquisition<br/>debt service target</p>
+      </div>
+    </div>
 
-<p>Every investor in this cooperative is also a participant in the work. Kevin works from the second floor. Jeremy shows up at events. The Ethereum Foundation supports the ecosystem these people build in. This is not outside capital looking for a return &mdash; it's people who are here because they believe in what Boulder can be.</p>
+    <!-- ACQUISITION MODEL -->
+    <div class="model-panel">
+      <p class="model-title">Building Acquisition &mdash; Scenario Builder</p>
 
-<p>That's the kind of relationship we'd like to build with you: not a transaction, but a partnership where the growth of what happens inside 1515 Walnut benefits everyone connected to it.</p>
+      <div class="model-row">
+        <div class="model-label">Purchase price<small>Pending appraisal</small></div>
+        <div>
+          <input class="model-input" type="text" id="purchasePrice" value="2500000" />
+          <input class="model-slider" type="range" id="purchaseSlider" min="1500000" max="4000000" step="50000" value="2500000" />
+        </div>
+      </div>
 
-<p>We'd love to hear about your goals for the building, how you're thinking about its future, and whether there's a way to walk toward that future together.</p>
+      <div class="model-row">
+        <div class="model-label">Down payment<small>Percentage</small></div>
+        <div>
+          <input class="model-input" type="text" id="downPct" value="20" />
+          <input class="model-slider" type="range" id="downSlider" min="5" max="40" step="1" value="20" />
+        </div>
+      </div>
 
-<p class="closing">We come prepared and we come in good faith.</p>
+      <div class="model-row">
+        <div class="model-label">Down payment amount</div>
+        <div class="model-value computed" id="downAmount">$500,000</div>
+      </div>
 
-<div class="footer">
-  Prepared March 2026 &middot; RegenHub, LCA (DBA Techne) &middot; Boulder, Colorado<br/>
-  Kevin Owocki &amp; Todd Youngblood
-</div>
+      <div class="model-row">
+        <div class="model-label">Loan amount</div>
+        <div class="model-value computed" id="loanAmount">$2,000,000</div>
+      </div>
+
+      <div class="model-row">
+        <div class="model-label">Interest rate<small>Annual</small></div>
+        <div>
+          <input class="model-input" type="text" id="interestRate" value="6.5" />
+          <input class="model-slider" type="range" id="interestSlider" min="4" max="9" step="0.25" value="6.5" />
+        </div>
+      </div>
+
+      <div class="model-row">
+        <div class="model-label">Loan term (years)</div>
+        <div>
+          <input class="model-input" type="text" id="loanTerm" value="25" />
+          <input class="model-slider" type="range" id="termSlider" min="10" max="30" step="1" value="25" />
+        </div>
+      </div>
+
+      <hr class="model-divider" />
+
+      <div class="model-row">
+        <div class="model-label">Monthly debt service</div>
+        <div class="model-value highlight" id="monthlyDebt">—</div>
+      </div>
+
+      <div class="model-row">
+        <div class="model-label">Annual debt service</div>
+        <div class="model-value computed" id="annualDebt">—</div>
+      </div>
+
+      <div class="model-row">
+        <div class="model-label">Cap rate (current estimate)</div>
+        <div class="model-value">7.4%</div>
+      </div>
+
+      <hr class="model-divider" />
+
+      <div class="model-row">
+        <div class="model-label" style="color: var(--sage-light);">Lynn &mdash; equity accrual<small>If lease discount is treated as equity contribution</small></div>
+        <div>
+          <input class="model-input" type="text" id="lynnDiscount" value="2000" style="border-color: var(--sage);" />
+          <input class="model-slider" type="range" id="lynnSlider" min="0" max="4000" step="250" value="2000" />
+        </div>
+      </div>
+
+      <div class="model-row">
+        <div class="model-label" style="color: var(--sage-light);">Annual equity accrual</div>
+        <div class="model-value equity" id="lynnAnnual">$24,000</div>
+      </div>
+
+      <div class="model-row">
+        <div class="model-label" style="color: var(--sage-light);">3-year equity accrual</div>
+        <div class="model-value equity" id="lynnThreeYear">$72,000</div>
+      </div>
+
+      <p class="model-note">Every number here is adjustable. The goal is to find the shape that works for everyone at the table. Drag any slider, type any number &mdash; this is a conversation tool, not a term sheet.</p>
+    </div>
+
+    <p>As a first step, we'd be willing to fund an independent appraisal &mdash; a good-faith signal that we're serious about the long-term path.</p>
+  </div>
+</section>
+
+<!-- ═══ 05 — TOGETHER ═══ -->
+<section id="together" class="closing">
+  <div class="closing-inner">
+    <h2>The Throughline</h2>
+    <p>Every investor in this cooperative is also a participant in the work. Kevin works from the second floor. Jeremy shows up at events. The Ethereum Foundation supports the ecosystem these people build in.</p>
+    <p>This is not outside capital looking for a return. It's people who are here because they believe in what Boulder can be.</p>
+    <p>We'd love to hear about your goals for the building, how you're thinking about its future, and whether there's a way to walk toward that future together.</p>
+    <p style="font-family: var(--font-display); font-style: italic; font-size: 1.2rem; color: var(--warm); margin-top: 2.5rem;">We come prepared and we come in good faith.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Prepared March 2026 &middot; RegenHub, LCA (DBA Techne) &middot; Boulder, Colorado</p>
+</footer>
 
 <script>
 (function() {
-  var btn = document.getElementById('themeToggle');
-  var stored = localStorage.getItem('preread-theme');
-  if (stored) document.documentElement.setAttribute('data-theme', stored);
+  // ─── Helpers ───
+  var $ = function(id) { return document.getElementById(id); };
+  var fmt = function(n) { return '$' + Math.round(n).toLocaleString('en-US'); };
 
-  function isDark() {
-    var t = document.documentElement.getAttribute('data-theme');
-    return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  // ─── Sync slider ↔ input ───
+  function bind(inputId, sliderId, cb) {
+    var inp = $(inputId), sl = $(sliderId);
+    sl.addEventListener('input', function() {
+      inp.value = sl.value;
+      cb();
+    });
+    inp.addEventListener('input', function() {
+      var v = parseFloat(inp.value.replace(/[^0-9.]/g, ''));
+      if (!isNaN(v)) { sl.value = v; }
+      cb();
+    });
   }
-  function render() {
-    btn.innerHTML = isDark()
-      ? '<i data-lucide="sun"></i>'
-      : '<i data-lucide="moon"></i>';
-    lucide.createIcons();
-  }
-  render();
-  lucide.createIcons();
 
-  btn.addEventListener('click', function() {
-    var next = isDark() ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('preread-theme', next);
-    render();
-  });
+  // ─── Lease model ───
+  var currentLease = 3000; // approximate current 2nd floor
+
+  function updateLease() {
+    var rate = parseFloat($('leaseRate').value.replace(/[^0-9]/g, '')) || 0;
+    var annual = rate * 12;
+    var runway = 130000 - annual;
+    var combined = currentLease + rate;
+
+    $('annualLease').textContent = fmt(annual);
+    $('runway').textContent = fmt(runway);
+    $('combinedObligation').textContent = fmt(combined) + '/mo';
+    $('sustainRate').textContent = fmt(combined) + '/mo';
+
+    // Update stepwise near-term
+    $('stepNear').textContent = fmt(combined / 1000).replace('$', '~$') + 'K';
+  }
+
+  bind('leaseRate', 'leaseSlider', updateLease);
+
+  // ─── Acquisition model ───
+  function pmt(rate, nper, pv) {
+    if (rate === 0) return pv / nper;
+    var x = Math.pow(1 + rate, nper);
+    return (pv * rate * x) / (x - 1);
+  }
+
+  function updateAcquisition() {
+    var price = parseFloat($('purchasePrice').value.replace(/[^0-9]/g, '')) || 0;
+    var downPct = parseFloat($('downPct').value.replace(/[^0-9.]/g, '')) || 0;
+    var intRate = parseFloat($('interestRate').value.replace(/[^0-9.]/g, '')) || 0;
+    var term = parseInt($('loanTerm').value) || 25;
+
+    var down = price * (downPct / 100);
+    var loan = price - down;
+    var monthlyRate = (intRate / 100) / 12;
+    var nPayments = term * 12;
+    var monthly = pmt(monthlyRate, nPayments, loan);
+    var annual = monthly * 12;
+
+    $('downAmount').textContent = fmt(down);
+    $('loanAmount').textContent = fmt(loan);
+    $('monthlyDebt').textContent = fmt(monthly);
+    $('annualDebt').textContent = fmt(annual);
+
+    // Update stepwise horizon
+    $('stepHorizon').textContent = fmt(monthly / 1000).replace('$', '~$') + 'K';
+  }
+
+  bind('purchasePrice', 'purchaseSlider', updateAcquisition);
+  bind('downPct', 'downSlider', updateAcquisition);
+  bind('interestRate', 'interestSlider', updateAcquisition);
+  bind('loanTerm', 'termSlider', updateAcquisition);
+
+  // ─── Lynn equity ───
+  function updateLynn() {
+    var discount = parseFloat($('lynnDiscount').value.replace(/[^0-9]/g, '')) || 0;
+    $('lynnAnnual').textContent = fmt(discount * 12);
+    $('lynnThreeYear').textContent = fmt(discount * 36);
+  }
+
+  bind('lynnDiscount', 'lynnSlider', updateLynn);
+
+  // ─── Init ───
+  updateLease();
+  updateAcquisition();
+  updateLynn();
 })();
 </script>
 </body>
