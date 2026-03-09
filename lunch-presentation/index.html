@@ -11,12 +11,14 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
+    --void: #08080a;
+    --ink: #0f0f12;
+    --charcoal: #1a1a1f;
+    --graphite: #2a2a30;
     --parchment: #f7f5f0;
     --cream: #ebe7df;
     --bone: #d8d3c8;
     --stone: #9a958a;
-    --charcoal: #1a1a1f;
-    --graphite: #2a2a30;
     --ember: #c2512a;
     --ember-dim: #8a3a1f;
     --ember-glow: rgba(194, 81, 42, 0.08);
@@ -26,45 +28,6 @@
     --font-body: 'Source Serif 4', serif;
     --font-mono: 'IBM Plex Mono', monospace;
     --font-mono-alt: 'JetBrains Mono', monospace;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --parchment: #0c0b09;
-      --cream: #161412;
-      --bone: #2a2622;
-      --stone: #a09890;
-      --charcoal: #f0ebe5;
-      --graphite: #d8d2ca;
-      --ember: #e07850;
-      --ember-dim: #d4a87a;
-      --ember-glow: rgba(224, 120, 80, 0.08);
-      --warm: #d4a87a;
-    }
-  }
-  [data-theme="dark"] {
-    --parchment: #0c0b09;
-    --cream: #161412;
-    --bone: #2a2622;
-    --stone: #a09890;
-    --charcoal: #f0ebe5;
-    --graphite: #d8d2ca;
-    --ember: #e07850;
-    --ember-dim: #d4a87a;
-    --ember-glow: rgba(224, 120, 80, 0.08);
-    --warm: #d4a87a;
-  }
-  [data-theme="light"] {
-    --parchment: #f7f5f0;
-    --cream: #ebe7df;
-    --bone: #d8d3c8;
-    --stone: #9a958a;
-    --charcoal: #1a1a1f;
-    --graphite: #2a2a30;
-    --ember: #c2512a;
-    --ember-dim: #8a3a1f;
-    --ember-glow: rgba(194, 81, 42, 0.08);
-    --warm: #c4956a;
   }
 
   html { scroll-behavior: smooth; overflow-x: hidden; }
@@ -79,61 +42,92 @@
     overflow-x: hidden;
   }
 
-
-
-  /* ─── HEADER ─── */
-  .page-header {
-    text-align: center;
-    padding: 5rem 2rem 3rem;
-    border-bottom: 1px solid var(--bone);
-    position: relative;
-  }
-  .page-header::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 50%; transform: translateX(-50%);
-    width: 60px; height: 1px;
-    background: var(--ember);
-  }
-
-  .page-header h1 {
-    font-family: var(--font-display);
-    font-weight: 300;
-    font-size: clamp(2.5rem, 7vw, 3.5rem);
-    letter-spacing: 0.15em;
-    color: var(--charcoal);
-    margin-bottom: 0.5rem;
-  }
-
-  .page-header .sub {
-    font-family: var(--font-display);
-    font-weight: 300;
-    font-style: italic;
-    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-    color: var(--stone);
-    margin-bottom: 1.5rem;
-  }
-
-  .page-header .meta {
-    font-family: var(--font-mono-alt);
-    font-size: 0.72rem;
-    font-weight: 300;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--bone);
-  }
-
   /* ─── BANNER ─── */
   .banner {
-    background: var(--cream);
-    border-bottom: 1px solid var(--bone);
-    padding: 0.6rem 2rem;
+    background: var(--charcoal);
+    border-bottom: 1px solid var(--graphite);
+    padding: 0.5rem 2rem;
     text-align: center;
     font-family: var(--font-mono-alt);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--stone);
+    color: var(--warm);
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 55vh;
+    background-color: var(--void);
+    background-image: radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px);
+    background-size: 28px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(130px);
+    opacity: 0.07;
+  }
+  .hero-glow-amber { top: -120px; right: -120px; background: #c4956a; }
+  .hero-glow-teal  { bottom: -120px; left: -120px; background: #7ccfb8; }
+
+  .hero-content {
+    max-width: 800px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-wordmark {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(3.5rem, 14vw, 8rem);
+    letter-spacing: 0.25em;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+    margin-right: -0.25em;
+    opacity: 0;
+    animation: heroReveal 1.6s ease-out 0.2s forwards;
+    text-shadow: 0 0 100px rgba(196, 149, 106, 0.15);
+  }
+
+  @keyframes heroReveal {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-sub {
+    font-family: var(--font-display);
+    font-weight: 300; font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: heroFade 1.2s ease-out 0.6s forwards;
+  }
+
+  .hero-meta {
+    font-family: var(--font-mono-alt);
+    font-size: 0.72rem; font-weight: 300;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    opacity: 0;
+    animation: heroFade 1.2s ease-out 0.9s forwards;
+  }
+
+  @keyframes heroFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   /* ─── NAV ─── */
@@ -141,35 +135,25 @@
     background: var(--parchment);
     border-bottom: 1px solid var(--bone);
     padding: 0 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 200;
+    position: sticky; top: 0; z-index: 200;
   }
   nav::after {
-    content: '';
-    position: absolute;
+    content: ''; position: absolute;
     bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 60px; height: 1px;
-    background: var(--ember);
+    width: 60px; height: 1px; background: var(--ember);
   }
   .nav-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 960px;
-    margin: 0 auto;
-    height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 960px; margin: 0 auto; height: 56px;
   }
   .nav-wordmark {
-    font-family: var(--font-mono);
-    font-size: 0.75rem; font-weight: 400;
+    font-family: var(--font-mono); font-size: 0.75rem; font-weight: 400;
     letter-spacing: 0.25em; text-transform: uppercase;
     color: var(--ember); text-decoration: none;
   }
   nav ul { display: flex; list-style: none; gap: 0; flex-wrap: wrap; justify-content: flex-end; }
   nav ul li a {
-    font-family: var(--font-mono);
-    font-size: 0.65rem; font-weight: 400;
+    font-family: var(--font-mono); font-size: 0.65rem; font-weight: 400;
     letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--graphite); text-decoration: none;
     padding: 0.5rem 0.85rem; display: block;
@@ -189,72 +173,41 @@
     nav ul { justify-content: center; }
   }
 
-  /* ─── SECTIONS ─── */
+  /* ─── LIGHT SECTIONS (framed) ─── */
   .frame {
-    max-width: 820px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    position: relative;
+    max-width: 820px; margin: 0 auto; padding: 0 2rem; position: relative;
   }
-
-  /* Running margin line */
   .frame::before {
-    content: '';
-    position: absolute;
-    left: -60px;
-    top: 0; bottom: 0;
-    width: 1px;
-    background: repeating-linear-gradient(
-      180deg,
-      var(--bone) 0px, var(--bone) 4px,
-      transparent 4px, transparent 20px
-    );
-    opacity: 0.5;
-    pointer-events: none;
+    content: ''; position: absolute; left: -60px; top: 0; bottom: 0; width: 1px;
+    background: repeating-linear-gradient(180deg, var(--bone) 0px, var(--bone) 4px, transparent 4px, transparent 20px);
+    opacity: 0.5; pointer-events: none;
   }
   @media (max-width: 1000px) { .frame::before { display: none; } }
 
-  section {
-    padding: 5rem 0;
-    border-bottom: 1px solid var(--bone);
-    position: relative;
+  .frame section {
+    padding: 5rem 0; border-bottom: 1px solid var(--bone); position: relative;
   }
-  section:last-child { border-bottom: none; }
+  .frame section:last-child { border-bottom: none; }
 
   .section-mark {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--stone);
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--stone); margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 1rem;
   }
   .section-mark::after {
-    content: ''; flex: 1; height: 1px;
-    background: var(--bone); max-width: 100px;
+    content: ''; flex: 1; height: 1px; background: var(--bone); max-width: 100px;
   }
 
   h2 {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: clamp(2rem, 5vw, 2.75rem);
-    color: var(--charcoal);
-    margin-bottom: 1.75rem;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(2rem, 5vw, 2.75rem); color: var(--charcoal);
+    margin-bottom: 1.75rem; letter-spacing: -0.01em; line-height: 1.2;
   }
-
   h3 {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: 1.4rem;
-    color: var(--graphite);
-    margin: 2.5rem 0 1rem;
+    font-family: var(--font-display); font-weight: 500;
+    font-size: 1.4rem; color: var(--graphite); margin: 2.5rem 0 1rem;
   }
-
   p { color: var(--graphite); margin-bottom: 1.25rem; max-width: 65ch; }
   .lead { font-size: 1.1rem; font-weight: 300; color: var(--charcoal); line-height: 1.9; }
   em { font-style: italic; color: var(--ember-dim); }
@@ -262,25 +215,77 @@
 
   /* ─── ORGANIZER GRID ─── */
   .org-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.4rem 2rem;
-    margin: 1.25rem 0 1.5rem;
-    font-size: 0.95rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0.4rem 2rem; margin: 1.25rem 0 1.5rem; font-size: 0.95rem;
   }
   .org-grid strong { font-weight: 500; }
   .org-grid .muted { color: var(--stone); }
   @media (max-width: 500px) { .org-grid { grid-template-columns: 1fr; } }
 
-  /* ─── CAPACITY CARDS ─── */
-  .capacity {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    margin-bottom: 1.25rem;
-    padding: 1rem 1.25rem;
+  /* ─── PREMISE BLOCKS (from main site) ─── */
+  .premise-blocks {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem;
+  }
+  @media (max-width: 700px) { .premise-blocks { grid-template-columns: 1fr; } }
+
+  .premise-block {
+    padding: 2rem 2rem 2rem 2.5rem;
     background: linear-gradient(135deg, var(--cream) 0%, var(--parchment) 100%);
     border-left: 2px solid var(--ember);
+    position: relative;
+  }
+  .premise-block::before {
+    content: ''; position: absolute; top: 2rem; left: -6px;
+    width: 10px; height: 10px; background: var(--parchment);
+    border: 2px solid var(--ember); border-radius: 50%;
+  }
+  .premise-block h3 {
+    font-family: var(--font-display); font-size: 1.35rem;
+    font-weight: 500; color: var(--charcoal); margin: 0 0 1rem;
+  }
+  .premise-block p { font-size: 0.95rem; margin: 0; }
+
+  /* ─── DARK SECTIONS (full-bleed) ─── */
+  .dark-section {
+    background: var(--ink); padding: 5rem 2rem; position: relative;
+  }
+  .dark-section::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 0%, var(--ember-glow) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 100%, rgba(74,95,74,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .dark-inner {
+    max-width: 820px; margin: 0 auto; position: relative; z-index: 1;
+  }
+  .dark-section .section-mark { color: var(--stone); }
+  .dark-section .section-mark::after { background: var(--graphite); }
+  .dark-section h2 { color: #ece6de; }
+  .dark-section h3 { color: #d8d3c8; }
+  .dark-section p { color: #b0a89e; }
+  .dark-section .lead { color: #d8d3c8; }
+  .dark-section strong { color: #ece6de; }
+
+  /* ─── INVESTOR CARDS (dark context) ─── */
+  .investor-card {
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--graphite);
+    margin-bottom: 1rem;
+    transition: border-color 0.3s;
+  }
+  .investor-card:hover { border-color: var(--warm); }
+  .investor-name {
+    font-family: var(--font-display); font-size: 1.15rem;
+    font-weight: 500; color: #ece6de; margin-bottom: 0.25rem;
+  }
+  .investor-detail { font-size: 0.92rem; color: #a09890; margin: 0; }
+
+  /* ─── CAPACITY CARDS (dark context) ─── */
+  .capacity {
+    display: flex; gap: 1rem; align-items: flex-start;
+    margin-bottom: 1.25rem; padding: 1rem 1.25rem;
+    border-left: 2px solid var(--ember);
+    background: rgba(194, 81, 42, 0.04);
   }
   .capacity-icon {
     flex-shrink: 0; margin-top: 0.1rem;
@@ -289,80 +294,63 @@
     text-transform: uppercase; min-width: 80px;
   }
   .capacity-text { font-size: 0.98rem; line-height: 1.7; }
-  .capacity-text strong { font-weight: 500; color: var(--charcoal); }
+  .capacity-text strong { font-weight: 500; color: #ece6de; }
 
-  /* ─── INVESTOR CARDS ─── */
-  .investor-card {
-    padding: 1.25rem 1.5rem;
-    background: var(--cream);
-    border-bottom: 2px solid var(--bone);
-    margin-bottom: 1rem;
-    transition: border-color 0.3s;
+  /* ─── SPACE VISUAL (from main site) ─── */
+  .space-visual {
+    background: linear-gradient(135deg, var(--charcoal) 0%, var(--ink) 100%);
+    padding: 3rem; margin: 2.5rem 0; text-align: center; position: relative;
   }
-  .investor-card:hover { border-color: var(--ember); }
-  .investor-name {
-    font-family: var(--font-display);
-    font-size: 1.15rem; font-weight: 500;
-    color: var(--charcoal); margin-bottom: 0.25rem;
+  .space-visual::before, .space-visual::after {
+    content: ''; position: absolute; width: 40px; height: 40px;
+    border: 1px solid var(--graphite);
   }
-  .investor-detail { font-size: 0.92rem; color: var(--stone); margin: 0; }
+  .space-visual::before { top: 1rem; left: 1rem; border-right: none; border-bottom: none; }
+  .space-visual::after { bottom: 1rem; right: 1rem; border-left: none; border-top: none; }
+  .space-visual p {
+    font-family: var(--font-display); font-style: italic;
+    font-size: 1.25rem; font-weight: 300; color: var(--bone);
+    max-width: none; margin: 0; line-height: 1.6;
+  }
 
-  /* ─── CALLOUT ─── */
-  .callout {
-    background: var(--cream);
-    border-left: 2px solid var(--warm);
-    padding: 1.5rem 1.75rem;
-    margin: 2rem 0;
+  /* ─── INVITATION (closing, from main site) ─── */
+  .invitation {
+    background: var(--ink); padding: 5rem 2rem; text-align: center; position: relative;
   }
-  .callout p { margin-bottom: 0.5rem; }
-  .callout p:last-child { margin-bottom: 0; }
-
-  /* ─── CLOSING ─── */
-  .closing-section {
-    text-align: center;
-    padding: 5rem 2rem;
-    border-top: 1px solid var(--bone);
+  .invitation::before {
+    content: ''; position: absolute;
+    top: -30px; left: 50%; transform: translateX(-50%);
+    width: 1px; height: 60px;
+    background: linear-gradient(180deg, var(--bone) 0%, var(--ember) 100%);
   }
-  .closing-inner {
-    max-width: 600px; margin: 0 auto;
+  .invitation-content {
+    max-width: 600px; margin: 0 auto; position: relative; z-index: 1;
   }
-  .closing-inner h2 {
-    text-align: center;
+  .invitation h2 {
+    font-family: var(--font-display); font-weight: 300;
+    font-size: 2.25rem; color: var(--cream); margin-bottom: 1.5rem;
   }
-  .closing-inner p {
-    max-width: none;
-    text-align: center;
+  .invitation p {
+    color: #b0a89e; font-size: 1.05rem;
+    max-width: none; margin-bottom: 1.25rem; line-height: 1.8;
+  }
+  .invitation-cta {
+    font-family: var(--font-display); font-style: italic;
+    font-size: 1.2rem; color: var(--warm); margin-top: 2rem;
   }
 
   /* ─── FOOTER ─── */
   footer {
-    border-top: 1px solid var(--bone);
-    padding: 2rem 2rem;
-    text-align: center;
+    background-color: var(--void);
+    background-image: radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px);
+    background-size: 28px 28px;
+    padding: 2rem 2rem; text-align: center;
   }
   footer p {
-    font-family: var(--font-mono-alt);
-    font-size: 0.68rem; letter-spacing: 0.1em;
-    color: var(--stone);
+    font-family: var(--font-mono-alt); font-size: 0.68rem;
+    letter-spacing: 0.1em; color: rgba(255,255,255,0.18);
     max-width: none; margin: 0;
   }
-
-  /* ─── THEME TOGGLE ─── */
-  .theme-toggle {
-    position: fixed;
-    top: 1rem; right: 1rem;
-    background: var(--cream);
-    border: 1px solid var(--bone);
-    border-radius: 20px;
-    width: 34px; height: 34px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    color: var(--stone);
-    transition: border-color 0.2s;
-    z-index: 300;
-    font-size: 14px; line-height: 1;
-  }
-  .theme-toggle:hover { border-color: var(--ember); color: var(--graphite); }
 
   /* ─── UTILITY ─── */
   a { color: var(--ember); text-decoration: none; }
@@ -370,38 +358,40 @@
 
   @media (max-width: 500px) {
     body { font-size: 16px; }
-    .page-header { padding: 3.5rem 1.5rem 2.5rem; }
+    .hero { min-height: 45vh; padding: 3rem 1.5rem; }
   }
 </style>
 </head>
 <body>
 
-<button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">☾</button>
-
 <div class="banner">Under construction &middot; Subject to change</div>
 
-<!-- ═══ HEADER ═══ -->
-<div class="page-header">
-  <h1>TECHNE</h1>
-  <p class="sub">The Plan for 1515 Walnut</p>
-  <p class="meta">March 11, 2026 &middot; Boulder, Colorado</p>
-</div>
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-glow hero-glow-amber" aria-hidden="true"></div>
+  <div class="hero-glow hero-glow-teal" aria-hidden="true"></div>
+  <div class="hero-content">
+    <h1 class="hero-wordmark">TECHNE</h1>
+    <p class="hero-sub">The Plan for 1515 Walnut</p>
+    <p class="hero-meta">March 11, 2026 &middot; Boulder, Colorado</p>
+  </div>
+</section>
 
 <!-- ═══ NAV ═══ -->
 <nav>
   <div class="nav-inner">
     <a href="/" class="nav-wordmark">Techne</a>
     <ul>
-      <li><a href="#who">Who</a></li>
-      <li><a href="#lease">Lease</a></li>
+      <li><a href="#who">Who We Are</a></li>
+      <li><a href="#lease">Lease Transfer</a></li>
       <li><a href="#third-floor">Third Floor</a></li>
-      <li><a href="#building">Building</a></li>
-      <li><a href="#together">Together</a></li>
+      <li><a href="#building">Longer View</a></li>
+      <li><a href="#together">Throughline</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- ═══ 01 — WHO WE ARE ═══ -->
+<!-- ═══ 01 — WHO WE ARE (light) ═══ -->
 <div class="frame">
   <section id="who">
     <p class="section-mark">01 &mdash; Who We Are</p>
@@ -422,10 +412,21 @@
       <div><strong>Benjamin Ross</strong> <span class="muted">&mdash; civic technology; OpenCivics</span></div>
     </div>
 
-    <p>We've operated from the second floor of 1515 Walnut since May 2024. <strong>Techne</strong> is what RegenHub is building next &mdash; a venture studio and project ecosystem that opens to the public from the third floor.</p>
+    <p>We've operated from the second floor of 1515 Walnut since May 2024. <strong>Techne</strong> is what RegenHub is building next &mdash; a venture studio and project ecosystem opening from the third floor.</p>
+
+    <div class="premise-blocks">
+      <div class="premise-block">
+        <h3>The Cooperative</h3>
+        <p>RegenHub is the legal and organizational foundation. Eight organizers, committed investors, legal counsel in place. Filed as a Colorado LCA in February 2026.</p>
+      </div>
+      <div class="premise-block">
+        <h3>The Studio</h3>
+        <p>Techne is a DBA of RegenHub: technology education through LeanVibe.Build, venture incubation, and a rotating calendar of programs and convergences. Same cooperative, new capacity.</p>
+      </div>
+    </div>
   </section>
 
-  <!-- ═══ 02 — LEASE TRANSFER ═══ -->
+  <!-- ═══ 02 — LEASE TRANSFER (light) ═══ -->
   <section id="lease">
     <p class="section-mark">02 &mdash; The Lease Transfer</p>
     <h2>Aligning the Contract</h2>
@@ -434,9 +435,11 @@
 
     <p>Same people. Same commitment. Updated legal structure. The cooperative was filed in February 2026 and formalizes the working group that has been here for nearly two years.</p>
   </section>
+</div>
 
-  <!-- ═══ 03 — THIRD FLOOR ═══ -->
-  <section id="third-floor">
+<!-- ═══ 03 — THIRD FLOOR (dark, full-bleed) ═══ -->
+<section id="third-floor" class="dark-section">
+  <div class="dark-inner">
     <p class="section-mark">03 &mdash; The Third Floor</p>
     <h2>Opening Techne</h2>
 
@@ -479,58 +482,41 @@
     </div>
 
     <p style="margin-top: 1.5rem;">These investors cover the first year of the third-floor lease, giving cash flow time to grow and sustain it &mdash; the same pattern that proved out on the second floor. We're seeking a lease rate that reflects a long-term partnership &mdash; a number we'd like to arrive at together.</p>
-  </section>
+  </div>
+</section>
 
-  <!-- ═══ 04 — BUILDING ═══ -->
+<!-- ═══ 04 — BUILDING (light) ═══ -->
+<div class="frame">
   <section id="building">
     <p class="section-mark">04 &mdash; The Longer View</p>
     <h2>A Path to Ownership</h2>
 
-    <p class="lead">Over the next two to three years, we'd like to explore acquiring 1515 Walnut &mdash; a cooperatively-owned building that grows with what happens inside it. We're not asking for a decision today. We're opening the conversation.</p>
+    <p class="lead">Over the next two to three years, we'd like to explore acquiring 1515 Walnut &mdash; a cooperatively-owned building that grows with what happens inside it.</p>
 
-    <div class="callout">
-      <p>As a first step, we'd be willing to fund an independent appraisal &mdash; a good-faith signal that we're serious about the long-term path, even as we work together on the near-term terms.</p>
-    </div>
-  </section>
+    <p>We're not asking for a decision today. We're opening the conversation.</p>
 
-  <!-- ═══ 05 — TOGETHER ═══ -->
-  <section id="together" class="closing-section" style="border-bottom: none;">
-    <div class="closing-inner">
-      <h2>The Throughline</h2>
-      <p>Every investor in this cooperative is also a participant in the work. Kevin works from the second floor. Jeremy Wood shows up at events. The Ethereum Foundation supports the ecosystem these people build in.</p>
-      <p>This is not outside capital looking for a return. It's people who are here because they believe in what Boulder can be.</p>
-      <p>We'd love to hear about your goals for the building, how you're thinking about its future, and whether there's a way to walk toward that future together.</p>
-      <p style="font-family: var(--font-display); font-style: italic; font-size: 1.2rem; color: var(--warm); margin-top: 2rem;">We come prepared and we come in good faith.</p>
+    <div class="space-visual">
+      <p>Third floor learning &middot; Second floor ventures &middot; Roof for gathering<br/>A complete ecosystem from street to sky</p>
     </div>
+
+    <p>As a first step, we'd be willing to fund an independent appraisal &mdash; a good-faith signal that we're serious about the long-term path, even as we work together on the near-term terms.</p>
   </section>
 </div>
+
+<!-- ═══ 05 — TOGETHER (dark, invitation style) ═══ -->
+<section id="together" class="invitation">
+  <div class="invitation-content">
+    <h2>The Throughline</h2>
+    <p>Every investor in this cooperative is also a participant in the work. Kevin works from the second floor. Jeremy Wood shows up at events. The Ethereum Foundation supports the ecosystem these people build in.</p>
+    <p>This is not outside capital looking for a return. It's people who are here because they believe in what Boulder can be.</p>
+    <p>We'd love to hear about your goals for the building, how you're thinking about its future, and whether there's a way to walk toward that future together.</p>
+    <p class="invitation-cta">We come prepared and we come in good faith.</p>
+  </div>
+</section>
 
 <footer>
   <p>Prepared March 2026 &middot; RegenHub, LCA (DBA Techne) &middot; Boulder, Colorado</p>
 </footer>
 
-<script>
-(function() {
-  var btn = document.getElementById('themeToggle');
-  var stored = localStorage.getItem('techne-theme');
-  if (stored) document.documentElement.setAttribute('data-theme', stored);
-
-  function isDark() {
-    var t = document.documentElement.getAttribute('data-theme');
-    return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
-  function render() {
-    btn.textContent = isDark() ? '☀' : '☾';
-  }
-  render();
-
-  btn.addEventListener('click', function() {
-    var next = isDark() ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('techne-theme', next);
-    render();
-  });
-})();
-</script>
 </body>
 </html>
