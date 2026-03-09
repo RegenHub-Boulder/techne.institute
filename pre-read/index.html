@@ -314,7 +314,7 @@
 <script>
 (function() {
   var btn = document.getElementById('themeToggle');
-  var stored = localStorage.getItem('preread-theme');
+  var stored = localStorage.getItem('techne-theme');
   if (stored) document.documentElement.setAttribute('data-theme', stored);
 
   function isDark() {
@@ -333,7 +333,7 @@
   btn.addEventListener('click', function() {
     var next = isDark() ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('preread-theme', next);
+    localStorage.setItem('techne-theme', next);
     render();
   });
 })();
