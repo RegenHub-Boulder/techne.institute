@@ -409,12 +409,14 @@
     letter-spacing: 0.08em; text-transform: uppercase;
     padding: 0.15rem 0.45rem; border-radius: 2px;
   }
+  .org-card-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
   .tag-tech    { background: rgba(122,159,194,0.12); color: #7a9fc2; }
   .tag-ops     { background: rgba(196,149,106,0.12); color: var(--warm); }
   .tag-edu     { background: rgba(133,184,133,0.12); color: var(--sage-light, #6b9b6b); }
   .tag-design  { background: rgba(196,149,106,0.09); color: var(--warm); }
   .tag-civic   { background: rgba(154,149,138,0.12); color: var(--text-muted); }
   .tag-capital { background: rgba(214,174,76,0.12);  color: #c4a84a; }
+  .tag-data    { background: rgba(122,159,194,0.10); color: #6a9ab8; }
   @media (max-width: 580px) { .org-grid { grid-template-columns: 1fr; } }
 
   /* ─── ENTITY TRANSITION ─── */
@@ -714,42 +716,66 @@
       <div class="org-card">
         <div class="org-card-name">Kevin Owocki</div>
         <div class="org-card-role">Serial founder &mdash; Gitcoin, Allo Capital</div>
-        <span class="org-card-tag tag-capital">Capital</span>
+        <div class="org-card-tags">
+          <span class="org-card-tag tag-capital">Capital</span>
+          <span class="org-card-tag tag-tech">Web3</span>
+        </div>
       </div>
       <div class="org-card">
         <div class="org-card-name">Todd Youngblood</div>
         <div class="org-card-role">MBA, operations &mdash; formerly U.S. Bank</div>
-        <span class="org-card-tag tag-ops">Operations</span>
+        <div class="org-card-tags">
+          <span class="org-card-tag tag-ops">Operations</span>
+          <span class="org-card-tag tag-data">Data Engineering</span>
+        </div>
       </div>
       <div class="org-card">
         <div class="org-card-name">Aaron G Neyer</div>
         <div class="org-card-role">Software &amp; education &mdash; formerly Google</div>
-        <span class="org-card-tag tag-edu">Education</span>
+        <div class="org-card-tags">
+          <span class="org-card-tag tag-edu">Education</span>
+          <span class="org-card-tag tag-tech">Engineering</span>
+        </div>
       </div>
       <div class="org-card">
         <div class="org-card-name">Lucian Hymer</div>
         <div class="org-card-role">Web infrastructure &mdash; [formerly] Gitcoin Passport</div>
-        <span class="org-card-tag tag-tech">Infrastructure</span>
+        <div class="org-card-tags">
+          <span class="org-card-tag tag-tech">Infrastructure</span>
+          <span class="org-card-tag tag-tech">Web3</span>
+        </div>
       </div>
       <div class="org-card">
         <div class="org-card-name">Jonathan Borichevskiy</div>
         <div class="org-card-role">Independent software developer</div>
-        <span class="org-card-tag tag-tech">Engineering</span>
+        <div class="org-card-tags">
+          <span class="org-card-tag tag-tech">Engineering</span>
+          <span class="org-card-tag tag-civic">Open Source</span>
+        </div>
       </div>
       <div class="org-card">
         <div class="org-card-name">Savannah Kruger</div>
         <div class="org-card-role">Community &mdash; Neighborhood Village Project</div>
-        <span class="org-card-tag tag-civic">Community</span>
+        <div class="org-card-tags">
+          <span class="org-card-tag tag-civic">Community</span>
+          <span class="org-card-tag tag-edu">Programs</span>
+        </div>
       </div>
       <div class="org-card">
         <div class="org-card-name">Neil Mackay Yarnal</div>
         <div class="org-card-role">Design &amp; creative direction</div>
-        <span class="org-card-tag tag-design">Design</span>
+        <div class="org-card-tags">
+          <span class="org-card-tag tag-design">Design</span>
+          <span class="org-card-tag tag-civic">Brand</span>
+        </div>
       </div>
       <div class="org-card">
         <div class="org-card-name">Benjamin Ross</div>
         <div class="org-card-role">Civic technology &mdash; OpenCivics</div>
-        <span class="org-card-tag tag-civic">Civic Tech</span>
+        <div class="org-card-tags">
+          <span class="org-card-tag tag-civic">Civic Tech</span>
+          <span class="org-card-tag tag-edu">Open Source</span>
+        </div>
       </div>
     </div>
 
