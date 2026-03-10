@@ -393,11 +393,120 @@
   /* ─── ORGANIZER GRID ─── */
   .org-grid {
     display: grid; grid-template-columns: 1fr 1fr;
-    gap: 0.4rem 2rem; margin: 1.25rem 0 1.5rem; font-size: 0.95rem;
+    gap: 0.75rem; margin: 1.25rem 0 1.5rem;
   }
-  .org-grid strong { font-weight: 500; }
-  .org-grid .muted { color: var(--text-muted); }
-  @media (max-width: 500px) { .org-grid { grid-template-columns: 1fr; } }
+  .org-card {
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    transition: border-color 0.2s;
+  }
+  .org-card:hover { border-color: var(--ember-dim); }
+  .org-card-name { font-weight: 500; font-size: 0.95rem; color: var(--text-bright); margin-bottom: 0.3rem; }
+  .org-card-role { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem; line-height: 1.4; }
+  .org-card-tag {
+    display: inline-block; font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.15rem 0.45rem; border-radius: 2px;
+  }
+  .tag-tech    { background: rgba(122,159,194,0.12); color: #7a9fc2; }
+  .tag-ops     { background: rgba(196,149,106,0.12); color: var(--warm); }
+  .tag-edu     { background: rgba(133,184,133,0.12); color: var(--sage-light, #6b9b6b); }
+  .tag-design  { background: rgba(196,149,106,0.09); color: var(--warm); }
+  .tag-civic   { background: rgba(154,149,138,0.12); color: var(--text-muted); }
+  .tag-capital { background: rgba(214,174,76,0.12);  color: #c4a84a; }
+  @media (max-width: 580px) { .org-grid { grid-template-columns: 1fr; } }
+
+  /* ─── ENTITY TRANSITION ─── */
+  .entity-transition {
+    display: flex; align-items: center; gap: 0; margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+  .entity-box {
+    flex: 1; min-width: 160px; padding: 1rem 1.25rem;
+    border: 1px solid var(--border); background: var(--card-bg);
+    font-size: 0.82rem;
+  }
+  .entity-box.from { opacity: 0.5; }
+  .entity-box.to   { border-color: var(--sage); }
+  .entity-label {
+    font-family: var(--font-mono); font-size: 0.55rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 0.35rem;
+  }
+  .entity-name { font-weight: 500; color: var(--text-bright); font-size: 0.9rem; line-height: 1.35; }
+  .entity-arrow {
+    flex-shrink: 0; width: 2.5rem; text-align: center;
+    font-family: var(--font-mono); font-size: 1.1rem;
+    color: var(--sage); padding: 0 0.25rem;
+  }
+
+  /* ─── BUILDING DIAGRAM ─── */
+  .building-diagram {
+    margin: 2.5rem 0; border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .floor {
+    display: flex; align-items: stretch;
+    border-bottom: 1px solid var(--border);
+  }
+  .floor:last-child { border-bottom: none; }
+  .floor-label {
+    flex-shrink: 0; width: 90px; padding: 1.1rem 1rem;
+    font-family: var(--font-mono); font-size: 0.6rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center;
+    writing-mode: initial; text-align: center;
+    border-right: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .floor-content {
+    flex: 1; padding: 1.1rem 1.5rem;
+  }
+  .floor-title {
+    font-weight: 500; font-size: 0.95rem; color: var(--text-bright);
+    margin-bottom: 0.25rem;
+  }
+  .floor-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+  .floor-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .floor.roof  { background: rgba(196,149,106,0.04); }
+  .floor.third { background: rgba(133,184,133,0.05); }
+  .floor.second { background: var(--card-bg); }
+  .floor.roof  .floor-label { color: var(--warm); }
+  .floor.third .floor-label { color: var(--sage); }
+
+  /* ─── MILESTONE TIMELINE ─── */
+  .timeline {
+    display: flex; gap: 0; margin: 2rem 0; position: relative;
+    overflow-x: auto; padding-bottom: 0.5rem;
+  }
+  .timeline::before {
+    content: ''; position: absolute; top: 18px; left: 0; right: 0;
+    height: 1px; background: var(--border);
+  }
+  .milestone {
+    flex: 1; min-width: 110px; padding-top: 2.5rem;
+    text-align: center; position: relative; padding-left: 0.5rem; padding-right: 0.5rem;
+  }
+  .milestone::before {
+    content: ''; position: absolute; top: 12px; left: 50%;
+    transform: translateX(-50%);
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--bg); border: 2px solid var(--border);
+    z-index: 1;
+  }
+  .milestone.done::before  { border-color: var(--sage); background: var(--sage); }
+  .milestone.now::before   { border-color: var(--warm); background: var(--warm); box-shadow: 0 0 0 4px rgba(196,149,106,0.15); }
+  .milestone.future::before { border-color: var(--border); background: var(--card-bg); }
+  .milestone-date {
+    font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem;
+  }
+  .milestone.done .milestone-date  { color: var(--sage); }
+  .milestone.now .milestone-date   { color: var(--warm); }
+  .milestone-label {
+    font-size: 0.8rem; color: var(--text); line-height: 1.4;
+  }
 
   /* ─── PREMISE BLOCKS (from main site) ─── */
   .premise-blocks {
@@ -602,14 +711,46 @@
     <p>Eight founding organizers:</p>
 
     <div class="org-grid">
-      <div><strong>Kevin Owocki</strong> <span class="muted">&mdash; serial founder; Allo Capital</span></div>
-      <div><strong>Todd Youngblood</strong> <span class="muted">&mdash; MBA, operations; formerly U.S. Bank</span></div>
-      <div><strong>Aaron G Neyer</strong> <span class="muted">&mdash; software &amp; education; formerly Google</span></div>
-      <div><strong>Lucian Hymer</strong> <span class="muted">&mdash; web infrastructure; [formerly] Gitcoin Passport</span></div>
-      <div><strong>Jonathan Borichevskiy</strong> <span class="muted">&mdash; independent software developer</span></div>
-      <div><strong>Savannah Kruger</strong> <span class="muted">&mdash; community; Neighborhood Village Project</span></div>
-      <div><strong>Neil Mackay Yarnal</strong> <span class="muted">&mdash; design &amp; creative direction</span></div>
-      <div><strong>Benjamin Ross</strong> <span class="muted">&mdash; civic technology; OpenCivics</span></div>
+      <div class="org-card">
+        <div class="org-card-name">Kevin Owocki</div>
+        <div class="org-card-role">Serial founder &mdash; Gitcoin, Allo Capital</div>
+        <span class="org-card-tag tag-capital">Capital</span>
+      </div>
+      <div class="org-card">
+        <div class="org-card-name">Todd Youngblood</div>
+        <div class="org-card-role">MBA, operations &mdash; formerly U.S. Bank</div>
+        <span class="org-card-tag tag-ops">Operations</span>
+      </div>
+      <div class="org-card">
+        <div class="org-card-name">Aaron G Neyer</div>
+        <div class="org-card-role">Software &amp; education &mdash; formerly Google</div>
+        <span class="org-card-tag tag-edu">Education</span>
+      </div>
+      <div class="org-card">
+        <div class="org-card-name">Lucian Hymer</div>
+        <div class="org-card-role">Web infrastructure &mdash; [formerly] Gitcoin Passport</div>
+        <span class="org-card-tag tag-tech">Infrastructure</span>
+      </div>
+      <div class="org-card">
+        <div class="org-card-name">Jonathan Borichevskiy</div>
+        <div class="org-card-role">Independent software developer</div>
+        <span class="org-card-tag tag-tech">Engineering</span>
+      </div>
+      <div class="org-card">
+        <div class="org-card-name">Savannah Kruger</div>
+        <div class="org-card-role">Community &mdash; Neighborhood Village Project</div>
+        <span class="org-card-tag tag-civic">Community</span>
+      </div>
+      <div class="org-card">
+        <div class="org-card-name">Neil Mackay Yarnal</div>
+        <div class="org-card-role">Design &amp; creative direction</div>
+        <span class="org-card-tag tag-design">Design</span>
+      </div>
+      <div class="org-card">
+        <div class="org-card-name">Benjamin Ross</div>
+        <div class="org-card-role">Civic technology &mdash; OpenCivics</div>
+        <span class="org-card-tag tag-civic">Civic Tech</span>
+      </div>
     </div>
 
     <p>We've operated from the second floor of 1515 Walnut since May 2024. <strong>Techne</strong> is what RegenHub is building next &mdash; a venture studio and project ecosystem opening from the third floor.</p>
@@ -633,7 +774,42 @@
 
     <p class="lead">Our current second-floor lease is held by West Software Services Inc., running through June. We'd like to transfer it to <strong>RegenHub, LCA</strong> &mdash; the cooperative entity that now represents the group operating from this space.</p>
 
-    <p>Same people. Same commitment. Updated legal structure. The cooperative was filed in February 2026 and formalizes the working group that has been here for nearly two years.</p>
+    <div class="entity-transition">
+      <div class="entity-box from">
+        <div class="entity-label">Current lessee</div>
+        <div class="entity-name">West Software<br/>Services Inc.</div>
+      </div>
+      <div class="entity-arrow">→</div>
+      <div class="entity-box to">
+        <div class="entity-label">Proposed lessee</div>
+        <div class="entity-name">RegenHub, LCA<br/><span style="font-size:0.75rem;font-weight:400;color:var(--sage);">Colorado Public Benefit LCA · Filed Feb 2026</span></div>
+      </div>
+    </div>
+
+    <p>Same people. Same commitment. Updated legal structure. The cooperative formalizes the working group that has been here for nearly two years.</p>
+
+    <div class="timeline">
+      <div class="milestone done">
+        <div class="milestone-date">May 2024</div>
+        <div class="milestone-label">Moved into<br/>second floor</div>
+      </div>
+      <div class="milestone done">
+        <div class="milestone-date">Feb 2026</div>
+        <div class="milestone-label">RegenHub, LCA<br/>filed</div>
+      </div>
+      <div class="milestone now">
+        <div class="milestone-date">Mar 2026</div>
+        <div class="milestone-label">Lease transfer<br/>+ third floor</div>
+      </div>
+      <div class="milestone future">
+        <div class="milestone-date">May 2026</div>
+        <div class="milestone-label">Cash-flow<br/>positive</div>
+      </div>
+      <div class="milestone future">
+        <div class="milestone-date">2028</div>
+        <div class="milestone-label">Explore<br/>acquisition</div>
+      </div>
+    </div>
   </section>
 </div>
 
@@ -695,8 +871,39 @@
 
     <p>We're not asking for a decision today. We're opening the conversation.</p>
 
-    <div class="space-visual">
-      <p>Third floor learning &middot; Second floor ventures &middot; Roof for gathering<br/>A complete ecosystem from street to sky</p>
+    <div class="building-diagram">
+      <div class="floor roof">
+        <div class="floor-label">Roof</div>
+        <div class="floor-content">
+          <div class="floor-title">Gathering &amp; Events</div>
+          <div class="floor-desc">Outdoor convergences, Sundance Boulder overflow, community programming. A node above the city.</div>
+          <div class="floor-tags">
+            <span class="org-card-tag tag-civic">Future</span>
+          </div>
+        </div>
+      </div>
+      <div class="floor third">
+        <div class="floor-label" style="color:var(--sage);">3rd Floor</div>
+        <div class="floor-content">
+          <div class="floor-title">Techne — Opening 2026</div>
+          <div class="floor-desc">Expanded coworking, LearnVibe.Build cohort space, venture studio. Funded by committed investors through year one.</div>
+          <div class="floor-tags">
+            <span class="org-card-tag tag-edu">LearnVibe.Build</span>
+            <span class="org-card-tag tag-tech">Ventures</span>
+            <span class="org-card-tag tag-ops">Coworking</span>
+          </div>
+        </div>
+      </div>
+      <div class="floor second">
+        <div class="floor-label">2nd Floor</div>
+        <div class="floor-content">
+          <div class="floor-title">RegenHub — Since May 2024</div>
+          <div class="floor-desc">Operating base. Coworking, community, and the founding infrastructure of the cooperative. Nearly two years here.</div>
+          <div class="floor-tags">
+            <span class="org-card-tag tag-ops" style="background:rgba(133,184,133,0.12);color:var(--sage);">Operational</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <p>We also plan to operate data infrastructure from within the building &mdash; a local cloud: compute, storage, and network services owned and run by the cooperative. This keeps critical infrastructure under community control, generates service revenue, and makes 1515 Walnut something more than an address. It becomes a node.</p>
