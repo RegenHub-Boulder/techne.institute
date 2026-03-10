@@ -316,6 +316,7 @@
     <h1>Revenue Ramp</h1>
     <p class="page-sub">Path to black &middot; LearnVibe.Build launch &middot; 30 &middot; 60 &middot; 90 &middot; 365 days</p>
     <p class="page-intro">Can we get into the black within a year? Adjust the coworking growth rate and the LVB ramp to find the answer. Every number is a starting assumption &mdash; the point is to play with them together.</p>
+    <p id="syncStamp" style="font-family:var(--font-mono-alt);font-size:0.6rem;letter-spacing:0.08em;color:rgba(255,255,255,0.18);margin-top:0.6rem;"></p>
   </div>
 
 
@@ -1132,6 +1133,12 @@
         if (!inp || !sl || !val) return;
         inp.value = val.toLocaleString();
         sl.value  = val;
+      }
+      // Timestamp
+      if (d.lastSync) {
+        var ts = new Date(d.lastSync);
+        var stamp = document.getElementById('syncStamp');
+        if (stamp) stamp.textContent = 'sheet data · synced ' + ts.toLocaleDateString('en-US', {month:'short',day:'numeric'}) + ' at ' + ts.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit',timeZoneName:'short'});
       }
       var a = d.assumptions || {};
       var op = d.opex || {};
