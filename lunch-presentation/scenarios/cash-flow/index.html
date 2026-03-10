@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Monthly Cash Flow &mdash; Techne, 1515 Walnut</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%230f0f12'/%3E%3Ctext x='16' y='24' font-family='Georgia%2Cserif' font-size='22' font-weight='400' fill='%23c4956a' text-anchor='middle'%3E%CF%84%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:         #0f0f12;
+    --charcoal:    #1a1a1f;
+    --graphite:    #2a2a30;
+    --graphite-2:  #323238;
+    --bone:        #d8d3c8;
+    --stone:       #9a958a;
+    --stone-dim:   rgba(154,149,138,0.4);
+    --ember:       #c2512a;
+    --ember-dim:   rgba(194,81,42,0.18);
+    --sage-bright: #85b885;
+    --sage-dim:    rgba(133,184,133,0.12);
+    --lvb:         #7a9fc2;
+    --lvb-dim:     rgba(122,159,194,0.12);
+    --warm:        #c4956a;
+    --warm-dim:    rgba(196,149,106,0.08);
+    --cream:       #ece6de;
+    --red:         #d4704e;
+    --font-display:  'Cormorant', serif;
+    --font-body:     'Source Serif 4', serif;
+    --font-mono:     'IBM Plex Mono', monospace;
+    --font-mono-alt: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--ink);
+    color: var(--bone);
+    line-height: 1.75;
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  .page { max-width: 960px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+  /* ─── NAV ─── */
+  .crumbs {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--stone); margin-bottom: 2.5rem; flex-wrap: wrap;
+  }
+  .crumbs a { color: var(--stone); text-decoration: none; }
+  .crumbs a:hover { color: var(--warm); }
+  .crumbs .sep { opacity: 0.3; }
+
+  /* ─── HEADER ─── */
+  h1 {
+    font-family: var(--font-display); font-weight: 300;
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--cream); margin-bottom: 0.4rem;
+  }
+  .page-sub {
+    font-family: var(--font-mono-alt); font-size: 0.66rem;
+    letter-spacing: 0.13em; text-transform: uppercase; color: var(--warm);
+    margin-bottom: 1.2rem;
+  }
+  .page-intro {
+    max-width: 62ch; font-size: 0.91rem; color: var(--stone);
+    line-height: 1.8; margin-bottom: 2.5rem;
+  }
+
+  /* ─── PANEL ─── */
+  .panel {
+    background: var(--charcoal); border: 1px solid var(--graphite);
+    padding: 1.6rem 1.8rem; margin-bottom: 1.4rem;
+  }
+  .panel.costs  { border-color: rgba(194,81,42,0.28); }
+  .panel.cw     { border-color: rgba(133,184,133,0.28); }
+  .panel.lvb    { border-color: rgba(122,159,194,0.28); }
+  .panel.capital{ border-color: rgba(196,149,106,0.28); }
+
+  .panel-title {
+    font-family: var(--font-mono-alt); font-size: 0.62rem;
+    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.2rem;
+  }
+  .panel-title.costs   { color: var(--ember); }
+  .panel-title.cw      { color: var(--sage-bright); }
+  .panel-title.lvb     { color: var(--lvb); }
+  .panel-title.capital { color: var(--warm); }
+
+  .panel-desc {
+    font-size: 0.8rem; color: var(--stone);
+    margin-bottom: 1rem; line-height: 1.7; max-width: 52ch;
+  }
+
+  /* ─── ROWS ─── */
+  .row {
+    display: grid; grid-template-columns: 1fr 170px;
+    gap: 0.8rem; align-items: center;
+    padding: 0.52rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .row:last-child { border-bottom: none; }
+
+  .row-label {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--stone);
+  }
+  .row-label small {
+    display: block; font-size: 0.6rem;
+    color: var(--stone-dim); margin-top: 0.08rem;
+  }
+
+  .row-val {
+    font-family: var(--font-mono-alt); font-size: 1.0rem;
+    color: var(--cream); text-align: right;
+  }
+  .row-val.lg   { font-size: 1.25rem; }
+  .row-val.muted{ color: var(--stone); font-size: 0.85rem; }
+  .row-val.pos  { color: var(--sage-bright); }
+  .row-val.neg  { color: var(--red); }
+  .row-val.lvb  { color: var(--lvb); }
+
+  input.inp {
+    width: 100%; background: rgba(255,255,255,0.04);
+    border: 1px solid var(--graphite); color: var(--cream);
+    font-family: var(--font-mono-alt); font-size: 0.88rem;
+    padding: 0.28rem 0.5rem; text-align: right;
+    border-radius: 2px; transition: border-color 0.18s;
+  }
+  input.inp:focus { outline: none; border-color: var(--warm); }
+
+  input.sl {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 3px; background: var(--graphite);
+    border-radius: 2px; outline: none;
+    margin-top: 0.35rem; cursor: pointer; display: block;
+  }
+  input.sl::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 13px; height: 13px;
+    background: var(--warm); border-radius: 50%;
+  }
+  input.sl.cw::-webkit-slider-thumb  { background: var(--sage-bright); }
+  input.sl.costs::-webkit-slider-thumb{ background: var(--ember); }
+  input.sl.lvb::-webkit-slider-thumb  { background: var(--lvb); }
+
+  hr.div { border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 0.5rem 0; }
+
+  /* ─── TWO-COL ─── */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.4rem; margin-bottom: 1.4rem;
+  }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ─── CAPITAL BARS ─── */
+  .capital-table { width: 100%; border-collapse: collapse; }
+  .capital-table tr { border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .capital-table td {
+    padding: 0.48rem 0; font-family: var(--font-mono); font-size: 0.7rem;
+  }
+  .capital-table td:last-child { text-align: right; color: var(--cream); font-family: var(--font-mono-alt); }
+  .capital-table td.cat { color: var(--stone); padding-right: 1rem; }
+  .capital-table td.bar-cell { width: 45%; padding: 0.48rem 1rem; }
+  .cap-bar-track {
+    height: 5px; background: var(--graphite);
+    border-radius: 3px; overflow: hidden;
+  }
+  .cap-bar-fill { height: 100%; border-radius: 3px; transition: width 0.35s ease; }
+  .capital-total-row td {
+    padding-top: 0.7rem; font-weight: 400;
+    font-family: var(--font-mono-alt); font-size: 0.75rem;
+  }
+  .capital-remaining {
+    font-family: var(--font-mono-alt); font-size: 0.72rem;
+    color: var(--warm); margin-top: 0.6rem; line-height: 1.6;
+    padding: 0.42rem 0.7rem;
+    background: var(--warm-dim); border: 1px solid rgba(196,149,106,0.15);
+    display: none;
+  }
+  .capital-remaining.visible { display: block; }
+  .capital-remaining.warn {
+    color: var(--red);
+    background: var(--ember-dim); border-color: rgba(194,81,42,0.25);
+  }
+
+  /* ─── SUMMARY CARDS ─── */
+  .summary-row {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1rem; margin-bottom: 1.4rem;
+  }
+  @media (max-width: 700px) { .summary-row { grid-template-columns: 1fr 1fr; } }
+  .sum-card {
+    background: var(--charcoal); border: 1px solid var(--graphite);
+    padding: 1.15rem; text-align: center;
+  }
+  .sum-label {
+    font-family: var(--font-mono-alt); font-size: 0.57rem;
+    letter-spacing: 0.13em; text-transform: uppercase;
+    color: var(--stone); margin-bottom: 0.5rem; line-height: 1.5;
+  }
+  .sum-val {
+    font-family: var(--font-mono-alt); font-size: 1.35rem; font-weight: 300;
+  }
+  .sum-val.pos  { color: var(--sage-bright); }
+  .sum-val.neg  { color: var(--red); }
+  .sum-val.warm { color: var(--warm); }
+  .sum-sub {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    color: var(--stone-dim); margin-top: 0.22rem;
+  }
+
+  /* ─── CHART ─── */
+  .chart-wrap {
+    background: var(--charcoal); border: 1px solid var(--graphite);
+    padding: 1.6rem 1.8rem; margin-bottom: 1.4rem;
+  }
+  .chart-title {
+    font-family: var(--font-mono-alt); font-size: 0.62rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 1rem;
+  }
+  .chart-legend {
+    display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 0.4rem;
+    font-family: var(--font-mono); font-size: 0.62rem; color: var(--stone);
+  }
+  .l-swatch { width: 10px; height: 10px; border-radius: 2px; }
+  .l-line { width: 18px; height: 2px; }
+  .l-dashed { border-top: 2px dashed currentColor; background: none; height: 0; }
+  svg.chart { width: 100%; display: block; overflow: visible; }
+  .chart-note {
+    font-family: var(--font-mono); font-size: 0.63rem;
+    color: rgba(154,149,138,0.35); margin-top: 0.8rem; line-height: 1.65;
+  }
+
+  /* ─── CASH FLOW TABLE ─── */
+  .cf-wrap {
+    background: var(--charcoal); border: 1px solid var(--graphite);
+    padding: 1.6rem 1.8rem; margin-bottom: 1.4rem;
+    overflow-x: auto;
+  }
+  .cf-table-title {
+    font-family: var(--font-mono-alt); font-size: 0.62rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 1rem;
+  }
+  table.cft {
+    width: 100%; border-collapse: collapse;
+    font-family: var(--font-mono-alt); font-size: 0.72rem;
+    min-width: 700px;
+  }
+  table.cft thead tr {
+    border-bottom: 1px solid var(--graphite-2);
+  }
+  table.cft thead th {
+    color: var(--stone); font-weight: 400;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    font-size: 0.6rem; padding: 0.4rem 0.6rem; text-align: right;
+  }
+  table.cft thead th:first-child { text-align: left; }
+  table.cft tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    transition: background 0.1s;
+  }
+  table.cft tbody tr:hover { background: rgba(255,255,255,0.02); }
+  table.cft tbody tr.be-row { background: rgba(196,149,106,0.04); border-bottom-color: rgba(196,149,106,0.12); }
+  table.cft tbody tr.cohort-row { background: rgba(122,159,194,0.04); }
+  table.cft td {
+    padding: 0.42rem 0.6rem; text-align: right; color: var(--bone);
+  }
+  table.cft td:first-child { text-align: left; color: var(--stone); }
+  table.cft td.pos   { color: var(--sage-bright); }
+  table.cft td.neg   { color: var(--red); }
+  table.cft td.lvb   { color: var(--lvb); }
+  table.cft td.warm  { color: var(--warm); }
+  table.cft td.faint { color: var(--stone-dim); }
+  table.cft td.bold  { font-weight: 500; }
+  table.cft tbody tr.total-row {
+    border-top: 1px solid var(--graphite-2);
+    background: rgba(255,255,255,0.015);
+  }
+  table.cft .tag {
+    display: inline-block;
+    font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.08rem 0.3rem; border-radius: 2px; margin-left: 0.3rem;
+    vertical-align: middle;
+  }
+  .tag.cohort { background: rgba(122,159,194,0.15); color: var(--lvb); }
+  .tag.be     { background: rgba(196,149,106,0.15); color: var(--warm); }
+  .table-note {
+    font-family: var(--font-mono); font-size: 0.63rem;
+    color: var(--stone-dim); margin-top: 0.8rem; line-height: 1.65;
+  }
+
+  .footer {
+    margin-top: 4rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--graphite);
+    font-family: var(--font-mono-alt); font-size: 0.61rem;
+    letter-spacing: 0.1em; color: rgba(255,255,255,0.1); text-align: center;
+  }
+
+  a { color: var(--warm); text-decoration: none; }
+  a:hover { color: var(--ember); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="crumbs">
+    <a href="/lunch-presentation/"><i data-lucide="arrow-left" style="width:13px;height:13px;stroke-width:2;margin-right:0.2rem;"></i> The Plan</a>
+    <span class="sep">/</span>
+    <a href="/lunch-presentation/scenarios/">Scenarios</a>
+    <span class="sep">/</span>
+    Cash Flow
+  </div>
+
+  <div style="margin-bottom:2.5rem;">
+    <h1>Monthly Cash Flow</h1>
+    <p class="page-sub">Coworking &middot; LearnVibe.Build cohorts &middot; Capital deployment &middot; Path to black</p>
+    <p class="page-intro">LVB revenue arrives in cohort-sized lumps, not a smooth ramp. This model captures that — quarterly cohorts, hub revenue split out from facilitator pay, and the $130K shown line by line. Adjust any number and the table updates live.</p>
+  </div>
+
+
+  <!-- ═══ COSTS ═══ -->
+  <div class="two-col">
+    <div class="panel costs">
+      <p class="panel-title costs">Monthly Fixed Costs</p>
+
+      <div class="row">
+        <div class="row-label">Third floor lease
+          <small>Monthly to Lynn</small>
+        </div>
+        <div>
+          <input class="inp" id="lease" type="text" value="5,000" />
+          <input class="sl costs" id="leaseS" type="range" min="2000" max="10000" step="250" value="5000" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-label">Other ops &amp; overhead
+          <small>Staff, utilities, current floor</small>
+        </div>
+        <div>
+          <input class="inp" id="ops" type="text" value="3,500" />
+          <input class="sl costs" id="opsS" type="range" min="1000" max="8000" step="250" value="3500" />
+        </div>
+      </div>
+
+      <hr class="div" />
+      <div class="row">
+        <div class="row-label">Total monthly costs</div>
+        <div class="row-val neg" id="totalCosts">&mdash;</div>
+      </div>
+    </div>
+
+    <!-- ═══ COWORK ═══ -->
+    <div class="panel cw">
+      <p class="panel-title cw">Coworking Revenue</p>
+
+      <div class="row">
+        <div class="row-label">Starting revenue
+          <small>Now, current floor</small>
+        </div>
+        <div>
+          <input class="inp" id="cwStart" type="text" value="4,500" />
+          <input class="sl cw" id="cwStartS" type="range" min="1000" max="12000" step="250" value="4500" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-label">Monthly growth
+          <small>New memberships &amp; booths</small>
+        </div>
+        <div>
+          <input class="inp" id="cwGrowth" type="text" value="750" />
+          <input class="sl cw" id="cwGrowthS" type="range" min="0" max="3000" step="100" value="750" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-label">Ceiling
+          <small>Capacity: both floors</small>
+        </div>
+        <div>
+          <input class="inp" id="cwCeil" type="text" value="10,000" />
+          <input class="sl cw" id="cwCeilS" type="range" min="5000" max="18000" step="500" value="10000" />
+        </div>
+      </div>
+
+      <hr class="div" />
+      <div class="row">
+        <div class="row-label">Month 3 cowork estimate</div>
+        <div class="row-val pos" id="cwM3">&mdash;</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ LVB ═══ -->
+  <div class="panel lvb">
+    <p class="panel-title lvb">LearnVibe.Build &mdash; Cohort Model</p>
+    <p class="panel-desc">Six-week cohorts, roughly one per quarter. Revenue flows to the hub in the launch month of each cohort. Facilitators are paid separately before the hub share.</p>
+
+    <div class="two-col" style="margin-bottom:0;">
+      <div>
+        <div class="row">
+          <div class="row-label">Cohort 2 launch
+            <small>Month number (1 = April)</small>
+          </div>
+          <div>
+            <input class="inp" id="lvbStart" type="text" value="1" />
+            <input class="sl lvb" id="lvbStartS" type="range" min="1" max="6" step="1" value="1" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="row-label">Months between cohorts
+            <small>One cohort per quarter = 3</small>
+          </div>
+          <div>
+            <input class="inp" id="lvbInterval" type="text" value="3" />
+            <input class="sl lvb" id="lvbIntervalS" type="range" min="2" max="6" step="1" value="3" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="row">
+          <div class="row-label">Cohort 2 → hub revenue
+            <small>$5–6K total; ~$2K facilitators; ~$3K hub</small>
+          </div>
+          <div>
+            <input class="inp" id="lvbC2" type="text" value="3,000" />
+            <input class="sl lvb" id="lvbC2S" type="range" min="0" max="8000" step="250" value="3000" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="row-label">Future cohorts → hub revenue
+            <small>$10K total; ~$6K facilitators; ~$4K hub</small>
+          </div>
+          <div>
+            <input class="inp" id="lvbFuture" type="text" value="4,000" />
+            <input class="sl lvb" id="lvbFutureS" type="range" min="0" max="10000" step="250" value="4000" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ CAPITAL DEPLOYMENT ═══ -->
+  <div class="panel capital">
+    <p class="panel-title capital">Capital Deployment &mdash; $130,000 Committed</p>
+    <p class="panel-desc">Kevin + Jeremy. Where it goes if we secure the third floor. Lease reserve is locked; adjust buildout line items to see what's left.</p>
+
+    <table class="capital-table" id="capTable">
+      <tbody>
+        <tr>
+          <td class="cat">Lease reserve (12 mo)</td>
+          <td class="bar-cell"><div class="cap-bar-track"><div class="cap-bar-fill" id="capBar0" style="background:rgba(194,81,42,0.5);width:0%"></div></div></td>
+          <td id="capAmt0">&mdash;</td>
+        </tr>
+        <tr>
+          <td class="cat">Phone booths
+            <small style="display:block;font-size:0.6rem;color:rgba(154,149,138,0.4);">3 additional @ ~$3,500 ea</small>
+          </td>
+          <td class="bar-cell"><div class="cap-bar-track"><div class="cap-bar-fill" id="capBar1" style="background:rgba(122,159,194,0.5);width:0%"></div></div></td>
+          <td>
+            <input class="inp" id="capPhone" type="text" value="10,500" style="width:90px;" />
+          </td>
+        </tr>
+        <tr>
+          <td class="cat">Office furniture
+            <small style="display:block;font-size:0.6rem;color:rgba(154,149,138,0.4);">desks, chairs — target used/surplus</small>
+          </td>
+          <td class="bar-cell"><div class="cap-bar-track"><div class="cap-bar-fill" id="capBar2" style="background:rgba(133,184,133,0.5);width:0%"></div></div></td>
+          <td>
+            <input class="inp" id="capFurniture" type="text" value="15,000" style="width:90px;" />
+          </td>
+        </tr>
+        <tr>
+          <td class="cat">Tech / AV
+            <small style="display:block;font-size:0.6rem;color:rgba(154,149,138,0.4);">displays, conferencing, WiFi</small>
+          </td>
+          <td class="bar-cell"><div class="cap-bar-track"><div class="cap-bar-fill" id="capBar3" style="background:rgba(196,149,106,0.5);width:0%"></div></div></td>
+          <td>
+            <input class="inp" id="capTech" type="text" value="5,000" style="width:90px;" />
+          </td>
+        </tr>
+        <tr>
+          <td class="cat">Design &amp; buildout
+            <small style="display:block;font-size:0.6rem;color:rgba(154,149,138,0.4);">cohesive brand, lighting, layout</small>
+          </td>
+          <td class="bar-cell"><div class="cap-bar-track"><div class="cap-bar-fill" id="capBar4" style="background:rgba(154,149,138,0.4);width:0%"></div></div></td>
+          <td>
+            <input class="inp" id="capDesign" type="text" value="8,000" style="width:90px;" />
+          </td>
+        </tr>
+        <tr class="total-row">
+          <td class="cat">Operating reserve (remainder)</td>
+          <td class="bar-cell"><div class="cap-bar-track"><div class="cap-bar-fill" id="capBar5" style="background:rgba(196,149,106,0.25);width:0%"></div></div></td>
+          <td id="capAmt5" style="color:var(--warm);">&mdash;</td>
+        </tr>
+        <tr class="total-row">
+          <td class="cat" style="color:var(--bone);font-family:var(--font-mono-alt);">Total allocated</td>
+          <td></td>
+          <td id="capTotal" style="color:var(--cream);font-family:var(--font-mono-alt);">&mdash;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="capital-remaining" id="capRemaining"></div>
+  </div>
+
+
+  <!-- ═══ SUMMARY CARDS ═══ -->
+  <div class="summary-row">
+    <div class="sum-card">
+      <p class="sum-label">Break-even<br/>month</p>
+      <p class="sum-val warm" id="sumBE">&mdash;</p>
+      <p class="sum-sub" id="sumBESub">&mdash;</p>
+    </div>
+    <div class="sum-card">
+      <p class="sum-label">Capital needed<br/>to cover ramp</p>
+      <p class="sum-val" id="sumCapNeeded">&mdash;</p>
+      <p class="sum-sub" id="sumCapSub">&mdash;</p>
+    </div>
+    <div class="sum-card">
+      <p class="sum-label">Month 12<br/>monthly net</p>
+      <p class="sum-val" id="sumM12">&mdash;</p>
+      <p class="sum-sub">monthly surplus</p>
+    </div>
+    <div class="sum-card">
+      <p class="sum-label">Year-1<br/>LVB to hub</p>
+      <p class="sum-val lvb" id="sumLVB">&mdash;</p>
+      <p class="sum-sub" id="sumLVBSub">&mdash;</p>
+    </div>
+  </div>
+
+
+  <!-- ═══ CHART ═══ -->
+  <div class="chart-wrap">
+    <p class="chart-title">Revenue vs Costs &mdash; Month by Month</p>
+    <div class="chart-legend">
+      <div class="legend-item"><div class="l-swatch" style="background:rgba(133,184,133,0.5)"></div> Coworking</div>
+      <div class="legend-item"><div class="l-swatch" style="background:rgba(122,159,194,0.6)"></div> LVB (cohort months)</div>
+      <div class="legend-item"><div class="l-line l-dashed" style="color:#c2512a;"></div> Monthly costs</div>
+    </div>
+    <svg id="chartMain" class="chart" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
+    <p class="chart-note">Bars = total monthly revenue. Blue caps = LVB cohort months. Dashed line = fixed cost base. Cross the line = in the black.</p>
+  </div>
+
+
+  <!-- ═══ TABLE ═══ -->
+  <div class="cf-wrap">
+    <p class="cf-table-title">Month-by-Month &mdash; Full Detail</p>
+    <table class="cft" id="cfTable">
+      <thead>
+        <tr>
+          <th style="text-align:left">Month</th>
+          <th>Cowork</th>
+          <th>LVB</th>
+          <th>Total Rev</th>
+          <th>Costs</th>
+          <th>Monthly Net</th>
+          <th>Capital Used</th>
+        </tr>
+      </thead>
+      <tbody id="cfBody"></tbody>
+    </table>
+    <p class="table-note">Capital Used = running total of deficit drawn from the $130K. Turns green when the space becomes self-sustaining. LVB months are highlighted.</p>
+  </div>
+
+
+  <div class="footer">
+    <p>Internal working document &middot; RegenHub, LCA &middot; March 2026 &middot; For conversation, not commitment</p>
+  </div>
+
+</div><!-- /.page -->
+
+<script>
+(function () {
+  'use strict';
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  function parseDollar(id) { return parseFloat($(id).value.replace(/[^0-9.]/g,''))||0; }
+  function parseNum(id)    { return parseFloat($(id).value.replace(/[^0-9.]/g,''))||0; }
+  function parseInt_(id)   { return parseInt($(id).value.replace(/[^0-9]/g,''),10)||0; }
+
+  function fmtD(n) {
+    var sign = n < 0 ? '-' : '';
+    return sign+'$'+Math.abs(Math.round(n)).toLocaleString('en-US');
+  }
+  function fmtS(n) {
+    var sign = n < 0 ? '-' : (n > 0 ? '+' : '');
+    var a = Math.abs(n);
+    if (a >= 1000) return sign+'$'+Math.round(a/1000)+'K';
+    return sign+'$'+Math.round(a);
+  }
+  function fmtShort(n) {
+    var a = Math.abs(n), sign = n < 0 ? '-' : '';
+    if (a >= 1000000) return sign+'$'+(a/1000000).toFixed(1)+'M';
+    if (a >= 1000)    return sign+'$'+Math.round(a/1000)+'K';
+    return sign+'$'+Math.round(a);
+  }
+
+  // Month names starting from April
+  var MONTHS = ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+  function monthName(m) { return MONTHS[(m-1) % 12] + ' \'' + (26 + Math.floor((m-1+3)/12)).toString().slice(-2); }
+
+  // ─── Input binding ────────────────────────────────────────────
+  function bindDollar(inId, slId, cb) {
+    var inp = $(inId), sl = $(slId);
+    if (!inp || !sl) return;
+    sl.addEventListener('input', function(){ inp.value = parseFloat(sl.value).toLocaleString('en-US'); cb(); });
+    inp.addEventListener('input', function(){ var v=parseFloat(inp.value.replace(/[^0-9.]/g,'')); if(!isNaN(v))sl.value=v; cb(); });
+  }
+  function bindNum(inId, slId, cb) {
+    var inp = $(inId), sl = $(slId);
+    if (!inp || !sl) return;
+    sl.addEventListener('input', function(){ inp.value = sl.value; cb(); });
+    inp.addEventListener('input', function(){ var v=parseFloat(inp.value.replace(/[^0-9.]/g,'')); if(!isNaN(v))sl.value=v; cb(); });
+  }
+  // Capital inputs (no slider)
+  function bindCapital(inId, cb) {
+    var inp = $(inId); if (!inp) return;
+    inp.addEventListener('input', cb);
+  }
+
+  // ─── Revenue model ───────────────────────────────────────────
+  function getCW(m, start, growth, ceil) {
+    return Math.min(start + growth * m, ceil);
+  }
+  function getLVB(m, launchM, interval, c2hub, futHub) {
+    if (m < launchM) return 0;
+    var offset = m - launchM;
+    if (offset % interval !== 0) return 0;
+    return (offset === 0) ? c2hub : futHub;
+  }
+
+  function buildModel() {
+    var totalCosts = parseDollar('lease') + parseDollar('ops');
+    var cwStart    = parseDollar('cwStart');
+    var cwGrowth   = parseDollar('cwGrowth');
+    var cwCeil     = parseDollar('cwCeil');
+    var lvbLaunch  = parseInt_('lvbStart');
+    var lvbInt     = Math.max(1, parseInt_('lvbInterval'));
+    var lvbC2      = parseDollar('lvbC2');
+    var lvbFuture  = parseDollar('lvbFuture');
+
+    var rows = [];
+    var cumCap = 0;
+    for (var m = 1; m <= 12; m++) {
+      var cw  = getCW(m, cwStart, cwGrowth, cwCeil);
+      var lvb = getLVB(m, lvbLaunch, lvbInt, lvbC2, lvbFuture);
+      var rev = cw + lvb;
+      var net = rev - totalCosts;
+      if (net < 0) cumCap += net;
+      rows.push({ m: m, cw: cw, lvb: lvb, rev: rev, costs: totalCosts, net: net, cumCap: cumCap });
+    }
+    return { rows: rows, totalCosts: totalCosts };
+  }
+
+  // ─── Capital deployment ──────────────────────────────────────
+  var COMMITTED = 130000;
+  function updateCapital(leaseMonthly) {
+    var leaseReserve = leaseMonthly * 12;
+    var phone     = parseDollar('capPhone');
+    var furniture = parseDollar('capFurniture');
+    var tech      = parseDollar('capTech');
+    var design    = parseDollar('capDesign');
+
+    var allocated = leaseReserve + phone + furniture + tech + design;
+    var remainder = COMMITTED - allocated;
+
+    var items = [leaseReserve, phone, furniture, tech, design, Math.max(0, remainder)];
+    var total  = Math.min(allocated + Math.max(0, remainder), COMMITTED);
+
+    items.forEach(function(v, i) {
+      var pct = (v / COMMITTED * 100).toFixed(1);
+      var bar = $('capBar'+i);
+      if (bar) bar.style.width = pct + '%';
+      var amt = $('capAmt'+i);
+      if (amt) amt.textContent = fmtD(v);
+    });
+
+    $('capAmt5').textContent = fmtD(Math.max(0, remainder));
+    $('capTotal').textContent = fmtD(Math.min(allocated, COMMITTED));
+
+    var remEl = $('capRemaining');
+    if (allocated > COMMITTED) {
+      remEl.classList.add('visible','warn');
+      remEl.classList.remove('warm');
+      remEl.textContent = 'Over budget by ' + fmtD(allocated - COMMITTED)
+        + '. Reduce line items or find additional capital.';
+    } else if (remainder < 5000) {
+      remEl.classList.add('visible');
+      remEl.classList.remove('warn');
+      remEl.textContent = 'Operating reserve: '+ fmtD(remainder)
+        + '. Low buffer — consider reducing buildout or seeking additional capital.';
+    } else {
+      remEl.classList.add('visible');
+      remEl.classList.remove('warn');
+      remEl.textContent = 'Operating reserve (unallocated): '+ fmtD(remainder)
+        + '. Available for cost overruns or additional buildout.';
+    }
+  }
+
+  // ─── Summary cards ──────────────────────────────────────────
+  function updateSummary(model) {
+    var rows = model.rows;
+    var beM = null;
+    var capNeeded = 0;
+    var lvbTotal = 0;
+    var lvbCohorts = 0;
+    rows.forEach(function(r) {
+      if (beM === null && r.net >= 0) beM = r.m;
+      if (r.net < 0 && beM === null) capNeeded += r.net;
+      lvbTotal += r.lvb;
+      if (r.lvb > 0) lvbCohorts++;
+    });
+    capNeeded = Math.abs(capNeeded);
+
+    var beEl = $('sumBE');
+    if (beM !== null) {
+      beEl.textContent = 'Month ' + beM;
+      beEl.className = 'sum-val warm';
+      $('sumBESub').textContent = monthName(beM);
+    } else {
+      beEl.textContent = '> 12 mo';
+      beEl.className = 'sum-val neg';
+      $('sumBESub').textContent = 'adjust ramp rates';
+    }
+
+    var cnEl = $('sumCapNeeded');
+    cnEl.textContent = fmtShort(capNeeded);
+    cnEl.className = 'sum-val ' + (capNeeded <= COMMITTED ? 'pos' : 'neg');
+    $('sumCapSub').textContent = capNeeded <= COMMITTED
+      ? 'within committed $130K' : 'exceeds $130K committed';
+
+    var m12 = rows[11];
+    var m12El = $('sumM12');
+    m12El.textContent = (m12.net >= 0 ? '+' : '') + fmtD(m12.net);
+    m12El.className = 'sum-val ' + (m12.net >= 0 ? 'pos' : 'neg');
+
+    $('sumLVB').textContent = fmtShort(lvbTotal);
+    $('sumLVBSub').textContent = lvbCohorts + ' cohort' + (lvbCohorts !== 1 ? 's' : '') + ' in yr 1';
+  }
+
+  // ─── Chart ──────────────────────────────────────────────────
+  var W=820, H=260, PL=68, PR=48, PT=16, PB=40;
+  var cW=W-PL-PR, cH=H-PT-PB;
+
+  function drawChart(model) {
+    var rows = model.rows;
+    var maxVal = 0;
+    rows.forEach(function(r){ maxVal = Math.max(maxVal, r.rev, r.costs); });
+    maxVal *= 1.15;
+
+    var xFor = function(m){ return PL + ((m-0.5) / 12) * cW; };
+    var yFor = function(v){ return PT + cH - Math.min(1, Math.max(0, v/maxVal)) * cH; };
+    var bw = Math.max(1, cW/12 - 6);
+
+    var out = [];
+    out.push('<rect x="'+PL+'" y="'+PT+'" width="'+cW+'" height="'+cH+'" fill="#16161b"/>');
+
+    // Grid
+    for (var t=1;t<=4;t++) {
+      var tv = maxVal*t/4, ty = yFor(tv);
+      out.push('<line x1="'+PL+'" y1="'+ty+'" x2="'+(PL+cW)+'" y2="'+ty+'" stroke="#1e1e24" stroke-width="1"/>');
+      out.push('<text x="'+(PL-5)+'" y="'+(ty+4)+'" font-family="JetBrains Mono,monospace" font-size="9" fill="#48443e" text-anchor="end">$'+Math.round(tv/1000)+'K</text>');
+    }
+
+    // Bars
+    rows.forEach(function(r) {
+      var bx = xFor(r.m) - bw/2;
+      // CW portion
+      var cwH = (r.cw / maxVal) * cH;
+      var cwY = PT + cH - cwH;
+      out.push('<rect x="'+bx+'" y="'+cwY+'" width="'+bw+'" height="'+cwH+'" fill="rgba(133,184,133,'+(r.net>=0?'0.58':'0.38')+')"/>');
+      // LVB cap
+      if (r.lvb > 0) {
+        var lvbH = (r.lvb / maxVal) * cH;
+        var lvbY = cwY - lvbH;
+        out.push('<rect x="'+bx+'" y="'+lvbY+'" width="'+bw+'" height="'+lvbH+'" fill="rgba(122,159,194,0.65)"/>');
+      }
+      // X labels
+      var lbl = monthName(r.m);
+      out.push('<text x="'+xFor(r.m)+'" y="'+(PT+cH+14)+'" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#48443e" text-anchor="middle">'+lbl+'</text>');
+    });
+
+    // Cost line
+    var costY = yFor(model.totalCosts);
+    out.push('<line x1="'+PL+'" y1="'+costY+'" x2="'+(PL+cW)+'" y2="'+costY+'" stroke="#c2512a" stroke-width="1.8" stroke-dasharray="7,4" opacity="0.75"/>');
+    out.push('<text x="'+(PL+cW+5)+'" y="'+(costY+4)+'" font-family="JetBrains Mono,monospace" font-size="9" fill="#c2512a" opacity="0.65">costs</text>');
+
+    // Break-even vertical
+    var beM = null;
+    rows.forEach(function(r){ if (beM===null && r.net>=0) beM=r.m; });
+    if (beM !== null) {
+      var bex = xFor(beM);
+      out.push('<line x1="'+bex+'" y1="'+PT+'" x2="'+bex+'" y2="'+(PT+cH)+'" stroke="#c4956a" stroke-width="1.2" stroke-dasharray="4,4" opacity="0.4"/>');
+    }
+
+    // Axes
+    out.push('<line x1="'+PL+'" y1="'+PT+'" x2="'+PL+'" y2="'+(PT+cH)+'" stroke="#2a2a30" stroke-width="1"/>');
+    out.push('<line x1="'+PL+'" y1="'+(PT+cH)+'" x2="'+(PL+cW)+'" y2="'+(PT+cH)+'" stroke="#2a2a30" stroke-width="1"/>');
+
+    $('chartMain').innerHTML = out.join('');
+  }
+
+  // ─── Table ──────────────────────────────────────────────────
+  function drawTable(model) {
+    var rows = model.rows;
+    var beM = null; rows.forEach(function(r){ if(beM===null && r.net>=0) beM=r.m; });
+
+    var html = '';
+    rows.forEach(function(r) {
+      var isCohort = r.lvb > 0;
+      var isBE     = r.m === beM;
+      var cls = isBE ? 'be-row' : isCohort ? 'cohort-row' : '';
+
+      var monthLabel = monthName(r.m);
+      if (isCohort) monthLabel += '<span class="tag cohort">LVB</span>';
+      if (isBE)     monthLabel += '<span class="tag be">break-even</span>';
+
+      var netCls = r.net >= 0 ? 'pos bold' : 'neg';
+      var cumCls = r.cumCap < 0 ? 'neg' : r.cumCap === 0 ? 'faint' : '';
+
+      html += '<tr class="'+cls+'">'
+        + '<td style="text-align:left;color:var(--bone);">'+monthLabel+'</td>'
+        + '<td>'+fmtD(r.cw)+'</td>'
+        + '<td class="'+(r.lvb>0?'lvb':'faint')+'">'+(r.lvb>0?fmtD(r.lvb):'&mdash;')+'</td>'
+        + '<td>'+fmtD(r.rev)+'</td>'
+        + '<td class="neg">'+fmtD(r.costs)+'</td>'
+        + '<td class="'+netCls+'">'+(r.net>=0?'+':'')+fmtD(r.net)+'</td>'
+        + '<td class="'+cumCls+'">'+(r.cumCap<0?fmtD(Math.abs(r.cumCap)):'&mdash;')+'</td>'
+        + '</tr>';
+    });
+
+    // 12-month totals row
+    var totRev = rows.reduce(function(s,r){return s+r.rev;},0);
+    var totLVB = rows.reduce(function(s,r){return s+r.lvb;},0);
+    var totCW  = rows.reduce(function(s,r){return s+r.cw;},0);
+    var totNet = rows.reduce(function(s,r){return s+r.net;},0);
+    var totCosts = model.totalCosts * 12;
+    var maxCumCap = Math.abs(Math.min.apply(null, rows.map(function(r){return r.cumCap;})));
+
+    html += '<tr class="total-row">'
+      + '<td style="text-align:left;color:var(--warm);">12-month total</td>'
+      + '<td style="color:var(--sage-bright);">'+fmtShort(totCW)+'</td>'
+      + '<td style="color:var(--lvb);">'+fmtShort(totLVB)+'</td>'
+      + '<td style="color:var(--cream);">'+fmtShort(totRev)+'</td>'
+      + '<td style="color:var(--red);">'+fmtShort(totCosts)+'</td>'
+      + '<td style="color:'+(totNet>=0?'var(--sage-bright)':'var(--red)')+';">'+(totNet>=0?'+':'')+fmtShort(totNet)+'</td>'
+      + '<td style="color:var(--warm);">'+fmtShort(maxCumCap)+' peak</td>'
+      + '</tr>';
+
+    $('cfBody').innerHTML = html;
+  }
+
+  // ─── Main update ────────────────────────────────────────────
+  function update() {
+    var model = buildModel();
+    var lease = parseDollar('lease');
+
+    $('totalCosts').textContent = fmtD(model.totalCosts);
+    $('cwM3').textContent = fmtD(getCW(3, parseDollar('cwStart'), parseDollar('cwGrowth'), parseDollar('cwCeil')));
+
+    updateCapital(lease);
+    updateSummary(model);
+    drawChart(model);
+    drawTable(model);
+  }
+
+  // ─── Wire inputs ────────────────────────────────────────────
+  bindDollar('lease',       'leaseS',         update);
+  bindDollar('ops',         'opsS',           update);
+  bindDollar('cwStart',     'cwStartS',       update);
+  bindDollar('cwGrowth',    'cwGrowthS',      update);
+  bindDollar('cwCeil',      'cwCeilS',        update);
+  bindNum(   'lvbStart',    'lvbStartS',      update);
+  bindNum(   'lvbInterval', 'lvbIntervalS',   update);
+  bindDollar('lvbC2',       'lvbC2S',         update);
+  bindDollar('lvbFuture',   'lvbFutureS',     update);
+  bindCapital('capPhone',    update);
+  bindCapital('capFurniture',update);
+  bindCapital('capTech',     update);
+  bindCapital('capDesign',   update);
+
+  update();
+})();
+</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" onload="lucide.createIcons()"></script>
+</body>
+</html>
