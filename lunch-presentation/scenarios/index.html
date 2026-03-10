@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Financial Scenarios &mdash; 1515 Walnut</title>
+<title>Financing Comparison &mdash; Techne, 1515 Walnut</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%230f0f12'/%3E%3Ctext x='16' y='24' font-family='Georgia%2Cserif' font-size='22' font-weight='400' fill='%23c4956a' text-anchor='middle'%3E%CF%84%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
@@ -11,21 +13,21 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --void: #08080a;
-    --ink: #0f0f12;
-    --charcoal: #1a1a1f;
-    --graphite: #2a2a30;
-    --bone: #d8d3c8;
-    --stone: #9a958a;
-    --ember: #c2512a;
-    --ember-dim: #8a3a1f;
-    --sage: #4a5f4a;
-    --sage-light: #6b836b;
-    --warm: #c4956a;
-    --cream: #ebe7df;
-    --font-display: 'Cormorant', serif;
-    --font-body: 'Source Serif 4', serif;
-    --font-mono: 'IBM Plex Mono', monospace;
+    --ink:         #0f0f12;
+    --charcoal:    #1a1a1f;
+    --graphite:    #2a2a30;
+    --bone:        #d8d3c8;
+    --stone:       #9a958a;
+    --ember:       #c2512a;
+    --ember-dim:   #8a3a1f;
+    --sage:        #4a6b4a;
+    --sage-light:  #6b9b6b;
+    --sage-bright: #85b885;
+    --warm:        #c4956a;
+    --cream:       #ece6de;
+    --font-display:  'Cormorant', serif;
+    --font-body:     'Source Serif 4', serif;
+    --font-mono:     'IBM Plex Mono', monospace;
     --font-mono-alt: 'JetBrains Mono', monospace;
   }
 
@@ -34,156 +36,245 @@
     background: var(--ink);
     color: var(--bone);
     line-height: 1.75;
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 300;
     overflow-x: hidden;
   }
 
-  .page {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 3rem 2rem 4rem;
-  }
+  .page { max-width: 940px; margin: 0 auto; padding: 3rem 2rem 6rem; }
 
+  /* ─── NAV ─── */
   .back-link {
     display: inline-flex; align-items: center; gap: 0.35rem;
-    font-family: var(--font-mono); font-size: 0.78rem;
-    color: var(--stone); text-decoration: none;
-    margin-bottom: 2rem;
+    font-family: var(--font-mono); font-size: 0.75rem;
+    color: var(--stone); text-decoration: none; margin-bottom: 2.5rem;
   }
   .back-link:hover { color: var(--warm); }
 
+  /* ─── PAGE HEADER ─── */
   h1 {
-    font-family: var(--font-display);
-    font-weight: 300; font-size: 2.5rem;
-    color: var(--cream); margin-bottom: 0.5rem;
-    letter-spacing: -0.01em;
+    font-family: var(--font-display); font-weight: 300;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    color: var(--cream); margin-bottom: 0.4rem; letter-spacing: -0.01em;
   }
-
   .page-sub {
-    font-family: var(--font-mono-alt);
-    font-size: 0.7rem; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--warm);
-    margin-bottom: 3rem;
+    font-family: var(--font-mono-alt); font-size: 0.67rem;
+    letter-spacing: 0.13em; text-transform: uppercase; color: var(--warm);
+    margin-bottom: 1.25rem;
+  }
+  .page-intro {
+    max-width: 64ch; font-size: 0.93rem; color: var(--stone);
+    line-height: 1.8; margin-bottom: 2.5rem;
   }
 
-  h2 {
-    font-family: var(--font-display);
-    font-weight: 400; font-size: 1.6rem;
-    color: var(--cream); margin: 3rem 0 1.25rem;
+  /* ─── PANELS ─── */
+  .panel {
+    background: var(--charcoal); border: 1px solid var(--graphite);
+    padding: 1.75rem 2rem; margin-bottom: 1.5rem;
+  }
+  .panel.lynn { border-color: var(--sage); }
+  .panel.bank { border-color: var(--ember-dim); }
+
+  .panel-title {
+    font-family: var(--font-mono-alt); font-size: 0.63rem;
+    letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 1.25rem;
+  }
+  .panel-title.shared  { color: var(--warm); }
+  .panel-title.lynn    { color: var(--sage-bright); }
+  .panel-title.bank    { color: var(--ember); }
+  .panel-title.compare { color: var(--bone); }
+
+  .panel-desc {
+    font-size: 0.82rem; color: var(--stone);
+    margin-bottom: 1.25rem; line-height: 1.7; max-width: 54ch;
   }
 
-  p { color: var(--stone); margin-bottom: 1rem; max-width: 65ch; }
-
-  /* ─── STEPWISE ─── */
-  .stepwise {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem; margin: 2rem 0 3rem;
-  }
-  @media (max-width: 600px) { .stepwise { grid-template-columns: 1fr; } }
-
-  .step {
-    padding: 1.5rem; border: 1px solid var(--graphite);
-    text-align: center; transition: border-color 0.3s;
-  }
-  .step.active { border-color: var(--warm); }
-
-  .step-label {
-    font-family: var(--font-mono-alt); font-size: 0.6rem;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--stone); margin-bottom: 0.75rem;
-  }
-  .step.active .step-label { color: var(--warm); }
-
-  .step-value {
-    font-family: var(--font-mono-alt); font-size: 1.6rem;
-    font-weight: 300; color: var(--bone); margin-bottom: 0.35rem;
-  }
-  .step.active .step-value { color: var(--cream); }
-
-  .step-desc { font-size: 0.8rem; color: var(--stone); margin: 0; }
-
-  /* ─── MODEL PANELS ─── */
-  .model-panel {
-    background: var(--charcoal);
-    border: 1px solid var(--graphite);
-    padding: 2rem; margin: 2rem 0;
-  }
-
-  .model-title {
-    font-family: var(--font-mono-alt); font-size: 0.68rem;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--warm); margin-bottom: 1.5rem;
-  }
-
+  /* ─── MODEL ROWS ─── */
   .model-row {
-    display: grid; grid-template-columns: 1fr 160px;
+    display: grid; grid-template-columns: 1fr 170px;
     gap: 1rem; align-items: center;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 0.58rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
   }
   .model-row:last-child { border-bottom: none; }
 
   .model-label {
-    font-family: var(--font-mono); font-size: 0.78rem;
-    color: var(--stone); letter-spacing: 0.03em;
+    font-family: var(--font-mono); font-size: 0.73rem;
+    color: var(--stone); letter-spacing: 0.025em;
   }
   .model-label small {
-    display: block; font-size: 0.68rem;
-    color: rgba(154,149,138,0.6); margin-top: 0.15rem;
+    display: block; font-size: 0.62rem;
+    color: rgba(154,149,138,0.42); margin-top: 0.1rem;
   }
 
   .model-value {
-    font-family: var(--font-mono-alt); font-size: 1.1rem;
-    font-weight: 400; color: var(--cream); text-align: right;
+    font-family: var(--font-mono-alt); font-size: 1.05rem;
+    color: var(--cream); text-align: right;
   }
-  .model-value.computed { color: var(--warm); }
-  .model-value.highlight { color: var(--ember); font-size: 1.25rem; }
-  .model-value.equity { color: var(--sage-light); }
+  .model-value.lg    { font-size: 1.3rem; }
+  .model-value.muted { color: var(--stone); font-size: 0.88rem; }
+  .model-value.lynn  { color: var(--sage-bright); }
+  .model-value.bank  { color: var(--ember); }
+  .model-value.pos   { color: var(--sage-bright); }
+  .model-value.warn  { color: #d4704e; }
 
   .model-input {
-    width: 100%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--graphite);
-    color: var(--cream);
-    font-family: var(--font-mono-alt); font-size: 1rem;
-    padding: 0.4rem 0.6rem; text-align: right;
-    border-radius: 3px; transition: border-color 0.2s;
+    width: 100%; background: rgba(255,255,255,0.04);
+    border: 1px solid var(--graphite); color: var(--cream);
+    font-family: var(--font-mono-alt); font-size: 0.9rem;
+    padding: 0.3rem 0.52rem; text-align: right;
+    border-radius: 2px; transition: border-color 0.2s;
   }
   .model-input:focus { outline: none; border-color: var(--warm); }
 
   .model-slider {
     -webkit-appearance: none; appearance: none;
-    width: 100%; height: 4px;
-    background: var(--graphite); border-radius: 2px;
-    outline: none; margin-top: 0.5rem;
+    width: 100%; height: 3px; background: var(--graphite);
+    border-radius: 2px; outline: none;
+    margin-top: 0.38rem; cursor: pointer; display: block;
   }
   .model-slider::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 16px; height: 16px;
-    background: var(--warm); border-radius: 50%; cursor: pointer;
+    -webkit-appearance: none; width: 14px; height: 14px;
+    background: var(--warm); border-radius: 50%;
   }
   .model-slider::-moz-range-thumb {
-    width: 16px; height: 16px; background: var(--warm);
-    border-radius: 50%; cursor: pointer; border: none;
+    width: 14px; height: 14px; background: var(--warm);
+    border-radius: 50%; border: none; cursor: pointer;
+  }
+  .model-slider.lynn::-webkit-slider-thumb { background: var(--sage-bright); }
+  .model-slider.lynn::-moz-range-thumb     { background: var(--sage-bright); }
+  .model-slider.bank::-webkit-slider-thumb { background: var(--ember); }
+  .model-slider.bank::-moz-range-thumb     { background: var(--ember); }
+
+  hr.div { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 0.6rem 0; }
+
+  /* ─── TWO-COL ─── */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.5rem; margin-bottom: 1.5rem;
+  }
+  @media (max-width: 660px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ─── CAPITAL GAP ─── */
+  .capital-gap {
+    background: rgba(194,81,42,0.07); border: 1px solid rgba(194,81,42,0.18);
+    padding: 0.48rem 0.78rem; margin: 0.4rem 0 0;
+    font-family: var(--font-mono); font-size: 0.67rem;
+    color: #d4704e; line-height: 1.55; display: none;
+  }
+  .capital-gap.visible { display: block; }
+
+  /* ─── SURPLUS TAG ─── */
+  .surplus-tag {
+    display: inline-block;
+    font-family: var(--font-mono-alt); font-size: 0.6rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.18rem 0.5rem; border-radius: 2px; margin-top: 0.4rem;
+  }
+  .surplus-tag.pos { background: rgba(133,184,133,0.12); color: var(--sage-bright); }
+  .surplus-tag.neg { background: rgba(194,81,42,0.1);   color: #d4704e; }
+
+  /* ─── METRIC CARDS ─── */
+  .metric-row {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1.25rem; margin-bottom: 1.5rem;
+  }
+  @media (max-width: 580px) { .metric-row { grid-template-columns: 1fr; } }
+
+  .metric-card {
+    background: var(--charcoal); border: 1px solid var(--graphite);
+    padding: 1.35rem; text-align: center;
+  }
+  .metric-label {
+    font-family: var(--font-mono-alt); font-size: 0.58rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--stone); margin-bottom: 0.6rem; line-height: 1.5;
+  }
+  .metric-val {
+    font-family: var(--font-mono-alt); font-size: 1.5rem;
+    font-weight: 300; color: var(--cream);
+  }
+  .metric-val.pos { color: var(--sage-bright); }
+  .metric-sub {
+    font-family: var(--font-mono); font-size: 0.63rem;
+    color: var(--stone); margin-top: 0.28rem;
   }
 
-  .model-divider {
-    border: none; border-top: 1px solid rgba(255,255,255,0.08);
-    margin: 1rem 0;
+  /* ─── CHART TABS ─── */
+  .chart-section {
+    background: var(--charcoal); border: 1px solid var(--graphite);
+    margin-bottom: 1.5rem;
+  }
+  .tab-bar {
+    display: flex; border-bottom: 1px solid var(--graphite);
+  }
+  .tab-btn {
+    font-family: var(--font-mono-alt); font-size: 0.6rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    background: none; border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--stone); padding: 0.8rem 1.3rem;
+    cursor: pointer; transition: color 0.18s, border-color 0.18s;
+    margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--bone); }
+  .tab-btn.active { color: var(--warm); border-bottom-color: var(--warm); }
+
+  .tab-panel { display: none; padding: 1.75rem 2rem; }
+  .tab-panel.active { display: block; }
+
+  .chart-legend {
+    display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 0.4rem;
+    font-family: var(--font-mono); font-size: 0.62rem; color: var(--stone);
+  }
+  .legend-line { width: 20px; height: 2px; border-radius: 1px; }
+  .legend-line.dashed { border-top: 2px dashed currentColor; background: none; }
+
+  svg.chart { width: 100%; display: block; overflow: visible; }
+
+  .chart-note {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    color: rgba(154,149,138,0.38); margin-top: 0.8rem; line-height: 1.65;
   }
 
-  .model-note {
-    font-family: var(--font-mono); font-size: 0.72rem;
-    color: rgba(154,149,138,0.5); margin-top: 1rem; line-height: 1.6;
+  /* ─── COST BARS ─── */
+  .cost-wrap {
+    background: var(--charcoal); border: 1px solid var(--graphite);
+    padding: 1.75rem 2rem; margin-bottom: 1.5rem;
+  }
+  .cost-row {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 0.85rem;
+  }
+  .cost-row:last-of-type { margin-bottom: 0; }
+  .cost-label {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    color: var(--stone); min-width: 88px;
+  }
+  .cost-track {
+    flex: 1; height: 7px; background: var(--graphite);
+    border-radius: 4px; overflow: hidden;
+  }
+  .cost-fill { height: 100%; border-radius: 4px; transition: width 0.42s ease; }
+  .cost-fill.lynn { background: var(--sage-bright); }
+  .cost-fill.bank { background: var(--ember); }
+  .cost-amount {
+    font-family: var(--font-mono-alt); font-size: 0.8rem;
+    color: var(--cream); min-width: 78px; text-align: right;
+  }
+  .cost-note {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    color: rgba(154,149,138,0.38); margin-top: 0.8rem; line-height: 1.65;
   }
 
   /* ─── FOOTER ─── */
   .footer {
     margin-top: 4rem; padding-top: 1.5rem;
     border-top: 1px solid var(--graphite);
-    font-family: var(--font-mono-alt); font-size: 0.68rem;
-    letter-spacing: 0.1em; color: rgba(255,255,255,0.18);
-    text-align: center;
+    font-family: var(--font-mono-alt); font-size: 0.62rem;
+    letter-spacing: 0.1em; color: rgba(255,255,255,0.12); text-align: center;
   }
 
   a { color: var(--warm); text-decoration: none; }
@@ -191,270 +282,761 @@
 </style>
 </head>
 <body>
-
 <div class="page">
 
-  <a class="back-link" href="/lunch-presentation/">&larr; Back to presentation</a>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;gap:0.75rem;">
+    <a class="back-link" style="margin-bottom:0;" href="/lunch-presentation/"><i data-lucide="arrow-left" style="width:13px;height:13px;stroke-width:2;margin-right:0.25rem;"></i> The Plan for 1515 Walnut</a>
+    <a style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;color:#c4956a;text-decoration:none;border:1px solid rgba(196,149,106,0.3);padding:0.35rem 0.75rem;display:inline-flex;align-items:center;gap:0.35rem;" href="/lunch-presentation/scenarios/cash-flow/">Monthly Cash Flow &amp; LVB Model <i data-lucide="arrow-right" style="width:12px;height:12px;stroke-width:2;"></i></a>
+  </div>
 
-  <h1>Financial Scenarios</h1>
-  <p class="page-sub">1515 Walnut &middot; Conversation tool &middot; Not a term sheet</p>
+  <div style="margin-bottom:2.5rem;">
+    <h1>Financing Comparison</h1>
+    <p class="page-sub">Seller financing vs. bank &middot; 1515 Walnut &middot; Conversation tool &mdash; not a term sheet</p>
+    <p class="page-intro">Both paths lead to cooperative ownership of 1515 Walnut. The difference is who captures the interest &mdash; Lynn or a bank. Adjust any number and every chart updates live.</p>
+  </div>
 
-  <p>Every number here is adjustable. Drag any slider, type any number. The goal is to find the shape that works for everyone at the table.</p>
 
-  <!-- ═══ STEPWISE ═══ -->
-  <div class="stepwise">
-    <div class="step active">
-      <p class="step-label">Present</p>
-      <p class="step-value">~$4.5K</p>
-      <p class="step-desc">Monthly cash flow<br/>2nd floor sustained</p>
+  <!-- ═══ SHARED ASSUMPTIONS ═══ -->
+  <div class="panel">
+    <p class="panel-title shared">Shared Assumptions</p>
+
+    <div class="model-row">
+      <div class="model-label">Property value<small>Starting point; pending independent appraisal</small></div>
+      <div>
+        <input class="model-input" type="text" id="propValue" value="2,500,000" />
+        <input class="model-slider" type="range" id="propSlider" min="1500000" max="5000000" step="50000" value="2500000" />
+      </div>
     </div>
-    <div class="step">
-      <p class="step-label">Near-term</p>
-      <p class="step-value" id="stepNear">—</p>
-      <p class="step-desc">Investors cover year 1<br/>Cash flow grows</p>
+    <div class="model-row">
+      <div class="model-label">Starting monthly cash flow<small>Both floors combined at launch &mdash; cowork + programs + desk memberships</small></div>
+      <div>
+        <input class="model-input" type="text" id="cashFlow" value="9,000" />
+        <input class="model-slider" type="range" id="cashFlowSlider" min="4500" max="35000" step="500" value="9000" />
+      </div>
     </div>
-    <div class="step">
-      <p class="step-label">Horizon</p>
-      <p class="step-value" id="stepHorizon">—</p>
-      <p class="step-desc">Building acquisition<br/>debt service target</p>
+    <div class="model-row">
+      <div class="model-label">Annual cash flow growth<small>% per year &mdash; as cowork, programs, and ventures scale</small></div>
+      <div>
+        <input class="model-input" type="text" id="growthRate" value="5" />
+        <input class="model-slider" type="range" id="growthSlider" min="0" max="20" step="0.5" value="5" />
+      </div>
+    </div>
+    <div class="model-row">
+      <div class="model-label">Committed capital<small>Kevin + Jeremy; available toward a down payment</small></div>
+      <div class="model-value muted">$130,000</div>
     </div>
   </div>
 
-  <!-- ═══ LEASE MODEL ═══ -->
-  <h2>Third Floor Lease</h2>
 
-  <div class="model-panel">
-    <p class="model-title">Lease Scenario</p>
+  <!-- ═══ SIDE-BY-SIDE PATH PANELS ═══ -->
+  <div class="two-col">
 
-    <div class="model-row">
-      <div class="model-label">Monthly lease rate<small>Adjust to explore scenarios</small></div>
-      <div>
-        <input class="model-input" type="text" id="leaseRate" value="5000" />
-        <input class="model-slider" type="range" id="leaseSlider" min="3000" max="8000" step="250" value="5000" />
+    <!-- PATH A: LYNN -->
+    <div class="panel lynn">
+      <p class="panel-title lynn">Path A &mdash; Lynn Holds the Note</p>
+      <p class="panel-desc">Lynn finances the purchase directly. No bank. Monthly payments go to her at a negotiated rate &mdash; potentially 0% or low interest, flexible structure.</p>
+
+      <div class="model-row">
+        <div class="model-label">Purchase price<small>Negotiated directly with Lynn</small></div>
+        <div>
+          <input class="model-input" type="text" id="lynnPrice" value="2,000,000" />
+          <input class="model-slider lynn" type="range" id="lynnPriceSlider" min="500000" max="4000000" step="50000" value="2000000" />
+        </div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Down payment<small>Paid upfront to Lynn; 0 = fully financed</small></div>
+        <div>
+          <input class="model-input" type="text" id="lynnDown" value="0" />
+          <input class="model-slider lynn" type="range" id="lynnDownSlider" min="0" max="500000" step="10000" value="0" />
+        </div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Seller financing rate<small>Annual %; 0 = interest-free</small></div>
+        <div>
+          <input class="model-input" type="text" id="lynnRate" value="0" />
+          <input class="model-slider lynn" type="range" id="lynnRateSlider" min="0" max="6" step="0.25" value="0" />
+        </div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Term (years)</div>
+        <div>
+          <input class="model-input" type="text" id="lynnTerm" value="25" />
+          <input class="model-slider lynn" type="range" id="lynnTermSlider" min="10" max="30" step="1" value="25" />
+        </div>
+      </div>
+
+      <hr class="div" />
+
+      <div class="model-row">
+        <div class="model-label">Monthly payment to Lynn</div>
+        <div class="model-value lynn lg" id="lynnMonthly">&mdash;</div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Cash flow surplus / deficit</div>
+        <div class="model-value lynn" id="lynnSurplus">&mdash;</div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Total interest to Lynn</div>
+        <div class="model-value lynn" id="lynnInterest">&mdash;</div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Total all-in cost</div>
+        <div class="model-value lynn" id="lynnTotal">&mdash;</div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Self-sustaining in</div>
+        <div class="model-value lynn" id="lynnBreakEven">&mdash;</div>
       </div>
     </div>
 
-    <div class="model-row">
-      <div class="model-label">Annual lease cost</div>
-      <div class="model-value computed" id="annualLease">$60,000</div>
+    <!-- PATH B: BANK -->
+    <div class="panel bank">
+      <p class="panel-title bank">Path B &mdash; Bank Holds the Note</p>
+      <p class="panel-desc">Traditional commercial mortgage. Bank finances the purchase at market interest. Requires a down payment upfront &mdash; drawn from committed capital.</p>
+
+      <div class="model-row">
+        <div class="model-label">Down payment<small>% of property value</small></div>
+        <div>
+          <input class="model-input" type="text" id="bankDownPct" value="20" />
+          <input class="model-slider bank" type="range" id="bankDownSlider" min="5" max="40" step="1" value="20" />
+        </div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Down payment amount</div>
+        <div class="model-value bank" id="bankDownAmount">&mdash;</div>
+      </div>
+      <div id="capitalGap" class="capital-gap">
+        Additional capital needed beyond $130K committed: <strong id="capitalGapAmt"></strong>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Interest rate<small>Annual; commercial loan</small></div>
+        <div>
+          <input class="model-input" type="text" id="bankRate" value="6.5" />
+          <input class="model-slider bank" type="range" id="bankRateSlider" min="4" max="10" step="0.25" value="6.5" />
+        </div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Term (years)</div>
+        <div>
+          <input class="model-input" type="text" id="bankTerm" value="25" />
+          <input class="model-slider bank" type="range" id="bankTermSlider" min="10" max="30" step="1" value="25" />
+        </div>
+      </div>
+
+      <hr class="div" />
+
+      <div class="model-row">
+        <div class="model-label">Monthly payment (P&amp;I)</div>
+        <div class="model-value bank lg" id="bankMonthly">&mdash;</div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Cash flow surplus / deficit</div>
+        <div class="model-value bank" id="bankSurplus">&mdash;</div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Total interest to bank</div>
+        <div class="model-value bank" id="bankInterest">&mdash;</div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Total all-in cost</div>
+        <div class="model-value bank" id="bankTotal">&mdash;</div>
+      </div>
+      <div class="model-row">
+        <div class="model-label">Self-sustaining in</div>
+        <div class="model-value bank" id="bankBreakEven">&mdash;</div>
+      </div>
     </div>
-
-    <div class="model-row">
-      <div class="model-label">Committed capital (year 1)</div>
-      <div class="model-value">$130,000</div>
-    </div>
-
-    <div class="model-row">
-      <div class="model-label">Year 1 runway after lease</div>
-      <div class="model-value computed" id="runway">$70,000</div>
-    </div>
-
-    <hr class="model-divider" />
-
-    <div class="model-row">
-      <div class="model-label">Current monthly cash flow (2nd floor)</div>
-      <div class="model-value">~$4,500</div>
-    </div>
-
-    <div class="model-row">
-      <div class="model-label">Combined monthly obligation</div>
-      <div class="model-value computed" id="combinedObligation">—</div>
-    </div>
-
-    <div class="model-row">
-      <div class="model-label">Monthly cash flow to self-sustain<small>Both floors, no investor subsidy</small></div>
-      <div class="model-value highlight" id="sustainRate">—</div>
-    </div>
-
-    <p class="model-note">All numbers are starting points for a conversation.</p>
   </div>
 
-  <!-- ═══ ACQUISITION MODEL ═══ -->
-  <h2>Building Acquisition</h2>
 
-  <div class="model-panel">
-    <p class="model-title">Acquisition Scenario</p>
-
-    <div class="model-row">
-      <div class="model-label">Purchase price<small>Pending appraisal</small></div>
-      <div>
-        <input class="model-input" type="text" id="purchasePrice" value="2500000" />
-        <input class="model-slider" type="range" id="purchaseSlider" min="1500000" max="4000000" step="50000" value="2500000" />
-      </div>
+  <!-- ═══ COMPARISON METRICS ═══ -->
+  <div class="metric-row">
+    <div class="metric-card">
+      <p class="metric-label">Interest Saved<br/>Lynn vs Bank</p>
+      <p class="metric-val pos" id="metInterestSaved">&mdash;</p>
+      <p class="metric-sub">total over loan term</p>
     </div>
-
-    <div class="model-row">
-      <div class="model-label">Down payment<small>Percentage</small></div>
-      <div>
-        <input class="model-input" type="text" id="downPct" value="20" />
-        <input class="model-slider" type="range" id="downSlider" min="5" max="40" step="1" value="20" />
-      </div>
+    <div class="metric-card">
+      <p class="metric-label">Monthly Savings<br/>Lynn vs Bank</p>
+      <p class="metric-val pos" id="metMonthlySavings">&mdash;</p>
+      <p class="metric-sub">every single month</p>
     </div>
-
-    <div class="model-row">
-      <div class="model-label">Down payment amount</div>
-      <div class="model-value computed" id="downAmount">$500,000</div>
+    <div class="metric-card">
+      <p class="metric-label">Total Cost<br/>Difference</p>
+      <p class="metric-val pos" id="metTotalDiff">&mdash;</p>
+      <p class="metric-sub">bank costs more by</p>
     </div>
-
-    <div class="model-row">
-      <div class="model-label">Loan amount</div>
-      <div class="model-value computed" id="loanAmount">$2,000,000</div>
-    </div>
-
-    <div class="model-row">
-      <div class="model-label">Interest rate<small>Annual</small></div>
-      <div>
-        <input class="model-input" type="text" id="interestRate" value="6.5" />
-        <input class="model-slider" type="range" id="interestSlider" min="4" max="9" step="0.25" value="6.5" />
-      </div>
-    </div>
-
-    <div class="model-row">
-      <div class="model-label">Loan term (years)</div>
-      <div>
-        <input class="model-input" type="text" id="loanTerm" value="25" />
-        <input class="model-slider" type="range" id="termSlider" min="10" max="30" step="1" value="25" />
-      </div>
-    </div>
-
-    <hr class="model-divider" />
-
-    <div class="model-row">
-      <div class="model-label">Monthly debt service</div>
-      <div class="model-value highlight" id="monthlyDebt">—</div>
-    </div>
-
-    <div class="model-row">
-      <div class="model-label">Annual debt service</div>
-      <div class="model-value computed" id="annualDebt">—</div>
-    </div>
-
-    <div class="model-row">
-      <div class="model-label">Cap rate (current estimate)</div>
-      <div class="model-value">7.4%</div>
-    </div>
-
-    <p class="model-note">Based on Arend Accola's (Altos Realty) financial model. All values adjustable.</p>
   </div>
 
-  <!-- ═══ LYNN EQUITY ═══ -->
-  <h2>Partnership Equity</h2>
 
-  <div class="model-panel">
-    <p class="model-title" style="color: var(--sage-light);">Equity Accrual &mdash; If Lease Discount = Equity Contribution</p>
+  <!-- ═══ CHARTS (TABBED) ═══ -->
+  <div class="chart-section">
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="cashflow">Cash Flow</button>
+      <button class="tab-btn" data-tab="equity">Equity Accumulation</button>
+      <button class="tab-btn" data-tab="cumcost">Cumulative Cost</button>
+    </div>
 
-    <div class="model-row">
-      <div class="model-label" style="color: var(--sage-light);">Monthly discount treated as equity<small>e.g. $7K listed &minus; $5K negotiated = $2K</small></div>
-      <div>
-        <input class="model-input" type="text" id="lynnDiscount" value="2000" style="border-color: var(--sage);" />
-        <input class="model-slider" type="range" id="lynnSlider" min="0" max="4000" step="250" value="2000" />
+    <!-- TAB 1: CASH FLOW VS OBLIGATIONS -->
+    <div class="tab-panel active" id="tab-cashflow">
+      <div class="chart-legend">
+        <div class="legend-item">
+          <div class="legend-line" style="background:#85b885;height:2.5px;"></div>
+          Cash flow (growing)
+        </div>
+        <div class="legend-item">
+          <div class="legend-line dashed" style="color:#85b885;"></div>
+          Lynn payment
+        </div>
+        <div class="legend-item">
+          <div class="legend-line dashed" style="color:#c2512a;"></div>
+          Bank payment
+        </div>
       </div>
+      <svg id="chartCF" class="chart" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet"></svg>
+      <p class="chart-note">Green shaded zone: cash flow exceeds the Lynn monthly obligation (self-sustaining). Vertical dashed lines mark break-even years.</p>
     </div>
 
-    <div class="model-row">
-      <div class="model-label" style="color: var(--sage-light);">Annual equity accrual</div>
-      <div class="model-value equity" id="lynnAnnual">$24,000</div>
+    <!-- TAB 2: EQUITY ACCUMULATION -->
+    <div class="tab-panel" id="tab-equity">
+      <div class="chart-legend">
+        <div class="legend-item">
+          <div class="legend-line" style="background:#85b885;height:2.5px;"></div>
+          Lynn path &mdash; % owned
+        </div>
+        <div class="legend-item">
+          <div class="legend-line" style="background:#c2512a;height:2.5px;"></div>
+          Bank path &mdash; % owned
+        </div>
+      </div>
+      <svg id="chartEQ" class="chart" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet"></svg>
+      <p class="chart-note">Bank path equity grows slowly in early years because most payments go to interest. Lynn path (0% default) builds equity linearly from day one.</p>
     </div>
 
-    <div class="model-row">
-      <div class="model-label" style="color: var(--sage-light);">3-year equity accrual</div>
-      <div class="model-value equity" id="lynnThreeYear">$72,000</div>
+    <!-- TAB 3: CUMULATIVE COST -->
+    <div class="tab-panel" id="tab-cumcost">
+      <div class="chart-legend">
+        <div class="legend-item">
+          <div class="legend-line" style="background:#85b885;height:2.5px;"></div>
+          Lynn path &mdash; total paid
+        </div>
+        <div class="legend-item">
+          <div class="legend-line" style="background:#c2512a;height:2.5px;"></div>
+          Bank path &mdash; total paid
+        </div>
+        <div class="legend-item">
+          <div class="legend-line dashed" style="color:#9a958a;"></div>
+          Property value
+        </div>
+      </div>
+      <svg id="chartCC" class="chart" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet"></svg>
+      <p class="chart-note">Horizontal dashed line = property value. Once cumulative payments cross it, every additional dollar is pure interest. The gap between curves at year 25 is the real cost of bank financing.</p>
     </div>
-
-    <div class="model-row">
-      <div class="model-label" style="color: var(--sage-light);">5-year equity accrual</div>
-      <div class="model-value equity" id="lynnFiveYear">$120,000</div>
-    </div>
-
-    <p class="model-note">Concept: if a landlord accepts below-market rent, the difference accrues as equity in the cooperative &mdash; converting a lease relationship into an ownership relationship over time.</p>
   </div>
+
+
+  <!-- ═══ TOTAL COST BARS ═══ -->
+  <div class="cost-wrap">
+    <p class="panel-title compare">Total Cost to Own &mdash; All-In</p>
+    <div class="cost-row">
+      <span class="cost-label">Lynn path</span>
+      <div class="cost-track"><div class="cost-fill lynn" id="lynnBar" style="width:0%"></div></div>
+      <span class="cost-amount" id="lynnBarAmt">&mdash;</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-label">Bank path</span>
+      <div class="cost-track"><div class="cost-fill bank" id="bankBar" style="width:100%"></div></div>
+      <span class="cost-amount" id="bankBarAmt">&mdash;</span>
+    </div>
+    <p class="cost-note">Includes all payments over the full term: down payment + principal + interest. The difference is the cost of borrowing from a bank vs. Lynn.</p>
+  </div>
+
 
   <div class="footer">
-    <p>Internal working document &middot; RegenHub, LCA &middot; March 2026</p>
+    <p>Internal working document &middot; RegenHub, LCA &middot; March 2026 &middot; All values are starting points for a conversation</p>
   </div>
 
-</div>
+</div><!-- /.page -->
 
 <script>
-(function() {
-  var $ = function(id) { return document.getElementById(id); };
-  var fmt = function(n) { return '$' + Math.round(n).toLocaleString('en-US'); };
+(function () {
+  'use strict';
 
-  function bind(inputId, sliderId, cb) {
+  // ─── DOM helper ────────────────────────────────────────────────
+  var $ = function (id) { return document.getElementById(id); };
+
+  // ─── Number formatting ─────────────────────────────────────────
+  function fmtDollar(n) {
+    return '$' + Math.round(n).toLocaleString('en-US');
+  }
+  function fmtShort(n) {
+    n = Math.abs(n);
+    if (n >= 1000000) return '$' + (n / 1000000).toFixed(2).replace(/\.?0+$/, '') + 'M';
+    if (n >= 1000)    return '$' + Math.round(n / 1000) + 'K';
+    return '$' + Math.round(n);
+  }
+  function fmtPct(n) { return n.toFixed(1) + '%'; }
+
+  // ─── Parsing ───────────────────────────────────────────────────
+  function parseDollar(id) {
+    return parseFloat($( id).value.replace(/[^0-9.]/g, '')) || 0;
+  }
+  function parseNum(id) {
+    return parseFloat($( id).value.replace(/[^0-9.]/g, '')) || 0;
+  }
+  function parseIntVal(id) {
+    return parseInt($( id).value.replace(/[^0-9]/g, ''), 10) || 0;
+  }
+
+  // ─── Finance math ──────────────────────────────────────────────
+  function monthlyPmt(annualRatePct, termYears, principal) {
+    var n = termYears * 12;
+    var r = annualRatePct / 100 / 12;
+    if (r <= 0) return principal / n;
+    var x = Math.pow(1 + r, n);
+    return principal * r * x / (x - 1);
+  }
+
+  // Returns array[0..termYears] with year-end state
+  function amortize(annualRatePct, termYears, principal, downPayment) {
+    var n = termYears * 12;
+    var r = annualRatePct / 100 / 12;
+    var payment = (r <= 0) ? principal / n : principal * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+    var balance = principal;
+    var cumPaid  = downPayment || 0;
+    var rows = [{ year: 0, balance: principal, equityPct: 0, cumPaid: cumPaid }];
+    for (var i = 0; i < n; i++) {
+      var interest  = balance * r;
+      var princPaid = payment - interest;
+      balance = Math.max(0, balance - princPaid);
+      cumPaid += payment;
+      if ((i + 1) % 12 === 0) {
+        rows.push({
+          year:       (i + 1) / 12,
+          balance:    balance,
+          equityPct:  (1 - balance / principal) * 100,
+          cumPaid:    cumPaid
+        });
+      }
+    }
+    return rows;
+  }
+
+  // First year where cash flow >= payment (or null)
+  function breakEven(payment, startCF, growthPct) {
+    for (var y = 0; y <= 40; y++) {
+      if (startCF * Math.pow(1 + growthPct / 100, y) >= payment) return y;
+    }
+    return null;
+  }
+
+  // ─── Input binding ─────────────────────────────────────────────
+  function bindDollar(inputId, sliderId, cb) {
     var inp = $(inputId), sl = $(sliderId);
-    sl.addEventListener('input', function() { inp.value = sl.value; cb(); });
-    inp.addEventListener('input', function() {
+    sl.addEventListener('input', function () {
+      inp.value = parseFloat(sl.value).toLocaleString('en-US');
+      cb();
+    });
+    inp.addEventListener('input', function () {
+      var v = parseFloat(inp.value.replace(/[^0-9.]/g, ''));
+      if (!isNaN(v)) sl.value = v;
+      cb();
+    });
+  }
+  function bindNum(inputId, sliderId, cb) {
+    var inp = $(inputId), sl = $(sliderId);
+    sl.addEventListener('input', function () { inp.value = sl.value; cb(); });
+    inp.addEventListener('input', function () {
       var v = parseFloat(inp.value.replace(/[^0-9.]/g, ''));
       if (!isNaN(v)) sl.value = v;
       cb();
     });
   }
 
-  // ─── Lease ───
-  var currentLease = 3000;
+  // ─── Shared SVG scaffold ───────────────────────────────────────
+  var W=800, H=300, PL=72, PR=52, PT=18, PB=46;
+  var cW = W-PL-PR, cH = H-PT-PB;
 
-  function updateLease() {
-    var rate = parseFloat($('leaseRate').value.replace(/[^0-9]/g, '')) || 0;
-    var annual = rate * 12;
-    var runway = 130000 - annual;
-    var combined = currentLease + rate;
-
-    $('annualLease').textContent = fmt(annual);
-    $('runway').textContent = fmt(runway);
-    $('combinedObligation').textContent = fmt(combined) + '/mo';
-    $('sustainRate').textContent = fmt(combined) + '/mo';
-    $('stepNear').textContent = '~$' + (combined / 1000).toFixed(1) + 'K';
+  function xAxis(maxYr) {
+    return function (yr) { return PL + (yr / maxYr) * cW; };
+  }
+  function yAxis(maxVal) {
+    return function (val) { return PT + cH - Math.min(1, Math.max(0, val / maxVal)) * cH; };
   }
 
-  bind('leaseRate', 'leaseSlider', updateLease);
-
-  // ─── Acquisition ───
-  function pmt(rate, nper, pv) {
-    if (rate === 0) return pv / nper;
-    var x = Math.pow(1 + rate, nper);
-    return (pv * rate * x) / (x - 1);
+  function gridLines(maxYr, maxVal, yFmt) {
+    var out = [];
+    // Bg
+    out.push('<rect x="'+PL+'" y="'+PT+'" width="'+cW+'" height="'+cH+'" fill="#16161b"/>');
+    // H-grid + Y labels (4 ticks)
+    var xp = xAxis(maxYr), yp = yAxis(maxVal);
+    for (var t=1; t<=4; t++) {
+      var tv = maxVal * t / 4, ty = yp(tv);
+      out.push('<line x1="'+PL+'" y1="'+ty+'" x2="'+(PL+cW)+'" y2="'+ty+'" stroke="#202026" stroke-width="1"/>');
+      out.push('<text x="'+(PL-6)+'" y="'+(ty+4)+'" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#504c47" text-anchor="end">'+yFmt(tv)+'</text>');
+    }
+    // V-grid + X labels (every 5 yrs)
+    for (var xl=0; xl<=maxYr; xl+=5) {
+      var xx = xp(xl);
+      out.push('<line x1="'+xx+'" y1="'+PT+'" x2="'+xx+'" y2="'+(PT+cH)+'" stroke="#1c1c22" stroke-width="1"/>');
+      out.push('<text x="'+xx+'" y="'+(PT+cH+16)+'" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#504c47" text-anchor="middle">'+(xl===0?'now':'yr '+xl)+'</text>');
+    }
+    // Axes
+    out.push('<line x1="'+PL+'" y1="'+PT+'" x2="'+PL+'" y2="'+(PT+cH)+'" stroke="#2a2a30" stroke-width="1"/>');
+    out.push('<line x1="'+PL+'" y1="'+(PT+cH)+'" x2="'+(PL+cW)+'" y2="'+(PT+cH)+'" stroke="#2a2a30" stroke-width="1"/>');
+    return out;
   }
 
-  function updateAcquisition() {
-    var price = parseFloat($('purchasePrice').value.replace(/[^0-9]/g, '')) || 0;
-    var downPct = parseFloat($('downPct').value.replace(/[^0-9.]/g, '')) || 0;
-    var intRate = parseFloat($('interestRate').value.replace(/[^0-9.]/g, '')) || 0;
-    var term = parseInt($('loanTerm').value) || 25;
-
-    var down = price * (downPct / 100);
-    var loan = price - down;
-    var monthlyRate = (intRate / 100) / 12;
-    var nPayments = term * 12;
-    var monthly = pmt(monthlyRate, nPayments, loan);
-    var annual = monthly * 12;
-
-    $('downAmount').textContent = fmt(down);
-    $('loanAmount').textContent = fmt(loan);
-    $('monthlyDebt').textContent = fmt(monthly);
-    $('annualDebt').textContent = fmt(annual);
-    $('stepHorizon').textContent = '~$' + (monthly / 1000).toFixed(1) + 'K';
+  function polyline(pts, stroke, width, dasharray, opacity) {
+    if (pts.length < 2) return '';
+    var d = 'M '+pts[0][0]+' '+pts[0][1];
+    for (var i=1; i<pts.length; i++) d += ' L '+pts[i][0]+' '+pts[i][1];
+    return '<path d="'+d+'" stroke="'+stroke+'" stroke-width="'+(width||2)+'" fill="none"'
+      +(dasharray?' stroke-dasharray="'+dasharray+'"':'')
+      +(opacity?' opacity="'+opacity+'"':'')+'"/>';
   }
 
-  bind('purchasePrice', 'purchaseSlider', updateAcquisition);
-  bind('downPct', 'downSlider', updateAcquisition);
-  bind('interestRate', 'interestSlider', updateAcquisition);
-  bind('loanTerm', 'termSlider', updateAcquisition);
-
-  // ─── Lynn equity ───
-  function updateLynn() {
-    var d = parseFloat($('lynnDiscount').value.replace(/[^0-9]/g, '')) || 0;
-    $('lynnAnnual').textContent = fmt(d * 12);
-    $('lynnThreeYear').textContent = fmt(d * 36);
-    $('lynnFiveYear').textContent = fmt(d * 60);
+  function hline(y, x1, x2, stroke, width, dasharray, opacity) {
+    return '<line x1="'+x1+'" y1="'+y+'" x2="'+x2+'" y2="'+y
+      +'" stroke="'+stroke+'" stroke-width="'+(width||1.5)+'"'
+      +(dasharray?' stroke-dasharray="'+dasharray+'"':'')
+      +(opacity?' opacity="'+opacity+'"':'')
+      +'/>';
   }
 
-  bind('lynnDiscount', 'lynnSlider', updateLynn);
+  function vline(x, y1, y2, stroke, dasharray, opacity) {
+    return '<line x1="'+x+'" y1="'+y1+'" x2="'+x+'" y2="'+y2
+      +'" stroke="'+stroke+'" stroke-width="1"'
+      +(dasharray?' stroke-dasharray="'+dasharray+'"':'')
+      +(opacity?' opacity="'+opacity+'"':'')
+      +'/>';
+  }
 
-  // Init
-  updateLease();
-  updateAcquisition();
-  updateLynn();
+  function endLabel(x, y, text, fill) {
+    return '<text x="'+(x+5)+'" y="'+(y+4)+'" font-family="JetBrains Mono,monospace" font-size="9" fill="'+fill+'" opacity="0.65">'+text+'</text>';
+  }
+
+  // ─── Chart 1: Cash Flow vs Obligations ────────────────────────
+  function drawCF(lynnPmt, bankPmt, startCF, growth, lynnBE, bankBE, lynnTerm, bankTerm) {
+    var svg  = $('chartCF');
+    var maxYr = Math.min(Math.max(lynnTerm, bankTerm, 25), 30);
+    var cf = [];
+    for (var y=0; y<=maxYr; y++) cf.push(startCF * Math.pow(1+growth/100, y));
+    var maxVal = Math.max(bankPmt, lynnPmt, cf[maxYr]) * 1.15;
+    var xp = xAxis(maxYr), yp = yAxis(maxVal);
+    var out = gridLines(maxYr, maxVal, function(v){ return v>=10000?'$'+Math.round(v/1000)+'K':'$'+Math.round(v); });
+
+    // Surplus fill (CF > lynnPmt zone)
+    var lBE = lynnBE !== null ? lynnBE : maxYr+1;
+    if (lBE <= maxYr && lynnPmt <= maxVal) {
+      var fp = '';
+      fp += xp(lBE)+','+yp(lynnPmt)+' ';
+      for (var fy=lBE+1; fy<=maxYr; fy++) fp += xp(fy)+','+yp(lynnPmt)+' ';
+      for (var ry=maxYr; ry>=lBE; ry--) fp += xp(ry)+','+yp(cf[ry])+' ';
+      out.push('<polygon points="'+fp+'" fill="rgba(133,184,133,0.09)"/>');
+    }
+
+    // Bank payment line
+    var byv = yp(bankPmt), bxEnd = Math.min(xp(bankTerm), PL+cW);
+    out.push(hline(byv, PL, bxEnd, '#c2512a', 1.8, '7,4', 0.72));
+    if (bxEnd < PL+cW-30) out.push(endLabel(bxEnd, byv, 'Bank', '#c2512a'));
+
+    // Lynn payment line
+    var lyv = yp(lynnPmt), lxEnd = Math.min(xp(lynnTerm), PL+cW);
+    out.push(hline(lyv, PL, lxEnd, '#85b885', 1.8, '7,4', 0.65));
+    if (lxEnd < PL+cW-30 && Math.abs(lyv-byv) > 12) out.push(endLabel(lxEnd, lyv, 'Lynn', '#85b885'));
+
+    // CF growth curve
+    var cfPts = []; for (var cy=0; cy<=maxYr; cy++) cfPts.push([xp(cy), yp(cf[cy])]);
+    out.push(polyline(cfPts, '#85b885', 2.5));
+
+    // Break-even verticals
+    if (lynnBE !== null && lynnBE > 0 && lynnBE <= maxYr) {
+      var lbx = xp(lynnBE);
+      out.push(vline(lbx, PT, PT+cH, '#85b885', '3,4', 0.32));
+      out.push('<text x="'+lbx+'" y="'+(PT+cH+30)+'" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#85b885" opacity="0.5" text-anchor="middle">yr '+lynnBE+'</text>');
+    }
+    if (bankBE !== null && bankBE > 0 && bankBE <= maxYr) {
+      var bbx = xp(bankBE);
+      out.push(vline(bbx, PT, PT+cH, '#c2512a', '3,4', 0.32));
+      out.push('<text x="'+bbx+'" y="'+(PT+cH+30)+'" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#c2512a" opacity="0.5" text-anchor="middle">yr '+bankBE+'</text>');
+    }
+
+    svg.innerHTML = out.join('');
+  }
+
+  // ─── Chart 2: Equity Accumulation ─────────────────────────────
+  function drawEQ(lynnSched, bankSched, lynnTerm, bankTerm) {
+    var svg = $('chartEQ');
+    var maxYr = Math.min(Math.max(lynnTerm, bankTerm, 25), 30);
+    var xp = xAxis(maxYr), yp = yAxis(100);
+    var out = gridLines(maxYr, 100, function(v){ return v.toFixed(0)+'%'; });
+
+    // 100% ownership line
+    out.push(hline(yp(100), PL, PL+cW, '#3a3a44', 1, '4,4', 0.6));
+
+    // Lynn equity area fill
+    var lynnFill = '';
+    lynnFill += xp(0)+','+(PT+cH)+' ';
+    for (var li=0; li<lynnSched.length && lynnSched[li].year <= maxYr; li++) {
+      lynnFill += xp(lynnSched[li].year)+','+yp(lynnSched[li].equityPct)+' ';
+    }
+    var lastLY = lynnSched[Math.min(li-1, lynnSched.length-1)];
+    lynnFill += xp(lastLY.year)+','+(PT+cH)+' ';
+    out.push('<polygon points="'+lynnFill+'" fill="rgba(133,184,133,0.07)"/>');
+
+    // Bank equity area fill
+    var bankFill = '';
+    bankFill += xp(0)+','+(PT+cH)+' ';
+    for (var bi=0; bi<bankSched.length && bankSched[bi].year <= maxYr; bi++) {
+      bankFill += xp(bankSched[bi].year)+','+yp(bankSched[bi].equityPct)+' ';
+    }
+    var lastBY = bankSched[Math.min(bi-1, bankSched.length-1)];
+    bankFill += xp(lastBY.year)+','+(PT+cH)+' ';
+    out.push('<polygon points="'+bankFill+'" fill="rgba(194,81,42,0.06)"/>');
+
+    // Bank equity curve
+    var bPts = [];
+    for (var bj=0; bj<bankSched.length && bankSched[bj].year <= maxYr; bj++) {
+      bPts.push([xp(bankSched[bj].year), yp(bankSched[bj].equityPct)]);
+    }
+    out.push(polyline(bPts, '#c2512a', 2.2));
+
+    // Lynn equity curve (on top)
+    var lPts = [];
+    for (var lj=0; lj<lynnSched.length && lynnSched[lj].year <= maxYr; lj++) {
+      lPts.push([xp(lynnSched[lj].year), yp(lynnSched[lj].equityPct)]);
+    }
+    out.push(polyline(lPts, '#85b885', 2.5));
+
+    // Labels at right edge
+    if (lPts.length) {
+      var lLast = lPts[lPts.length-1];
+      out.push(endLabel(lLast[0], lLast[1]-2, 'Lynn', '#85b885'));
+    }
+    if (bPts.length) {
+      var bLast = bPts[bPts.length-1];
+      out.push(endLabel(bLast[0], bLast[1]+4, 'Bank', '#c2512a'));
+    }
+
+    // Year-10 callout: show equity % difference
+    var l10 = lynnSched[Math.min(10, lynnSched.length-1)];
+    var b10 = bankSched[Math.min(10, bankSched.length-1)];
+    if (l10 && b10) {
+      var lx10 = xp(10), ly10 = yp(l10.equityPct), by10 = yp(b10.equityPct);
+      out.push(vline(lx10, Math.min(ly10,by10), Math.max(ly10,by10), '#5a5a64', '2,3', 0.5));
+      var midY = (ly10+by10)/2;
+      out.push('<rect x="'+(lx10+4)+'" y="'+(midY-9)+'" width="38" height="15" fill="#1a1a22" rx="2"/>');
+      out.push('<text x="'+(lx10+8)+'" y="'+(midY+3)+'" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#9a958a">yr 10 gap</text>');
+    }
+
+    svg.innerHTML = out.join('');
+  }
+
+  // ─── Chart 3: Cumulative Cost ──────────────────────────────────
+  function drawCC(lynnSched, bankSched, lynnTerm, bankTerm, propVal) {
+    var svg = $('chartCC');
+    var maxYr = Math.min(Math.max(lynnTerm, bankTerm, 25), 30);
+    var xp = xAxis(maxYr);
+    var maxBankCC = bankSched.length ? bankSched[Math.min(bankTerm, bankSched.length)-1].cumPaid : 0;
+    var maxLynnCC = lynnSched.length ? lynnSched[Math.min(lynnTerm, lynnSched.length)-1].cumPaid : 0;
+    var maxVal = Math.max(maxBankCC, maxLynnCC, propVal) * 1.08;
+    var yp = yAxis(maxVal);
+    var out = gridLines(maxYr, maxVal, function(v){ return '$'+Math.round(v/1000)+'K'; });
+
+    // Property value reference line
+    var pvy = yp(propVal);
+    out.push(hline(pvy, PL, PL+cW, '#6a6460', 1.2, '5,5', 0.5));
+    out.push('<text x="'+(PL+cW+5)+'" y="'+(pvy+4)+'" font-family="JetBrains Mono,monospace" font-size="9" fill="#6a6460" opacity="0.65">value</text>');
+
+    // Lynn cum cost area
+    var lynnFill2 = xp(0)+','+(PT+cH)+' ';
+    var lPts2 = [];
+    for (var li2=0; li2<lynnSched.length && lynnSched[li2].year <= maxYr; li2++) {
+      lPts2.push([xp(lynnSched[li2].year), yp(lynnSched[li2].cumPaid)]);
+      lynnFill2 += xp(lynnSched[li2].year)+','+yp(lynnSched[li2].cumPaid)+' ';
+    }
+    if (lPts2.length) lynnFill2 += lPts2[lPts2.length-1][0]+','+(PT+cH)+' ';
+    out.push('<polygon points="'+lynnFill2+'" fill="rgba(133,184,133,0.06)"/>');
+
+    // Bank cum cost area
+    var bankFill2 = xp(0)+','+(PT+cH)+' ';
+    var bPts2 = [];
+    for (var bi2=0; bi2<bankSched.length && bankSched[bi2].year <= maxYr; bi2++) {
+      bPts2.push([xp(bankSched[bi2].year), yp(bankSched[bi2].cumPaid)]);
+      bankFill2 += xp(bankSched[bi2].year)+','+yp(bankSched[bi2].cumPaid)+' ';
+    }
+    if (bPts2.length) bankFill2 += bPts2[bPts2.length-1][0]+','+(PT+cH)+' ';
+    out.push('<polygon points="'+bankFill2+'" fill="rgba(194,81,42,0.06)"/>');
+
+    // Bank curve
+    out.push(polyline(bPts2, '#c2512a', 2.2));
+    // Lynn curve (on top)
+    out.push(polyline(lPts2, '#85b885', 2.5));
+
+    // End labels
+    if (lPts2.length) out.push(endLabel(lPts2[lPts2.length-1][0], lPts2[lPts2.length-1][1]-2, 'Lynn', '#85b885'));
+    if (bPts2.length) out.push(endLabel(bPts2[bPts2.length-1][0], bPts2[bPts2.length-1][1]+4, 'Bank', '#c2512a'));
+
+    // Gap callout at final year
+    var lynnEnd = lynnSched[Math.min(lynnTerm, lynnSched.length-1)];
+    var bankEnd = bankSched[Math.min(bankTerm, bankSched.length-1)];
+    if (lynnEnd && bankEnd) {
+      var gapX  = xp(Math.min(lynnTerm, bankTerm, maxYr));
+      var gapLY = yp(lynnEnd.cumPaid);
+      var gapBY = yp(bankEnd.cumPaid);
+      var midGY = (gapLY + gapBY) / 2;
+      out.push(vline(gapX-2, Math.min(gapLY,gapBY)+2, Math.max(gapLY,gapBY)-2, '#5a5a64', '2,3', 0.5));
+      var diff = bankEnd.cumPaid - lynnEnd.cumPaid;
+      if (diff > 0) {
+        var lab = fmtShort(diff);
+        out.push('<rect x="'+(gapX-22)+'" y="'+(midGY-9)+'" width="42" height="15" fill="#1a1a22" rx="2"/>');
+        out.push('<text x="'+(gapX-19)+'" y="'+(midGY+3)+'" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#c4956a">+'+lab+'</text>');
+      }
+    }
+
+    svg.innerHTML = out.join('');
+  }
+
+  // ─── Main update ───────────────────────────────────────────────
+  var STATE = {};
+
+  function update() {
+    var propVal   = parseDollar('propValue');
+    var startCF   = parseDollar('cashFlow');
+    var growth    = parseNum('growthRate');
+    var COMMITTED = 130000;
+
+    // Lynn
+    var lynnPrice = parseDollar('lynnPrice');
+    var lynnDown  = parseDollar('lynnDown');
+    var lynnRate  = parseNum('lynnRate');
+    var lynnTerm  = parseIntVal('lynnTerm') || 25;
+    var lynnLoan  = Math.max(0, lynnPrice - lynnDown);
+    var lynnPmt   = monthlyPmt(lynnRate, lynnTerm, lynnLoan);
+    var lynnSched = amortize(lynnRate, lynnTerm, lynnLoan, lynnDown);
+    var lynnInterestTotal = Math.max(0, lynnPmt * lynnTerm * 12 - lynnLoan);
+    var lynnCostTotal     = lynnDown + lynnPmt * lynnTerm * 12;
+    var lynnBE            = breakEven(lynnPmt, startCF, growth);
+    var lynnSurplusNow    = startCF - lynnPmt;
+
+    $('lynnMonthly').textContent  = fmtDollar(lynnPmt);
+    $('lynnInterest').textContent = fmtShort(lynnInterestTotal);
+    $('lynnTotal').textContent    = fmtShort(lynnCostTotal);
+    $('lynnBreakEven').textContent = lynnBE === 0 ? 'Already covered'
+                                   : lynnBE !== null ? 'Year ' + lynnBE : '> 40 years';
+    var lsEl = $('lynnSurplus');
+    lsEl.textContent = (lynnSurplusNow >= 0 ? '+' : '') + fmtDollar(lynnSurplusNow) + '/mo';
+    lsEl.className = 'model-value ' + (lynnSurplusNow >= 0 ? 'pos' : 'warn');
+
+    // Bank
+    var bankDownPct = parseNum('bankDownPct');
+    var bankRate    = parseNum('bankRate');
+    var bankTerm    = parseIntVal('bankTerm') || 25;
+    var bankDown    = propVal * (bankDownPct / 100);
+    var bankLoan    = propVal - bankDown;
+    var bankPmt     = monthlyPmt(bankRate, bankTerm, bankLoan);
+    var bankSched   = amortize(bankRate, bankTerm, bankLoan, bankDown);
+    var bankInterestTotal = Math.max(0, bankPmt * bankTerm * 12 - bankLoan);
+    var bankCostTotal     = bankDown + bankPmt * bankTerm * 12;
+    var bankBE            = breakEven(bankPmt, startCF, growth);
+    var bankSurplusNow    = startCF - bankPmt;
+    var capGap            = bankDown - COMMITTED;
+
+    $('bankDownAmount').textContent  = fmtDollar(bankDown);
+    $('bankMonthly').textContent     = fmtDollar(bankPmt);
+    $('bankInterest').textContent    = fmtShort(bankInterestTotal);
+    $('bankTotal').textContent       = fmtShort(bankCostTotal);
+    $('bankBreakEven').textContent   = bankBE === 0 ? 'Already covered'
+                                     : bankBE !== null ? 'Year ' + bankBE : '> 40 years';
+    var bsEl = $('bankSurplus');
+    bsEl.textContent = (bankSurplusNow >= 0 ? '+' : '') + fmtDollar(bankSurplusNow) + '/mo';
+    bsEl.className = 'model-value ' + (bankSurplusNow >= 0 ? 'pos' : 'warn');
+
+    var gapEl = $('capitalGap');
+    if (capGap > 0) {
+      gapEl.classList.add('visible');
+      $('capitalGapAmt').textContent = fmtDollar(capGap);
+    } else {
+      gapEl.classList.remove('visible');
+    }
+
+    // Comparison metrics
+    $('metInterestSaved').textContent  = fmtShort(Math.abs(bankInterestTotal - lynnInterestTotal));
+    $('metMonthlySavings').textContent = fmtDollar(Math.abs(bankPmt - lynnPmt));
+    $('metTotalDiff').textContent      = fmtShort(Math.abs(bankCostTotal - lynnCostTotal));
+
+    // Cost bars
+    var maxC = Math.max(lynnCostTotal, bankCostTotal, 1);
+    $('lynnBar').style.width    = (lynnCostTotal / maxC * 100).toFixed(1) + '%';
+    $('bankBar').style.width    = (bankCostTotal  / maxC * 100).toFixed(1) + '%';
+    $('lynnBarAmt').textContent = fmtShort(lynnCostTotal);
+    $('bankBarAmt').textContent = fmtShort(bankCostTotal);
+
+    // Store state for chart re-draw on tab switch
+    STATE = { lynnPmt, bankPmt, startCF, growth, lynnBE, bankBE,
+              lynnTerm, bankTerm, lynnSched, bankSched, propVal };
+
+    // Draw whichever tab is active
+    redrawActiveTab();
+  }
+
+  function redrawActiveTab() {
+    var active = document.querySelector('.tab-panel.active');
+    if (!active) return;
+    var id = active.id;
+    var s = STATE;
+    if (id === 'tab-cashflow') drawCF(s.lynnPmt, s.bankPmt, s.startCF, s.growth, s.lynnBE, s.bankBE, s.lynnTerm, s.bankTerm);
+    if (id === 'tab-equity')   drawEQ(s.lynnSched, s.bankSched, s.lynnTerm, s.bankTerm);
+    if (id === 'tab-cumcost')  drawCC(s.lynnSched, s.bankSched, s.lynnTerm, s.bankTerm, s.propVal);
+  }
+
+  // ─── Tab switching ─────────────────────────────────────────────
+  document.querySelectorAll('.tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      var panel = $('tab-' + btn.getAttribute('data-tab'));
+      if (panel) { panel.classList.add('active'); redrawActiveTab(); }
+    });
+  });
+
+  // ─── Wire inputs ───────────────────────────────────────────────
+  bindDollar('propValue',   'propSlider',      update);
+  bindDollar('cashFlow',    'cashFlowSlider',  update);
+  bindNum(   'growthRate',  'growthSlider',    update);
+  bindDollar('lynnPrice',   'lynnPriceSlider', update);
+  bindDollar('lynnDown',    'lynnDownSlider',  update);
+  bindNum(   'lynnRate',    'lynnRateSlider',  update);
+  bindNum(   'lynnTerm',    'lynnTermSlider',  update);
+  bindNum(   'bankDownPct', 'bankDownSlider',  update);
+  bindNum(   'bankRate',    'bankRateSlider',  update);
+  bindNum(   'bankTerm',    'bankTermSlider',  update);
+
+  // Initial render
+  update();
+
+  // Seed inputs from data.json (Apps Script sync from Google Sheets)
+  fetch('/lunch-presentation/data.json')
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      function seed(inputId, sliderId, val) {
+        var inp = document.getElementById(inputId);
+        var sl  = document.getElementById(sliderId);
+        if (!inp || !sl || !val) return;
+        inp.value = val.toLocaleString();
+        sl.value  = val;
+      }
+      // Monthly cash flow: use May net (first profitable month)
+      var net = d.net || [];
+      var mayNet = net[3]; // May index
+      if (mayNet && mayNet > 0) seed('cashFlow', 'cashFlowSlider', mayNet);
+      update();
+    })
+    .catch(function(){/* fallback: hardcoded defaults remain */});
 })();
 </script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" onload="lucide.createIcons()"></script>
 </body>
 </html>
