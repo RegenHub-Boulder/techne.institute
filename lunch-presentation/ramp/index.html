@@ -550,17 +550,31 @@
             </div>
           </div>
           <div class="lvb-row">
-            <div class="lvb-label">Ongoing members per cohort<small>Convert to monthly membership</small></div>
+            <div class="lvb-label">Digital members per cohort<small>Discord + async co-learning only</small></div>
             <div>
-              <input class="model-input" id="lvbMembersPC" type="text" value="5" />
-              <input class="model-slider lvb" id="lvbMembersPCS" type="range" min="0" max="20" step="1" value="5" />
+              <input class="model-input" id="lvbMembersPC" type="text" value="4" />
+              <input class="model-slider lvb" id="lvbMembersPCS" type="range" min="0" max="20" step="1" value="4" />
             </div>
           </div>
           <div class="lvb-row">
-            <div class="lvb-label">Monthly membership fee<small>Discord + async co-learning</small></div>
+            <div class="lvb-label">Digital membership fee<small>Remote community tier</small></div>
             <div>
               <input class="model-input" id="lvbMemFee" type="text" value="75" />
               <input class="model-slider lvb" id="lvbMemFeeS" type="range" min="20" max="200" step="5" value="75" />
+            </div>
+          </div>
+          <div class="lvb-row">
+            <div class="lvb-label">Desk members per cohort<small>Upgrade to seat at RegenHub / Techne</small></div>
+            <div>
+              <input class="model-input" id="lvbDeskPC" type="text" value="1" />
+              <input class="model-slider lvb" id="lvbDeskPCS" type="range" min="0" max="10" step="1" value="1" />
+            </div>
+          </div>
+          <div class="lvb-row">
+            <div class="lvb-label">Desk membership fee<small>Hot desk or dedicated seat</small></div>
+            <div>
+              <input class="model-input" id="lvbDeskFee" type="text" value="300" />
+              <input class="model-slider lvb" id="lvbDeskFeeS" type="range" min="100" max="800" step="25" value="300" />
             </div>
           </div>
         </div>
@@ -609,7 +623,7 @@
         </div>
       </div>
       <svg id="chartLVB" class="chart" viewBox="0 0 820 320" preserveAspectRatio="xMidYMid meet"></svg>
-      <p class="chart-note">Bars appear only in cohort months (every 3 mo): bottom dim = teacher pay, top bright = RegenHub's 40%. Green step line = growing membership income. Warm line = total monthly income to RegenHub. 18-month view.</p>
+      <p class="chart-note">Bars appear only in cohort months (every 3 mo): bottom dim = teacher pay, top bright = RegenHub's 40%. Green step line = growing membership income (digital + desk seats). Warm line = total monthly income to RegenHub. 18-month view.</p>
     </div>
   </div>
 
@@ -915,13 +929,16 @@
     var coStart    = parseNum('lvbCoStart')      || 1;
     var teachPct   = parseNum('lvbTeachPct')     || 60;
     var numTeach   = Math.max(1, parseNum('lvbNumTeach') || 2);
-    var membersPC  = parseNum('lvbMembersPC')    || 5;
+    var membersPC  = parseNum('lvbMembersPC')    || 4;
     var memFee     = parseDollar('lvbMemFee')    || 75;
+    var deskPC     = parseNum('lvbDeskPC')       || 1;
+    var deskFee    = parseDollar('lvbDeskFee')   || 300;
 
     var hubPct = 100 - teachPct;
     var INTERVAL = 3;
     var rows = [];
     var totalMembers = 0;
+    var totalDesk = 0;
     var cohortCount = 0;
 
     for (var m = 1; m <= 18; m++) {
@@ -938,9 +955,10 @@
         hubCohortShare = cohortRev * (hubPct   / 100);
         perTeacher     = teacherShare / numTeach;
         totalMembers  += membersPC;
+        totalDesk     += deskPC;
       }
 
-      var membershipHub = totalMembers * memFee;
+      var membershipHub = (totalMembers * memFee) + (totalDesk * deskFee);
       var hubMonthly    = hubCohortShare + membershipHub;
 
       rows.push({
@@ -1120,6 +1138,8 @@
   bindNum(   'lvbNumTeach', 'lvbNumTeachS',  lvbUpdate);
   bindNum(   'lvbMembersPC','lvbMembersPCS', lvbUpdate);
   bindDollar('lvbMemFee',   'lvbMemFeeS',    lvbUpdate);
+  bindNum(   'lvbDeskPC',   'lvbDeskPCS',    lvbUpdate);
+  bindDollar('lvbDeskFee',  'lvbDeskFeeS',   lvbUpdate);
 
   update();
 
