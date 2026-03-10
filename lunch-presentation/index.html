@@ -3,7 +3,30 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>The Plan for 1515 Walnut &mdash; Techne</title>
+<title>Techne &mdash; Cooperative Workspace &amp; Venture Studio, Boulder CO</title>
+
+<!-- SEO -->
+<meta name="description" content="Techne is a cooperative workspace and venture studio at 1515 Walnut Street, Boulder CO — home to coworking, LearnVibe.Build cohorts, and Web3 ventures. Backed by Kevin Owocki (Gitcoin) and Jeremy Wood (Cardano co-founder)." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://techne.institute/" />
+
+<!-- Open Graph -->
+<meta property="og:type"        content="website" />
+<meta property="og:url"         content="https://techne.institute/" />
+<meta property="og:title"       content="Techne — Cooperative Workspace &amp; Venture Studio, Boulder CO" />
+<meta property="og:description" content="A cooperative workspace and learning studio at 1515 Walnut Street, Boulder. Coworking, LearnVibe.Build cohort programs, and Web3 ventures — owned by the people who build here." />
+<meta property="og:site_name"   content="Techne" />
+<meta property="og:locale"      content="en_US" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card"        content="summary" />
+<meta name="twitter:title"       content="Techne — Cooperative Workspace &amp; Venture Studio, Boulder CO" />
+<meta name="twitter:description" content="A cooperative workspace and learning studio at 1515 Walnut Street, Boulder. Coworking, LearnVibe.Build, and Web3 ventures — owned by the people who build here." />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%230f0f12'/%3E%3Ctext x='16' y='24' font-family='Georgia%2Cserif' font-size='22' font-weight='400' fill='%23c4956a' text-anchor='middle'%3E%CF%84%3C/text%3E%3C/svg%3E" />
+<link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%230f0f12'/%3E%3Ctext x='16' y='24' font-family='Georgia%2Cserif' font-size='22' font-weight='400' fill='%23c4956a' text-anchor='middle'%3E%CF%84%3C/text%3E%3C/svg%3E" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
@@ -192,6 +215,7 @@
   }
 
   /* ─── HERO ─── */
+  /* ─── HERO ─── */
   .hero {
     min-height: 55vh;
     background: var(--hero-bg);
@@ -200,12 +224,16 @@
     align-items: center;
     padding: 4rem 2rem;
     position: relative;
+    overflow: hidden;
   }
 
   .hero-content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 860px;
     position: relative;
     z-index: 1;
   }
@@ -215,7 +243,11 @@
     font-weight: 300;
     font-size: clamp(3.5rem, 14vw, 8rem);
     color: var(--hero-text);
-    margin-bottom: 0.25rem;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    margin: 0 0 0.3rem;
+    width: 100%;
+    text-align: center;
     opacity: 0;
     animation: heroReveal 1.6s ease-out 0.2s forwards;
   }
@@ -227,21 +259,47 @@
 
   .hero-sub {
     font-family: var(--font-display);
-    font-weight: 300; font-style: italic;
+    font-weight: 300;
+    font-style: italic;
     font-size: clamp(1.1rem, 2.5vw, 1.5rem);
     color: var(--hero-sub);
-    margin-bottom: 2.5rem;
+    width: 100%;
+    text-align: center;
+    margin: 0 0 2.5rem;
     opacity: 0;
     animation: heroFade 1.2s ease-out 0.6s forwards;
   }
 
   .hero-meta {
     font-family: var(--font-mono-alt);
-    font-size: 0.72rem; font-weight: 300;
-    color: var(--hero-meta);
+    font-size: 0.68rem;
+    font-weight: 300;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
+    color: var(--hero-meta);
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
     opacity: 0;
     animation: heroFade 1.2s ease-out 0.9s forwards;
+  }
+
+  .hero-meta-line {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-divider {
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--hero-meta);
+    opacity: 0.4;
+    margin: 0.5rem auto;
   }
 
   @keyframes heroFade {
@@ -400,11 +458,11 @@
     background: var(--card-bg);
   }
   .capacity-icon {
-    flex-shrink: 0; margin-top: 0.1rem;
-    font-family: var(--font-mono); font-size: 0.7rem;
-    color: var(--ember); letter-spacing: 0.08em;
-    text-transform: uppercase; min-width: 80px;
+    flex-shrink: 0; margin-top: 0.22rem;
+    color: var(--ember);
+    width: 20px; min-width: 20px;
   }
+  .capacity-icon svg { width: 20px; height: 20px; stroke-width: 1.5; display: block; }
   .capacity-text { font-size: 0.98rem; line-height: 1.7; }
   .capacity-text strong { font-weight: 500; color: var(--text-bright); }
 
@@ -511,7 +569,11 @@
   <div class="hero-content">
     <h1 class="hero-wordmark">TECHNE</h1>
     <p class="hero-sub">The Plan for 1515 Walnut</p>
-    <p class="hero-meta">March 10, 2026 · 1:00 PM · Boulder, Colorado</p>
+    <div class="hero-meta">
+      <span class="hero-meta-line">Boulder, Colorado</span>
+      <span class="hero-divider"></span>
+      <span class="hero-meta-line">Founding 2026</span>
+    </div>
   </div>
 </section>
 
@@ -541,11 +603,11 @@
 
     <div class="org-grid">
       <div><strong>Kevin Owocki</strong> <span class="muted">&mdash; serial founder; Allo Capital</span></div>
-      <div><strong>Todd Youngblood</strong> <span class="muted">&mdash; operations; formerly U.S. Bank</span></div>
+      <div><strong>Todd Youngblood</strong> <span class="muted">&mdash; MBA, operations; formerly U.S. Bank</span></div>
       <div><strong>Aaron G Neyer</strong> <span class="muted">&mdash; software &amp; education; formerly Google</span></div>
-      <div><strong>Lucian Hymer</strong> <span class="muted">&mdash; web infrastructure; Gitcoin Passport</span></div>
+      <div><strong>Lucian Hymer</strong> <span class="muted">&mdash; web infrastructure; [formerly] Gitcoin Passport</span></div>
       <div><strong>Jonathan Borichevskiy</strong> <span class="muted">&mdash; independent software developer</span></div>
-      <div><strong>Savannah Kruger</strong> <span class="muted">&mdash; community; Neighborhood Village</span></div>
+      <div><strong>Savannah Kruger</strong> <span class="muted">&mdash; community; Neighborhood Village Project</span></div>
       <div><strong>Neil Mackay Yarnal</strong> <span class="muted">&mdash; design &amp; creative direction</span></div>
       <div><strong>Benjamin Ross</strong> <span class="muted">&mdash; civic technology; OpenCivics</span></div>
     </div>
@@ -559,7 +621,7 @@
       </div>
       <div class="premise-block">
         <h3>The Studio</h3>
-        <p>Techne is a DBA of RegenHub: technology education through LeanVibe.Build, venture incubation, and a rotating calendar of programs and convergences. Same cooperative, new capacity.</p>
+        <p>Techne is a DBA of RegenHub: technology education through LearnVibe.Build, venture incubation, and a rotating calendar of programs and convergences. Same cooperative, new capacity.</p>
       </div>
     </div>
   </section>
@@ -569,7 +631,7 @@
     <p class="section-mark">02 &mdash; The Lease Transfer</p>
     <h2>Aligning the Contract</h2>
 
-    <p class="lead">Our current second-floor lease is held by West Software Services Inc., running through June 2027. We'd like to transfer it to <strong>RegenHub, LCA</strong> &mdash; the cooperative entity that now represents the group operating from this space.</p>
+    <p class="lead">Our current second-floor lease is held by West Software Services Inc., running through June. We'd like to transfer it to <strong>RegenHub, LCA</strong> &mdash; the cooperative entity that now represents the group operating from this space.</p>
 
     <p>Same people. Same commitment. Updated legal structure. The cooperative was filed in February 2026 and formalizes the working group that has been here for nearly two years.</p>
   </section>
@@ -586,17 +648,17 @@
     <h3>Three Capacities</h3>
 
     <div class="capacity">
-      <div class="capacity-icon">Cowork</div>
+      <div class="capacity-icon"><i data-lucide="users"></i></div>
       <div class="capacity-text"><strong>Coworking.</strong> An expanded daily workspace for members and affiliates. Desk memberships, meeting rooms, and shared infrastructure generate steady monthly revenue.</div>
     </div>
 
     <div class="capacity">
-      <div class="capacity-icon">Programs</div>
-      <div class="capacity-text"><strong>Programs.</strong> LeanVibe.Build &mdash; technology cohorts, cultural convergences like Sundance Boulder, civic workshops. A rotating seasonal calendar.</div>
+      <div class="capacity-icon"><i data-lucide="book-open"></i></div>
+      <div class="capacity-text"><strong>Programs.</strong> LearnVibe.Build &mdash; technology cohorts, cultural convergences like Sundance Boulder, civic workshops. A rotating seasonal calendar.</div>
     </div>
 
     <div class="capacity">
-      <div class="capacity-icon">Ventures</div>
+      <div class="capacity-icon"><i data-lucide="trending-up"></i></div>
       <div class="capacity-text"><strong>Ventures.</strong> Early-stage technology ventures. Each contributes a minimum 1% annually back to the cooperative. A shared basket that compounds.</div>
     </div>
 
@@ -611,7 +673,7 @@
 
     <div class="investor-card">
       <p class="investor-name">Jeremy Wood</p>
-      <p class="investor-detail">Motivated by access to the builder community and the creative energy emerging from this space.</p>
+      <p class="investor-detail">+Co-founder of Cardano. Motivated by access to the builder community and the creative energy emerging from this space.</p>
     </div>
 
     <div class="investor-card">
@@ -637,7 +699,36 @@
       <p>Third floor learning &middot; Second floor ventures &middot; Roof for gathering<br/>A complete ecosystem from street to sky</p>
     </div>
 
+    <p>We also plan to operate data infrastructure from within the building &mdash; a local cloud: compute, storage, and network services owned and run by the cooperative. This keeps critical infrastructure under community control, generates service revenue, and makes 1515 Walnut something more than an address. It becomes a node.</p>
+
     <p>As a first step, we'd be willing to fund an independent appraisal &mdash; a good-faith signal that we're serious about the long-term path, even as we work together on the near-term terms.</p>
+  </section>
+</div>
+
+<!-- ═══ TOOLS ═══ -->
+<div class="frame">
+  <section>
+    <p class="section-mark">Working Tools</p>
+    <h2>Interactive Models</h2>
+    <p class="lead">Adjust any assumption live. Built for this conversation.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:1.75rem;">
+      <a href="/lunch-presentation/ramp/" style="display:block;padding:1.5rem;background:var(--card-bg);border:1px solid var(--card-border);text-decoration:none;color:inherit;">
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.6rem;">
+          <i data-lucide="trending-up" style="width:13px;height:13px;color:var(--sage);stroke-width:2;flex-shrink:0;"></i>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--sage);">Revenue Ramp</span>
+        </div>
+        <p style="font-family:'Cormorant',serif;font-size:1.4rem;font-weight:300;color:var(--text-bright);margin-bottom:0.5rem;">Path to Black</p>
+        <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;">Coworking growth + LVB launch trajectory vs the lease. 30/60/90/365-day milestones. Adjust any rate to find break-even.</p>
+      </a>
+      <a href="/lunch-presentation/scenarios/" style="display:block;padding:1.5rem;background:var(--card-bg);border:1px solid var(--card-border);text-decoration:none;color:inherit;">
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.6rem;">
+          <i data-lucide="landmark" style="width:13px;height:13px;color:var(--warm);stroke-width:2;flex-shrink:0;"></i>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--warm);">Financing Scenarios</span>
+        </div>
+        <p style="font-family:'Cormorant',serif;font-size:1.4rem;font-weight:300;color:var(--text-bright);margin-bottom:0.5rem;">Seller vs Bank</p>
+        <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;">Seller financing vs commercial mortgage. Equity accumulation, cumulative cost, and cash flow charts. For the acquisition conversation.</p>
+      </a>
+    </div>
   </section>
 </div>
 
@@ -653,7 +744,7 @@
 </section>
 
 <footer>
-  <p>Prepared March 2026 &middot; RegenHub, LCA (DBA Techne) &middot; Boulder, Colorado</p>
+  <p>Prepared March 2026 &middot; RegenHub, LCA (DBA Techne) &middot; <i data-lucide="map-pin" style="width:11px;height:11px;display:inline-block;vertical-align:middle;margin-right:2px;stroke-width:2;"></i>Boulder, Colorado</p>
 </footer>
 
 <script>
