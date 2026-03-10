@@ -74,6 +74,26 @@
     --footer-bg:    #ebe7df;
     --footer-text:  rgba(26,26,31,0.3);
     --footer-dot:   rgba(26,26,31,0.04);
+    /* SVG diagram (basket) — light defaults */
+    --diagram-bg:       #e8e3d8;
+    --diagram-border:   #c8c3b8;
+    --svg-box-bg:       #f0ece4;
+    --svg-sub:          #888880;
+    --svg-author:       #9a958a;
+    --svg-arrow:        #9a958a;
+    --svg-arrow-fade:   #b0aba4;
+    --svg-basket-fill:  #ddd8ce;
+    --svg-basket-label: #7a5535;
+    --svg-basket-text:  #1a1a1f;
+    --svg-basket-sub:   #888880;
+    --svg-found-fill:   #cdc8be;
+    --svg-found-text:   #6a4a2e;
+    --svg-flow-line:    #9a958a;
+    --svg-flow-fade:    #b8b3ac;
+    --svg-flow-label:   #888880;
+    --svg-dashed-stroke:#bbb8b0;
+    --svg-forthcoming:  #888880;
+    --svg-divider:      #ccc8c0;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -112,6 +132,26 @@
       --footer-bg:    #08080a;
       --footer-text:  rgba(255,255,255,0.18);
       --footer-dot:   rgba(255,255,255,0.09);
+      /* SVG diagram vars — dark */
+      --diagram-bg:       #0a0a0a;
+      --diagram-border:   #2a2a2a;
+      --svg-box-bg:       #161616;
+      --svg-sub:          #666666;
+      --svg-author:       #555555;
+      --svg-arrow:        #4a4a4a;
+      --svg-arrow-fade:   #363636;
+      --svg-basket-fill:  #1c1c1c;
+      --svg-basket-label: #7a5535;
+      --svg-basket-text:  #ece6de;
+      --svg-basket-sub:   #4a4a4a;
+      --svg-found-fill:   #141414;
+      --svg-found-text:   #6a4a2e;
+      --svg-flow-line:    #4a4a4a;
+      --svg-flow-fade:    #333333;
+      --svg-flow-label:   #555555;
+      --svg-dashed-stroke:#383838;
+      --svg-forthcoming:  #4a4a4a;
+      --svg-divider:      #2a2a2a;
     }
   }
 
@@ -150,6 +190,26 @@
     --footer-bg:    #08080a;
     --footer-text:  rgba(255,255,255,0.18);
     --footer-dot:   rgba(255,255,255,0.09);
+    /* SVG diagram vars — dark */
+    --diagram-bg:     #0a0a0a;
+    --diagram-border:   #2a2a2a;
+    --svg-box-bg:     #161616;
+    --svg-sub:        #666666;
+    --svg-author:     #555555;
+    --svg-arrow:      #4a4a4a;
+    --svg-arrow-fade:   #363636;
+    --svg-basket-fill:  #1c1c1c;
+    --svg-basket-label: #7a5535;
+    --svg-basket-text:  #ece6de;
+    --svg-basket-sub:   #4a4a4a;
+    --svg-found-fill:   #141414;
+    --svg-found-text:   #6a4a2e;
+    --svg-flow-line:    #4a4a4a;
+    --svg-flow-fade:    #333333;
+    --svg-flow-label:   #555555;
+    --svg-dashed-stroke:#383838;
+    --svg-forthcoming:  #4a4a4a;
+    --svg-divider:    #2a2a2a;
   }
 
   [data-theme="light"] {
@@ -187,6 +247,26 @@
     --footer-bg:    #ebe7df;
     --footer-text:  rgba(26,26,31,0.3);
     --footer-dot:   rgba(26,26,31,0.04);
+    /* SVG diagram vars — light */
+    --diagram-bg:       #e8e3d8;
+    --diagram-border:   #c8c3b8;
+    --svg-box-bg:       #f0ece4;
+    --svg-sub:          #888880;
+    --svg-author:       #9a958a;
+    --svg-arrow:        #9a958a;
+    --svg-arrow-fade:   #b0aba4;
+    --svg-basket-fill:  #ddd8ce;
+    --svg-basket-label: #7a5535;
+    --svg-basket-text:  #1a1a1f;
+    --svg-basket-sub:   #888880;
+    --svg-found-fill:   #cdc8be;
+    --svg-found-text:   #6a4a2e;
+    --svg-flow-line:    #9a958a;
+    --svg-flow-fade:    #b8b3ac;
+    --svg-flow-label:   #888880;
+    --svg-dashed-stroke:#bbb8b0;
+    --svg-forthcoming:  #888880;
+    --svg-divider:      #ccc8c0;
   }
 
   html { scroll-behavior: smooth; overflow-x: hidden; }
@@ -900,53 +980,53 @@
     </div>
 
     <!-- ── BASKET DIAGRAM ── -->
-    <div style="background:#0a0a0a;border:1px solid #2a2a2a;padding:1.75rem 1.5rem;margin:1.75rem 0;">
+    <div style="background:var(--diagram-bg);border:1px solid var(--diagram-border);padding:1.75rem 1.5rem;margin:1.75rem 0;">
       <svg viewBox="0 0 720 218" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;" aria-label="RegenHub basket: founding ventures pooling equity into a single investable fund">
         <defs>
           <marker id="arr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L6,3 z" fill="#4a4a4a"/>
+            <path d="M0,0 L0,6 L6,3 z" style="fill:var(--svg-arrow)"/>
           </marker>
           <marker id="arrFade" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L6,3 z" fill="#363636"/>
+            <path d="M0,0 L0,6 L6,3 z" style="fill:var(--svg-arrow-fade)"/>
           </marker>
         </defs>
         <!-- Parachute -->
-        <rect x="34" y="12" width="148" height="54" rx="2" fill="#161616" stroke="#c4956a" stroke-width="1.5"/>
-        <text x="108" y="31" text-anchor="middle" fill="#c4956a" font-family="monospace" font-size="10" letter-spacing="1">PARACHUTE</text>
-        <text x="108" y="45" text-anchor="middle" fill="#666666" font-family="monospace" font-size="8">Voice · AI</text>
-        <text x="108" y="57" text-anchor="middle" fill="#555555" font-family="monospace" font-size="7.5" font-style="italic">Aaron G Neyer</text>
+        <rect x="34" y="12" width="148" height="54" rx="2" style="fill:var(--svg-box-bg);stroke:#c4956a" stroke-width="1.5"/>
+        <text x="108" y="31" text-anchor="middle" style="fill:#c4956a" font-family="monospace" font-size="10" letter-spacing="1">PARACHUTE</text>
+        <text x="108" y="45" text-anchor="middle" style="fill:var(--svg-sub)" font-family="monospace" font-size="8">Voice · AI</text>
+        <text x="108" y="57" text-anchor="middle" style="fill:var(--svg-author)" font-family="monospace" font-size="7.5" font-style="italic">Aaron G Neyer</text>
         <!-- Postage -->
-        <rect x="202" y="12" width="148" height="54" rx="2" fill="#161616" stroke="#c4956a" stroke-width="1.5"/>
-        <text x="276" y="31" text-anchor="middle" fill="#c4956a" font-family="monospace" font-size="10" letter-spacing="1">POSTAGE</text>
-        <text x="276" y="45" text-anchor="middle" fill="#666666" font-family="monospace" font-size="8">Email Protocol</text>
-        <text x="276" y="57" text-anchor="middle" fill="#555555" font-family="monospace" font-size="7.5" font-style="italic">Lucian Hymer</text>
+        <rect x="202" y="12" width="148" height="54" rx="2" style="fill:var(--svg-box-bg);stroke:#c4956a" stroke-width="1.5"/>
+        <text x="276" y="31" text-anchor="middle" style="fill:#c4956a" font-family="monospace" font-size="10" letter-spacing="1">POSTAGE</text>
+        <text x="276" y="45" text-anchor="middle" style="fill:var(--svg-sub)" font-family="monospace" font-size="8">Email Protocol</text>
+        <text x="276" y="57" text-anchor="middle" style="fill:var(--svg-author)" font-family="monospace" font-size="7.5" font-style="italic">Lucian Hymer</text>
         <!-- Venture 3 (unnamed) -->
-        <rect x="370" y="12" width="148" height="54" rx="2" fill="none" stroke="#383838" stroke-width="1" stroke-dasharray="4,3"/>
-        <text x="444" y="33" text-anchor="middle" fill="#4a4a4a" font-family="monospace" font-size="9" letter-spacing="1">FORTHCOMING</text>
-        <text x="444" y="48" text-anchor="middle" fill="#3d3d3d" font-family="monospace" font-size="8">Venture</text>
-        <text x="444" y="59" text-anchor="middle" fill="#353535" font-family="monospace" font-size="7">in development</text>
+        <rect x="370" y="12" width="148" height="54" rx="2" fill="none" style="stroke:var(--svg-dashed-stroke)" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="444" y="33" text-anchor="middle" style="fill:var(--svg-forthcoming)" font-family="monospace" font-size="9" letter-spacing="1">FORTHCOMING</text>
+        <text x="444" y="48" text-anchor="middle" style="fill:var(--svg-forthcoming)" font-family="monospace" font-size="8">Venture</text>
+        <text x="444" y="59" text-anchor="middle" style="fill:var(--svg-forthcoming)" font-family="monospace" font-size="7">in development</text>
         <!-- Future (dashed) -->
-        <rect x="538" y="12" width="148" height="54" rx="2" fill="none" stroke="#383838" stroke-width="1" stroke-dasharray="4,3"/>
-        <text x="612" y="33" text-anchor="middle" fill="#4a4a4a" font-family="monospace" font-size="9" letter-spacing="1">FUTURE</text>
-        <text x="612" y="48" text-anchor="middle" fill="#3d3d3d" font-family="monospace" font-size="8">Ventures</text>
-        <text x="612" y="59" text-anchor="middle" fill="#353535" font-family="monospace" font-size="7">forthcoming</text>
+        <rect x="538" y="12" width="148" height="54" rx="2" fill="none" style="stroke:var(--svg-dashed-stroke)" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="612" y="33" text-anchor="middle" style="fill:var(--svg-forthcoming)" font-family="monospace" font-size="9" letter-spacing="1">FUTURE</text>
+        <text x="612" y="48" text-anchor="middle" style="fill:var(--svg-forthcoming)" font-family="monospace" font-size="8">Ventures</text>
+        <text x="612" y="59" text-anchor="middle" style="fill:var(--svg-forthcoming)" font-family="monospace" font-size="7">forthcoming</text>
         <!-- Flow lines -->
-        <line x1="108" y1="66" x2="108" y2="114" stroke="#4a4a4a" stroke-width="1.5" marker-end="url(#arr)"/>
-        <line x1="276" y1="66" x2="276" y2="114" stroke="#4a4a4a" stroke-width="1.5" marker-end="url(#arr)"/>
-        <line x1="444" y1="66" x2="444" y2="114" stroke="#333333" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrFade)"/>
-        <line x1="612" y1="66" x2="612" y2="114" stroke="#333333" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrFade)"/>
-        <text x="360" y="94" text-anchor="middle" fill="#555555" font-family="monospace" font-size="8" letter-spacing="1">— 10% equity gift —</text>
+        <line x1="108" y1="66" x2="108" y2="114" style="stroke:var(--svg-flow-line)" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="276" y1="66" x2="276" y2="114" style="stroke:var(--svg-flow-line)" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="444" y1="66" x2="444" y2="114" style="stroke:var(--svg-flow-fade)" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrFade)"/>
+        <line x1="612" y1="66" x2="612" y2="114" style="stroke:var(--svg-flow-fade)" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrFade)"/>
+        <text x="360" y="94" text-anchor="middle" style="fill:var(--svg-flow-label)" font-family="monospace" font-size="8" letter-spacing="1">— 10% equity gift —</text>
         <!-- The basket -->
-        <polygon points="28,118 692,118 642,180 78,180" fill="#1c1c1c" stroke="#c4956a" stroke-width="1.5"/>
-        <line x1="192" y1="118" x2="192" y2="180" stroke="#2a2a2a" stroke-width="0.5"/>
-        <line x1="360" y1="118" x2="360" y2="180" stroke="#2a2a2a" stroke-width="0.5"/>
-        <line x1="528" y1="118" x2="528" y2="180" stroke="#2a2a2a" stroke-width="0.5"/>
-        <text x="360" y="139" text-anchor="middle" fill="#7a5535" font-family="monospace" font-size="9" letter-spacing="3">THE BASKET</text>
-        <text x="360" y="156" text-anchor="middle" fill="#ece6de" font-family="monospace" font-size="12" font-weight="300">Bundled Venture Equity</text>
-        <text x="360" y="171" text-anchor="middle" fill="#4a4a4a" font-family="monospace" font-size="7.5" letter-spacing="1">PARACHUTE · POSTAGE · + FORTHCOMING VENTURES</text>
+        <polygon points="28,118 692,118 642,180 78,180" style="fill:var(--svg-basket-fill);stroke:#c4956a" stroke-width="1.5"/>
+        <line x1="192" y1="118" x2="192" y2="180" style="stroke:var(--svg-divider)" stroke-width="0.5"/>
+        <line x1="360" y1="118" x2="360" y2="180" style="stroke:var(--svg-divider)" stroke-width="0.5"/>
+        <line x1="528" y1="118" x2="528" y2="180" style="stroke:var(--svg-divider)" stroke-width="0.5"/>
+        <text x="360" y="139" text-anchor="middle" style="fill:var(--svg-basket-label)" font-family="monospace" font-size="9" letter-spacing="3">THE BASKET</text>
+        <text x="360" y="156" text-anchor="middle" style="fill:var(--svg-basket-text)" font-family="monospace" font-size="12" font-weight="300">Bundled Venture Equity</text>
+        <text x="360" y="171" text-anchor="middle" style="fill:var(--svg-basket-sub)" font-family="monospace" font-size="7.5" letter-spacing="1">PARACHUTE · POSTAGE · + FORTHCOMING VENTURES</text>
         <!-- Foundation bar -->
-        <rect x="78" y="180" width="564" height="28" fill="#141414"/>
-        <text x="360" y="198" text-anchor="middle" fill="#6a4a2e" font-family="monospace" font-size="9" letter-spacing="2">REGENHUB, LCA — THE COOPERATIVE</text>
+        <rect x="78" y="180" width="564" height="28" style="fill:var(--svg-found-fill)"/>
+        <text x="360" y="198" text-anchor="middle" style="fill:var(--svg-found-text)" font-family="monospace" font-size="9" letter-spacing="2">REGENHUB, LCA — THE COOPERATIVE</text>
       </svg>
     </div>
 
