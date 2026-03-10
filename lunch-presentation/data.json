@@ -1,27 +1,111 @@
 {
-  "lastSync": "2026-03-10T03:14:00Z",
+  "lastSync": "2026-03-10T03:18:59.949Z",
   "spreadsheetId": "1Hk9PA7cY8bbLnoA7Jnj86r5pBR_Eru12_WYzFEBC0DA",
-  "months": ["February", "March", "April", "May", "June", "July"],
+  "months": [
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July"
+  ],
   "revenue": {
-    "vipDesks":       [2700, 3300, 3900, 4500, 4800, 5100],
-    "hotDesk":        [1800, 2200, 2600, 3000, 3200, 3400],
-    "nodes":          [ 850,  850,  850,  850,  850,  850],
-    "learnVibeBuild": [   0,    0, 1500, 1500,    0, 2000],
-    "accelerator":    [   0,    0,    0,    0,    0,    0],
-    "total":          [5350, 6350, 8850, 9850, 8850, 11350]
+    "vipDesks": [
+      2700,
+      3300,
+      3900,
+      4500,
+      4800,
+      5100
+    ],
+    "hotDesk": [
+      1800,
+      2200,
+      2600,
+      3000,
+      3200,
+      3400
+    ],
+    "nodes": [
+      850,
+      850,
+      850,
+      850,
+      850,
+      850
+    ],
+    "learnVibeBuild": [
+      0,
+      0,
+      1500,
+      1500,
+      0,
+      2000
+    ],
+    "accelerator": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "total": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
   },
   "opex": {
-    "total":      [5500, 5500, 5500, 5500, 12500, 12500],
-    "personnel":  [2000, 2000, 2000, 2000,  2000,  2000],
-    "lease2nd":   [3500, 3500, 3500, 3500,  3500,  3500],
-    "lease3rd":   [   0,    0,    0,    0,  7000,  7000]
+    "total": [
+      5500,
+      5500,
+      5500,
+      5500,
+      12500,
+      12500
+    ],
+    "personnel": [
+      2000,
+      2000,
+      2000,
+      2000,
+      2000,
+      2000
+    ],
+    "lease2nd": [
+      3500,
+      3500,
+      3500,
+      3500,
+      3500,
+      3500
+    ],
+    "lease3rd": [
+      0,
+      0,
+      0,
+      0,
+      7000,
+      7000
+    ]
   },
-  "net": [-150, 850, 3350, 4350, -3650, -1150],
+  "net": [
+    -5500,
+    -5500,
+    -5500,
+    -5500,
+    -12500,
+    -12500
+  ],
   "assumptions": {
     "committedCapital": 130000,
     "thirdFloorLeaseTarget": 5500,
     "coworkingBaseRevenue": 4500,
-    "breakevenMonth": "May",
+    "breakevenMonth": null,
     "personnelRetainer": 2000
   }
 }
