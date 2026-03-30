@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Empire &amp; the People — Techne</title>
+<meta name="description" content="On the oldest struggle in political life — concentration vs. self-governance — and what it asks of us now.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Empire &amp; the People — Techne">
+<meta property="og:description" content="On the oldest struggle in political life, and what it asks of us now.">
+<meta property="og:url" content="https://techne.institute/introduction/empire-and-the-people-deck.html">
+<meta property="og:site_name" content="Techne Institute">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Empire &amp; the People — Techne">
+<meta name="twitter:description" content="On the oldest struggle in political life, and what it asks of us now.">
+<link rel="canonical" href="https://techne.institute/introduction/empire-and-the-people-deck.html">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #1a1a1a;
+    --bg-accent: #151515;
+    --text: #e8e4df;
+    --text-dim: #9a9590;
+    --text-faint: #5a5550;
+    --accent: #c4956a;
+    --accent-dim: #8a6a4a;
+    --rule: #2a2520;
+    --serif: 'EB Garamond', 'Georgia', serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  .skip-link { position: absolute; top: -100%; left: 0; background: var(--accent); color: var(--bg); padding: 0.5rem 1rem; z-index: 200; font-family: var(--sans); font-size: 0.8rem; text-decoration: none; }
+  .skip-link:focus { top: 0; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 18px; scroll-behavior: smooth; background: var(--bg); }
+  body { font-family: var(--serif); color: var(--text); background: var(--bg); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  /* --- COVER --- */
+  .cover {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 4rem 2rem; text-align: center; position: relative;
+  }
+  .cover::after { content: ''; position: absolute; bottom: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-dim), transparent); }
+  .cover h1 { font-family: var(--serif); font-size: 3.4rem; font-weight: 400; line-height: 1.15; max-width: 14em; margin-bottom: 2rem; letter-spacing: -0.01em; }
+  .cover h1 .amp { color: var(--accent); font-style: italic; }
+  .cover .subtitle { font-size: 1.15rem; font-style: italic; color: var(--text-dim); max-width: 30em; line-height: 1.6; margin-bottom: 1.5rem; }
+  .cover .date { font-family: var(--sans); font-size: 0.75rem; color: var(--text-faint); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .cover .commons { font-family: var(--serif); font-size: 0.9rem; font-style: italic; color: var(--text-faint); }
+
+  /* --- SECTIONS --- */
+  section { max-width: 42rem; margin: 0 auto; padding: 5rem 2rem; position: relative; }
+  section + section { border-top: 1px solid var(--rule); }
+  .section-num { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 0.5rem; }
+  h2 { font-family: var(--serif); font-size: 2rem; font-weight: 400; margin-bottom: 2rem; line-height: 1.3; }
+  h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 500; margin-top: 2.5rem; margin-bottom: 1rem; }
+  p { margin-bottom: 1.4rem; font-size: 1.05rem; }
+  strong { font-weight: 600; color: var(--text); }
+  .greek-word { font-style: italic; color: var(--accent); }
+
+  blockquote { border-left: 2px solid var(--accent-dim); padding: 1rem 0 1rem 1.5rem; margin: 2rem 0; font-style: italic; color: var(--text-dim); font-size: 1.1rem; line-height: 1.6; }
+
+  .featured-quote { max-width: 100%; padding: 5rem 2rem; text-align: center; background: var(--bg-accent); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .featured-quote p { font-family: var(--serif); font-size: 1.6rem; font-style: italic; color: var(--text-dim); max-width: 36rem; margin: 0 auto; line-height: 1.5; }
+  .featured-quote .attr { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); margin-top: 1.5rem; }
+
+  /* --- TENSION DIAGRAM --- */
+  .tension {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin: 3rem 0;
+    padding: 2.5rem 2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+  }
+  .tension-pole {
+    text-align: center;
+    flex: 1;
+  }
+  .tension-pole .pole-label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .tension-pole .pole-desc {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .tension-between {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+    white-space: nowrap;
+  }
+
+  /* --- CYCLE DIAGRAM --- */
+  .cycle {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 2rem;
+    margin: 2.5rem 0;
+  }
+  .cycle-title {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .cycle-steps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .cycle-step {
+    background: var(--bg-accent);
+    border: 1px solid var(--rule);
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text);
+    border-radius: 2px;
+    text-align: center;
+  }
+  .cycle-arrow {
+    color: var(--accent-dim);
+    font-size: 0.9rem;
+  }
+
+  /* --- TIMELINE --- */
+  .timeline { margin: 2.5rem 0; position: relative; padding-left: 1.5rem; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0.5rem; bottom: 0.5rem; width: 1px; background: var(--rule); }
+  .timeline-item { position: relative; padding: 0 0 1.5rem 1.5rem; }
+  .timeline-item::before { content: ''; position: absolute; left: -1.75rem; top: 0.6rem; width: 5px; height: 5px; border-radius: 50%; background: var(--accent-dim); }
+  .timeline-item .date { font-family: var(--sans); font-size: 0.7rem; color: var(--text-faint); letter-spacing: 0.1em; }
+  .timeline-item .who { font-weight: 500; color: var(--text); font-size: 0.95rem; }
+  .timeline-item .what { color: var(--text-dim); font-size: 0.9rem; margin-top: 0.2rem; }
+
+  /* --- ECOSYSTEM GRID --- */
+  .eco-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  .eco-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 1.5rem;
+  }
+  .eco-card .eco-name {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .eco-card .eco-desc {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .eco-card .eco-stat {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    margin-top: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* --- CONTRAST CARDS --- */
+  .contrast {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  .contrast-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .contrast-card .c-label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 0.75rem;
+  }
+  .contrast-card .c-flow {
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+  .contrast-card .c-flow .c-arrow { color: var(--accent-dim); }
+
+  /* --- OSTROM --- */
+  .ostrom {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+  .ostrom-title {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 1.5rem;
+  }
+  .ostrom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .ostrom-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+  }
+  .ostrom-item .o-num {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--accent);
+    flex-shrink: 0;
+    width: 1.2rem;
+  }
+  .ostrom-item .o-text { color: var(--text-dim); }
+
+  /* --- CLOSING --- */
+  .closing {
+    max-width: 42rem; margin: 0 auto; padding: 5rem 2rem 8rem; text-align: center;
+    border-top: 1px solid var(--rule);
+  }
+  .closing .final-lines {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    color: var(--text);
+    line-height: 2;
+    margin-bottom: 2rem;
+  }
+  .closing .final-lines .dim { color: var(--text-dim); }
+  .closing p { color: var(--text-dim); font-size: 0.95rem; max-width: 30em; margin: 0 auto 1rem; }
+  .closing .commons { font-family: var(--serif); font-size: 0.95rem; font-style: italic; color: var(--text-faint); margin-top: 2rem; }
+  .closing .org { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); margin-top: 2rem; }
+
+  /* --- FURTHER READING --- */
+  .reading {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 3rem 2rem 2rem;
+  }
+  .reading-title {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 1rem;
+  }
+  .reading-list {
+    list-style: none;
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 2;
+  }
+  .reading-list a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+  .reading-list a:hover { border-color: var(--accent); }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 640px) {
+    html { font-size: 16px; 
+    .tension { flex-direction: column; gap: 1rem; }
+    .series-nav { font-size: 0.7rem; }
+    .series-nav a, .series-nav .nav-disabled { min-height: 44px; display: inline-flex; align-items: center; }}
+    .cover h1 { font-size: 2.4rem; }
+    h2 { font-size: 1.6rem; }
+    .featured-quote p { font-size: 1.3rem; }
+    section { padding: 3rem 1.5rem; }
+    .eco-grid { grid-template-columns: 1fr; }
+    .contrast { grid-template-columns: 1fr; }
+    .ostrom-grid { grid-template-columns: 1fr; }
+    .tension { flex-direction: column; }
+    .tension-between { writing-mode: horizontal-tb; }
+    .cycle-steps { flex-direction: column; }
+  }
+
+  @media print {
+    :root { --bg: #fff; --text: #111; --text-dim: #555; --text-faint: #999; --accent: #8a5a3a; --accent-dim: #aa7a5a; --rule: #ddd; --bg-card: #f5f5f0; }
+    .series-nav { display: none !important; }
+    .skip-link { display: none !important; }
+    body { padding-top: 0 !important; }
+    section { page-break-inside: avoid; }
+    a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: var(--text-dim); }
+    .cover { min-height: auto; page-break-after: always; }
+  }
+    .cover { min-height: auto; page-break-after: always; }
+    section { page-break-inside: avoid; }
+  }
+  /* --- SERIES NAV --- */
+  .series-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,10,0.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule); padding: 0.6rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.1em;
+  }
+  .series-nav a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .series-nav a:hover { color: var(--accent); }
+  .series-nav .nav-center { color: var(--text-faint); letter-spacing: 0.2em; text-transform: uppercase; }
+  .series-nav .nav-disabled { color: var(--text-faint); opacity: 0.3; }
+  body { padding-top: 2.5rem; }
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<nav class="series-nav" aria-label="Series navigation"><span class="nav-disabled">Series Index</span><a href="index.html" class="nav-center">Techne Introduction</a><a href="the-oldest-design-problem-deck.html">Next: The Oldest Design Problem →</a></nav>
+
+<main id="content">
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <h1>Empire <span class="amp">&amp;</span> the People</h1>
+  <div class="subtitle">On the oldest struggle in political life, and what it asks of us now</div>
+  <div class="date">March 2026</div>
+  <div class="commons">Written in common. Offered freely.</div>
+</div>
+
+<!-- ============ OPENING ============ -->
+<section>
+  <h2>Democracy was not invented in a moment of peace.</h2>
+
+  <p>It was invented in the shadow of empire.</p>
+
+  <p>When the Athenian assembly first gathered to govern itself in the sixth century BCE, the Persian Empire controlled most of the known world. The democratic experiment was, from its first breath, a refusal: a community of people insisting that they could govern the conditions of their own lives without a king, without a distant capital, without surrendering their judgment to someone else's power.</p>
+
+  <p>That refusal has never been fully settled. It has been reasserted and suppressed, expanded and captured, codified and hollowed out, across twenty-five centuries and every inhabited continent.</p>
+
+  <div class="tension">
+    <div class="tension-pole">
+      <div class="pole-label">Concentration</div>
+      <div class="pole-desc">Power, wealth, and decision-making in fewer hands</div>
+    </div>
+    <div class="tension-between">Perpetual Tension</div>
+    <div class="tension-pole">
+      <div class="pole-label">Self-Governance</div>
+      <div class="pole-desc">Those who bear the consequences should shape the decisions</div>
+    </div>
+  </div>
+
+  <p>This essay is about that tension as it exists right now, in the United States and beyond, and about the forms of democratic practice that might meet the scale of the present crisis.</p>
+</section>
+
+<!-- ============ SECTION ONE: THE PATTERN ============ -->
+<section>
+  <div class="section-num">Section One</div>
+  <h2>The Pattern</h2>
+
+  <p>History does not repeat, but it rhymes in ways that are difficult to ignore.</p>
+
+  <div class="cycle">
+    <div class="cycle-title">The Recurring Cycle</div>
+    <div class="cycle-steps">
+      <div class="cycle-step">Democratic movement arises</div>
+      <span class="cycle-arrow">→</span>
+      <div class="cycle-step">Institutions of self-governance are built</div>
+      <span class="cycle-arrow">→</span>
+      <div class="cycle-step">Institutions captured or hollowed out</div>
+      <span class="cycle-arrow">→</span>
+      <div class="cycle-step">New concentrations of power form at greater scale</div>
+      <span class="cycle-arrow">→</span>
+      <div class="cycle-step" style="border-color: var(--accent-dim);">Cycle repeats</div>
+    </div>
+  </div>
+
+  <p>The Roman Republic gave way to Empire not through a single coup but through slow accumulation: executive power, military expansion, economic inequality, and the erosion of civic norms. The Senate continued to meet. Elections continued to be held. But the substance of self-governance had migrated elsewhere.</p>
+
+  <p>The American Revolution was an anti-imperial act. Its founding documents are saturated with the language of self-governance and the rejection of concentrated, unaccountable power. And yet the nation that emerged from that revolution became, within two centuries, the most powerful empire the world has ever seen — with military installations in dozens of countries, economic influence that shapes the daily lives of billions, and domestic concentrations of wealth that would have alarmed the founders who warned against aristocracy in all its forms.</p>
+
+  <p>This is not a contradiction unique to America. It is the recurring pattern: democratic movements arise in opposition to concentrated power, build institutions of self-governance, and then watch as those institutions are gradually captured, hollowed out, or overwhelmed by new concentrations of power that operate at scales the original democratic structures were never designed to reach.</p>
+
+  <blockquote>The question is whether each generation recognizes the pattern early enough to respond with something more durable than outrage.</blockquote>
+</section>
+
+<!-- ============ FEATURED QUOTE ============ -->
+<div class="featured-quote">
+  <p>"Political self-governance without economic self-governance is unstable."</p>
+</div>
+
+<!-- ============ SECTION TWO: THE ECONOMIC LAYER ============ -->
+<section>
+  <div class="section-num">Section Two</div>
+  <h2>The Economic Layer</h2>
+
+  <p>The democratic tradition has always understood that political self-governance without economic self-governance is unstable. The question of who owns and who decides has been intertwined with the question of who governs since the beginning.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="date">4th c. BCE</div>
+      <div class="who">Aristotle</div>
+      <div class="what">Extreme inequality is incompatible with stable democratic life.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">1640s</div>
+      <div class="who">English Levellers</div>
+      <div class="what">Economic as well as political rights.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">1770s</div>
+      <div class="who">American Founders</div>
+      <div class="what">A republic of yeoman farmers, not landless tenants.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">19th century</div>
+      <div class="who">Cooperative Movement</div>
+      <div class="what">Democratic governance extended into economic life.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2009</div>
+      <div class="who">Elinor Ostrom</div>
+      <div class="what">Commons governance as functioning institutional form.</div>
+    </div>
+  </div>
+
+  <p>The point is not that economic democracy is a new idea. It is among the oldest ideas in the democratic tradition. What is new is the scale at which it must now operate, and the tools available to support it.</p>
+
+  <div class="ostrom">
+    <div class="ostrom-title">Ostrom's Commons Principles</div>
+    <div class="ostrom-grid">
+      <div class="ostrom-item"><span class="o-num">1</span><span class="o-text">Clear boundaries</span></div>
+      <div class="ostrom-item"><span class="o-num">2</span><span class="o-text">Collective decision-making</span></div>
+      <div class="ostrom-item"><span class="o-num">3</span><span class="o-text">Graduated accountability</span></div>
+      <div class="ostrom-item"><span class="o-num">4</span><span class="o-text">Local adaptation</span></div>
+    </div>
+  </div>
+
+  <p>Her research demonstrated that commons governance was not a romantic fantasy but a functioning institutional form — observable in fisheries, forests, irrigation systems, and grazing lands across dozens of cultures and centuries. These principles describe a form of economic democracy that predates modern capitalism and, in many places, has outlasted it.</p>
+</section>
+
+<!-- ============ SECTION THREE: TAIWAN ============ -->
+<section>
+  <div class="section-num">Section Three</div>
+  <h2>What an Island Proved Possible</h2>
+
+  <p>Economic integration without democratic oversight is a delivery mechanism for authoritarianism.</p>
+
+  <h3>From Protest to Construction</h3>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="date">2012–2014</div>
+      <div class="who">g0v forms</div>
+      <div class="what">Civic tech community builds communications infrastructure.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">March 2014</div>
+      <div class="who">Sunflower Movement</div>
+      <div class="what">Students occupy parliament for 23 days. Trade agreement blocked.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2014+</div>
+      <div class="who">vTaiwan</div>
+      <div class="what">Platform for structured public deliberation. 30+ policy cases deliberated.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2016</div>
+      <div class="who">Audrey Tang</div>
+      <div class="what">g0v co-founder appointed Digital Minister. Open data, radical transparency.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2020</div>
+      <div class="who">COVID response</div>
+      <div class="what">Civic hackers build real-time mask supply maps with government agencies.</div>
+    </div>
+  </div>
+
+  <div class="contrast">
+    <div class="contrast-card">
+      <div class="c-label">Typical Pattern</div>
+      <div class="c-flow">
+        Protest<br>
+        <span class="c-arrow">↓</span><br>
+        Return to normal
+      </div>
+    </div>
+    <div class="contrast-card">
+      <div class="c-label">Taiwan's Pattern</div>
+      <div class="c-flow">
+        Protest<br>
+        <span class="c-arrow">↓</span><br>
+        <strong>Construction</strong>
+      </div>
+    </div>
+  </div>
+
+  <p>The pattern that Taiwan demonstrated was not protest followed by a return to normal. It was protest followed by construction: the patient, technically skilled, publicly visible building of democratic infrastructure that outlasts any single political crisis.</p>
+
+  <p>The civic hackers did not wait for the government to become transparent. They built transparency and offered it freely. When their tools proved better, the government adopted them.</p>
+
+  <p>Tang and E. Glen Weyl have since articulated this approach as <strong>Plurality</strong>: the use of digital tools not to replace democratic governance but to deepen it, creating new forms of collective deliberation, cooperative economics, and civic participation that operate across difference rather than demanding uniformity.</p>
+</section>
+
+<!-- ============ FEATURED QUOTE ============ -->
+<div class="featured-quote">
+  <p>"The most durable democratic energy is generative. It builds things."</p>
+</div>
+
+<!-- ============ SECTION FOUR: THE AMERICAN QUESTION ============ -->
+<section>
+  <div class="section-num">Section Four</div>
+  <h2>The American Question</h2>
+
+  <p>The instinct to resist is everywhere. The instinct to build is rarer.</p>
+
+  <p>Today, as millions of people take to the streets across the United States in the third major "No Kings" mobilization since early 2025, the American version of this tension is on full display.</p>
+
+  <p>The federal government is partially shut down. TSA officers are working without pay. The country is engaged in a war that Congress did not authorize. Executive power is being exercised at a scale and speed that has overwhelmed the capacity of existing institutional checks. State and local governments are stepping into the breach — passing laws, filing lawsuits, and organizing resistance to federal overreach.</p>
+
+  <p>The pro-democracy movement in the United States is, understandably, focused on defense: defending voting rights, defending the rule of law, defending communities targeted by federal action. These are necessary and urgent. But defense without construction is a strategy for exhaustion. If the only democratic energy is reactive, then the initiative always belongs to whoever is willing to act first and most aggressively.</p>
+</section>
+
+<!-- ============ SECTION FIVE: INFRASTRUCTURE ============ -->
+<section>
+  <div class="section-num">Section Five</div>
+  <h2>Cooperatives, Commons, and Civic Technology</h2>
+
+  <div class="eco-grid">
+    <div class="eco-card">
+      <div class="eco-name">Cooperatives</div>
+      <div class="eco-desc">Businesses owned and governed by members. Democratic governance in daily life.</div>
+      <div class="eco-stat">65,000 in the U.S. · 100+ million members</div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-name">Commons Governance</div>
+      <div class="eco-desc">Community land trusts. Open-source communities. Community-supported agriculture.</div>
+      <div class="eco-stat">Ostrom's principles in practice</div>
+    </div>
+    <div class="eco-card">
+      <div class="eco-name">Civic Technology</div>
+      <div class="eco-desc">Open data platforms. Participatory budgeting. Collective deliberation software.</div>
+      <div class="eco-stat">Taiwan's proven pattern</div>
+    </div>
+  </div>
+
+  <p>None of these, alone, is sufficient. Together, they describe an ecosystem: a set of interlocking institutions that embed democratic governance into the economic and informational fabric of daily life, rather than confining it to the voting booth every two or four years.</p>
+</section>
+
+<!-- ============ CLOSING: POSSIBILITIES ============ -->
+<section>
+  <div class="section-num">Closing</div>
+  <h2>Possibilities</h2>
+
+  <p>Constraint is not a vision. Visions are what sustain democratic movements across the years and decades required to build something durable.</p>
+
+  <p>The vision that the democratic tradition offers — from Athens to the cooperative movements of the 19th century to the civic hackers of 21st-century Taiwan — is not that power can be abolished. It cannot.</p>
+
+  <p>The vision is that power can be distributed, made visible, subjected to the judgment of the people it affects, and structured so that its exercise requires ongoing consent rather than passive submission.</p>
+
+  <blockquote><strong>This is not a utopian claim. It is a design problem.</strong><br><br>And it is a design problem that human communities have solved, in different ways and at different scales, for millennia.</blockquote>
+
+  <p>The Sunflower Movement's most lasting contribution was not the occupation of a parliament. It was the culture of civic construction that followed: the conviction that democratic sovereignty is something you build and maintain, not something you declare and defend. The occupation lasted 23 days. The building has continued for twelve years.</p>
+
+  <p>What this moment in American life is asking is whether a generation raised on the experience of institutional failure can find the patience, the skill, and the vision to build democratic institutions that are adequate to the scale of the forces arrayed against self-governance.</p>
+
+  <p>Not instead of protest. Not instead of legal defense. Not instead of political organizing. But underneath all of these, as their foundation: the daily, unglamorous, technically demanding work of creating economic and civic institutions where people actually govern the conditions of their own lives.</p>
+</section>
+
+<!-- ============ FINAL ============ -->
+<div class="closing">
+  <div class="final-lines">
+    The empire is always large.<br>
+    The people are always local.<br>
+    The work is always specific.<br><br>
+    <span class="dim">And the pattern of history says that the people who build<br>are the ones whose contributions last.</span>
+  </div>
+
+  <div class="reading">
+    <div class="reading-title">Further Reading</div>
+    <ul class="reading-list">
+      <li><a href="https://g0v.tw">g0v.tw</a></li>
+      <li><a href="https://vtaiwan.tw">vTaiwan</a></li>
+      <li><a href="https://www.radicalxchange.org">RadicalxChange</a></li>
+      <li><a href="https://democracycollaborative.org">The Democracy Collaborative</a></li>
+      <li><a href="https://plurality.net">Plurality</a> — Tang &amp; Weyl</li>
+    </ul>
+  </div>
+
+  <div class="commons">Written in common. Offered freely.</div>
+  <div class="org">March 2026</div>
+</div>
+
+</main>
+</body>
+</html>

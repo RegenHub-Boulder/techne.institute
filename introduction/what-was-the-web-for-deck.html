@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Was the Web For? — Techne</title>
+<meta name="description" content="The network was designed to augment human capability, not capture human attention. We are returning to the original path.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="What Was the Web For? — Techne">
+<meta property="og:description" content="The network was designed to augment human capability, not capture attention.">
+<meta property="og:url" content="https://techne.institute/introduction/what-was-the-web-for-deck.html">
+<meta property="og:site_name" content="Techne Institute">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="What Was the Web For? — Techne">
+<meta name="twitter:description" content="The network was designed to augment human capability, not capture attention.">
+<link rel="canonical" href="https://techne.institute/introduction/what-was-the-web-for-deck.html">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #1a1a1a;
+    --bg-accent: #151515;
+    --text: #e8e4df;
+    --text-dim: #9a9590;
+    --text-faint: #5a5550;
+    --accent: #c4956a;
+    --accent-dim: #8a6a4a;
+    --rule: #2a2520;
+    --serif: 'EB Garamond', 'Georgia', serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  .skip-link { position: absolute; top: -100%; left: 0; background: var(--accent); color: var(--bg); padding: 0.5rem 1rem; z-index: 200; font-family: var(--sans); font-size: 0.8rem; text-decoration: none; }
+  .skip-link:focus { top: 0; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 18px; scroll-behavior: smooth; background: var(--bg); }
+  body { font-family: var(--serif); color: var(--text); background: var(--bg); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  .cover {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 4rem 2rem; text-align: center; position: relative;
+  }
+  .cover::after { content: ''; position: absolute; bottom: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-dim), transparent); }
+  .cover .greek { font-size: 1rem; letter-spacing: 0.4em; color: var(--accent); text-transform: uppercase; font-family: var(--sans); font-weight: 300; margin-bottom: 3rem; }
+  .cover h1 { font-family: var(--serif); font-size: 3.2rem; font-weight: 400; line-height: 1.2; max-width: 16em; margin-bottom: 2rem; letter-spacing: -0.01em; }
+  .cover .subtitle { font-size: 1.15rem; font-style: italic; color: var(--text-dim); max-width: 32em; line-height: 1.6; margin-bottom: 3rem; }
+  .cover .byline { font-family: var(--sans); font-size: 0.75rem; color: var(--text-faint); letter-spacing: 0.15em; text-transform: uppercase; }
+  .cover .byline span { color: var(--text-dim); }
+
+  section { max-width: 42rem; margin: 0 auto; padding: 5rem 2rem; position: relative; }
+  section + section { border-top: 1px solid var(--rule); }
+  .section-num { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 0.5rem; }
+  h2 { font-family: var(--serif); font-size: 2rem; font-weight: 400; margin-bottom: 2rem; line-height: 1.3; }
+  h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 500; margin-top: 2.5rem; margin-bottom: 1rem; }
+  p { margin-bottom: 1.4rem; font-size: 1.05rem; }
+  strong { font-weight: 600; color: var(--text); }
+  .greek-word { font-style: italic; color: var(--accent); }
+
+  blockquote { border-left: 2px solid var(--accent-dim); padding: 1rem 0 1rem 1.5rem; margin: 2rem 0; font-style: italic; color: var(--text-dim); font-size: 1.1rem; line-height: 1.6; }
+
+  .featured-quote { max-width: 100%; padding: 5rem 2rem; text-align: center; background: var(--bg-accent); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .featured-quote p { font-family: var(--serif); font-size: 1.6rem; font-style: italic; color: var(--text-dim); max-width: 36rem; margin: 0 auto; line-height: 1.5; }
+  .featured-quote .attr { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); margin-top: 1.5rem; }
+
+  /* Lineage cards */
+  .lineage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  .lineage-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 1.5rem;
+  }
+  .lineage-card .year {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .lineage-card .person {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .lineage-card .contribution {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* Divergence timeline */
+  .divergence {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+  .divergence-title {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 1.5rem;
+  }
+  .divergence-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.92rem;
+  }
+  .divergence-item:last-child { border-bottom: none; }
+  .divergence-item .d-year {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: var(--accent);
+    width: 5rem;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .divergence-item .d-text { color: var(--text-dim); }
+
+  /* Principles */
+  .principle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  .principle-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 1.5rem;
+  }
+  .principle-card .p-name {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .principle-card .p-desc {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .principle-card .p-lineage {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    margin-top: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  .closing {
+    max-width: 42rem; margin: 0 auto; padding: 5rem 2rem 8rem; text-align: center;
+    border-top: 1px solid var(--rule);
+  }
+  .closing .mark { font-family: var(--serif); font-size: 1.6rem; font-style: italic; color: var(--accent); margin-bottom: 2rem; }
+  .closing p { color: var(--text-dim); font-size: 0.95rem; max-width: 28em; margin: 0 auto 1rem; }
+  .closing .org { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); margin-top: 3rem; }
+
+  @media (max-width: 640px) {
+    html { font-size: 16px; 
+    .tension { flex-direction: column; gap: 1rem; }
+    .series-nav { font-size: 0.7rem; }
+    .series-nav a, .series-nav .nav-disabled { min-height: 44px; display: inline-flex; align-items: center; }}
+    .cover h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.6rem; }
+    .featured-quote p { font-size: 1.3rem; }
+    section { padding: 3rem 1.5rem; }
+    .lineage-grid, .principle-grid { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    :root { --bg: #fff; --text: #111; --text-dim: #555; --text-faint: #999; --accent: #8a5a3a; --accent-dim: #aa7a5a; --rule: #ddd; --bg-card: #f5f5f0; }
+    .series-nav { display: none !important; }
+    .skip-link { display: none !important; }
+    body { padding-top: 0 !important; }
+    section { page-break-inside: avoid; }
+    a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: var(--text-dim); }
+    .cover { min-height: auto; page-break-after: always; }
+  }
+    .cover { min-height: auto; page-break-after: always; }
+    section { page-break-inside: avoid; }
+  }
+  /* --- SERIES NAV --- */
+  .series-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,10,0.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule); padding: 0.6rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.1em;
+  }
+  .series-nav a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .series-nav a:hover { color: var(--accent); }
+  .series-nav .nav-center { color: var(--text-faint); letter-spacing: 0.2em; text-transform: uppercase; }
+  .series-nav .nav-disabled { color: var(--text-faint); opacity: 0.3; }
+  body { padding-top: 2.5rem; }
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<nav class="series-nav" aria-label="Series navigation"><a href="the-oldest-design-problem-deck.html">← The Oldest Design Problem</a><a href="index.html" class="nav-center">Techne Introduction</a><a href="older-than-the-wire-deck.html">Next: Older Than the Wire →</a></nav>
+
+<!-- COVER -->
+<main id="content">
+<div class="cover">
+  <div class="greek">Techne Venture Studio</div>
+  <h1>What Was the Web For?</h1>
+  <div class="subtitle">
+    The network was designed to augment human capability, not capture human attention. We're returning to the original path.
+  </div>
+  <div class="byline">
+    <span>Techne</span> — the venture studio of <span>RegenHub LCA</span> — Boulder, Colorado
+  </div>
+</div>
+
+<!-- THE QUESTION -->
+<section>
+  <div class="section-num">The Question</div>
+  <h2>Before the Feed</h2>
+
+  <p>Before the feed, before the algorithm, before the platform, there was a question: what if computers could make us better thinkers, better collaborators, better stewards of shared knowledge?</p>
+
+  <p>This was not a fringe idea. It was the founding premise of networked computing. For roughly three decades, from the 1940s through the 1970s, the people who built the conceptual and technical foundations of the internet shared a common conviction: that these tools existed to extend human capacity for reasoning, memory, and cooperative work.</p>
+
+  <p>That vision did not fail. It was displaced. And understanding how it was displaced is essential to understanding what can be built in its place.</p>
+</section>
+
+<!-- THE LINEAGE -->
+<section>
+  <div class="section-num">The Lineage</div>
+  <h2>A Tradition of Augmentation</h2>
+
+  <p>The prosocial web was not one person's idea. It emerged across disciplines and decades, a shared intuition that networked information systems could serve democratic and cooperative ends. These thinkers did not agree on everything, but they agreed on a direction.</p>
+
+  <div class="lineage-grid">
+    <div class="lineage-card">
+      <div class="year">1945</div>
+      <div class="person">Vannevar Bush</div>
+      <div class="contribution">Proposed the <em>memex</em>, a device for linking and traversing trails of associated knowledge. The web before the web, designed for researchers and citizens, not consumers.</div>
+    </div>
+    <div class="lineage-card">
+      <div class="year">1948</div>
+      <div class="person">Norbert Wiener</div>
+      <div class="contribution">Founded cybernetics as the study of communication and control in living and machine systems. Warned explicitly that these tools, in corporate hands, would serve profit over people.</div>
+    </div>
+    <div class="lineage-card">
+      <div class="year">1960</div>
+      <div class="person">J.C.R. Licklider</div>
+      <div class="contribution">Envisioned "man-computer symbiosis" and an "intergalactic network" of shared computing resources. Funded the ARPANET not as a military tool but as infrastructure for collaborative research.</div>
+    </div>
+    <div class="lineage-card">
+      <div class="year">1962</div>
+      <div class="person">Douglas Engelbart</div>
+      <div class="contribution">Framed computing as a system for "augmenting human intellect." His H-LAM/T framework treated tools, language, methods, and training as a single integrated system for collective problem-solving.</div>
+    </div>
+    <div class="lineage-card">
+      <div class="year">1972</div>
+      <div class="person">Stafford Beer</div>
+      <div class="contribution">Developed the Viable System Model, a cybernetic framework for organizational self-governance. Applied it to Chile's Project Cybersyn as real-time democratic economic coordination.</div>
+    </div>
+    <div class="lineage-card">
+      <div class="year">1974</div>
+      <div class="person">Ted Nelson</div>
+      <div class="contribution">Coined "hypertext" and designed Project Xanadu with built-in attribution, micropayment, and two-way linking. A system where creators retained ownership and connection, by design.</div>
+    </div>
+  </div>
+
+  <p>What unites this lineage is not a single technology. It is a design premise: that computing infrastructure is a commons, and that its governance shapes the kind of society it produces.</p>
+</section>
+
+<!-- FEATURED QUOTE -->
+<div class="featured-quote">
+  <p>"The question is not whether machines think, but whether people do."</p>
+  <div class="attr">B.F. Skinner — frequently echoed in Wiener's critique of automation</div>
+</div>
+
+<!-- THE DIVERGENCE -->
+<section>
+  <div class="section-num">The Divergence</div>
+  <h2>What Happened</h2>
+
+  <p>The network was publicly funded, publicly developed, and governed by norms of open access and shared benefit. Its transformation into a privately captured, extraction-optimized system was not a natural evolution. It was a series of policy decisions, each of which shifted ownership and control from public and cooperative structures to corporate ones.</p>
+
+  <div class="divergence">
+    <div class="divergence-title">The Enclosure</div>
+    <div class="divergence-item"><span class="d-year">1991</span><span class="d-text">NSF lifts the Acceptable Use Policy, opening the internet to commercial traffic.</span></div>
+    <div class="divergence-item"><span class="d-year">1996</span><span class="d-text">The Telecommunications Act deregulates infrastructure, accelerating consolidation.</span></div>
+    <div class="divergence-item"><span class="d-year">1998–2004</span><span class="d-text">Venture capital selects for attention-capture business models. The ad-tech stack emerges.</span></div>
+    <div class="divergence-item"><span class="d-year">2007–2012</span><span class="d-text">Platform monopolies consolidate. The user becomes the product.</span></div>
+  </div>
+
+  <p>The pattern is consistent: infrastructure designed as commons was enclosed by corporate ownership. The browser was captured. The protocol layer was bypassed by proprietary platforms. Attribution systems like Nelson envisioned were never built. Engelbart's augmentation framework was reduced to "productivity software." Beer's vision of democratic coordination was forgotten entirely.</p>
+
+  <p>The result is a network that optimizes for engagement, extraction, and enclosure. Not because the technology requires it, but because the ownership structure demands it.</p>
+
+  <p><strong>This is the key insight: the web's dysfunction is not a technology problem. It is a governance problem. The tools work. The ownership is wrong.</strong></p>
+</section>
+
+<!-- THE RETURN -->
+<section>
+  <div class="section-num">The Return</div>
+  <h2>What Techne Builds</h2>
+
+  <p>Techne is a venture studio within RegenHub, a Colorado Public Benefit Limited Cooperative Association based in Boulder. We build cooperative digital infrastructure — tools and platforms owned and governed by the people and communities who use them.</p>
+
+  <p>This is not a radical proposition. It is a return to first principles. If the original vision of networked computing was augmentation, collaboration, and shared stewardship, then cooperative ownership is the natural governance structure for that vision. The founders of the field understood this implicitly. We are making it explicit.</p>
+
+  <div class="principle-grid">
+    <div class="principle-card">
+      <div class="p-name">Compositional Fluency</div>
+      <div class="p-desc">Rather than monolithic platforms, we build modular tools that communities can compose into systems that fit their actual needs. This follows Engelbart's insight that augmentation is not a product but a practice.</div>
+      <div class="p-lineage">← Engelbart's augmentation framework</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-name">Commons Governance</div>
+      <div class="p-desc">Drawing on Ostrom's design principles for managing shared resources, we structure ownership and decision-making to prevent enclosure. Our cooperative charter operationalizes these principles at the organizational level.</div>
+      <div class="p-lineage">← Ostrom + Beer's viable system model</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-name">Cooperative Capital</div>
+      <div class="p-desc">We are developing alternatives to venture capital that align investor returns with community benefit. Capital structures modeled on mutual aid, not extraction — where funding flows support the commons rather than enclose it.</div>
+      <div class="p-lineage">← Patronage economics + cooperative tradition</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-name">Progressive Design</div>
+      <div class="p-desc">We start with rapidly prototyped tools that solve real problems today, then progressively deepen the technical and governance sophistication as communities grow into them. Useful now, extensible later.</div>
+      <div class="p-lineage">← Licklider's symbiosis in practice</div>
+    </div>
+  </div>
+
+  <p>Each of these principles traces a direct line to the computing tradition described above. We are not inventing a new philosophy. We are inheriting one that was interrupted.</p>
+</section>
+
+<!-- CONNECTION TO THE PATTERN STACK (new, from thesis) -->
+<section>
+  <div class="section-num">The Grammar</div>
+  <h2>The Craft of Composition</h2>
+
+  <p>A carpenter looks at a bookshelf and a boat and sees the same materials arranged differently. Wood, joinery, an understanding of load and purpose. The craft is not in the materials. It is in knowing which joint to use where, and why.</p>
+
+  <p>Every information system is built from a finite set of design patterns, layered in a progressive order — Identity, State, Relationship, Event, Flow, Constraint, View — each depending on those beneath it. The same grammar that structures a database schema also structures a cooperative agreement, a patronage allocation, or a watershed monitoring system.</p>
+
+  <p>The prosocial web's founders understood this intuitively. Bush's <em>memex</em> was about associative trails — Relationships between identifiable things. Engelbart's augmentation was about co-evolving the entire stack: tool, method, training, and language together. Nelson's Xanadu was about preserving the provenance layer — Events, attribution, and Flow — that platforms stripped away.</p>
+
+  <p>What was lost was not the patterns. It was the institutional container that kept them oriented toward augmentation rather than extraction. The craft of composition remains. The cooperative is the container that holds it.</p>
+</section>
+
+<!-- THE INVITATION -->
+<div class="featured-quote">
+  <p>"The prosocial web was not a utopian fantasy. It was a working research program with institutional support, technical infrastructure, and a coherent design philosophy."</p>
+</div>
+
+<section>
+  <div class="section-num">The Invitation</div>
+  <h2>Building the Other Path</h2>
+
+  <p>The prosocial web produced the internet, the mouse, hypertext, interactive computing, and the conceptual foundations for every tool we use today.</p>
+
+  <p>What it did not produce was an ownership model resilient enough to withstand corporate capture. That is the problem Techne exists to solve. Not by rejecting technology, but by grounding it in cooperative governance. Not by nostalgia for the past, but by completing work that was left unfinished.</p>
+
+  <p>If the current web is the web imposed on people, the cooperative web is the web people build for themselves. The tools exist. The legal structures exist. The historical precedent exists. What remains is the work.</p>
+</section>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="mark">τέχνη</div>
+  <p>The network was designed to augment human capability. We're returning to the original path — not from nothing, but from the accumulated intelligence of every thinker who understood what these tools were for.</p>
+  <div class="org">
+    Techne — The venture studio of RegenHub LCA<br>
+    A Colorado Public Benefit Limited Cooperative Association<br>
+    Boulder, Colorado — 2026
+  </div>
+</div>
+
+</main>
+</body>
+</html>

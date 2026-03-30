@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Techne — An Introduction</title>
+<meta name="description" content="Four essays on the tension between concentration and self-governance — in political life, in the scaling of craft, in the history of computing, and in cross-civilizational commons governance.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Techne — An Introduction in Four Essays">
+<meta property="og:description" content="Four essays on the tension between concentration and self-governance — from Techne, the venture studio of RegenHub LCA.">
+<meta property="og:url" content="https://techne.institute/introduction/">
+<meta property="og:site_name" content="Techne Institute">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Techne — An Introduction in Four Essays">
+<meta name="twitter:description" content="Four essays on the tension between concentration and self-governance.">
+<link rel="canonical" href="https://techne.institute/introduction/">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #1a1a1a;
+    --bg-hover: #222220;
+    --text: #e8e4df;
+    --text-dim: #9a9590;
+    --text-faint: #5a5550;
+    --accent: #c4956a;
+    --accent-dim: #8a6a4a;
+    --rule: #2a2520;
+    --serif: 'EB Garamond', 'Georgia', serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  .skip-link { position: absolute; top: -100%; left: 0; background: var(--accent); color: var(--bg); padding: 0.5rem 1rem; z-index: 200; font-family: var(--sans); font-size: 0.8rem; text-decoration: none; }
+  .skip-link:focus { top: 0; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 18px; scroll-behavior: smooth; background: var(--bg); }
+  body { font-family: var(--serif); color: var(--text); background: var(--bg); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  .hero {
+    min-height: 80vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 4rem 2rem; text-align: center; position: relative;
+  }
+  .hero::after { content: ''; position: absolute; bottom: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-dim), transparent); }
+
+  .hero .greek {
+    font-size: 2.4rem;
+    font-style: italic;
+    color: var(--accent);
+    font-family: var(--serif);
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .hero .premise {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--text-dim);
+    max-width: 34em;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .hero .org {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  /* --- SERIES INTRO --- */
+  .intro {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+  }
+  .intro p {
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    max-width: 36em;
+    margin: 0 auto 1.2rem;
+  }
+
+  /* --- ESSAY CARDS --- */
+  .series {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+  }
+
+  .essay-card {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s, border-color 0.2s;
+    position: relative;
+  }
+  .essay-card:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent-dim);
+  }
+
+  .essay-card .card-num {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .essay-card .card-title {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .essay-card .card-subtitle {
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .essay-card .card-themes {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+  }
+
+  .essay-card .card-arrow {
+    position: absolute;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-dim);
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .essay-card:hover .card-arrow { opacity: 1; }
+
+  /* --- CLOSING --- */
+  .closing {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+    text-align: center;
+    border-top: 1px solid var(--rule);
+  }
+  .closing p {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    max-width: 30em;
+    margin: 0 auto 1rem;
+    font-style: italic;
+  }
+  .closing .mark {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--accent);
+    font-style: italic;
+    margin-top: 2rem;
+  }
+  .closing .org {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    html { font-size: 16px; }
+    .hero .greek { font-size: 1.8rem; }
+    .hero h1 { font-size: 1.5rem; }
+    .essay-card { padding: 1.5rem; }
+    .essay-card .card-title { font-size: 1.3rem; }
+    .essay-card .card-arrow { display: none; }
+  }
+
+  @media print {
+    :root { --bg: #fff; --text: #111; --text-dim: #555; --text-faint: #999; --accent: #8a5a3a; --accent-dim: #aa7a5a; --rule: #ddd; --bg-card: #f5f5f0; }
+    .skip-link { display: none !important; }
+    .hero { min-height: auto; page-break-after: always; }
+    .essay-card { page-break-inside: avoid; }
+    a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: var(--text-dim); }
+    .essay-card .card-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+
+<main id="content">
+<div class="hero">
+  <div class="greek">τέχνη</div>
+  <h1>An Introduction in Four Essays</h1>
+  <div class="premise">
+    Every serious civilization has faced the same question: how do you build shared productive capacity that remains accountable to the people who exercise it? That question is not solved. It is held.
+  </div>
+  <div class="org">Techne — the venture studio of RegenHub LCA — Boulder, Colorado</div>
+</div>
+
+<div class="intro">
+  <p>These four essays explore the tension between concentration and self-governance — in political life, in the scaling of craft, in the history of computing, and in the cross-civilizational impulse to build shared information infrastructure. They are offered as context for the work Techne is doing: building cooperative digital infrastructure grounded in the longest traditions of commons governance.</p>
+  <p>Read in order, or begin wherever the question catches you.</p>
+</div>
+
+<div class="series">
+
+  <a href="empire-and-the-people-deck.html" class="essay-card">
+    <div class="card-num">Essay One</div>
+    <div class="card-title">Empire &amp; the People</div>
+    <div class="card-subtitle">On the oldest struggle in political life, and what it asks of us now.</div>
+    <div class="card-themes">Concentration vs. self-governance · The recurring cycle · Ostrom's commons · Taiwan's construction pattern · Cooperatives, commons, and civic technology</div>
+    <div class="card-arrow">→</div>
+  </a>
+
+  <a href="the-oldest-design-problem-deck.html" class="essay-card">
+    <div class="card-num">Essay Two</div>
+    <div class="card-title">The Oldest Design Problem</div>
+    <div class="card-subtitle">How do you scale craft without killing what makes it craft? That question is not solved. It is held.</div>
+    <div class="card-themes">τέχνη · Seven-layer pattern stack · First-order divergence · Economic Habitat Matrix · The cooperative advantage · Hesiod to Engelbart</div>
+    <div class="card-arrow">→</div>
+  </a>
+
+  <a href="what-was-the-web-for-deck.html" class="essay-card">
+    <div class="card-num">Essay Three</div>
+    <div class="card-title">What Was the Web For?</div>
+    <div class="card-subtitle">The network was designed to augment human capability, not capture human attention. We're returning to the original path.</div>
+    <div class="card-themes">Bush · Wiener · Licklider · Engelbart · Beer · Nelson · The divergence · Compositional fluency · Commons governance · Cooperative capital</div>
+    <div class="card-arrow">→</div>
+  </a>
+
+  <a href="older-than-the-wire-deck.html" class="essay-card">
+    <div class="card-num">Essay Four</div>
+    <div class="card-title">Older Than the Wire</div>
+    <div class="card-subtitle">The impulse to build shared information infrastructure is not Western, not modern, and not male. It is ancient, cross-cultural, and ongoing.</div>
+    <div class="card-themes">Quipu · Al-Khwarizmi · Kerala mathematics · Haudenosaunee governance · Ubuntu · Iriai commons · Taiwan · Zapatista autonomy · Kerala cooperatives</div>
+    <div class="card-arrow">→</div>
+  </a>
+
+</div>
+
+<div class="closing">
+  <p>The civilizations that managed the tension well did so through sustained institutional attention. The ones that didn't experienced the split. We are living in the split now. The work is to build what comes next.</p>
+  <div class="mark">Knowledge that lives in the making.</div>
+  <div class="org">
+    Techne — RegenHub LCA<br>
+    Boulder, Colorado — 2026<br>
+    Written in common. Offered freely.<br>
+    <a href="https://creativecommons.org/licenses/by-sa/4.0/" style="color: var(--text-faint); text-decoration: underline;">CC BY-SA 4.0</a> · <a href="https://github.com/RegenHub-Boulder/techne.institute" style="color: var(--text-faint); text-decoration: underline;">Source</a>
+  </div>
+</div>
+</main>
+
+</body>
+</html>

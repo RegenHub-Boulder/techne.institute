@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Older Than the Wire — Techne</title>
+<meta name="description" content="The impulse to build shared information infrastructure is not Western, not modern, and not male. It is ancient, cross-cultural, and ongoing.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Older Than the Wire — Techne">
+<meta property="og:description" content="The impulse to build shared information infrastructure is ancient, cross-cultural, and ongoing.">
+<meta property="og:url" content="https://techne.institute/introduction/older-than-the-wire-deck.html">
+<meta property="og:site_name" content="Techne Institute">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Older Than the Wire — Techne">
+<meta name="twitter:description" content="The impulse to build shared information infrastructure is ancient, cross-cultural, and ongoing.">
+<link rel="canonical" href="https://techne.institute/introduction/older-than-the-wire-deck.html">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #1a1a1a;
+    --bg-accent: #151515;
+    --text: #e8e4df;
+    --text-dim: #9a9590;
+    --text-faint: #5a5550;
+    --accent: #c4956a;
+    --accent-dim: #8a6a4a;
+    --rule: #2a2520;
+    --serif: 'EB Garamond', 'Georgia', serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  .skip-link { position: absolute; top: -100%; left: 0; background: var(--accent); color: var(--bg); padding: 0.5rem 1rem; z-index: 200; font-family: var(--sans); font-size: 0.8rem; text-decoration: none; }
+  .skip-link:focus { top: 0; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 18px; scroll-behavior: smooth; background: var(--bg); }
+  body { font-family: var(--serif); color: var(--text); background: var(--bg); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  .cover {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 4rem 2rem; text-align: center; position: relative;
+  }
+  .cover::after { content: ''; position: absolute; bottom: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-dim), transparent); }
+  .cover .companion { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 1.5rem; }
+  .cover .greek { font-size: 1rem; letter-spacing: 0.4em; color: var(--accent); text-transform: uppercase; font-family: var(--sans); font-weight: 300; margin-bottom: 3rem; }
+  .cover h1 { font-family: var(--serif); font-size: 3.2rem; font-weight: 400; line-height: 1.2; max-width: 16em; margin-bottom: 2rem; letter-spacing: -0.01em; }
+  .cover .subtitle { font-size: 1.15rem; font-style: italic; color: var(--text-dim); max-width: 34em; line-height: 1.6; margin-bottom: 3rem; }
+  .cover .byline { font-family: var(--sans); font-size: 0.75rem; color: var(--text-faint); letter-spacing: 0.15em; text-transform: uppercase; }
+  .cover .byline span { color: var(--text-dim); }
+
+  section { max-width: 42rem; margin: 0 auto; padding: 5rem 2rem; position: relative; }
+  section + section { border-top: 1px solid var(--rule); }
+  .section-num { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 0.5rem; }
+  h2 { font-family: var(--serif); font-size: 2rem; font-weight: 400; margin-bottom: 2rem; line-height: 1.3; }
+  h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 500; margin-top: 2.5rem; margin-bottom: 1rem; }
+  p { margin-bottom: 1.4rem; font-size: 1.05rem; }
+  strong { font-weight: 600; color: var(--text); }
+  .greek-word { font-style: italic; color: var(--accent); }
+
+  blockquote { border-left: 2px solid var(--accent-dim); padding: 1rem 0 1rem 1.5rem; margin: 2rem 0; font-style: italic; color: var(--text-dim); font-size: 1.1rem; line-height: 1.6; }
+
+  .featured-quote { max-width: 100%; padding: 5rem 2rem; text-align: center; background: var(--bg-accent); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .featured-quote p { font-family: var(--serif); font-size: 1.6rem; font-style: italic; color: var(--text-dim); max-width: 36rem; margin: 0 auto; line-height: 1.5; }
+  .featured-quote .attr { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); margin-top: 1.5rem; }
+
+  /* Tradition cards — single column, more space */
+  .tradition-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+  .tradition-card .t-region {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .tradition-card .t-name {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  .tradition-card .t-body {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .tradition-card .t-connection {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: var(--accent-dim);
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--rule);
+    font-style: italic;
+  }
+
+  /* Person cards for The Erased */
+  .person-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 1.5rem 2rem;
+    margin: 1.5rem 0;
+  }
+  .person-card .p-name {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .person-card .p-body {
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* Living practice cards */
+  .living-card {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+  }
+  .living-card .l-place {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .living-card .l-name {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  .living-card .l-body {
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .closing {
+    max-width: 42rem; margin: 0 auto; padding: 5rem 2rem 8rem; text-align: center;
+    border-top: 1px solid var(--rule);
+  }
+  .closing .mark { font-family: var(--serif); font-size: 1.6rem; font-style: italic; color: var(--accent); margin-bottom: 2rem; }
+  .closing p { color: var(--text-dim); font-size: 0.95rem; max-width: 30em; margin: 0 auto 1rem; }
+  .closing .org { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); margin-top: 3rem; }
+
+  @media (max-width: 640px) {
+    html { font-size: 16px; 
+    .tension { flex-direction: column; gap: 1rem; }
+    .series-nav { font-size: 0.7rem; }
+    .series-nav a, .series-nav .nav-disabled { min-height: 44px; display: inline-flex; align-items: center; }}
+    .cover h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.6rem; }
+    .featured-quote p { font-size: 1.3rem; }
+    section { padding: 3rem 1.5rem; }
+  }
+
+  @media print {
+    :root { --bg: #fff; --text: #111; --text-dim: #555; --text-faint: #999; --accent: #8a5a3a; --accent-dim: #aa7a5a; --rule: #ddd; --bg-card: #f5f5f0; }
+    .series-nav { display: none !important; }
+    .skip-link { display: none !important; }
+    body { padding-top: 0 !important; }
+    section { page-break-inside: avoid; }
+    a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: var(--text-dim); }
+    .cover { min-height: auto; page-break-after: always; }
+  }
+    .cover { min-height: auto; page-break-after: always; }
+    section { page-break-inside: avoid; }
+  }
+  /* --- SERIES NAV --- */
+  .series-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,10,0.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule); padding: 0.6rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.1em;
+  }
+  .series-nav a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .series-nav a:hover { color: var(--accent); }
+  .series-nav .nav-center { color: var(--text-faint); letter-spacing: 0.2em; text-transform: uppercase; }
+  .series-nav .nav-disabled { color: var(--text-faint); opacity: 0.3; }
+  body { padding-top: 2.5rem; }
+</style>
+</head>
+<body>
+<a href="#content" class="skip-link">Skip to content</a>
+<nav class="series-nav" aria-label="Series navigation"><a href="what-was-the-web-for-deck.html">← What Was the Web For?</a><a href="index.html" class="nav-center">Techne Introduction</a><span class="nav-disabled">End of Series</span></nav>
+
+<!-- COVER -->
+<main id="content">
+<div class="cover">
+  <div class="companion">Companion to "What Was the Web For?"</div>
+  <div class="greek">Techne Venture Studio</div>
+  <h1>Older Than the Wire</h1>
+  <div class="subtitle">
+    The impulse to build shared information infrastructure is not Western, not modern, and not male. It is ancient, cross-cultural, and ongoing. Techne inherits from all of it.
+  </div>
+  <div class="byline">
+    <span>Techne</span> — the venture studio of <span>RegenHub LCA</span> — Boulder, Colorado
+  </div>
+</div>
+
+<!-- THE BROADER RIVER -->
+<section>
+  <div class="section-num">The Broader River</div>
+  <h2>A Longer Story</h2>
+
+  <p>There is a story about computing that begins in 1945, at a desk in the US Office of Scientific Research and Development, with a man named Vannevar Bush imagining a machine for linking knowledge. It is a true story, as far as it goes. But it does not go very far.</p>
+
+  <p>That story positions the Western Cold War research tradition as the origin point for networked intelligence. In doing so, it obscures a much longer, wider, and more diverse history of humans building systems to share information, coordinate collective action, and govern shared resources.</p>
+
+  <p>These older traditions are not footnotes to computing history. They are parallel achievements, and in many cases, direct antecedents to the concepts the Western tradition claims as its own.</p>
+
+  <p>If Techne is serious about building cooperative digital infrastructure, we cannot build on a partial foundation. The lineage we draw from must be honest about what came before, what was borrowed without credit, and what living traditions are doing this work right now without waiting for Silicon Valley to catch up.</p>
+</section>
+
+<!-- INFORMATION BEFORE COMPUTERS -->
+<section>
+  <div class="section-num">Information Before Computers</div>
+  <h2>Systems Older Than the Machine</h2>
+
+  <p>The idea that information can be encoded, distributed, queried, and governed across a network is not a 20th century invention. Civilizations have built these systems for millennia, often with a sophistication that resists easy comparison to digital analogues precisely because they solved problems the digital tradition has not yet confronted.</p>
+
+  <div class="tradition-card">
+    <div class="t-region">Tawantinsuyu (Inca Empire)</div>
+    <div class="t-name">Quipu</div>
+    <div class="t-body">A system of knotted cords used to encode census data, tax records, resource inventories, and possibly narrative across a network spanning thousands of miles and millions of people. Quipu were not simply records. They were a distributed information architecture maintained by specialized practitioners called <em>quipucamayocs</em>, who functioned as both data stewards and accountants. The system operated without written language — not a limitation but a design choice: a protocol-level commitment to a different relationship between information and its medium. Scholars are still decoding its full complexity.</div>
+    <div class="t-connection">Pattern stack parallel: Identity + State + Relationship across a distributed network — maintained by specialized practitioners, not centralized authority.</div>
+  </div>
+
+  <div class="tradition-card">
+    <div class="t-region">Islamic Golden Age — 9th Century Baghdad</div>
+    <div class="t-name">Al-Khwarizmi and Algorithmic Thought</div>
+    <div class="t-body">Muhammad ibn Musa al-Khwarizmi, working in Baghdad's House of Wisdom, produced the texts that gave us the words <em>algorithm</em> and <em>algebra</em>. His work was not abstract mathematics. It was practical: methods for inheritance calculation, land measurement, and commercial accounting. The House of Wisdom itself was a collective intelligence institution — a publicly funded center where scholars from across traditions translated, synthesized, and extended Greek, Indian, Persian, and Chinese knowledge. It was, in function, a knowledge commons.</div>
+    <div class="t-connection">The first compositional fluency: practical patterns for inheritance, land, commerce — applied to context with care. The House of Wisdom was scenius, nine centuries before the word.</div>
+  </div>
+
+  <div class="tradition-card">
+    <div class="t-region">Kerala, South India — 14th–16th Century</div>
+    <div class="t-name">The Kerala School of Mathematics</div>
+    <div class="t-body">Mathematicians including Madhava of Sangamagrama developed infinite series expansions for trigonometric functions, anticipating European calculus by roughly two hundred years. This work was transmitted through a lineage of teacher-student relationships within a specific geographic and institutional context. It is a case study in how knowledge systems can be sustained across generations through governance structures that do not require corporate or state patronage.</div>
+    <div class="t-connection">Knowledge sustained through apprenticeship and place — the guild model before guilds, the commons without enclosure.</div>
+  </div>
+
+  <div class="tradition-card">
+    <div class="t-region">South Asia</div>
+    <div class="t-name">Place-Value Notation and Zero</div>
+    <div class="t-body">The numeral system that undergirds all of modern computing originated in Indian mathematical traditions, transmitted through Islamic scholarship to Europe. The ability to represent absence (zero) as a positive value, and to encode magnitude through position rather than repetition, is a foundational information design decision. Every digital system inherits it.</div>
+    <div class="t-connection">Layer 1 — Identity. The most fundamental design pattern in computing came from South Asia. This is not incidental. It is structural.</div>
+  </div>
+
+  <p>These are not curiosities from a pre-digital past. They are evidence of a cross-civilizational impulse: that communities facing coordination problems at scale will build information systems to solve them, and that the design of those systems reflects the values of the communities that build them.</p>
+</section>
+
+<!-- FEATURED QUOTE -->
+<div class="featured-quote">
+  <p>"Ostrom formalized what indigenous and traditional communities had been doing, successfully, for centuries."</p>
+  <div class="attr">The commons is not a theory. It is a practice older than the academy that studies it.</div>
+</div>
+
+<!-- GOVERNANCE BEFORE OSTROM -->
+<section>
+  <div class="section-num">Governance Before Ostrom</div>
+  <h2>The Commons Is Not a Theory</h2>
+
+  <p>Elinor Ostrom's eight design principles for governing shared resources, published in 1990, were groundbreaking within Western academic economics because they refuted the dominant assumption that commons always collapse into tragedy. But the practices she described were already ancient. Ostrom formalized what indigenous and traditional communities had been doing, successfully, for centuries.</p>
+
+  <div class="tradition-card">
+    <div class="t-region">Haudenosaunee (Iroquois) Confederacy</div>
+    <div class="t-name">The Great Law of Peace</div>
+    <div class="t-body">A multi-nation governance framework predating European contact, with codified processes for collective decision-making, conflict resolution, and intergenerational accountability. The Great Law's influence on early American democratic thought, particularly through Benjamin Franklin's direct engagement with Haudenosaunee leaders, is documented but systematically underacknowledged. It is a working example of federated governance at scale, maintained across centuries through oral tradition and institutional practice rather than written constitution.</div>
+    <div class="t-connection">Federated governance with intergenerational accountability — the design problem Techne inherits, at continental scale, sustained for centuries.</div>
+  </div>
+
+  <div class="tradition-card">
+    <div class="t-region">Southern Africa</div>
+    <div class="t-name">Ubuntu</div>
+    <div class="t-body"><em>Umuntu ngumuntu ngabantu</em>: a person is a person through other people. Ubuntu is not a metaphor or a slogan. It is a relational epistemology — a theory of knowledge grounded in the premise that individual identity and collective belonging are inseparable. This maps directly onto the cooperative principle of mutual benefit and onto the design challenge at the heart of Techne's work: how to build systems where individual agency and collective welfare reinforce rather than compete with each other.</div>
+    <div class="t-connection">The mutualistic zone of the Economic Habitat Matrix — not as aspiration but as living epistemology.</div>
+  </div>
+
+  <div class="tradition-card">
+    <div class="t-region">Japan</div>
+    <div class="t-name">Iriai Commons</div>
+    <div class="t-body">Japanese mountain and forest commons, governed through village-level institutions for centuries, demonstrate sustained collective resource management under conditions of scarcity and population pressure. These systems predate both Ostrom's framework and the Meiji-era enclosures that dismantled many of them. They are a reminder that commons governance does not fail on its own. It is destroyed by external imposition of private property regimes.</div>
+    <div class="t-connection">Commons governance works when the community that depends on the resource also governs it. Collapse comes from external enclosure — the same pattern that captured the web.</div>
+  </div>
+
+  <p>The pattern across these traditions is consistent: commons governance works when the community that depends on the resource also governs it. Collapse happens not from internal failure but from external enclosure. This is the same pattern that played out with the internet, and it is the pattern Techne's cooperative structure is designed to resist.</p>
+</section>
+
+<!-- THE ERASED -->
+<section>
+  <div class="section-num">The Erased</div>
+  <h2>Inside the Western Tradition</h2>
+
+  <p>Even within the Cold War research lineage, the standard narrative is incomplete. The people who built foundational systems were often rendered invisible by the same institutional structures that funded the work. Crediting them is not a gesture of inclusion. It is a correction of the historical record.</p>
+
+  <div class="person-card">
+    <div class="p-name">Jean Jennings Bartik, Kay McNulty, and the ENIAC Programmers</div>
+    <div class="p-body">Six women programmed ENIAC, the first general-purpose electronic computer. Their work was classified as "clerical" and they were left out of publicity photographs. They solved problems of logical flow, subroutine design, and debugging that remain foundational to software engineering. The fact that programming was gendered as secretarial work until it became prestigious and profitable is itself a case study in how credit follows power, not contribution.</div>
+  </div>
+
+  <div class="person-card">
+    <div class="p-name">Grace Hopper</div>
+    <div class="p-body">Developed the first compiler and championed the idea that programming languages should be human-readable, not machine-native. This is an augmentation argument: that the machine should adapt to human cognition, not the reverse. It is the same argument Engelbart made, but Hopper made it earlier, in working code, against institutional resistance.</div>
+  </div>
+
+  <div class="person-card">
+    <div class="p-name">Donella Meadows</div>
+    <div class="p-body">Brought systems dynamics out of MIT's Sloan School and into public discourse with <em>Limits to Growth</em> (1972) and later <em>Thinking in Systems</em> (2008). Her leverage points framework remains one of the most practical tools for understanding where intervention in complex systems actually matters. Her work connects directly to the cybernetic tradition of Wiener and Beer, but through the lens of ecology and planetary boundaries.</div>
+  </div>
+
+  <div class="person-card">
+    <div class="p-name">Elinor Ostrom</div>
+    <div class="p-body">The first woman to receive the Nobel Memorial Prize in Economic Sciences (2009), for work that the economics establishment had dismissed for decades. Her contribution was empirical: she studied communities that successfully governed commons and derived principles from their practice. In a field dominated by theoretical models predicting inevitable failure, she did fieldwork. The resistance she faced is inseparable from the significance of what she proved.</div>
+  </div>
+
+  <p><strong>The erasure is structural, not incidental.</strong> When programming was "women's work," it was clerical. When it became profitable, it became engineering. When commons governance was practiced by indigenous communities, it was primitive. When Ostrom described it in academic language, it was Nobel-worthy. The contribution does not change. The credit follows the power structure.</p>
+</section>
+
+<!-- THE LIVING PRACTICE -->
+<section>
+  <div class="section-num">The Living Practice</div>
+  <h2>Not Recovery, but Convergence</h2>
+
+  <p>The prosocial web is not something that was lost and must be excavated from Western archives. It is being built, right now, in places and by people that the standard narrative does not center.</p>
+
+  <div class="living-card">
+    <div class="l-place">Taiwan</div>
+    <div class="l-name">g0v and Civic Tech</div>
+    <div class="l-body">Taiwan's g0v (gov-zero) movement, catalyzed by the 2014 Sunflower Movement, has built one of the world's most functional civic technology ecosystems. Under the leadership of digital minister Audrey Tang, the Taiwanese government adopted radical transparency tools, deliberative polling platforms like Pol.is, and participatory budgeting systems. This is not an experiment or a pilot. It is national-scale infrastructure for democratic coordination, built cooperatively, operating in production, in a society under constant geopolitical pressure. It demonstrates that the prosocial web is not utopian. It is practical.</div>
+  </div>
+
+  <div class="living-card">
+    <div class="l-place">Chiapas, Mexico</div>
+    <div class="l-name">Zapatista Autonomous Governance</div>
+    <div class="l-body">Since 1994, Zapatista communities in Chiapas have maintained autonomous governance structures including cooperative education, healthcare, and economic systems that operate outside state and corporate frameworks. Their approach to technology is selective and self-determined: adopting tools that serve community needs while refusing dependencies that would compromise autonomy. This is commons governance in practice, without the academic framing.</div>
+  </div>
+
+  <div class="living-card">
+    <div class="l-place">Kerala, India</div>
+    <div class="l-name">The Cooperative Economy</div>
+    <div class="l-body">Kerala operates one of the world's densest cooperative networks, spanning banking, dairy, coir production, healthcare, and housing. Its cooperative tradition predates and exceeds Western cooperative movements in both scale and integration with public institutions. For Techne, Kerala is evidence that cooperative economics is not a niche alternative but a proven governance structure for complex, modern economies.</div>
+  </div>
+
+  <p>These are not inspirations to be cited and shelved. They are living proof that the work Techne undertakes is part of a broader, ongoing, global practice. The question is not whether cooperative digital infrastructure can work. It is whether those of us building it in the Western context can do so honestly, with full acknowledgment of where these ideas actually come from.</p>
+</section>
+
+<!-- FEATURED QUOTE -->
+<div class="featured-quote">
+  <p>"The corporation is roughly four hundred years old. Commons governance is thousands of years old. The enclosure of digital infrastructure by corporate ownership is not the natural state of things. It is a brief aberration in a much longer history of shared stewardship."</p>
+</div>
+
+<!-- THE COMMITMENT -->
+<section>
+  <div class="section-num">The Commitment</div>
+  <h2>Building on a Wider Foundation</h2>
+
+  <p>This broadened lineage changes what Techne is building and how we talk about it. We are not recovering a lost Western tradition. We are joining a convergence of practices — some ancient, some contemporary, most developed outside the institutions that typically receive credit for innovation.</p>
+
+  <p>This means designing systems that learn from <em>quipucamayocs</em> and <em>iriai</em> commons, not only from ARPANET and Xerox PARC. It means treating Taiwan's civic tech ecosystem as a peer implementation, not an exotic case study. It means understanding that the cooperative legal structures we use in Colorado are one expression of governance principles that have worked, in diverse forms, for longer than the modern corporation has existed.</p>
+
+  <p>Techne builds on that longer history. Not as tribute, but as practice.</p>
+</section>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="mark">τέχνη</div>
+  <p>The impulse to build shared information infrastructure is ancient, cross-cultural, and ongoing. The tools Techne builds inherit from all of it — from quipu to hypertext, from iriai to cooperative code, from ubuntu to programmable patronage.</p>
+  <p style="margin-top: 1.5rem; color: var(--accent); font-style: italic;">Not recovery, but convergence.</p>
+  <div class="org">
+    Techne — The venture studio of RegenHub LCA<br>
+    A Colorado Public Benefit Limited Cooperative Association<br>
+    Boulder, Colorado — 2026
+  </div>
+</div>
+
+</main>
+</body>
+</html>
