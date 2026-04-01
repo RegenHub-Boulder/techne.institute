@@ -72,6 +72,37 @@
     <h3>Soil, Not Plant</h3>
     <p>The central metaphor crystallized early: RegenHub is soil, not plant. A music label isn't a band. A venture studio isn't a startup. The cooperative provides infrastructure — space, legal structure, operational systems, capital access — for autonomous ventures to grow, mature, and eventually exit into their own structures.</p>
 
+    <!-- Soil-Not-Plant: Concentric Ring Diagram -->
+    <div class="diagram">
+      <svg viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg" style="max-width: 420px;">
+        <!-- Outer ring: Ventures -->
+        <circle cx="220" cy="220" r="200" fill="none" stroke="#8a6a4a" stroke-width="1" stroke-dasharray="6,4"/>
+        <circle cx="220" cy="220" r="200" fill="rgba(196,149,106,0.04)"/>
+        <text x="220" y="32" text-anchor="middle" fill="#5a5550" font-size="10" font-family="Inter,sans-serif" letter-spacing="0.15em" text-transform="uppercase">VENTURES</text>
+        <!-- Venture labels -->
+        <text x="95" y="100" text-anchor="middle" fill="#9a9590" font-size="12" font-family="'EB Garamond',serif">Parachute</text>
+        <text x="345" y="100" text-anchor="middle" fill="#9a9590" font-size="12" font-family="'EB Garamond',serif">Postage</text>
+        <text x="220" y="410" text-anchor="middle" fill="#9a9590" font-size="12" font-family="'EB Garamond',serif">Habitat</text>
+        <!-- Small venture nodes -->
+        <circle cx="95" cy="110" r="4" fill="#c4956a" opacity="0.6"/>
+        <circle cx="345" cy="110" r="4" fill="#c4956a" opacity="0.6"/>
+        <circle cx="220" cy="390" r="4" fill="#c4956a" opacity="0.6"/>
+        <!-- Middle ring: Infrastructure -->
+        <circle cx="220" cy="220" r="130" fill="none" stroke="#8a6a4a" stroke-width="1.5"/>
+        <circle cx="220" cy="220" r="130" fill="rgba(196,149,106,0.06)"/>
+        <text x="220" y="102" text-anchor="middle" fill="#9a9590" font-size="10" font-family="Inter,sans-serif" letter-spacing="0.1em">INFRASTRUCTURE</text>
+        <!-- Infrastructure labels around the ring -->
+        <text x="130" y="180" text-anchor="middle" fill="#5a5550" font-size="10" font-family="Inter,sans-serif">space</text>
+        <text x="310" y="180" text-anchor="middle" fill="#5a5550" font-size="10" font-family="Inter,sans-serif">legal</text>
+        <text x="130" y="270" text-anchor="middle" fill="#5a5550" font-size="10" font-family="Inter,sans-serif">systems</text>
+        <text x="310" y="270" text-anchor="middle" fill="#5a5550" font-size="10" font-family="Inter,sans-serif">capital</text>
+        <!-- Center: Cooperative -->
+        <circle cx="220" cy="220" r="55" fill="#141412" stroke="#c4956a" stroke-width="2"/>
+        <text x="220" y="215" text-anchor="middle" fill="#e8e4df" font-size="13" font-family="'EB Garamond',serif">RegenHub</text>
+        <text x="220" y="233" text-anchor="middle" fill="#c4956a" font-size="10" font-family="Inter,sans-serif">cooperative</text>
+      </svg>
+    </div>
+
     <h3>Four Membership Classes</h3>
     <table>
       <thead><tr><th>Class</th><th>Name</th><th>Type</th><th>Voting</th><th>Purpose</th></tr></thead>
@@ -89,6 +120,40 @@
 
     <h3>Revenue Architecture</h3>
     <p>Three revenue streams sustain the infrastructure: <strong>space revenue</strong> (coworking, studio rental, events), <strong>service revenue</strong> (coordination infrastructure, formation assistance, consulting), and <strong>venture reciprocity</strong> (1% commitment from each venture, plus 10% equity gift into the cooperative's venture basket).</p>
+
+    <!-- Revenue Architecture Flow -->
+    <div class="diagram">
+      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="max-width: 600px;">
+        <!-- Source nodes -->
+        <g transform="translate(80,40)">
+          <rect x="-60" y="-18" width="120" height="36" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+          <text x="0" y="4" text-anchor="middle" fill="#e8e4df" font-size="12" font-family="'EB Garamond',serif">Space Revenue</text>
+        </g>
+        <g transform="translate(80,100)">
+          <rect x="-60" y="-18" width="120" height="36" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+          <text x="0" y="4" text-anchor="middle" fill="#e8e4df" font-size="12" font-family="'EB Garamond',serif">Service Revenue</text>
+        </g>
+        <g transform="translate(80,160)">
+          <rect x="-60" y="-18" width="120" height="36" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+          <text x="0" y="4" text-anchor="middle" fill="#e8e4df" font-size="12" font-family="'EB Garamond',serif">Venture Reciprocity</text>
+        </g>
+        <!-- Center node -->
+        <g transform="translate(370,100)">
+          <rect x="-100" y="-30" width="200" height="60" rx="6" fill="#141412" stroke="#c4956a" stroke-width="2"/>
+          <text x="0" y="-4" text-anchor="middle" fill="#e8e4df" font-size="13" font-family="'EB Garamond',serif">Cooperative</text>
+          <text x="0" y="14" text-anchor="middle" fill="#c4956a" font-size="10" font-family="Inter,sans-serif">Infrastructure</text>
+        </g>
+        <!-- Arrows -->
+        <line x1="140" y1="40" x2="260" y2="90" stroke="#8a6a4a" stroke-width="1.5"/>
+        <line x1="140" y1="100" x2="260" y2="100" stroke="#8a6a4a" stroke-width="1.5"/>
+        <line x1="140" y1="160" x2="260" y2="110" stroke="#8a6a4a" stroke-width="1.5"/>
+        <polygon points="260,87 260,93 268,90" fill="#8a6a4a"/>
+        <polygon points="260,97 260,103 268,100" fill="#8a6a4a"/>
+        <polygon points="260,107 260,113 268,110" fill="#8a6a4a"/>
+        <!-- 1% label -->
+        <text x="170" y="175" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">1% + 10% equity</text>
+      </svg>
+    </div>
   </section>
 
   <section>
@@ -127,6 +192,27 @@
         <tr><td class="name">Community</td><td class="num">10%</td><td>Community building, mentorship, programming participation</td></tr>
       </tbody>
     </table>
+
+    <!-- Patronage Formula Bars -->
+    <div class="bar-viz">
+      <div class="bar-row">
+        <span class="bar-label">Labor</span>
+        <div class="bar-track"><div class="bar-fill" style="width: 40%;"></div><span class="bar-value">40%</span></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Revenue</span>
+        <div class="bar-track"><div class="bar-fill" style="width: 30%;"></div><span class="bar-value">30%</span></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Capital</span>
+        <div class="bar-track"><div class="bar-fill" style="width: 20%;"></div><span class="bar-value">20%</span></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Community</span>
+        <div class="bar-track"><div class="bar-fill" style="width: 10%;"></div><span class="bar-value">10%</span></div>
+      </div>
+    </div>
+
     <p>These weights are proposed, not ratified. The Financial Systems Committee — Aaron G Neyer and Todd Youngblood, first convened March 18-19, 2026 — is responsible for parameterizing the formula into operational definitions.</p>
 
     <h3>The Engine</h3>
@@ -149,20 +235,28 @@
   <section>
     <h2><span class="n">VII</span>The First Eight Weeks</h2>
 
-    <h4>Week 1 (Feb 6-12): Filing and Setup</h4>
-    <p>Entity filed. EIN application initiated (as partnership under Sub K). Bank account setup begun.</p>
-
-    <h4>Week 2 (Feb 13): Public Announcement</h4>
-    <p>Techne announced at ETHBoulder (February 13, 2026). The transition from informal alignment to legal reality became public.</p>
-
-    <h4>Weeks 3-4 (Feb 14-27): Architecture</h4>
-    <p>Governance decision: Class 1 only voting. Venture ownership confirmed. Finance systems discussions. Kevin strategy session for 1515 Walnut. Data room preparation initiated.</p>
-
-    <h4>Weeks 5-6 (Feb 28-Mar 14): Infrastructure</h4>
-    <p>Bylaws tool deployed. Workshop coordination surface activated at co-op.us. Sprint cadence established. Agent infrastructure (Nou + Dianoia) contributing through coordinated sprints. Over 300 sprints executed through the Workshop.</p>
-
-    <h4>Weeks 7-8 (Mar 15-31): Parameterization</h4>
-    <p>Financial Systems Committee convened. Patronage parameterization initiated. Patronage engine validated (184 tests). Formation Package architecture designed.</p>
+    <div class="timeline">
+      <div class="timeline-node">
+        <span class="tl-label">Week 1 &middot; Feb 6&#8211;12</span>
+        <span class="tl-event"><strong>Filing and Setup</strong> &#8212; Entity filed, EIN initiated, bank setup begun</span>
+      </div>
+      <div class="timeline-node">
+        <span class="tl-label">Week 2 &middot; Feb 13</span>
+        <span class="tl-event"><strong>Public Announcement</strong> &#8212; Techne announced at ETHBoulder</span>
+      </div>
+      <div class="timeline-node">
+        <span class="tl-label">Weeks 3&#8211;4 &middot; Feb 14&#8211;27</span>
+        <span class="tl-event"><strong>Architecture</strong> &#8212; Class 1 only voting, venture ownership confirmed, Kevin strategy session</span>
+      </div>
+      <div class="timeline-node">
+        <span class="tl-label">Weeks 5&#8211;6 &middot; Feb 28 &#8211; Mar 14</span>
+        <span class="tl-event"><strong>Infrastructure</strong> &#8212; Bylaws tool, Workshop activated, 300+ sprints, agent coordination</span>
+      </div>
+      <div class="timeline-node">
+        <span class="tl-label">Weeks 7&#8211;8 &middot; Mar 15&#8211;31</span>
+        <span class="tl-event"><strong>Parameterization</strong> &#8212; FSC convened, patronage engine validated (184 tests)</span>
+      </div>
+    </div>
   </section>
 
   <section>
@@ -182,6 +276,40 @@
   <section>
     <h2><span class="n">IX</span>Why It Matters</h2>
     <p>Most accounting tools are designed for extraction. They track what's taken, not what's contributed. They make competitive relationships legible and mutualistic ones invisible. The Economic Habitat Matrix maps this: governance orientation (dispersive to concentrative) against systemic relationship (extractive to contributive). Most organizations operate in the Competitive zone because that's what their tools can see.</p>
+
+    <!-- Economic Habitat Matrix -->
+    <div class="diagram">
+      <svg viewBox="0 0 500 460" xmlns="http://www.w3.org/2000/svg" style="max-width: 480px;">
+        <!-- Grid -->
+        <rect x="100" y="40" width="360" height="360" fill="none" stroke="#2a2520" stroke-width="1"/>
+        <line x1="280" y1="40" x2="280" y2="400" stroke="#2a2520" stroke-width="1"/>
+        <line x1="100" y1="220" x2="460" y2="220" stroke="#2a2520" stroke-width="1"/>
+        <!-- Axis labels -->
+        <text x="280" y="28" text-anchor="middle" fill="#5a5550" font-size="10" font-family="Inter,sans-serif" letter-spacing="0.1em">GOVERNANCE ORIENTATION</text>
+        <text x="88" y="220" text-anchor="end" fill="#5a5550" font-size="10" font-family="Inter,sans-serif" transform="rotate(-90,44,220)" letter-spacing="0.1em">SYSTEMIC RELATIONSHIP</text>
+        <!-- Axis endpoints -->
+        <text x="110" y="418" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">Dispersive</text>
+        <text x="412" y="418" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">Concentrative</text>
+        <text x="100" y="56" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">Contributive</text>
+        <text x="100" y="396" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">Extractive</text>
+        <!-- Quadrant labels -->
+        <!-- Top-left: Mutualistic (Dispersive + Contributive) -->
+        <rect x="101" y="41" width="178" height="178" fill="rgba(196,149,106,0.08)"/>
+        <text x="190" y="120" text-anchor="middle" fill="#c4956a" font-size="14" font-family="'EB Garamond',serif">Mutualistic</text>
+        <!-- Top-right: Paternalistic (Concentrative + Contributive) -->
+        <text x="370" y="120" text-anchor="middle" fill="#5a5550" font-size="14" font-family="'EB Garamond',serif">Paternalistic</text>
+        <!-- Bottom-left: Competitive (Dispersive + Extractive) -->
+        <text x="190" y="310" text-anchor="middle" fill="#5a5550" font-size="14" font-family="'EB Garamond',serif">Competitive</text>
+        <!-- Bottom-right: Monopolistic (Concentrative + Extractive) -->
+        <text x="370" y="310" text-anchor="middle" fill="#5a5550" font-size="14" font-family="'EB Garamond',serif">Monopolistic</text>
+        <!-- RegenHub marker -->
+        <circle cx="170" cy="140" r="6" fill="#c4956a"/>
+        <text x="185" y="144" fill="#e8e4df" font-size="10" font-family="Inter,sans-serif">RegenHub</text>
+        <!-- Descriptors -->
+        <text x="190" y="140" text-anchor="middle" fill="#9a9590" font-size="9" font-family="Inter,sans-serif" dy="18"></text>
+      </svg>
+    </div>
+
     <p>RegenHub exists to make the Contributive and Mutualistic zones operable. Not through ideology, but through infrastructure: legal structure (LCA), economic tracking (patronage engine), coordination surface (Workshop), and place-based grounding (Boulder, the watershed, the seasonal rhythms of this specific geography).</p>
     <p class="lead">The tools an organization uses to track value shape what it can see. What it can see determines whether it extracts or enriches. Techne is building the sensory apparatus for economic ecology.</p>
   </section>
@@ -196,3 +324,4 @@
 
 </body>
 </html>
+<!-- cache-bust 1775078272 -->

@@ -29,7 +29,7 @@
   </div>
 
   <section>
-    <h2><span class="n">1</span>Tax Treatment: Subchapter K</h2>
+    <h2><span class="n">1</span><span class="sym">&#9671;</span> Tax Treatment: Subchapter K</h2>
     <p>RegenHub elected partnership tax treatment under Subchapter K — a deliberate departure from the Meadow source template's Subchapter T (cooperative taxation). This is the most significant structural adaptation.</p>
     <table>
       <thead><tr><th>Dimension</th><th>Subchapter T (Meadow)</th><th>Subchapter K (RegenHub)</th></tr></thead>
@@ -44,7 +44,7 @@
   </section>
 
   <section>
-    <h2><span class="n">2</span>Capital Accounts</h2>
+    <h2><span class="n">2</span><span class="sym">&#9671;</span> Capital Accounts</h2>
     <p>Each member maintains two parallel accounts:</p>
 
     <h3>Book Capital Account (IRC 704(b))</h3>
@@ -56,6 +56,36 @@
 
     <h3>Tax Capital Account</h3>
     <p>Tracks member's tax basis in cooperative interest. Used for K-1 preparation. May diverge from book account due to 704(c) layers and timing differences.</p>
+
+    <!-- Capital Account Diagram -->
+    <div class="diagram">
+      <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" style="max-width: 560px;">
+        <!-- Book Account -->
+        <rect x="20" y="20" width="240" height="160" rx="6" fill="#141412" stroke="#c4956a" stroke-width="1.5"/>
+        <text x="140" y="48" text-anchor="middle" fill="#e8e4df" font-size="13" font-family="'EB Garamond',serif">Book Capital Account</text>
+        <text x="140" y="64" text-anchor="middle" fill="#c4956a" font-size="10" font-family="'JetBrains Mono',monospace">IRC 704(b)</text>
+        <line x1="40" y1="74" x2="240" y2="74" stroke="#2a2520" stroke-width="1"/>
+        <!-- Up arrows -->
+        <text x="40" y="96" fill="#6a9a6a" font-size="11" font-family="Inter,sans-serif">&#8593; Contributions</text>
+        <text x="40" y="114" fill="#6a9a6a" font-size="11" font-family="Inter,sans-serif">&#8593; Allocated income</text>
+        <!-- Down arrows -->
+        <text x="40" y="140" fill="#c46a6a" font-size="11" font-family="Inter,sans-serif">&#8595; Distributions</text>
+        <text x="40" y="158" fill="#c46a6a" font-size="11" font-family="Inter,sans-serif">&#8595; Allocated losses</text>
+
+        <!-- Tax Account -->
+        <rect x="320" y="20" width="240" height="160" rx="6" fill="#141412" stroke="#5a5550" stroke-width="1"/>
+        <text x="440" y="48" text-anchor="middle" fill="#e8e4df" font-size="13" font-family="'EB Garamond',serif">Tax Capital Account</text>
+        <text x="440" y="64" text-anchor="middle" fill="#5a5550" font-size="10" font-family="'JetBrains Mono',monospace">K-1 basis</text>
+        <line x1="340" y1="74" x2="540" y2="74" stroke="#2a2520" stroke-width="1"/>
+        <text x="340" y="96" fill="#9a9590" font-size="11" font-family="Inter,sans-serif">Mirrors book account</text>
+        <text x="340" y="114" fill="#9a9590" font-size="11" font-family="Inter,sans-serif">+ 704(c) adjustments</text>
+        <text x="340" y="140" fill="#9a9590" font-size="11" font-family="Inter,sans-serif">May diverge over time</text>
+
+        <!-- Connector -->
+        <line x1="260" y1="100" x2="320" y2="100" stroke="#5a5550" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="290" y="94" text-anchor="middle" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">&#8596;</text>
+      </svg>
+    </div>
 
     <h3>Substantial Economic Effect (704(b) Compliance)</h3>
     <ol>
@@ -70,7 +100,7 @@
   </section>
 
   <section>
-    <h2><span class="n">3</span>Patronage Allocation</h2>
+    <h2><span class="n">3</span><span class="sym">&#9671;</span> Patronage Allocation</h2>
 
     <h3>Proposed Formula</h3>
     <table>
@@ -82,6 +112,27 @@
         <tr><td class="name">Community</td><td class="num">10%</td><td>Governance, education, outreach, community development</td></tr>
       </tbody>
     </table>
+
+    <!-- Patronage Formula Bars -->
+    <div class="bar-viz">
+      <div class="bar-row">
+        <span class="bar-label">Labor</span>
+        <div class="bar-track"><div class="bar-fill" style="width: 40%;"></div><span class="bar-value">40%</span></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Revenue</span>
+        <div class="bar-track"><div class="bar-fill" style="width: 30%;"></div><span class="bar-value">30%</span></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Capital</span>
+        <div class="bar-track"><div class="bar-fill" style="width: 20%;"></div><span class="bar-value">20%</span></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Community</span>
+        <div class="bar-track"><div class="bar-fill" style="width: 10%;"></div><span class="bar-value">10%</span></div>
+      </div>
+    </div>
+
     <p>FSC initiated parameterization March 18-19, 2026. Operational definitions (how each factor is measured) are the FSC's primary task.</p>
 
     <h3>Allocation Mechanics</h3>
@@ -102,7 +153,7 @@
   </section>
 
   <section>
-    <h2><span class="n">4</span>Revenue Architecture</h2>
+    <h2><span class="n">4</span><span class="sym">&#9671;</span> Revenue Architecture</h2>
     <table>
       <thead><tr><th>Stream</th><th>Source</th><th>Status</th></tr></thead>
       <tbody>
@@ -111,6 +162,43 @@
         <tr><td class="name">Venture reciprocity</td><td>1% commitment + 10% equity gift</td><td>Committed (3 ventures)</td></tr>
       </tbody>
     </table>
+
+    <!-- Revenue → Economic Memory Diagram -->
+    <div class="diagram">
+      <svg viewBox="0 0 620 240" xmlns="http://www.w3.org/2000/svg" style="max-width: 600px;">
+        <!-- Revenue sources -->
+        <rect x="10" y="20" width="140" height="36" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="80" y="42" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Space Revenue</text>
+        <rect x="10" y="72" width="140" height="36" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="80" y="94" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Service Revenue</text>
+        <rect x="10" y="124" width="140" height="36" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="80" y="146" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Venture Reciprocity</text>
+        <!-- Arrows to center -->
+        <line x1="150" y1="38" x2="225" y2="80" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="150" y1="90" x2="225" y2="90" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="150" y1="142" x2="225" y2="100" stroke="#8a6a4a" stroke-width="1"/>
+        <!-- Center -->
+        <rect x="230" y="60" width="160" height="60" rx="6" fill="#141412" stroke="#c4956a" stroke-width="1.5"/>
+        <text x="310" y="85" text-anchor="middle" fill="#e8e4df" font-size="12" font-family="'EB Garamond',serif">Infrastructure</text>
+        <text x="310" y="102" text-anchor="middle" fill="#c4956a" font-size="9" font-family="Inter,sans-serif">cooperative operations</text>
+        <!-- Economic Memory outputs -->
+        <line x1="390" y1="75" x2="445" y2="50" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="390" y1="90" x2="445" y2="90" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="390" y1="105" x2="445" y2="130" stroke="#8a6a4a" stroke-width="1"/>
+        <!-- Time horizons -->
+        <rect x="450" y="30" width="155" height="36" rx="4" fill="#141412" stroke="#c4956a" stroke-width="1"/>
+        <text x="528" y="46" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Equity</text>
+        <text x="528" y="60" text-anchor="middle" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">long-term</text>
+        <rect x="450" y="72" width="155" height="36" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="528" y="88" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Royalties</text>
+        <text x="528" y="102" text-anchor="middle" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">medium-term</text>
+        <rect x="450" y="114" width="155" height="36" rx="4" fill="#141412" stroke="#5a5550" stroke-width="1"/>
+        <text x="528" y="130" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Patronage</text>
+        <text x="528" y="144" text-anchor="middle" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">current period</text>
+        <!-- Label -->
+        <text x="528" y="170" text-anchor="middle" fill="#5a5550" font-size="10" font-family="Inter,sans-serif" letter-spacing="0.08em">ECONOMIC MEMORY</text>
+      </svg>
+    </div>
 
     <h3>Economic Memory System</h3>
     <table>
@@ -124,7 +212,7 @@
   </section>
 
   <section>
-    <h2><span class="n">5</span>Venture Basket Model</h2>
+    <h2><span class="n">5</span><span class="sym">&#9671;</span> Venture Basket Model</h2>
     <p>Each venture commits 10% of its equity to RegenHub as a cooperative gift:</p>
     <table>
       <thead><tr><th>Pool</th><th>Allocation</th><th>Purpose</th></tr></thead>
@@ -133,6 +221,42 @@
         <tr><td class="name">Balance sheet reserve</td><td>8-9% per venture</td><td>Held by cooperative for future seasons</td></tr>
       </tbody>
     </table>
+
+    <!-- Venture Basket Flow -->
+    <div class="diagram">
+      <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" style="max-width: 600px;">
+        <!-- Ventures -->
+        <rect x="10" y="20" width="110" height="34" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="65" y="41" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Parachute</text>
+        <rect x="10" y="64" width="110" height="34" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="65" y="85" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Postage</text>
+        <rect x="10" y="108" width="110" height="34" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="65" y="129" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Habitat</text>
+        <!-- 10% label -->
+        <text x="160" y="80" fill="#c4956a" font-size="10" font-family="'JetBrains Mono',monospace">10%</text>
+        <text x="155" y="92" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">equity gift</text>
+        <!-- Arrows to cooperative -->
+        <line x1="120" y1="37" x2="220" y2="75" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="120" y1="81" x2="220" y2="81" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="120" y1="125" x2="220" y2="88" stroke="#8a6a4a" stroke-width="1"/>
+        <!-- Cooperative -->
+        <rect x="225" y="55" width="150" height="52" rx="6" fill="#141412" stroke="#c4956a" stroke-width="2"/>
+        <text x="300" y="78" text-anchor="middle" fill="#e8e4df" font-size="12" font-family="'EB Garamond',serif">Cooperative</text>
+        <text x="300" y="96" text-anchor="middle" fill="#c4956a" font-size="9" font-family="Inter,sans-serif">venture basket</text>
+        <!-- Split arrows -->
+        <line x1="375" y1="70" x2="435" y2="45" stroke="#8a6a4a" stroke-width="1.5"/>
+        <line x1="375" y1="92" x2="435" y2="125" stroke="#8a6a4a" stroke-width="1.5"/>
+        <polygon points="433,41 433,49 441,45" fill="#8a6a4a"/>
+        <polygon points="433,121 433,129 441,125" fill="#8a6a4a"/>
+        <!-- Outputs -->
+        <rect x="440" y="25" width="165" height="40" rx="4" fill="#141412" stroke="#c4956a" stroke-width="1"/>
+        <text x="522" y="43" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Basket Fund</text>
+        <text x="522" y="57" text-anchor="middle" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">1-2% &#8594; investor members</text>
+        <rect x="440" y="105" width="165" height="40" rx="4" fill="#141412" stroke="#5a5550" stroke-width="1"/>
+        <text x="522" y="123" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Balance Sheet Reserve</text>
+        <text x="522" y="137" text-anchor="middle" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">8-9% &#8594; future seasons</text>
+      </svg>
+    </div>
 
     <h3>Founding Ventures</h3>
     <table>
@@ -149,7 +273,7 @@
   </section>
 
   <section>
-    <h2><span class="n">6</span>Committed Capital</h2>
+    <h2><span class="n">6</span><span class="sym">&#9671;</span> Committed Capital</h2>
     <table>
       <thead><tr><th>Investor</th><th class="num">Amount</th><th>Terms</th><th>Document</th></tr></thead>
       <tbody>
@@ -164,7 +288,7 @@
   </section>
 
   <section>
-    <h2><span class="n">7</span>Dissolution Waterfall</h2>
+    <h2><span class="n">7</span><span class="sym">&#9671;</span> Dissolution Waterfall</h2>
     <p>Simplified from Meadow's 4-tier to 3-tier:</p>
     <ol>
       <li>Pay debts and obligations</li>

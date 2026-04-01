@@ -41,9 +41,52 @@
     <h2>Reading Guide</h2>
     <p class="ss">Start with the story, then go deeper</p>
 
+    <div class="diagram">
+      <svg viewBox="0 0 760 180" xmlns="http://www.w3.org/2000/svg" style="max-width: 760px;">
+        <!-- Nodes -->
+        <g transform="translate(80,70)">
+          <circle cx="0" cy="0" r="28" fill="#141412" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="0" y="5" text-anchor="middle" fill="#e8e4df" font-size="18" font-family="'EB Garamond',Georgia,serif">&#182;</text>
+          <text x="0" y="42" text-anchor="middle" fill="#9a9590" font-size="11" font-family="Inter,sans-serif">Story</text>
+        </g>
+        <g transform="translate(260,70)">
+          <circle cx="0" cy="0" r="28" fill="#141412" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="0" y="5" text-anchor="middle" fill="#e8e4df" font-size="18" font-family="'EB Garamond',Georgia,serif">&#8801;</text>
+          <text x="0" y="42" text-anchor="middle" fill="#9a9590" font-size="11" font-family="Inter,sans-serif">Structure</text>
+        </g>
+        <g transform="translate(440,70)">
+          <circle cx="0" cy="0" r="28" fill="#141412" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="0" y="5" text-anchor="middle" fill="#e8e4df" font-size="16" font-family="'JetBrains Mono',monospace">&#9633;</text>
+          <text x="0" y="42" text-anchor="middle" fill="#9a9590" font-size="11" font-family="Inter,sans-serif">Operations</text>
+        </g>
+        <g transform="translate(620,70)">
+          <circle cx="0" cy="0" r="28" fill="#141412" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="0" y="5" text-anchor="middle" fill="#e8e4df" font-size="16" font-family="'JetBrains Mono',monospace">&#9675;</text>
+          <text x="0" y="42" text-anchor="middle" fill="#9a9590" font-size="11" font-family="Inter,sans-serif">Snapshots</text>
+        </g>
+        <!-- Reference branch -->
+        <g transform="translate(440,155)">
+          <circle cx="0" cy="0" r="20" fill="#141412" stroke="#5a5550" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="0" y="4" text-anchor="middle" fill="#9a9590" font-size="14" font-family="'EB Garamond',Georgia,serif">&#167;</text>
+          <text x="28" y="4" text-anchor="start" fill="#5a5550" font-size="10" font-family="Inter,sans-serif">Reference</text>
+        </g>
+        <!-- Connectors -->
+        <line x1="108" y1="70" x2="228" y2="70" stroke="#8a6a4a" stroke-width="1.5"/>
+        <line x1="288" y1="70" x2="408" y2="70" stroke="#8a6a4a" stroke-width="1.5"/>
+        <line x1="468" y1="70" x2="588" y2="70" stroke="#8a6a4a" stroke-width="1.5"/>
+        <!-- Arrowheads -->
+        <polygon points="228,66 228,74 236,70" fill="#8a6a4a"/>
+        <polygon points="408,66 408,74 416,70" fill="#8a6a4a"/>
+        <polygon points="588,66 588,74 596,70" fill="#8a6a4a"/>
+        <!-- Branch connector -->
+        <line x1="440" y1="98" x2="440" y2="135" stroke="#5a5550" stroke-width="1" stroke-dasharray="4,3"/>
+      </svg>
+    </div>
+
     <h3>The Story</h3>
     <div class="card-grid">
       <a href="narrative.html" class="card-link">
+        <span class="card-sym">&#182;</span>
         <span class="card-num">P330</span>
         <span class="card-title">Formation Narrative</span>
         <span class="card-desc">Chronological account from the conditions that preceded filing through the cooperative's first eight weeks. The human story of how RegenHub came into being.</span>
@@ -53,11 +96,13 @@
     <h3>The Structure</h3>
     <div class="card-grid">
       <a href="governance.html" class="card-link">
+        <span class="card-sym">&#8801;</span>
         <span class="card-num">P331</span>
         <span class="card-title">Governance Architecture</span>
         <span class="card-desc">Membership classes, voting rights, board structure, committees, dispute resolution. How decisions get made.</span>
       </a>
       <a href="financial.html" class="card-link">
+        <span class="card-sym">&#9671;</span>
         <span class="card-num">P332</span>
         <span class="card-title">Financial Infrastructure</span>
         <span class="card-desc">Capital accounts, patronage formula, venture basket model, tax treatment (Subchapter K), committed capital.</span>
@@ -67,11 +112,13 @@
     <h3>The Operations</h3>
     <div class="card-grid">
       <a href="tooling.html" class="card-link">
+        <span class="card-sym">&#9633;</span>
         <span class="card-num">P335</span>
         <span class="card-title">Operations Tooling</span>
         <span class="card-desc">Every system, service, and tool built during formation. URLs, maintainers, dependencies, repositories.</span>
       </a>
       <a href="open-items.html" class="card-link">
+        <span class="card-sym">&#9633;</span>
         <span class="card-num">P336</span>
         <span class="card-title">Open Items + Transition</span>
         <span class="card-desc">17 unresolved items with owners and priorities. The operations transition checklist: what must be true before formation is complete.</span>
@@ -81,11 +128,13 @@
     <h3>The Snapshots</h3>
     <div class="card-grid">
       <a href="q1-2026.html" class="card-link">
+        <span class="card-sym">&#9675;</span>
         <span class="card-num">P333</span>
         <span class="card-title">Q1 2026 Close Report</span>
         <span class="card-desc">The founding quarter. 323 sprints, $100K committed, patronage engine validated, FSC convened. Full financial and operational snapshot.</span>
       </a>
       <a href="spring-equinox-2026.html" class="card-link">
+        <span class="card-sym">&#9675;</span>
         <span class="card-num">P334</span>
         <span class="card-title">Spring Equinox 2026</span>
         <span class="card-desc">Seasonal close at the vernal equinox. Entity at 42 days: membership, capital, governance, ecological context.</span>
@@ -95,6 +144,7 @@
     <h3>Reference</h3>
     <div class="card-grid">
       <a href="decisions.html" class="card-link">
+        <span class="card-sym">&#167;</span>
         <span class="card-num">P329</span>
         <span class="card-title">Decisions Index</span>
         <span class="card-desc">All governance and structural decisions extracted from formation meetings. Pending meeting notes ingestion.</span>

@@ -39,6 +39,7 @@
 
   section{padding:3rem 0;border-top:1px solid var(--rule)}
   h2{font-family:var(--serif);font-size:1.6rem;font-weight:500;color:var(--text);margin-bottom:0.25rem}
+  h2 .sym{font-size:0.9em;color:var(--accent);margin-right:0.4rem}
   h2 .n{font-family:var(--mono);font-size:0.8rem;color:var(--accent);margin-right:0.5rem}
   .ss{font-family:var(--sans);font-size:0.75rem;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2rem}
   h3{font-family:var(--serif);font-size:1.15rem;font-weight:600;color:var(--text);margin:2rem 0 0.75rem}
@@ -157,17 +158,17 @@
     <span>|</span>
     <span>Boulder, Colorado</span>
   </div>
-  <div class="seal">Merkle Root: <span class="hash">335459a2...149b971a</span> &nbsp; Chain: <span class="hash">a224831b...78add80f</span></div>
+  <div class="seal">Merkle Root: <span class="hash">524ab08d...686aa37e</span> &nbsp; Chain: <span class="hash">585e2e22...d77b3cd8</span></div>
 </header>
 
 <main class="container">
 
   <!-- Summary Cards FIRST -->
   <div class="summary-cards">
-    <div class="summary-card"><span class="value">$3,808</span><span class="label">Safe Balance (Onchain)</span></div>
+    <div class="summary-card"><span class="value">$9,753</span><span class="label">Safe Balance (Multi-Chain)</span></div>
     <div class="summary-card"><span class="value">$0</span><span class="label">Mercury Bank</span></div>
     <div class="summary-card"><span class="value">$6,683</span><span class="label">Q1 Received</span></div>
-    <div class="summary-card"><span class="value">$5,150</span><span class="label">Q1 Disbursed</span></div>
+    <div class="summary-card"><span class="value">$7,153</span><span class="label">Q1 Disbursed</span></div>
     <div class="summary-card"><span class="value">$100K</span><span class="label">Capital Committed</span></div>
   </div>
 
@@ -202,26 +203,43 @@
 
   <!-- 1. Balance Sheet -->
   <section id="balance">
-    <h2><span class="n">01</span>Balance Sheet</h2>
+    <h2><span class="n">01</span><span class="sym">&#9671;</span> Balance Sheet</h2>
     <div class="ss">Treasury position at March 31, 2026 -- onchain verified</div>
 
-    <h3>Onchain Treasury (Safe Multisig, Optimism)</h3>
+    <h3>Onchain Treasury (Safe Multisig, Multi-Chain)</h3>
+
+    <p style="font-size:0.85rem;margin-bottom:1.5rem;">The same Safe address is deployed across Ethereum mainnet and Optimism. Balances tracked and reconciled independently per chain.</p>
+
+    <h4 style="font-family:var(--sans);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin:1.5rem 0 0.75rem;">Ethereum Mainnet</h4>
     <div class="accounts-row">
       <div class="account-card">
-        <div class="acct-name">USDC</div>
-        <div class="acct-balance">$2,808.41</div>
-        <div class="acct-detail">2,808.411728 USDC</div>
+        <div class="acct-name">USDC (Ethereum)</div>
+        <div class="acct-balance">$5,647.17</div>
+        <div class="acct-detail">5,647.170000 USDC</div>
+      </div>
+    </div>
+
+    <h4 style="font-family:var(--sans);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin:1.5rem 0 0.75rem;">Optimism</h4>
+    <div class="accounts-row">
+      <div class="account-card">
+        <div class="acct-name">USDC (Optimism)</div>
+        <div class="acct-balance">$3,058.41</div>
+        <div class="acct-detail">3,058.411753 USDC</div>
       </div>
       <div class="account-card">
-        <div class="acct-name">DAI</div>
+        <div class="acct-name">DAI (Optimism)</div>
         <div class="acct-balance">$1,000.00</div>
         <div class="acct-detail">1,000.00 DAI</div>
       </div>
       <div class="account-card">
-        <div class="acct-name">ETH</div>
+        <div class="acct-name">ETH (Optimism)</div>
         <div class="acct-balance">0.022 ETH</div>
-        <div class="acct-detail">Gas reserve</div>
+        <div class="acct-detail">~$47 gas reserve</div>
       </div>
+    </div>
+
+    <h4 style="font-family:var(--sans);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-faint);margin:1.5rem 0 0.75rem;">Fiat</h4>
+    <div class="accounts-row">
       <div class="account-card">
         <div class="acct-name">Mercury Bank</div>
         <div class="acct-balance">$0.00</div>
@@ -230,19 +248,20 @@
     </div>
 
     <table>
-      <thead><tr><th>Asset</th><th class="num">Balance</th><th>Notes</th></tr></thead>
+      <thead><tr><th>Asset</th><th>Chain</th><th class="num">Balance</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td class="name">USDC (Optimism)</td><td class="num">$2,808.41</td><td>Primary operating balance</td></tr>
-        <tr><td class="name">DAI (Optimism)</td><td class="num">$1,000.00</td><td>Stablecoin reserve</td></tr>
-        <tr><td class="name">ETH (Optimism)</td><td class="num">~$40</td><td>Gas reserve (0.022 ETH)</td></tr>
-        <tr><td class="name">Mercury checking</td><td class="num">$0.00</td><td>Fiat account, newly opened</td></tr>
+        <tr><td class="name">USDC</td><td>Ethereum</td><td class="num">$5,647.17</td><td>L1 settlement</td></tr>
+        <tr><td class="name">USDC</td><td>Optimism</td><td class="num">$3,058.41</td><td>Primary operating</td></tr>
+        <tr><td class="name">DAI</td><td>Optimism</td><td class="num">$1,000.00</td><td>Stablecoin reserve</td></tr>
+        <tr><td class="name">ETH</td><td>Optimism</td><td class="num">~$47</td><td>Gas reserve (0.022 ETH)</td></tr>
+        <tr><td class="name">Checking</td><td>Mercury</td><td class="num">$0.00</td><td>Fiat, newly opened</td></tr>
       </tbody>
       <tfoot>
-        <tr><td>Total Liquid</td><td class="num">~$3,848</td><td></td></tr>
+        <tr><td colspan="2">Total Liquid</td><td class="num">~$9,753</td><td></td></tr>
       </tfoot>
     </table>
 
-    <p style="font-size:0.85rem;color:var(--text-faint);">Safe address: <a href="https://app.safe.global/balances?safe=oeth:0xA594263e0449A28eAEf5BA6420E81cC1996b7782" style="color:var(--accent);text-decoration:none;font-family:var(--mono);font-size:0.8rem;">0xA594...b7782</a> (Optimism). Balances queried from Safe Transaction Service API at time of seal. Xero book balance ($15,943.02) includes cross-chain receivables and historical accruals -- see Reconciliation section.</p>
+    <p style="font-size:0.85rem;color:var(--text-faint);">Safe address: <a href="https://app.safe.global/balances?safe=oeth:0xA594263e0449A28eAEf5BA6420E81cC1996b7782" style="color:var(--accent);text-decoration:none;font-family:var(--mono);font-size:0.8rem;">0xA594...b7782</a> — deployed on Ethereum mainnet and Optimism. Balances queried from Safe Transaction Service API at time of seal. Xero book balance ($15,943.02) includes historical accruals — see Reconciliation section.</p>
 
     <h3>Capital Committed (Not Yet Received)</h3>
     <table>
@@ -257,7 +276,7 @@
 
   <!-- 2. Income Statement -->
   <section id="income">
-    <h2><span class="n">02</span>Income Statement</h2>
+    <h2><span class="n">02</span><span class="sym">&#9671;</span> Income Statement</h2>
     <div class="ss">Q1 2026 -- formation period, pre-revenue</div>
 
     <h3>Contributions Received (All Sources)</h3>
@@ -279,24 +298,26 @@
       <div class="bar-row"><div class="bar-label">Contributors (combined)</div><div class="bar-track"><div class="bar-fill green" style="width:21.7%"></div></div><div class="bar-value">$1,448.12</div></div>
     </div>
 
-    <h3>Disbursements</h3>
+    <h3>Disbursements (All Chains)</h3>
     <table>
-      <thead><tr><th>Date</th><th>Description</th><th class="num">Amount</th><th>Nonce</th></tr></thead>
+      <thead><tr><th>Date</th><th>Description</th><th>Chain</th><th class="num">Amount</th><th>Ref</th></tr></thead>
       <tbody>
-        <tr><td>Feb 10</td><td>Reimbursement -- facility supplies</td><td class="num" style="color:var(--red)">-$316.09</td><td style="font-family:var(--mono);font-size:0.8rem;color:var(--text-faint)">#20</td></tr>
-        <tr><td>Feb 11</td><td>Vendor invoice payment</td><td class="num" style="color:var(--red)">-$2,770.72</td><td style="font-family:var(--mono);font-size:0.8rem;color:var(--text-faint)">#21</td></tr>
-        <tr><td>Mar 27</td><td>Organizer reimbursement (Oct 25 -- Mar 26)</td><td class="num" style="color:var(--red)">-$2,063.00</td><td style="font-family:var(--mono);font-size:0.8rem;color:var(--text-faint)">#22</td></tr>
+        <tr><td>Feb 10</td><td>Reimbursement -- facility supplies</td><td><span class="tx-chain op">OP</span></td><td class="num" style="color:var(--red)">-$316.09</td><td style="font-family:var(--mono);font-size:0.7rem;color:var(--text-faint)">nonce #20</td></tr>
+        <tr><td>Feb 11</td><td>Vendor invoice payment</td><td><span class="tx-chain op">OP</span></td><td class="num" style="color:var(--red)">-$2,770.72</td><td style="font-family:var(--mono);font-size:0.7rem;color:var(--text-faint)">nonce #21</td></tr>
+        <tr><td>Mar 27</td><td>Organizer reimbursement (Oct -- Mar)</td><td><span class="tx-chain op">OP</span></td><td class="num" style="color:var(--red)">-$2,063.00</td><td style="font-family:var(--mono);font-size:0.7rem;color:var(--text-faint)">nonce #22</td></tr>
+        <tr><td>Mar 31</td><td>L1 disbursement</td><td><span class="tx-chain eth">ETH</span></td><td class="num" style="color:var(--red)">-$2,002.84</td><td style="font-family:var(--mono);font-size:0.7rem;color:var(--text-faint)">0xc996...</td></tr>
       </tbody>
-      <tfoot><tr><td colspan="2">Total Disbursed</td><td class="num" style="color:var(--red)">-$5,149.81</td><td></td></tr></tfoot>
+      <tfoot><tr><td colspan="3">Total Disbursed</td><td class="num" style="color:var(--red)">-$7,152.65</td><td></td></tr></tfoot>
     </table>
 
     <h3>Net Flow</h3>
     <table>
       <tbody>
-        <tr><td class="name">Total received</td><td class="num" style="color:var(--green)">+$6,682.55</td></tr>
-        <tr><td class="name">Total disbursed</td><td class="num" style="color:var(--red)">-$5,149.81</td></tr>
+        <tr><td class="name">Total received (all chains)</td><td class="num" style="color:var(--green)">+$6,682.55</td></tr>
+        <tr><td class="name">Total disbursed (Optimism)</td><td class="num" style="color:var(--red)">-$5,149.81</td></tr>
+        <tr><td class="name">Total disbursed (Ethereum L1)</td><td class="num" style="color:var(--red)">-$2,002.84</td></tr>
       </tbody>
-      <tfoot><tr><td>Net Q1 flow</td><td class="num">+$1,532.74</td></tr></tfoot>
+      <tfoot><tr><td>Net Q1 flow</td><td class="num" style="color:var(--red)">-$470.10</td></tr></tfoot>
     </table>
 
     <h3>Forward Projections (Q2+ Pro Forma)</h3>
@@ -324,34 +345,38 @@
 
   <!-- 3. Reconciliation -->
   <section id="reconciliation">
-    <h2><span class="n">03</span>Monthly Reconciliation</h2>
+    <h2><span class="n">03</span><span class="sym">&#9671;</span> Monthly Reconciliation</h2>
     <div class="ss">Xero book vs Safe onchain -- cross-source verification</div>
 
-    <p>Two data sources were reconciled: the Xero accounting system (book values, all chains) and the Safe multisig CSV export (onchain USDC on Optimism). Discrepancies are expected because Xero tracks across chains and converts at payment-time exchange rates.</p>
+    <p>Two data sources were reconciled: the Xero accounting system (book values, all chains) and the Safe multisig across Ethereum mainnet and Optimism. With multi-chain tracking, the reconciliation gap narrowed by $5,945.</p>
 
-    <h3>Xero Book Balance vs Onchain</h3>
+    <h3>Xero Book Balance vs Onchain (Multi-Chain)</h3>
     <table>
-      <thead><tr><th>Measure</th><th class="num">Xero Book</th><th class="num">Onchain Actual</th><th class="num">Delta</th></tr></thead>
+      <thead><tr><th>Measure</th><th class="num">Xero Book</th><th class="num">Onchain (All Chains)</th><th class="num">Delta</th></tr></thead>
       <tbody>
-        <tr><td class="name">Balance at Q1 end</td><td class="num">$15,943.02</td><td class="num">$3,808.41</td><td class="num" style="color:var(--red)">-$12,134.61</td></tr>
+        <tr><td class="name">Balance at Q1 end</td><td class="num">$15,943.02</td><td class="num">$9,752.75</td><td class="num" style="color:var(--red)">-$6,190.27</td></tr>
+        <tr><td class="name" style="color:var(--text-faint);font-size:0.85rem"><em>Prior (Optimism only)</em></td><td class="num" style="color:var(--text-faint);font-size:0.85rem">$15,943.02</td><td class="num" style="color:var(--text-faint);font-size:0.85rem">$3,808.41</td><td class="num" style="color:var(--text-faint);font-size:0.85rem">-$12,134.61</td></tr>
       </tbody>
     </table>
-    <p style="font-size:0.85rem;">The $12,135 gap represents: (1) Xero includes Ethereum L1 receivables not held in the Optimism Safe, (2) Xero includes Splits-protocol flows, (3) Xero has not reconciled the three Q1 disbursements (all marked "Unreconciled"), (4) historical accrual differences. The Xero balance is a book balance, not a cash position.</p>
+    <p style="font-size:0.85rem;">The $6,190 gap (reduced from $12,135) represents: (1) Xero includes Splits-protocol flows not held in either Safe, (2) four Q1 disbursements remain "Unreconciled" in Xero, (3) historical accrual differences and rate conversions. Multi-chain tracking closed $5,945 of the prior gap by including Ethereum mainnet USDC.</p>
 
-    <h3>Monthly Inflows</h3>
+    <h3>Monthly Inflows (Multi-Chain)</h3>
     <table>
-      <thead><tr><th>Month</th><th class="num">Xero Book</th><th class="num">Safe CSV (OP)</th><th class="num">Difference</th><th>Notes</th></tr></thead>
+      <thead><tr><th>Month</th><th class="num">Xero Book</th><th class="num">Safe (OP)</th><th class="num">Safe (L1)</th><th class="num">Total Onchain</th><th class="num">Diff</th></tr></thead>
       <tbody>
-        <tr><td>January</td><td class="num">$2,730.00</td><td class="num">$1,030.00</td><td class="num">$1,700.00</td><td style="font-size:0.75rem;color:var(--text-faint)">L1 + Splits not in Safe</td></tr>
-        <tr><td>February</td><td class="num">$2,799.53</td><td class="num">$1,405.00</td><td class="num">$1,394.53</td><td style="font-size:0.75rem;color:var(--text-faint)">L1 + Splits + rate diffs</td></tr>
-        <tr><td>March</td><td class="num">$1,297.55</td><td class="num">$590.00</td><td class="num">$707.55</td><td style="font-size:0.75rem;color:var(--text-faint)">L1 not in Safe</td></tr>
+        <tr><td>January</td><td class="num">$2,730.00</td><td class="num">$1,030.00</td><td class="num">$1,700.00</td><td class="num">$2,730.00</td><td class="num" style="color:var(--green)">$0</td></tr>
+        <tr><td>February</td><td class="num">$2,799.53</td><td class="num">$1,155.00</td><td class="num">$850.00</td><td class="num">$2,005.00</td><td class="num">$795</td></tr>
+        <tr><td>March</td><td class="num">$1,297.55</td><td class="num">$590.00</td><td class="num">$850.00</td><td class="num">$1,440.00</td><td class="num" style="color:var(--green)">-$142</td></tr>
       </tbody>
     </table>
+    <p style="font-size:0.85rem;color:var(--text-faint);">January reconciles exactly with multi-chain data. February gap ($795) likely Splits-protocol flows. March onchain exceeds Xero — timing difference in L1 recording.</p>
 
     <details>
       <summary>View all Q1 Safe transactions (inflows + outflows)</summary>
       <div>
         <div class="month-header">January 2026</div>
+        <div class="tx-item"><span class="tx-date">Jan 7</span><span class="tx-name">Infrastructure Partner</span><span class="tx-chain eth">ETH</span><span class="tx-amount inflow">+1,690 USDC</span><span class="tx-hash">L1 pending</span></div>
+        <div class="tx-item"><span class="tx-date">Jan 7</span><span class="tx-name">Infrastructure Partner</span><span class="tx-chain eth">ETH</span><span class="tx-amount inflow">+10 USDC</span><span class="tx-hash">L1 pending</span></div>
         <div class="tx-item"><span class="tx-date">Jan 9</span><span class="tx-name">Contributor</span><span class="tx-chain op">OP</span><span class="tx-amount inflow">+250 USDC</span><span class="tx-hash">0xe7c474...</span></div>
         <div class="tx-item"><span class="tx-date">Jan 15</span><span class="tx-name">Contributor</span><span class="tx-chain op">OP</span><span class="tx-amount inflow">+130 USDC</span><span class="tx-hash">0xd6322b...</span></div>
         <div class="tx-item"><span class="tx-date">Jan 16</span><span class="tx-name">Organizer</span><span class="tx-chain op">OP</span><span class="tx-amount inflow">+250 USDC</span><span class="tx-hash">0x382894...</span></div>
@@ -363,25 +388,28 @@
         <div class="tx-item"><span class="tx-date">Feb 6</span><span class="tx-name">Organizer</span><span class="tx-chain op">OP</span><span class="tx-amount inflow">+250 USDC</span><span class="tx-hash">0xf5899f...</span></div>
         <div class="tx-item"><span class="tx-date">Feb 6</span><span class="tx-name">Contributor</span><span class="tx-chain op">OP</span><span class="tx-amount inflow">+250 USDC</span><span class="tx-hash">0x892d3d...</span></div>
         <div class="tx-item"><span class="tx-date">Feb 9</span><span class="tx-name">Contributor</span><span class="tx-chain op">OP</span><span class="tx-amount inflow">+155 USDC</span><span class="tx-hash">0xc10558...</span></div>
+        <div class="tx-item"><span class="tx-date">Feb 10</span><span class="tx-name">Infrastructure Partner</span><span class="tx-chain eth">ETH</span><span class="tx-amount inflow">+850 USDC</span><span class="tx-hash">L1 pending</span></div>
         <div class="tx-item"><span class="tx-date">Feb 10</span><span class="tx-name">Reimbursement -- facility supplies</span><span class="tx-chain op">OP</span><span class="tx-amount outflow">-316.09</span><span class="tx-hash">nonce #20</span></div>
         <div class="tx-item"><span class="tx-date">Feb 11</span><span class="tx-name">Vendor invoice payment</span><span class="tx-chain op">OP</span><span class="tx-amount outflow">-2,770.72</span><span class="tx-hash">nonce #21</span></div>
 
         <div class="month-header">March 2026</div>
+        <div class="tx-item"><span class="tx-date">Mar 7</span><span class="tx-name">Infrastructure Partner</span><span class="tx-chain eth">ETH</span><span class="tx-amount inflow">+850 USDC</span><span class="tx-hash">L1 pending</span></div>
         <div class="tx-item"><span class="tx-date">Mar 8</span><span class="tx-name">Contributor</span><span class="tx-chain op">OP</span><span class="tx-amount inflow">+190 USDC</span><span class="tx-hash">0x051fc4...</span></div>
         <div class="tx-item"><span class="tx-date">Mar 12</span><span class="tx-name">Contributor</span><span class="tx-chain op">OP</span><span class="tx-amount inflow">+250 USDC</span><span class="tx-hash">0x100bce...</span></div>
         <div class="tx-item"><span class="tx-date">Mar 27</span><span class="tx-name">Organizer reimbursement</span><span class="tx-chain op">OP</span><span class="tx-amount outflow">-2,063.00</span><span class="tx-hash">nonce #22</span></div>
         <div class="tx-item"><span class="tx-date">Mar 27</span><span class="tx-name">Organizer</span><span class="tx-chain op">OP</span><span class="tx-amount inflow">+150 USDC</span><span class="tx-hash">0x34fa5a...</span></div>
+        <div class="tx-item"><span class="tx-date">Mar 31</span><span class="tx-name">L1 disbursement</span><span class="tx-chain eth">ETH</span><span class="tx-amount outflow">-2,002.84</span><span class="tx-hash">0xc996...</span></div>
       </div>
     </details>
   </section>
 
   <!-- 4. Action Items -->
   <section id="action-items">
-    <h2><span class="n">04</span>Action Items</h2>
+    <h2><span class="n">04</span><span class="sym">&#9633;</span> Action Items</h2>
     <div class="ss">Outstanding items entering Q2</div>
 
     <h3>Financial</h3>
-    <div class="open-item"><div><span class="tag blocker">Urgent</span></div><div class="content"><div class="item-title">Xero reconciliation</div><div class="item-desc">3 disbursements (totaling $5,149.81) are marked "Unreconciled" in Xero. Book balance ($15,943) does not match onchain ($3,808). Needs immediate reconciliation.</div></div></div>
+    <div class="open-item"><div><span class="tag blocker">Urgent</span></div><div class="content"><div class="item-title">Xero reconciliation</div><div class="item-desc">4 disbursements (totaling $7,152.65 across Optimism + Ethereum) are marked "Unreconciled" in Xero. Book balance ($15,943) vs onchain ($9,753) gap reduced to $6,190 with multi-chain tracking. Remaining gap needs Splits-protocol reconciliation.</div></div></div>
     <div class="open-item"><div><span class="tag blocker">Urgent</span></div><div class="content"><div class="item-title">Class 4 return structure</div><div class="item-desc">$100K committed from two investors. Return structure TBD by Financial Systems Committee. Capital cannot be formally accepted until terms are set.</div></div></div>
     <div class="open-item"><div><span class="tag open">High</span></div><div class="content"><div class="item-title">FSC: allocation formula weights</div><div class="item-desc">Patronage parameterization initiated March 18-19 but not finalized. Proposed: 40% labor / 30% revenue / 20% capital / 10% community.</div></div></div>
     <div class="open-item"><div><span class="tag open">High</span></div><div class="content"><div class="item-title">Budget establishment</div><div class="item-desc">Pro forma projects $110,500 annual OpEx. No formal budget adopted. Q1 actual disbursements ($5,150) had no budget authorization process.</div></div></div>
@@ -400,7 +428,7 @@
 
   <!-- 5. Entity Status -->
   <section id="entity">
-    <h2><span class="n">05</span>Entity Status</h2>
+    <h2><span class="n">05</span><span class="sym">&#8801;</span> Entity Status</h2>
     <div class="ss">Legal foundation</div>
     <div class="entity-card">
       <div class="entity-row"><div class="entity-key">Entity</div><div class="entity-value">RegenHub, LCA (DBA Techne)</div></div>
@@ -418,39 +446,39 @@
 
   <!-- 6. Merkle Seal -->
   <section id="merkle">
-    <h2><span class="n">06</span>Merkle Seal</h2>
+    <h2><span class="n">06</span><span class="sym">&#9675;</span> Merkle Seal</h2>
     <div class="ss">Cryptographic data integrity for open accounting</div>
 
     <p>Every financial transaction is hashed into a merkle tree. The tree provides verifiable integrity: anyone with the source data can confirm that no transaction has been altered after the quarterly seal. Q1 2026 is the genesis -- future quarters chain against this root.</p>
 
     <div>
       <div class="merkle-node chain">
-        <div class="merkle-label">Q1 2026 Chain Hash (genesis)</div>
-        <div class="merkle-hash">a224831be627aac63259d3250f33ffc201a47f90513e412eb09faf6478add80f</div>
-        <div class="merkle-meta">SHA-256(genesis + q1_root) -- chains to Q2</div>
+        <div class="merkle-label">Q1 2026 Chain Hash (genesis) — v2 multi-chain</div>
+        <div class="merkle-hash">585e2e227b2b38d3b80a69a376766972e767fe4dcd747b9ad4373d45d77b3cd8</div>
+        <div class="merkle-meta">SHA-256(genesis + q1_root) — chains to Q2</div>
       </div>
       <div class="merkle-connector">|</div>
       <div class="merkle-node root">
-        <div class="merkle-label">Q1 2026 Merkle Root</div>
-        <div class="merkle-hash">335459a235a313d527eb5f76a5262e2118dcbd503f54f1b8e27d3a68149b971a</div>
-        <div class="merkle-meta">17 transactions, 3 months</div>
+        <div class="merkle-label">Q1 2026 Merkle Root (multi-chain)</div>
+        <div class="merkle-hash">524ab08dff4209eec75501961f0c49ac81858870ec170dfca8e25f5d686aa37e</div>
+        <div class="merkle-meta">21 transactions (Ethereum + Optimism), 3 months — rebuilt from multi-chain data</div>
       </div>
       <div class="merkle-connector">|</div>
       <div class="merkle-months">
         <div class="merkle-node">
-          <div class="merkle-label">January (5 leaves)</div>
-          <div class="merkle-hash" style="font-size:0.65rem">23668276381ad89f...487ec</div>
-          <div class="merkle-meta">$2,730.00</div>
+          <div class="merkle-label">January (7 leaves)</div>
+          <div class="merkle-hash" style="font-size:0.65rem">6939cca72b14...df91e54</div>
+          <div class="merkle-meta">5 OP + 2 L1 = $2,730.00</div>
         </div>
         <div class="merkle-node">
-          <div class="merkle-label">February (9 leaves)</div>
-          <div class="merkle-hash" style="font-size:0.65rem">6e53335445f1d618...a7775</div>
-          <div class="merkle-meta">$2,799.53</div>
+          <div class="merkle-label">February (8 leaves)</div>
+          <div class="merkle-hash" style="font-size:0.65rem">254f823094...cf73a6</div>
+          <div class="merkle-meta">5 OP + 1 L1 + 2 disb = $2,005.00 in / $3,086.81 out</div>
         </div>
         <div class="merkle-node">
-          <div class="merkle-label">March (3 leaves)</div>
-          <div class="merkle-hash" style="font-size:0.65rem">e7253e2039d2d190...c13a</div>
-          <div class="merkle-meta">$1,297.55</div>
+          <div class="merkle-label">March (6 leaves)</div>
+          <div class="merkle-hash" style="font-size:0.65rem">7bb9ddf96b...2e0cc</div>
+          <div class="merkle-meta">3 OP + 1 L1 + 2 disb = $1,440.00 in / $4,065.84 out</div>
         </div>
       </div>
       <div class="merkle-connector">|</div>
@@ -463,35 +491,39 @@
 
     <div class="verify-box">
       <h4>Verify It Yourself</h4>
-      <div class="verify-code"># Verify genesis
+      <div class="verify-code"># Verify genesis (unchanged)
 echo -n "RegenHub,LCA|20261163853|Q0|000...000" | sha256sum
-# ef96fd02b2c3ae46...
+# ef96fd02b2c3ae46f8fa9b910ae834139af401f282361216edcd744ce3b45f2b
 
-# Verify a transaction leaf (Jan 1, Organizer A, 500 USDC)
-echo -n "2026-01-01|INV-0157|500.00|optimism" | sha256sum
-# aeac272707e727a9...
+# Verify an L1 leaf (Jan 7, Infrastructure Partner, 1690 USDC)
+echo -n "2026-01-07|L1-001|1690.00|ethereum" | sha256sum
 
-# Each leaf hashes: date|invoice_id|amount|chain
-# Leaves pair into monthly roots, roots into quarterly root
-# Chain hash = SHA-256(genesis_hash + q1_root)</div>
+# Verify an OP leaf (Jan 9, Contributor, 250 USDC)
+echo -n "2026-01-09|INV-0157|250.00|optimism" | sha256sum
+
+# Each leaf hashes: date|id|amount|chain
+# Leaves sort + hash into monthly roots
+# Monthly roots concatenate into quarterly root
+# Chain hash = SHA-256(genesis_hash + q1_root)
+# v2: 21 leaves across Ethereum + Optimism (was 17, OP only)</div>
     </div>
 
-    <p>The merkle tree currently covers Xero-sourced inflow transactions. Future iterations will incorporate Safe CSV outflows and cross-chain settlement proofs, creating a complete dual-entry merkle accounting chain.</p>
+    <p>The v2 merkle tree covers both Ethereum mainnet and Optimism transactions — inflows and outflows. 21 leaves across both chains. Future iterations will incorporate Splits-protocol flows and Xero book entries, completing the triple-entry accounting chain (book + onchain + merkle proof).</p>
   </section>
 
   <!-- Closing -->
   <section style="text-align:center;padding:4rem 0;">
     <p class="lead">Q1 was the seed quarter. Q2 is when it has to grow.</p>
     <div style="margin-top:2rem;font-family:var(--mono);font-size:0.7rem;color:var(--text-faint);">
-      Chain: a224831be627aac63259d3250f33ffc201a47f90513e412eb09faf6478add80f
+      Chain: 585e2e227b2b38d3b80a69a376766972e767fe4dcd747b9ad4373d45d77b3cd8
     </div>
   </section>
 
 </main>
 
 <footer>
-  <p>RegenHub, LCA (DBA Techne) -- Q1 2026 Close Report -- Sealed April 1, 2026</p>
-  <p style="margin-top:0.5rem;">Safe: <a href="https://app.safe.global/balances?safe=oeth:0xA594263e0449A28eAEf5BA6420E81cC1996b7782">0xA594...b7782</a> (Optimism) | Data: Xero, Safe CSV, Safe API, Google Sheets pro forma</p>
+  <p>RegenHub, LCA (DBA Techne) — Q1 2026 Close Report — Resealed April 1, 2026 (multi-chain v2)</p>
+  <p style="margin-top:0.5rem;">Safe: <a href="https://app.safe.global/balances?safe=oeth:0xA594263e0449A28eAEf5BA6420E81cC1996b7782">0xA594...b7782</a> (Ethereum + Optimism) | Data: Xero, Safe Transaction Service API (multi-chain), Google Sheets pro forma</p>
 </footer>
 
 <script>
