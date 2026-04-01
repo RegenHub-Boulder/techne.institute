@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Infrastructure — RegenHub, LCA</title>
+<meta name="description" content="Financial infrastructure of RegenHub, LCA. Capital accounts, patronage formula, venture basket model, Subchapter K tax treatment.">
+<link rel="stylesheet" href="formation.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="breadcrumb"><a href="/formation/">Formation Package</a> / Financial</div>
+</div>
+
+<div class="hero" style="min-height: 30vh;">
+  <div class="ql">P332 — Financial Infrastructure</div>
+  <h1>Capital, Patronage, and the Venture Basket</h1>
+  <div class="sub">Subchapter K partnership tax treatment with patronage-based allocation across four membership classes.</div>
+</div>
+
+<div class="container">
+
+  <div class="summary-cards">
+    <div class="summary-card"><span class="value">$100K</span><span class="label">Capital Committed</span></div>
+    <div class="summary-card"><span class="value">Sub K</span><span class="label">Tax Treatment</span></div>
+    <div class="summary-card"><span class="value">184</span><span class="label">Engine Tests</span></div>
+    <div class="summary-card"><span class="value">3</span><span class="label">Ventures</span></div>
+  </div>
+
+  <section>
+    <h2><span class="n">1</span>Tax Treatment: Subchapter K</h2>
+    <p>RegenHub elected partnership tax treatment under Subchapter K — a deliberate departure from the Meadow source template's Subchapter T (cooperative taxation). This is the most significant structural adaptation.</p>
+    <table>
+      <thead><tr><th>Dimension</th><th>Subchapter T (Meadow)</th><th>Subchapter K (RegenHub)</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Tax entity</td><td>Cooperative</td><td>Partnership (Form 1065)</td></tr>
+        <tr><td class="name">Member reporting</td><td>Qualified written notices</td><td>Schedule K-1</td></tr>
+        <tr><td class="name">Loss treatment</td><td>Board discretion</td><td>Pass-through per patronage formula</td></tr>
+        <tr><td class="name">Capital accounts</td><td>Equity account (cost basis)</td><td>IRC 704(b) book + parallel tax</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Why Sub K?</strong> The venture studio model requires: (1) loss pass-through to members during formation years, (2) flexible allocation of different income/loss types, (3) capital account precision for multi-class membership with varying economic interests.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span>Capital Accounts</h2>
+    <p>Each member maintains two parallel accounts:</p>
+
+    <h3>Book Capital Account (IRC 704(b))</h3>
+    <ul>
+      <li><strong>Increased by:</strong> cash/property contributions, allocated income and gain</li>
+      <li><strong>Decreased by:</strong> distributions, allocated losses and deductions</li>
+      <li><strong>Governs:</strong> liquidating distributions</li>
+    </ul>
+
+    <h3>Tax Capital Account</h3>
+    <p>Tracks member's tax basis in cooperative interest. Used for K-1 preparation. May diverge from book account due to 704(c) layers and timing differences.</p>
+
+    <h3>Substantial Economic Effect (704(b) Compliance)</h3>
+    <ol>
+      <li><strong>Economic Effect Test:</strong> Capital accounts maintained per regulations; liquidating distributions follow positive capital account balances; deficit restoration obligation (DRO) or qualified income offset (QIO)</li>
+      <li><strong>Liquidation follows capital accounts:</strong> Dissolution waterfall distributes based on capital account balances</li>
+      <li><strong>Substantiality:</strong> Allocations must have reasonable possibility of affecting dollar amounts received</li>
+    </ol>
+
+    <div class="card" style="border-left: 3px solid var(--accent);">
+      <p style="margin-bottom: 0;"><strong>Attorney review required:</strong> Jeff Pote must confirm QIO vs. DRO election, liquidation distribution language, and 704(c) method selection (Traditional / Curative / Remedial).</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span>Patronage Allocation</h2>
+
+    <h3>Proposed Formula</h3>
+    <table>
+      <thead><tr><th>Factor</th><th class="num">Weight</th><th>Measurement</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Labor</td><td class="num">40%</td><td>Hours contributed to cooperative operations and ventures</td></tr>
+        <tr><td class="name">Revenue</td><td class="num">30%</td><td>Revenue generated or attributed to member activity</td></tr>
+        <tr><td class="name">Capital</td><td class="num">20%</td><td>Cash and non-cash capital contributions</td></tr>
+        <tr><td class="name">Community</td><td class="num">10%</td><td>Governance, education, outreach, community development</td></tr>
+      </tbody>
+    </table>
+    <p>FSC initiated parameterization March 18-19, 2026. Operational definitions (how each factor is measured) are the FSC's primary task.</p>
+
+    <h3>Allocation Mechanics</h3>
+    <ul>
+      <li><strong>Frequency:</strong> Quarterly computation, annual reconciliation</li>
+      <li><strong>Distribution:</strong> Board discretion on timing and amount</li>
+      <li><strong>K-1 delivery:</strong> Annually per IRS deadlines</li>
+      <li><strong>Losses:</strong> Pass through per patronage-weighted formula</li>
+    </ul>
+
+    <h3>Patronage Engine</h3>
+    <p>The Habitat patronage engine was validated through Sprint S25 (March 17, 2026): 184 passing tests across 7 engine test files. Full lifecycle coverage: contribution recording, allocation calculation, distribution, equity tracking. Ready for production once FSC finalizes measurement methodology.</p>
+
+    <div class="card" style="border-left: 3px solid var(--accent);">
+      <h4 style="margin-top: 0;">Reconciliation Needed</h4>
+      <p style="margin-bottom: 0;">Bylaws use percentage weights (40/30/20/10) with categories Labor, Revenue, Cash, Community. Habitat templates use multiplier weights (1.0x, 1.5x, 0.5x, 1.0x) with categories Labor, Expertise, Capital, Relationship. The bylaws govern; the engine implements. These must be formally aligned.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span>Revenue Architecture</h2>
+    <table>
+      <thead><tr><th>Stream</th><th>Source</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Space revenue</td><td>Coworking, studio rental, events</td><td>Future (pending lease)</td></tr>
+        <tr><td class="name">Service revenue</td><td>Coordination infrastructure, consulting</td><td>Future</td></tr>
+        <tr><td class="name">Venture reciprocity</td><td>1% commitment + 10% equity gift</td><td>Committed (3 ventures)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Economic Memory System</h3>
+    <table>
+      <thead><tr><th>Horizon</th><th>Mechanism</th><th>Duration</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Equity</td><td>Stake in cooperative + venture ecosystem</td><td>Long-term</td></tr>
+        <tr><td class="name">Royalties</td><td>IP licensing, pattern deployment returns</td><td>Medium-term</td></tr>
+        <tr><td class="name">Patronage</td><td>Periodic allocation based on contribution</td><td>Current period</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="n">5</span>Venture Basket Model</h2>
+    <p>Each venture commits 10% of its equity to RegenHub as a cooperative gift:</p>
+    <table>
+      <thead><tr><th>Pool</th><th>Allocation</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Basket fund</td><td>1-2% per venture</td><td>Available to investor members</td></tr>
+        <tr><td class="name">Balance sheet reserve</td><td>8-9% per venture</td><td>Held by cooperative for future seasons</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Founding Ventures</h3>
+    <table>
+      <thead><tr><th>Venture</th><th>Domain</th><th>Lead</th><th>Equity Gift</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Parachute</td><td>Voice-first, local-first AI</td><td>Aaron Gabriel</td><td>10%</td></tr>
+        <tr><td class="name">Postage</td><td>Blockchain email filtering (USDC on Base)</td><td>Lucian Hymer</td><td>10%</td></tr>
+        <tr><td class="name">Habitat</td><td>Legal &amp; financial primitives, cooperative infrastructure</td><td>Todd Youngblood</td><td>10%</td></tr>
+      </tbody>
+    </table>
+    <p>Techne Institute is explicitly outside the basket — structured as nonprofit, funded by grants and tuition.</p>
+
+    <p class="lead">The cooperative as local ETF: ventures gift equity into a diversified ecosystem fund. The ecosystem — not any single venture — becomes the investable thing.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span>Committed Capital</h2>
+    <table>
+      <thead><tr><th>Investor</th><th class="num">Amount</th><th>Terms</th><th>Document</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Kevin Owocki</td><td class="num">$50,000</td><td>Return TBD by FSC</td><td>Pending (Jeff Pote)</td></tr>
+        <tr><td class="name">Jeremy Wood</td><td class="num">$50,000</td><td>Return TBD by FSC</td><td>Pending (Jeff Pote)</td></tr>
+      </tbody>
+      <tfoot><tr><td>Total</td><td class="num">$100,000</td><td colspan="2">Immediate use: 1515 Walnut lease</td></tr></tfoot>
+    </table>
+
+    <blockquote>"This capital contribution comes with no defined return to the investor. Any such return will be discussed and approved by the member body at a future date."</blockquote>
+    <p style="font-size: 0.85rem; color: var(--text-faint);">— Term sheet shape, agreed February 20, 2026 (Aaron G Neyer + Todd Youngblood)</p>
+  </section>
+
+  <section>
+    <h2><span class="n">7</span>Dissolution Waterfall</h2>
+    <p>Simplified from Meadow's 4-tier to 3-tier:</p>
+    <ol>
+      <li>Pay debts and obligations</li>
+      <li>Return capital account balances to members per IRC 704(b)</li>
+      <li>Distribute remainder per patronage-weighted allocation</li>
+    </ol>
+    <p><strong>Attorney review required:</strong> Jeff Pote must confirm the simplified version satisfies 704(b) requirements for liquidating distributions following capital account balances.</p>
+  </section>
+
+</div>
+
+<footer class="page-footer">
+  <a href="/formation/" class="back">Back to Formation Package</a>
+  <p>RegenHub, LCA -- Boulder, Colorado -- 2026</p>
+</footer>
+
+</body>
+</html>
