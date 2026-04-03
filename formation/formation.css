@@ -175,7 +175,7 @@ h2 .sym { font-size: 0.9em; }
 .priority-legend .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
 
 /* Health Indicators — Ecosystem Pulse */
-.health-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; padding: 2rem 0 1rem; }
+.health-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; padding: 2rem 0 1rem; max-width: 640px; margin: 0 auto; }
 .health-card { background: var(--bg-card); border: 1px solid var(--rule); border-radius: 10px; padding: 1.25rem 1.5rem; position: relative; overflow: hidden; }
 .health-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
 .health-card.homeostasis::before { background: linear-gradient(90deg, var(--green), var(--green-dim)); }
@@ -213,7 +213,6 @@ h2 .sym { font-size: 0.9em; }
   .entity-key { width: auto; margin-bottom: 0.1rem; }
   .card-grid { grid-template-columns: 1fr; }
   .summary-cards { grid-template-columns: repeat(2, 1fr); }
-  .health-grid { grid-template-columns: 1fr; }
   table { font-size: 0.8rem; }
   thead th, tbody td { padding: 0.4rem 0.5rem; }
 }
