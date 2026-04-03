@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Techne — A Vision for Civic Infrastructure</title>
+<meta name="description" content="Techne is a network of locally owned civic infrastructure nodes — third spaces that coordinate capability, economy, and community in specific places. This is the vision.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Techne — A Vision for Civic Infrastructure">
+<meta property="og:description" content="What if every city had a place that made it legible to itself? A network of locally owned nodes for coordination, capability, and participatory economy.">
+<meta property="og:url" content="https://techne.institute/vision/">
+<link rel="canonical" href="https://techne.institute/vision/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #08080a;
+    --ink: #0f0f12;
+    --charcoal: #1a1a1f;
+    --graphite: #2a2a30;
+    --slate: #3a3a42;
+    --parchment: #f7f5f0;
+    --cream: #ebe7df;
+    --bone: #d8d3c8;
+    --stone: #9a958a;
+    --ember: #c2512a;
+    --ember-dim: #8a3a1f;
+    --ember-glow: rgba(194, 81, 42, 0.08);
+    --sage: #4a5f4a;
+    --sage-light: #6b836b;
+    --warm: #c4956a;
+    --warm-dim: #8a6a4a;
+    --teal: #5a9a8a;
+    --teal-dim: #3a6a5a;
+    --font-display: 'Cormorant', serif;
+    --font-body: 'Source Serif 4', serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-code: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--void);
+    color: var(--bone);
+    line-height: 1.8;
+    font-size: 17px;
+    font-weight: 400;
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--void);
+    background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(140px);
+  }
+
+  .hero-glow-1 { width: 600px; height: 600px; top: -200px; right: -100px; background: rgba(196, 149, 106, 0.06); }
+  .hero-glow-2 { width: 500px; height: 500px; bottom: -150px; left: -100px; background: rgba(90, 154, 138, 0.05); }
+  .hero-glow-3 { width: 300px; height: 300px; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(194, 81, 42, 0.04); }
+
+  .hero-content {
+    max-width: 720px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-label {
+    font-family: var(--font-code);
+    font-size: 0.68rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    letter-spacing: -0.01em;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.4s forwards;
+  }
+
+  .hero-sub {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 540px;
+    margin: 0 auto;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.7s forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ LAYOUT ============ */
+  .frame {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  section {
+    padding: 5rem 0;
+  }
+
+  section + section {
+    border-top: 1px solid var(--graphite);
+  }
+
+  .section-mark {
+    font-family: var(--font-code);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm-dim);
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
+    color: #fff;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: var(--cream);
+    margin: 2.5rem 0 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    color: var(--stone);
+    margin-bottom: 1.25rem;
+    max-width: 62ch;
+    line-height: 1.8;
+  }
+
+  .lead {
+    font-size: 1.1rem;
+    color: var(--bone);
+    line-height: 1.85;
+  }
+
+  strong { color: var(--cream); font-weight: 500; }
+  em { font-style: italic; color: var(--warm); }
+
+  /* ============ CALLOUT ============ */
+  .callout {
+    margin: 2.5rem 0;
+    padding: 2rem 2.5rem;
+    border-left: 2px solid var(--warm-dim);
+    background: linear-gradient(135deg, rgba(196, 149, 106, 0.04) 0%, transparent 100%);
+  }
+
+  .callout p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--cream);
+    line-height: 1.7;
+    margin: 0;
+    max-width: none;
+  }
+
+  /* ============ NODE ANATOMY ============ */
+  .layer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin: 2.5rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .layer-grid { grid-template-columns: 1fr; }
+  }
+
+  .layer-card {
+    padding: 1.75rem;
+    border: 1px solid var(--graphite);
+    background: var(--ink);
+    transition: border-color 0.2s;
+  }
+
+  .layer-card:hover { border-color: var(--slate); }
+
+  .layer-num {
+    font-family: var(--font-code);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-dim);
+    margin-bottom: 0.75rem;
+  }
+
+  .layer-card h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .layer-card p {
+    font-size: 0.88rem;
+    color: var(--stone);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  /* ============ SUBSTRATE TEST ============ */
+  .substrate-block {
+    margin: 2.5rem 0;
+    padding: 2.5rem;
+    border: 1px solid var(--sage);
+    background: linear-gradient(135deg, rgba(74, 95, 74, 0.06) 0%, transparent 100%);
+    position: relative;
+  }
+
+  .substrate-label {
+    font-family: var(--font-code);
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sage-light);
+    margin-bottom: 1rem;
+  }
+
+  .substrate-block blockquote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.3rem;
+    color: #fff;
+    line-height: 1.6;
+    margin: 0 0 1.25rem;
+  }
+
+  .substrate-block p {
+    font-size: 0.92rem;
+    color: var(--bone);
+    margin: 0;
+    line-height: 1.75;
+  }
+
+  /* ============ FORMATION PHASES ============ */
+  .phase-track {
+    margin: 2.5rem 0;
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .phase-track::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, var(--warm) 0%, var(--teal) 50%, var(--graphite) 100%);
+  }
+
+  .phase {
+    padding: 1.5rem 0 2rem 2rem;
+    position: relative;
+  }
+
+  .phase::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem; top: 1.85rem;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--warm);
+    background: var(--void);
+  }
+
+  .phase:nth-child(2)::before { border-color: var(--teal); }
+  .phase:nth-child(3)::before { border-color: var(--stone); }
+
+  .phase-label {
+    font-family: var(--font-code);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .phase:nth-child(1) .phase-label { color: var(--warm); }
+  .phase:nth-child(2) .phase-label { color: var(--teal); }
+  .phase:nth-child(3) .phase-label { color: var(--stone); }
+
+  .phase h4 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+  }
+
+  .phase p {
+    font-size: 0.88rem;
+    color: var(--stone);
+    line-height: 1.75;
+  }
+
+  /* ============ NETWORK ============ */
+  .network-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin: 2.5rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .network-grid { grid-template-columns: 1fr; }
+  }
+
+  .network-card {
+    padding: 1.75rem;
+    border: 1px solid var(--graphite);
+    background: var(--ink);
+    text-align: center;
+  }
+
+  .network-card h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.15rem;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .network-card p {
+    font-size: 0.82rem;
+    color: var(--stone);
+    margin: 0;
+    line-height: 1.65;
+    max-width: none;
+  }
+
+  /* ============ PRINCIPLES ============ */
+  .principle-list {
+    margin: 2rem 0;
+    list-style: none;
+  }
+
+  .principle-list li {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--graphite);
+  }
+
+  .principle-list li:last-child { border-bottom: none; }
+
+  .principle-name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.15rem;
+    color: var(--cream);
+    margin-bottom: 0.35rem;
+  }
+
+  .principle-desc {
+    font-size: 0.9rem;
+    color: var(--stone);
+    line-height: 1.75;
+    max-width: 55ch;
+  }
+
+  /* ============ CLOSING ============ */
+  .closing {
+    padding: 5rem 0;
+    border-top: 1px solid var(--graphite);
+    text-align: center;
+  }
+
+  .closing h2 {
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+
+  .closing p {
+    max-width: 520px;
+    margin: 0 auto 1.25rem;
+    text-align: center;
+  }
+
+  .closing-mark {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--warm);
+    margin-top: 2.5rem;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid var(--graphite);
+  }
+
+  footer p {
+    font-family: var(--font-code);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--graphite);
+    max-width: none;
+    margin: 0;
+  }
+
+  footer a {
+    color: var(--slate);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  footer a:hover { color: var(--warm); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 640px) {
+    section { padding: 3.5rem 0; }
+    .callout { padding: 1.5rem; }
+    .substrate-block { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+  <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+  <div class="hero-glow hero-glow-3" aria-hidden="true"></div>
+  <div class="hero-content">
+    <p class="hero-label">A vision for civic infrastructure</p>
+    <h1>What if every city had a place that made it legible to itself?</h1>
+    <p class="hero-sub">Techne is a network of locally owned nodes &mdash; physical spaces where people meet, build, learn, coordinate, and generate local economy. Not a franchise. A shared grammar that each community speaks in its own voice.</p>
+  </div>
+</section>
+
+<div class="frame">
+
+  <!-- ============ THE PROBLEM ============ -->
+  <section>
+    <p class="section-mark">The gap</p>
+    <h2>The Infrastructure That Disappeared</h2>
+    <p class="lead">Every functioning society has had places where people gather informally &mdash; not at home, not at work, but in a third space where civic life happens. The barbershop, the public house, the town square, the temple courtyard. These places did more than host conversation. They coordinated local knowledge: who is building what, who needs help, what opportunities exist, what the community knows that no single person contains.</p>
+    <p>Over the last two decades, these spaces have been disappearing &mdash; replaced by platforms that extract attention into global feeds, concentrate capability in distant institutions, and substitute algorithmic connection for the kind that requires showing up. The result is a coordination crisis: people in the same city who don&rsquo;t know each other, skills that can&rsquo;t find needs, economic value that leaks out before it circulates locally, loneliness at epidemic scale.</p>
+    <p>The technology exists to rebuild this infrastructure. What&rsquo;s missing is the institutional form &mdash; a way to create, sustain, and replicate spaces that coordinate local capacity without extracting from the communities they serve.</p>
+  </section>
+
+  <!-- ============ WHAT TECHNE IS ============ -->
+  <section>
+    <p class="section-mark">The response</p>
+    <h2>Techne</h2>
+    <p class="lead">Techne is a network of civic infrastructure nodes &mdash; locally owned, cooperatively governed physical spaces that serve as the coordination layer for their city. Each node is a third space, a learning center, an economic engine, and a social fabric builder. Together, they form a peer-to-peer network that shares patterns while staying rooted in place.</p>
+
+    <div class="callout">
+      <p>Not a coworking space. Not a tech school. Not a community center. All of those things are layers within something larger: a place where a city becomes legible to itself &mdash; where the question &ldquo;who is doing what here?&rdquo; has an answer.</p>
+    </div>
+
+    <p>The name comes from the Greek <em>&tau;&#941;&chi;&nu;&eta;</em> &mdash; productive knowledge, the craft of bringing something into being. Not theory about making but the making itself. The word once held art, skill, and practical wisdom as a single capacity. Techne recovers that unity and applies it to the challenge of building local institutions that work.</p>
+  </section>
+
+  <!-- ============ ANATOMY OF A NODE ============ -->
+  <section>
+    <p class="section-mark">Anatomy</p>
+    <h2>What a Node Looks Like</h2>
+    <p class="lead">Every Techne node is different &mdash; shaped by its city, its people, its economy, its culture. But they share a common anatomy: five layers that together create the full civic infrastructure function.</p>
+
+    <div class="layer-grid">
+      <div class="layer-card">
+        <p class="layer-num">Layer 1</p>
+        <h4>Third Space</h4>
+        <p>A physical place where people gather &mdash; not to consume but to participate. Open to the city, not just to members. The default answer to &ldquo;what&rsquo;s happening tonight?&rdquo; Talks, salons, cultural events, meals, music. Demand exceeds capacity. The space is a Schelling point: the place you go when you want to find what your city is doing.</p>
+      </div>
+      <div class="layer-card">
+        <p class="layer-num">Layer 2</p>
+        <h4>Capability Engine</h4>
+        <p>Structured programs that develop human capability &mdash; not just transfer techniques. People leave with stance, not just skill: the judgment to know when and how to apply what they&rsquo;ve learned. Cohorts, workshops, apprenticeships, and the informal learning that happens when practitioners work alongside each other every day.</p>
+      </div>
+      <div class="layer-card">
+        <p class="layer-num">Layer 3</p>
+        <h4>Economic Hub</h4>
+        <p>Local jobs, business incubation, venture formation, freelance coordination. The space is an economic engine, not a cost center. Value generated here circulates locally before it leaks out. Members hire each other, fund each other, form companies together. The cooperative structure ensures the economics serve the community, not the other way around.</p>
+      </div>
+      <div class="layer-card">
+        <p class="layer-num">Layer 4</p>
+        <h4>Coordination Layer</h4>
+        <p>A living index of who is building what in this city. Skills, projects, opportunities, needs &mdash; surfaced and searchable. The node makes its community queryable: not through a database people never update but through the natural byproduct of people working together in a shared space with shared tools.</p>
+      </div>
+      <div class="layer-card" style="grid-column: 1 / -1;">
+        <p class="layer-num">Layer 5</p>
+        <h4>Social Fabric</h4>
+        <p>The layer that makes everything else work. Real relationships formed through repeated in-person interaction &mdash; the trust, reputation, and mutual accountability that emerge when people show up consistently. This is the social immune system: the capacity of a community to identify bad actors, support good ones, and maintain the norms that make coordination possible without coercion.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SUBSTRATE TEST ============ -->
+  <section>
+    <p class="section-mark">The discipline</p>
+    <h2>The Substrate Test</h2>
+    <p class="lead">Every institution arises from a substrate &mdash; the relationships, attention, trust, and local knowledge that make it possible. Most institutions eventually extract from their substrate. They monetize the attention. They commodify the relationships. They concentrate the capability. They debase the thing they arose from.</p>
+
+    <div class="substrate-block">
+      <p class="substrate-label">The test</p>
+      <blockquote>Does this node strengthen the relationships, skills, agency, and economic capacity of the people who participate? Or does it extract from them?</blockquote>
+      <p>This is the single design constraint that governs the entire network. A node that passes the substrate test &mdash; that regenerates what it arises from &mdash; is Techne. A node that fails it, regardless of how successful it looks by other metrics, is not.</p>
+    </div>
+
+    <p>This is not an aspiration. It is an operating discipline enforced through cooperative governance, transparent accounting, and a simple heuristic applied to every decision: <strong>do the people who pass through this place leave more capable, more connected, and more rooted in their city?</strong></p>
+
+    <p>A coworking space that isolates people into headphones fails. A learning program that creates dependency on the instructor fails. A community space that becomes a scene for insiders fails. A node that generates economic activity but exports it all fails. The test is applied at every layer, in every program, at every scale.</p>
+  </section>
+
+  <!-- ============ HOW NODES FORM ============ -->
+  <section>
+    <p class="section-mark">Formation</p>
+    <h2>How a Node Comes to Life</h2>
+    <p class="lead">Techne nodes are not deployed. They form &mdash; organically, from existing community, through a three-phase process that each node traverses at its own pace. The grammar describes the phases. The community decides the timing.</p>
+
+    <div class="phase-track">
+      <div class="phase">
+        <p class="phase-label">Phase I &mdash; Tribe + Space</p>
+        <h4>Dense Local Community</h4>
+        <p>A trusted group of 10&ndash;50 people gathers regularly in a physical space. Weekly rhythms, shared meals, the slow accumulation of mutual knowledge. First economic loops form: introductions, collaborations, help given without invoicing. The space is for insiders, and that&rsquo;s fine &mdash; every third place begins as someone&rsquo;s living room.</p>
+        <p><strong>Substrate check:</strong> Are the people forming real relationships? Are they more connected to their city, not less? If the answer is no, nothing that follows will work.</p>
+      </div>
+
+      <div class="phase">
+        <p class="phase-label">Phase II &mdash; City Schelling Point</p>
+        <h4>The Default Place</h4>
+        <p>The space evolves from &ldquo;my community&rdquo; to &ldquo;the place in this city.&rdquo; Programming expands: talks, classes, cultural events, workshops. Quality and curation drive demand beyond capacity. A local discovery layer emerges &mdash; the answer to &ldquo;what is happening here tonight?&rdquo; starts at this address. Light economic coordination begins: local projects showcased, skills connected to needs, early experiments with local funding.</p>
+        <p><strong>Substrate check:</strong> Is this space serving the whole city, or has it become a club? Does the programming weave ecosystems together, or compete with them? Is the curation high-signal?</p>
+      </div>
+
+      <div class="phase">
+        <p class="phase-label">Phase III &mdash; Replicable Grammar</p>
+        <h4>Protocol, Not Blueprint</h4>
+        <p>The patterns that worked become documentable, teachable, and adaptable. Not a franchise package &mdash; a shared grammar: how to form a cooperative, how to run capability-development programs, how to build a local discovery layer, how to apply the substrate test, how to bootstrap collective capacity. Other communities take the grammar and produce their own utterance &mdash; native to their place, accountable to their people.</p>
+        <p><strong>Substrate check:</strong> Does the replication process strengthen both the source and the new node? Or does it extract attention and resources from the original to feed expansion?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE NETWORK ============ -->
+  <section>
+    <p class="section-mark">The network</p>
+    <h2>Nodes Connected</h2>
+    <p class="lead">When multiple nodes exist, they form a network &mdash; not a hierarchy. Each node is locally owned and governed. What flows between them is knowledge, not control: patterns that work, tools that help, lessons learned, people in motion between cities.</p>
+
+    <div class="network-grid">
+      <div class="network-card">
+        <h4>Shared Grammar</h4>
+        <p>Formation patterns, governance templates, program designs, coordination tools. Open source, freely adapted. The grammar evolves as nodes contribute what they learn back to the commons.</p>
+      </div>
+      <div class="network-card">
+        <h4>Local Ownership</h4>
+        <p>Every node is a cooperative &mdash; owned and governed by its members. No central entity extracts fees, dictates programming, or controls brand. Nodes choose to affiliate because the grammar is useful, not because a contract requires it.</p>
+      </div>
+      <div class="network-card">
+        <h4>Portable Reputation</h4>
+        <p>A member of one node carries earned trust to any other. Not a credential &mdash; a track record of contribution, accumulated through observation and visible to the network. What you demonstrably do, not what you claim.</p>
+      </div>
+    </div>
+
+    <h3>What Flows Between Nodes</h3>
+    <p><strong>People.</strong> A maker in Boulder visits a node in Detroit and is immediately legible &mdash; their contributions, skills, and trust are portable. Residencies, exchanges, cross-pollination that enriches both places.</p>
+    <p><strong>Patterns.</strong> A program that works in one city becomes a template others can adapt. A governance solution invented under pressure in one node becomes available to all. The network compounds learning.</p>
+    <p><strong>Economy.</strong> Nodes can coordinate economic activity across cities &mdash; shared clients, distributed teams, collaborative projects. Value still circulates locally first, but the network provides reach that no single node could achieve.</p>
+    <p><strong>Nothing else.</strong> No franchise fees. No brand licensing. No central platform taking a cut. The network exists to serve the nodes, not the other way around.</p>
+  </section>
+
+  <!-- ============ PRINCIPLES ============ -->
+  <section>
+    <p class="section-mark">Commitments</p>
+    <h2>Design Principles</h2>
+    <p class="lead">These principles are not values on a wall. They are design constraints that govern how nodes are built, governed, and connected.</p>
+
+    <ul class="principle-list">
+      <li>
+        <div class="principle-name">Local First</div>
+        <div class="principle-desc">Every node is native to its place. Programs, governance, economic activity, and culture emerge from local conditions. The grammar provides structure; the community provides substance. A node in Medell&iacute;n will not look like a node in Boulder. That is the point.</div>
+      </li>
+      <li>
+        <div class="principle-name">Cooperative Ownership</div>
+        <div class="principle-desc">Nodes are owned by the people who use them. Not by investors, not by a parent company, not by a founder who got there first. Democratic governance ensures the institution remains accountable to its community. Surplus is reinvested or distributed to members, never extracted.</div>
+      </li>
+      <li>
+        <div class="principle-name">Regenerate the Substrate</div>
+        <div class="principle-desc">The substrate test is not optional. Every program, policy, and partnership is evaluated against a single question: does this leave our community&rsquo;s relationships, skills, agency, and economic capacity stronger than it found them? Growth that debases the substrate is not growth. It is consumption.</div>
+      </li>
+      <li>
+        <div class="principle-name">Online Drives Offline</div>
+        <div class="principle-desc">Technology serves the physical community, not the reverse. Digital tools make the node&rsquo;s coordination legible, its programming discoverable, its economy traceable. But the primary experience is showing up, being present, and building alongside others in a room. The screen is the map; the space is the territory.</div>
+      </li>
+      <li>
+        <div class="principle-name">Curation Over Scale</div>
+        <div class="principle-desc">The network grows by the quality of its nodes, not the quantity. A hundred thriving nodes that pass the substrate test are worth more than a thousand that have compromised on it. Signal over noise. Density over reach. Trust over growth.</div>
+      </li>
+      <li>
+        <div class="principle-name">Augment, Don&rsquo;t Replace</div>
+        <div class="principle-desc">Techne weaves into existing ecosystems, not over them. A node partners with the organizations already serving its city &mdash; libraries, schools, nonprofits, small businesses, local government. The goal is to strengthen what exists, not to compete with it. A rising tide, not a new island.</div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============ WHAT THIS MAKES POSSIBLE ============ -->
+  <section>
+    <p class="section-mark">The case</p>
+    <h2>What This Makes Possible</h2>
+
+    <h3>For a person</h3>
+    <p>You walk into a Techne node in your city. You don&rsquo;t need to know anyone. Within a week you know who is building what, what skills are in demand, and who you might collaborate with. Within a month you&rsquo;re participating in a program that develops real capability, working alongside people who challenge and support you. Within a quarter you have a track record of contribution that is legible to the entire network. You are more skilled, more connected, and more economically engaged in your city than you were before.</p>
+
+    <h3>For a city</h3>
+    <p>The node becomes the coordination layer the city didn&rsquo;t know it was missing. Local businesses find talent without recruiters. Founders find co-founders without accelerators. Learners find mentors without platforms. Cultural programming fills a calendar that used to be empty. Economic activity that would have leaked to remote platforms circulates locally first. The city develops a shared capacity to identify and respond to its own needs &mdash; the collective intelligence that emerges when people can actually find each other.</p>
+
+    <h3>For the network</h3>
+    <p>Each node that succeeds becomes proof that civic infrastructure can be cooperatively owned, locally governed, and economically sustainable. The grammar improves. The patterns compound. The network becomes a visible, working alternative to the extractive platforms that currently mediate civic life &mdash; not by opposing them but by building something better in specific places with specific people.</p>
+  </section>
+
+  <!-- ============ CLOSING ============ -->
+  <section class="closing">
+    <h2>This Is Being Built Now</h2>
+    <p class="lead" style="color: var(--bone); max-width: 520px;">The first Techne node is forming in Boulder, Colorado &mdash; a cooperative called RegenHub, operating from 1515 Walnut Street. It is in Phase I: a dense local community of builders developing the grammar through practice.</p>
+    <p>The grammar is open. The patterns will be shared as they are proven. If you see something here that your community needs, the next step is the same one it has always been for civic infrastructure:</p>
+    <p class="closing-mark">Gather the people. Find the space. Start building.</p>
+  </section>
+
+</div>
+
+<footer>
+  <p><a href="https://techne.institute">Techne</a> &bull; Vision &bull; 2026 &bull; <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></p>
+</footer>
+
+</body>
+</html>
