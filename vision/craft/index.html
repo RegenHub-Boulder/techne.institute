@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Techne — A Vision for the Crafts</title>
+<meta name="description" content="Techne recognizes eight fundamental crafts — ways of shaping the world that have existed in every culture and every century. Nodes form where crafts meet.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Techne — A Vision for the Crafts">
+<meta property="og:description" content="Eight crafts. Sixty-four archetypes. Nodes where craft meets place. A network built on what people actually do.">
+<meta property="og:url" content="https://techne.institute/vision/craft/">
+<link rel="canonical" href="https://techne.institute/vision/craft/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #08080a;
+    --ink: #0f0f12;
+    --charcoal: #1a1a1f;
+    --graphite: #2a2a30;
+    --slate: #3a3a42;
+    --cream: #ebe7df;
+    --bone: #d8d3c8;
+    --stone: #9a958a;
+    --ember: #c2512a;
+    --warm: #c4956a;
+    --warm-dim: #8a6a4a;
+    --sage: #4a5f4a;
+    --sage-light: #6b836b;
+    --teal: #7ccfb8;
+    --font-display: 'Cormorant', serif;
+    --font-body: 'Source Serif 4', serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-code: 'JetBrains Mono', monospace;
+
+    /* Craft colors */
+    --c-code:  #8bbfff;
+    --c-word:  #a6ed2a;
+    --c-form:  #d4a0e8;
+    --c-sound: #fbbf24;
+    --c-earth: #4a8c6f;
+    --c-body:  #e8927c;
+    --c-fire:  #ef4444;
+    --c-water: #7ccfb8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--void);
+    color: var(--bone);
+    line-height: 1.8;
+    font-size: 17px;
+    font-weight: 400;
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--void);
+    background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(140px);
+  }
+
+  .hero-glow-1 { width: 400px; height: 400px; top: -100px; left: 10%; background: rgba(139, 191, 255, 0.05); }
+  .hero-glow-2 { width: 350px; height: 350px; bottom: -80px; right: 15%; background: rgba(239, 68, 68, 0.04); }
+  .hero-glow-3 { width: 300px; height: 300px; top: 50%; left: 60%; transform: translate(-50%, -50%); background: rgba(74, 140, 111, 0.04); }
+
+  .hero-content {
+    max-width: 720px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-label {
+    font-family: var(--font-code);
+    font-size: 0.68rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 2rem;
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    letter-spacing: -0.01em;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.4s forwards;
+  }
+
+  .hero-sub {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 540px;
+    margin: 0 auto;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.7s forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ LAYOUT ============ */
+  .frame {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  section { padding: 5rem 0; }
+  section + section { border-top: 1px solid var(--graphite); }
+
+  .section-mark {
+    font-family: var(--font-code);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm-dim);
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
+    color: #fff;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: var(--cream);
+    margin: 2.5rem 0 1rem;
+  }
+
+  p {
+    color: var(--stone);
+    margin-bottom: 1.25rem;
+    max-width: 62ch;
+    line-height: 1.8;
+  }
+
+  .lead { font-size: 1.1rem; color: var(--bone); line-height: 1.85; }
+  strong { color: var(--cream); font-weight: 500; }
+  em { font-style: italic; color: var(--warm); }
+
+  .callout {
+    margin: 2.5rem 0;
+    padding: 2rem 2.5rem;
+    border-left: 2px solid var(--warm-dim);
+    background: linear-gradient(135deg, rgba(196, 149, 106, 0.04) 0%, transparent 100%);
+  }
+
+  .callout p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--cream);
+    line-height: 1.7;
+    margin: 0;
+    max-width: none;
+  }
+
+  /* ============ CRAFT GRID ============ */
+  .craft-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 2.5rem 0;
+  }
+
+  @media (max-width: 700px) {
+    .craft-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .craft-card {
+    padding: 1.5rem;
+    border: 1px solid var(--graphite);
+    background: var(--ink);
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .craft-card:hover { border-color: var(--slate); }
+
+  .craft-symbol {
+    font-family: var(--font-code);
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  .craft-card h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.15rem;
+    color: var(--cream);
+    margin-bottom: 0.35rem;
+  }
+
+  .craft-domain {
+    font-family: var(--font-code);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.5rem;
+  }
+
+  .craft-card p {
+    font-size: 0.82rem;
+    color: var(--stone);
+    margin: 0;
+    line-height: 1.65;
+    max-width: none;
+  }
+
+  /* ============ ARCHETYPE EXAMPLES ============ */
+  .archetype-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin: 2.5rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .archetype-grid { grid-template-columns: 1fr; }
+  }
+
+  .archetype-card {
+    padding: 1.5rem 1.75rem;
+    border: 1px solid var(--graphite);
+    background: var(--ink);
+    transition: border-color 0.2s;
+  }
+
+  .archetype-card:hover { border-color: var(--slate); }
+
+  .archetype-formula {
+    font-family: var(--font-code);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .archetype-card h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.15rem;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .archetype-card p {
+    font-size: 0.85rem;
+    color: var(--stone);
+    margin: 0;
+    line-height: 1.7;
+    max-width: none;
+  }
+
+  /* ============ NODE PATTERNS ============ */
+  .node-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin: 2.5rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .node-grid { grid-template-columns: 1fr; }
+  }
+
+  .node-card {
+    padding: 1.75rem;
+    border: 1px solid var(--graphite);
+    background: var(--ink);
+    transition: border-color 0.2s;
+  }
+
+  .node-card:hover { border-color: var(--slate); }
+
+  .node-type {
+    font-family: var(--font-code);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-dim);
+    margin-bottom: 0.75rem;
+  }
+
+  .node-card h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .node-card p {
+    font-size: 0.85rem;
+    color: var(--stone);
+    margin: 0 0 0.5rem;
+    line-height: 1.7;
+    max-width: none;
+  }
+
+  .node-card p:last-child { margin-bottom: 0; }
+
+  .node-crafts {
+    font-family: var(--font-code);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    margin-top: 0.75rem;
+  }
+
+  /* ============ GUILD TABLE ============ */
+  .guild-list {
+    margin: 2.5rem 0;
+    list-style: none;
+  }
+
+  .guild-item {
+    display: grid;
+    grid-template-columns: 50px 140px 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--graphite);
+    align-items: start;
+  }
+
+  .guild-item:last-child { border-bottom: none; }
+
+  @media (max-width: 500px) {
+    .guild-item { grid-template-columns: 40px 1fr; }
+    .guild-item .guild-name { grid-column: 2; }
+    .guild-item .guild-desc { grid-column: 1 / -1; }
+  }
+
+  .guild-symbol {
+    font-family: var(--font-code);
+    font-size: 1.3rem;
+    text-align: center;
+    line-height: 1;
+    padding-top: 0.15rem;
+  }
+
+  .guild-name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--cream);
+    line-height: 1.4;
+  }
+
+  .guild-desc {
+    font-size: 0.85rem;
+    color: var(--stone);
+    line-height: 1.7;
+  }
+
+  /* ============ CLOSING ============ */
+  .closing {
+    padding: 5rem 0;
+    border-top: 1px solid var(--graphite);
+    text-align: center;
+  }
+
+  .closing h2 { font-weight: 300; margin-bottom: 1.5rem; }
+
+  .closing p {
+    max-width: 520px;
+    margin: 0 auto 1.25rem;
+    text-align: center;
+  }
+
+  .closing-mark {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--warm);
+    margin-top: 2.5rem;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid var(--graphite);
+  }
+
+  footer p {
+    font-family: var(--font-code);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--graphite);
+    max-width: none;
+    margin: 0;
+  }
+
+  footer a { color: var(--slate); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--warm); }
+
+  @media (max-width: 640px) {
+    section { padding: 3.5rem 0; }
+    .callout { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+  <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+  <div class="hero-glow hero-glow-3" aria-hidden="true"></div>
+  <div class="hero-content">
+    <p class="hero-label">A vision for the crafts</p>
+    <h1>What you shape &mdash; and what shapes you</h1>
+    <p class="hero-sub">Techne recognizes eight fundamental crafts &mdash; ways of working that have existed in every culture and every century. Nodes form where crafts meet place. The network is built on what people actually do.</p>
+  </div>
+</section>
+
+<div class="frame">
+
+  <!-- ============ THE CRAFTS ============ -->
+  <section>
+    <p class="section-mark">The elements</p>
+    <h2>Eight Ways of Making</h2>
+    <p class="lead">Every person who enters a Techne node carries two crafts: a <strong>primary</strong> &mdash; what you shape &mdash; and a <strong>secondary</strong> &mdash; what shapes you. The combination is your archetype: the specific orientation you bring to any work, any community, any problem.</p>
+    <p>These are not job titles. They are not credentials. They are ways of engaging with the world that predate any industry and outlast any technology. A farmer, a fermentation scientist, and a landscape architect all practice <em>Earth</em>. A nurse, a mediator, and a community organizer all practice <em>Water</em>. The craft is deeper than the role.</p>
+
+    <div class="craft-grid">
+      <div class="craft-card">
+        <div class="craft-symbol" style="color: var(--c-code);">{ }</div>
+        <h4>Code</h4>
+        <div class="craft-domain">Systems &middot; Logic &middot; Automation</div>
+        <p>Programming, data infrastructure, algorithms. The loom on which patterns are woven.</p>
+      </div>
+      <div class="craft-card">
+        <div class="craft-symbol" style="color: var(--c-word);">&para;</div>
+        <h4>Word</h4>
+        <div class="craft-domain">Language &middot; Narrative &middot; Law</div>
+        <p>Writing, policy, teaching, translation. The medium that makes meaning legible.</p>
+      </div>
+      <div class="craft-card">
+        <div class="craft-symbol" style="color: var(--c-form);">&loz;</div>
+        <h4>Form</h4>
+        <div class="craft-domain">Shape &middot; Space &middot; The Visible</div>
+        <p>Design, architecture, visual art, cartography. Perception as practice.</p>
+      </div>
+      <div class="craft-card">
+        <div class="craft-symbol" style="color: var(--c-sound);">~</div>
+        <h4>Sound</h4>
+        <div class="craft-domain">Vibration &middot; Rhythm &middot; The Heard</div>
+        <p>Music, audio, acoustics, oral tradition. Resonance as connection.</p>
+      </div>
+      <div class="craft-card">
+        <div class="craft-symbol" style="color: var(--c-earth);">&nabla;</div>
+        <h4>Earth</h4>
+        <div class="craft-domain">Land &middot; Growth &middot; Materials</div>
+        <p>Agriculture, ecology, fermentation, herbalism. Life tending life.</p>
+      </div>
+      <div class="craft-card">
+        <div class="craft-symbol" style="color: var(--c-body);">&cir;</div>
+        <h4>Body</h4>
+        <div class="craft-domain">Movement &middot; Presence &middot; Health</div>
+        <p>Dance, athletics, bodywork, martial arts, cooking. The body as instrument.</p>
+      </div>
+      <div class="craft-card">
+        <div class="craft-symbol" style="color: var(--c-fire);">&triangle;</div>
+        <h4>Fire</h4>
+        <div class="craft-domain">Energy &middot; Transformation &middot; Catalysis</div>
+        <p>Engineering, activism, entrepreneurship. Energy directed with intention.</p>
+      </div>
+      <div class="craft-card">
+        <div class="craft-symbol" style="color: var(--c-water);">&ap;</div>
+        <h4>Water</h4>
+        <div class="craft-domain">Connection &middot; Flow &middot; Care</div>
+        <p>Facilitation, counseling, mediation, nursing. Flow as care.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ARCHETYPES ============ -->
+  <section>
+    <p class="section-mark">The intersections</p>
+    <h2>Sixty-Four Archetypes</h2>
+    <p class="lead">Primary craft &times; secondary craft = your archetype. Not a label imposed from outside but a recognition of how your crafts combine. <strong>8 &times; 8 = 64 unique archetypes</strong> &mdash; each one a distinct orientation to the work of making.</p>
+
+    <p>The archetype names reach into the history of craft itself. They are not metaphors. A <em>Terraformer</em> (Code &times; Earth) really does build digital systems informed by ecological patterns. A <em>Midwife</em> (Body &times; Water) really does bring things into being through presence and care. The names honor what the intersection actually produces.</p>
+
+    <div class="archetype-grid">
+      <div class="archetype-card">
+        <div class="archetype-formula" style="color: var(--c-code);"><span style="color: var(--c-code);">{ }</span> &times; <span style="color: var(--c-earth);">&nabla;</span></div>
+        <h4>Terraformer</h4>
+        <p>Builds digital systems shaped by ecological patterns. Data infrastructure that mirrors watersheds. Automation that respects cycles. The programmer who thinks in seasons.</p>
+      </div>
+      <div class="archetype-card">
+        <div class="archetype-formula"><span style="color: var(--c-word);">&para;</span> &times; <span style="color: var(--c-fire);">&triangle;</span></div>
+        <h4>Prophet</h4>
+        <p>Uses language as a catalyst for transformation. The organizer who writes the manifesto. The teacher whose words change what people think is possible. Narrative as accelerant.</p>
+      </div>
+      <div class="archetype-card">
+        <div class="archetype-formula"><span style="color: var(--c-earth);">&nabla;</span> &times; <span style="color: var(--c-sound);">~</span></div>
+        <h4>Beekeeper</h4>
+        <p>Tends living systems by listening to their vibrations. The farmer who reads the hive by its hum. The ecologist attuned to signals the rest of us miss. Stewardship through attention.</p>
+      </div>
+      <div class="archetype-card">
+        <div class="archetype-formula"><span style="color: var(--c-body);">&cir;</span> &times; <span style="color: var(--c-word);">&para;</span></div>
+        <h4>Storyteller</h4>
+        <p>Embodies narrative. The teacher who demonstrates rather than explains. The coach whose presence teaches more than their curriculum. Knowledge transmitted through doing, narrated as it happens.</p>
+      </div>
+      <div class="archetype-card">
+        <div class="archetype-formula"><span style="color: var(--c-water);">&ap;</span> &times; <span style="color: var(--c-code);">{ }</span></div>
+        <h4>Navigator</h4>
+        <p>Connects people through systems. Builds the pathways through complexity. The community organizer who also writes the coordination tools. Care expressed as infrastructure.</p>
+      </div>
+      <div class="archetype-card">
+        <div class="archetype-formula"><span style="color: var(--c-form);">&loz;</span> &times; <span style="color: var(--c-body);">&cir;</span></div>
+        <h4>Dancer</h4>
+        <p>Shapes space through movement. The architect who thinks in how bodies flow through rooms. The designer whose work you feel before you see. Form as kinesthetic intelligence.</p>
+      </div>
+      <div class="archetype-card">
+        <div class="archetype-formula"><span style="color: var(--c-fire);">&triangle;</span> &times; <span style="color: var(--c-water);">&ap;</span></div>
+        <h4>Distiller</h4>
+        <p>Transformation through care. The entrepreneur who builds businesses that heal. The engineer whose energy is directed toward connection. Fire tempered by water &mdash; intensity made sustainable.</p>
+      </div>
+      <div class="archetype-card">
+        <div class="archetype-formula"><span style="color: var(--c-sound);">~</span> &times; <span style="color: var(--c-form);">&loz;</span></div>
+        <h4>Luthier</h4>
+        <p>Builds the instruments. The sound designer who thinks in shapes. The musician who crafts the physical object that produces the vibration. Where the heard meets the visible.</p>
+      </div>
+    </div>
+
+    <h3>The Eight Pure Archetypes</h3>
+    <p>On the diagonal of the matrix sit the <strong>pure archetypes</strong> &mdash; those whose primary and secondary craft are the same. The Logician (Code &times; Code): systems all the way down. The Grower (Earth &times; Earth): life tending life. The Firekeeper (Fire &times; Fire): transformation sustaining itself. The Wellkeeper (Water &times; Water): connection nourishing connection. These are the anchors of each guild &mdash; the practitioners who go deepest rather than widest.</p>
+  </section>
+
+  <!-- ============ GUILDS ============ -->
+  <section>
+    <p class="section-mark">Communities of practice</p>
+    <h2>The Eight Guilds</h2>
+    <p class="lead">Your primary craft determines your guild. A guild is not a hierarchy &mdash; it is a commons of shared orientation. Everyone in the Guild of the Root practices Earth as their primary craft, whether their secondary is Code, Sound, Body, or anything else. The guild holds eight archetypes, each contributing a different perspective to the shared practice.</p>
+
+    <ul class="guild-list">
+      <li class="guild-item">
+        <div class="guild-symbol" style="color: var(--c-code);">{ }</div>
+        <div class="guild-name">Guild of the Loom</div>
+        <div class="guild-desc">Weavers of systems. Pattern upon pattern. Infrastructure, data, automation, the digital substrate that other crafts build on.</div>
+      </li>
+      <li class="guild-item">
+        <div class="guild-symbol" style="color: var(--c-word);">&para;</div>
+        <div class="guild-name">Guild of the Quill</div>
+        <div class="guild-desc">Keepers of language. Meaning made legible. Policy, narrative, education, translation &mdash; the craft that makes every other craft communicable.</div>
+      </li>
+      <li class="guild-item">
+        <div class="guild-symbol" style="color: var(--c-form);">&loz;</div>
+        <div class="guild-name">Guild of the Lens</div>
+        <div class="guild-desc">Shapers of the visible. Architecture, design, cartography, visual art &mdash; the craft of making perception itself a practice.</div>
+      </li>
+      <li class="guild-item">
+        <div class="guild-symbol" style="color: var(--c-sound);">~</div>
+        <div class="guild-name">Guild of the Bell</div>
+        <div class="guild-desc">Carriers of vibration. Music, sound design, oral tradition, acoustics &mdash; the craft that travels through bodies and walls alike.</div>
+      </li>
+      <li class="guild-item">
+        <div class="guild-symbol" style="color: var(--c-earth);">&nabla;</div>
+        <div class="guild-name">Guild of the Root</div>
+        <div class="guild-desc">Tenders of the living. Agriculture, ecology, fermentation, herbalism &mdash; the craft grounded in growth, season, and soil.</div>
+      </li>
+      <li class="guild-item">
+        <div class="guild-symbol" style="color: var(--c-body);">&cir;</div>
+        <div class="guild-name">Guild of the Hand</div>
+        <div class="guild-desc">Makers through presence. Dance, athletics, cooking, bodywork &mdash; the craft where skill lives in the body, not the mind alone.</div>
+      </li>
+      <li class="guild-item">
+        <div class="guild-symbol" style="color: var(--c-fire);">&triangle;</div>
+        <div class="guild-name">Guild of the Forge</div>
+        <div class="guild-desc">Agents of transformation. Engineering, entrepreneurship, activism &mdash; the craft of directing energy toward change with intention and discipline.</div>
+      </li>
+      <li class="guild-item">
+        <div class="guild-symbol" style="color: var(--c-water);">&ap;</div>
+        <div class="guild-name">Guild of the Spring</div>
+        <div class="guild-desc">Connectors and carriers. Facilitation, counseling, mediation, nursing &mdash; the craft that sustains everything else by ensuring nothing is left stranded.</div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============ NODES FROM CRAFT ============ -->
+  <section>
+    <p class="section-mark">Where craft meets place</p>
+    <h2>Nodes Form Where Crafts Converge</h2>
+    <p class="lead">A Techne node is not a generic coworking space that happens to have a craft vocabulary. It is a place where specific crafts converge around specific local conditions. The crafts present in a node shape its character, its programming, its economy, and its contribution to the network.</p>
+
+    <p>Some nodes form around a single dominant craft &mdash; a workshop town, a music scene, a farming collective. Others form at the intersection of two or three crafts that discover they need each other. The most generative nodes attract all eight, creating the full ecology of making. But <strong>every node starts with a specific convergence</strong>, not an abstract mission.</p>
+
+    <div class="node-grid">
+      <div class="node-card">
+        <div class="node-type">Convergence node</div>
+        <h4>The Food Lab</h4>
+        <p>A node where Earth meets Body meets Fire. Farmers, chefs, and food entrepreneurs in the same room. Fermentation workshops feed into a local food brand. The chef sources from the farmer who learned soil science from the ecologist down the hall. Economic loops close within a season.</p>
+        <div class="node-crafts" style="color: var(--c-earth);">&nabla; Earth &times; <span style="color: var(--c-body);">&cir; Body</span> &times; <span style="color: var(--c-fire);">&triangle; Fire</span></div>
+      </div>
+      <div class="node-card">
+        <div class="node-type">Convergence node</div>
+        <h4>The Civic Studio</h4>
+        <p>Code meets Word meets Water. Software developers, policy writers, and community organizers building local coordination tools. The app that tells a city what is happening tonight, built by people who live there and answer to the people who use it.</p>
+        <div class="node-crafts" style="color: var(--c-code);">{ } Code &times; <span style="color: var(--c-word);">&para; Word</span> &times; <span style="color: var(--c-water);">&ap; Water</span></div>
+      </div>
+      <div class="node-card">
+        <div class="node-type">Convergence node</div>
+        <h4>The Maker Hall</h4>
+        <p>Form meets Fire meets Sound. Designers, engineers, and musicians sharing fabrication tools and performance space. The luthier builds a guitar on the same bench where the hardware startup prototypes its first product. Art opening on Friday, demo day on Monday.</p>
+        <div class="node-crafts" style="color: var(--c-form);">&loz; Form &times; <span style="color: var(--c-fire);">&triangle; Fire</span> &times; <span style="color: var(--c-sound);">~ Sound</span></div>
+      </div>
+      <div class="node-card">
+        <div class="node-type">Convergence node</div>
+        <h4>The Healing House</h4>
+        <p>Body meets Water meets Earth. Bodyworkers, counselors, and herbalists creating an integrated wellness practice rooted in local ecology. The meditation teacher, the acupuncturist, and the herbalist share clients and a garden. Health as a practice of place.</p>
+        <div class="node-crafts" style="color: var(--c-body);">&cir; Body &times; <span style="color: var(--c-water);">&ap; Water</span> &times; <span style="color: var(--c-earth);">&nabla; Earth</span></div>
+      </div>
+    </div>
+
+    <h3>Between Nodes</h3>
+    <p>When nodes in different cities share a craft, they form <strong>guild bridges</strong> &mdash; living connections between the Guild of the Root in Boulder and the Guild of the Root in Oaxaca. Not a corporate partnership. A community of practice that spans geography. The farmer in one city and the farmer in another are already kin. The guild bridge makes that kinship functional: shared knowledge, portable reputation, exchange residencies, collaborative projects.</p>
+    <p>And when nodes with <em>different</em> dominant crafts connect, the network produces something no single node could: the Luthier in Detroit needs the Stonecutter in Carrara. The Navigator in Nairobi has a coordination pattern that the Civic Studio in Boulder needs. <strong>Craft diversity across nodes is the network&rsquo;s immune system</strong> &mdash; the guarantee that the whole is more capable than any part.</p>
+  </section>
+
+  <!-- ============ CRAFT AND ECONOMY ============ -->
+  <section>
+    <p class="section-mark">The living economy</p>
+    <h2>Craft as Economic Identity</h2>
+    <p class="lead">In the Techne network, your craft is not a hobby category. It is your economic identity &mdash; the basis on which you find collaborators, get hired, build a track record, and contribute to your node&rsquo;s productive capacity.</p>
+
+    <p><strong>Evidence, not credentials.</strong> Your archetype is not a badge you receive on day one and carry forever. It is a living record of what you demonstrably do &mdash; contributions observed, work produced, capability developed over time. A Terraformer who has spent two years building ecological data systems at the Boulder node carries that record to any node in the network. Reputation is earned, portable, and queryable.</p>
+
+    <p><strong>Craft evolution.</strong> People change. A Chronicler (Word &times; Code) discovers a calling in Earth and becomes a Seedkeeper (Earth &times; Word). The network remembers all past archetypes &mdash; your history of transformation is itself a form of craft. Reforging is not failure. It is the deepest expression of <em>techne</em>: the capacity to become something new through practice.</p>
+
+    <p><strong>Local circulation.</strong> When a node needs a capability, it queries its own craft composition first. The Food Lab needs a website? The Chronicler three desks away can build it. The Civic Studio needs someone who understands soil data? The Terraformer in the same building has been thinking about exactly that. Craft identity makes the local economy legible to itself &mdash; matchmaking that no algorithm needs to mediate, because the people are already in the same room.</p>
+  </section>
+
+  <!-- ============ WHY CRAFT MATTERS NOW ============ -->
+  <section>
+    <p class="section-mark">The case</p>
+    <h2>Why Craft Matters Now</h2>
+
+    <div class="callout">
+      <p>Automation is coming for tasks. It is not coming for craft. A task is something a system can perform. A craft is a relationship between a human, a material, a community, and a tradition. The distinction is the most important one in the economy ahead.</p>
+    </div>
+
+    <p>The word <em>techne</em> predates the split between art and engineering, between making and thinking, between manual and intellectual work. When the Greeks used it, they meant the whole thing: the potter&rsquo;s knowledge of clay, the shipwright&rsquo;s knowledge of wood and water, the healer&rsquo;s knowledge of the body in its environment. Productive knowledge inseparable from the practitioner who holds it.</p>
+
+    <p>We are entering a period when this older understanding becomes practically urgent. AI can perform tasks at scale. It cannot practice a craft. It cannot form the relationships within which craft produces value. It cannot tend a substrate. The economy that emerges on the other side of automation will be organized around <strong>what humans do that requires presence, relationship, judgment, and place</strong> &mdash; which is to say, around craft.</p>
+
+    <p>Techne builds the infrastructure for that economy before it fully arrives. The crafts are the ontology. The nodes are the institutions. The guilds are the communities of practice. The network is the connective tissue. And the substrate test &mdash; <em>does this regenerate or debase the relationships, skills, and local capacity it arises from?</em> &mdash; is the discipline that keeps the whole thing honest.</p>
+  </section>
+
+  <!-- ============ CLOSING ============ -->
+  <section class="closing">
+    <h2>What Is Your Craft?</h2>
+    <p class="lead" style="color: var(--bone); max-width: 520px;">Everyone carries at least two. The one you shape the world with and the one that shapes you back. The Techne network is built on the conviction that those crafts &mdash; named, practiced, composed &mdash; are the foundation of any economy worth building.</p>
+    <p>Sixty-four archetypes. Eight guilds. Nodes wherever crafts converge around a place and a purpose. A network that connects them without extracting from them.</p>
+    <p class="closing-mark">The craft is the unit. The node is the institution. The network is the commons.</p>
+  </section>
+
+</div>
+
+<footer>
+  <p><a href="https://techne.institute">Techne</a> &bull; <a href="/vision/">Vision</a> &bull; Craft &bull; 2026 &bull; <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></p>
+</footer>
+
+</body>
+</html>
