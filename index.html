@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Techne Institute | An Integral Technology Learning Center</title>
+    <title>Techne | Civic Infrastructure, Built in Common</title>
+    <meta name="description" content="Techne is a grammar for civic infrastructure — the craft of building shared capacity that remains accountable to the people who exercise it. RegenHub, Boulder is the first instance.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Techne — Civic Infrastructure, Built in Common">
+    <meta property="og:description" content="A grammar for local coordination, capability development, and participatory economy. The craft of building what comes next.">
+    <meta property="og:url" content="https://techne.institute/">
+    <meta property="og:site_name" content="Techne Institute">
+    <link rel="canonical" href="https://techne.institute/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -44,7 +51,6 @@
             overflow-x: hidden;
         }
 
-        /* Paper texture — below nav and content */
         body::before {
             content: '';
             position: fixed;
@@ -56,7 +62,7 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         }
 
-        /* ============ HERO — co-op.us aesthetic ============ */
+        /* ============ HERO ============ */
         .hero {
             min-height: 100vh;
             background-color: #08080a;
@@ -71,7 +77,6 @@
             overflow: hidden;
         }
 
-        /* Ambient glow orbs — co-op.us signature */
         .hero-glow {
             position: absolute;
             width: 500px;
@@ -133,7 +138,7 @@
             font-size: clamp(1rem, 2vw, 1.2rem);
             color: rgba(255, 255, 255, 0.5);
             margin: 0 auto;
-            max-width: 480px;
+            max-width: 520px;
             line-height: 1.65;
         }
 
@@ -147,7 +152,7 @@
             font-weight: 400;
             font-size: clamp(1.15rem, 2.5vw, 1.5rem);
             color: rgba(255, 255, 255, 0.85);
-            max-width: 500px;
+            max-width: 560px;
             margin: 0 auto 2.5rem;
             line-height: 1.6;
             opacity: 0;
@@ -269,7 +274,7 @@
             nav ul { gap: 0; justify-content: center; }
         }
 
-        /* ============ SECTION FRAME (replaces main max-width constraint) ============ */
+        /* ============ SECTION FRAME ============ */
         .section-frame {
             max-width: 820px;
             margin: 0 auto;
@@ -277,7 +282,6 @@
             position: relative;
         }
 
-        /* Running margin line — only on wide viewports */
         .section-frame::before {
             content: '';
             position: absolute;
@@ -304,7 +308,6 @@
             position: relative;
         }
 
-        /* Last section in each frame has no bottom border */
         .section-frame > section:last-child,
         section.no-border {
             border-bottom: none;
@@ -407,10 +410,6 @@
         .premise-block p { font-size: 0.95rem; margin: 0; }
 
         /* ============ DISTINCTION (full-bleed dark) ============ */
-        /*
-         * No negative-margin hack needed — this section lives outside
-         * .section-frame, so it naturally spans full viewport width.
-         */
         .distinction {
             background: var(--ink);
             padding: 6rem 2rem;
@@ -485,6 +484,53 @@
 
         .distinction-card p { font-size: 0.9rem; color: var(--stone); margin: 0; line-height: 1.7; }
         .distinction-card.highlight p { color: var(--bone); }
+
+        /* ============ SUBSTRATE (new section) ============ */
+        .substrate-test {
+            background: var(--cream);
+            padding: 3.5rem;
+            margin: 3rem 0;
+            border-left: 3px solid var(--sage);
+            position: relative;
+        }
+
+        .substrate-test::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(74, 95, 74, 0.03) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .substrate-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--sage);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .substrate-test blockquote {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 1.35rem;
+            font-weight: 400;
+            color: var(--charcoal);
+            line-height: 1.6;
+            margin: 0 0 1.5rem;
+            max-width: 55ch;
+            position: relative;
+        }
+
+        .substrate-test p {
+            font-size: 0.95rem;
+            color: var(--graphite);
+            position: relative;
+            margin-bottom: 0;
+        }
 
         /* ============ FRAMEWORK ============ */
         .framework-elements {
@@ -699,6 +745,99 @@
         .program-status.developing { background: var(--ember-glow); color: var(--ember); }
         .program-status.planned  { background: var(--bone); color: var(--stone); }
 
+        /* ============ PATTERN (full-bleed dark — new section) ============ */
+        .pattern {
+            background: var(--ink);
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .pattern::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 70% 0%, rgba(74, 95, 74, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 30% 100%, var(--ember-glow) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .pattern-inner {
+            max-width: 820px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pattern .section-mark { color: var(--stone); }
+        .pattern .section-mark::after { background: var(--graphite); }
+        .pattern h2 { color: var(--cream); }
+        .pattern .lead { color: var(--bone); }
+
+        .phase-track {
+            margin-top: 3rem;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .phase-track::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 1px;
+            background: linear-gradient(180deg, var(--ember) 0%, var(--sage-light) 50%, var(--graphite) 100%);
+        }
+
+        .phase {
+            padding: 2rem 0 2.5rem 2rem;
+            position: relative;
+        }
+
+        .phase::before {
+            content: '';
+            position: absolute;
+            left: -2.35rem; top: 2.35rem;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--ember);
+            background: var(--ink);
+        }
+
+        .phase:nth-child(2)::before { border-color: var(--sage-light); }
+        .phase:nth-child(3)::before { border-color: var(--bone); }
+
+        .phase-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ember);
+            margin-bottom: 0.5rem;
+        }
+
+        .phase:nth-child(2) .phase-label { color: var(--sage-light); }
+        .phase:nth-child(3) .phase-label { color: var(--bone); }
+
+        .phase h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--cream);
+            margin: 0 0 1rem;
+        }
+
+        .phase p { font-size: 0.9rem; color: var(--stone); margin: 0 0 0.75rem; line-height: 1.7; max-width: 55ch; }
+
+        .phase-note {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--bone);
+            margin-top: 3rem;
+            max-width: 55ch;
+            line-height: 1.7;
+        }
+
         /* ============ PRACTICE ============ */
         .practice-grid {
             display: grid;
@@ -826,7 +965,6 @@
             position: relative;
         }
 
-        /* Connecting line from content above */
         .invitation::before {
             content: '';
             position: absolute;
@@ -868,7 +1006,7 @@
             margin-top: 3rem;
         }
 
-        /* ============ FOOTER — co-op.us aesthetic ============ */
+        /* ============ FOOTER ============ */
         footer {
             background-color: #08080a;
             background-image: radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px);
@@ -899,12 +1037,12 @@
         <div class="hero-content">
             <h1 class="hero-wordmark">TECHNE</h1>
             <div class="hero-etymology">
-                <p class="hero-etymology-origin">Greek · τέχνη · PIE *teks- &ldquo;to weave, to make&rdquo;</p>
-                <p class="hero-etymology-def">Productive knowledge — the craft of bringing something into being, where art, skill, and wisdom are not yet separated.</p>
+                <p class="hero-etymology-origin">Greek &middot; &tau;&#941;&chi;&nu;&eta; &middot; PIE *teks- &ldquo;to weave, to make&rdquo;</p>
+                <p class="hero-etymology-def">Productive knowledge &mdash; the craft of bringing something into being, where art, skill, and wisdom are not yet separated.</p>
             </div>
-            <p class="hero-tagline">An Integral Technology Learning Center</p>
+            <p class="hero-tagline">Civic infrastructure, built in common.<br>A grammar for local coordination, capability, and participatory economy.</p>
             <div class="hero-meta">
-                <p class="hero-location">Boulder, Colorado</p>
+                <p class="hero-location">First instance &middot; Boulder, Colorado</p>
                 <p class="hero-status">Founding 2026</p>
             </div>
         </div>
@@ -917,31 +1055,33 @@
             <ul>
                 <li><a href="#premise">Premise</a></li>
                 <li><a href="#distinction">Distinction</a></li>
+                <li><a href="#substrate">Substrate</a></li>
                 <li><a href="#framework">Framework</a></li>
                 <li><a href="#programs">Programs</a></li>
-                <li><a href="#practice">Practice</a></li>
+                <li><a href="#pattern">Pattern</a></li>
                 <li><a href="#space">Space</a></li>
-                <li><a href="#community">Community</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- ============ SECTION: PREMISE (bounded) ============ -->
+    <!-- ============ SECTION: PREMISE ============ -->
     <div class="section-frame">
         <section id="premise">
             <p class="section-mark">01 &mdash; Premise</p>
-            <h2>The Recovery of Craft</h2>
-            <p class="lead">A human with a pencil can think thoughts unavailable to a human without one. A human in conversation can reach understanding neither would find alone. Capability emerges from the pairing of mind, tool, and community.</p>
-            <p>This is the oldest insight about technology, encoded in the Greek word <em>techne</em>: the craft of making, where art and skill and practical wisdom were not yet separated. The institute recovers this understanding for an age when the dominant narrative treats technology as replacement for human capability rather than extension of it.</p>
+            <h2>The Recovery of Civic Capacity</h2>
+            <p class="lead">A human with a pencil can think thoughts unavailable to a human without one. A human in conversation can reach understanding neither would find alone. A neighborhood with a place to gather can coordinate what no isolated household could manage.</p>
+            <p>Capability emerges from the pairing of mind, tool, and community. This is the oldest insight about technology, encoded in the Greek word <em>techne</em>: the craft of making, where art and skill and practical wisdom were not yet separated.</p>
+            <p>But this insight has a corollary that matters now more than ever: <strong>capability is local.</strong> It lives in specific places, among specific people, grounded in specific conditions. The dominant pattern of the last two decades &mdash; extracting attention into global platforms, concentrating capacity in distant institutions, replacing local knowledge with centralized services &mdash; has eroded exactly the civic infrastructure that communities need to govern themselves.</p>
+            <p>Techne recovers the older pattern. Not nostalgia for village life, but a serious engagement with what it takes to build shared productive capacity that remains accountable to the people who exercise it.</p>
 
             <div class="premise-blocks">
                 <div class="premise-block">
-                    <h3>Augmentation</h3>
+                    <h3>Augmentation, Not Automation</h3>
                     <p>We develop human capability, not automate it away. Tools extend what people can think, make, and coordinate. The human remains central: more capable, not less necessary.</p>
                 </div>
                 <div class="premise-block">
-                    <h3>Collective Intelligence</h3>
-                    <p>Individual skill matters, but the deeper leverage comes from groups thinking together. Shared memory, common language, accumulated observations, coordinated action. Intelligence that no single mind contains.</p>
+                    <h3>Local, Not Extracted</h3>
+                    <p>The value generated here stays here &mdash; in relationships formed, skills developed, businesses seeded, coordination capacity built. Online drives offline flourishing. The community that gathers is the primary product.</p>
                 </div>
             </div>
         </section>
@@ -951,39 +1091,84 @@
     <section id="distinction" class="distinction">
         <div class="distinction-inner">
             <p class="section-mark">02 &mdash; Distinction</p>
-            <h2>What We Mean by Integral</h2>
+            <h2>What This Actually Is</h2>
             <div class="distinction-grid">
                 <div class="distinction-card">
-                    <p class="distinction-label">The Dominant Narrative</p>
-                    <h3>Artificial Intelligence</h3>
-                    <p>Intelligence as computation, located in machines. Humans as data sources, users, or obstacles. The goal: systems that perform tasks without human involvement. Value extracted, capability concentrated.</p>
+                    <p class="distinction-label">What it looks like</p>
+                    <h3>Coworking Space</h3>
+                    <p>A place with desks and wifi where people work near each other. Membership sold, coffee provided. Pleasant, useful, replaceable.</p>
                 </div>
                 <div class="distinction-card highlight">
-                    <p class="distinction-label">The Alternative</p>
-                    <h3>Collective Intelligence</h3>
-                    <p>Intelligence as emergent from relationship: between people, between people and tools, between communities and their accumulated knowledge. The goal: humans more capable together than apart. Value created, capability distributed.</p>
+                    <p class="distinction-label">What it is</p>
+                    <h3>Civic Infrastructure</h3>
+                    <p>A third space that coordinates local capacity &mdash; surfacing who is building what, connecting skills to needs, hosting the programming that makes a city legible to itself. Not a service. A commons.</p>
                 </div>
                 <div class="distinction-card">
-                    <p class="distinction-label">Typical Tech Education</p>
-                    <h3>Skills Training</h3>
-                    <p>Transfer of techniques. Learn the tool, get the job. Cohorts begin and end. Credentials certify completion. Success measured in placement rates and salary bumps.</p>
+                    <p class="distinction-label">What it looks like</p>
+                    <h3>Tech Education</h3>
+                    <p>Transfer of techniques. Learn the tool, get the credential, find the job. Cohorts begin and end. Success measured in placement rates.</p>
                 </div>
                 <div class="distinction-card highlight">
-                    <p class="distinction-label">What We Build</p>
+                    <p class="distinction-label">What it is</p>
                     <h3>Capability Development</h3>
-                    <p>Formation of practitioners. Develop judgment, not just skill. Community persists beyond any program. Evidence demonstrates what you can actually do. Success measured in what becomes possible.</p>
+                    <p>Formation of practitioners within a persistent community. Develop judgment, not just skill. Evidence demonstrates what you can do. The community that forms around learning is more valuable than any credential it issues.</p>
+                </div>
+                <div class="distinction-card">
+                    <p class="distinction-label">What it looks like</p>
+                    <h3>A Franchise</h3>
+                    <p>One model, stamped onto different cities. Central brand, local compliance. The form travels but the soul stays behind.</p>
+                </div>
+                <div class="distinction-card highlight">
+                    <p class="distinction-label">What it is</p>
+                    <h3>A Grammar</h3>
+                    <p>Techne is a shared language for building civic infrastructure &mdash; patterns, tools, and protocols that any community can learn and adapt. Each instance is native to its place. What travels is the capacity to build, not the blueprint of what gets built.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ============ SECTIONS: FRAMEWORK → COMMUNITY (bounded) ============ -->
+    <!-- ============ SECTION: SUBSTRATE TEST ============ -->
     <div class="section-frame">
+        <section id="substrate">
+            <p class="section-mark">03 &mdash; Substrate</p>
+            <h2>The Test That Matters</h2>
+            <p class="lead">Every system arises from a substrate &mdash; the relationships, attention, trust, and local knowledge that make coordination possible. The decisive question for any institution is whether it regenerates or debases what it arises from.</p>
+
+            <div class="substrate-test">
+                <p class="substrate-label">The substrate test</p>
+                <blockquote>Does this strengthen the relationships, skills, agency, and offline life of the people who participate? Or does it extract from them?</blockquote>
+                <p>A coworking space that isolates people into headphones is debasing its substrate. A learning program that creates dependency on the instructor is debasing its substrate. A community space that becomes a scene for insiders is debasing its substrate. The test is not whether something is pleasant or popular but whether the people who pass through it leave more capable, more connected, and more rooted in their place.</p>
+            </div>
+
+            <p>This is not a marketing distinction. It is a design constraint that governs every decision &mdash; what programs to run, how membership works, what technology to build, how growth is measured. The substrate is the community itself: its relationships, its accumulated trust, its shared capacity to act. Everything Techne builds must leave that substrate richer than it found it.</p>
+
+            <h3>Five Substrates</h3>
+            <div class="premise-blocks">
+                <div class="premise-block">
+                    <h3>Relationships</h3>
+                    <p>Real relationships formed in person, not parasocial connections mediated by feeds. The antidote to the loneliness epidemic is not more content &mdash; it is more presence.</p>
+                </div>
+                <div class="premise-block">
+                    <h3>Skills &amp; Agency</h3>
+                    <p>People leave more capable than they arrived. Not just knowing how to use a tool but understanding when and why. Stance, not just skill.</p>
+                </div>
+                <div class="premise-block">
+                    <h3>Local Economy</h3>
+                    <p>Jobs created, businesses seeded, economic loops that circulate value locally before it leaks out. The space is an economic engine, not a cost center.</p>
+                </div>
+                <div class="premise-block">
+                    <h3>Civic Knowledge</h3>
+                    <p>The community can query its own knowledge &mdash; who is building what, what skills exist, what opportunities are open. A city legible to itself.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ SECTION: FRAMEWORK ============ -->
         <section id="framework">
-            <p class="section-mark">03 &mdash; Framework</p>
+            <p class="section-mark">04 &mdash; Framework</p>
             <h2>The Elements of Capability</h2>
             <p class="lead">Capability emerges from five co-evolving elements. Change any one, and the others shift in response. Develop all together, and possibility expands.</p>
-            <p class="lead" style="font-size:0.88em;opacity:0.72;">From the Augmentation Research Center &mdash; the founding lab behind the Mother of All Demos and a node of the original ARPANET &mdash; Douglas Engelbart articulated this framework in 1962. We build on it still.</p>
+            <p class="lead" style="font-size:0.88em;opacity:0.72;">From the Augmentation Research Center &mdash; the founding lab behind the Mother of All Demos and a node of the original ARPANET &mdash; Douglas Engelbart articulated this framework in 1962. His insight was not just that tools augment humans, but that <strong>the process of augmentation itself can be augmented</strong> &mdash; a community that uses its own tools to improve its own coordination gets better at getting better.</p>
 
             <div class="framework-elements">
                 <div class="framework-element">
@@ -1011,20 +1196,22 @@
             <p class="framework-note">New tools require new language to think with, new methods to apply, new training to develop proficiency. The human who emerges is different from the one who began.</p>
 
             <h3>Applied to This Moment</h3>
-            <p>AI tools are artifacts. Powerful ones. But artifacts alone don't create capability. The institute develops what surrounds the artifact: the language to think about what AI does and doesn't do well, the methodology for working alongside it effectively, the training to develop genuine proficiency, and the human judgment to direct it toward worthy ends.</p>
+            <p>AI tools are artifacts. Powerful ones. But artifacts alone don't create capability. Techne develops what surrounds the artifact: the language to think about what AI does and doesn't do well, the methodology for working alongside it effectively, the training to develop genuine proficiency, and the human judgment to direct it toward worthy ends.</p>
             <p>People leave not just knowing how to use AI tools but understanding their place in a larger system of human capability. They have stance, not just skill.</p>
+
+            <h3>Applied to a City</h3>
+            <p>Engelbart's framework was designed for organizations. It applies equally to communities. A city with shared language for its challenges, shared artifacts for coordination, shared methodology for decision-making, and shared training for civic participation is more capable than the sum of its individual residents. This is what civic infrastructure means: the H-LAM/T of a place, not just a lab.</p>
         </section>
 
+        <!-- ============ SECTION: PROGRAMS ============ -->
         <section id="programs">
-            <p class="section-mark">04 &mdash; Programs</p>
-            <h2>Pathways Into Practice</h2>
-            <div class="program-intro">
-                <p class="lead">Multiple entry points into capability development. Some structured, some emergent. All held within a community that persists beyond any single program.</p>
-            </div>
+            <p class="section-mark">05 &mdash; Programs</p>
+            <h2>The Boulder Instance</h2>
+            <p class="lead">What follows is specific to RegenHub, Boulder &mdash; the first instantiation of Techne in a particular place, economy, and community. Other instances would develop different programs grounded in their own conditions. What's shared is the grammar. What's local is the expression.</p>
 
+            <h3>AI Building Cohorts</h3>
             <div class="cohort-track">
-                <h3>AI Building Cohorts</h3>
-                <p>Structured programs teaching people to build with AI as a creative partner. From first explorations to production applications. <em>"Articulation is the new skill."</em></p>
+                <p>Structured programs teaching people to build with AI as a creative partner. From first explorations to production applications. <em>&ldquo;Articulation is the new skill.&rdquo;</em></p>
 
                 <div class="cohort-level">
                     <div class="cohort-numeral">I</div>
@@ -1110,48 +1297,49 @@
                 </div>
             </div>
         </section>
+    </div>
 
-        <section id="practice">
-            <p class="section-mark">05 &mdash; Practice</p>
-            <h2>How We Work</h2>
-            <p class="lead">Collective intelligence doesn't happen automatically. It requires infrastructure, discipline, and intention. The institute builds these into its operation.</p>
+    <!-- ============ SECTION: PATTERN (full-bleed dark) ============ -->
+    <section id="pattern" class="pattern">
+        <div class="pattern-inner">
+            <p class="section-mark">06 &mdash; Pattern</p>
+            <h2>How a Node Forms</h2>
+            <p class="lead">Techne is not a franchise. It is a grammar &mdash; a set of patterns that any community can learn, adapt to local conditions, and build from. What follows is the formation pattern we are learning by doing it in Boulder. Each phase bootstraps the next.</p>
 
-            <div class="practice-grid">
-                <div>
-                    <div class="practice-item">
-                        <h4>Observation</h4>
-                        <p>Members document what happens: work undertaken, insights gained, collaborations formed. This isn't bureaucracy but reflective practice. Observations accumulate into collective memory.</p>
-                    </div>
-                    <div class="practice-item">
-                        <h4>Evidence</h4>
-                        <p>Capability emerges from what you demonstrably do, not what you claim. Profiles build from accumulated observations. The community can query its own knowledge.</p>
-                    </div>
-                    <div class="practice-item">
-                        <h4>Agreements</h4>
-                        <p>Commitments made visible. Membership, mentorship, collaboration: all involve mutual expectation. Making agreements explicit creates clarity without bureaucratizing relationship.</p>
-                    </div>
+            <div class="phase-track">
+                <div class="phase">
+                    <p class="phase-label">Phase I &mdash; Tribe + Space</p>
+                    <h3>Dense Local Community</h3>
+                    <p>A trusted group of 10&ndash;50 people who gather regularly in a physical space. Weekly rituals, shared meals, the slow accumulation of &ldquo;these are my people.&rdquo; A hiring pool. An idea lab. A place where the first economic loops form &mdash; introductions made, collaborations seeded, help given without invoicing.</p>
+                    <p>The substrate test at this phase: are the people who show up forming real relationships? Are they more connected to their city, not less? If the answer is no, nothing that follows will work.</p>
                 </div>
-                <div>
-                    <div class="practice-item">
-                        <h4>Multiple Capitals</h4>
-                        <p>Value flows in many forms: knowledge shared, attention given, introductions made, trust built. The institute tracks what matters, not just what's easy to count.</p>
-                    </div>
-                    <div class="practice-item">
-                        <h4>Contemplative Ground</h4>
-                        <p>Optional morning practices: meditation, movement, grounding before work. Inner development alongside outer capability. Wisdom about when and how to act, not just ability to act.</p>
-                    </div>
-                    <div class="practice-item">
-                        <h4>Bootstrapping</h4>
-                        <p>The institute uses itself to improve itself. We apply our own tools to our own coordination. Methodology develops through practice, not just theory.</p>
-                    </div>
+
+                <div class="phase">
+                    <p class="phase-label">Phase II &mdash; City Schelling Point</p>
+                    <h3>The Default Place</h3>
+                    <p>The space evolves from &ldquo;my community&rdquo; to &ldquo;the place in this city.&rdquo; Consistent programming &mdash; talks, classes, cultural events, salons &mdash; where demand exceeds capacity. A local discovery layer: &ldquo;what is happening in Boulder tonight?&rdquo; answered here. Light economic coordination: showcasing local builders, connecting projects to people, early experiments with local funding.</p>
+                    <p>This is the transition from tribe to civic infrastructure. The space becomes a Schelling point &mdash; not through marketing but through density of activity and quality of curation. When outsiders ask &ldquo;what&rsquo;s happening in your city?&rdquo; the answer starts here.</p>
+                </div>
+
+                <div class="phase">
+                    <p class="phase-label">Phase III &mdash; Replicable Grammar</p>
+                    <h3>Protocol, Not Blueprint</h3>
+                    <p>The patterns that worked in Boulder become documentable, teachable, and adaptable. Not a franchise package but a shared grammar: how to form a cooperative, how to run capability-development programs, how to build a local discovery layer, how to apply the substrate test, how to bootstrap collective capacity using Engelbart&rsquo;s framework.</p>
+                    <p>Other communities take the grammar and produce their own utterance &mdash; different programs, different economic conditions, different cultural expression, same underlying commitment to local coordination capacity that regenerates what it arises from.</p>
                 </div>
             </div>
-        </section>
 
+            <p class="phase-note">Engelbart called this &ldquo;bootstrapping&rdquo; &mdash; the process by which a community uses its own tools to improve its own capacity to improve. Phase I builds the community. Phase II builds the infrastructure that makes the community a city resource. Phase III builds the grammar that lets other cities do it themselves. Each phase uses the output of the previous as its input. Getting better at getting better.</p>
+        </div>
+    </section>
+
+    <!-- ============ SECTIONS: SPACE → COMMUNITY (bounded) ============ -->
+    <div class="section-frame">
         <section id="space">
-            <p class="section-mark">06 &mdash; Space</p>
-            <h2>The Building</h2>
-            <p>Central Boulder. A vertical ecosystem where learning flows into building flows into employment.</p>
+            <p class="section-mark">07 &mdash; Space</p>
+            <h2>The Third Place</h2>
+            <p class="lead">Ray Oldenburg named the &ldquo;third place&rdquo; &mdash; the gathering point that is neither home nor work. The caf&eacute;, the barbershop, the public house. These spaces produce the informal civic life on which democracy, community, and local economy depend. They have been disappearing for decades.</p>
+            <p>Central Boulder. A vertical ecosystem where learning flows into building flows into community flows into employment. Not just a building &mdash; a third place rebuilt for a city that needs one.</p>
 
             <div class="space-visual">
                 <p>Third floor institute, second floor ventures, roof for gathering.<br>A complete ecosystem from street to sky.</p>
@@ -1183,22 +1371,22 @@
         </section>
 
         <section id="community">
-            <p class="section-mark">07 &mdash; Community</p>
+            <p class="section-mark">08 &mdash; Community</p>
             <h2>What Forms Here</h2>
-            <p class="lead">The community that emerges is the primary artifact. Relationships, shared language, collective memory, evolving practice: these matter more than any particular program or output.</p>
+            <p class="lead">The community that emerges is the primary artifact. Relationships, shared language, collective memory, evolving practice, local economic capacity: these matter more than any particular program or output. They are the substrate. Everything else is built on top of them.</p>
 
             <div class="community-values">
                 <div class="value-card">
                     <h4>Making</h4>
-                    <p>Techne is productive knowledge. We don't just study; we build. Projects, prototypes, artifacts that exist because we made them.</p>
+                    <p>Techne is productive knowledge. We don't just study; we build. Projects, prototypes, artifacts that exist because we made them together.</p>
                 </div>
                 <div class="value-card">
                     <h4>Craft</h4>
-                    <p>Attention to how something is made, not just that it works. Quality emerges from care and discipline, developed through practice.</p>
+                    <p>Attention to how something is made, not just that it works. Quality emerges from care and discipline, developed through practice in community.</p>
                 </div>
                 <div class="value-card">
-                    <h4>Wisdom</h4>
-                    <p>Knowing when to apply which capability. Judgment that comes from experience and reflection. Not just ability but discernment about its use.</p>
+                    <h4>Coordination</h4>
+                    <p>The capacity to act together &mdash; not through hierarchy but through shared understanding, mutual trust, and tools that make collective action legible.</p>
                 </div>
             </div>
         </section>
@@ -1208,15 +1396,16 @@
     <section class="invitation">
         <div class="invitation-content">
             <h2>An Invitation</h2>
-            <p>We're gathering a founding community. Not customers, not employees: people who want to develop capability alongside others who share these commitments.</p>
-            <p>The first participants shape what this becomes. Their observations become the first entries in collective memory. Their relationships form the network's initial threads. Their questions become the curriculum's early material.</p>
-            <p class="invitation-cta">If you feel the pull: reach out.<br>The next step is conversation.</p>
+            <p>We are building civic infrastructure for Boulder &mdash; and developing a grammar that other communities can use. This is not a product launch. It is a formation process. The first participants shape what this becomes.</p>
+            <p>If you are in Boulder and want to build alongside others who take local coordination seriously &mdash; as makers, as teachers, as community builders, as citizens &mdash; this is the space.</p>
+            <p>If you are elsewhere and see something in this pattern that your community needs &mdash; the grammar is open. We are learning it by doing it. We will share what we learn.</p>
+            <p class="invitation-cta">The next step is conversation.</p>
         </div>
     </section>
 
     <!-- ============ FOOTER ============ -->
     <footer>
-        <p>Techne Institute &bull; Part of <a href="https://regenhub.xyz">RegenHub</a> &bull; Boulder, Colorado &bull; 2026</p>
+        <p>Techne &bull; First instance: <a href="https://regenhub.xyz">RegenHub</a>, Boulder &bull; 2026 &bull; <a href="/introduction/">Essays</a> &bull; <a href="/formation/">Formation</a></p>
     </footer>
 
 </body>
