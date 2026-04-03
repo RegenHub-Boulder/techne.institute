@@ -135,6 +135,18 @@ li strong { color: var(--text); }
 h2 .sym { font-size: 0.9em; }
 .card-sym { font-family: var(--mono); font-size: 1.1rem; color: var(--accent); display: block; margin-bottom: 0.15rem; letter-spacing: 0.05em; }
 
+/* Symbol Key */
+.symbol-key { background: var(--bg-card); border: 1px solid var(--rule); border-radius: 8px; padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+.symbol-key-title { font-family: var(--sans); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-faint); margin-bottom: 0.75rem; }
+.symbol-key-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.35rem 1.5rem; }
+.symbol-key-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.25rem 0; }
+.symbol-key-glyph { font-family: var(--serif); font-size: 1.15rem; color: var(--accent); width: 1.5rem; text-align: center; flex-shrink: 0; }
+.symbol-key-label { font-family: var(--sans); font-size: 0.8rem; color: var(--text-dim); }
+
+@media (max-width: 600px) {
+  .symbol-key-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* Diagrams — shared containers */
 .diagram { background: var(--bg-card); border: 1px solid var(--rule); border-radius: 8px; padding: 1.5rem; margin: 1.5rem 0; overflow-x: auto; display: flex; justify-content: center; }
 .diagram svg { max-width: 100%; height: auto; }
