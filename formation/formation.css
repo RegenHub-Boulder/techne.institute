@@ -174,6 +174,38 @@ h2 .sym { font-size: 0.9em; }
 .priority-legend .legend-item { display: flex; align-items: center; gap: 0.4rem; font-family: var(--sans); font-size: 0.75rem; color: var(--text-dim); }
 .priority-legend .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
 
+/* Health Indicators — Ecosystem Pulse */
+.health-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; padding: 2rem 0 1rem; }
+.health-card { background: var(--bg-card); border: 1px solid var(--rule); border-radius: 10px; padding: 1.25rem 1.5rem; position: relative; overflow: hidden; }
+.health-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.health-card.homeostasis::before { background: linear-gradient(90deg, var(--green), var(--green-dim)); }
+.health-card.growth::before { background: linear-gradient(90deg, var(--accent), var(--accent-dim)); }
+.health-card.circulation::before { background: linear-gradient(90deg, var(--blue), #4a6a9a); }
+.health-card.symbiosis::before { background: linear-gradient(90deg, #9a6ac4, #6a4a8a); }
+.health-label { font-family: var(--sans); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem; }
+.health-card.homeostasis .health-label { color: var(--green); }
+.health-card.growth .health-label { color: var(--accent); }
+.health-card.circulation .health-label { color: var(--blue); }
+.health-card.symbiosis .health-label { color: #9a6ac4; }
+.health-pulse { width: 6px; height: 6px; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+.health-card.homeostasis .health-pulse { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.health-card.growth .health-pulse { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+.health-card.circulation .health-pulse { background: var(--blue); box-shadow: 0 0 6px var(--blue); }
+.health-card.symbiosis .health-pulse { background: #9a6ac4; box-shadow: 0 0 6px #9a6ac4; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.health-value { font-family: var(--serif); font-size: 1.05rem; color: var(--text); line-height: 1.4; margin-bottom: 0.4rem; }
+.health-detail { font-family: var(--sans); font-size: 0.75rem; color: var(--text-faint); line-height: 1.5; }
+.health-signals { list-style: none; margin: 0.5rem 0 0; padding: 0; }
+.health-signals li { font-family: var(--sans); font-size: 0.72rem; color: var(--text-dim); padding: 0.2rem 0; padding-left: 1rem; position: relative; }
+.health-signals li::before { content: ''; position: absolute; left: 0; top: 0.55rem; width: 4px; height: 4px; border-radius: 50%; }
+.health-card.homeostasis .health-signals li::before { background: var(--green); }
+.health-card.growth .health-signals li::before { background: var(--accent); }
+.health-card.circulation .health-signals li::before { background: var(--blue); }
+.health-card.symbiosis .health-signals li::before { background: #9a6ac4; }
+
+/* Ecosystem timestamp */
+.ecosystem-ts { font-family: var(--mono); font-size: 0.65rem; color: var(--text-faint); text-align: center; padding: 0.5rem 0 1.5rem; letter-spacing: 0.05em; }
+
 /* Responsive */
 @media (max-width: 600px) {
   .hero h1 { font-size: 1.7rem; }
@@ -181,6 +213,7 @@ h2 .sym { font-size: 0.9em; }
   .entity-key { width: auto; margin-bottom: 0.1rem; }
   .card-grid { grid-template-columns: 1fr; }
   .summary-cards { grid-template-columns: repeat(2, 1fr); }
+  .health-grid { grid-template-columns: 1fr; }
   table { font-size: 0.8rem; }
   thead th, tbody td { padding: 0.4rem 0.5rem; }
 }
