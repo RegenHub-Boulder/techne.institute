@@ -1,0 +1,154 @@
+/**
+ * Techne Design Tokens
+ * techne.institute/assets/tokens.css
+ *
+ * Tier 1: Enforced globally — all sections must use these.
+ * Import at the top of any section stylesheet:
+ *   @import url('/assets/tokens.css');
+ *
+ * Sprint P363 (R3-B) — 2026-04-06
+ * Governance: docs/specs/r3/design-system.md
+ */
+
+/* ============================================================
+   COLOR PALETTE
+   ============================================================ */
+:root {
+  /* Dark surfaces */
+  --void:     #08080a;    /* Deepest background — pages that feel like night */
+  --ink:      #0f0f12;    /* Dark background — code blocks, intranet pages */
+  --charcoal: #1a1a1f;    /* Raised surface — cards on dark backgrounds */
+  --graphite: #2a2a30;    /* Borders, dividers on dark backgrounds */
+
+  /* Light surfaces */
+  --parchment: #f7f5f0;   /* Primary light background — landing, introduction */
+  --cream:     #ebe7df;   /* Subtle warm off-white — alternate rows, sidebars */
+  --bone:      #d8d3c8;   /* Light border, rule on parchment backgrounds */
+  --stone:     #9a958a;   /* Muted text on parchment */
+
+  /* Accent — Ember (primary) */
+  --ember:         #c2512a;              /* Primary accent — links, CTAs, highlights */
+  --ember-dim:     #8a3a1f;             /* Ember on hover, pressed states */
+  --ember-glow:    rgba(194, 81, 42, 0.08);  /* Ember background wash */
+
+  /* Accent — Copper (secondary, formation palette) */
+  --copper:        #c4956a;             /* Secondary accent — formation, documents */
+  --copper-dim:    #8a6a4a;             /* Copper hover */
+  --copper-bright: #d4a57a;             /* Copper emphasis */
+
+  /* Semantic — Status */
+  --green:         #6a9a6a;
+  --green-dim:     #4a7a4a;
+  --green-glow:    rgba(106, 154, 106, 0.15);
+  --red:           #c46a6a;
+  --blue:          #6a8ac4;
+
+  /* Ecological */
+  --sage:          #4a5f4a;
+  --sage-light:    #6b836b;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================
+
+   Sections choose their own font stacks (Tier 3), but use
+   these semantic names when defining --font-display etc.
+   in their own :root overrides.
+
+   Default stack (landing, public pages):
+*/
+:root {
+  --font-display: 'Cormorant', 'EB Garamond', 'Georgia', serif;
+  --font-body:    'Source Serif 4', 'EB Garamond', 'Georgia', serif;
+  --font-sans:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:    'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ============================================================
+   TYPE SCALE
+   ============================================================ */
+:root {
+  --text-xs:   0.65rem;   /* 10.4px — labels, tags, caps */
+  --text-sm:   0.75rem;   /* 12px   — meta, footnotes */
+  --text-base: 0.875rem;  /* 14px   — UI text, tables */
+  --text-md:   1rem;      /* 16px   — body (intranet) */
+  --text-body: 1.0625rem; /* 17px   — body (public pages) */
+  --text-lg:   1.125rem;  /* 18px   — lead, emphasized body */
+  --text-xl:   1.375rem;  /* 22px   — section headers, card titles */
+  --text-2xl:  1.75rem;   /* 28px   — page subtitles */
+  --text-3xl:  2.25rem;   /* 36px   — page titles */
+  --text-hero: clamp(2.5rem, 5vw, 4rem);  /* Hero — scales with viewport */
+}
+
+/* ============================================================
+   SPACING SCALE
+   ============================================================ */
+:root {
+  --space-1:  0.25rem;   /* 4px  */
+  --space-2:  0.5rem;    /* 8px  */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.25rem;   /* 20px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+  --space-24: 6rem;      /* 96px */
+}
+
+/* ============================================================
+   BREAKPOINTS (use in media queries as reference values)
+   ============================================================ */
+:root {
+  --bp-mobile:  480px;
+  --bp-tablet:  768px;
+  --bp-desktop: 1024px;
+  --bp-wide:    1280px;
+}
+
+/* ============================================================
+   BORDERS & RADIUS
+   ============================================================ */
+:root {
+  --radius-sm:  3px;
+  --radius-md:  6px;
+  --radius-lg:  12px;
+  --border-light: 1px solid var(--bone);
+  --border-dark:  1px solid var(--graphite);
+}
+
+/* ============================================================
+   SHADOWS
+   ============================================================ */
+:root {
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:  0 4px 12px rgba(0,0,0,0.12);
+  --shadow-lg:  0 8px 24px rgba(0,0,0,0.16);
+}
+
+/* ============================================================
+   MOTION
+   ============================================================ */
+:root {
+  --ease-out:   cubic-bezier(0.0, 0.0, 0.2, 1);
+  --ease-in:    cubic-bezier(0.4, 0.0, 1, 1);
+  --duration-fast:   150ms;
+  --duration-normal: 250ms;
+  --duration-slow:   400ms;
+  --transition: var(--duration-normal) var(--ease-out);
+}
+
+/* ============================================================
+   Z-INDEX SCALE
+   ============================================================ */
+:root {
+  --z-base:    0;
+  --z-raised:  10;
+  --z-overlay: 100;
+  --z-nav:     200;
+  --z-modal:   300;
+  --z-toast:   400;
+}

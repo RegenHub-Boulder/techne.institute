@@ -1,0 +1,226 @@
+/**
+ * Techne Component Library
+ * techne.institute/assets/components.css
+ *
+ * Tier 2: Optional shared components — sections can use or override.
+ * Import after tokens.css:
+ *   @import url('/assets/tokens.css');
+ *   @import url('/assets/components.css');
+ *
+ * Sprint P363 (R3-B) — 2026-04-06
+ */
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), opacity var(--transition);
+  border: none;
+  outline: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 2px;
+}
+
+/* Primary — ember */
+.btn-primary {
+  background: var(--ember);
+  color: var(--parchment);
+}
+.btn-primary:hover { background: var(--ember-dim); }
+
+/* Ghost — outlined */
+.btn-ghost {
+  background: transparent;
+  color: var(--charcoal);
+  border: 1px solid var(--bone);
+}
+.btn-ghost:hover { border-color: var(--ember); color: var(--ember); }
+
+/* Ghost on dark */
+.btn-ghost-dark {
+  background: transparent;
+  color: var(--stone);
+  border: 1px solid var(--graphite);
+}
+.btn-ghost-dark:hover { border-color: var(--ember); color: var(--ember); }
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+
+.card {
+  background: var(--charcoal);
+  border: 1px solid var(--graphite);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+}
+
+.card-light {
+  background: var(--cream);
+  border: 1px solid var(--bone);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+}
+
+.card-link {
+  display: block;
+  text-decoration: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.card-link:hover {
+  border-color: var(--ember);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================================
+   TAGS & BADGES
+   ============================================================ */
+
+.tag {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--graphite);
+  color: var(--stone);
+}
+
+.badge-green {
+  background: var(--green-glow);
+  color: var(--green);
+  border: 1px solid rgba(106, 154, 106, 0.3);
+}
+
+.badge-ember {
+  background: var(--ember-glow);
+  color: var(--ember);
+  border: 1px solid rgba(194, 81, 42, 0.25);
+}
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.form-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+.form-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  background: var(--ink);
+  color: var(--parchment);
+  border: 1px solid var(--graphite);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition);
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--ember);
+}
+
+.form-input-light {
+  background: var(--parchment);
+  color: var(--charcoal);
+  border: 1px solid var(--bone);
+}
+.form-input-light:focus { border-color: var(--ember); }
+
+/* ============================================================
+   DIVIDERS
+   ============================================================ */
+
+.rule { border: none; border-top: 1px solid var(--graphite); margin: var(--space-8) 0; }
+.rule-light { border: none; border-top: 1px solid var(--bone); margin: var(--space-8) 0; }
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 10, 0.7);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.modal {
+  background: var(--charcoal);
+  border: 1px solid var(--graphite);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ============================================================
+   LAYOUT UTILITIES
+   ============================================================ */
+
+.container {
+  width: 100%;
+  max-width: var(--bp-wide);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 var(--space-4); }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border-width: 0;
+}
