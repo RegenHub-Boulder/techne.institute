@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RegenHub — Investment Vision: The Basket</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #212121;
+    --border: #2e2e2e;
+    --border2: #3a3a3a;
+    --primary: #c4956a;
+    --primary-dim: #8a6545;
+    --text: #d9d9d9;
+    --text-bright: #ece6de;
+    --text-muted: #888888;
+    --text-faint: #555555;
+    --green: #8aba8a;
+    --green-bg: #1a1f1a;
+    --green-border: #4a6a4a;
+  }
+
+  html { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.65; }
+  body { max-width: 860px; margin: 0 auto; padding: 48px 32px 80px; }
+
+  /* ── Cover ── */
+  .cover { padding: 56px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 52px; }
+  .cover-eyebrow { font-size: 11px; font-family: monospace; color: var(--primary-dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .cover h1 { font-size: 32px; font-weight: 700; color: var(--text-bright); letter-spacing: -0.6px; line-height: 1.2; margin-bottom: 10px; }
+  .cover-sub { font-size: 14px; color: var(--text-muted); margin-top: 12px; line-height: 1.6; max-width: 580px; }
+  .cover-meta { margin-top: 28px; display: flex; gap: 0; flex-wrap: wrap; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; }
+  .cover-meta-item { font-size: 11px; font-family: monospace; color: var(--text-faint); padding-right: 24px; border-right: 1px solid var(--border); margin-right: 24px; }
+  .cover-meta-item:last-child { border-right: none; margin-right: 0; }
+  .cover-meta-item strong { color: var(--text-muted); font-weight: 500; }
+
+  /* ── Sections ── */
+  section { margin-bottom: 56px; }
+  .section-label { font-size: 10px; font-family: monospace; letter-spacing: 2.5px; text-transform: uppercase; color: var(--primary-dim); margin-bottom: 10px; }
+  section h2 { font-size: 21px; font-weight: 600; color: var(--text-bright); letter-spacing: -0.3px; margin-bottom: 14px; }
+  section > p { color: var(--text); margin-bottom: 14px; max-width: 700px; line-height: 1.7; }
+
+  /* ── Pullquote ── */
+  .pullquote { border-left: 3px solid var(--primary); padding: 14px 18px; background: var(--surface); border-radius: 0 4px 4px 0; margin: 24px 0; font-size: 14px; color: var(--text-bright); font-style: italic; line-height: 1.65; }
+
+  /* ── Venture grid ── */
+  .venture-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+  @media (max-width: 600px) { .venture-grid { grid-template-columns: 1fr; } }
+  .venture { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 20px; }
+  .venture-tag { font-size: 10px; font-family: monospace; letter-spacing: 1.5px; text-transform: uppercase; color: var(--primary-dim); margin-bottom: 8px; }
+  .venture h3 { font-size: 15px; font-weight: 600; color: var(--text-bright); margin-bottom: 6px; }
+  .venture-lead { font-size: 11px; font-family: monospace; color: var(--text-faint); margin-bottom: 10px; }
+  .venture-lead strong { color: var(--text-muted); font-weight: 500; }
+  .venture p { font-size: 13px; color: var(--text-muted); line-height: 1.55; margin: 0; }
+  .venture a { color: var(--primary); font-size: 12px; font-family: monospace; text-decoration: none; display: inline-block; margin-top: 8px; }
+
+  /* ── Structure rows ── */
+  .structure-rows { margin-top: 24px; }
+  .structure-row { display: grid; grid-template-columns: 140px 1fr; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--border); align-items: start; }
+  .structure-row:last-child { border-bottom: none; }
+  @media (max-width: 500px) { .structure-row { grid-template-columns: 1fr; gap: 6px; } }
+  .structure-label { font-size: 10px; font-family: monospace; letter-spacing: 1.5px; text-transform: uppercase; color: var(--primary-dim); padding-top: 2px; line-height: 1.6; }
+  .structure-row p { font-size: 14px; color: var(--text); line-height: 1.7; margin: 0; }
+
+  /* ── Scenario ── */
+  .scenario { margin-top: 28px; background: var(--surface); border: 1px solid var(--border); border-bottom: 2px solid var(--primary); border-radius: 4px 4px 0 0; padding: 20px 24px; }
+  .scenario-label { font-size: 10px; font-family: monospace; letter-spacing: 2px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 18px; }
+  .scenario-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 520px) { .scenario-grid { grid-template-columns: 1fr; } }
+  .scenario-item .amount { font-size: 24px; font-weight: 700; color: var(--primary); font-family: monospace; line-height: 1; margin-bottom: 6px; }
+  .scenario-item p { font-size: 12px; color: var(--text-faint); font-family: monospace; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; line-height: 1.5; }
+
+  /* ── Diagram ── */
+  .diagram { margin: 28px 0 8px; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+
+  /* ── Divider ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+  /* ── Footer ── */
+  footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-faint); font-family: monospace; line-height: 1.9; }
+  footer a { color: var(--primary-dim); text-decoration: none; }
+
+  strong { color: var(--text-bright); }
+  em { color: var(--text-muted); }
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-eyebrow">RegenHub, LCA · Investment Vision · February 2026</div>
+  <h1>The RegenHub Basket</h1>
+  <p class="cover-sub">A new kind of local fund — not venture capital, not a nonprofit, but a community-supported stake in the ventures growing from Boulder's most interesting cooperative ecosystem.</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>From</strong> · Aaron Gabriel &amp; Todd Youngblood</div>
+    <div class="cover-meta-item"><strong>Date</strong> · February 2026</div>
+    <div class="cover-meta-item"><strong>Location</strong> · Boulder, Colorado</div>
+    <div class="cover-meta-item"><strong>Entity</strong> · RegenHub, LCA (DBA Techne)</div>
+  </div>
+</div>
+
+<!-- 00: PUBLIC BENEFIT PURPOSE -->
+<section>
+  <div class="section-label">00 — Public Benefit Purpose</div>
+  <h2>Cultivating scenius</h2>
+  <p><em>Scenius</em> — the collective intelligence that emerges from sustained proximity of culturally aligned people — is the rarest and most durable source of value in the knowledge economy. The greatest creative periods in history weren't produced by lone geniuses. They were produced by scenes: dense networks of people who saw each other regularly, shared references, challenged each other's work, and built on each other's discoveries in real time.</p>
+  <p>This is RegenHub's public benefit purpose, as filed with the Colorado Secretary of State on February 6, 2026 (Document #20261163853): <strong>to cultivate the conditions under which scenius can emerge and flourish.</strong></p>
+  <p>We pursue this through three layers: physical space at 1515 Walnut St where proximity happens; a shared pattern library where accumulated knowledge becomes a commons; and economic infrastructure that makes multi-capital contribution visible and distributable — rewarding not just financial investment, but labor, expertise, relationships, and community-building.</p>
+  <div class="pullquote">We are a public benefit entity — and we have high conviction in the economic case. Scenius produces outsized returns precisely because it is rare. The organizations that emerge from a genuine scene carry context, relationships, and trust that cannot be acquired. We are an infrastructure investment in the conditions that produce those organizations.</div>
+  <p style="font-size:13px; color: var(--text-muted);">Returns are structured across three time horizons: <strong>equity</strong> (a permanent stake in the cooperative and its venture ecosystem), <strong>royalties</strong> (ongoing returns from IP created through cooperative work), and <strong>patronage</strong> (periodic allocation of surplus based on multi-capital contribution). This is the economic memory system — how the cooperative recognizes not just current contribution, but durable value created.</p>
+</section>
+
+<!-- 01: THE MODEL -->
+<section>
+  <div class="section-label">01 — The Model</div>
+  <h2>A CSA for Boulder ventures</h2>
+  <p>Community Supported Agriculture works because investors buy a share of the season's harvest upfront — not a single crop, but the whole farm's yield. What if investment in early-stage ventures worked the same way?</p>
+  <p>Instead of a SAFE into one company at a fixed valuation, you are buying into a basket: equity from multiple ventures incubating at RegenHub, bundled into a single investable share. New ventures are added as they mature. The basket grows. Your position compounds across the whole ecosystem rather than riding a single bet.</p>
+  <p>This is not the hyper-scale VC model where one in fifteen survives. It is a balanced growth model — one where health and growth are tracked together, and where the success of each venture strengthens every other.</p>
+
+  <div class="pullquote">"RegenHub is the soil. Each venture is a seed. The basket is the seasonal harvest — what grows, what matures, what gets added each year. You are investing in the farm."</div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 720 218" xmlns="http://www.w3.org/2000/svg" aria-label="RegenHub basket: three founding ventures pooling equity into a single investable fund">
+      <defs>
+        <marker id="arr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="#2e2e2e"/>
+        </marker>
+        <marker id="arrFade" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="#252525"/>
+        </marker>
+      </defs>
+
+      <!-- ── VENTURE BOXES ── -->
+      <!-- Parachute (cx=108) -->
+      <rect x="34" y="12" width="148" height="54" rx="2" fill="#161616" stroke="#c4956a" stroke-width="1.5"/>
+      <text x="108" y="31" text-anchor="middle" fill="#c4956a" font-family="monospace" font-size="10" letter-spacing="1">PARACHUTE</text>
+      <text x="108" y="45" text-anchor="middle" fill="#555555" font-family="monospace" font-size="8">Voice · AI</text>
+      <text x="108" y="57" text-anchor="middle" fill="#3a3a3a" font-family="monospace" font-size="7.5" font-style="italic">Aaron Gabriel</text>
+
+      <!-- Postage (cx=276) -->
+      <rect x="202" y="12" width="148" height="54" rx="2" fill="#161616" stroke="#c4956a" stroke-width="1.5"/>
+      <text x="276" y="31" text-anchor="middle" fill="#c4956a" font-family="monospace" font-size="10" letter-spacing="1">POSTAGE</text>
+      <text x="276" y="45" text-anchor="middle" fill="#555555" font-family="monospace" font-size="8">Email Protocol</text>
+      <text x="276" y="57" text-anchor="middle" fill="#3a3a3a" font-family="monospace" font-size="7.5" font-style="italic">Lucian Hymer</text>
+
+      <!-- Habitat (cx=444) -->
+      <rect x="370" y="12" width="148" height="54" rx="2" fill="#161616" stroke="#c4956a" stroke-width="1.5"/>
+      <text x="444" y="31" text-anchor="middle" fill="#c4956a" font-family="monospace" font-size="10" letter-spacing="1">HABITAT</text>
+      <text x="444" y="45" text-anchor="middle" fill="#555555" font-family="monospace" font-size="8">Legal · Finance</text>
+      <text x="444" y="57" text-anchor="middle" fill="#3a3a3a" font-family="monospace" font-size="7.5" font-style="italic">Todd Youngblood</text>
+
+      <!-- Future (cx=612, dashed) -->
+      <rect x="538" y="12" width="148" height="54" rx="2" fill="none" stroke="#282828" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="612" y="33" text-anchor="middle" fill="#333333" font-family="monospace" font-size="9" letter-spacing="1">FUTURE</text>
+      <text x="612" y="48" text-anchor="middle" fill="#2a2a2a" font-family="monospace" font-size="8">Ventures</text>
+      <text x="612" y="59" text-anchor="middle" fill="#222222" font-family="monospace" font-size="7">forthcoming</text>
+
+      <!-- ── FLOW LINES (y: 66 → 116) ── -->
+      <line x1="108" y1="66" x2="108" y2="114" stroke="#3a3a3a" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="276" y1="66" x2="276" y2="114" stroke="#3a3a3a" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="444" y1="66" x2="444" y2="114" stroke="#3a3a3a" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="612" y1="66" x2="612" y2="114" stroke="#252525" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrFade)"/>
+
+      <!-- Flow label -->
+      <text x="360" y="94" text-anchor="middle" fill="#3d3d3d" font-family="monospace" font-size="8" letter-spacing="1">— 10% equity gift —</text>
+
+      <!-- ── THE BASKET (trapezoid: wide at top, slightly narrower at base) ── -->
+      <polygon points="28,118 692,118 642,180 78,180" fill="#1c1c1c" stroke="#c4956a" stroke-width="1.5"/>
+
+      <!-- Subtle section dividers inside basket -->
+      <line x1="192" y1="118" x2="192" y2="180" stroke="#2a2a2a" stroke-width="0.5"/>
+      <line x1="360" y1="118" x2="360" y2="180" stroke="#2a2a2a" stroke-width="0.5"/>
+      <line x1="528" y1="118" x2="528" y2="180" stroke="#2a2a2a" stroke-width="0.5"/>
+
+      <!-- Basket labels -->
+      <text x="360" y="139" text-anchor="middle" fill="#8a6545" font-family="monospace" font-size="9" letter-spacing="3">THE BASKET</text>
+      <text x="360" y="156" text-anchor="middle" fill="#ece6de" font-family="monospace" font-size="12" font-weight="300">Bundled Venture Equity</text>
+      <text x="360" y="171" text-anchor="middle" fill="#4a4a4a" font-family="monospace" font-size="7.5" letter-spacing="1">PARACHUTE · POSTAGE · HABITAT · + FUTURE</text>
+
+      <!-- ── REGENHUB FOUNDATION BAR ── -->
+      <rect x="78" y="180" width="564" height="28" fill="#141414"/>
+      <text x="360" y="198" text-anchor="middle" fill="#5a3d26" font-family="monospace" font-size="9" letter-spacing="2">REGENHUB, LCA — THE COOPERATIVE</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 02: THE VENTURES -->
+<section>
+  <div class="section-label">02 — The Ventures</div>
+  <h2>What's in the basket</h2>
+  <p>Three ventures are positioned to contribute equity into the initial basket. Each is a real, operating project with a founder embedded in the RegenHub community.</p>
+
+  <div class="venture-grid">
+    <div class="venture">
+      <div class="venture-tag">Voice &amp; AI</div>
+      <h3>Parachute</h3>
+      <div class="venture-lead">Lead · <strong>Aaron Gabriel</strong></div>
+      <p>A voice-first, local-first extended mind tool — built to help people think more clearly and act more deliberately with AI as a partner. Active development, growing user base among knowledge workers, researchers, and builders.</p>
+      <a href="https://parachute.computer" target="_blank">parachute.computer →</a>
+    </div>
+    <div class="venture">
+      <div class="venture-tag">Email Protocol</div>
+      <h3>Postage</h3>
+      <div class="venture-lead">Lead · <strong>Lucian Hymer</strong></div>
+      <p>Blockchain-based email filtering: senders pay a small amount of USDC on Base to get their email delivered to you. Your inbox, your terms. Spam solved at the protocol layer. A web3-native utility with clear consumer value.</p>
+      <a href="https://postage.email" target="_blank">postage.email →</a>
+    </div>
+    <div class="venture">
+      <div class="venture-tag">Legal &amp; Financial Infrastructure</div>
+      <h3>Habitat</h3>
+      <div class="venture-lead">Lead · <strong>Todd Youngblood</strong></div>
+      <p>Deep tech at the intersection of accounting, finance, and law. Building the legal and financial primitives that enable new instruments — including, eventually, the basket structure itself. Habitat is the tooling layer that makes this whole model possible.</p>
+    </div>
+    <div class="venture" style="border-style: dashed; border-color: var(--border2); background: transparent;">
+      <div class="venture-tag">Forthcoming</div>
+      <h3>Future Ventures</h3>
+      <p>The basket is designed to grow. As new ventures are incubated from RegenHub, they are evaluated for inclusion. Each addition diversifies the basket and increases the total fund value — creating ongoing opportunity for existing shareholders.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03: THE STRUCTURE -->
+<section>
+  <div class="section-label">03 — The Structure</div>
+  <h2>How equity flows into the basket</h2>
+  <p>Each founding venture — Parachute, Postage, Habitat — contributes <strong>10% of their equity</strong> to RegenHub as a gift to the cooperative. This is not a sale. It is a commitment: the founders choosing to root their ventures in this ecosystem and share in its collective success.</p>
+  <p>RegenHub does not put all of that equity into the basket. It puts <strong>1–2% of each venture</strong> into the basket fund, making those shares available to external investors. The remaining 8–9% stays on RegenHub's balance sheet — a growing reserve that becomes more valuable as the ventures mature.</p>
+  <p>This reserve is the engine of the model. As ventures appreciate, RegenHub can add further equity from its reserve into the basket, raising new capital at higher valuations without any new dilution to the founders. Each addition refreshes the fund and creates new opportunities for investors to participate.</p>
+  <p>Techne Institute sits outside this structure entirely — it is becoming a nonprofit, funded by grants and tuition. <strong>Techne is not in the basket.</strong> It is the reason the basket keeps producing.</p>
+
+  <div class="diagram" style="margin-top: 28px;">
+    <svg viewBox="0 0 720 180" xmlns="http://www.w3.org/2000/svg" aria-label="Equity flow: ventures gift 10% to RegenHub, which splits into basket and reserve">
+      <rect x="8" y="20" width="160" height="44" rx="2" fill="#1a1a1a" stroke="#2e2e2e" stroke-width="1"/>
+      <text x="88" y="33" text-anchor="middle" fill="#c4956a" font-family="monospace" font-size="10">PARACHUTE</text>
+      <text x="88" y="45" text-anchor="middle" fill="#555555" font-family="monospace" font-size="8">Venture equity (100%)</text>
+      <text x="88" y="57" text-anchor="middle" fill="#555555" font-family="monospace" font-size="7.5" font-style="italic">Aaron Gabriel</text>
+      <rect x="8" y="78" width="160" height="44" rx="2" fill="#1a1a1a" stroke="#2e2e2e" stroke-width="1"/>
+      <text x="88" y="91" text-anchor="middle" fill="#c4956a" font-family="monospace" font-size="10">POSTAGE</text>
+      <text x="88" y="103" text-anchor="middle" fill="#555555" font-family="monospace" font-size="8">Venture equity (100%)</text>
+      <text x="88" y="115" text-anchor="middle" fill="#555555" font-family="monospace" font-size="7.5" font-style="italic">Lucian Hymer</text>
+      <rect x="8" y="136" width="160" height="44" rx="2" fill="#1a1a1a" stroke="#2e2e2e" stroke-width="1"/>
+      <text x="88" y="149" text-anchor="middle" fill="#c4956a" font-family="monospace" font-size="10">HABITAT</text>
+      <text x="88" y="161" text-anchor="middle" fill="#555555" font-family="monospace" font-size="8">Venture equity (100%)</text>
+      <text x="88" y="173" text-anchor="middle" fill="#555555" font-family="monospace" font-size="7.5" font-style="italic">Todd Youngblood</text>
+      <line x1="168" y1="42" x2="262" y2="86" stroke="#3a3a3a" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <line x1="168" y1="100" x2="262" y2="100" stroke="#3a3a3a" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <line x1="168" y1="158" x2="262" y2="114" stroke="#3a3a3a" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <text x="214" y="96" text-anchor="middle" fill="#8a6545" font-family="monospace" font-size="9">10% gift</text>
+      <rect x="268" y="70" width="164" height="60" rx="2" fill="#212121" stroke="#c4956a" stroke-width="1.5"/>
+      <text x="350" y="94" text-anchor="middle" fill="#ece6de" font-family="monospace" font-size="10">REGENHUB, LCA</text>
+      <text x="350" y="110" text-anchor="middle" fill="#888888" font-family="monospace" font-size="8">Cooperative</text>
+      <text x="350" y="122" text-anchor="middle" fill="#555555" font-family="monospace" font-size="8">holds 10% each venture</text>
+      <line x1="432" y1="88" x2="512" y2="56" stroke="#3a3a3a" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <line x1="432" y1="112" x2="512" y2="144" stroke="#3a3a3a" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <rect x="518" y="24" width="196" height="52" rx="2" fill="#1a1a1a" stroke="#c4956a" stroke-width="1"/>
+      <text x="616" y="44" text-anchor="middle" fill="#c4956a" font-family="monospace" font-size="9" letter-spacing="1">BASKET FUND</text>
+      <text x="616" y="58" text-anchor="middle" fill="#8a6545" font-family="monospace" font-size="9">1–2% per venture</text>
+      <text x="616" y="70" text-anchor="middle" fill="#555555" font-family="monospace" font-size="8">Available to investors</text>
+      <rect x="518" y="116" width="196" height="52" rx="2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1"/>
+      <text x="616" y="136" text-anchor="middle" fill="#888888" font-family="monospace" font-size="9" letter-spacing="1">BALANCE SHEET</text>
+      <text x="616" y="150" text-anchor="middle" fill="#555555" font-family="monospace" font-size="9">8–9% per venture</text>
+      <text x="616" y="162" text-anchor="middle" fill="#3a3a3a" font-family="monospace" font-size="8">Reserve — grows as ventures mature</text>
+      <defs>
+        <marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="#3a3a3a"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<!-- 04: THE INVESTMENT -->
+<section>
+  <div class="section-label">04 — The Investment</div>
+  <h2>What this transaction looks like</h2>
+  <p>This is the first event of reciprocity — the first harvest. You are not buying into a cap table. You are buying a share of the basket: a unitized stake in the bundled equity of Parachute, Postage, and Habitat, with the expectation that new ventures will be added in future seasons.</p>
+
+  <div class="structure-rows">
+    <div class="structure-row">
+      <div class="structure-label">Your Position</div>
+      <p>$50k each — $100k in committed capital — sits alongside equity contributions from the founding ventures, targeting a starting fund value of $250k–$500k. You do not need to fully subscribe the fund; any unsubscribed value accrues to the co-op, strengthening each member's position and available for future initiatives.</p>
+    </div>
+    <div class="structure-row">
+      <div class="structure-label">What You Receive</div>
+      <p>A proportional share of the basket fund. As ventures in the basket grow, your share grows with them. As new ventures are added, the basket value increases. As RegenHub's cooperative treasury holds basket shares, the whole ecosystem's growth is reflected in your position.</p>
+    </div>
+    <div class="structure-row">
+      <div class="structure-label">How It Grows</div>
+      <p>Say the basket starts at $250k and appreciates to $5m as the ventures mature. Meanwhile Parachute has grown to a $100m valuation — meaning RegenHub's 10% stake is worth $10m, of which 2% is already in the basket ($2m) and 8% remains on the balance sheet ($8m). RegenHub now adds another 3% of Parachute from its reserve into the basket — worth $3m at current valuation. The basket grows, the hub raises fresh capital, and your position appreciates alongside it. Nothing about this requires the founders to give up anything more than they already committed.</p>
+    </div>
+    <div class="structure-row">
+      <div class="structure-label">Multiple Funds</div>
+      <p>As the basket matures and its entry price rises, new funds can be created for the next generation of ventures emerging from RegenHub — cheaper, earlier, higher risk and reward. The first basket becomes an established fund; the second basket is the frontier. The ecosystem produces a continuous harvest of new opportunities, not a single bet.</p>
+    </div>
+    <div class="structure-row">
+      <div class="structure-label">Near-Term Use</div>
+      <p>The immediate priority is securing the Suite 200 lease — the physical home for Techne Institute and the ventures. Beyond that, near-term investments in shared infrastructure (including high-compute local AI capacity) benefit every venture in the basket and increase the value of the whole.</p>
+    </div>
+  </div>
+
+  <div class="diagram" style="margin-top: 28px;">
+    <svg viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" aria-label="Season 1 to Season 2 basket growth progression">
+      <rect x="8" y="20" width="190" height="90" rx="2" fill="#1a1a1a" stroke="#2e2e2e" stroke-width="1"/>
+      <text x="103" y="42" text-anchor="middle" fill="#8a6545" font-family="monospace" font-size="9" letter-spacing="2">SEASON ONE</text>
+      <text x="103" y="68" text-anchor="middle" fill="#ece6de" font-family="monospace" font-size="18" font-weight="300">$250–500k</text>
+      <text x="103" y="88" text-anchor="middle" fill="#555555" font-family="monospace" font-size="8">$100k cash + venture equity</text>
+      <text x="103" y="100" text-anchor="middle" fill="#3a3a3a" font-family="monospace" font-size="8">Parachute · Postage · Habitat</text>
+      <line x1="198" y1="65" x2="252" y2="65" stroke="#2e2e2e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="225" y="58" text-anchor="middle" fill="#3a3a3a" font-family="monospace" font-size="8">appreciate</text>
+      <rect x="258" y="20" width="190" height="90" rx="2" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1"/>
+      <text x="353" y="42" text-anchor="middle" fill="#8a6545" font-family="monospace" font-size="9" letter-spacing="2">APPRECIATES</text>
+      <text x="353" y="68" text-anchor="middle" fill="#ece6de" font-family="monospace" font-size="18" font-weight="300">$5m+</text>
+      <text x="353" y="88" text-anchor="middle" fill="#555555" font-family="monospace" font-size="8">Ventures mature</text>
+      <text x="353" y="100" text-anchor="middle" fill="#3a3a3a" font-family="monospace" font-size="8">No new dilution required</text>
+      <line x1="448" y1="65" x2="502" y2="65" stroke="#2e2e2e" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="475" y="58" text-anchor="middle" fill="#3a3a3a" font-family="monospace" font-size="8">add reserve</text>
+      <rect x="508" y="20" width="204" height="90" rx="2" fill="#212121" stroke="#c4956a" stroke-width="1.5"/>
+      <text x="610" y="42" text-anchor="middle" fill="#8a6545" font-family="monospace" font-size="9" letter-spacing="2">SEASON TWO</text>
+      <text x="610" y="68" text-anchor="middle" fill="#c4956a" font-family="monospace" font-size="18" font-weight="300">+$3m</text>
+      <text x="610" y="88" text-anchor="middle" fill="#8a6545" font-family="monospace" font-size="8">Hub adds 3% Parachute from reserve</text>
+      <text x="610" y="100" text-anchor="middle" fill="#555555" font-family="monospace" font-size="8">Fresh capital raised · Position grows</text>
+      <defs>
+        <marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="#555555"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="scenario">
+    <div class="scenario-label">Illustrative: Season One → Season Two</div>
+    <div class="scenario-grid">
+      <div class="scenario-item">
+        <div class="amount">$250–500k</div>
+        <p>Starting basket value: $100k cash + founding venture equity</p>
+      </div>
+      <div class="scenario-item">
+        <div class="amount">$5m+</div>
+        <p>Basket value after venture appreciation — no new dilution required</p>
+      </div>
+      <div class="scenario-item">
+        <div class="amount">$3m</div>
+        <p>Hub adds 3% more Parachute equity from reserve, raises fresh capital</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr/>
+
+<!-- CLOSING -->
+<section style="margin-bottom: 32px;">
+  <div class="section-label">The Next Step</div>
+  <h2>This is the starting basket</h2>
+  <p>Todd is preparing the agreement stack — the layered legal and financial instruments that make this structure real and deliverable. The goal is to have something concrete within the week: not just a concept, but a structure you can have conviction in.</p>
+  <p>This is the starting basket. The first season. The question is whether you want to be in it from the beginning — when the soil is freshest and the founding positions are largest.</p>
+  <div class="pullquote">What if the ventures growing here were connected not just by proximity, but by a shared stake in each other's success — and you were part of that from the first season?</div>
+</section>
+
+<footer>
+  RegenHub, LCA (DBA Techne) · Boulder, Colorado · Filed February 6, 2026<br/>
+  Colorado Public Benefit Limited Cooperative Association<br/>
+  From: Aaron Gabriel · <a href="mailto:ag@unforced.org">ag@unforced.org</a><br/>
+  Contact: Todd Youngblood · Ventures &amp; Operations Steward<br/>
+  <a href="https://roots-trust-lca.github.io/regenhub/">roots-trust-lca.github.io/regenhub</a>
+</footer>
+
+
+<!-- rh-theme-start --><script>
+/* rh-theme: postMessage theme sync */
+(function () {
+  var THEMES = {
+    dark: {
+      '--bg':'#0f0f0f','--surface':'#1a1a1a','--surface2':'#212121',
+      '--border':'#2e2e2e','--border2':'#3a3a3a',
+      '--primary':'#c4956a','--primary-dim':'#8a6545',
+      '--text':'#d9d9d9','--text-bright':'#ece6de',
+      '--text-muted':'#888888','--text-faint':'#555555',
+      '--green':'#8aba8a','--green-bg':'#1a1f1a','--green-border':'#4a6a4a',
+      '--amber':'#d4b08a','--amber-bg':'#1f1a14','--amber-border':'#8a6545',
+      '--blue':'#a0a0c4','--blue-bg':'#1a1a22','--blue-border':'#6a6a8a',
+      '--red':'#c47070','--red-bg':'#1f1414','--red-border':'#6a3a3a'
+    },
+    light: {
+      '--bg':'#f8f5f0','--surface':'#efebe4','--surface2':'#e6e0d8',
+      '--border':'#d4ccc0','--border2':'#c4bab0',
+      '--primary':'#9a6838','--primary-dim':'#c4956a',
+      '--text':'#3a342e','--text-bright':'#1a1410',
+      '--text-muted':'#7a7068','--text-faint':'#b0a898',
+      '--green':'#3a7a3a','--green-bg':'#edf5ed','--green-border':'#4a7a4a',
+      '--amber':'#7a4818','--amber-bg':'#f5ede0','--amber-border':'#9a6838',
+      '--blue':'#3a3a7a','--blue-bg':'#edeff8','--blue-border':'#5a5a8a',
+      '--red':'#9a3a3a','--red-bg':'#f8eded','--red-border':'#8a4a4a'
+    }
+  };
+
+  /* Inject smooth transition style once */
+  var style = document.createElement('style');
+  style.textContent = 'html,body,*{transition:background-color 0.2s,color 0.2s,border-color 0.2s;}';
+  document.head.appendChild(style);
+
+  function applyTheme(mode) {
+    var vars = THEMES[mode] || THEMES.dark;
+    var root = document.documentElement;
+    for (var k in vars) root.style.setProperty(k, vars[k]);
+  }
+
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'rh-theme') applyTheme(e.data.mode);
+  });
+
+  /* Tell parent we are ready — parent will reply with current theme */
+  try { window.parent.postMessage({ type: 'rh-theme-ready' }, '*'); } catch(e) {}
+})();
+</script><!-- rh-theme-end -->
+</body>
+</html>
