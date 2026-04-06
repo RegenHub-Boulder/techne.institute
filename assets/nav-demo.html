@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Techne Nav — Component Demo</title>
+  <script src="/assets/nav.js"></script>
+  <style>
+    body { margin: 0; font-family: 'IBM Plex Mono', monospace; background: #1a1a1f; color: #9a958a; }
+    .section { margin: 3rem 0; }
+    .label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #5a5550;
+      padding: 0 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .note {
+      font-size: 0.7rem;
+      color: #5a5550;
+      padding: 0.75rem 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="section">
+    <p class="label">Mode: public — no active section</p>
+    <techne-nav mode="public"></techne-nav>
+  </div>
+
+  <div class="section">
+    <p class="label">Mode: public — active-section: formation</p>
+    <techne-nav mode="public" active-section="formation"></techne-nav>
+  </div>
+
+  <div class="section">
+    <p class="label">Mode: investor — active-section: data-room</p>
+    <techne-nav mode="investor" active-section="data-room"></techne-nav>
+    <p class="note">Intranet link is locked (membership nudge). Investor can see data room.</p>
+  </div>
+
+  <div class="section">
+    <p class="label">Mode: intranet — active-section: patronage — user signed in</p>
+    <techne-nav mode="intranet" active-section="patronage" user-name="T. Youngblood" user-class="Class 1 — Labor"></techne-nav>
+  </div>
+
+  <div class="section">
+    <p class="label">Mode: intranet — no user (loading state or guest)</p>
+    <techne-nav mode="intranet"></techne-nav>
+  </div>
+
+</body>
+</html>
