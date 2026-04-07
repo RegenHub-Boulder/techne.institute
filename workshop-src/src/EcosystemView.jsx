@@ -3,6 +3,7 @@ import EcosystemWindow from './EcosystemWindow.jsx'
 import AgentWindow from './AgentWindow.jsx'
 import SprintWindow from './SprintWindow.jsx'
 import StreamPanel from './StreamPanel.jsx'
+import RoadmapWindow from './RoadmapWindow.jsx'
 
 const PHASE_LABELS = {
   gathering: 'Gathering',
@@ -13,7 +14,7 @@ const PHASE_LABELS = {
 }
 
 export default function EcosystemView({ data, lastFetch, onRefresh }) {
-  const { presence = [], sprints = {}, messages = [], events = [], floor = {} } = data || {}
+  const { presence = [], sprints = {}, messages = [], events = [], floor = {}, roadmap = [] } = data || {}
   const { active = [], recent = [] } = sprints
 
   const phase = floor.phase || 'gathering'
@@ -153,6 +154,9 @@ export default function EcosystemView({ data, lastFetch, onRefresh }) {
         <div style={{ gridColumn: 'span 1' }}>
           <StreamPanel messages={messages} events={events} />
         </div>
+
+        {/* ── Roadmap ── */}
+        <RoadmapWindow roadmap={roadmap} />
 
         {/* ── Recent / Completed ── */}
         <EcosystemWindow
