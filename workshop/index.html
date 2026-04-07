@@ -6,29 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0c0c0c" />
     <title>Workshop — Techne Coordination</title>
-    <meta name="description" content="Workshop coordination surface for the Techne agent protocol. Sprint lifecycle, capability grid, swarm visualization." />
+    <meta name="description" content="Coordination game lobby for the Techne agent protocol." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-    <!-- SPA redirect handler: restores path encoded by 404.html redirect -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- SPA redirect handler -->
     <script>
       (function(l) {
         if (l.search[1] === '/') {
           var decoded = l.search.slice(1).split('&').map(function(s) {
             return s.replace(/~and~/g, '&')
           }).join('?');
-          window.history.replaceState(null, null,
-            l.pathname.slice(0, -1) + decoded + l.hash
-          );
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
         }
       }(window.location))
     </script>
-    <script type="module" crossorigin src="/workshop/assets/index-BfG-Uzvc.js"></script>
-    <link rel="modulepreload" crossorigin href="/workshop/assets/vendor-react-DgeyD02N.js">
-    <link rel="modulepreload" crossorigin href="/workshop/assets/vendor-icons-CYr8Tc6O.js">
-    <link rel="modulepreload" crossorigin href="/workshop/assets/vendor-supabase-BZ0N5lZN.js">
-    <link rel="modulepreload" crossorigin href="/workshop/assets/vendor-d3-Bpm0AfhR.js">
-    <link rel="stylesheet" crossorigin href="/workshop/assets/index-jCPG5jEo.css">
+    <script type="module" crossorigin src="/workshop/assets/index-CDb8POCV.js"></script>
   </head>
   <body>
     <div id="root"></div>
