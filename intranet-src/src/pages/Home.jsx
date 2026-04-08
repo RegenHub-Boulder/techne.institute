@@ -86,6 +86,30 @@ export default function Home() {
             description="R13 scenario model — solar-powered cooperative compute array, CLOUD credit projections, and LCA patronage accounting."
             available={true}
           />
+          <NavCard
+            href="/intranet/journal/"
+            title="REA Journal"
+            description="Append-only cooperative event log — all economic and governance activity with Resource · Event · Agent semantics."
+            available={true}
+          />
+          <NavCard
+            href="/intranet/ledger/"
+            title="REA Ledger"
+            description="Current account balances — capital, CLOUD credits, labor, and voting power. Merkle-verified state."
+            available={true}
+          />
+          <NavCard
+            href="/intranet/governance/"
+            title="Governance"
+            description="Cooperative proposals and voting. Votes recorded as REA journal events for auditable decision-making."
+            available={true}
+          />
+          <NavCard
+            href="/intranet/verify/"
+            title="State Verifier"
+            description="Cryptographically verify account balances and state transitions using merkle proofs. Auditor-accessible."
+            available={true}
+          />
           {isSteward && (
             <NavCard
               href="/intranet/treasury/"

@@ -14,6 +14,10 @@ export function IntranetHeader() {
     { href: '/intranet/documents/', label: 'Documents', match: 'documents' },
     { href: '/intranet/guide/', label: 'Guide', match: 'guide' },
     { href: '/intranet/cloud/', label: 'Cloud', match: 'cloud' },
+    { href: '/intranet/journal/', label: 'Journal', match: 'journal' },
+    { href: '/intranet/ledger/', label: 'Ledger', match: 'ledger' },
+    { href: '/intranet/governance/', label: 'Governance', match: 'governance' },
+    { href: '/intranet/verify/', label: 'Verify', match: 'verify' },
   ]
 
   const visible = navLinks.filter((l) => !l.steward || isSteward)
