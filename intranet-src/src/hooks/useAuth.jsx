@@ -30,16 +30,40 @@ export function AuthProvider({ children }) {
   }, [])
 
   async function loadParticipant(authUserId) {
+    // First: try direct auth_user_id link
     const { data, error } = await supabase
       .from('participants')
       .select('id, name, email, participant_type, account_type, auth_user_id')
       .eq('auth_user_id', authUserId)
-      .single()
+      .maybeSingle()
 
     if (!error && data) {
       setParticipant(data)
+      return
+    }
+
+    // Fallback: look up by email alias (supports multiple emails per account)
+    const { data: session } = await supabase.auth.getSession()
+    const userEmail = session?.session?.user?.email
+    if (!userEmail) { setParticipant(null); return }
+
+    const { data: alias } = await supabase
+      .from('participant_email_aliases')
+      .select('participant_id')
+      .eq('email', userEmail.toLowerCase())
+      .maybeSingle()
+
+    if (!alias) { setParticipant(null); return }
+
+    const { data: p2, error: e2 } = await supabase
+      .from('participants')
+      .select('id, name, email, participant_type, account_type, auth_user_id')
+      .eq('id', alias.participant_id)
+      .maybeSingle()
+
+    if (!e2 && p2) {
+      setParticipant(p2)
     } else {
-      // No participant record linked to this auth user
       setParticipant(null)
     }
   }
