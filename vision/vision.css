@@ -1,30 +1,24 @@
 /* ============================================================
    Techne Vision — Shared Styles
    Used by /vision/, /vision/craft/, /vision/common/
+
+   Imports design tokens from the shared system.
+   Local additions: craft colors, teal, vision-specific components.
+   Updated P412 — 2026-04-08
    ============================================================ */
 
+@import url('/assets/tokens.css');
+
 :root {
-  --void: #08080a;
-  --ink: #0f0f12;
-  --charcoal: #1a1a1f;
-  --graphite: #2a2a30;
+  /* Vision-local extensions (not in shared tokens) */
   --slate: #3a3a42;
-  --cream: #ebe7df;
-  --bone: #d8d3c8;
-  --stone: #9a958a;
-  --ember: #c2512a;
-  --warm: #c4956a;
-  --warm-dim: #8a6a4a;
-  --sage: #4a5f4a;
-  --sage-light: #6b836b;
+  --warm: var(--copper, #c4956a);
+  --warm-dim: var(--copper-dim, #8a6a4a);
   --teal: #7ccfb8;
   --teal-dim: #5a9a8a;
-  --font-display: 'Cormorant', serif;
-  --font-body: 'Source Serif 4', serif;
-  --font-mono: 'IBM Plex Mono', monospace;
-  --font-code: 'JetBrains Mono', monospace;
+  --font-code: var(--font-mono);
 
-  /* Craft colors */
+  /* Craft discipline colors */
   --c-code:  #8bbfff;
   --c-word:  #a6ed2a;
   --c-form:  #d4a0e8;

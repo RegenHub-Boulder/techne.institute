@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Title — Techne Institute</title>
+<meta name="description" content="Page description for search and social sharing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<!--
+  NARRATIVE TEMPLATE — Techne Design System (P412)
+  For: introduction, formation, vision, bylaws, membership, about, public-benefit
+  CSS imports: tokens → layout → components → (optional section-local.css)
+-->
+<link rel="stylesheet" href="/assets/tokens.css">
+<link rel="stylesheet" href="/assets/layout.css">
+<link rel="stylesheet" href="/assets/components.css">
+<style>
+/* Page-specific overrides go here */
+body {
+  font-family: var(--font-body);
+  background: var(--parchment);
+  color: var(--charcoal);
+  font-size: var(--text-body);
+  line-height: 1.75;
+}
+
+/* Paper texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+main { position: relative; z-index: 1; }
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="site-nav" aria-label="Main navigation">
+  <div class="site-nav-inner">
+    <a href="/" class="site-nav-logo">Techne</a>
+    <ul class="site-nav-links">
+      <li><a href="/introduction/">Introduction</a></li>
+      <li><a href="/vision/">Vision</a></li>
+      <li><a href="/formation/">Formation</a></li>
+      <li><a href="/membership/">Membership</a></li>
+      <li><a href="/app/" class="btn btn-ghost" style="padding:0.3rem 0.75rem;">Members</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ MAIN ============ -->
+<main>
+
+  <!-- Hero -->
+  <div class="section-sm">
+    <div class="frame">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="/section/">Section</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>Current Page</span>
+      </nav>
+
+      <!-- Title block -->
+      <div class="hero-minimal">
+        <span class="eyebrow">Section Name</span>
+        <h1>Page Title Goes Here</h1>
+        <p class="lead">
+          A compelling subtitle or opening sentence that draws the reader in.
+          Keep it under two lines.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Body content -->
+  <div class="section-sm">
+    <div class="frame prose">
+
+      <p>
+        Opening paragraph. Use Source Serif 4 at 17px, line-height 1.75.
+        This is the primary reading experience for narrative pages.
+      </p>
+
+      <h2>Section Heading</h2>
+
+      <p>
+        Content paragraphs. The 820px max-width frame gives you roughly 70
+        characters per line — the optimal measure for comfortable reading.
+      </p>
+
+      <blockquote>
+        A pull quote or highlighted passage goes here. Bordered left in ember.
+        Use sparingly — once or twice per page.
+      </blockquote>
+
+      <h3>Subsection</h3>
+
+      <p>
+        Subsection content. H3 uses Cormorant at 1.75rem, weight 400.
+      </p>
+
+      <hr>
+
+      <!-- Callout box -->
+      <div class="notice notice-ember-light">
+        <strong>Key insight or important note.</strong>
+        Use the notice component for things you want to highlight.
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="site-footer-brand">
+      <a href="/" class="site-footer-wordmark">Techne</a>
+      <p class="site-footer-tagline">A venture studio for cooperative infrastructure. Boulder, Colorado.</p>
+    </div>
+    <div class="site-footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="/introduction/">Introduction</a></li>
+        <li><a href="/vision/">Vision</a></li>
+        <li><a href="/formation/">Formation</a></li>
+        <li><a href="/membership/">Membership</a></li>
+      </ul>
+    </div>
+    <div class="site-footer-col">
+      <h4>Organization</h4>
+      <ul>
+        <li><a href="/cooperative/">Cooperative</a></li>
+        <li><a href="/bylaws/">Bylaws</a></li>
+        <li><a href="/public-benefit/">Public Benefit</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </div>
+    <div class="site-footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="mailto:hello@techne.studio">hello@techne.studio</a></li>
+        <li><a href="/app/">Member Portal</a></li>
+        <li><a href="/workshop/">Workshop</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer-bottom">
+    <p class="site-footer-legal">
+      &copy; 2026 RegenHub, LCA · <a href="/bylaws/">Bylaws</a> · <a href="/public-benefit/">Public Benefit</a>
+    </p>
+    <p class="site-footer-legal">Colorado Limited Cooperative Association</p>
+  </div>
+</footer>
+
+</body>
+</html>

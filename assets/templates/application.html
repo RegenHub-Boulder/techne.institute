@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Application — Techne Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<!--
+  APPLICATION TEMPLATE — Techne Design System (P412)
+  For: /app/*, /workshop/*
+  Dense dark UI. Sidebar navigation. Data-focused.
+  Note: /app/* is a React app (intranet) — this template is for /workshop/* and
+  other app-adjacent static pages that live outside the React build.
+-->
+<link rel="stylesheet" href="/assets/tokens.css">
+<link rel="stylesheet" href="/assets/layout.css">
+<link rel="stylesheet" href="/assets/components.css">
+<style>
+body {
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--bone);
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+/* App shell: sticky top nav + scrollable content */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  height: 52px;
+  background: var(--ink);
+  border-bottom: 1px solid var(--graphite);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-6);
+  gap: var(--space-6);
+  flex-shrink: 0;
+}
+
+.app-header-logo {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ember);
+  text-decoration: none;
+}
+
+.app-header-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  flex: 1;
+}
+
+.app-header-nav a {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  color: var(--stone);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.app-header-nav a:hover,
+.app-header-nav a.active { color: var(--bone); }
+
+.app-header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* App body with optional sidebar */
+.app-body {
+  display: flex;
+  flex: 1;
+}
+
+.app-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--graphite);
+  background: var(--ink);
+  padding: var(--space-6) 0;
+  position: sticky;
+  top: 52px;
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+
+.app-sidebar-section {
+  padding: 0 var(--space-4) var(--space-6);
+}
+
+.app-sidebar-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--graphite);
+  padding: 0 var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.app-sidebar-link {
+  display: block;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-base);
+  color: var(--stone);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+  margin-bottom: 2px;
+}
+
+.app-sidebar-link:hover { color: var(--bone); background: rgba(255,255,255,0.04); }
+.app-sidebar-link.active { color: var(--ember); background: var(--ember-glow); }
+
+/* Main content area */
+.app-content {
+  flex: 1;
+  padding: var(--space-8);
+  min-width: 0;
+}
+
+.app-page-header {
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--graphite);
+}
+
+.app-page-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-2xl);
+  color: #fff;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-2);
+}
+
+.app-page-subtitle {
+  font-size: var(--text-base);
+  color: var(--stone);
+}
+
+@media (max-width: 768px) {
+  .app-sidebar { display: none; }
+  .app-content { padding: var(--space-5); }
+}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- App header -->
+  <header class="app-header">
+    <a href="/" class="app-header-logo">Techne</a>
+    <nav class="app-header-nav">
+      <a href="/workshop/" class="active">Workshop</a>
+      <a href="/app/">Members</a>
+      <a href="/">Public Site</a>
+    </nav>
+    <div class="app-header-actions">
+      <span style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--stone)">User Name</span>
+      <button class="btn-ghost-dark btn" style="padding:0.25rem 0.6rem;font-size:var(--text-xs)">Sign out</button>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <p class="app-sidebar-title">Navigation</p>
+      <nav>
+        <a href="#" class="app-sidebar-link active">Dashboard</a>
+        <a href="#" class="app-sidebar-link">Sprints</a>
+        <a href="#" class="app-sidebar-link">Participants</a>
+        <a href="#" class="app-sidebar-link">Activity</a>
+      </nav>
+      <div style="height:1px;background:var(--graphite);margin:var(--space-4) var(--space-4)"></div>
+      <p class="app-sidebar-title">Settings</p>
+      <nav>
+        <a href="#" class="app-sidebar-link">Profile</a>
+        <a href="#" class="app-sidebar-link">Preferences</a>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="app-content">
+
+      <div class="app-page-header">
+        <h1 class="app-page-title">Page Title</h1>
+        <p class="app-page-subtitle">Brief description of this view.</p>
+      </div>
+
+      <!-- Content grid -->
+      <div class="grid-auto" style="margin-bottom:var(--space-8)">
+        <div class="metric-card">
+          <div class="metric-label">Metric One</div>
+          <div class="metric-value">42</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Metric Two</div>
+          <div class="metric-value">$12K</div>
+          <div class="metric-change positive">+8%</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Status</div>
+          <div style="margin-top:var(--space-3)"><span class="status status-active">Active</span></div>
+        </div>
+      </div>
+
+      <!-- Data table -->
+      <div style="background:var(--ink);border:1px solid var(--graphite);border-radius:var(--radius-md);overflow:hidden">
+        <div style="padding:var(--space-5) var(--space-6);border-bottom:1px solid var(--graphite)">
+          <h2 style="font-family:var(--font-mono);font-size:var(--text-base);font-weight:400;color:var(--bone)">Recent Items</h2>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th class="num">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--stone)">P001</td>
+                <td>Example item title</td>
+                <td><span class="status status-active">Active</span></td>
+                <td class="num">$4,500</td>
+              </tr>
+              <tr>
+                <td style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--stone)">P002</td>
+                <td>Another item</td>
+                <td><span class="status status-pending">Pending</span></td>
+                <td class="num">$2,200</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+</div>
+
+</body>
+</html>

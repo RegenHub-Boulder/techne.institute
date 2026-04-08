@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presentation Deck — Techne Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<!--
+  PRESENTATION DECK TEMPLATE — Techne Design System (P412)
+  For: introduction/*-deck.html, data-room/deck.html, lunch-presentation/*
+  Dark aesthetic. Full-viewport slides. Print-optimized for screen projection.
+-->
+<link rel="stylesheet" href="/assets/tokens.css">
+<link rel="stylesheet" href="/assets/layout.css">
+<link rel="stylesheet" href="/assets/components.css">
+<style>
+
+/* ── Deck base ── */
+body {
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--bone);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── Slide units ── */
+.slide {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem var(--space-8);
+  position: relative;
+  border-bottom: 1px solid var(--graphite);
+}
+
+.slide:last-child { border-bottom: none; }
+
+.slide-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Slide types ── */
+.slide-title {
+  align-items: center;
+  text-align: center;
+  background: var(--void);
+}
+
+.slide-content {
+  background: var(--ink);
+}
+
+.slide-dark {
+  background: var(--charcoal);
+}
+
+/* ── Typography within slides ── */
+.slide-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: var(--space-5);
+}
+
+.slide h1 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  color: #fff;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-6);
+}
+
+.slide h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: #fff;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-5);
+}
+
+.slide-sub {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: var(--stone);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.slide-sub.centered { margin-inline: auto; }
+
+.slide p {
+  font-size: var(--text-lg);
+  color: var(--stone);
+  line-height: 1.75;
+  margin-bottom: var(--space-4);
+  max-width: 65ch;
+}
+
+.slide p:last-child { margin-bottom: 0; }
+
+/* ── Slide number ── */
+.slide-num {
+  position: absolute;
+  bottom: var(--space-6);
+  right: var(--space-8);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--graphite);
+  letter-spacing: 0.1em;
+}
+
+/* ── Two-column slide ── */
+.slide-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-10);
+  align-items: start;
+}
+
+@media (max-width: 700px) {
+  .slide-cols { grid-template-columns: 1fr; }
+  .slide { min-height: auto; padding: 3.5rem var(--space-4); }
+}
+
+/* ── CTA slide ── */
+.slide-cta {
+  text-align: center;
+  align-items: center;
+  background-color: var(--void);
+  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Orb decoration ── */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(120px);
+}
+.orb-ember { background: rgba(194, 81, 42, 0.12); }
+.orb-sage  { background: rgba(74, 95, 74, 0.08); }
+
+/* Print: each slide on its own page */
+@media print {
+  .slide { min-height: 100vh; page-break-after: always; }
+  .slide:last-child { page-break-after: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Slide 1: Title ── -->
+<section class="slide slide-title" id="slide-1">
+  <div class="orb orb-ember" style="width:600px;height:600px;top:-200px;right:-100px"></div>
+  <div class="orb orb-sage" style="width:400px;height:400px;bottom:-100px;left:-100px"></div>
+  <div class="slide-inner">
+    <div class="slide-label">Techne Institute · April 2026</div>
+    <h1>Presentation Title</h1>
+    <p class="slide-sub centered">Subtitle or framing sentence for the deck.</p>
+  </div>
+  <div class="slide-num">1</div>
+</section>
+
+<!-- ── Slide 2: Context ── -->
+<section class="slide slide-content" id="slide-2">
+  <div class="slide-inner">
+    <div class="slide-label">Context</div>
+    <h2>What We're Building</h2>
+    <p>Key message for this slide. Keep it to 2–3 sentences. Decks are not essays — use the spoken word for nuance.</p>
+  </div>
+  <div class="slide-num">2</div>
+</section>
+
+<!-- ── Slide 3: Two columns ── -->
+<section class="slide slide-content" id="slide-3">
+  <div class="slide-inner">
+    <div class="slide-label">Comparison</div>
+    <h2>Two Perspectives</h2>
+    <div class="slide-cols">
+      <div>
+        <p style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--ember);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:var(--space-3)">Left Column</p>
+        <p>Content for the left column. Use for comparisons, before/after, or parallel ideas.</p>
+      </div>
+      <div>
+        <p style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--sage-light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:var(--space-3)">Right Column</p>
+        <p>Content for the right column.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">3</div>
+</section>
+
+<!-- ── Slide 4: CTA ── -->
+<section class="slide slide-cta" id="slide-4">
+  <div class="slide-inner" style="text-align:center">
+    <div class="slide-label">Next Steps</div>
+    <h2>Call to Action</h2>
+    <p class="slide-sub centered">Where do we go from here?</p>
+    <div style="margin-top:var(--space-8);display:flex;gap:var(--space-4);justify-content:center;flex-wrap:wrap">
+      <a href="/" class="btn btn-primary">Primary Action</a>
+      <a href="/" class="btn btn-ghost-dark">Learn More</a>
+    </div>
+  </div>
+  <div class="slide-num">4</div>
+</section>
+
+</body>
+</html>

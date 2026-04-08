@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Page Not Found · Techne Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<!--
+  UTILITY TEMPLATE — Techne Design System (P412)
+  For: /404.html, legal pages, error states
+  Simple centered layout. Can be light or dark depending on site section.
+-->
+<link rel="stylesheet" href="/assets/tokens.css">
+<link rel="stylesheet" href="/assets/layout.css">
+<link rel="stylesheet" href="/assets/components.css">
+<style>
+body {
+  font-family: var(--font-body);
+  background: var(--parchment);
+  color: var(--charcoal);
+  font-size: var(--text-body);
+  line-height: 1.75;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
+</head>
+<body>
+
+<!-- Minimal nav for utility pages -->
+<nav style="height:56px;display:flex;align-items:center;padding:0 var(--space-8);border-bottom:1px solid var(--bone)">
+  <a href="/" style="font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:0.12em;text-transform:uppercase;color:var(--charcoal);text-decoration:none">Techne</a>
+</nav>
+
+<main>
+  <div style="text-align:center;padding:var(--space-8)">
+
+    <!-- Error code -->
+    <div style="font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:0.2em;text-transform:uppercase;color:var(--stone);margin-bottom:var(--space-6)">
+      Error 404
+    </div>
+
+    <!-- Title -->
+    <h1 style="font-family:var(--font-display);font-weight:300;font-size:clamp(2.5rem,6vw,4rem);letter-spacing:-0.02em;color:var(--charcoal);line-height:1.15;margin-bottom:var(--space-5)">
+      Page not found
+    </h1>
+
+    <!-- Message -->
+    <p style="font-size:var(--text-lg);color:var(--stone);max-width:480px;margin:0 auto var(--space-8);line-height:1.7">
+      The page you're looking for has moved, been renamed, or doesn't exist.
+    </p>
+
+    <!-- Actions -->
+    <div class="cluster" style="justify-content:center">
+      <a href="/" class="btn btn-primary">Go home</a>
+      <a href="/introduction/" class="btn btn-ghost">Introduction</a>
+    </div>
+
+    <!-- Helpful links -->
+    <div style="margin-top:var(--space-10);border-top:1px solid var(--bone);padding-top:var(--space-8)">
+      <p style="font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:0.1em;text-transform:uppercase;color:var(--stone);margin-bottom:var(--space-5)">
+        You might be looking for
+      </p>
+      <div class="cluster" style="justify-content:center">
+        <a href="/vision/" style="font-size:var(--text-base);color:var(--ember);text-decoration:none">Vision</a>
+        <a href="/formation/" style="font-size:var(--text-base);color:var(--ember);text-decoration:none">Formation</a>
+        <a href="/membership/" style="font-size:var(--text-base);color:var(--ember);text-decoration:none">Membership</a>
+        <a href="/about/" style="font-size:var(--text-base);color:var(--ember);text-decoration:none">About</a>
+        <a href="/app/" style="font-size:var(--text-base);color:var(--ember);text-decoration:none">Member Portal</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer style="padding:var(--space-6) var(--space-8);border-top:1px solid var(--bone);text-align:center">
+  <p style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--stone);letter-spacing:0.06em">
+    &copy; 2026 RegenHub, LCA &middot; Boulder, Colorado
+  </p>
+</footer>
+
+</body>
+</html>

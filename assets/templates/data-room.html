@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Room — Techne Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<!--
+  DATA ROOM TEMPLATE — Techne Design System (P412)
+  For: data-room/*, formation/financial, formation/governance, term sheets
+  Dark aesthetic — void background, bone text, ember accents.
+  Wide container (1200px) for tables and data grids.
+-->
+<link rel="stylesheet" href="/assets/tokens.css">
+<link rel="stylesheet" href="/assets/layout.css">
+<link rel="stylesheet" href="/assets/components.css">
+<style>
+body {
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--bone);
+  font-size: var(--text-base);
+  line-height: 1.7;
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION (dark variant) ============ -->
+<nav class="site-nav site-nav-dark" aria-label="Main navigation">
+  <div class="site-nav-inner">
+    <a href="/" class="site-nav-logo">Techne</a>
+    <ul class="site-nav-links">
+      <li><a href="/data-room/" aria-current="page">Data Room</a></li>
+      <li><a href="/formation/">Formation</a></li>
+      <li><a href="/app/">Members</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <!-- Header section -->
+  <div class="section-sm section-dark">
+    <div class="container-wide">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="/data-room/">Data Room</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>Document Title</span>
+      </nav>
+
+      <div style="margin-top:var(--space-6)">
+        <span style="font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:0.15em;text-transform:uppercase;color:var(--stone)">Data Room</span>
+        <h1 style="font-family:var(--font-display);font-weight:400;font-size:var(--text-hero);letter-spacing:-0.02em;color:#fff;margin:var(--space-4) 0 var(--space-5);line-height:1.15">Document Title</h1>
+        <p style="font-size:var(--text-lg);color:var(--stone);max-width:560px;line-height:1.7">Brief description of what this document contains and who it's for.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Metrics summary row -->
+  <div class="section-dark" style="padding-block:var(--space-8)">
+    <div class="container-wide">
+      <div class="grid-auto" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">
+        <div class="metric-card">
+          <div class="metric-label">Total Capital</div>
+          <div class="metric-value">$2.4M</div>
+          <div class="metric-change positive">+12% YoY</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Members</div>
+          <div class="metric-value">24</div>
+          <div class="metric-change">as of Q1 2026</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Revenue</div>
+          <div class="metric-value">$380K</div>
+          <div class="metric-change">trailing 12 months</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Status</div>
+          <div style="margin-top:var(--space-3)">
+            <span class="status status-active">Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data table section -->
+  <div class="section-dark">
+    <div class="container-wide">
+
+      <h2 style="font-family:var(--font-display);font-weight:400;font-size:var(--text-2xl);color:#fff;margin-bottom:var(--space-6)">
+        Section Heading
+      </h2>
+
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Column A</th>
+              <th>Column B</th>
+              <th class="num">Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Row item 1</td>
+              <td>Supporting data</td>
+              <td class="num">$100,000</td>
+              <td><span class="status status-active">Active</span></td>
+            </tr>
+            <tr>
+              <td>Row item 2</td>
+              <td>Supporting data</td>
+              <td class="num">$75,000</td>
+              <td><span class="status status-pending">Pending</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Disclosure notice -->
+      <div class="notice notice-ember" style="margin-top:var(--space-8)">
+        <strong>Important disclosure.</strong>
+        This document is for informational purposes only and does not constitute
+        an offer to sell or a solicitation to buy any security.
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- Minimal footer for data room pages -->
+<footer style="padding:var(--space-8);border-top:1px solid var(--graphite);background:var(--void)">
+  <div class="container-wide" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--space-4)">
+    <p style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--graphite);letter-spacing:0.08em">
+      &copy; 2026 RegenHub, LCA &mdash; Confidential
+    </p>
+    <a href="/data-room/" style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--stone);letter-spacing:0.08em;text-decoration:none">
+      &larr; Back to Data Room
+    </a>
+  </div>
+</footer>
+
+</body>
+</html>
