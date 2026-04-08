@@ -45,6 +45,20 @@ export function AuthProvider({ children }) {
   }
 
   async function signInWithEmail(email) {
+    // Check allowlist before sending OTP — only authorized organizers may log in
+    const { data: allowed, error: allowlistError } = await supabase
+      .from('techne_allowed_organizers')
+      .select('email')
+      .eq('email', email.toLowerCase())
+      .maybeSingle()
+
+    if (allowlistError) {
+      return { error: { message: 'Could not verify email authorization. Try again.' } }
+    }
+    if (!allowed) {
+      return { error: { message: 'This email is not on the authorized organizer list. Contact a steward to request access.' } }
+    }
+
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
