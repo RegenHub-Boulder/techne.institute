@@ -14,6 +14,7 @@ import Treasury from './pages/Treasury'
 import Projects from './pages/Projects'
 import Labor from './pages/Labor'
 import Guide from './pages/Guide'
+import Cloud from './pages/Cloud'
 
 // GitHub Pages SPA routing shim
 // On 404, GH Pages redirects to 404.html which encodes the path as ?p=/path
@@ -71,6 +72,7 @@ function Router() {
   if (path === 'projects') return <Projects />
   if (path === 'labor') return <Labor />
   if (path === 'guide') return <Guide />
+  if (path === 'cloud') return <Cloud />
 
   // Default: home
   return <Home />

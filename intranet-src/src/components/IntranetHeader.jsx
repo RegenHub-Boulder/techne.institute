@@ -13,6 +13,7 @@ export function IntranetHeader() {
     { href: '/intranet/labor/', label: 'Labor', match: 'labor' },
     { href: '/intranet/documents/', label: 'Documents', match: 'documents' },
     { href: '/intranet/guide/', label: 'Guide', match: 'guide' },
+    { href: '/intranet/cloud/', label: 'Cloud', match: 'cloud' },
   ]
 
   const visible = navLinks.filter((l) => !l.steward || isSteward)

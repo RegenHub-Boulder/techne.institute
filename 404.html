@@ -5,7 +5,7 @@
     <title>Techne</title>
     <script>
       // SPA redirect for GitHub Pages deep links
-      // Routes /workshop/* paths to the workshop SPA, preserving the path.
+      // Routes /workshop/* and /intranet/* paths to their respective SPAs, preserving the path.
       // All other 404s fall through to the window.location.replace below.
       (function() {
         var l = window.location;
@@ -19,6 +19,16 @@
             path.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
             path.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
             (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+            l.hash
+          );
+        } else if (path.indexOf('/intranet/') === 0) {
+          // Intranet SPA uses ?p= query param format (App.jsx resolveInitialPath)
+          // e.g. /intranet/account/ → /intranet/?p=account/
+          var subpath = path.slice(1).split('/').slice(1).join('/');
+          l.replace(
+            l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+            '/intranet/' + '?p=' + subpath +
+            (l.search ? '&' + l.search.slice(1) : '') +
             l.hash
           );
         }

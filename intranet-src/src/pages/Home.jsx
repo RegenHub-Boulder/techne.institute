@@ -80,6 +80,12 @@ export default function Home() {
             description="Bylaws, member agreement, purpose statement, and articles of organization."
             available={true}
           />
+          <NavCard
+            href="/intranet/cloud/"
+            title="Cloud Micro-Grid"
+            description="R13 scenario model — solar-powered cooperative compute array, CLOUD credit projections, and LCA patronage accounting."
+            available={true}
+          />
           {isSteward && (
             <NavCard
               href="/intranet/treasury/"

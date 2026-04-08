@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooperative Cloud — Techne Institute</title>
+<meta name="description" content="A solar-powered local compute cooperative at 1515 Walnut, Boulder — service credits backed by physical infrastructure, issued through Colorado LCA patronage accounting.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/tokens.css">
+<link rel="stylesheet" href="/assets/layout.css">
+<link rel="stylesheet" href="/assets/components.css">
+<style>
+body {
+  font-family: var(--font-body);
+  background: var(--parchment);
+  color: var(--charcoal);
+  font-size: var(--text-body);
+  line-height: 1.75;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+main { position: relative; z-index: 1; }
+
+/* Scenario cards */
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-5);
+  margin: var(--space-8) 0;
+}
+
+.scenario-card {
+  background: var(--cream);
+  border: 1px solid var(--bone);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+}
+
+.scenario-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: var(--space-3);
+}
+
+.scenario-name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  color: var(--charcoal);
+  margin-bottom: var(--space-4);
+  line-height: 1.25;
+}
+
+.scenario-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--bone);
+  padding: var(--space-2) 0;
+  font-size: var(--text-sm);
+}
+.scenario-stat:last-child { border-bottom: none; }
+
+.scenario-stat-label { color: var(--stone); }
+.scenario-stat-value {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--charcoal);
+  font-weight: 400;
+}
+
+/* Stamp primitive visual */
+.stamp-diagram {
+  margin: var(--space-10) 0;
+  padding: var(--space-8);
+  background: var(--cream);
+  border: 1px solid var(--bone);
+  border-radius: var(--radius-md);
+}
+
+.stamp-flow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: var(--space-6) 0;
+}
+
+.stamp-node {
+  text-align: center;
+  flex: 0 0 auto;
+}
+
+.stamp-node-box {
+  width: 100px;
+  height: 60px;
+  border: 1px solid var(--bone);
+  border-radius: var(--radius-sm);
+  background: var(--parchment);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--stone);
+  letter-spacing: 0.05em;
+  text-align: center;
+  padding: var(--space-2);
+}
+
+.stamp-node-box.highlight {
+  border-color: var(--ember);
+  background: rgba(196, 90, 43, 0.04);
+  color: var(--ember);
+}
+
+.stamp-arrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--stone);
+  flex-shrink: 0;
+}
+
+.stamp-node-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--stone);
+  margin-top: var(--space-2);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Comparison table (light variant) */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  margin: var(--space-6) 0;
+}
+.compare-table th {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--stone);
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 2px solid var(--bone);
+}
+.compare-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--bone);
+  vertical-align: top;
+  color: var(--charcoal);
+}
+.compare-table td:not(:first-child) {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--stone);
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table .highlight-cell {
+  color: var(--ember) !important;
+  font-weight: 400;
+}
+
+/* R13 tag */
+.r-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  padding: 0.15em 0.55em;
+  background: rgba(196, 90, 43, 0.07);
+  color: var(--ember);
+  border-radius: 3px;
+  border: 1px solid rgba(196, 90, 43, 0.15);
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="site-nav" aria-label="Main navigation">
+  <div class="site-nav-inner">
+    <a href="/" class="site-nav-logo">Techne</a>
+    <ul class="site-nav-links">
+      <li><a href="/introduction/">Introduction</a></li>
+      <li><a href="/vision/">Vision</a></li>
+      <li><a href="/formation/">Formation</a></li>
+      <li><a href="/membership/">Membership</a></li>
+      <li><a href="/app/" class="btn btn-ghost" style="padding:0.3rem 0.75rem;">Members</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <!-- Hero -->
+  <div class="section-sm">
+    <div class="frame">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>Cloud</span>
+      </nav>
+      <div class="hero-minimal">
+        <span class="eyebrow">Infrastructure Research <span class="r-tag">R13</span></span>
+        <h1>Compute as Commons</h1>
+        <p class="lead">
+          A solar-powered local compute cooperative at 1515 Walnut.
+          Service credits backed by physical infrastructure —
+          issued as cooperative patronage, redeemable as a claim on capacity.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Opening narrative -->
+  <div class="section-sm">
+    <div class="frame prose">
+
+      <p>
+        The word <em>cloud</em> has always been a polite fiction — a way of not saying
+        "someone else's computers." The data centers that hold our work, our messages,
+        our money are physical things: machines in buildings, drawing power from a grid,
+        owned by a small number of large corporations.
+      </p>
+
+      <p>
+        Techne is building something different. On the rooftop of 1515 Walnut Street in Boulder,
+        Colorado — the same building where RegenHub operates its cooperative workspace —
+        we are proposing a solar-powered local compute array. Not a metaphor. Actual hardware:
+        Mac Mini compute nodes, network-attached storage, and photovoltaic panels on the roof
+        above them.
+      </p>
+
+      <p>
+        The compute this array produces will be issued as cooperative service credits —
+        <strong>CLOUD credits</strong> — through the patronage accounting system of RegenHub, LCA.
+        One CLOUD credit represents a $0.10 claim on cooperative compute capacity.
+        Credits are earned by contributing to the cooperative, purchased at par, or received
+        as patronage distributions. They are redeemed against actual services: compute time,
+        storage, bandwidth.
+      </p>
+
+      <h2>The Postage Stamp</h2>
+
+      <p>
+        A postage stamp is not a promise to deliver something someday. It is a pre-paid,
+        transferable claim on a specific service issued by the entity that controls delivery.
+        Its face value tracks the cost of that service. You can hold it, trade it, redeem it —
+        but only the postal cooperative can honor it.
+      </p>
+
+      <p>
+        This is exactly what a CLOUD credit is. The LCA controls the infrastructure.
+        The credit is issued against capacity the cooperative actually has.
+        Redemption is a claim on services the cooperative actually delivers.
+        The accounting is open — patronage allocations are recorded in each member's
+        capital account, visible in the cooperative ledger.
+      </p>
+
+      <p>
+        This model is the intersection of two things happening at Techne simultaneously:
+        the <strong>CLOUD credit</strong> (RegenHub's service unit, initially a floating abstraction)
+        and <strong>postage.protocol</strong> (an LCA organizer venture building the protocol layer
+        for proof-backed local service claims). Together they become something
+        more concrete: a mutual credit system backed by physical compute,
+        auditable on-chain, governed by Colorado cooperative law.
+      </p>
+
+      <div class="notice notice-ember-light">
+        <strong>Capacity attestation as primitive.</strong>
+        The cooperative attests to its hardware capacity on-chain. Credits are issued
+        against that attestation. Redemptions produce proofs. The full lifecycle
+        — issuance, transfer, redemption, proof — is observable without requiring
+        trust in any central party.
+      </div>
+
+      <h2>The Physical Layer</h2>
+
+      <p>
+        Three hardware configurations illustrate the range of what's possible
+        at 1515 Walnut, from a proof-of-concept array to a fully solar-offset system
+        scaled to rooftop capacity:
+      </p>
+
+    </div>
+  </div>
+
+  <!-- Scenario cards -->
+  <div class="section-sm" style="padding-top: 0;">
+    <div class="container">
+      <div class="scenario-grid">
+
+        <div class="scenario-card">
+          <div class="scenario-label">Scenario A</div>
+          <div class="scenario-name">Seed Array</div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Hardware</span>
+            <span class="scenario-stat-value">3× Mac Mini M4 Pro + 1× NAS</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Compute</span>
+            <span class="scenario-stat-value">36 vCPU · 144 GB RAM</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Storage</span>
+            <span class="scenario-stat-value">16 TB usable</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Power</span>
+            <span class="scenario-stat-value">~75 W avg · 54 kWh/mo</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">CapEx</span>
+            <span class="scenario-stat-value">~$5,200</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">CLOUD output</span>
+            <span class="scenario-stat-value">~8,000 /month</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Solar offset</span>
+            <span class="scenario-stat-value">100% (2.2% of roof)</span>
+          </div>
+        </div>
+
+        <div class="scenario-card">
+          <div class="scenario-label">Scenario B</div>
+          <div class="scenario-name">Growth Array</div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Hardware</span>
+            <span class="scenario-stat-value">10× Mac Mini M4 Pro + 2× NAS</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Compute</span>
+            <span class="scenario-stat-value">120 vCPU · 480 GB RAM</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Storage</span>
+            <span class="scenario-stat-value">40 TB usable</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Power</span>
+            <span class="scenario-stat-value">~280 W avg · 202 kWh/mo</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">CapEx</span>
+            <span class="scenario-stat-value">~$18,500</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">CLOUD output</span>
+            <span class="scenario-stat-value">~28,000 /month</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Solar offset</span>
+            <span class="scenario-stat-value">100% (8.2% of roof)</span>
+          </div>
+        </div>
+
+        <div class="scenario-card">
+          <div class="scenario-label">Scenario C</div>
+          <div class="scenario-name">Full Roof Array</div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Hardware</span>
+            <span class="scenario-stat-value">40× Mac Mini M4 Pro + 8× NAS</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Compute</span>
+            <span class="scenario-stat-value">480 vCPU · 1,920 GB RAM</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Storage</span>
+            <span class="scenario-stat-value">160 TB usable</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Power</span>
+            <span class="scenario-stat-value">~1,100 W avg · 792 kWh/mo</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">CapEx</span>
+            <span class="scenario-stat-value">~$72,000 (incl. solar)</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">CLOUD output</span>
+            <span class="scenario-stat-value">~110,000 /month</span>
+          </div>
+          <div class="scenario-stat">
+            <span class="scenario-stat-label">Solar offset</span>
+            <span class="scenario-stat-value">100% + surplus export</span>
+          </div>
+        </div>
+
+      </div>
+
+      <p style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--stone); text-align: center; margin-top: 0;">
+        Assumptions: 15 kW rooftop solar potential at 1515 Walnut · 5.5 peak sun hours/day (Boulder CO) ·
+        Mac Mini M4 Pro 12-core · 1 CLOUD = $0.10 service credit · CLOUD output at 70% utilization
+      </p>
+    </div>
+  </div>
+
+  <!-- Stamp diagram -->
+  <div class="section-sm section-cream">
+    <div class="frame">
+      <div class="prose">
+        <h2>The Ethereum Primitive</h2>
+        <p>
+          The postage stamp model maps cleanly onto Ethereum infrastructure.
+          Each component is composable and auditable. The LCA provides the legal
+          and operational anchor; the protocol provides the on-chain accounting layer.
+        </p>
+      </div>
+
+      <div class="stamp-diagram">
+        <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--stone); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-5); text-align: center;">
+          Lifecycle of a CLOUD Credit
+        </div>
+
+        <div class="stamp-flow">
+          <div class="stamp-node">
+            <div class="stamp-node-box">Solar Array<br/>1515 Walnut</div>
+            <div class="stamp-node-label">Capacity</div>
+          </div>
+          <div class="stamp-arrow">→</div>
+          <div class="stamp-node">
+            <div class="stamp-node-box highlight">Capacity<br/>Attestation</div>
+            <div class="stamp-node-label">On-chain</div>
+          </div>
+          <div class="stamp-arrow">→</div>
+          <div class="stamp-node">
+            <div class="stamp-node-box highlight">CLOUD Credit<br/>Issuance</div>
+            <div class="stamp-node-label">LCA Patronage</div>
+          </div>
+          <div class="stamp-arrow">→</div>
+          <div class="stamp-node">
+            <div class="stamp-node-box">Transfer /<br/>Hold / Trade</div>
+            <div class="stamp-node-label">Transferable</div>
+          </div>
+          <div class="stamp-arrow">→</div>
+          <div class="stamp-node">
+            <div class="stamp-node-box highlight">Service<br/>Redemption</div>
+            <div class="stamp-node-label">Claim</div>
+          </div>
+          <div class="stamp-arrow">→</div>
+          <div class="stamp-node">
+            <div class="stamp-node-box">Proof of<br/>Delivery</div>
+            <div class="stamp-node-label">Open Proof</div>
+          </div>
+        </div>
+
+        <p style="font-size: var(--text-sm); color: var(--stone); text-align: center; margin: 0; line-height: 1.6;">
+          The cooperative attests capacity on-chain. Credits are issued as patronage.
+          Holders can redeem against services the cooperative delivers.
+          Each redemption produces a proof. The accounting is open.
+        </p>
+      </div>
+
+      <div class="prose">
+        <h3>Why This is Distinct</h3>
+        <p>
+          Most stablecoin and tokenized-asset frameworks assume fiat reserves or
+          financial instruments as backing. CLOUD credits are different on two counts:
+        </p>
+        <p>
+          <strong>Service backing, not fiat backing.</strong> The value is not "we hold
+          $1 for every token." It is "we have physical hardware that can deliver $0.10
+          of compute per credit." Face value tracks service cost, not exchange rate.
+        </p>
+        <p>
+          <strong>Cooperative law as governance layer.</strong> Colorado's Limited Cooperative
+          Association Act (§7-58-301 et seq.) provides the legal structure:
+          infrastructure owned as patron capital, services delivered as patronage allocations,
+          member accounts as the ledger. The LCA is the legal entity that stands behind
+          each credit. This intersection with GENIUS Act / CLOUD Token Safe Harbor analysis
+          (R9) suggests a novel classification path for cooperative service claims.
+        </p>
+        <p>
+          <strong>Locality as the primitive.</strong> The infrastructure is physically located
+          in Boulder, CO. The members it serves are in the same bioregion.
+          This locality — verifiable through attestation, anchored in property and cooperate law —
+          is the primitive that makes "local cloud" meaningful rather than merely rhetorical.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison with postage.protocol -->
+  <div class="section-sm">
+    <div class="frame prose">
+
+      <h2>The Comparison</h2>
+
+      <p>
+        The table below maps the postage stamp model against traditional cloud,
+        CLOUD credits, and the postage.protocol integration:
+      </p>
+
+    </div>
+    <div class="container" style="overflow-x: auto; margin-top: var(--space-6);">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Traditional Cloud</th>
+            <th>CLOUD Credit (bare)</th>
+            <th>Cooperative Stamp (R13)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Backing</td>
+            <td>Corporate balance sheet</td>
+            <td>LCA operating commitment</td>
+            <td class="highlight-cell">Physical hardware + solar</td>
+          </tr>
+          <tr>
+            <td>Issuance</td>
+            <td>Subscription / invoice</td>
+            <td>Patronage allocation</td>
+            <td class="highlight-cell">Capacity attestation → stamp</td>
+          </tr>
+          <tr>
+            <td>Transferability</td>
+            <td>None</td>
+            <td>Cooperative accounts</td>
+            <td class="highlight-cell">On-chain, open accounting</td>
+          </tr>
+          <tr>
+            <td>Redemption proof</td>
+            <td>Invoice / logs (private)</td>
+            <td>Ledger entry</td>
+            <td class="highlight-cell">On-chain delivery proof</td>
+          </tr>
+          <tr>
+            <td>Governance</td>
+            <td>Terms of Service</td>
+            <td>LCA bylaws</td>
+            <td class="highlight-cell">LCA bylaws + protocol rules</td>
+          </tr>
+          <tr>
+            <td>Locality</td>
+            <td>Opaque / global</td>
+            <td>Boulder, CO (implicit)</td>
+            <td class="highlight-cell">Attestable, on-chain</td>
+          </tr>
+          <tr>
+            <td>Energy source</td>
+            <td>Grid mix (unknown)</td>
+            <td>Grid mix (unknown)</td>
+            <td class="highlight-cell">Rooftop solar, verified</td>
+          </tr>
+          <tr>
+            <td>Legal classification</td>
+            <td>Service contract</td>
+            <td>Patronage credit (LCA)</td>
+            <td class="highlight-cell">Service claim + safe harbor candidate</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- LCA research case study framing -->
+  <div class="section-sm section-cream">
+    <div class="frame prose">
+      <h2>As a Research Case Study</h2>
+      <p>
+        Techne is treating R13 as a living research case study in cooperative infrastructure
+        economics. The questions we are investigating:
+      </p>
+      <ul>
+        <li>
+          Can a Colorado LCA issue service credits that function as stamps
+          (pre-paid, transferable, face-value claims) without triggering securities classification?
+        </li>
+        <li>
+          What attestation format — hardware inventory, solar output, uptime SLA —
+          is sufficient to back a claim on-chain?
+        </li>
+        <li>
+          How does the patronage accounting treatment (Subchapter T / IRC 1385)
+          interact with on-chain issuance and transfer?
+        </li>
+        <li>
+          Can <em>locality</em> itself be a verifiable primitive — something provable
+          about where compute lives, not just who operates it?
+        </li>
+      </ul>
+      <p>
+        The prototype will be built at the intersection of three active projects:
+        the Techne intranet (patronage accounting UI), the postage.protocol
+        (stamp issuance and redemption layer), and the 1515 Walnut build-out
+        (physical infrastructure).
+      </p>
+
+      <blockquote>
+        The goal is not to build a new token. The goal is to make a cooperative's
+        physical capacity legible, transferable, and trustless — starting with
+        the most concrete possible form: a box on a shelf, drawing power from the sun,
+        doing work that the community actually needs done.
+      </blockquote>
+
+      <p>
+        Scenario modeling, financial projections, and LCA patronage accounting
+        breakdowns are available to members in the <a href="/intranet/cloud/">intranet scenario model</a>.
+      </p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="section-sm">
+    <div class="frame" style="text-align: center; padding-block: var(--space-10);">
+      <p style="font-family: var(--font-display); font-size: var(--text-2xl); font-style: italic; color: var(--charcoal); margin-bottom: var(--space-6); line-height: 1.35;">
+        If compute can be cooperative infrastructure,<br>
+        what else can?
+      </p>
+      <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+        <a href="/membership/" class="btn btn-primary">Explore membership</a>
+        <a href="/formation/" class="btn btn-ghost">Read the formation docs</a>
+      </div>
+      <p style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--stone); margin-top: var(--space-6);">
+        Questions? <a href="mailto:hello@techne.studio" style="color: var(--ember);">hello@techne.studio</a>
+      </p>
+    </div>
+  </div>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="site-footer-brand">
+      <a href="/" class="site-footer-wordmark">Techne</a>
+      <p class="site-footer-tagline">A venture studio for cooperative infrastructure. Boulder, Colorado.</p>
+    </div>
+    <div class="site-footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="/introduction/">Introduction</a></li>
+        <li><a href="/vision/">Vision</a></li>
+        <li><a href="/formation/">Formation</a></li>
+        <li><a href="/membership/">Membership</a></li>
+      </ul>
+    </div>
+    <div class="site-footer-col">
+      <h4>Organization</h4>
+      <ul>
+        <li><a href="/cooperative/">Cooperative</a></li>
+        <li><a href="/bylaws/">Bylaws</a></li>
+        <li><a href="/public-benefit/">Public Benefit</a></li>
+        <li><a href="/cloud/">Cooperative Cloud</a></li>
+      </ul>
+    </div>
+    <div class="site-footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="mailto:hello@techne.studio">hello@techne.studio</a></li>
+        <li><a href="/app/">Member Portal</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer-bottom">
+    <p class="site-footer-legal">
+      &copy; 2026 RegenHub, LCA &middot; <a href="/bylaws/">Bylaws</a> &middot; <a href="/public-benefit/">Public Benefit</a>
+    </p>
+    <p class="site-footer-legal">Colorado Limited Cooperative Association</p>
+  </div>
+</footer>
+
+</body>
+</html>
