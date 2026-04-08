@@ -61,6 +61,7 @@ function Router() {
 
   // Route to page
   if (path === 'account') return <Account />
+  if (path === 'capital') return <Account />
   if (path === 'patronage') return <Patronage />
   if (path === 'documents') return <Documents />
   if (path === 'ventures') return <Ventures />
