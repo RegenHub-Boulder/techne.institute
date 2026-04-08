@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
 import { supabase } from '../lib/supabase.js'
+import { IntranetHeader } from '../components/IntranetHeader.jsx'
 
 const EDGE_BASE = 'https://hvbdpgkdcdskhpbdeeim.supabase.co/functions/v1'
 
@@ -473,20 +474,7 @@ function pct(part, total) {
   return Math.round((part / total) * 100)
 }
 
-function IntranetHeader({ signOut }) {
-  return (
-    <div style={styles.header}>
-      <a href="/intranet/" style={styles.wordmark}>Techne</a>
-      <nav style={styles.headerNav}>
-        <a href="/intranet/account/" style={styles.navLink}>Account</a>
-        <a href="/intranet/patronage/" style={styles.navLink}>Patronage</a>
-        <a href="/intranet/documents/" style={styles.navLink}>Documents</a>
-        <a href="/intranet/admin/" style={{ ...styles.navLink, color: 'var(--color-copper, #c87533)' }}>Admin</a>
-        <button onClick={signOut} style={styles.signOut}>Sign out</button>
-      </nav>
-    </div>
-  )
-}
+
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
 import { supabase } from '../lib/supabase.js'
+import { IntranetHeader } from '../components/IntranetHeader.jsx'
 
 export default function Account() {
   const { participant } = useAuth()
@@ -182,20 +183,6 @@ function LoadingCard() {
   )
 }
 
-function IntranetHeader() {
-  const { signOut } = useAuth()
-  return (
-    <div style={styles.header}>
-      <a href="/intranet/" style={styles.wordmark}>Techne</a>
-      <nav style={styles.headerNav}>
-        <a href="/intranet/account/" style={styles.navLink}>Account</a>
-        <a href="/intranet/patronage/" style={styles.navLink}>Patronage</a>
-        <a href="/intranet/documents/" style={styles.navLink}>Documents</a>
-        <button onClick={signOut} style={styles.signOut}>Sign out</button>
-      </nav>
-    </div>
-  )
-}
 
 const styles = {
   page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },

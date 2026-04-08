@@ -51,11 +51,44 @@ export default function Home() {
             available={true}
           />
           <NavCard
+            href="/intranet/labor/"
+            title="Labor Contributions"
+            description="Log hours, track FMV totals by category, and view your contribution history."
+            available={true}
+          />
+          <NavCard
+            href="/intranet/projects/"
+            title="Projects & Ventures"
+            description="Active cooperative projects, ventures, contributors, and milestones."
+            available={true}
+          />
+          <NavCard
+            href="/intranet/directory/"
+            title="Member Directory"
+            description="Organizer roster — names, roles, crafts, and membership class."
+            available={true}
+          />
+          <NavCard
             href="/intranet/documents/"
             title="K-1 Documents"
             description="Your tax documents and cooperative filings."
             available={true}
           />
+          <NavCard
+            href="/intranet/guide/"
+            title="Member Guide"
+            description="Bylaws, member agreement, purpose statement, and articles of organization."
+            available={true}
+          />
+          {isSteward && (
+            <NavCard
+              href="/intranet/treasury/"
+              title="Treasury"
+              description="Bank accounts, balances, and transaction history."
+              available={true}
+              stewardOnly
+            />
+          )}
           {isSteward && (
             <NavCard
               href="/intranet/admin/"
