@@ -7,11 +7,23 @@ export default function Home() {
     ? `Welcome, ${participant.name.split(' ')[0]}.`
     : 'Welcome.'
 
+  const membershipLabel = {
+    1: 'Class 1 — Labor',
+    2: 'Class 2 — Patron',
+    3: 'Class 3 — Community',
+    4: 'Class 4 — Investor',
+  }
+
   return (
     <div style={styles.page}>
       <div style={styles.header}>
         <div style={styles.wordmark}>Techne</div>
         <div style={styles.headerRight}>
+          {participant?.membership_class && (
+            <span style={styles.memberClass}>
+              {membershipLabel[participant.membership_class]}
+            </span>
+          )}
           <span style={styles.participantType}>
             {participant?.participant_type || 'member'}
           </span>
@@ -23,29 +35,25 @@ export default function Home() {
 
       <div style={styles.main}>
         <h1 style={styles.greeting}>{greeting}</h1>
-        <p style={styles.subtitle}>
-          {isSteward
-            ? 'You have steward access.'
-            : 'Member intranet — your cooperative account.'}
-        </p>
+        <p style={styles.subtitle}>Your cooperative account.</p>
 
         <div style={styles.nav}>
           <NavCard
             href="/intranet/account/"
             title="Capital Account"
-            description="Your book balance, tax capital account, and YTD summary."
-            available={false}
+            description="Your book balance, tax capital account (IRC 704b), last allocation date, and YTD summary."
+            available={true}
           />
           <NavCard
             href="/intranet/patronage/"
             title="Patronage History"
-            description="Quarterly allocation events, component breakdown, CSV export."
-            available={false}
+            description="Quarterly allocation events by component (40/30/20/10), with CSV export."
+            available={true}
           />
           <NavCard
             href="/intranet/documents/"
-            title="Document Vault"
-            description="Your K-1 tax documents and cooperative filings."
+            title="K-1 Documents"
+            description="Your tax documents and cooperative filings."
             available={false}
           />
           {isSteward && (
@@ -57,11 +65,14 @@ export default function Home() {
               stewardOnly
             />
           )}
-        </div>
-
-        <div style={styles.notice}>
-          Portal is launching soon. Capital accounts and documents will appear
-          here once the steward completes data backfill and review.
+          {participant?.membership_class === 4 && (
+            <NavCard
+              href="/intranet/ventures/"
+              title="Venture Basket"
+              description="Your Class 4 investor portfolio — basket composition, status, and returns."
+              available={false}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -69,14 +80,19 @@ export default function Home() {
 }
 
 function NavCard({ title, description, href, available, stewardOnly }) {
+  const tag = available ? 'a' : 'div'
+  const props = available ? { href } : {}
+
   return (
     <a
       href={available ? href : undefined}
+      onClick={available ? undefined : (e) => e.preventDefault()}
       style={{
         ...styles.card,
         opacity: available ? 1 : 0.5,
         cursor: available ? 'pointer' : 'default',
         textDecoration: 'none',
+        display: 'block',
       }}
     >
       {stewardOnly && <div style={styles.stewardBadge}>Steward</div>}
@@ -110,6 +126,16 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '1rem',
+  },
+  memberClass: {
+    fontSize: '0.75rem',
+    color: 'var(--color-copper, #c87533)',
+    background: 'rgba(200,117,51,0.1)',
+    padding: '0.2rem 0.5rem',
+    borderRadius: '4px',
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+    fontWeight: 600,
   },
   participantType: {
     fontSize: '0.75rem',
@@ -147,10 +173,8 @@ const styles = {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
     gap: '1rem',
-    marginBottom: '2rem',
   },
   card: {
-    display: 'block',
     background: 'var(--color-surface, #141418)',
     border: '1px solid var(--color-border, #2a2a35)',
     borderRadius: '10px',
@@ -187,14 +211,5 @@ const styles = {
     letterSpacing: '0.08em',
     padding: '0.2rem 0.5rem',
     borderRadius: '4px',
-  },
-  notice: {
-    padding: '1rem 1.25rem',
-    background: 'rgba(200, 117, 51, 0.07)',
-    border: '1px solid rgba(200, 117, 51, 0.2)',
-    borderRadius: '8px',
-    fontSize: '0.875rem',
-    color: 'var(--color-text-muted, #aaa)',
-    lineHeight: 1.6,
   },
 }

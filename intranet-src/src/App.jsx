@@ -1,16 +1,38 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx'
 import Login from './pages/Login'
 import Home from './pages/Home'
+import Account from './pages/Account'
+import Patronage from './pages/Patronage'
 import NotLinked from './pages/NotLinked'
 
+// GitHub Pages SPA routing shim
+// On 404, GH Pages redirects to 404.html which encodes the path as ?p=/path
+// We read it here and push the correct route via history API
+function resolveInitialPath() {
+  const searchParams = new URLSearchParams(window.location.search)
+  const redirectPath = searchParams.get('p')
+  if (redirectPath) {
+    const cleanURL = window.location.pathname + redirectPath
+    window.history.replaceState(null, '', cleanURL)
+  }
+  return window.location.pathname.replace(/^\/intranet\/?/, '').replace(/\/$/, '')
+}
+
 function Router() {
-  const { loading, isAuthenticated, participant, session } = useAuth()
+  const { loading, isAuthenticated, participant } = useAuth()
+  const [path, setPath] = useState(resolveInitialPath)
 
-  // Determine current path within /intranet/
-  const path = window.location.pathname.replace(/^\/intranet\/?/, '') || ''
+  // Listen for popstate (browser back/forward)
+  useEffect(() => {
+    const handler = () => {
+      setPath(window.location.pathname.replace(/^\/intranet\/?/, '').replace(/\/$/, ''))
+    }
+    window.addEventListener('popstate', handler)
+    return () => window.removeEventListener('popstate', handler)
+  }, [])
 
-  // Loading state
+  // Loading spinner
   if (loading) {
     return (
       <div style={loadingStyle}>
@@ -19,19 +41,17 @@ function Router() {
     )
   }
 
-  // Not authenticated → login
-  if (!isAuthenticated) {
-    return <Login />
-  }
+  // Not authenticated → login page
+  if (!isAuthenticated) return <Login />
 
   // Authenticated but no participant record linked
-  if (isAuthenticated && !participant) {
-    return <NotLinked />
-  }
+  if (!participant) return <NotLinked />
 
-  // Authenticated + linked participant → route to page
-  // Future routes for /account/, /patronage/, /documents/, /admin/
-  // are added by P368, P369, P370
+  // Route to page
+  if (path === 'account') return <Account />
+  if (path === 'patronage') return <Patronage />
+
+  // Default: home
   return <Home />
 }
 
