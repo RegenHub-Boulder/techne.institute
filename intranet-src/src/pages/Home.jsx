@@ -54,7 +54,7 @@ export default function Home() {
             href="/intranet/documents/"
             title="K-1 Documents"
             description="Your tax documents and cooperative filings."
-            available={false}
+            available={true}
           />
           {isSteward && (
             <NavCard
@@ -70,7 +70,7 @@ export default function Home() {
               href="/intranet/ventures/"
               title="Venture Basket"
               description="Your Class 4 investor portfolio — basket composition, status, and returns."
-              available={false}
+              available={true}
             />
           )}
         </div>

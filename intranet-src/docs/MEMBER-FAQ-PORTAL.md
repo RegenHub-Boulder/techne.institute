@@ -65,4 +65,4 @@ Your K-1 will show the breakdown. Most of your allocation will be qualified noti
 
 ## Where is my K-1?
 
-K-1 documents are managed through the Documents section of the portal (coming soon). Until that section is live, contact **steward@techne.studio** for your K-1.
+K-1 documents are in the Documents section of the portal at /intranet/documents/. Once the steward has uploaded your K-1, it will appear there with a download button. If you don't see your K-1 yet, contact **steward@techne.studio**.

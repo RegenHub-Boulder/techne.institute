@@ -4,6 +4,8 @@ import Login from './pages/Login'
 import Home from './pages/Home'
 import Account from './pages/Account'
 import Patronage from './pages/Patronage'
+import Documents from './pages/Documents'
+import Ventures from './pages/Ventures'
 import NotLinked from './pages/NotLinked'
 
 // GitHub Pages SPA routing shim
@@ -50,6 +52,8 @@ function Router() {
   // Route to page
   if (path === 'account') return <Account />
   if (path === 'patronage') return <Patronage />
+  if (path === 'documents') return <Documents />
+  if (path === 'ventures') return <Ventures />
 
   // Default: home
   return <Home />
