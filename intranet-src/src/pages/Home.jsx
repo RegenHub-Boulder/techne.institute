@@ -61,7 +61,7 @@ export default function Home() {
               href="/intranet/admin/"
               title="Admin"
               description="Allocation entry, document upload, member management."
-              available={false}
+              available={true}
               stewardOnly
             />
           )}

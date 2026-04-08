@@ -6,6 +6,8 @@ import Account from './pages/Account'
 import Patronage from './pages/Patronage'
 import Documents from './pages/Documents'
 import Ventures from './pages/Ventures'
+import Admin from './pages/Admin'
+import FAQ from './pages/FAQ'
 import NotLinked from './pages/NotLinked'
 
 // GitHub Pages SPA routing shim
@@ -43,6 +45,9 @@ function Router() {
     )
   }
 
+  // FAQ is public — accessible without login
+  if (path === 'faq') return <FAQ />
+
   // Not authenticated → login page
   if (!isAuthenticated) return <Login />
 
@@ -54,6 +59,7 @@ function Router() {
   if (path === 'patronage') return <Patronage />
   if (path === 'documents') return <Documents />
   if (path === 'ventures') return <Ventures />
+  if (path === 'admin') return <Admin />
 
   // Default: home
   return <Home />
