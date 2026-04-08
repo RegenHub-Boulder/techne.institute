@@ -10,26 +10,8 @@ export default function Documents() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    async function load() {
-      setLoading(true)
-      try {
-        const session = (await supabase.auth.getSession()).data.session
-        if (!session) return
-
-        const res = await fetch(
-          'https://hvbdpgkdcdskhpbdeeim.supabase.co/functions/v1/document-vault',
-          { headers: { Authorization: `Bearer ${session.access_token}` } }
-        )
-        const data = await res.json()
-        if (data.ok) setDocs(data.documents || [])
-        else setError(data.error)
-      } catch (e) {
-        setError(e.message)
-      } finally {
-        setLoading(false)
-      }
-    }
-    load()
+    // Document vault not yet populated — show empty state
+    setLoading(false)
   }, [])
 
   const docTypeLabel = { k1: 'K-1', bylaws: 'Bylaws', formation: 'Formation', other: 'Other' }

@@ -10,26 +10,8 @@ export default function Ventures() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    async function load() {
-      setLoading(true)
-      try {
-        const session = (await supabase.auth.getSession()).data.session
-        if (!session) return
-
-        const res = await fetch(
-          'https://hvbdpgkdcdskhpbdeeim.supabase.co/functions/v1/venture-basket',
-          { headers: { Authorization: `Bearer ${session.access_token}` } }
-        )
-        const json = await res.json()
-        if (json.ok) setData(json)
-        else setError(json.error || 'Unable to load venture basket.')
-      } catch (e) {
-        setError(e.message)
-      } finally {
-        setLoading(false)
-      }
-    }
-    load()
+    // Venture basket data not yet available — show empty state
+    setLoading(false)
   }, [])
 
   const statusLabel = {

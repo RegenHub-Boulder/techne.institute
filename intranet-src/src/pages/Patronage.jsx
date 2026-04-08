@@ -12,24 +12,42 @@ export default function Patronage() {
   const [yearFilter, setYearFilter] = useState('')
 
   useEffect(() => {
+    if (!participant) return
+
     async function load() {
       setLoading(true)
+      setError(null)
       try {
-        const session = (await supabase.auth.getSession()).data.session
-        if (!session) return
+        // Get capital account for this participant
+        const { data: acct, error: acctErr } = await supabase
+          .from('capital_accounts')
+          .select('id')
+          .eq('participant_id', participant.id)
+          .maybeSingle()
 
-        const params = new URLSearchParams({ limit: '50', offset: '0' })
-        if (yearFilter) params.set('year', yearFilter)
+        if (acctErr) throw acctErr
+        if (!acct) { setLoading(false); return }
 
-        const res = await fetch(
-          `https://hvbdpgkdcdskhpbdeeim.supabase.co/functions/v1/allocation-history?${params}`,
-          { headers: { Authorization: `Bearer ${session.access_token}` } }
-        )
-        const data = await res.json()
-        if (data.ok) {
-          setEvents(data.events || [])
-          setTotal(data.total || 0)
+        // Query capital transactions as patronage history
+        let query = supabase
+          .from('capital_transactions')
+          .select('id, transaction_type, amount, description, effective_date')
+          .eq('capital_account_id', acct.id)
+          .in('transaction_type', ['patronage', 'labor', 'draw', 'adjustment'])
+          .order('effective_date', { ascending: false })
+          .limit(50)
+
+        if (yearFilter) {
+          query = query
+            .gte('effective_date', `${yearFilter}-01-01`)
+            .lte('effective_date', `${yearFilter}-12-31`)
         }
+
+        const { data: txns, error: txnErr } = await query
+        if (txnErr) throw txnErr
+
+        setEvents(txns || [])
+        setTotal(txns?.length || 0)
       } catch (e) {
         setError(e.message)
       } finally {
@@ -37,7 +55,7 @@ export default function Patronage() {
       }
     }
     load()
-  }, [yearFilter])
+  }, [participant, yearFilter])
 
   function downloadCSV() {
     const headers = ['Quarter', 'Labor', 'Revenue', 'Capital', 'Community', 'Total', 'Book Balance', 'Tax Balance', 'Notes']
@@ -65,7 +83,7 @@ export default function Patronage() {
   const fmt = (n) =>
     Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 
-  const years = [...new Set(events.map((e) => e.quarter?.split('-')[0]).filter(Boolean))].sort().reverse()
+  const years = [...new Set(events.map((e) => e.effective_date?.slice(0, 4)).filter(Boolean))].sort().reverse()
 
   return (
     <div style={styles.page}>
@@ -130,31 +148,28 @@ export default function Patronage() {
             <table style={styles.table}>
               <thead>
                 <tr>
-                  {['Quarter', 'Labor', 'Revenue', 'Capital', 'Community', 'Total Allocation', 'Book Balance', 'Tax Balance'].map((h) => (
-                    <th key={h} style={styles.th}>{h}</th>
+                  {['Date', 'Type', 'Description', 'Amount'].map((h) => (
+                    <th key={h} style={h === 'Amount' ? {...styles.th} : {...styles.th, textAlign: 'left'}}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {events.map((e, i) => (
                   <tr key={e.id} style={i % 2 === 0 ? styles.trEven : styles.trOdd}>
-                    <td style={styles.tdQuarter}>{e.quarter}</td>
-                    <td style={styles.td}>{fmt(e.components?.labor)}</td>
-                    <td style={styles.td}>{fmt(e.components?.revenue)}</td>
-                    <td style={styles.td}>{fmt(e.components?.capital)}</td>
-                    <td style={styles.td}>{fmt(e.components?.community)}</td>
-                    <td style={{ ...styles.td, fontWeight: 600 }}>{fmt(e.total_allocation)}</td>
-                    <td style={styles.td}>{fmt(e.book_capital_balance)}</td>
-                    <td style={styles.td}>{fmt(e.tax_capital_balance)}</td>
+                    <td style={styles.tdQuarter}>
+                      {new Date(e.effective_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                    </td>
+                    <td style={{...styles.td, textAlign: 'left', textTransform: 'capitalize'}}>{e.transaction_type}</td>
+                    <td style={{...styles.td, textAlign: 'left'}}>{e.description || '—'}</td>
+                    <td style={{ ...styles.td, fontWeight: 600, color: parseFloat(e.amount) >= 0 ? '#50b478' : '#ff6b6b' }}>
+                      {parseFloat(e.amount) >= 0 ? '+' : ''}{fmt(e.amount)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
             <div style={styles.tableFooter}>
-              Showing {events.length} of {total} events
-              {events.some((e) => e.notes?.includes('proration')) && (
-                <span style={styles.prorationNote}> · Proration applied for mid-quarter joins — see notes in CSV export</span>
-              )}
+              Showing {events.length} of {total} entries
             </div>
           </div>
         )}
