@@ -27,9 +27,9 @@
   --stone:     #9a958a;   /* Muted text on parchment */
 
   /* Accent — Ember (primary) */
-  --ember:         #c2512a;              /* Primary accent — links, CTAs, highlights */
-  --ember-dim:     #8a3a1f;             /* Ember on hover, pressed states */
-  --ember-glow:    rgba(194, 81, 42, 0.08);  /* Ember background wash */
+  --ember:         #c4956a;              /* Primary accent — links, CTAs, highlights */
+  --ember-dim:     #8a6a4a;             /* Ember on hover, pressed states */
+  --ember-glow:    rgba(196, 149, 106, 0.08);  /* Ember background wash */
 
   /* Accent — Copper (secondary, formation palette) */
   --copper:        #c4956a;             /* Secondary accent — formation, documents */

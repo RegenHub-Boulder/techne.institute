@@ -189,10 +189,10 @@ export default function Verify() {
           {liveMatch !== null && (
             <div style={{
               ...styles.resultBox,
-              borderColor: liveMatch ? 'rgba(76,175,130,0.3)' : 'rgba(255,107,107,0.3)',
-              background: liveMatch ? 'rgba(76,175,130,0.05)' : 'rgba(255,107,107,0.05)',
+              borderColor: liveMatch ? 'rgba(74,95,74,0.3)' : 'rgba(255,107,107,0.3)',
+              background: liveMatch ? 'rgba(74,95,74,0.05)' : 'rgba(255,107,107,0.05)',
             }}>
-              <div style={{ ...styles.resultStatus, color: liveMatch ? '#4caf82' : '#ff6b6b' }}>
+              <div style={{ ...styles.resultStatus, color: liveMatch ? '#4a5f4a' : '#c46a6a' }}>
                 {liveMatch ? '✓ State Verified' : '✗ State Mismatch — possible tampering'}
               </div>
               <div style={styles.resultRows}>
@@ -256,21 +256,21 @@ export default function Verify() {
               borderColor: proofResult.error
                 ? 'rgba(255,107,107,0.3)'
                 : proofResult.valid
-                ? 'rgba(76,175,130,0.3)'
+                ? 'rgba(74,95,74,0.3)'
                 : 'rgba(255,107,107,0.3)',
               background: proofResult.error
                 ? 'rgba(255,107,107,0.05)'
                 : proofResult.valid
-                ? 'rgba(76,175,130,0.05)'
+                ? 'rgba(74,95,74,0.05)'
                 : 'rgba(255,107,107,0.05)',
             }}>
               {proofResult.error ? (
-                <div style={{ color: '#ff6b6b', fontFamily: 'monospace', fontSize: '0.85rem' }}>
+                <div style={{ color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem' }}>
                   {proofResult.error}
                 </div>
               ) : (
                 <>
-                  <div style={{ ...styles.resultStatus, color: proofResult.valid ? '#4caf82' : '#ff6b6b' }}>
+                  <div style={{ ...styles.resultStatus, color: proofResult.valid ? '#4a5f4a' : '#c46a6a' }}>
                     {proofResult.valid ? '✓ Proof Valid' : '✗ Proof Invalid'}
                   </div>
                   <div style={styles.resultRows}>
@@ -367,7 +367,7 @@ function ResultRow({ label, value, mono, highlight }) {
       <span style={{
         fontFamily: mono ? 'monospace' : undefined,
         fontSize: mono ? '0.78rem' : '0.85rem',
-        color: highlight ? '#4caf82' : '#aaa',
+        color: highlight ? '#4a5f4a' : '#aaa',
       }}>
         {String(value)}
       </span>

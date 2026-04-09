@@ -122,7 +122,7 @@ html { scroll-behavior: smooth; overflow-x: hidden; }
 .badge-ember {
   background: var(--ember-glow);
   color: var(--ember);
-  border: 1px solid rgba(194, 81, 42, 0.25);
+  border: 1px solid rgba(196, 149, 106, 0.25);
 }
 
 /* ============================================================
@@ -516,7 +516,7 @@ html { scroll-behavior: smooth; overflow-x: hidden; }
 
 .status-active    { color: var(--green);  background: var(--green-glow);         border-color: rgba(106,154,106,0.3); }
 .status-pending   { color: var(--stone);  background: rgba(154,149,138,0.1);     border-color: rgba(154,149,138,0.3); }
-.status-completed { color: var(--ember);  background: var(--ember-glow);         border-color: rgba(194,81,42,0.25); }
+.status-completed { color: var(--ember);  background: var(--ember-glow);         border-color: rgba(196,149,106,0.25); }
 .status-draft     { color: var(--blue);   background: rgba(106,138,196,0.1);     border-color: rgba(106,138,196,0.3); }
 
 /* ============================================================
@@ -603,7 +603,7 @@ html { scroll-behavior: smooth; overflow-x: hidden; }
 }
 
 .notice-ember-light {
-  background: rgba(194,81,42,0.06);
+  background: rgba(196,149,106,0.06);
   border-left-color: var(--ember);
   color: var(--charcoal);
 }

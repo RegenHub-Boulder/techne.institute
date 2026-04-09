@@ -126,7 +126,7 @@ function MemberList() {
                 {m.email || '—'} · Class {m.membership_class || '?'} {classLabel[m.membership_class] ? `— ${classLabel[m.membership_class]}` : ''}
               </div>
               <div style={styles.memberMeta}>
-                Auth: {m.auth_user_id ? <span style={{ color: '#4caf88' }}>linked</span> : <span style={{ color: '#ff6b6b' }}>NOT LINKED</span>}
+                Auth: {m.auth_user_id ? <span style={{ color: '#4caf88' }}>linked</span> : <span style={{ color: '#c46a6a' }}>NOT LINKED</span>}
                 {m.last_allocation_date && <> · Last allocation: {m.last_allocation_date}</>}
               </div>
             </div>
@@ -503,7 +503,7 @@ const styles = {
     background: 'rgba(220,60,60,0.08)', border: '1px solid rgba(220,60,60,0.25)',
     borderRadius: '8px',
   },
-  launchGateTitle: { fontWeight: 700, fontSize: '0.85rem', color: '#ff6b6b', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' },
+  launchGateTitle: { fontWeight: 700, fontSize: '0.85rem', color: '#c46a6a', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' },
   launchGateBody: { fontSize: '0.875rem', color: '#aaa', margin: 0 },
   tabRow: {},
   tabs: { display: 'flex', gap: '0.25rem', marginBottom: '0', borderBottom: '1px solid var(--color-border, #2a2a35)' },
@@ -522,7 +522,7 @@ const styles = {
   error: {
     padding: '0.75rem 1rem', background: 'rgba(220,60,60,0.1)',
     border: '1px solid rgba(220,60,60,0.3)', borderRadius: '6px',
-    color: '#ff6b6b', fontSize: '0.875rem', marginBottom: '1rem',
+    color: '#c46a6a', fontSize: '0.875rem', marginBottom: '1rem',
   },
   successBox: {
     padding: '0.75rem 1rem', background: 'rgba(76,175,136,0.1)',

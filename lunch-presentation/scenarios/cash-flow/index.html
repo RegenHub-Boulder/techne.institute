@@ -20,8 +20,8 @@
     --bone:        #d8d3c8;
     --stone:       #9a958a;
     --stone-dim:   rgba(154,149,138,0.4);
-    --ember:       #c2512a;
-    --ember-dim:   rgba(194,81,42,0.18);
+    --ember:       #c4956a;
+    --ember-dim:   rgba(196,149,106,0.18);
     --sage-bright: #85b885;
     --sage-dim:    rgba(133,184,133,0.12);
     --lvb:         #7a9fc2;
@@ -29,7 +29,7 @@
     --warm:        #c4956a;
     --warm-dim:    rgba(196,149,106,0.08);
     --cream:       #ece6de;
-    --red:         #d4704e;
+    --red:         #c4956a;
     --font-display:  'Cormorant', serif;
     --font-body:     'Source Serif 4', serif;
     --font-mono:     'IBM Plex Mono', monospace;
@@ -78,7 +78,7 @@
     background: var(--charcoal); border: 1px solid var(--graphite);
     padding: 1.6rem 1.8rem; margin-bottom: 1.4rem;
   }
-  .panel.costs  { border-color: rgba(194,81,42,0.28); }
+  .panel.costs  { border-color: rgba(196,149,106,0.28); }
   .panel.cw     { border-color: rgba(133,184,133,0.28); }
   .panel.lvb    { border-color: rgba(122,159,194,0.28); }
   .panel.capital{ border-color: rgba(196,149,106,0.28); }
@@ -185,7 +185,7 @@
   .capital-remaining.visible { display: block; }
   .capital-remaining.warn {
     color: var(--red);
-    background: var(--ember-dim); border-color: rgba(194,81,42,0.25);
+    background: var(--ember-dim); border-color: rgba(196,149,106,0.25);
   }
 
   /* ─── SUMMARY CARDS ─── */
@@ -459,7 +459,7 @@
       <tbody>
         <tr>
           <td class="cat">Lease reserve (12 mo)</td>
-          <td class="bar-cell"><div class="cap-bar-track"><div class="cap-bar-fill" id="capBar0" style="background:rgba(194,81,42,0.5);width:0%"></div></div></td>
+          <td class="bar-cell"><div class="cap-bar-track"><div class="cap-bar-fill" id="capBar0" style="background:rgba(196,149,106,0.5);width:0%"></div></div></td>
           <td id="capAmt0">&mdash;</td>
         </tr>
         <tr>
@@ -546,7 +546,7 @@
     <div class="chart-legend">
       <div class="legend-item"><div class="l-swatch" style="background:rgba(133,184,133,0.5)"></div> Coworking</div>
       <div class="legend-item"><div class="l-swatch" style="background:rgba(122,159,194,0.6)"></div> LVB (cohort months)</div>
-      <div class="legend-item"><div class="l-line l-dashed" style="color:#c2512a;"></div> Monthly costs</div>
+      <div class="legend-item"><div class="l-line l-dashed" style="color:#c4956a;"></div> Monthly costs</div>
     </div>
     <svg id="chartMain" class="chart" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
     <p class="chart-note">Bars = total monthly revenue. Blue caps = LVB cohort months. Dashed line = fixed cost base. Cross the line = in the black.</p>
@@ -794,8 +794,8 @@
 
     // Cost line
     var costY = yFor(model.totalCosts);
-    out.push('<line x1="'+PL+'" y1="'+costY+'" x2="'+(PL+cW)+'" y2="'+costY+'" stroke="#c2512a" stroke-width="1.8" stroke-dasharray="7,4" opacity="0.75"/>');
-    out.push('<text x="'+(PL+cW+5)+'" y="'+(costY+4)+'" font-family="JetBrains Mono,monospace" font-size="9" fill="#c2512a" opacity="0.65">costs</text>');
+    out.push('<line x1="'+PL+'" y1="'+costY+'" x2="'+(PL+cW)+'" y2="'+costY+'" stroke="#c4956a" stroke-width="1.8" stroke-dasharray="7,4" opacity="0.75"/>');
+    out.push('<text x="'+(PL+cW+5)+'" y="'+(costY+4)+'" font-family="JetBrains Mono,monospace" font-size="9" fill="#c4956a" opacity="0.65">costs</text>');
 
     // Break-even vertical
     var beM = null;

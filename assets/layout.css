@@ -179,7 +179,7 @@
   color: var(--ember);
   text-decoration: underline;
   text-underline-offset: 3px;
-  text-decoration-color: rgba(194, 81, 42, 0.4);
+  text-decoration-color: rgba(196, 149, 106, 0.4);
   transition: text-decoration-color var(--transition);
 }
 

@@ -159,7 +159,7 @@ export default function Patronage() {
                     </td>
                     <td style={{...styles.td, textAlign: 'left', textTransform: 'capitalize'}}>{e.transaction_type}</td>
                     <td style={{...styles.td, textAlign: 'left'}}>{e.description || '—'}</td>
-                    <td style={{ ...styles.td, fontWeight: 600, color: parseFloat(e.amount) >= 0 ? '#50b478' : '#ff6b6b' }}>
+                    <td style={{ ...styles.td, fontWeight: 600, color: parseFloat(e.amount) >= 0 ? '#50b478' : '#c46a6a' }}>
                       {parseFloat(e.amount) >= 0 ? '+' : ''}{fmt(e.amount)}
                     </td>
                   </tr>
@@ -218,7 +218,7 @@ const styles = {
     color: 'var(--ember, #c4956a)',
   },
   loadingBar: { color: 'var(--color-text-muted, #888)', padding: '2rem 0', textAlign: 'center' },
-  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#ff6b6b' },
+  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#c46a6a' },
   emptyNotice: {
     padding: '1.5rem', background: 'rgba(196,149,106,0.06)', border: '1px solid rgba(196,149,106,0.15)',
     borderRadius: '8px', fontSize: '0.875rem', color: 'var(--color-text-muted, #aaa)', lineHeight: 1.6,

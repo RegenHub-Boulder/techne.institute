@@ -196,7 +196,7 @@ const styles = {
   loading: { color: 'var(--color-text-muted, #888)', padding: '2rem 0' },
   error: {
     padding: '1rem', background: 'rgba(220,60,60,0.1)',
-    border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#ff6b6b',
+    border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#c46a6a',
   },
   summaryRow: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',

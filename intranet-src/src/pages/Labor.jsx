@@ -274,7 +274,7 @@ const styles = {
     fontWeight: 600, cursor: 'pointer',
   },
   loading: { color: '#888', padding: '2rem 0', fontSize: '0.875rem' },
-  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#ff6b6b', fontSize: '0.875rem', marginBottom: '1rem' },
+  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#c46a6a', fontSize: '0.875rem', marginBottom: '1rem' },
   summaryRow: { display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1.5rem' },
   summaryCard: { background: '#141418', border: '1px solid #2a2a35', borderRadius: '10px', padding: '1.25rem 1.5rem', minWidth: '140px' },
   summaryCardSmall: { padding: '1rem 1.25rem', minWidth: '120px' },

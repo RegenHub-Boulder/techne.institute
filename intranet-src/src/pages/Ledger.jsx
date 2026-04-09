@@ -3,10 +3,10 @@ import { supabase } from '../lib/supabase.js'
 import { computeMerkleRoot, computeLeafHash } from '../lib/merkle.js'
 
 const RESOURCE_COLORS = {
-  USD:          '#4caf82',
+  USD:          '#4a5f4a',
   CLOUD:        '#c4956a',
-  labor_hours:  '#7eb8e8',
-  voting_power: '#a78bfa',
+  labor_hours:  '#6b836b',
+  voting_power: '#c4956a',
 }
 
 const RESOURCE_LABELS = {
@@ -132,12 +132,12 @@ export default function Ledger() {
         <div style={{
           ...styles.verifyBanner,
           background: rootMatch === true
-            ? 'rgba(76,175,130,0.06)'
+            ? 'rgba(74,95,74,0.06)'
             : rootMatch === false
             ? 'rgba(255,107,107,0.06)'
             : 'rgba(196,149,106,0.04)',
           borderColor: rootMatch === true
-            ? 'rgba(76,175,130,0.25)'
+            ? 'rgba(74,95,74,0.25)'
             : rootMatch === false
             ? 'rgba(255,107,107,0.25)'
             : 'rgba(196,149,106,0.15)',
@@ -156,7 +156,7 @@ export default function Ledger() {
             <span style={styles.verifyLabel}>State integrity</span>
             <span style={{
               fontFamily: 'monospace', fontSize: '0.78rem',
-              color: rootMatch === true ? '#4caf82' : rootMatch === false ? '#ff6b6b' : '#555',
+              color: rootMatch === true ? '#4a5f4a' : rootMatch === false ? '#c46a6a' : '#555',
             }}>
               {rootMatch === true ? '✓ Verified' : rootMatch === false ? '✗ Mismatch' : '—'}
             </span>
@@ -274,7 +274,7 @@ const styles = {
   filterBtnActive: { background: 'rgba(196,149,106,0.08)', color: '#e8e8e0', borderColor: '#c4956a' },
 
   loading: { color: '#555', fontFamily: 'monospace', fontSize: '0.85rem', padding: '2rem 0' },
-  error: { color: '#ff6b6b', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
+  error: { color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
 
   group: { marginBottom: '2rem' },
   groupHeader: { display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' },

@@ -18,9 +18,9 @@
   --text-body:    #3a3530;
   --text-dim:     var(--stone, #9a958a);
   --text-faint:   #6a6560;
-  --accent:       var(--ember, #c2512a);
-  --accent-dim:   rgba(194, 81, 42, 0.4);
-  --accent-glow:  rgba(194, 81, 42, 0.08);
+  --accent:       var(--ember, #c4956a);
+  --accent-dim:   rgba(196, 149, 106, 0.4);
+  --accent-glow:  rgba(196, 149, 106, 0.08);
   --rule:         var(--bone, #d8d3c8);
 }
 

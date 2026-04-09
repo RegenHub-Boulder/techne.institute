@@ -4,12 +4,12 @@ import { supabase } from '../lib/supabase.js'
 const EVENT_TYPES = ['', 'transfer', 'contribution', 'expense', 'vote', 'delegation', 'allocation', 'proposal']
 
 const EVENT_COLORS = {
-  transfer:     '#7eb8e8',
-  contribution: '#4caf82',
-  expense:      '#ff6b6b',
+  transfer:     '#6b836b',
+  contribution: '#4a5f4a',
+  expense:      '#c46a6a',
   vote:         '#c4956a',
-  delegation:   '#a78bfa',
-  allocation:   '#4caf82',
+  delegation:   '#c4956a',
+  allocation:   '#4a5f4a',
   proposal:     '#60a5fa',
 }
 
@@ -248,7 +248,7 @@ const styles = {
   filterBtnActive: { background: 'rgba(196,149,106,0.08)', color: '#e8e8e0', borderColor: '#c4956a' },
 
   loading: { color: '#555', fontFamily: 'monospace', fontSize: '0.85rem', padding: '2rem 0' },
-  error: { color: '#ff6b6b', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
+  error: { color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
   empty: { padding: '3rem 0', color: '#666', fontFamily: 'monospace', fontSize: '0.85rem', textAlign: 'center' },
 
   entry: { background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '0.9rem 1.1rem', marginBottom: '0.5rem', cursor: 'pointer', transition: 'border-color 0.15s' },

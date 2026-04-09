@@ -3,9 +3,9 @@ import { supabase } from '../lib/supabase.js'
 import { useAuth } from '../hooks/useAuth.jsx'
 
 const statusColor = {
-  active: '#4caf82',
-  paused: '#f0c040',
-  completed: '#7eb8e8',
+  active: '#4a5f4a',
+  paused: '#c4956a',
+  completed: '#6b836b',
   archived: '#666',
 }
 
@@ -142,7 +142,7 @@ function ProjectRow({ project, onClick }) {
         </div>
       </div>
       <div style={styles.rowRight}>
-        <span style={{ ...styles.typeBadge, color: project.type === 'venture' ? 'var(--ember, #c4956a)' : '#7eb8e8' }}>
+        <span style={{ ...styles.typeBadge, color: project.type === 'venture' ? 'var(--ember, #c4956a)' : '#6b836b' }}>
           {project.type}
         </span>
         <span style={{ ...styles.statusDot, background: statusColor[project.status] || '#888' }} />
@@ -163,7 +163,7 @@ function ProjectDetail({ project, isSteward, onBack }) {
       <div style={styles.detailHeader}>
         <h1 style={styles.h1}>{project.name}</h1>
         <div style={styles.detailBadges}>
-          <span style={{ ...styles.typeBadge, color: project.type === 'venture' ? 'var(--ember, #c4956a)' : '#7eb8e8' }}>
+          <span style={{ ...styles.typeBadge, color: project.type === 'venture' ? 'var(--ember, #c4956a)' : '#6b836b' }}>
             {project.type}
           </span>
           <span style={{ ...styles.statusDot, background: statusColor[project.status] || '#888' }} />
@@ -302,7 +302,7 @@ const styles = {
     fontSize: '0.8rem', cursor: 'pointer',
   },
   loading: { color: '#888', padding: '2rem 0', fontSize: '0.875rem' },
-  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#ff6b6b', fontSize: '0.875rem', marginBottom: '1rem' },
+  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#c46a6a', fontSize: '0.875rem', marginBottom: '1rem' },
   empty: { padding: '2rem', textAlign: 'center', color: '#888', fontSize: '0.875rem' },
   list: { display: 'flex', flexDirection: 'column', gap: '0.75rem' },
   row: {

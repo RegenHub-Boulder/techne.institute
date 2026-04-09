@@ -16,7 +16,7 @@ const TYPE_COLORS = {
   labor: '#50b478',
   capital: '#4a9eff',
   patronage: '#b47cd4',
-  draw: '#ff6b6b',
+  draw: '#c46a6a',
   adjustment: '#888',
 }
 
@@ -182,7 +182,7 @@ export default function Account() {
                           style={{
                             ...styles.txnAmount,
                             color:
-                              parseFloat(t.amount) < 0 ? '#ff6b6b' : '#50b478',
+                              parseFloat(t.amount) < 0 ? '#c46a6a' : '#50b478',
                           }}
                         >
                           {parseFloat(t.amount) >= 0 ? '+' : ''}
@@ -450,7 +450,7 @@ const styles = {
     background: 'rgba(220,60,60,0.1)',
     border: '1px solid rgba(220,60,60,0.3)',
     borderRadius: '8px',
-    color: '#ff6b6b',
+    color: '#c46a6a',
   },
   loadingCard: {
     padding: '1.5rem',

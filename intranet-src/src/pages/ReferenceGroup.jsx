@@ -363,7 +363,7 @@ const g = {
     color: '#e0e0f0', borderRadius: 6, fontSize: '0.8rem', outline: 'none', width: '160px',
   },
   loading: { color: '#888', fontSize: '0.875rem' },
-  error:   { padding: '0.75rem 1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: 8, color: '#ff6b6b', fontSize: '0.875rem' },
+  error:   { padding: '0.75rem 1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: 8, color: '#c46a6a', fontSize: '0.875rem' },
   mdBody:  { fontSize: '0.9rem', lineHeight: 1.8, color: '#ccc' },
 }
 

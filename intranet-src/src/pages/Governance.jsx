@@ -3,16 +3,16 @@ import { supabase } from '../lib/supabase.js'
 import { useAuth } from '../hooks/useAuth.jsx'
 
 const STATUS_COLORS = {
-  open:     '#4caf82',
+  open:     '#4a5f4a',
   closed:   '#555',
-  passed:   '#7eb8e8',
-  rejected: '#ff6b6b',
+  passed:   '#6b836b',
+  rejected: '#c46a6a',
   pending:  '#c4956a',
 }
 
 const VOTE_OPTIONS = [
-  { value: 'yes',     label: 'Yes', color: '#4caf82' },
-  { value: 'no',      label: 'No',  color: '#ff6b6b' },
+  { value: 'yes',     label: 'Yes', color: '#4a5f4a' },
+  { value: 'no',      label: 'No',  color: '#c46a6a' },
   { value: 'abstain', label: 'Abstain', color: '#555' },
 ]
 
@@ -347,7 +347,7 @@ const styles = {
   pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: '#ece6de', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
   pageSub: { fontSize: '0.9rem', color: '#888', lineHeight: 1.65, maxWidth: 600, margin: 0 },
 
-  journalNote: { background: 'rgba(76,175,130,0.08)', border: '1px solid rgba(76,175,130,0.2)', borderRadius: 6, padding: '0.65rem 1rem', fontFamily: 'monospace', fontSize: '0.8rem', color: '#4caf82', marginBottom: '1rem' },
+  journalNote: { background: 'rgba(74,95,74,0.08)', border: '1px solid rgba(74,95,74,0.2)', borderRadius: 6, padding: '0.65rem 1rem', fontFamily: 'monospace', fontSize: '0.8rem', color: '#4a5f4a', marginBottom: '1rem' },
 
   actionBar: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' },
   filterBar: { display: 'flex', gap: '0.4rem' },
@@ -362,7 +362,7 @@ const styles = {
   cancelBtn: { background: 'none', border: '1px solid #2a2a35', color: '#666', borderRadius: 5, padding: '0.5rem 0.85rem', cursor: 'pointer', fontSize: '0.82rem' },
 
   loading: { color: '#555', fontFamily: 'monospace', fontSize: '0.85rem', padding: '2rem 0' },
-  error: { color: '#ff6b6b', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
+  error: { color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
   empty: { color: '#555', fontFamily: 'monospace', fontSize: '0.85rem', padding: '3rem 0', textAlign: 'center' },
 
   card: { background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '1.25rem', marginBottom: '0.75rem' },

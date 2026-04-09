@@ -18,8 +18,8 @@
     --graphite:    #2a2a30;
     --bone:        #d8d3c8;
     --stone:       #9a958a;
-    --ember:       #c2512a;
-    --ember-dim:   #8a3a1f;
+    --ember:       #c4956a;
+    --ember-dim:   #8a6a4a;
     --sage:        #4a6b4a;
     --sage-light:  #6b9b6b;
     --sage-bright: #85b885;
@@ -71,7 +71,7 @@
     background: var(--charcoal); border: 1px solid var(--graphite);
     padding: 1.75rem 2rem; margin-bottom: 1.5rem;
   }
-  .panel.costs { border-color: rgba(194,81,42,0.3); }
+  .panel.costs { border-color: rgba(196,149,106,0.3); }
   .panel.cw    { border-color: rgba(133,184,133,0.3); }
   .panel.lvb   { border-color: rgba(122,159,194,0.3); }
 
@@ -113,7 +113,7 @@
   .model-value.lg    { font-size: 1.3rem; }
   .model-value.muted { color: var(--stone); font-size: 0.88rem; }
   .model-value.pos   { color: var(--sage-bright); }
-  .model-value.neg   { color: #d4704e; }
+  .model-value.neg   { color: #c4956a; }
   .model-value.lvb   { color: var(--lvb); }
 
   .model-input {
@@ -177,7 +177,7 @@
     font-weight: 300;
   }
   .milestone-net.pos { color: var(--sage-bright); }
-  .milestone-net.neg { color: #d4704e; }
+  .milestone-net.neg { color: #c4956a; }
   .milestone-net.zero { color: var(--warm); }
   .milestone-rev {
     font-family: var(--font-mono); font-size: 0.65rem;
@@ -479,7 +479,7 @@
           LearnVibe.Build
         </div>
         <div class="legend-item">
-          <div class="legend-line dashed" style="color:#c2512a;"></div>
+          <div class="legend-line dashed" style="color:#c4956a;"></div>
           Total costs
         </div>
       </div>
@@ -495,7 +495,7 @@
           Monthly surplus
         </div>
         <div class="legend-item">
-          <div class="legend-swatch" style="background:rgba(194,81,42,0.4);"></div>
+          <div class="legend-swatch" style="background:rgba(196,149,106,0.4);"></div>
           Monthly deficit
         </div>
         <div class="legend-item">
@@ -776,8 +776,8 @@
     // Cost line
     var costY = yFor(model.totalCosts, maxVal);
     out.push('<line x1="'+PL+'" y1="'+costY+'" x2="'+(PL+cW)+'" y2="'+costY
-      +'" stroke="#c2512a" stroke-width="2" stroke-dasharray="8,4" opacity="0.8"/>');
-    out.push('<text x="'+(PL+cW+5)+'" y="'+(costY+4)+'" font-family="JetBrains Mono,monospace" font-size="9" fill="#c2512a" opacity="0.7">costs</text>');
+      +'" stroke="#c4956a" stroke-width="2" stroke-dasharray="8,4" opacity="0.8"/>');
+    out.push('<text x="'+(PL+cW+5)+'" y="'+(costY+4)+'" font-family="JetBrains Mono,monospace" font-size="9" fill="#c4956a" opacity="0.7">costs</text>');
 
     // Break-even vertical
     var beM = null;
@@ -847,7 +847,7 @@
       if (d.net >= 0) {
         out.push('<rect x="'+bx2+'" y="'+(ZERO-netH)+'" width="'+bw2+'" height="'+netH+'" fill="rgba(133,184,133,0.55)"/>');
       } else {
-        out.push('<rect x="'+bx2+'" y="'+ZERO+'" width="'+bw2+'" height="'+netH+'" fill="rgba(194,81,42,0.45)"/>');
+        out.push('<rect x="'+bx2+'" y="'+ZERO+'" width="'+bw2+'" height="'+netH+'" fill="rgba(196,149,106,0.45)"/>');
         cumDef += d.net;
       }
     });

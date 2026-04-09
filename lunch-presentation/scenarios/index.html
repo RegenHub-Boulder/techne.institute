@@ -18,8 +18,8 @@
     --graphite:    #2a2a30;
     --bone:        #d8d3c8;
     --stone:       #9a958a;
-    --ember:       #c2512a;
-    --ember-dim:   #8a3a1f;
+    --ember:       #c4956a;
+    --ember-dim:   #8a6a4a;
     --sage:        #4a6b4a;
     --sage-light:  #6b9b6b;
     --sage-bright: #85b885;
@@ -116,7 +116,7 @@
   .model-value.lynn  { color: var(--sage-bright); }
   .model-value.bank  { color: var(--ember); }
   .model-value.pos   { color: var(--sage-bright); }
-  .model-value.warn  { color: #d4704e; }
+  .model-value.warn  { color: #c4956a; }
 
   .model-input {
     width: 100%; background: rgba(255,255,255,0.04);
@@ -157,10 +157,10 @@
 
   /* ─── CAPITAL GAP ─── */
   .capital-gap {
-    background: rgba(194,81,42,0.07); border: 1px solid rgba(194,81,42,0.18);
+    background: rgba(196,149,106,0.07); border: 1px solid rgba(196,149,106,0.18);
     padding: 0.48rem 0.78rem; margin: 0.4rem 0 0;
     font-family: var(--font-mono); font-size: 0.67rem;
-    color: #d4704e; line-height: 1.55; display: none;
+    color: #c4956a; line-height: 1.55; display: none;
   }
   .capital-gap.visible { display: block; }
 
@@ -172,7 +172,7 @@
     padding: 0.18rem 0.5rem; border-radius: 2px; margin-top: 0.4rem;
   }
   .surplus-tag.pos { background: rgba(133,184,133,0.12); color: var(--sage-bright); }
-  .surplus-tag.neg { background: rgba(194,81,42,0.1);   color: #d4704e; }
+  .surplus-tag.neg { background: rgba(196,149,106,0.1);   color: #c4956a; }
 
   /* ─── METRIC CARDS ─── */
   .metric-row {
@@ -489,7 +489,7 @@
           Lynn payment
         </div>
         <div class="legend-item">
-          <div class="legend-line dashed" style="color:#c2512a;"></div>
+          <div class="legend-line dashed" style="color:#c4956a;"></div>
           Bank payment
         </div>
       </div>
@@ -505,7 +505,7 @@
           Lynn path &mdash; % owned
         </div>
         <div class="legend-item">
-          <div class="legend-line" style="background:#c2512a;height:2.5px;"></div>
+          <div class="legend-line" style="background:#c4956a;height:2.5px;"></div>
           Bank path &mdash; % owned
         </div>
       </div>
@@ -521,7 +521,7 @@
           Lynn path &mdash; total paid
         </div>
         <div class="legend-item">
-          <div class="legend-line" style="background:#c2512a;height:2.5px;"></div>
+          <div class="legend-line" style="background:#c4956a;height:2.5px;"></div>
           Bank path &mdash; total paid
         </div>
         <div class="legend-item">
@@ -738,8 +738,8 @@
 
     // Bank payment line
     var byv = yp(bankPmt), bxEnd = Math.min(xp(bankTerm), PL+cW);
-    out.push(hline(byv, PL, bxEnd, '#c2512a', 1.8, '7,4', 0.72));
-    if (bxEnd < PL+cW-30) out.push(endLabel(bxEnd, byv, 'Bank', '#c2512a'));
+    out.push(hline(byv, PL, bxEnd, '#c4956a', 1.8, '7,4', 0.72));
+    if (bxEnd < PL+cW-30) out.push(endLabel(bxEnd, byv, 'Bank', '#c4956a'));
 
     // Lynn payment line
     var lyv = yp(lynnPmt), lxEnd = Math.min(xp(lynnTerm), PL+cW);
@@ -758,8 +758,8 @@
     }
     if (bankBE !== null && bankBE > 0 && bankBE <= maxYr) {
       var bbx = xp(bankBE);
-      out.push(vline(bbx, PT, PT+cH, '#c2512a', '3,4', 0.32));
-      out.push('<text x="'+bbx+'" y="'+(PT+cH+30)+'" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#c2512a" opacity="0.5" text-anchor="middle">yr '+bankBE+'</text>');
+      out.push(vline(bbx, PT, PT+cH, '#c4956a', '3,4', 0.32));
+      out.push('<text x="'+bbx+'" y="'+(PT+cH+30)+'" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#c4956a" opacity="0.5" text-anchor="middle">yr '+bankBE+'</text>');
     }
 
     svg.innerHTML = out.join('');
@@ -793,14 +793,14 @@
     }
     var lastBY = bankSched[Math.min(bi-1, bankSched.length-1)];
     bankFill += xp(lastBY.year)+','+(PT+cH)+' ';
-    out.push('<polygon points="'+bankFill+'" fill="rgba(194,81,42,0.06)"/>');
+    out.push('<polygon points="'+bankFill+'" fill="rgba(196,149,106,0.06)"/>');
 
     // Bank equity curve
     var bPts = [];
     for (var bj=0; bj<bankSched.length && bankSched[bj].year <= maxYr; bj++) {
       bPts.push([xp(bankSched[bj].year), yp(bankSched[bj].equityPct)]);
     }
-    out.push(polyline(bPts, '#c2512a', 2.2));
+    out.push(polyline(bPts, '#c4956a', 2.2));
 
     // Lynn equity curve (on top)
     var lPts = [];
@@ -816,7 +816,7 @@
     }
     if (bPts.length) {
       var bLast = bPts[bPts.length-1];
-      out.push(endLabel(bLast[0], bLast[1]+4, 'Bank', '#c2512a'));
+      out.push(endLabel(bLast[0], bLast[1]+4, 'Bank', '#c4956a'));
     }
 
     // Year-10 callout: show equity % difference
@@ -867,16 +867,16 @@
       bankFill2 += xp(bankSched[bi2].year)+','+yp(bankSched[bi2].cumPaid)+' ';
     }
     if (bPts2.length) bankFill2 += bPts2[bPts2.length-1][0]+','+(PT+cH)+' ';
-    out.push('<polygon points="'+bankFill2+'" fill="rgba(194,81,42,0.06)"/>');
+    out.push('<polygon points="'+bankFill2+'" fill="rgba(196,149,106,0.06)"/>');
 
     // Bank curve
-    out.push(polyline(bPts2, '#c2512a', 2.2));
+    out.push(polyline(bPts2, '#c4956a', 2.2));
     // Lynn curve (on top)
     out.push(polyline(lPts2, '#85b885', 2.5));
 
     // End labels
     if (lPts2.length) out.push(endLabel(lPts2[lPts2.length-1][0], lPts2[lPts2.length-1][1]-2, 'Lynn', '#85b885'));
-    if (bPts2.length) out.push(endLabel(bPts2[bPts2.length-1][0], bPts2[bPts2.length-1][1]+4, 'Bank', '#c2512a'));
+    if (bPts2.length) out.push(endLabel(bPts2[bPts2.length-1][0], bPts2[bPts2.length-1][1]+4, 'Bank', '#c4956a'));
 
     // Gap callout at final year
     var lynnEnd = lynnSched[Math.min(lynnTerm, lynnSched.length-1)];
