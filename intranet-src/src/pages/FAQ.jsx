@@ -11,7 +11,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'What is patronage? How is my allocation calculated?',
-    a: 'Patronage is your share of the cooperative\'s quarterly surplus. Allocations follow the 40/30/20/10 formula: 40% based on labor contributed, 30% on revenue generated, 20% on capital contributed, and 10% on community participation. Your Patronage History page shows each allocation broken down by component.',
+    a: 'Patronage is your share of the cooperative\'s quarterly surplus. Allocations follow a four-component formula: labor contributed, revenue generated, capital contributed, and community participation. The exact weights are set through governance and are visible on the Account page. Your Patronage History page shows each allocation broken down by component.',
   },
   {
     q: 'When are allocations made?',

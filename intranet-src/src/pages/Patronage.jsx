@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
 import { supabase } from '../lib/supabase.js'
+import { useGovernanceParam } from '../hooks/useGovernanceParam.jsx'
+
+const FORMULA_LABELS = { labor: 'labor', revenue: 'revenue', capital: 'capital', community: 'community' }
 
 export default function Patronage() {
   const { participant } = useAuth()
@@ -9,6 +12,7 @@ export default function Patronage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [yearFilter, setYearFilter] = useState('')
+  const { value: formula, status: formulaStatus } = useGovernanceParam('patronage_formula')
 
   useEffect(() => {
     if (!participant) return
@@ -105,7 +109,11 @@ export default function Patronage() {
         </div>
 
         <div style={styles.formulaBar}>
-          Formula: 40% labor · 30% revenue · 20% capital · 10% community
+          Formula: {formula
+            ? Object.entries(formula).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${v}% ${FORMULA_LABELS[k]||k}`).join(' · ')
+            : '40% labor · 30% revenue · 20% capital · 10% community'
+          }
+          {formulaStatus === 'proposed' && <span style={{ marginLeft: '0.5rem', fontSize: '0.72em', color: 'var(--gold)', opacity: 0.8 }}>(proposed)</span>}
         </div>
 
         {/* Year filter */}

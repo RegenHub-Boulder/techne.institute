@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
 import { supabase } from '../lib/supabase.js'
+import { useGovernanceParam } from '../hooks/useGovernanceParam.jsx'
 
 const TYPE_LABELS = {
   initial: 'Initial Contribution',
@@ -26,6 +27,7 @@ export default function Account() {
   const [transactions, setTransactions] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const { value: formula, status: formulaStatus } = useGovernanceParam('patronage_formula')
 
   useEffect(() => {
     if (!participant) return
@@ -203,20 +205,37 @@ export default function Account() {
 
             {/* Patronage formula */}
             <div style={styles.section}>
-              <h2 style={styles.h2}>Patronage Formula</h2>
+              <h2 style={{ ...styles.h2, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                Patronage Formula
+                {formulaStatus === 'proposed' && (
+                  <span style={{ fontSize: '0.6rem', background: 'rgba(196,149,106,0.15)', color: 'var(--gold)', border: '1px solid rgba(196,149,106,0.3)', borderRadius: '3px', padding: '1px 5px', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>proposed</span>
+                )}
+              </h2>
               <div style={styles.formulaGrid}>
-                {[
-                  { label: 'Labor', pct: '40%', desc: 'Hours contributed to cooperative work' },
-                  { label: 'Revenue', pct: '30%', desc: 'Patronage transactions with the cooperative' },
-                  { label: 'Capital', pct: '20%', desc: 'Capital deployed to cooperative ventures' },
-                  { label: 'Community', pct: '10%', desc: 'Civic and community contributions' },
-                ].map(({ label, pct, desc }) => (
-                  <div key={label} style={styles.formulaCard}>
-                    <div style={styles.formulaPct}>{pct}</div>
-                    <div style={styles.formulaLabel}>{label}</div>
-                    <div style={styles.formulaDesc}>{desc}</div>
-                  </div>
-                ))}
+                {formula
+                  ? Object.entries(formula).sort((a,b)=>b[1]-a[1]).map(([key, weight]) => {
+                      const meta = { labor: { label: 'Labor', desc: 'Hours contributed to cooperative work' }, revenue: { label: 'Revenue', desc: 'Patronage transactions with the cooperative' }, capital: { label: 'Capital', desc: 'Capital deployed to cooperative ventures' }, community: { label: 'Community', desc: 'Civic and community contributions' } }[key] || { label: key, desc: '' }
+                      return (
+                        <div key={key} style={styles.formulaCard}>
+                          <div style={styles.formulaPct}>{weight}%</div>
+                          <div style={styles.formulaLabel}>{meta.label}</div>
+                          <div style={styles.formulaDesc}>{meta.desc}</div>
+                        </div>
+                      )
+                    })
+                  : [
+                      { label: 'Labor', pct: '40%', desc: 'Hours contributed to cooperative work' },
+                      { label: 'Revenue', pct: '30%', desc: 'Patronage transactions with the cooperative' },
+                      { label: 'Capital', pct: '20%', desc: 'Capital deployed to cooperative ventures' },
+                      { label: 'Community', pct: '10%', desc: 'Civic and community contributions' },
+                    ].map(({ label, pct, desc }) => (
+                      <div key={label} style={styles.formulaCard}>
+                        <div style={styles.formulaPct}>{pct}</div>
+                        <div style={styles.formulaLabel}>{label}</div>
+                        <div style={styles.formulaDesc}>{desc}</div>
+                      </div>
+                    ))
+                }
               </div>
             </div>
 

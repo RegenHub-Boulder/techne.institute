@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
 import { supabase } from '../lib/supabase.js'
+import { useGovernanceParam } from '../hooks/useGovernanceParam.jsx'
 
 const EDGE_BASE = 'https://hvbdpgkdcdskhpbdeeim.supabase.co/functions/v1'
 
@@ -56,7 +57,7 @@ function AdminTabView() {
   return (
     <>
       <div style={styles.tabs}>
-        {[['members', 'Member List'], ['allocation', 'Allocation Entry'], ['upload', 'K-1 Upload']].map(([id, label]) => (
+        {[['members', 'Member List'], ['allocation', 'Allocation Entry'], ['upload', 'K-1 Upload'], ['governance', 'Governance Params']].map(([id, label]) => (
           <button
             key={id}
             onClick={() => setTab(id)}
@@ -70,6 +71,7 @@ function AdminTabView() {
         {tab === 'members' && <MemberList />}
         {tab === 'allocation' && <AllocationEntry />}
         {tab === 'upload' && <DocumentUpload />}
+        {tab === 'governance' && <GovernanceParamsPanel />}
       </div>
     </>
   )
@@ -148,6 +150,7 @@ function MemberList() {
 // ─── Allocation Entry ─────────────────────────────────────────────────────────
 
 function AllocationEntry() {
+  const { value: formula, status: formulaStatus } = useGovernanceParam('patronage_formula')
   const [members, setMembers] = useState(null)
   const [form, setForm] = useState({
     participant_id: '',
@@ -220,8 +223,12 @@ function AllocationEntry() {
   return (
     <div>
       <p style={styles.sectionNote}>
-        Allocations use the 40/30/20/10 formula: Labor 40%, Revenue 30%, Capital 20%, Community 10%.
-        Enter amounts in cents (USD × 100). All components can be zero.
+        {formula
+          ? <>Allocations use formula: {Object.entries(formula).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${k[0].toUpperCase()+k.slice(1)} ${v}%`).join(', ')}.</>
+          : <>Allocations use the 40/30/20/10 formula: Labor 40%, Revenue 30%, Capital 20%, Community 10%.</>
+        }
+        {formulaStatus === 'proposed' && <span style={{ color: 'var(--gold)', marginLeft: '0.4rem' }}>(proposed — not yet ratified)</span>}
+        {' '}Enter amounts in cents (USD × 100). All components can be zero.
       </p>
 
       {result && (
@@ -267,7 +274,12 @@ function AllocationEntry() {
         </div>
 
         <div style={styles.formRow}>
-          {[['labor_cents', 'Labor (40%)'], ['revenue_cents', 'Revenue (30%)'], ['capital_cents', 'Capital (20%)'], ['community_cents', 'Community (10%)']].map(([k, label]) => (
+          {[
+            ['labor_cents', formula ? `Labor (${formula.labor}%)` : 'Labor (40%)'],
+            ['revenue_cents', formula ? `Revenue (${formula.revenue}%)` : 'Revenue (30%)'],
+            ['capital_cents', formula ? `Capital (${formula.capital}%)` : 'Capital (20%)'],
+            ['community_cents', formula ? `Community (${formula.community}%)` : 'Community (10%)'],
+          ].map(([k, label]) => (
             <label key={k} style={styles.label}>
               {label}
               <input
@@ -457,6 +469,146 @@ function DocumentUpload() {
           {uploading ? 'Uploading…' : 'Upload document'}
         </button>
       </form>
+    </div>
+  )
+}
+
+// ─── Governance Params Panel ──────────────────────────────────────────────────
+
+function GovernanceParamsPanel() {
+  const { participant } = useAuth()
+  const { value: formula, status, label, description, loading, error: fetchError } = useGovernanceParam('patronage_formula')
+
+  const [editing, setEditing]   = useState(false)
+  const [draft, setDraft]       = useState(null)
+  const [saving, setSaving]     = useState(false)
+  const [saveError, setSaveError] = useState(null)
+  const [saveOk, setSaveOk]     = useState(false)
+
+  function startEdit() {
+    setDraft({ ...(formula || { labor: 40, revenue: 30, capital: 20, community: 10 }) })
+    setEditing(true)
+    setSaveOk(false)
+    setSaveError(null)
+  }
+
+  function handleChange(key, val) {
+    const n = parseInt(val, 10)
+    setDraft(d => ({ ...d, [key]: isNaN(n) ? 0 : Math.max(0, Math.min(100, n)) }))
+  }
+
+  const draftTotal = draft ? Object.values(draft).reduce((s, v) => s + v, 0) : 0
+
+  async function handleSave() {
+    if (draftTotal !== 100) { setSaveError('Weights must sum to 100.'); return }
+    setSaving(true)
+    setSaveError(null)
+    try {
+      const { error } = await supabase
+        .from('techne_governance_params')
+        .update({ value: draft, updated_by: participant?.id, updated_at: new Date().toISOString() })
+        .eq('key', 'patronage_formula')
+      if (error) throw error
+      setSaveOk(true)
+      setEditing(false)
+    } catch (e) {
+      setSaveError(e.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function handleRatify() {
+    if (!window.confirm('Mark this formula as ratified by governance? This cannot be undone without a new governance vote.')) return
+    setSaving(true)
+    setSaveError(null)
+    try {
+      const { error } = await supabase
+        .from('techne_governance_params')
+        .update({ status: 'ratified', ratified_at: new Date().toISOString(), ratified_by: participant?.id })
+        .eq('key', 'patronage_formula')
+      if (error) throw error
+      setSaveOk(true)
+    } catch (e) {
+      setSaveError(e.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const STATUS_COLOR = { proposed: 'var(--gold)', ratified: 'var(--status-ok)', superseded: 'var(--text-dim)' }
+
+  if (loading) return <div style={{ color: 'var(--text-nav)', fontSize: '0.85rem' }}>Loading governance parameters…</div>
+
+  return (
+    <div>
+      <p style={styles.sectionNote}>
+        Governance parameters are system variables set through collective decision-making.
+        Parameters marked <em>proposed</em> have been tabled but not yet ratified.
+        Ratified parameters take effect immediately.
+      </p>
+
+      {fetchError && <div style={styles.error}>Load error: {fetchError}</div>}
+      {saveOk && <div style={styles.successBox}>Saved successfully.</div>}
+      {saveError && <div style={styles.error}>{saveError}</div>}
+
+      {/* Patronage formula card */}
+      <div style={{ border: '1px solid var(--hud-border)', borderRadius: '8px', overflow: 'hidden', marginBottom: '1.5rem' }}>
+        <div style={{ padding: '0.9rem 1.1rem', borderBottom: '1px solid var(--hud-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
+          <div>
+            <div style={{ fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.2rem' }}>
+              Patronage Allocation Formula
+              <span style={{ marginLeft: '0.5rem', fontSize: '0.65rem', background: 'rgba(0,0,0,0.2)', color: STATUS_COLOR[status] || 'var(--text-dim)', border: `1px solid ${STATUS_COLOR[status] || 'var(--hud-border)'}`, borderRadius: '3px', padding: '1px 5px', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>{status || '—'}</span>
+            </div>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-nav)' }}>{description || 'Weights governing patronage allocation. Must sum to 100.'}</div>
+          </div>
+          <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
+            {!editing && status !== 'ratified' && (
+              <button onClick={startEdit} style={{ ...styles.submitBtn, padding: '0.35rem 0.75rem', fontSize: '0.78rem' }}>Edit</button>
+            )}
+            {!editing && status === 'proposed' && (
+              <button onClick={handleRatify} disabled={saving} style={{ padding: '0.35rem 0.75rem', fontSize: '0.78rem', background: 'rgba(76,175,136,0.15)', border: '1px solid rgba(76,175,136,0.4)', color: 'var(--status-ok)', borderRadius: '5px', cursor: 'pointer', fontFamily: 'inherit' }}>Ratify</button>
+            )}
+          </div>
+        </div>
+
+        <div style={{ padding: '1rem 1.1rem' }}>
+          {!editing && formula && (
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+              {Object.entries(formula).sort((a,b)=>b[1]-a[1]).map(([key, weight]) => (
+                <div key={key} style={{ background: 'var(--hud-surface)', border: '1px solid var(--hud-border)', borderRadius: '6px', padding: '0.6rem 0.9rem', minWidth: '90px', textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.4rem', fontWeight: 800, fontFamily: 'monospace', color: { labor: 'var(--status-info)', revenue: 'var(--status-ok)', capital: '#4a9eff', community: '#b47cd4' }[key] || 'var(--text-muted)' }}>{weight}%</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-nav)', textTransform: 'capitalize', marginTop: '0.2rem' }}>{key}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {editing && draft && (
+            <div>
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
+                {Object.entries(draft).sort((a,b)=>b[1]-a[1]).map(([key, weight]) => (
+                  <label key={key} style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', minWidth: '90px' }}>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-nav)', textTransform: 'capitalize' }}>{key}</span>
+                    <input
+                      type="number" min="0" max="100" value={weight}
+                      onChange={e => handleChange(key, e.target.value)}
+                      style={{ ...styles.input, width: '80px', textAlign: 'center', fontFamily: 'monospace', fontSize: '1rem', fontWeight: 700 }}
+                    />
+                  </label>
+                ))}
+              </div>
+              <div style={{ fontSize: '0.8rem', color: draftTotal === 100 ? 'var(--status-ok)' : 'var(--status-err)', marginBottom: '0.75rem' }}>
+                Total: {draftTotal}/100 {draftTotal === 100 ? '✓' : '— must equal 100'}
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button onClick={handleSave} disabled={saving || draftTotal !== 100} style={styles.submitBtn}>{saving ? 'Saving…' : 'Save'}</button>
+                <button onClick={() => setEditing(false)} style={{ ...styles.submitBtn, background: 'none', border: '1px solid var(--hud-border)', color: 'var(--text-nav)' }}>Cancel</button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

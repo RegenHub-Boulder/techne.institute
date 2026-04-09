@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
 import { supabase } from '../lib/supabase.js'
 import { TabShell } from '../components/TabShell.jsx'
+import { useGovernanceParam } from '../hooks/useGovernanceParam.jsx'
 
 // ─── Shared data hook ─────────────────────────────────────────────────────────
 
@@ -141,8 +142,16 @@ function ContribRow({ c }) {
 
 // ─── Overview tab ─────────────────────────────────────────────────────────────
 
+const FORMULA_META = {
+  labor:     { label: 'Labor',     desc: 'Hours contributed',       color: 'var(--status-info)' },
+  revenue:   { label: 'Revenue',   desc: 'Patronage transactions',  color: 'var(--status-ok)'   },
+  capital:   { label: 'Capital',   desc: 'Capital deployed',        color: '#4a9eff'             },
+  community: { label: 'Community', desc: 'Civic contributions',     color: '#b47cd4'             },
+}
+
 function OverviewTab({ data }) {
   const { account, transactions, contributions, patronageEvents } = data
+  const { value: formula, status: formulaStatus } = useGovernanceParam('patronage_formula')
 
   const totalHours = contributions.reduce((s, c) => s + parseFloat(c.hours || 0), 0)
   const totalFmv   = contributions.reduce((s, c) => s + parseFloat(c.fmv_total || 0), 0)
@@ -204,22 +213,28 @@ function OverviewTab({ data }) {
 
         {/* Patronage formula */}
         <div>
-          <div style={headingStyle}>Patronage Formula</div>
+          <div style={{ ...headingStyle, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            Patronage Formula
+            {formulaStatus === 'proposed' && (
+              <span style={{ fontSize: '0.6rem', background: 'rgba(196,149,106,0.15)', color: 'var(--gold)', border: '1px solid rgba(196,149,106,0.3)', borderRadius: '3px', padding: '1px 5px', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>proposed</span>
+            )}
+          </div>
           <div style={tableContainer}>
-            {[
-              { pct: '40%', label: 'Labor', desc: 'Hours contributed', color: 'var(--status-info)' },
-              { pct: '30%', label: 'Revenue', desc: 'Patronage transactions', color: 'var(--status-ok)' },
-              { pct: '20%', label: 'Capital', desc: 'Capital deployed', color: '#4a9eff' },
-              { pct: '10%', label: 'Community', desc: 'Civic contributions', color: '#b47cd4' },
-            ].map(({ pct, label, desc, color }) => (
-              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.55rem 0.85rem', borderBottom: '1px solid #12121e' }}>
-                <div style={{ fontSize: '1rem', fontWeight: 800, color, fontFamily: 'monospace', minWidth: '2.75rem' }}>{pct}</div>
-                <div>
-                  <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-ccc)' }}>{label}</div>
-                  <div style={{ fontSize: '0.72rem', color: 'var(--text-nav)' }}>{desc}</div>
-                </div>
-              </div>
-            ))}
+            {formula && Object.entries(formula)
+              .sort((a, b) => b[1] - a[1])
+              .map(([key, weight]) => {
+                const meta = FORMULA_META[key] || { label: key, desc: '', color: 'var(--text-muted)' }
+                return (
+                  <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.55rem 0.85rem', borderBottom: '1px solid #12121e' }}>
+                    <div style={{ fontSize: '1rem', fontWeight: 800, color: meta.color, fontFamily: 'monospace', minWidth: '2.75rem' }}>{weight}%</div>
+                    <div>
+                      <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-ccc)' }}>{meta.label}</div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--text-nav)' }}>{meta.desc}</div>
+                    </div>
+                  </div>
+                )
+              })
+            }
           </div>
         </div>
       </div>
@@ -381,13 +396,18 @@ function LaborTab({ data, reload }) {
 function PatronageTab({ data }) {
   const { patronageEvents } = data
   const [yearFilter, setYearFilter] = useState('')
+  const { value: formula, status: formulaStatus } = useGovernanceParam('patronage_formula')
   const filtered = patronageEvents.filter(e => !yearFilter || e.effective_date?.startsWith(yearFilter))
   const years = [...new Set(patronageEvents.map(e => e.effective_date?.slice(0, 4)).filter(Boolean))].sort().reverse()
 
   return (
     <div>
       <div style={{ fontSize: '0.8rem', color: 'var(--text-nav)', background: 'rgba(196,149,106,0.06)', border: '1px solid rgba(196,149,106,0.12)', borderRadius: '6px', padding: '0.6rem 0.85rem', marginBottom: '1.25rem' }}>
-        Formula: 40% labor · 30% revenue · 20% capital · 10% community
+        {formula
+          ? Object.entries(formula).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${v}% ${FORMULA_META[k]?.label||k}`).join(' · ')
+          : '40% labor · 30% revenue · 20% capital · 10% community'
+        }
+        {formulaStatus === 'proposed' && <span style={{ marginLeft: '0.5rem', fontSize: '0.68rem', color: 'var(--gold)', fontWeight: 600 }}>(proposed — not yet ratified)</span>}
       </div>
 
       {years.length > 0 && (
