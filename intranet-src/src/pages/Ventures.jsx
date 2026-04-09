@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
 import { supabase } from '../lib/supabase.js'
-import { IntranetHeader } from '../components/IntranetHeader.jsx'
 
 export default function Ventures() {
   const { participant } = useAuth()
@@ -30,7 +29,6 @@ export default function Ventures() {
 
   return (
     <div style={styles.page}>
-      <IntranetHeader />
       <div style={styles.main}>
         <nav style={styles.breadcrumb}>
           <a href="/intranet/" style={styles.breadLink}>Home</a>

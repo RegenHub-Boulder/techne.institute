@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase.js'
 import { useAuth } from '../hooks/useAuth.jsx'
-import { IntranetHeader } from '../components/IntranetHeader.jsx'
 
 const statusColor = {
   active: '#4caf82',
@@ -52,7 +51,6 @@ export default function Projects() {
 
   return (
     <div style={styles.page}>
-      <IntranetHeader />
       <div style={styles.main}>
         <nav style={styles.breadcrumb}>
           <a href="/intranet/" style={styles.breadLink}>Home</a>

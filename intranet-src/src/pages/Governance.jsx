@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase.js'
 import { useAuth } from '../hooks/useAuth.jsx'
-import { IntranetHeader } from '../components/IntranetHeader.jsx'
 
 const STATUS_COLORS = {
   open:     '#4caf82',
@@ -170,7 +169,6 @@ export default function Governance() {
 
   return (
     <div style={styles.page}>
-      <IntranetHeader />
       <div style={styles.main}>
 
         <nav style={styles.breadcrumb}>

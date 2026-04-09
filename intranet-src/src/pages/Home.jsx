@@ -1,278 +1,453 @@
+import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
+import { supabase } from '../lib/supabase.js'
 
-export default function Home() {
-  const { participant, signOut, isSteward } = useAuth()
+// ─── Mini-panel data fetchers ─────────────────────────────────────────────────
 
-  const greeting = participant?.name
-    ? `Welcome, ${participant.name.split(' ')[0]}.`
-    : 'Welcome.'
+function useDashboardMetrics(participantId) {
+  const [data, setData] = useState({})
+  const [loading, setLoading] = useState(true)
 
-  const membershipLabel = {
-    1: 'Class 1 — Labor',
-    2: 'Class 2 — Patron',
-    3: 'Class 3 — Community',
-    4: 'Class 4 — Investor',
-  }
+  useEffect(() => {
+    if (!participantId) return
 
+    async function fetchAll() {
+      const [capitalRes, laborRes, projectsRes, proposalsRes, ledgerRes] = await Promise.all([
+        supabase
+          .from('capital_accounts')
+          .select('book_balance, last_updated')
+          .eq('participant_id', participantId)
+          .maybeSingle(),
+        supabase
+          .from('labor_contributions')
+          .select('hours, fmv_value')
+          .eq('participant_id', participantId),
+        supabase
+          .from('projects')
+          .select('id, status')
+          .eq('status', 'active'),
+        supabase
+          .from('proposals')
+          .select('id, status')
+          .eq('status', 'open'),
+        supabase
+          .from('rea_ledger')
+          .select('resource_type, balance, state_merkle_root')
+          .order('resource_type'),
+      ])
+
+      const totalLabor = (laborRes.data || []).reduce((s, r) => s + Number(r.hours || 0), 0)
+      const totalFmv   = (laborRes.data || []).reduce((s, r) => s + Number(r.fmv_value || 0), 0)
+
+      // Get the most recent merkle root (from first rea_ledger entry that has one)
+      const rootEntry = (ledgerRes.data || []).find(r => r.state_merkle_root)
+
+      setData({
+        capital:     capitalRes.data || null,
+        laborHours:  totalLabor,
+        laborFmv:    totalFmv,
+        activeProjects: (projectsRes.data || []).length,
+        openProposals:  (proposalsRes.data || []).length,
+        merkleRoot:  rootEntry?.state_merkle_root || null,
+        ledger:      ledgerRes.data || [],
+      })
+      setLoading(false)
+    }
+
+    fetchAll()
+  }, [participantId])
+
+  return { data, loading }
+}
+
+// ─── Metric card component ────────────────────────────────────────────────────
+
+function MetricCard({ title, icon, href, color, children, badge }) {
   return (
-    <div style={styles.page}>
-      <div style={styles.header}>
-        <div style={styles.wordmark}>Techne</div>
-        <div style={styles.headerRight}>
-          {participant?.membership_class && (
-            <span style={styles.memberClass}>
-              {membershipLabel[participant.membership_class]}
-            </span>
-          )}
-          <span style={styles.participantType}>
-            {participant?.participant_type || 'member'}
-          </span>
-          <button onClick={signOut} style={styles.signOut}>
-            Sign out
-          </button>
-        </div>
+    <a
+      href={href}
+      style={{
+        display: 'block',
+        textDecoration: 'none',
+        background: 'rgba(255,255,255,0.025)',
+        border: '1px solid #1a1a2e',
+        borderRadius: '10px',
+        padding: '1.25rem',
+        position: 'relative',
+        overflow: 'hidden',
+        transition: 'border-color 0.15s, background 0.15s',
+        cursor: 'pointer',
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.borderColor = color || '#c87533'
+        e.currentTarget.style.background = 'rgba(255,255,255,0.04)'
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.borderColor = '#1a1a2e'
+        e.currentTarget.style.background = 'rgba(255,255,255,0.025)'
+      }}
+    >
+      {/* Color accent line */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        height: '2px',
+        background: `linear-gradient(90deg, ${color || '#c87533'} 0%, transparent 100%)`,
+        opacity: 0.7,
+      }} />
+
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
+        <span style={{
+          fontSize: '0.68rem',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          color: '#52526a',
+        }}>{title}</span>
+        <span style={{ fontSize: '1rem', opacity: 0.5 }}>{icon}</span>
       </div>
 
-      <div style={styles.main}>
-        <h1 style={styles.greeting}>{greeting}</h1>
-        <p style={styles.subtitle}>Your cooperative account.</p>
+      {/* Content */}
+      {children}
 
-        <div style={styles.nav}>
-          <NavCard
-            href="/intranet/account/"
-            title="Capital Account"
-            description="Your book balance, tax capital account (IRC 704b), last allocation date, and YTD summary."
-            available={true}
-          />
-          <NavCard
-            href="/intranet/patronage/"
-            title="Patronage History"
-            description="Quarterly allocation events by component (40/30/20/10), with CSV export."
-            available={true}
-          />
-          <NavCard
-            href="/intranet/labor/"
-            title="Labor Contributions"
-            description="Log hours, track FMV totals by category, and view your contribution history."
-            available={true}
-          />
-          <NavCard
-            href="/intranet/projects/"
-            title="Projects & Ventures"
-            description="Active cooperative projects, ventures, contributors, and milestones."
-            available={true}
-          />
-          <NavCard
-            href="/intranet/directory/"
-            title="Member Directory"
-            description="Organizer roster — names, roles, crafts, and membership class."
-            available={true}
-          />
-          <NavCard
-            href="/intranet/documents/"
-            title="K-1 Documents"
-            description="Your tax documents and cooperative filings."
-            available={true}
-          />
-          <NavCard
-            href="/intranet/guide/"
-            title="Member Guide"
-            description="Bylaws, member agreement, purpose statement, and articles of organization."
-            available={true}
-          />
-          <NavCard
-            href="/intranet/cloud/"
-            title="Cloud Micro-Grid"
-            description="R13 scenario model — solar-powered cooperative compute array, CLOUD credit projections, and LCA patronage accounting."
-            available={true}
-          />
-          <NavCard
-            href="/intranet/journal/"
-            title="REA Journal"
-            description="Append-only cooperative event log — all economic and governance activity with Resource · Event · Agent semantics."
-            available={true}
-          />
-          <NavCard
-            href="/intranet/ledger/"
-            title="REA Ledger"
-            description="Current account balances — capital, CLOUD credits, labor, and voting power. Merkle-verified state."
-            available={true}
-          />
-          <NavCard
-            href="/intranet/governance/"
-            title="Governance"
-            description="Cooperative proposals and voting. Votes recorded as REA journal events for auditable decision-making."
-            available={true}
-          />
-          <NavCard
-            href="/intranet/verify/"
-            title="State Verifier"
-            description="Cryptographically verify account balances and state transitions using merkle proofs. Auditor-accessible."
-            available={true}
-          />
-          {isSteward && (
-            <NavCard
-              href="/intranet/treasury/"
-              title="Treasury"
-              description="Bank accounts, balances, and transaction history."
-              available={true}
-              stewardOnly
-            />
-          )}
-          {isSteward && (
-            <NavCard
-              href="/intranet/admin/"
-              title="Admin"
-              description="Allocation entry, document upload, member management."
-              available={true}
-              stewardOnly
-            />
-          )}
-          {participant?.membership_class === 4 && (
-            <NavCard
-              href="/intranet/ventures/"
-              title="Venture Basket"
-              description="Your Class 4 investor portfolio — basket composition, status, and returns."
-              available={true}
-            />
-          )}
-        </div>
+      {badge && (
+        <div style={{
+          position: 'absolute', bottom: '0.75rem', right: '0.75rem',
+          fontSize: '0.62rem', color: color || '#c87533',
+          background: `${color || '#c87533'}18`,
+          padding: '2px 6px', borderRadius: '3px',
+          textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700,
+        }}>{badge}</div>
+      )}
+    </a>
+  )
+}
+
+function MetricValue({ value, sub, mono }) {
+  return (
+    <div>
+      <div style={{
+        fontSize: '1.6rem',
+        fontWeight: 700,
+        letterSpacing: '-0.03em',
+        color: '#e0e0f0',
+        fontFamily: mono ? "'JetBrains Mono', 'Fira Code', Consolas, monospace" : 'inherit',
+        lineHeight: 1.1,
+      }}>{value}</div>
+      {sub && (
+        <div style={{
+          fontSize: '0.75rem',
+          color: '#52526a',
+          marginTop: '0.3rem',
+          lineHeight: 1.4,
+        }}>{sub}</div>
+      )}
+    </div>
+  )
+}
+
+function MerkleIndicator({ root }) {
+  if (!root) return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+      <span style={{ color: '#f59e0b', fontSize: '0.7rem' }}>◎ No root</span>
+    </div>
+  )
+  return (
+    <div>
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.35rem',
+      }}>
+        <span style={{ color: '#4caf82', fontSize: '0.72rem', fontWeight: 700 }}>✓ Verifiable</span>
+      </div>
+      <div style={{
+        fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
+        fontSize: '0.68rem',
+        color: '#52526a',
+        letterSpacing: '0.02em',
+        wordBreak: 'break-all',
+      }}>
+        {root.slice(0, 20)}…{root.slice(-8)}
       </div>
     </div>
   )
 }
 
-function NavCard({ title, description, href, available, stewardOnly }) {
-  const tag = available ? 'a' : 'div'
-  const props = available ? { href } : {}
+// ─── Main Dashboard ───────────────────────────────────────────────────────────
+
+export default function Home() {
+  const { participant, isSteward } = useAuth()
+  const { data, loading } = useDashboardMetrics(participant?.id)
+
+  const fmt = (n) =>
+    Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+  const fmtHrs = (n) =>
+    Number(n || 0).toFixed(1) + ' hrs'
+
+  const membershipLabel = {
+    1: 'Class 1 · Labor',
+    2: 'Class 2 · Patron',
+    3: 'Class 3 · Community',
+    4: 'Class 4 · Investor',
+  }
 
   return (
-    <a
-      href={available ? href : undefined}
-      onClick={available ? undefined : (e) => e.preventDefault()}
-      style={{
-        ...styles.card,
-        opacity: available ? 1 : 0.5,
-        cursor: available ? 'pointer' : 'default',
-        textDecoration: 'none',
-        display: 'block',
-      }}
-    >
-      {stewardOnly && <div style={styles.stewardBadge}>Steward</div>}
-      <div style={styles.cardTitle}>{title}</div>
-      <div style={styles.cardDesc}>{description}</div>
-      {!available && <div style={styles.comingSoon}>Coming soon</div>}
-    </a>
+    <div style={styles.page}>
+      {/* Panel header */}
+      <div style={styles.panelHeader}>
+        <div>
+          <h1 style={styles.title}>
+            {participant?.name ? `${participant.name.split(' ')[0]}` : 'Dashboard'}
+          </h1>
+          <p style={styles.subtitle}>
+            {participant?.membership_class
+              ? membershipLabel[participant.membership_class]
+              : 'Cooperative member'}
+            {' · '}
+            <span style={{ color: '#52526a' }}>techne.institute</span>
+          </p>
+        </div>
+        <div style={styles.headerMeta}>
+          <span style={styles.onlineDot} />
+          <span style={styles.onlineLabel}>Live</span>
+        </div>
+      </div>
+
+      {/* Metric grid */}
+      {loading ? (
+        <div style={styles.loadingGrid}>
+          {[...Array(6)].map((_, i) => (
+            <div key={i} style={styles.skeletonCard} />
+          ))}
+        </div>
+      ) : (
+        <div style={styles.grid}>
+
+          {/* Capital Account */}
+          <MetricCard
+            title="Capital Account"
+            icon="◉"
+            href="/intranet/account/"
+            color="#c87533"
+          >
+            <MetricValue
+              value={data.capital ? fmt(data.capital.book_balance) : '—'}
+              sub={data.capital?.last_updated
+                ? `Last updated ${new Date(data.capital.last_updated).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+                : 'No account data'}
+              mono
+            />
+          </MetricCard>
+
+          {/* Labor */}
+          <MetricCard
+            title="Labor Contributions"
+            icon="⏱"
+            href="/intranet/labor/"
+            color="#7eb8e8"
+          >
+            <MetricValue
+              value={fmtHrs(data.laborHours)}
+              sub={data.laborFmv > 0 ? `FMV: ${fmt(data.laborFmv)}` : 'Log hours to track FMV'}
+            />
+          </MetricCard>
+
+          {/* Projects */}
+          <MetricCard
+            title="Active Projects"
+            icon="◇"
+            href="/intranet/projects/"
+            color="#a78bfa"
+          >
+            <MetricValue
+              value={String(data.activeProjects ?? 0)}
+              sub="Currently running"
+            />
+          </MetricCard>
+
+          {/* Governance */}
+          <MetricCard
+            title="Governance"
+            icon="⊕"
+            href="/intranet/governance/"
+            color={data.openProposals > 0 ? '#f59e0b' : '#4caf82'}
+            badge={data.openProposals > 0 ? `${data.openProposals} open` : null}
+          >
+            <MetricValue
+              value={String(data.openProposals ?? 0)}
+              sub={data.openProposals > 0 ? 'Proposals awaiting votes' : 'No pending proposals'}
+            />
+          </MetricCard>
+
+          {/* REA Ledger state */}
+          <MetricCard
+            title="State Verifier"
+            icon="◈"
+            href="/intranet/verify/"
+            color="#4caf82"
+          >
+            <MerkleIndicator root={data.merkleRoot} />
+          </MetricCard>
+
+          {/* Cloud */}
+          <MetricCard
+            title="Cloud Micro-Grid"
+            icon="⬡"
+            href="/intranet/cloud/"
+            color="#c4956a"
+          >
+            <MetricValue
+              value="R13"
+              sub="Solar compute · 3 scenarios"
+            />
+          </MetricCard>
+
+          {/* REA Journal */}
+          <MetricCard
+            title="REA Journal"
+            icon="≡"
+            href="/intranet/journal/"
+            color="#8888a8"
+          >
+            <MetricValue
+              value="Append-only"
+              sub="Economic event log"
+            />
+          </MetricCard>
+
+          {/* REA Ledger */}
+          <MetricCard
+            title="REA Ledger"
+            icon="⊞"
+            href="/intranet/ledger/"
+            color="#52526a"
+          >
+            <MetricValue
+              value={String(data.ledger?.length ?? 0)}
+              sub="Account balances"
+            />
+          </MetricCard>
+
+          {/* Patronage */}
+          <MetricCard
+            title="Patronage"
+            icon="★"
+            href="/intranet/patronage/"
+            color="#c87533"
+          >
+            <MetricValue
+              value="40/30/20/10"
+              sub="Labor · Revenue · Cash · Community"
+            />
+          </MetricCard>
+
+          {/* Treasury — steward only */}
+          {isSteward && (
+            <MetricCard
+              title="Treasury"
+              icon="⌖"
+              href="/intranet/treasury/"
+              color="#c87533"
+              badge="Steward"
+            >
+              <MetricValue
+                value="Bank accounts"
+                sub="Transactions & balances"
+              />
+            </MetricCard>
+          )}
+
+          {/* Member Guide */}
+          <MetricCard
+            title="Member Guide"
+            icon="≡"
+            href="/intranet/guide/"
+            color="#2a2a40"
+          >
+            <MetricValue
+              value="Bylaws &amp; Docs"
+              sub="Articles, member agreement"
+            />
+          </MetricCard>
+
+          {/* Directory */}
+          <MetricCard
+            title="Directory"
+            icon="⊛"
+            href="/intranet/directory/"
+            color="#4caf82"
+          >
+            <MetricValue
+              value="Organizers"
+              sub="Roles, crafts, membership"
+            />
+          </MetricCard>
+
+        </div>
+      )}
+    </div>
   )
 }
 
 const styles = {
   page: {
-    minHeight: '100vh',
-    background: 'var(--color-void, #0a0a0f)',
+    padding: '2rem',
+    maxWidth: '1100px',
   },
-  header: {
+  panelHeader: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
-    padding: '1rem 2rem',
-    borderBottom: '1px solid var(--color-border, #2a2a35)',
-    background: 'var(--color-surface, #141418)',
+    marginBottom: '2rem',
   },
-  wordmark: {
-    fontSize: '1.1rem',
-    fontWeight: 700,
-    color: 'var(--color-copper, #c87533)',
-    letterSpacing: '-0.02em',
-  },
-  headerRight: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
-  },
-  memberClass: {
-    fontSize: '0.75rem',
-    color: 'var(--color-copper, #c87533)',
-    background: 'rgba(200,117,51,0.1)',
-    padding: '0.2rem 0.5rem',
-    borderRadius: '4px',
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-    fontWeight: 600,
-  },
-  participantType: {
-    fontSize: '0.75rem',
-    color: 'var(--color-text-muted, #888)',
-    textTransform: 'uppercase',
-    letterSpacing: '0.08em',
-  },
-  signOut: {
-    background: 'none',
-    border: '1px solid var(--color-border, #2a2a35)',
-    color: 'var(--color-text-muted, #888)',
-    borderRadius: '6px',
-    padding: '0.4rem 0.75rem',
-    fontSize: '0.8rem',
-    cursor: 'pointer',
-  },
-  main: {
-    maxWidth: '800px',
-    margin: '0 auto',
-    padding: '3rem 2rem',
-  },
-  greeting: {
-    fontSize: '2rem',
-    fontWeight: 700,
-    letterSpacing: '-0.02em',
-    margin: '0 0 0.5rem',
-    color: 'var(--color-text, #e8e8e8)',
+  title: {
+    fontSize: '1.75rem',
+    fontWeight: 800,
+    letterSpacing: '-0.03em',
+    color: '#e0e0f0',
+    margin: 0,
+    lineHeight: 1.15,
   },
   subtitle: {
-    fontSize: '1rem',
-    color: 'var(--color-text-muted, #888)',
-    margin: '0 0 2.5rem',
+    fontSize: '0.8rem',
+    color: '#52526a',
+    margin: '0.35rem 0 0',
   },
-  nav: {
+  headerMeta: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.4rem',
+    marginTop: '0.25rem',
+  },
+  onlineDot: {
+    width: '6px',
+    height: '6px',
+    borderRadius: '50%',
+    background: '#4caf82',
+    boxShadow: '0 0 6px #4caf82',
+    flexShrink: 0,
+  },
+  onlineLabel: {
+    fontSize: '0.68rem',
+    color: '#4caf82',
+    textTransform: 'uppercase',
+    letterSpacing: '0.1em',
+    fontWeight: 700,
+  },
+  grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
     gap: '1rem',
   },
-  card: {
-    background: 'var(--color-surface, #141418)',
-    border: '1px solid var(--color-border, #2a2a35)',
+  loadingGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+    gap: '1rem',
+  },
+  skeletonCard: {
+    height: '120px',
+    background: 'rgba(255,255,255,0.02)',
+    border: '1px solid #1a1a2e',
     borderRadius: '10px',
-    padding: '1.5rem',
-    position: 'relative',
-  },
-  cardTitle: {
-    fontWeight: 600,
-    fontSize: '1rem',
-    color: 'var(--color-text, #e8e8e8)',
-    marginBottom: '0.5rem',
-  },
-  cardDesc: {
-    fontSize: '0.85rem',
-    color: 'var(--color-text-muted, #888)',
-    lineHeight: 1.5,
-  },
-  comingSoon: {
-    marginTop: '1rem',
-    fontSize: '0.75rem',
-    color: 'var(--color-text-muted, #666)',
-    textTransform: 'uppercase',
-    letterSpacing: '0.06em',
-  },
-  stewardBadge: {
-    position: 'absolute',
-    top: '0.75rem',
-    right: '0.75rem',
-    background: 'rgba(200, 117, 51, 0.15)',
-    color: 'var(--color-copper, #c87533)',
-    fontSize: '0.65rem',
-    fontWeight: 700,
-    textTransform: 'uppercase',
-    letterSpacing: '0.08em',
-    padding: '0.2rem 0.5rem',
-    borderRadius: '4px',
+    animation: 'pulse 1.5s ease-in-out infinite',
   },
 }

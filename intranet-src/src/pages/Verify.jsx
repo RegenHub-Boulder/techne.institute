@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase.js'
-import { IntranetHeader } from '../components/IntranetHeader.jsx'
 import { computeMerkleRoot, generateMerkleProof, verifyMerkleProof, computeLeafHash } from '../lib/merkle.js'
 
 /**
@@ -154,7 +153,6 @@ export default function Verify() {
 
   return (
     <div style={styles.page}>
-      <IntranetHeader />
       <div style={styles.main}>
 
         <nav style={styles.breadcrumb}>

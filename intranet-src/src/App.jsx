@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx'
+import { HUDLayout } from './components/HUDLayout.jsx'
 import Login from './pages/Login'
 import Home from './pages/Home'
 import Account from './pages/Account'
@@ -64,26 +65,27 @@ function Router() {
   // Authenticated but no participant record linked
   if (!participant) return <NotLinked />
 
-  // Route to page
-  if (path === 'account') return <Account />
-  if (path === 'capital') return <Account />
-  if (path === 'patronage') return <Patronage />
-  if (path === 'documents') return <Documents />
-  if (path === 'ventures') return <Ventures />
-  if (path === 'admin') return <Admin />
-  if (path === 'directory') return <Directory />
-  if (path === 'treasury') return <Treasury />
-  if (path === 'projects') return <Projects />
-  if (path === 'labor') return <Labor />
-  if (path === 'guide') return <Guide />
-  if (path === 'cloud') return <Cloud />
-  if (path === 'journal') return <Journal />
-  if (path === 'ledger') return <Ledger />
-  if (path === 'governance') return <Governance />
-  if (path === 'verify') return <Verify />
+  // Resolve page component
+  let PageComponent
+  if (path === 'account' || path === 'capital') PageComponent = <Account />
+  else if (path === 'patronage')  PageComponent = <Patronage />
+  else if (path === 'documents')  PageComponent = <Documents />
+  else if (path === 'ventures')   PageComponent = <Ventures />
+  else if (path === 'admin')      PageComponent = <Admin />
+  else if (path === 'directory')  PageComponent = <Directory />
+  else if (path === 'treasury')   PageComponent = <Treasury />
+  else if (path === 'projects')   PageComponent = <Projects />
+  else if (path === 'labor')      PageComponent = <Labor />
+  else if (path === 'guide')      PageComponent = <Guide />
+  else if (path === 'cloud')      PageComponent = <Cloud />
+  else if (path === 'journal')    PageComponent = <Journal />
+  else if (path === 'ledger')     PageComponent = <Ledger />
+  else if (path === 'governance') PageComponent = <Governance />
+  else if (path === 'verify')     PageComponent = <Verify />
+  else                            PageComponent = <Home />
 
-  // Default: home
-  return <Home />
+  // Wrap all authenticated pages in HUD shell
+  return <HUDLayout>{PageComponent}</HUDLayout>
 }
 
 export default function App() {

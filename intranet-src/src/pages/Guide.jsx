@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { IntranetHeader } from '../components/IntranetHeader.jsx'
 
 const DOCS = [
   {
@@ -115,7 +114,6 @@ export default function Guide() {
 
   return (
     <div style={styles.page}>
-      <IntranetHeader />
       <div style={styles.layout}>
         {/* Sidebar */}
         <div style={styles.sidebar}>

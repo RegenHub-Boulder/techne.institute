@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase.js'
-import { IntranetHeader } from '../components/IntranetHeader.jsx'
 
 const membershipLabel = {
   1: 'Class 1 — Labor',
@@ -45,7 +44,6 @@ export default function Directory() {
 
   return (
     <div style={styles.page}>
-      <IntranetHeader />
       <div style={styles.main}>
         <nav style={styles.breadcrumb}>
           <a href="/intranet/" style={styles.breadLink}>Home</a>

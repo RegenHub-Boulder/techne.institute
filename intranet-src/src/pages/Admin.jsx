@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
 import { supabase } from '../lib/supabase.js'
-import { IntranetHeader } from '../components/IntranetHeader.jsx'
 
 const EDGE_BASE = 'https://hvbdpgkdcdskhpbdeeim.supabase.co/functions/v1'
 

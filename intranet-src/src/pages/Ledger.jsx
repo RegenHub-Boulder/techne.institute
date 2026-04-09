@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase.js'
-import { IntranetHeader } from '../components/IntranetHeader.jsx'
 import { computeMerkleRoot, computeLeafHash } from '../lib/merkle.js'
 
 const RESOURCE_COLORS = {
@@ -112,7 +111,6 @@ export default function Ledger() {
 
   return (
     <div style={styles.page}>
-      <IntranetHeader />
       <div style={styles.main}>
 
         <nav style={styles.breadcrumb}>

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { IntranetHeader } from '../components/IntranetHeader.jsx'
 
 // ---------------------------------------------------------------------------
 // Scenario data
@@ -131,7 +130,6 @@ export default function Cloud() {
 
   return (
     <div style={styles.page}>
-      <IntranetHeader />
 
       <div style={styles.main}>
 
