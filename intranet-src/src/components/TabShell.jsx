@@ -110,7 +110,7 @@ const s = {
   },
   tabActive: {
     color: '#e0e0f0',
-    borderBottomColor: '#c87533',
+    borderBottomColor: '#c2512a',
     fontWeight: 600,
   },
   tabBarFill: {

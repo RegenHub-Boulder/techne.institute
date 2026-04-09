@@ -13,8 +13,8 @@
     --surface2: #212121;
     --border: #2e2e2e;
     --border2: #3a3a3a;
-    --primary: #c4956a;
-    --primary-dim: #8a6545;
+    --primary: #c2512a;
+    --primary-dim: #8a3a1f;
     --text: #d9d9d9;
     --text-bright: #ece6de;
     --text-muted: #888888;
@@ -125,6 +125,18 @@
 </style>
 </head>
 <body>
+
+<!-- NAVIGATION -->
+<nav style="position:sticky;top:0;z-index:200;height:52px;background:rgba(15,15,15,0.92);border-bottom:1px solid #2e2e2e;backdrop-filter:blur(12px);display:flex;align-items:center;padding:0 2rem;" aria-label="Main navigation">
+  <div style="width:100%;max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;">
+    <a href="/" style="font-family:monospace;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:#d9d9d9;text-decoration:none;opacity:0.9;">Techne</a>
+    <ul style="display:flex;align-items:center;gap:1.5rem;list-style:none;margin:0;padding:0;">
+      <li><a href="/data-room/" aria-current="page" style="font-family:monospace;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;color:#c2512a;text-decoration:none;">Data Room</a></li>
+      <li><a href="/formation/" style="font-family:monospace;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;color:#888;text-decoration:none;">Formation</a></li>
+      <li><a href="/intranet/" style="font-family:monospace;font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;color:#555;border:1px solid #333;border-radius:3px;padding:0.25rem 0.6rem;text-decoration:none;">Members</a></li>
+    </ul>
+  </div>
+</nav>
 
 <!-- COVER -->
 <div class="cover">
@@ -476,7 +488,7 @@
     dark: {
       '--bg':'#0f0f0f','--surface':'#1a1a1a','--surface2':'#212121',
       '--border':'#2e2e2e','--border2':'#3a3a3a',
-      '--primary':'#c4956a','--primary-dim':'#8a6545',
+      '--primary':'#c2512a','--primary-dim':'#8a3a1f',
       '--text':'#d9d9d9','--text-bright':'#ece6de',
       '--text-muted':'#888888','--text-faint':'#555555',
       '--green':'#8aba8a','--green-bg':'#1a1f1a','--green-border':'#4a6a4a',

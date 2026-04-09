@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
 
 // SVG icons at 16×16
@@ -25,6 +26,8 @@ const ICONS = {
   treasury:  'M2 5h12v8H2V5zm5 0V3h2v2M1 5h14v2H1z',
   admin:     'M8 1a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM1 15c0-3.3 3.1-6 7-6s7 2.7 7 6H1z',
   ventures:  'M3 13V6l5-5 5 5v7H9V9H7v4H3z',
+  menu:      'M1 3h14M1 8h14M1 13h14',
+  close:     'M2 2l12 12M14 2L2 14',
 }
 
 const NAV_ITEMS = [
@@ -44,12 +47,13 @@ const INVESTOR_ITEMS = [
   { path: 'ventures',   label: 'Ventures',   icon: 'ventures'   },
 ]
 
-function NavItem({ path, label, icon, currentPath, steward }) {
+function NavItem({ path, label, icon, currentPath, steward, onClick }) {
   const active = currentPath === path
   const href = `/intranet/${path ? path + '/' : ''}`
   return (
     <a
       href={href}
+      onClick={onClick}
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -60,8 +64,8 @@ function NavItem({ path, label, icon, currentPath, steward }) {
         fontSize: '0.8rem',
         fontWeight: active ? 600 : 400,
         color: active ? '#e0e0f0' : '#52526a',
-        background: active ? 'rgba(200,117,51,0.12)' : 'transparent',
-        borderLeft: active ? '2px solid #c87533' : '2px solid transparent',
+        background: active ? 'rgba(194,81,42,0.12)' : 'transparent',
+        borderLeft: active ? '2px solid #c2512a' : '2px solid transparent',
         transition: 'all 0.12s',
         cursor: 'pointer',
         whiteSpace: 'nowrap',
@@ -81,7 +85,7 @@ function NavItem({ path, label, icon, currentPath, steward }) {
         }
       }}
     >
-      <span style={{ color: active ? '#c87533' : 'inherit', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+      <span style={{ color: active ? '#c2512a' : 'inherit', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
         <Icon d={ICONS[icon]} size={14} />
       </span>
       <span>{label}</span>
@@ -89,8 +93,8 @@ function NavItem({ path, label, icon, currentPath, steward }) {
         <span style={{
           marginLeft: 'auto',
           fontSize: '0.6rem',
-          color: '#c87533',
-          background: 'rgba(200,117,51,0.1)',
+          color: '#c2512a',
+          background: 'rgba(194,81,42,0.1)',
           padding: '1px 4px',
           borderRadius: '3px',
           textTransform: 'uppercase',
@@ -103,24 +107,71 @@ function NavItem({ path, label, icon, currentPath, steward }) {
   )
 }
 
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < breakpoint)
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < breakpoint)
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  }, [breakpoint])
+  return isMobile
+}
+
 export function HUDLayout({ children }) {
   const { participant, signOut, isSteward } = useAuth()
+  const isMobile = useIsMobile(768)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const currentPath = window.location.pathname.replace(/^\/intranet\/?/, '').replace(/\/$/, '')
+
+  // Close sidebar when navigating on mobile
+  const handleNavClick = () => {
+    if (isMobile) setSidebarOpen(false)
+  }
+
+  // Close sidebar on outside click (mobile overlay)
+  useEffect(() => {
+    if (!isMobile || !sidebarOpen) return
+    const handler = (e) => {
+      const sidebar = document.getElementById('hud-sidebar')
+      if (sidebar && !sidebar.contains(e.target)) {
+        setSidebarOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [isMobile, sidebarOpen])
 
   const today = new Date().toLocaleDateString('en-US', {
     month: 'short', day: 'numeric', year: 'numeric',
   })
+
+  const sidebarVisible = !isMobile || sidebarOpen
 
   return (
     <div style={s.root}>
       {/* Status bar */}
       <div style={s.statusBar}>
         <div style={s.statusLeft}>
+          {/* Hamburger toggle on mobile */}
+          {isMobile && (
+            <button
+              onClick={() => setSidebarOpen(o => !o)}
+              aria-label={sidebarOpen ? 'Close navigation' : 'Open navigation'}
+              aria-expanded={sidebarOpen}
+              style={s.hamburger}
+            >
+              <Icon d={sidebarOpen ? ICONS.close : ICONS.menu} size={16} />
+            </button>
+          )}
           <span style={s.wordmark}>Techne</span>
           <span style={s.statusSep}>·</span>
           <span style={s.statusLabel}>Intranet</span>
-          <span style={s.statusSep}>·</span>
-          <span style={s.statusDate}>{today}</span>
+          {!isMobile && (
+            <>
+              <span style={s.statusSep}>·</span>
+              <span style={s.statusDate}>{today}</span>
+            </>
+          )}
         </div>
         <div style={s.statusRight}>
           {participant?.name && (
@@ -142,33 +193,66 @@ export function HUDLayout({ children }) {
 
       {/* Body: sidebar + panel */}
       <div style={s.body}>
+        {/* Mobile overlay backdrop */}
+        {isMobile && sidebarOpen && (
+          <div
+            style={s.backdrop}
+            onClick={() => setSidebarOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+
         {/* Sidebar */}
-        <nav style={s.sidebar}>
-          <div style={s.navSection}>
-            {NAV_ITEMS.map(item => (
-              <NavItem key={item.path} {...item} currentPath={currentPath} />
-            ))}
-          </div>
-
-          {(isSteward || (participant?.membership_class === 4)) && (
-            <div style={{ ...s.navSection, marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid #1a1a28' }}>
-              {isSteward && STEWARD_ITEMS.map(item => (
-                <NavItem key={item.path} {...item} currentPath={currentPath} steward />
-              ))}
-              {participant?.membership_class === 4 && INVESTOR_ITEMS.map(item => (
-                <NavItem key={item.path} {...item} currentPath={currentPath} />
+        {sidebarVisible && (
+          <nav
+            id="hud-sidebar"
+            style={{
+              ...s.sidebar,
+              ...(isMobile ? s.sidebarMobile : {}),
+            }}
+          >
+            <div style={s.navSection}>
+              {NAV_ITEMS.map(item => (
+                <NavItem
+                  key={item.path}
+                  {...item}
+                  currentPath={currentPath}
+                  onClick={handleNavClick}
+                />
               ))}
             </div>
-          )}
 
-          {/* Sidebar footer */}
-          <div style={s.sidebarFooter}>
-            <div style={s.sidebarFooterText}>
-              <span style={{ color: '#c87533', fontWeight: 700, fontSize: '0.7rem' }}>◈</span>
-              {' '}RegenHub, LCA
+            {(isSteward || (participant?.membership_class === 4)) && (
+              <div style={{ ...s.navSection, marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid #1a1a28' }}>
+                {isSteward && STEWARD_ITEMS.map(item => (
+                  <NavItem
+                    key={item.path}
+                    {...item}
+                    currentPath={currentPath}
+                    steward
+                    onClick={handleNavClick}
+                  />
+                ))}
+                {participant?.membership_class === 4 && INVESTOR_ITEMS.map(item => (
+                  <NavItem
+                    key={item.path}
+                    {...item}
+                    currentPath={currentPath}
+                    onClick={handleNavClick}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Sidebar footer */}
+            <div style={s.sidebarFooter}>
+              <div style={s.sidebarFooterText}>
+                <span style={{ color: '#c2512a', fontWeight: 700, fontSize: '0.7rem' }}>◈</span>
+                {' '}RegenHub, LCA
+              </div>
             </div>
-          </div>
-        </nav>
+          </nav>
+        )}
 
         {/* Panel content */}
         <main style={s.panel}>
@@ -184,14 +268,14 @@ const s = {
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
-    background: '#070712',
+    background: '#08080a',
     color: '#e0e0f0',
-    fontFamily: 'var(--font-body, Inter, system-ui, sans-serif)',
+    fontFamily: 'var(--font-sans, Inter, system-ui, sans-serif)',
     overflow: 'hidden',
   },
   statusBar: {
-    height: '36px',
-    minHeight: '36px',
+    height: '44px',
+    minHeight: '44px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -199,17 +283,29 @@ const s = {
     background: '#0c0c1a',
     borderBottom: '1px solid #1a1a2e',
     flexShrink: 0,
-    zIndex: 10,
+    zIndex: 20,
   },
   statusLeft: {
     display: 'flex',
     alignItems: 'center',
     gap: '0.6rem',
   },
+  hamburger: {
+    background: 'none',
+    border: 'none',
+    color: '#52526a',
+    cursor: 'pointer',
+    padding: '4px',
+    display: 'flex',
+    alignItems: 'center',
+    borderRadius: '4px',
+    transition: 'color 0.12s',
+    marginRight: '0.25rem',
+  },
   wordmark: {
     fontSize: '0.8rem',
     fontWeight: 800,
-    color: '#c87533',
+    color: '#c2512a',
     letterSpacing: '-0.01em',
     textTransform: 'uppercase',
   },
@@ -241,8 +337,8 @@ const s = {
     gap: '0.35rem',
   },
   stewardPip: {
-    background: 'rgba(200,117,51,0.15)',
-    color: '#c87533',
+    background: 'rgba(194,81,42,0.15)',
+    color: '#c2512a',
     fontSize: '0.6rem',
     fontWeight: 700,
     textTransform: 'uppercase',
@@ -265,6 +361,14 @@ const s = {
     display: 'flex',
     flex: 1,
     overflow: 'hidden',
+    position: 'relative',
+  },
+  backdrop: {
+    position: 'fixed',
+    inset: 0,
+    background: 'rgba(0,0,0,0.6)',
+    zIndex: 15,
+    top: '44px',
   },
   sidebar: {
     width: '172px',
@@ -277,6 +381,17 @@ const s = {
     overflowY: 'auto',
     overflowX: 'hidden',
     flexShrink: 0,
+  },
+  sidebarMobile: {
+    position: 'fixed',
+    top: '44px',
+    left: 0,
+    bottom: 0,
+    zIndex: 16,
+    width: '200px',
+    minWidth: '200px',
+    boxShadow: '4px 0 24px rgba(0,0,0,0.5)',
+    borderRight: '1px solid #2a2a3e',
   },
   navSection: {
     display: 'flex',
@@ -298,6 +413,6 @@ const s = {
     flex: 1,
     overflowY: 'auto',
     overflowX: 'hidden',
-    background: '#070712',
+    background: '#08080a',
   },
 }

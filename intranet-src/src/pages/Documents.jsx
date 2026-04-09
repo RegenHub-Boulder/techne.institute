@@ -142,7 +142,7 @@ const styles = {
     padding: '1rem 2rem', borderBottom: '1px solid var(--color-border, #2a2a35)',
     background: 'var(--color-surface, #141418)',
   },
-  wordmark: { fontSize: '1.1rem', fontWeight: 700, color: 'var(--color-copper, #c87533)', textDecoration: 'none' },
+  wordmark: { fontSize: '1.1rem', fontWeight: 700, color: 'var(--ember, #c2512a)', textDecoration: 'none' },
   headerNav: { display: 'flex', alignItems: 'center', gap: '1.5rem' },
   navLink: { fontSize: '0.875rem', color: 'var(--color-text-muted, #888)', textDecoration: 'none' },
   signOut: {
@@ -152,7 +152,7 @@ const styles = {
   },
   main: { maxWidth: '800px', margin: '0 auto', padding: '2rem' },
   breadcrumb: { fontSize: '0.85rem', color: 'var(--color-text-muted, #888)', marginBottom: '1rem' },
-  breadLink: { color: 'var(--color-copper, #c87533)', textDecoration: 'none' },
+  breadLink: { color: 'var(--ember, #c2512a)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 0.25rem' },
   subtitle: { fontSize: '1rem', color: 'var(--color-text-muted, #888)', margin: '0 0 2rem' },
@@ -165,7 +165,7 @@ const styles = {
   emptyTitle: { fontWeight: 600, fontSize: '1rem', marginBottom: '0.75rem' },
   emptyBody: { fontSize: '0.9rem', color: 'var(--color-text-muted, #aaa)', lineHeight: 1.6, margin: '0 0 0.5rem' },
   emptyContact: { fontSize: '0.875rem', color: 'var(--color-text-muted, #888)', margin: 0 },
-  link: { color: 'var(--color-copper, #c87533)', textDecoration: 'none' },
+  link: { color: 'var(--ember, #c2512a)', textDecoration: 'none' },
   section: { marginBottom: '2rem' },
   h2: { fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.75rem' },
   docList: { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
@@ -176,7 +176,7 @@ const styles = {
   },
   docIcon: {
     width: '40px', height: '40px', borderRadius: '6px',
-    background: 'rgba(200,117,51,0.15)', color: 'var(--color-copper, #c87533)',
+    background: 'rgba(194,81,42,0.15)', color: 'var(--ember, #c2512a)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.05em', flexShrink: 0,
   },
@@ -184,7 +184,7 @@ const styles = {
   docName: { fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.2rem' },
   docMeta: { fontSize: '0.8rem', color: 'var(--color-text-muted, #888)' },
   downloadBtn: {
-    padding: '0.4rem 0.9rem', background: 'var(--color-copper, #c87533)',
+    padding: '0.4rem 0.9rem', background: 'var(--ember, #c2512a)',
     color: '#fff', borderRadius: '6px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 600,
   },
   downloadPending: {
@@ -193,7 +193,7 @@ const styles = {
   },
   infoBox: {
     marginTop: '2.5rem', padding: '1.25rem',
-    background: 'rgba(200,117,51,0.06)', border: '1px solid rgba(200,117,51,0.15)',
+    background: 'rgba(194,81,42,0.06)', border: '1px solid rgba(194,81,42,0.15)',
     borderRadius: '8px',
   },
   infoTitle: { display: 'block', marginBottom: '0.75rem', fontSize: '0.875rem' },

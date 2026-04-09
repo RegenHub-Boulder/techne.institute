@@ -113,7 +113,7 @@ const styles = {
     fontSize: '1.5rem',
     fontWeight: 700,
     letterSpacing: '-0.02em',
-    color: 'var(--color-copper, #c87533)',
+    color: 'var(--ember, #c2512a)',
     marginBottom: '0.25rem',
   },
   subtitle: {
@@ -152,7 +152,7 @@ const styles = {
   },
   button: {
     padding: '0.75rem 1rem',
-    background: 'var(--color-copper, #c87533)',
+    background: 'var(--ember, #c2512a)',
     color: '#fff',
     border: 'none',
     borderRadius: '8px',
@@ -203,7 +203,7 @@ const styles = {
   linkBtn: {
     background: 'none',
     border: 'none',
-    color: 'var(--color-copper, #c87533)',
+    color: 'var(--ember, #c2512a)',
     cursor: 'pointer',
     fontSize: 'inherit',
     padding: 0,
@@ -218,7 +218,7 @@ const styles = {
     textAlign: 'center',
   },
   footerLink: {
-    color: 'var(--color-copper, #c87533)',
+    color: 'var(--ember, #c2512a)',
     textDecoration: 'none',
   },
 }

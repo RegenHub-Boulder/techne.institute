@@ -47,7 +47,8 @@ class TechneNav extends HTMLElement {
     return [
       { key: 'introduction', label: 'Introduction', href: '/introduction/' },
       { key: 'formation',    label: 'Formation',    href: '/formation/' },
-      { key: 'about',        label: 'About',         href: '/about/' },
+      { key: 'membership',   label: 'Membership',   href: '/membership/' },
+      { key: 'about',        label: 'About',        href: '/about/' },
     ];
   }
 

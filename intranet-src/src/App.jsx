@@ -107,7 +107,7 @@ const spinnerStyle = {
   width: '32px',
   height: '32px',
   border: '3px solid rgba(200, 117, 51, 0.2)',
-  borderTopColor: 'var(--color-copper, #c87533)',
+  borderTopColor: 'var(--ember, #c2512a)',
   borderRadius: '50%',
   animation: 'spin 0.8s linear infinite',
 }

@@ -106,7 +106,7 @@ export default function Guide() {
   const highlightSearch = (html) => {
     if (!search.trim()) return html
     const escaped = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    return html.replace(new RegExp(`(${escaped})`, 'gi'), '<mark style="background:rgba(200,117,51,0.3);color:inherit">$1</mark>')
+    return html.replace(new RegExp(`(${escaped})`, 'gi'), '<mark style="background:rgba(194,81,42,0.3);color:inherit">$1</mark>')
   }
 
   const renderedHtml = selected && content ? highlightSearch(renderMarkdown(content)) : ''
@@ -221,7 +221,7 @@ const styles = {
     padding: '0.6rem 0.75rem', borderRadius: '6px', textAlign: 'left',
     width: '100%', transition: 'background 0.1s',
   },
-  docBtnActive: { background: 'rgba(200,117,51,0.12)' },
+  docBtnActive: { background: 'rgba(194,81,42,0.12)' },
   docBtnTitle: { fontSize: '0.875rem', fontWeight: 600, color: '#e8e8e0', marginBottom: '0.1rem' },
   docBtnSub: { fontSize: '0.72rem', color: '#888' },
   tocSection: { borderTop: '1px solid #2a2a35', paddingTop: '1rem' },
@@ -229,7 +229,7 @@ const styles = {
   tocLink: { display: 'block', color: '#888', textDecoration: 'none', padding: '0.2rem 0.5rem', borderRadius: '4px', lineHeight: 1.4 },
   content: { flex: 1, padding: '2rem 2.5rem', overflowY: 'auto', maxWidth: '720px' },
   placeholder: { paddingTop: '2rem' },
-  placeholderIcon: { fontSize: '2.5rem', color: 'rgba(200,117,51,0.4)', marginBottom: '1rem' },
+  placeholderIcon: { fontSize: '2.5rem', color: 'rgba(194,81,42,0.4)', marginBottom: '1rem' },
   placeholderTitle: { fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.75rem' },
   placeholderText: { color: '#aaa', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '2rem', maxWidth: '480px' },
   docGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.75rem' },

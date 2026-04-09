@@ -51,7 +51,7 @@ const styles = {
     background: '#141418', flexWrap: 'wrap',
   },
   wordmark: {
-    fontSize: '1rem', fontWeight: 700, color: 'var(--color-copper, #c87533)',
+    fontSize: '1rem', fontWeight: 700, color: 'var(--ember, #c2512a)',
     textDecoration: 'none', letterSpacing: '-0.02em', flexShrink: 0,
   },
   nav: { display: 'flex', alignItems: 'center', gap: '0.25rem', flex: 1, flexWrap: 'wrap' },
