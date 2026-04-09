@@ -293,7 +293,7 @@ export default function Home() {
             title="Cloud Micro-Grid"
             icon="⬡"
             href="/intranet/cloud/"
-            color="#c4956a"
+            color="#7eb8e8"
           >
             <MetricValue
               value="R13"
