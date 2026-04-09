@@ -165,27 +165,37 @@ export function HUDLayout({ children }) {
 
   const sidebarVisible = !isMobile || sidebarOpen
 
+  // Current page label for mobile status bar
+  const allNavItems = [...NAV_ITEMS, ...STEWARD_ITEMS, ...INVESTOR_ITEMS]
+  const currentNavLabel = allNavItems.find(item => item.path === currentPath)?.label || 'Dashboard'
+
   return (
     <div style={s.root}>
       {/* Status bar */}
-      <div style={s.statusBar}>
+      <div style={{ ...s.statusBar, ...(isMobile ? s.statusBarMobile : {}) }}>
         <div style={s.statusLeft}>
-          {/* Hamburger toggle on mobile */}
+          {/* Hamburger toggle on mobile — 44×44px tap target, gold accent */}
           {isMobile && (
             <button
               onClick={() => setSidebarOpen(o => !o)}
               aria-label={sidebarOpen ? 'Close navigation' : 'Open navigation'}
               aria-expanded={sidebarOpen}
-              style={s.hamburger}
+              style={{ ...s.hamburger, ...(sidebarOpen ? s.hamburgerOpen : {}) }}
             >
-              <Icon d={sidebarOpen ? ICONS.close : ICONS.menu} size={16} />
+              <Icon d={sidebarOpen ? ICONS.close : ICONS.menu} size={18} />
+              <span style={s.hamburgerLabel}>{sidebarOpen ? 'Close' : 'Nav'}</span>
             </button>
           )}
           <span style={s.wordmark}>Techne</span>
-          <span style={s.statusSep}>·</span>
-          <span style={s.statusLabel}>Intranet</span>
-          {!isMobile && (
+          {isMobile ? (
             <>
+              <span style={s.statusSep}>·</span>
+              <span style={{ ...s.statusLabel, color: 'var(--text-mid)' }}>{currentNavLabel}</span>
+            </>
+          ) : (
+            <>
+              <span style={s.statusSep}>·</span>
+              <span style={s.statusLabel}>Intranet</span>
               <span style={s.statusSep}>·</span>
               <span style={s.statusDate}>{today}</span>
             </>
@@ -317,17 +327,36 @@ const s = {
     alignItems: 'center',
     gap: '0.6rem',
   },
+  statusBarMobile: {
+    height: '48px',
+    minHeight: '48px',
+  },
   hamburger: {
-    background: 'none',
-    border: 'none',
-    color: 'var(--text-nav)',
+    background: 'var(--gold-12)',
+    border: '1px solid rgba(196,149,106,0.3)',
+    color: 'var(--gold)',
     cursor: 'pointer',
-    padding: '4px',
+    padding: '0 10px',
+    height: '36px',
+    minWidth: '60px',
     display: 'flex',
     alignItems: 'center',
-    borderRadius: '4px',
-    transition: 'color 0.12s',
-    marginRight: '0.25rem',
+    justifyContent: 'center',
+    gap: '5px',
+    borderRadius: '6px',
+    transition: 'background 0.12s, color 0.12s',
+    marginRight: '0.5rem',
+    flexShrink: 0,
+  },
+  hamburgerOpen: {
+    background: 'rgba(196,149,106,0.2)',
+    border: '1px solid rgba(196,149,106,0.5)',
+  },
+  hamburgerLabel: {
+    fontSize: '0.7rem',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '0.06em',
   },
   wordmark: {
     fontSize: '0.8rem',
@@ -406,7 +435,7 @@ const s = {
     inset: 0,
     background: 'rgba(0,0,0,0.6)',
     zIndex: 15,
-    top: '44px',
+    top: '48px',
   },
   sidebar: {
     width: '172px',
@@ -422,7 +451,7 @@ const s = {
   },
   sidebarMobile: {
     position: 'fixed',
-    top: '44px',
+    top: '48px',
     left: 0,
     bottom: 0,
     zIndex: 16,
