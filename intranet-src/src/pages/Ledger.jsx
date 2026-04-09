@@ -3,10 +3,10 @@ import { supabase } from '../lib/supabase.js'
 import { computeMerkleRoot, computeLeafHash } from '../lib/merkle.js'
 
 const RESOURCE_COLORS = {
-  USD:          '#4a5f4a',
-  CLOUD:        '#c2512a',
-  labor_hours:  '#6b836b',
-  voting_power: '#c2512a',
+  USD:          '#4caf82',
+  CLOUD:        '#c4956a',
+  labor_hours:  '#7eb8e8',
+  voting_power: '#a78bfa',
 }
 
 const RESOURCE_LABELS = {
@@ -132,15 +132,15 @@ export default function Ledger() {
         <div style={{
           ...styles.verifyBanner,
           background: rootMatch === true
-            ? 'rgba(74,95,74,0.06)'
+            ? 'rgba(76,175,130,0.06)'
             : rootMatch === false
-            ? 'rgba(196,106,106,0.06)'
-            : 'rgba(194,81,42,0.04)',
+            ? 'rgba(255,107,107,0.06)'
+            : 'rgba(196,149,106,0.04)',
           borderColor: rootMatch === true
-            ? 'rgba(74,95,74,0.25)'
+            ? 'rgba(76,175,130,0.25)'
             : rootMatch === false
-            ? 'rgba(196,106,106,0.25)'
-            : 'rgba(194,81,42,0.15)',
+            ? 'rgba(255,107,107,0.25)'
+            : 'rgba(196,149,106,0.15)',
         }}>
           <div style={styles.verifyRow}>
             <span style={styles.verifyLabel}>Stored state root</span>
@@ -148,7 +148,7 @@ export default function Ledger() {
           </div>
           <div style={styles.verifyRow}>
             <span style={styles.verifyLabel}>Client-computed root</span>
-            <span style={{ ...styles.verifyHash, color: verifying ? '#555' : '#c2512a' }}>
+            <span style={{ ...styles.verifyHash, color: verifying ? '#555' : '#c4956a' }}>
               {verifying ? 'Computing…' : truncHash(computedRoot)}
             </span>
           </div>
@@ -156,7 +156,7 @@ export default function Ledger() {
             <span style={styles.verifyLabel}>State integrity</span>
             <span style={{
               fontFamily: 'monospace', fontSize: '0.78rem',
-              color: rootMatch === true ? '#4a5f4a' : rootMatch === false ? '#c46a6a' : '#555',
+              color: rootMatch === true ? '#4caf82' : rootMatch === false ? '#ff6b6b' : '#555',
             }}>
               {rootMatch === true ? '✓ Verified' : rootMatch === false ? '✗ Mismatch' : '—'}
             </span>
@@ -260,7 +260,7 @@ const styles = {
   breadSep: { color: '#3a3a42' },
 
   pageHeader: { marginBottom: '1.5rem' },
-  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c2512a', marginBottom: '0.5rem' },
+  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c4956a', marginBottom: '0.5rem' },
   pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: '#ece6de', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
   pageSub: { fontSize: '0.9rem', color: '#888', lineHeight: 1.65, maxWidth: 600, margin: 0 },
 
@@ -271,10 +271,10 @@ const styles = {
 
   filterBar: { display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '1.5rem' },
   filterBtn: { background: '#1e1e24', border: '1px solid #2a2a35', color: '#888', borderRadius: 5, padding: '0.3rem 0.75rem', fontSize: '0.78rem', fontFamily: 'monospace', cursor: 'pointer' },
-  filterBtnActive: { background: 'rgba(194,81,42,0.08)', color: '#e8e8e0', borderColor: '#c2512a' },
+  filterBtnActive: { background: 'rgba(196,149,106,0.08)', color: '#e8e8e0', borderColor: '#c4956a' },
 
   loading: { color: '#555', fontFamily: 'monospace', fontSize: '0.85rem', padding: '2rem 0' },
-  error: { color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(196,106,106,0.06)', borderRadius: 6 },
+  error: { color: '#ff6b6b', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
 
   group: { marginBottom: '2rem' },
   groupHeader: { display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' },

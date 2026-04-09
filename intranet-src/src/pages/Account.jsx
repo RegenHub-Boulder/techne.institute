@@ -13,10 +13,10 @@ const TYPE_LABELS = {
 
 const TYPE_COLORS = {
   initial: 'var(--ember, #c2512a)',
-  labor: '#4a5f4a',
-  capital: '#6b836b',
-  patronage: '#c2512a',
-  draw: '#c46a6a',
+  labor: '#50b478',
+  capital: '#4a9eff',
+  patronage: '#b47cd4',
+  draw: '#ff6b6b',
   adjustment: '#888',
 }
 
@@ -182,7 +182,7 @@ export default function Account() {
                           style={{
                             ...styles.txnAmount,
                             color:
-                              parseFloat(t.amount) < 0 ? '#c46a6a' : '#4a5f4a',
+                              parseFloat(t.amount) < 0 ? '#ff6b6b' : '#50b478',
                           }}
                         >
                           {parseFloat(t.amount) >= 0 ? '+' : ''}
@@ -447,10 +447,10 @@ const styles = {
   },
   error: {
     padding: '1rem',
-    background: 'rgba(196,80,80,0.1)',
-    border: '1px solid rgba(196,80,80,0.3)',
+    background: 'rgba(220,60,60,0.1)',
+    border: '1px solid rgba(220,60,60,0.3)',
     borderRadius: '8px',
-    color: '#c46a6a',
+    color: '#ff6b6b',
   },
   loadingCard: {
     padding: '1.5rem',

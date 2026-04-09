@@ -10,14 +10,14 @@ import { TabShell } from '../components/TabShell.jsx'
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const RESOURCE_COLORS = {
-  USD: '#4a5f4a', CLOUD: '#c2512a', labor_hours: '#6b836b', voting_power: '#c2512a',
+  USD: '#4caf82', CLOUD: '#c4956a', labor_hours: '#7eb8e8', voting_power: '#a78bfa',
 }
 const RESOURCE_LABELS = {
   USD: 'USD', CLOUD: 'CLOUD Credits', labor_hours: 'Labor Hours', voting_power: 'Voting Power',
 }
 const EVENT_COLORS = {
-  transfer: '#6b836b', contribution: '#4a5f4a', expense: '#c46a6a',
-  vote: '#c2512a', delegation: '#c2512a', allocation: '#4a5f4a', proposal: '#6b836b',
+  transfer: '#7eb8e8', contribution: '#4caf82', expense: '#ff6b6b',
+  vote: '#c4956a', delegation: '#a78bfa', allocation: '#4caf82', proposal: '#60a5fa',
 }
 const EVENT_TYPES = ['', 'transfer', 'contribution', 'expense', 'vote', 'delegation', 'allocation', 'proposal']
 
@@ -145,22 +145,22 @@ function OverviewTab({ data }) {
       <div style={{
         ...s.integrityBadge,
         borderColor: rootMatch === true
-          ? 'rgba(74,95,74,0.25)'
+          ? 'rgba(76,175,130,0.25)'
           : rootMatch === false
-          ? 'rgba(196,106,106,0.25)'
-          : 'rgba(194,81,42,0.15)',
+          ? 'rgba(255,107,107,0.25)'
+          : 'rgba(196,149,106,0.15)',
         background: rootMatch === true
-          ? 'rgba(74,95,74,0.04)'
+          ? 'rgba(76,175,130,0.04)'
           : rootMatch === false
-          ? 'rgba(196,106,106,0.04)'
-          : 'rgba(194,81,42,0.02)',
+          ? 'rgba(255,107,107,0.04)'
+          : 'rgba(196,149,106,0.02)',
       }}>
         <div style={s.integrityRow}>
           <span style={s.integrityLabel}>State root</span>
           <span style={s.integrityHash}>{truncHash(storedRoot)}</span>
           <span style={{
             ...s.integrityStatus,
-            color: rootMatch === true ? '#4a5f4a' : rootMatch === false ? '#c46a6a' : '#555',
+            color: rootMatch === true ? '#4caf82' : rootMatch === false ? '#ff6b6b' : '#555',
           }}>
             {verifying ? 'verifying…' : rootMatch === true ? '✓ verified' : rootMatch === false ? '✗ mismatch' : '—'}
           </span>
@@ -360,11 +360,11 @@ function JournalTab() {
         <div style={{
           fontFamily: 'monospace', fontSize: '0.72rem', color: '#666',
           marginBottom: '1rem', padding: '0.5rem 0.75rem',
-          background: 'rgba(194,81,42,0.04)',
-          border: '1px solid rgba(194,81,42,0.1)',
+          background: 'rgba(196,149,106,0.04)',
+          border: '1px solid rgba(196,149,106,0.1)',
           borderRadius: 5,
         }}>
-          Current root: <span style={{ color: '#c2512a' }}>{truncHash(currentRoot)}</span>
+          Current root: <span style={{ color: '#c4956a' }}>{truncHash(currentRoot)}</span>
         </div>
       )}
 
@@ -575,12 +575,12 @@ function VerifyTab() {
           {liveResult && (
             <div style={{
               ...s.resultBox,
-              borderColor: liveResult.match ? 'rgba(74,95,74,0.3)' : 'rgba(196,106,106,0.3)',
-              background:  liveResult.match ? 'rgba(74,95,74,0.04)' : 'rgba(196,106,106,0.04)',
+              borderColor: liveResult.match ? 'rgba(76,175,130,0.3)' : 'rgba(255,107,107,0.3)',
+              background:  liveResult.match ? 'rgba(76,175,130,0.04)' : 'rgba(255,107,107,0.04)',
               marginTop: '1.25rem',
             }}>
               <div style={{
-                color: liveResult.match ? '#4a5f4a' : '#c46a6a',
+                color: liveResult.match ? '#4caf82' : '#ff6b6b',
                 fontWeight: 600, marginBottom: '0.75rem', fontFamily: 'monospace',
               }}>
                 {liveResult.match ? '✓ State Verified' : '✗ State Mismatch — possible tampering'}
@@ -597,7 +597,7 @@ function VerifyTab() {
               ))}
               <div style={{ fontSize: '0.78rem', color: '#555', lineHeight: 1.6, marginTop: '0.75rem' }}>
                 Each balance is hashed as{' '}
-                <code style={{ fontFamily: 'monospace', background: 'rgba(255,255,255,0.05)', padding: '0.1em 0.35em', borderRadius: 3, color: '#c2512a' }}>
+                <code style={{ fontFamily: 'monospace', background: 'rgba(255,255,255,0.05)', padding: '0.1em 0.35em', borderRadius: 3, color: '#c4956a' }}>
                   sha256(account_key + ':' + balance)
                 </code>
                 . Leaf hashes are concatenated alphabetically and re-hashed to produce the root.
@@ -642,18 +642,18 @@ function VerifyTab() {
           {proofResult && (
             <div style={{
               ...s.resultBox,
-              borderColor: proofResult.error ? 'rgba(196,106,106,0.3)' : proofResult.valid ? 'rgba(74,95,74,0.3)' : 'rgba(196,106,106,0.3)',
-              background:  proofResult.error ? 'rgba(196,106,106,0.04)' : proofResult.valid ? 'rgba(74,95,74,0.04)' : 'rgba(196,106,106,0.04)',
+              borderColor: proofResult.error ? 'rgba(255,107,107,0.3)' : proofResult.valid ? 'rgba(76,175,130,0.3)' : 'rgba(255,107,107,0.3)',
+              background:  proofResult.error ? 'rgba(255,107,107,0.04)' : proofResult.valid ? 'rgba(76,175,130,0.04)' : 'rgba(255,107,107,0.04)',
               marginTop: '1.25rem',
             }}>
               {proofResult.error ? (
-                <div style={{ color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem' }}>
+                <div style={{ color: '#ff6b6b', fontFamily: 'monospace', fontSize: '0.85rem' }}>
                   {proofResult.error}
                 </div>
               ) : (
                 <>
                   <div style={{
-                    color: proofResult.valid ? '#4a5f4a' : '#c46a6a',
+                    color: proofResult.valid ? '#4caf82' : '#ff6b6b',
                     fontWeight: 600, marginBottom: '0.75rem', fontFamily: 'monospace',
                   }}>
                     {proofResult.valid ? '✓ Proof Valid' : '✗ Proof Invalid'}
@@ -698,8 +698,8 @@ const CATEGORY_LABEL = {
   distribution: 'Distribution', transfer: 'Transfer', other: 'Other',
 }
 const CATEGORY_COLOR = {
-  income: '#4a5f4a', expense: '#c46a6a', capital_call: '#c2512a',
-  distribution: '#6b836b', transfer: '#aaa', other: '#888',
+  income: '#4caf82', expense: '#ff6b6b', capital_call: '#c2512a',
+  distribution: '#7eb8e8', transfer: '#aaa', other: '#888',
 }
 const TREASURY_PAGE_SIZE = 20
 
@@ -823,7 +823,7 @@ function TreasuryTab() {
               </span>
               <span style={{
                 textAlign: 'right', fontWeight: 600,
-                color: t.amount >= 0 ? '#4a5f4a' : '#c46a6a',
+                color: t.amount >= 0 ? '#4caf82' : '#ff6b6b',
                 fontFamily: 'monospace', fontSize: '0.82rem',
               }}>
                 {t.amount >= 0 ? '+' : ''}{fmt(t.amount)}
@@ -855,8 +855,8 @@ const s = {
     color: '#555', padding: '3rem 0', textAlign: 'center', fontSize: '0.875rem',
   },
   error: {
-    padding: '1rem', background: 'rgba(196,80,80,0.1)',
-    border: '1px solid rgba(196,80,80,0.3)', borderRadius: 8, color: '#c46a6a', fontSize: '0.875rem',
+    padding: '1rem', background: 'rgba(220,60,60,0.1)',
+    border: '1px solid rgba(220,60,60,0.3)', borderRadius: 8, color: '#ff6b6b', fontSize: '0.875rem',
   },
   emptyNotice: {
     padding: '1.5rem', background: 'rgba(194,81,42,0.05)',
@@ -873,7 +873,7 @@ const s = {
   integrityLabel: {
     color: '#444', textTransform: 'uppercase', letterSpacing: '0.07em', fontSize: '0.68rem',
   },
-  integrityHash: { color: '#c2512a', flex: 1 },
+  integrityHash: { color: '#c4956a', flex: 1 },
   integrityStatus: { fontWeight: 600, flexShrink: 0 },
   resourceGrid: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
@@ -918,8 +918,8 @@ const s = {
     fontSize: '0.78rem', fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.03em',
   },
   filterBtnActive: {
-    background: 'rgba(194,81,42,0.1)', color: '#e0e0f0',
-    borderColor: 'rgba(194,81,42,0.3)',
+    background: 'rgba(196,149,106,0.1)', color: '#e0e0f0',
+    borderColor: 'rgba(196,149,106,0.3)',
   },
   table: {
     background: '#0f0f1e', border: '1px solid #1a1a2e',
@@ -941,8 +941,8 @@ const s = {
     cursor: 'pointer', fontSize: '0.78rem', fontFamily: 'monospace',
   },
   actionBtn: {
-    background: 'rgba(194,81,42,0.08)', border: '1px solid rgba(194,81,42,0.25)',
-    color: '#c2512a', borderRadius: 6, padding: '0.5rem 1.1rem',
+    background: 'rgba(196,149,106,0.08)', border: '1px solid rgba(196,149,106,0.25)',
+    color: '#c4956a', borderRadius: 6, padding: '0.5rem 1.1rem',
     fontSize: '0.82rem', fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.04em',
   },
   resultBox: { border: '1px solid', borderRadius: 8, padding: '1.1rem 1.25rem' },

@@ -163,10 +163,10 @@ const styles = {
   },
   error: {
     padding: '0.75rem',
-    background: 'rgba(196, 80, 80, 0.1)',
-    border: '1px solid rgba(196, 80, 80, 0.3)',
+    background: 'rgba(220, 60, 60, 0.1)',
+    border: '1px solid rgba(220, 60, 60, 0.3)',
     borderRadius: '6px',
-    color: '#c46a6a',
+    color: '#ff6b6b',
     fontSize: '0.875rem',
   },
   sent: {
@@ -178,7 +178,7 @@ const styles = {
     height: '48px',
     borderRadius: '50%',
     background: 'rgba(80, 180, 120, 0.15)',
-    color: '#4a5f4a',
+    color: '#50b478',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

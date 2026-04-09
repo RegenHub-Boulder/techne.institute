@@ -11,10 +11,10 @@ const categoryLabel = {
 }
 
 const categoryColor = {
-  income: '#4a5f4a',
-  expense: '#c46a6a',
+  income: '#4caf82',
+  expense: '#ff6b6b',
   capital_call: 'var(--ember, #c2512a)',
-  distribution: '#6b836b',
+  distribution: '#7eb8e8',
   transfer: '#aaa',
   other: '#888',
 }
@@ -156,7 +156,7 @@ export default function Treasury() {
                       </span>
                       <span style={{
                         ...styles.txnAmount,
-                        color: t.amount >= 0 ? '#4a5f4a' : '#c46a6a',
+                        color: t.amount >= 0 ? '#4caf82' : '#ff6b6b',
                       }}>
                         {t.amount >= 0 ? '+' : ''}{fmt(t.amount)}
                       </span>
@@ -199,7 +199,7 @@ const styles = {
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 1.5rem' },
   h2: { fontSize: '1.1rem', fontWeight: 600, margin: '0' },
   loading: { color: '#888', padding: '2rem 0', fontSize: '0.875rem' },
-  error: { padding: '1rem 1.25rem', background: 'rgba(196,80,80,0.1)', border: '1px solid rgba(196,80,80,0.3)', borderRadius: '8px', color: '#c46a6a', fontSize: '0.875rem' },
+  error: { padding: '1rem 1.25rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#ff6b6b', fontSize: '0.875rem' },
   summaryCard: {
     background: '#141418', border: '1px solid #2a2a35',
     borderRadius: '12px', padding: '1.75rem 2rem', marginBottom: '2rem',

@@ -115,7 +115,7 @@ function StatRow({ label, value, highlight }) {
   return (
     <div style={{ ...styles.statRow, ...(highlight ? styles.statRowHighlight : {}) }}>
       <span style={styles.statLabel}>{label}</span>
-      <span style={{ ...styles.statValue, ...(highlight ? { color: '#c2512a' } : {}) }}>{value}</span>
+      <span style={{ ...styles.statValue, ...(highlight ? { color: '#c4956a' } : {}) }}>{value}</span>
     </div>
   )
 }
@@ -226,7 +226,7 @@ export default function Cloud() {
                   ))}
                   <tr style={{ borderTop: '1px solid #2a2a35' }}>
                     <td style={{ ...td, color: '#e8e8e0', fontWeight: 600 }} colSpan={3}>Total CapEx</td>
-                    <td style={{ ...td, ...num, color: '#c2512a', fontWeight: 600 }}>{fmtUsd(totalCapEx)}</td>
+                    <td style={{ ...td, ...num, color: '#c4956a', fontWeight: 600 }}>{fmtUsd(totalCapEx)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -311,7 +311,7 @@ export default function Cloud() {
                   {Object.values(SCENARIOS).map((s) => (
                     <th
                       key={s.id}
-                      style={{ ...th, ...num, color: active === s.id ? '#c2512a' : undefined }}
+                      style={{ ...th, ...num, color: active === s.id ? '#c4956a' : undefined }}
                     >
                       {s.label}
                     </th>
@@ -340,7 +340,7 @@ export default function Cloud() {
                           ...td,
                           ...num,
                           color: active === s.id
-                            ? (highlight ? '#c2512a' : '#e8e8e0')
+                            ? (highlight ? '#c4956a' : '#e8e8e0')
                             : '#666',
                           fontWeight: active === s.id ? 600 : 400,
                         }}
@@ -394,15 +394,15 @@ const styles = {
   breadCurrent: { color: '#c8c2ba' },
 
   pageHeader: { marginBottom: '2.5rem' },
-  pageTag: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#c2512a', marginBottom: '0.75rem' },
+  pageTag: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#c4956a', marginBottom: '0.75rem' },
   pageTitle: { fontFamily: 'var(--font-display, Georgia, serif)', fontSize: '2.2rem', fontWeight: 400, color: '#ece6de', letterSpacing: '-0.02em', margin: '0 0 0.75rem' },
   pageSubtitle: { fontSize: '1rem', color: '#888', lineHeight: 1.7, maxWidth: 640, margin: '0 0 1rem' },
   cloudNote: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.8rem', color: '#888' },
-  cloudBadge: { background: 'rgba(194, 81, 42, 0.1)', color: '#c2512a', border: '1px solid rgba(194,81,42,0.2)', borderRadius: 4, padding: '0.15em 0.5em', fontSize: '0.78rem' },
+  cloudBadge: { background: 'rgba(196, 149, 106, 0.1)', color: '#c4956a', border: '1px solid rgba(196,149,106,0.2)', borderRadius: 4, padding: '0.15em 0.5em', fontSize: '0.78rem' },
 
   tabBar: { display: 'flex', gap: '0.5rem', marginBottom: '1.25rem', flexWrap: 'wrap' },
   tab: { display: 'flex', flexDirection: 'column', alignItems: 'flex-start', background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '0.65rem 1.1rem', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.15s' },
-  tabActive: { borderColor: '#c2512a', background: 'rgba(194,81,42,0.06)' },
+  tabActive: { borderColor: '#c4956a', background: 'rgba(196,149,106,0.06)' },
   tabLabel: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.68rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#666', marginBottom: '0.2rem' },
   tabName: { fontFamily: 'var(--font-display, Georgia, serif)', fontSize: '1rem', fontWeight: 400, color: '#e8e8e0' },
 
@@ -411,7 +411,7 @@ const styles = {
   metricsRow: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' },
   metric: { background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '1.25rem 1.35rem' },
   metricLabel: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.7rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#666', marginBottom: '0.5rem' },
-  metricValue: { fontFamily: 'var(--font-display, Georgia, serif)', fontSize: '1.9rem', fontWeight: 400, color: '#c2512a', lineHeight: 1.1, marginBottom: '0.35rem' },
+  metricValue: { fontFamily: 'var(--font-display, Georgia, serif)', fontSize: '1.9rem', fontWeight: 400, color: '#c4956a', lineHeight: 1.1, marginBottom: '0.35rem' },
   metricSub: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', color: '#555', lineHeight: 1.4 },
 
   detailGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(460px, 1fr))', gap: '1rem', marginBottom: '1rem' },
@@ -428,10 +428,10 @@ const styles = {
 
   solarNote: { marginTop: '1rem', fontSize: '0.78rem', color: '#555', lineHeight: 1.6, borderTop: '1px solid #252530', paddingTop: '0.75rem' },
 
-  noticeBox: { background: 'rgba(194, 81, 42, 0.04)', border: '1px solid rgba(194,81,42,0.15)', borderRadius: 8, padding: '1.5rem', marginTop: '2rem', marginBottom: '2rem' },
-  noticeTitle: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c2512a', marginBottom: '0.75rem' },
+  noticeBox: { background: 'rgba(196, 149, 106, 0.04)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: 8, padding: '1.5rem', marginTop: '2rem', marginBottom: '2rem' },
+  noticeTitle: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c4956a', marginBottom: '0.75rem' },
   noticeText: { fontSize: '0.9rem', color: '#888', lineHeight: 1.65, marginBottom: '0.75rem' },
-  noticeLink: { color: '#c2512a', textDecoration: 'none' },
+  noticeLink: { color: '#c4956a', textDecoration: 'none' },
 
   footerNav: { display: 'flex', justifyContent: 'space-between', paddingTop: '1.5rem', borderTop: '1px solid #2a2a35' },
   footerNavLink: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.78rem', color: '#888', textDecoration: 'none' },

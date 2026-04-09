@@ -162,6 +162,6 @@ const styles = {
     border: '1px solid #2a2a35', borderRadius: '4px', padding: '0.2rem 0.5rem',
   },
   tagCopper: { color: 'var(--ember, #c2512a)', background: 'rgba(194,81,42,0.1)', border: '1px solid rgba(194,81,42,0.2)' },
-  error: { padding: '1rem', background: 'rgba(196,80,80,0.1)', border: '1px solid rgba(196,80,80,0.3)', borderRadius: '8px', color: '#c46a6a' },
+  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#ff6b6b' },
   empty: { padding: '2rem', textAlign: 'center', color: '#888', fontSize: '0.875rem' },
 }
