@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Techne Design System · Palette Reference</title>
   <meta name="robots" content="noindex,nofollow" />
+  <!-- Theme detection: runs before paint to prevent flash -->
+  <script>
+    (function() {
+      var stored = localStorage.getItem('techne-theme');
+      if (stored === 'light' || stored === 'dark') {
+        document.documentElement.setAttribute('data-theme', stored);
+      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
@@ -433,18 +444,135 @@
     }
 
     .hr { border: none; border-top: 1px solid var(--border-dim); margin: 3rem 0; }
+
+    /* ── Light mode tokens ───────────────────────────────────── */
+    [data-theme="light"] {
+      /* Backgrounds — warm parchment scale */
+      --void:    #f7f5f0;
+      --ink:     #ede8e0;
+      --surface: #f0ece4;
+      --panel:   #e8e2d8;
+      --raised:  #ddd7cc;
+
+      /* Borders */
+      --border:     #c8c2b8;
+      --border-dim: #ddd7cc;
+
+      /* Gold — unchanged, the thread through both modes */
+      --gold:    #c4956a;
+      --gold-12: rgba(196,149,106,0.12);
+      --gold-20: rgba(196,149,106,0.20);
+      --gold-06: rgba(196,149,106,0.06);
+
+      /* Text — warm dark scale */
+      --parchment: #1a1614;
+      --warm:      #3a3530;
+      --muted:     #6a6560;
+      --dim:       #8a8480;
+      --ghost:     #aaa49c;
+
+      /* Status — same (work in both modes) */
+      --status-ok:   #4a5f4a;
+      --status-warn: #c4956a;
+      --status-err:  #c46a6a;
+      --status-info: #6b836b;
+    }
+
+    /* Light mode component overrides */
+    [data-theme="light"] body {
+      background: var(--void);
+      color: var(--warm);
+    }
+
+    [data-theme="light"] .metric-card {
+      background: rgba(0,0,0,0.025);
+    }
+
+    [data-theme="light"] .token-table td {
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+
+    [data-theme="light"] .swatch-name,
+    [data-theme="light"] .status-name {
+      color: var(--warm);
+    }
+
+    [data-theme="light"] .sep {
+      color: var(--border);
+    }
+
+    /* ── Theme toggle ────────────────────────────────────────── */
+    .theme-toggle {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.5rem;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.35rem 0.8rem 0.35rem 0.6rem;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      transition: border-color 0.15s ease, color 0.15s ease, background 0.2s ease;
+      user-select: none;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .theme-icon {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    /* Light palette swatches — invert text for visibility */
+    .swatch-light .swatch-info {
+      background: #e8e2d8;
+      border-color: #c8c2b8;
+    }
+    .swatch-light .swatch-name { color: #3a3530; }
+    .swatch-light .swatch-hex  { color: #6a6560; }
+    .swatch-light .swatch-role { color: #8a8480; }
   </style>
 </head>
 <body>
+
+  <!-- Theme toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+    <!-- Sun icon (shown in dark mode) -->
+    <svg class="theme-icon" id="iconSun" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    <!-- Moon icon (shown in light mode) -->
+    <svg class="theme-icon" id="iconMoon" viewBox="0 0 24 24" aria-hidden="true" style="display:none;">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <span id="themeLabel">Light</span>
+  </button>
+
   <div class="page">
 
     <!-- Page header -->
-    <div class="site-tag">Techne Institute · Design System · P421 Reference</div>
+    <div class="site-tag">Techne Institute · Design System · P423</div>
     <h1 class="page-title">Palette &amp; Component Reference</h1>
     <p class="page-sub">
-      Working reference for the Techne intranet design system.
-      Copper gold as primary accent throughout — document pages and HUD chrome.
-      Review this page before finalizing the intranet palette.
+      Working reference for the Techne design system.
+      Copper gold as the single accent thread through both dark and light modes.
+      Toggle between modes with the button in the top-right corner — preference is saved locally.
     </p>
 
     <hr class="hr" />
@@ -523,6 +651,86 @@
             <div class="swatch-name">Muted</div>
             <div class="swatch-hex">#888888</div>
             <div class="swatch-role">Secondary text</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION: Light mode palette -->
+    <section class="section">
+      <div class="section-label">Light Mode Palette — Complementary</div>
+      <div class="swatch-grid">
+
+        <div class="swatch swatch-light">
+          <div class="swatch-color" style="background:#f7f5f0;border:1px solid #c8c2b8;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Parchment</div>
+            <div class="swatch-hex">#f7f5f0</div>
+            <div class="swatch-role">App background (light)</div>
+          </div>
+        </div>
+
+        <div class="swatch swatch-light">
+          <div class="swatch-color" style="background:#ede8e0;border:1px solid #c8c2b8;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Linen</div>
+            <div class="swatch-hex">#ede8e0</div>
+            <div class="swatch-role">Status bar, panels</div>
+          </div>
+        </div>
+
+        <div class="swatch swatch-light">
+          <div class="swatch-color" style="background:#f0ece4;border:1px solid #c8c2b8;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Vellum</div>
+            <div class="swatch-hex">#f0ece4</div>
+            <div class="swatch-role">Page background</div>
+          </div>
+        </div>
+
+        <div class="swatch swatch-light">
+          <div class="swatch-color" style="background:#e8e2d8;border:1px solid #c8c2b8;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Cream</div>
+            <div class="swatch-hex">#e8e2d8</div>
+            <div class="swatch-role">Cards, elevated</div>
+          </div>
+        </div>
+
+        <div class="swatch swatch-light">
+          <div class="swatch-color" style="background:#c4956a;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Copper Gold</div>
+            <div class="swatch-hex">#c4956a</div>
+            <div class="swatch-role">Primary accent — unchanged</div>
+          </div>
+        </div>
+
+        <div class="swatch swatch-light">
+          <div class="swatch-color" style="background:#1a1614;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Ink</div>
+            <div class="swatch-hex">#1a1614</div>
+            <div class="swatch-role">Display headings (light)</div>
+          </div>
+        </div>
+
+        <div class="swatch swatch-light">
+          <div class="swatch-color" style="background:#3a3530;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Warm Dark</div>
+            <div class="swatch-hex">#3a3530</div>
+            <div class="swatch-role">Body text (light)</div>
+          </div>
+        </div>
+
+        <div class="swatch swatch-light">
+          <div class="swatch-color" style="background:#6a6560;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Stone</div>
+            <div class="swatch-hex">#6a6560</div>
+            <div class="swatch-role">Secondary text (light)</div>
           </div>
         </div>
 
@@ -814,10 +1022,49 @@
       </div>
     </section>
 
-    <div style="font-family:monospace;font-size:0.72rem;color:#333;text-align:center;padding-top:2rem;">
-      P421 · techne.institute/design-system/ · Apr 2026
+    <div style="font-family:monospace;font-size:0.72rem;color:var(--dim);text-align:center;padding-top:2rem;">
+      P421 / P423 · techne.institute/design-system/ · Apr 2026
     </div>
 
   </div>
+
+  <script>
+    (function() {
+      var html = document.documentElement;
+      var btn = document.getElementById('themeToggle');
+      var iconSun = document.getElementById('iconSun');
+      var iconMoon = document.getElementById('iconMoon');
+      var label = document.getElementById('themeLabel');
+
+      function applyTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        localStorage.setItem('techne-theme', theme);
+        if (theme === 'dark') {
+          iconSun.style.display = '';
+          iconMoon.style.display = 'none';
+          label.textContent = 'Light';
+        } else {
+          iconSun.style.display = 'none';
+          iconMoon.style.display = '';
+          label.textContent = 'Dark';
+        }
+      }
+
+      // Sync button state with current theme on load
+      applyTheme(html.getAttribute('data-theme') || 'dark');
+
+      btn.addEventListener('click', function() {
+        var current = html.getAttribute('data-theme');
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+      });
+
+      // Respond to OS preference changes (when no stored override)
+      window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function(e) {
+        if (!localStorage.getItem('techne-theme')) {
+          applyTheme(e.matches ? 'light' : 'dark');
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
