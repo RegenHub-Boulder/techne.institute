@@ -5,7 +5,7 @@ const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(undefined) // undefined = loading
-  const [participant, setParticipant] = useState(null)
+  const [participant, setParticipant] = useState(undefined) // undefined = loading, null = loaded but not linked
 
   useEffect(() => {
     // Get initial session
@@ -30,6 +30,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   async function loadParticipant(authUserId) {
+    setParticipant(undefined) // mark as loading during fetch
     // First: try direct auth_user_id link
     const { data, error } = await supabase
       .from('participants')
@@ -101,7 +102,8 @@ export function AuthProvider({ children }) {
   const value = {
     session,
     participant,
-    loading: session === undefined,
+    // loading = true during session fetch OR while participant is loading after session resolves
+    loading: session === undefined || (session !== null && participant === undefined),
     signInWithEmail,
     signOut,
     isAuthenticated: !!session,
