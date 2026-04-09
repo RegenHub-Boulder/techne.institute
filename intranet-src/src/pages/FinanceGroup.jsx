@@ -796,7 +796,7 @@ function TreasuryTab() {
         </select>
       </div>
 
-      <div style={{ background: 'var(--ink)', border: '1px solid #1a1a2e', borderRadius: 8, overflow: 'hidden' }}>
+      <div style={{ background: 'var(--ink)', border: '1px solid #1a1a2e', borderRadius: 8, overflow: 'hidden', overflowX: 'auto' }}>
         {paginated.length === 0 ? (
           <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-dim)', fontSize: '0.875rem' }}>
             No transactions.
@@ -808,6 +808,7 @@ function TreasuryTab() {
               style={{
                 display: 'grid',
                 gridTemplateColumns: '100px 1fr 110px 100px',
+                minWidth: '380px',
                 padding: '0.8rem 1rem',
                 borderBottom: '1px solid #1a1a28',
                 fontSize: '0.875rem',

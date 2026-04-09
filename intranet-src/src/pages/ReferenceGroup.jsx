@@ -6,6 +6,16 @@ import { useAuth } from '../hooks/useAuth.jsx'
 import { supabase } from '../lib/supabase.js'
 import { TabShell } from '../components/TabShell.jsx'
 
+function useIsMobile(bp = 768) {
+  const [m, setM] = useState(() => window.innerWidth < bp)
+  useEffect(() => {
+    const h = () => setM(window.innerWidth < bp)
+    window.addEventListener('resize', h)
+    return () => window.removeEventListener('resize', h)
+  }, [bp])
+  return m
+}
+
 // ─── Document definitions (same as Guide.jsx) ─────────────────────────────────
 
 const DOCS = [
@@ -72,17 +82,20 @@ export default function ReferenceGroup({ initialTab = 'guide' }) {
 // Full doc-browser layout: left sidebar (doc selection + ToC) + right content pane
 
 function GuideTab() {
+  const isMobile = useIsMobile()
   const [selected, setSelected] = useState(null)
   const [content, setContent]   = useState('')
   const [loading, setLoading]   = useState(false)
   const [error, setError]       = useState(null)
   const [search, setSearch]     = useState('')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   async function loadDoc(doc) {
     setSelected(doc)
     setLoading(true)
     setError(null)
     setSearch('')
+    setSidebarOpen(false) // collapse selector on mobile after picking a doc
     try {
       const res = await fetch(doc.path)
       if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
@@ -147,11 +160,30 @@ function GuideTab() {
   const rendered  = selected && content ? highlight(renderMarkdown(content)) : ''
   const headings  = selected && content ? getHeadings(content) : []
 
+  const showSidebar = !isMobile || sidebarOpen
+
   return (
     // Negative margin cancels TabShell's content padding so the inner layout runs edge-to-edge
-    <div style={{ margin: '-1.75rem -2rem', display: 'flex', height: 'calc(100vh - 36px - 48px - 2.5rem)', overflow: 'hidden' }}>
+    <div style={isMobile
+      ? { margin: '-1.75rem -2rem', display: 'flex', flexDirection: 'column', minHeight: 0 }
+      : { margin: '-1.75rem -2rem', display: 'flex', height: 'calc(100vh - 36px - 48px - 2.5rem)', overflow: 'hidden' }
+    }>
+      {/* Mobile: doc selector toggle */}
+      {isMobile && (
+        <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid #1a1a2e', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <button
+            onClick={() => setSidebarOpen(o => !o)}
+            style={{ background: 'var(--gold-15)', border: '1px solid rgba(196,149,106,0.3)', color: 'var(--gold)', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', padding: '0.35rem 0.75rem', fontFamily: 'inherit' }}
+          >
+            {selected ? selected.title : 'Select Document'} {sidebarOpen ? '▲' : '▼'}
+          </button>
+          {selected && (
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-nav)' }}>{selected.subtitle}</span>
+          )}
+        </div>
+      )}
       {/* Left sidebar: doc selection + ToC */}
-      <div style={g.sidebar}>
+      {showSidebar && <div style={isMobile ? { ...g.sidebar, width: '100%', borderRight: 'none', borderBottom: '1px solid #1a1a2e', maxHeight: '240px' } : g.sidebar}>
         <div style={g.sidebarTitle}>Documents</div>
         <nav style={g.docNav}>
           {DOCS.map(doc => (
@@ -184,10 +216,10 @@ function GuideTab() {
             ))}
           </div>
         )}
-      </div>
+      </div>}
 
-      {/* Right: document content */}
-      <div style={g.contentPane}>
+      {/* Right: document content — hidden on mobile when sidebar is open */}
+      {(!isMobile || !sidebarOpen) && <div style={isMobile ? { ...g.contentPane, overflowY: 'auto' } : g.contentPane}>
         {!selected && (
           <div style={g.placeholder}>
             <div style={g.placeholderIcon}>§</div>
@@ -232,7 +264,7 @@ function GuideTab() {
             )}
           </>
         )}
-      </div>
+      </div>}
     </div>
   )
 }

@@ -157,7 +157,7 @@ function OverviewTab({ data }) {
   return (
     <div>
       {/* Primary balance */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.85rem', marginBottom: '2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '0.85rem', marginBottom: '2rem' }}>
         <StatBox
           label="Book Balance"
           value={account ? fmtUSD(account.book_balance) : '—'}
@@ -178,7 +178,7 @@ function OverviewTab({ data }) {
       </div>
 
       {/* Two-column: contribution breakdown + patronage formula */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
 
         {/* Contribution breakdown */}
         <div>
@@ -324,7 +324,7 @@ function LaborTab({ data, reload }) {
       {/* Log form */}
       {showForm && (
         <form onSubmit={submit} style={{ background: 'rgba(196,149,106,0.06)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: '8px', padding: '1.25rem', marginBottom: '1.25rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '0.75rem', marginBottom: '0.75rem' }}>
             <div>
               <label style={labelStyle}>Date</label>
               <input type="date" required value={form.date} onChange={e => setForm(f => ({...f, date: e.target.value}))} style={inputStyle} />
@@ -340,7 +340,7 @@ function LaborTab({ data, reload }) {
               </select>
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.75rem', marginBottom: '0.75rem' }}>
             <div>
               <label style={labelStyle}>Project (optional)</label>
               <select value={form.project_id} onChange={e => setForm(f => ({...f, project_id: e.target.value}))} style={inputStyle}>
