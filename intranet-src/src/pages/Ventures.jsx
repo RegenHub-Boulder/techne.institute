@@ -21,7 +21,7 @@ export default function Ventures() {
   }
 
   const statusColor = {
-    active: '#4caf88',
+    active: '#4a5f4a',
     exited: 'var(--ember, #c2512a)',
     written_off: '#888',
     pending: '#aaa',
@@ -195,8 +195,8 @@ const styles = {
   subtitle: { fontSize: '1rem', color: 'var(--color-text-muted, #888)', margin: '0 0 2rem' },
   loading: { color: 'var(--color-text-muted, #888)', padding: '2rem 0' },
   error: {
-    padding: '1rem', background: 'rgba(220,60,60,0.1)',
-    border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#ff6b6b',
+    padding: '1rem', background: 'rgba(196,80,80,0.1)',
+    border: '1px solid rgba(196,80,80,0.3)', borderRadius: '8px', color: '#c46a6a',
   },
   summaryRow: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',

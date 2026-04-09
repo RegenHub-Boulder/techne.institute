@@ -149,7 +149,7 @@ function MetricValue({ value, sub, mono }) {
 function MerkleIndicator({ root }) {
   if (!root) return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-      <span style={{ color: '#f59e0b', fontSize: '0.7rem' }}>◎ No root</span>
+      <span style={{ color: '#c2512a', fontSize: '0.7rem' }}>◎ No root</span>
     </div>
   )
   return (
@@ -157,7 +157,7 @@ function MerkleIndicator({ root }) {
       <div style={{
         display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.35rem',
       }}>
-        <span style={{ color: '#4caf82', fontSize: '0.72rem', fontWeight: 700 }}>✓ Verifiable</span>
+        <span style={{ color: '#4a5f4a', fontSize: '0.72rem', fontWeight: 700 }}>✓ Verifiable</span>
       </div>
       <div style={{
         fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
@@ -243,7 +243,7 @@ export default function Home() {
             title="Labor Contributions"
             icon="⏱"
             href="/intranet/labor/"
-            color="#7eb8e8"
+            color="#6b836b"
           >
             <MetricValue
               value={fmtHrs(data.laborHours)}
@@ -256,7 +256,7 @@ export default function Home() {
             title="Active Projects"
             icon="◇"
             href="/intranet/projects/"
-            color="#a78bfa"
+            color="#c2512a"
           >
             <MetricValue
               value={String(data.activeProjects ?? 0)}
@@ -269,7 +269,7 @@ export default function Home() {
             title="Governance"
             icon="⊕"
             href="/intranet/governance/"
-            color={data.openProposals > 0 ? '#f59e0b' : '#4caf82'}
+            color={data.openProposals > 0 ? '#c2512a' : '#4a5f4a'}
             badge={data.openProposals > 0 ? `${data.openProposals} open` : null}
           >
             <MetricValue
@@ -283,7 +283,7 @@ export default function Home() {
             title="State Verifier"
             icon="◈"
             href="/intranet/verify/"
-            color="#4caf82"
+            color="#4a5f4a"
           >
             <MerkleIndicator root={data.merkleRoot} />
           </MetricCard>
@@ -293,7 +293,7 @@ export default function Home() {
             title="Cloud Micro-Grid"
             icon="⬡"
             href="/intranet/cloud/"
-            color="#7eb8e8"
+            color="#6b836b"
           >
             <MetricValue
               value="R13"
@@ -374,7 +374,7 @@ export default function Home() {
             title="Directory"
             icon="⊛"
             href="/intranet/directory/"
-            color="#4caf82"
+            color="#4a5f4a"
           >
             <MetricValue
               value="Organizers"
@@ -422,13 +422,13 @@ const styles = {
     width: '6px',
     height: '6px',
     borderRadius: '50%',
-    background: '#4caf82',
-    boxShadow: '0 0 6px #4caf82',
+    background: '#4a5f4a',
+    boxShadow: '0 0 6px #4a5f4a',
     flexShrink: 0,
   },
   onlineLabel: {
     fontSize: '0.68rem',
-    color: '#4caf82',
+    color: '#4a5f4a',
     textTransform: 'uppercase',
     letterSpacing: '0.1em',
     fontWeight: 700,

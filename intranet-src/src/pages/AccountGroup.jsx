@@ -80,8 +80,8 @@ const TYPE_LABELS = {
   patronage: 'Patronage', draw: 'Draw', adjustment: 'Adjustment',
 }
 const TYPE_COLORS = {
-  initial: '#c2512a', labor: '#50b478', capital: '#4a9eff',
-  patronage: '#b47cd4', draw: '#ff6b6b', adjustment: '#888',
+  initial: '#c2512a', labor: '#4a5f4a', capital: '#6b836b',
+  patronage: '#c2512a', draw: '#c46a6a', adjustment: '#888',
 }
 const LABOR_TYPE_LABELS = {
   governance: 'Governance', operations: 'Operations',
@@ -112,7 +112,7 @@ function TxnRow({ txn }) {
         {txn.description && <span style={{ fontSize: '0.82rem', color: '#7070a0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{txn.description}</span>}
       </div>
       <div style={{ textAlign: 'right', flexShrink: 0 }}>
-        <div style={{ fontSize: '0.95rem', fontWeight: 700, color: isPositive ? '#4caf82' : '#ff6b6b', fontFamily: 'monospace' }}>
+        <div style={{ fontSize: '0.95rem', fontWeight: 700, color: isPositive ? '#4a5f4a' : '#c46a6a', fontFamily: 'monospace' }}>
           {isPositive ? '+' : ''}{fmtUSD(txn.amount)}
         </div>
         <div style={{ fontSize: '0.7rem', color: '#3a3a5a' }}>{fmtDate(txn.effective_date)}</div>
@@ -126,13 +126,13 @@ function ContribRow({ c }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.7rem 1rem', borderBottom: '1px solid #12121e', gap: '1rem' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', minWidth: 0 }}>
-        <span style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#7eb8e8', background: 'rgba(126,184,232,0.1)', padding: '1px 6px', borderRadius: '3px', display: 'inline-block' }}>{label}</span>
+        <span style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#6b836b', background: 'rgba(107,131,107,0.1)', padding: '1px 6px', borderRadius: '3px', display: 'inline-block' }}>{label}</span>
         {c.projects?.name && <span style={{ fontSize: '0.78rem', color: '#52526a' }}>{c.projects.name}</span>}
         {c.description && <span style={{ fontSize: '0.78rem', color: '#7070a0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.description}</span>}
       </div>
       <div style={{ textAlign: 'right', flexShrink: 0 }}>
         <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#e0e0f0', fontFamily: 'monospace' }}>{fmtHrs(c.hours)}</div>
-        {c.fmv_total && <div style={{ fontSize: '0.72rem', color: '#4caf82', fontFamily: 'monospace' }}>{fmtUSD(c.fmv_total)}</div>}
+        {c.fmv_total && <div style={{ fontSize: '0.72rem', color: '#4a5f4a', fontFamily: 'monospace' }}>{fmtUSD(c.fmv_total)}</div>}
         <div style={{ fontSize: '0.68rem', color: '#3a3a5a' }}>{fmtDate(c.date)}</div>
       </div>
     </div>
@@ -173,7 +173,7 @@ function OverviewTab({ data }) {
           label="Labor YTD"
           value={fmtHrs(totalHours)}
           sub={totalFmv > 0 ? `FMV: ${fmtUSD(totalFmv)}` : 'No FMV data'}
-          color="#7eb8e8"
+          color="#6b836b"
         />
       </div>
 
@@ -193,7 +193,7 @@ function OverviewTab({ data }) {
                     <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: TYPE_COLORS[type] || '#888', flexShrink: 0 }} />
                     <span style={{ fontSize: '0.82rem', color: '#9090b0' }}>{TYPE_LABELS[type] || type}</span>
                   </div>
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, fontFamily: 'monospace', color: parseFloat(total) >= 0 ? '#4caf82' : '#ff6b6b' }}>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 700, fontFamily: 'monospace', color: parseFloat(total) >= 0 ? '#4a5f4a' : '#c46a6a' }}>
                     {parseFloat(total) >= 0 ? '+' : ''}{fmtUSD(total)}
                   </span>
                 </div>
@@ -207,10 +207,10 @@ function OverviewTab({ data }) {
           <div style={headingStyle}>Patronage Formula</div>
           <div style={tableContainer}>
             {[
-              { pct: '40%', label: 'Labor', desc: 'Hours contributed', color: '#7eb8e8' },
-              { pct: '30%', label: 'Revenue', desc: 'Patronage transactions', color: '#4caf82' },
-              { pct: '20%', label: 'Capital', desc: 'Capital deployed', color: '#4a9eff' },
-              { pct: '10%', label: 'Community', desc: 'Civic contributions', color: '#b47cd4' },
+              { pct: '40%', label: 'Labor', desc: 'Hours contributed', color: '#6b836b' },
+              { pct: '30%', label: 'Revenue', desc: 'Patronage transactions', color: '#4a5f4a' },
+              { pct: '20%', label: 'Capital', desc: 'Capital deployed', color: '#6b836b' },
+              { pct: '10%', label: 'Community', desc: 'Civic contributions', color: '#c2512a' },
             ].map(({ pct, label, desc, color }) => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.55rem 0.85rem', borderBottom: '1px solid #12121e' }}>
                 <div style={{ fontSize: '1rem', fontWeight: 800, color, fontFamily: 'monospace', minWidth: '2.75rem' }}>{pct}</div>
@@ -297,7 +297,7 @@ function LaborTab({ data, reload }) {
       {/* Summary row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
         <StatBox label="Total Hours" value={fmtHrs(totalHours)} />
-        <StatBox label="Total FMV" value={fmtUSD(totalFmv)} color="#4caf82" />
+        <StatBox label="Total FMV" value={fmtUSD(totalFmv)} color="#4a5f4a" />
         {Object.entries(LABOR_TYPE_LABELS).map(([type, label]) => {
           const hrs = filtered.filter(c => c.labor_type === type).reduce((s, c) => s + parseFloat(c.hours || 0), 0)
           return hrs > 0 ? <StatBox key={type} label={label} value={fmtHrs(hrs)} /> : null
@@ -354,11 +354,11 @@ function LaborTab({ data, reload }) {
             </div>
           </div>
           {fmvRates[form.labor_type] && form.hours && (
-            <div style={{ fontSize: '0.78rem', color: '#4caf82', marginBottom: '0.75rem' }}>
+            <div style={{ fontSize: '0.78rem', color: '#4a5f4a', marginBottom: '0.75rem' }}>
               FMV estimate: {fmtUSD(parseFloat(form.hours) * fmvRates[form.labor_type])} (${fmvRates[form.labor_type]}/hr × {form.hours} hrs)
             </div>
           )}
-          {submitError && <div style={{ color: '#ff6b6b', fontSize: '0.8rem', marginBottom: '0.5rem' }}>{submitError}</div>}
+          {submitError && <div style={{ color: '#c46a6a', fontSize: '0.8rem', marginBottom: '0.5rem' }}>{submitError}</div>}
           <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.25rem', background: '#c2512a', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
             {submitting ? 'Saving…' : 'Log Hours'}
           </button>
@@ -476,12 +476,12 @@ export default function AccountGroup({ initialTab = 'overview' }) {
   }
 
   const tabsWithBadge = TABS.map(t => {
-    if (t.key === 'labor') return { ...t, badge: totalHours > 0 ? totalHours.toFixed(0) + 'h' : null, badgeColor: '#7eb8e8' }
+    if (t.key === 'labor') return { ...t, badge: totalHours > 0 ? totalHours.toFixed(0) + 'h' : null, badgeColor: '#6b836b' }
     return t
   })
 
   if (data.loading) return <div style={{ padding: '3rem 2rem', color: '#52526a', fontSize: '0.9rem' }}>Loading account…</div>
-  if (data.error) return <div style={{ padding: '2rem', color: '#ff6b6b', fontSize: '0.85rem' }}>Error: {data.error}</div>
+  if (data.error) return <div style={{ padding: '2rem', color: '#c46a6a', fontSize: '0.85rem' }}>Error: {data.error}</div>
 
   return (
     <TabShell

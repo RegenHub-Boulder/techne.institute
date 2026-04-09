@@ -3,16 +3,16 @@ import { supabase } from '../lib/supabase.js'
 import { useAuth } from '../hooks/useAuth.jsx'
 
 const STATUS_COLORS = {
-  open:     '#4caf82',
+  open:     '#4a5f4a',
   closed:   '#555',
-  passed:   '#7eb8e8',
-  rejected: '#ff6b6b',
-  pending:  '#c4956a',
+  passed:   '#6b836b',
+  rejected: '#c46a6a',
+  pending:  '#c2512a',
 }
 
 const VOTE_OPTIONS = [
-  { value: 'yes',     label: 'Yes', color: '#4caf82' },
-  { value: 'no',      label: 'No',  color: '#ff6b6b' },
+  { value: 'yes',     label: 'Yes', color: '#4a5f4a' },
+  { value: 'no',      label: 'No',  color: '#c46a6a' },
   { value: 'abstain', label: 'Abstain', color: '#555' },
 ]
 
@@ -343,26 +343,26 @@ const styles = {
   breadSep: { color: '#3a3a42' },
 
   pageHeader: { marginBottom: '1.75rem' },
-  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c4956a', marginBottom: '0.5rem' },
+  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c2512a', marginBottom: '0.5rem' },
   pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: '#ece6de', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
   pageSub: { fontSize: '0.9rem', color: '#888', lineHeight: 1.65, maxWidth: 600, margin: 0 },
 
-  journalNote: { background: 'rgba(76,175,130,0.08)', border: '1px solid rgba(76,175,130,0.2)', borderRadius: 6, padding: '0.65rem 1rem', fontFamily: 'monospace', fontSize: '0.8rem', color: '#4caf82', marginBottom: '1rem' },
+  journalNote: { background: 'rgba(74,95,74,0.08)', border: '1px solid rgba(74,95,74,0.2)', borderRadius: 6, padding: '0.65rem 1rem', fontFamily: 'monospace', fontSize: '0.8rem', color: '#4a5f4a', marginBottom: '1rem' },
 
   actionBar: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' },
   filterBar: { display: 'flex', gap: '0.4rem' },
   filterBtn: { background: '#1e1e24', border: '1px solid #2a2a35', color: '#888', borderRadius: 5, padding: '0.3rem 0.75rem', fontSize: '0.78rem', fontFamily: 'monospace', cursor: 'pointer' },
-  filterBtnActive: { background: 'rgba(196,149,106,0.08)', color: '#e8e8e0', borderColor: '#c4956a' },
-  newBtn: { background: 'rgba(196,149,106,0.08)', border: '1px solid rgba(196,149,106,0.25)', color: '#c4956a', borderRadius: 6, padding: '0.4rem 1rem', fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'monospace' },
+  filterBtnActive: { background: 'rgba(194,81,42,0.08)', color: '#e8e8e0', borderColor: '#c2512a' },
+  newBtn: { background: 'rgba(194,81,42,0.08)', border: '1px solid rgba(194,81,42,0.25)', color: '#c2512a', borderRadius: 6, padding: '0.4rem 1rem', fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'monospace' },
 
   newForm: { background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '1.25rem', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' },
   formTitle: { fontFamily: 'monospace', fontSize: '0.78rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#666', marginBottom: '0.25rem' },
   input: { background: '#141418', border: '1px solid #2a2a35', borderRadius: 5, color: '#c8c2ba', padding: '0.6rem 0.85rem', fontSize: '0.88rem', fontFamily: 'inherit', width: '100%', boxSizing: 'border-box' },
-  submitBtn: { background: 'rgba(196,149,106,0.12)', border: '1px solid rgba(196,149,106,0.3)', color: '#c4956a', borderRadius: 5, padding: '0.5rem 1.1rem', cursor: 'pointer', fontSize: '0.82rem' },
+  submitBtn: { background: 'rgba(194,81,42,0.12)', border: '1px solid rgba(194,81,42,0.3)', color: '#c2512a', borderRadius: 5, padding: '0.5rem 1.1rem', cursor: 'pointer', fontSize: '0.82rem' },
   cancelBtn: { background: 'none', border: '1px solid #2a2a35', color: '#666', borderRadius: 5, padding: '0.5rem 0.85rem', cursor: 'pointer', fontSize: '0.82rem' },
 
   loading: { color: '#555', fontFamily: 'monospace', fontSize: '0.85rem', padding: '2rem 0' },
-  error: { color: '#ff6b6b', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
+  error: { color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(196,106,106,0.06)', borderRadius: 6 },
   empty: { color: '#555', fontFamily: 'monospace', fontSize: '0.85rem', padding: '3rem 0', textAlign: 'center' },
 
   card: { background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '1.25rem', marginBottom: '0.75rem' },

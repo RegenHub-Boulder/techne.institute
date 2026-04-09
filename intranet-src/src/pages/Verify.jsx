@@ -189,10 +189,10 @@ export default function Verify() {
           {liveMatch !== null && (
             <div style={{
               ...styles.resultBox,
-              borderColor: liveMatch ? 'rgba(76,175,130,0.3)' : 'rgba(255,107,107,0.3)',
-              background: liveMatch ? 'rgba(76,175,130,0.05)' : 'rgba(255,107,107,0.05)',
+              borderColor: liveMatch ? 'rgba(74,95,74,0.3)' : 'rgba(196,106,106,0.3)',
+              background: liveMatch ? 'rgba(74,95,74,0.05)' : 'rgba(196,106,106,0.05)',
             }}>
-              <div style={{ ...styles.resultStatus, color: liveMatch ? '#4caf82' : '#ff6b6b' }}>
+              <div style={{ ...styles.resultStatus, color: liveMatch ? '#4a5f4a' : '#c46a6a' }}>
                 {liveMatch ? '✓ State Verified' : '✗ State Mismatch — possible tampering'}
               </div>
               <div style={styles.resultRows}>
@@ -254,23 +254,23 @@ export default function Verify() {
             <div style={{
               ...styles.resultBox,
               borderColor: proofResult.error
-                ? 'rgba(255,107,107,0.3)'
+                ? 'rgba(196,106,106,0.3)'
                 : proofResult.valid
-                ? 'rgba(76,175,130,0.3)'
-                : 'rgba(255,107,107,0.3)',
+                ? 'rgba(74,95,74,0.3)'
+                : 'rgba(196,106,106,0.3)',
               background: proofResult.error
-                ? 'rgba(255,107,107,0.05)'
+                ? 'rgba(196,106,106,0.05)'
                 : proofResult.valid
-                ? 'rgba(76,175,130,0.05)'
-                : 'rgba(255,107,107,0.05)',
+                ? 'rgba(74,95,74,0.05)'
+                : 'rgba(196,106,106,0.05)',
             }}>
               {proofResult.error ? (
-                <div style={{ color: '#ff6b6b', fontFamily: 'monospace', fontSize: '0.85rem' }}>
+                <div style={{ color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem' }}>
                   {proofResult.error}
                 </div>
               ) : (
                 <>
-                  <div style={{ ...styles.resultStatus, color: proofResult.valid ? '#4caf82' : '#ff6b6b' }}>
+                  <div style={{ ...styles.resultStatus, color: proofResult.valid ? '#4a5f4a' : '#c46a6a' }}>
                     {proofResult.valid ? '✓ Proof Valid' : '✗ Proof Invalid'}
                   </div>
                   <div style={styles.resultRows}>
@@ -322,7 +322,7 @@ export default function Verify() {
                   key={s.id}
                   style={{
                     ...styles.snapCard,
-                    borderColor: selectedSnap === s.id ? 'rgba(196,149,106,0.4)' : '#2a2a35',
+                    borderColor: selectedSnap === s.id ? 'rgba(194,81,42,0.4)' : '#2a2a35',
                   }}
                   onClick={() => {
                     setSelectedSnap(selectedSnap === s.id ? null : s.id)
@@ -367,7 +367,7 @@ function ResultRow({ label, value, mono, highlight }) {
       <span style={{
         fontFamily: mono ? 'monospace' : undefined,
         fontSize: mono ? '0.78rem' : '0.85rem',
-        color: highlight ? '#4caf82' : '#aaa',
+        color: highlight ? '#4a5f4a' : '#aaa',
       }}>
         {String(value)}
       </span>
@@ -384,7 +384,7 @@ const styles = {
   breadSep: { color: '#3a3a42' },
 
   pageHeader: { marginBottom: '2rem' },
-  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c4956a', marginBottom: '0.5rem' },
+  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c2512a', marginBottom: '0.5rem' },
   pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: '#ece6de', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
   pageSub: { fontSize: '0.9rem', color: '#888', lineHeight: 1.65, maxWidth: 600, margin: 0 },
 
@@ -392,13 +392,13 @@ const styles = {
   sectionTitle: { fontFamily: 'monospace', fontSize: '0.78rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginBottom: '0.65rem' },
   sectionDesc: { fontSize: '0.9rem', color: '#666', lineHeight: 1.65, marginBottom: '1.25rem' },
 
-  actionBtn: { background: 'rgba(196,149,106,0.08)', border: '1px solid rgba(196,149,106,0.25)', color: '#c4956a', borderRadius: 6, padding: '0.55rem 1.25rem', fontSize: '0.85rem', fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.05em' },
+  actionBtn: { background: 'rgba(194,81,42,0.08)', border: '1px solid rgba(194,81,42,0.25)', color: '#c2512a', borderRadius: 6, padding: '0.55rem 1.25rem', fontSize: '0.85rem', fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.05em' },
 
   resultBox: { border: '1px solid', borderRadius: 8, padding: '1.25rem', marginTop: '1.25rem' },
   resultStatus: { fontFamily: 'monospace', fontSize: '0.95rem', marginBottom: '1rem', fontWeight: 600 },
   resultRows: { display: 'flex', flexDirection: 'column', marginBottom: '1rem' },
   explainBox: { fontSize: '0.82rem', color: '#555', lineHeight: 1.65, paddingTop: '0.75rem', borderTop: '1px solid #252530' },
-  code: { fontFamily: 'monospace', fontSize: '0.8rem', background: '#1e1e24', padding: '0.1em 0.35em', borderRadius: 3, color: '#c4956a' },
+  code: { fontFamily: 'monospace', fontSize: '0.8rem', background: '#1e1e24', padding: '0.1em 0.35em', borderRadius: 3, color: '#c2512a' },
 
   inputGroup: { marginBottom: '0.85rem' },
   label: { display: 'block', fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#555', marginBottom: '0.4rem' },
@@ -412,7 +412,7 @@ const styles = {
 
   snapCard: { background: '#1e1e24', border: '1px solid', borderRadius: 6, padding: '0.85rem 1rem', marginBottom: '0.4rem', cursor: 'pointer' },
   snapTop: { display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' },
-  snapRoot: { fontFamily: 'monospace', fontSize: '0.78rem', color: '#c4956a', flex: 1 },
+  snapRoot: { fontFamily: 'monospace', fontSize: '0.78rem', color: '#c2512a', flex: 1 },
   snapMeta: { fontFamily: 'monospace', fontSize: '0.72rem', color: '#555' },
   snapDate: { fontFamily: 'monospace', fontSize: '0.72rem', color: '#444' },
   snapEvent: { fontFamily: 'monospace', fontSize: '0.72rem', marginTop: '0.35rem' },

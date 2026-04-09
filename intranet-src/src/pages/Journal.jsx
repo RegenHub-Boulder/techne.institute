@@ -4,13 +4,13 @@ import { supabase } from '../lib/supabase.js'
 const EVENT_TYPES = ['', 'transfer', 'contribution', 'expense', 'vote', 'delegation', 'allocation', 'proposal']
 
 const EVENT_COLORS = {
-  transfer:     '#7eb8e8',
-  contribution: '#4caf82',
-  expense:      '#ff6b6b',
-  vote:         '#c4956a',
-  delegation:   '#a78bfa',
-  allocation:   '#4caf82',
-  proposal:     '#60a5fa',
+  transfer:     '#6b836b',
+  contribution: '#4a5f4a',
+  expense:      '#c46a6a',
+  vote:         '#c2512a',
+  delegation:   '#c2512a',
+  allocation:   '#4a5f4a',
+  proposal:     '#6b836b',
 }
 
 function fmtDate(d) {
@@ -209,7 +209,7 @@ function DetailRow({ label, value, mono, highlight }) {
       <span style={{
         fontFamily: mono ? 'var(--font-mono, monospace)' : undefined,
         fontSize: mono ? '0.78rem' : '0.85rem',
-        color: highlight ? '#c4956a' : '#aaa',
+        color: highlight ? '#c2512a' : '#aaa',
         textAlign: 'right',
         maxWidth: '60%',
         wordBreak: 'break-all',
@@ -234,21 +234,21 @@ const styles = {
   breadSep: { color: '#3a3a42' },
 
   pageHeader: { marginBottom: '2rem' },
-  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c4956a', marginBottom: '0.5rem' },
+  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c2512a', marginBottom: '0.5rem' },
   pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: '#ece6de', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
   pageSub: { fontSize: '0.9rem', color: '#888', lineHeight: 1.65, maxWidth: 600, margin: 0 },
 
-  rootBadge: { display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1.25rem', padding: '0.75rem 1rem', background: 'rgba(196,149,106,0.05)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: 6, fontFamily: 'monospace', fontSize: '0.78rem' },
+  rootBadge: { display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1.25rem', padding: '0.75rem 1rem', background: 'rgba(194,81,42,0.05)', border: '1px solid rgba(194,81,42,0.15)', borderRadius: 6, fontFamily: 'monospace', fontSize: '0.78rem' },
   rootLabel: { color: '#666', letterSpacing: '0.08em', textTransform: 'uppercase' },
-  rootHash: { color: '#c4956a', flex: 1 },
+  rootHash: { color: '#c2512a', flex: 1 },
   rootVerify: { color: '#888', textDecoration: 'none', fontSize: '0.72rem' },
 
   filterBar: { display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '1.5rem' },
   filterBtn: { background: '#1e1e24', border: '1px solid #2a2a35', color: '#888', borderRadius: 5, padding: '0.3rem 0.75rem', fontSize: '0.78rem', fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.05em' },
-  filterBtnActive: { background: 'rgba(196,149,106,0.08)', color: '#e8e8e0', borderColor: '#c4956a' },
+  filterBtnActive: { background: 'rgba(194,81,42,0.08)', color: '#e8e8e0', borderColor: '#c2512a' },
 
   loading: { color: '#555', fontFamily: 'monospace', fontSize: '0.85rem', padding: '2rem 0' },
-  error: { color: '#ff6b6b', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
+  error: { color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(196,106,106,0.06)', borderRadius: 6 },
   empty: { padding: '3rem 0', color: '#666', fontFamily: 'monospace', fontSize: '0.85rem', textAlign: 'center' },
 
   entry: { background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '0.9rem 1.1rem', marginBottom: '0.5rem', cursor: 'pointer', transition: 'border-color 0.15s' },

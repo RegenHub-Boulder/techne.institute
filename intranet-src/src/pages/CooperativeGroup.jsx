@@ -6,7 +6,7 @@ import { TabShell } from '../components/TabShell.jsx'
 // ─── Shared ───────────────────────────────────────────────────────────────────
 
 const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'
-const STATUS_COLOR = { active: '#4caf82', paused: '#f0c040', completed: '#7eb8e8', archived: '#555', open: '#4caf82', closed: '#555', passed: '#7eb8e8', rejected: '#ff6b6b', pending: '#c4956a' }
+const STATUS_COLOR = { active: '#4a5f4a', paused: '#c2512a', completed: '#6b836b', archived: '#555', open: '#4a5f4a', closed: '#555', passed: '#6b836b', rejected: '#c46a6a', pending: '#c2512a' }
 const MEMBER_CLASS = { 1: 'Class 1 · Labor', 2: 'Class 2 · Patron', 3: 'Class 3 · Community', 4: 'Class 4 · Investor' }
 const inputStyle = { width: '100%', padding: '0.5rem 0.65rem', background: '#0c0c1a', border: '1px solid #2a2a40', borderRadius: '5px', color: '#e0e0f0', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box' }
 const tableContainer = { background: 'rgba(255,255,255,0.015)', border: '1px solid #1a1a2e', borderRadius: '8px', overflow: 'hidden' }
@@ -78,7 +78,7 @@ function ProjectsTab() {
             {selected.project_milestones.map(m => (
               <div key={m.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.65rem 1rem', borderBottom: '1px solid #12121e' }}>
                 <div style={{ display: 'flex', align: 'center', gap: '0.5rem' }}>
-                  <span style={{ color: m.status === 'completed' ? '#4caf82' : '#52526a', fontSize: '0.85rem' }}>{m.status === 'completed' ? '✓' : '○'}</span>
+                  <span style={{ color: m.status === 'completed' ? '#4a5f4a' : '#52526a', fontSize: '0.85rem' }}>{m.status === 'completed' ? '✓' : '○'}</span>
                   <span style={{ fontSize: '0.85rem', color: m.status === 'completed' ? '#52526a' : '#c0c0d0' }}>{m.title}</span>
                 </div>
                 {m.due_date && <span style={{ fontSize: '0.75rem', color: '#3a3a5a' }}>{fmtDate(m.due_date)}</span>}
@@ -101,7 +101,7 @@ function ProjectsTab() {
       </div>
 
       {loading && <div style={emptyStyle}>Loading projects…</div>}
-      {error && <div style={{ color: '#ff6b6b', padding: '0.75rem' }}>{error}</div>}
+      {error && <div style={{ color: '#c46a6a', padding: '0.75rem' }}>{error}</div>}
 
       <div style={tableContainer}>
         {!loading && filtered.length === 0 && <div style={emptyStyle}>No projects found.</div>}
@@ -162,7 +162,7 @@ function MembersTab() {
         style={{ ...inputStyle, maxWidth: '360px', marginBottom: '1.25rem' }}
       />
       {loading && <div style={emptyStyle}>Loading members…</div>}
-      {error && <div style={{ color: '#ff6b6b', fontSize: '0.85rem' }}>{error}</div>}
+      {error && <div style={{ color: '#c46a6a', fontSize: '0.85rem' }}>{error}</div>}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '0.85rem' }}>
         {filtered.map(m => (
           <div key={m.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem', background: 'rgba(255,255,255,0.025)', border: '1px solid #1a1a2e', borderRadius: '8px', padding: '1rem' }}>
@@ -276,7 +276,7 @@ function GovernanceTab() {
       )}
 
       {loading && <div style={emptyStyle}>Loading proposals…</div>}
-      {error && <div style={{ color: '#ff6b6b', fontSize: '0.85rem' }}>{error}</div>}
+      {error && <div style={{ color: '#c46a6a', fontSize: '0.85rem' }}>{error}</div>}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {!loading && proposals.length === 0 && <div style={{ ...emptyStyle, background: 'rgba(255,255,255,0.015)', border: '1px solid #1a1a2e', borderRadius: '8px' }}>No {filter === 'all' ? '' : filter} proposals.</div>}
@@ -296,15 +296,15 @@ function GovernanceTab() {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem' }}>
                 {/* Vote counts */}
                 <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.78rem', fontFamily: 'monospace' }}>
-                  {(counts.yes || 0) > 0 && <span style={{ color: '#4caf82' }}>Yes: {counts.yes}</span>}
-                  {(counts.no || 0) > 0 && <span style={{ color: '#ff6b6b' }}>No: {counts.no}</span>}
+                  {(counts.yes || 0) > 0 && <span style={{ color: '#4a5f4a' }}>Yes: {counts.yes}</span>}
+                  {(counts.no || 0) > 0 && <span style={{ color: '#c46a6a' }}>No: {counts.no}</span>}
                   {(counts.abstain || 0) > 0 && <span style={{ color: '#555' }}>Abstain: {counts.abstain}</span>}
                   {p.proposal_votes?.length === 0 && <span style={{ color: '#3a3a5a' }}>No votes</span>}
                 </div>
                 {/* Vote buttons */}
                 {isOpen && (
                   <div style={{ display: 'flex', gap: '0.4rem' }}>
-                    {[['yes', '#4caf82', 'Yes'], ['no', '#ff6b6b', 'No'], ['abstain', '#555', 'Abstain']].map(([v, c, l]) => (
+                    {[['yes', '#4a5f4a', 'Yes'], ['no', '#c46a6a', 'No'], ['abstain', '#555', 'Abstain']].map(([v, c, l]) => (
                       <button key={v}
                         onClick={() => castVote(p.id, v)}
                         disabled={voting[p.id] === 'loading'}
