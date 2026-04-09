@@ -49,6 +49,20 @@
 }
 
 /* ============================================================
+   DARK MODE — for pages that default to light (parchment)
+   Toggle via: document.documentElement.setAttribute('data-theme','dark')
+   ============================================================ */
+[data-theme="dark"] {
+  /* Flip surface names: light becomes dark, dark becomes light */
+  --parchment: #0f0f12;   /* was light bg, now near-black */
+  --cream:     #141418;   /* was warm off-white, now deep surface */
+  --bone:      #2a2a30;   /* was light border, now dark graphite */
+  --stone:     #6a6560;   /* muted text — legible on dark */
+  --charcoal:  #e8e4df;   /* was dark text, now light text */
+  --graphite:  #3a3a42;   /* raised surface on dark */
+}
+
+/* ============================================================
    TYPOGRAPHY
    ============================================================
 

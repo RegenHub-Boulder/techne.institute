@@ -13,6 +13,7 @@
  *   user-class      membership class label             (default: "")
  *
  * Sprint P364 (R3-C) — 2026-04-06
+ * Updated P426 — 2026-04-09 (light/dark toggle, copper-gold accent)
  */
 
 class TechneNav extends HTMLElement {
@@ -24,11 +25,19 @@ class TechneNav extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._menuOpen = false;
+    this._themeObserver = null;
   }
 
   connectedCallback() {
     this._render();
     this._attachListeners();
+  }
+
+  disconnectedCallback() {
+    if (this._themeObserver) {
+      this._themeObserver.disconnect();
+      this._themeObserver = null;
+    }
   }
 
   attributeChangedCallback() {
@@ -98,8 +107,42 @@ class TechneNav extends HTMLElement {
     return `<a href="/intranet/" class="btn-signin">Sign in</a>`;
   }
 
+  _themeToggleBtn() {
+    // Sun icon (show in dark mode — clicking switches to light)
+    const sun = `<svg class="icon-sun" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+      <circle cx="8" cy="8" r="3"/>
+      <line x1="8" y1="1" x2="8" y2="3"/>
+      <line x1="8" y1="13" x2="8" y2="15"/>
+      <line x1="1" y1="8" x2="3" y2="8"/>
+      <line x1="13" y1="8" x2="15" y2="8"/>
+      <line x1="3.05" y1="3.05" x2="4.46" y2="4.46"/>
+      <line x1="11.54" y1="11.54" x2="12.95" y2="12.95"/>
+      <line x1="12.95" y1="3.05" x2="11.54" y2="4.46"/>
+      <line x1="4.46" y1="11.54" x2="3.05" y2="12.95"/>
+    </svg>`;
+    // Moon icon (show in light mode — clicking switches to dark)
+    const moon = `<svg class="icon-moon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+      <path d="M7 2a6 6 0 1 0 7 7 4.5 4.5 0 0 1-7-7z"/>
+    </svg>`;
+    return `<button class="theme-btn" id="theme-toggle" aria-label="Toggle light/dark mode">${sun}${moon}</button>`;
+  }
+
   _esc(str) {
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  _currentTheme() {
+    return document.documentElement.getAttribute('data-theme') || 'light';
+  }
+
+  _updateThemeBtn(btn) {
+    if (!btn) return;
+    const theme = this._currentTheme();
+    const sun = btn.querySelector('.icon-sun');
+    const moon = btn.querySelector('.icon-moon');
+    if (sun) sun.style.display = theme === 'dark' ? 'block' : 'none';
+    if (moon) moon.style.display = theme === 'dark' ? 'none' : 'block';
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
   }
 
   _render() {
@@ -123,14 +166,24 @@ class TechneNav extends HTMLElement {
       <style>
         :host {
           display: block;
-          --nav-bg: ${isIntranet ? '#0f0f12' : '#f7f5f0'};
-          --nav-border: ${isIntranet ? '#2a2a30' : '#d8d3c8'};
-          --nav-text: ${isIntranet ? '#9a958a' : '#2a2a30'};
-          --nav-text-hover: ${isIntranet ? '#f7f5f0' : '#0f0f12'};
-          --nav-active: #c2512a;
-          --nav-wordmark: ${isIntranet ? '#f7f5f0' : '#1a1a1f'};
+          /* Light mode defaults */
+          --nav-bg:         #f7f5f0;
+          --nav-border:     #d8d3c8;
+          --nav-text:       #6a6560;
+          --nav-text-hover: #1a1a1f;
+          --nav-active:     #c4956a;
+          --nav-wordmark:   #1a1a1f;
           --nav-height: 52px;
           font-family: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+        }
+
+        /* Dark mode — responds to data-theme="dark" on any ancestor (incl. <html>) */
+        :host-context([data-theme="dark"]) {
+          --nav-bg:         #0f0f12;
+          --nav-border:     #2a2a30;
+          --nav-text:       #9a958a;
+          --nav-text-hover: #f7f5f0;
+          --nav-wordmark:   #e8e4df;
         }
 
         nav {
@@ -140,6 +193,7 @@ class TechneNav extends HTMLElement {
           background: var(--nav-bg);
           border-bottom: 1px solid var(--nav-border);
           height: var(--nav-height);
+          transition: background 0.2s ease, border-color 0.2s ease;
         }
 
         .inner {
@@ -160,7 +214,7 @@ class TechneNav extends HTMLElement {
           color: var(--nav-wordmark);
           text-decoration: none;
           opacity: 0.9;
-          transition: opacity 200ms;
+          transition: opacity 200ms, color 0.2s ease;
         }
         .wordmark:hover { opacity: 0.6; }
 
@@ -227,6 +281,23 @@ class TechneNav extends HTMLElement {
           color: var(--nav-text);
         }
 
+        /* Theme toggle */
+        .theme-btn {
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: var(--nav-text);
+          padding: 4px 6px;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: color 200ms;
+          line-height: 0;
+        }
+        .theme-btn:hover { color: var(--nav-text-hover); }
+        .theme-btn:focus-visible { outline: 2px solid var(--nav-active); border-radius: 4px; }
+
         .btn-signin {
           font-size: 0.65rem;
           letter-spacing: 0.1em;
@@ -234,38 +305,38 @@ class TechneNav extends HTMLElement {
           color: var(--nav-active);
           text-decoration: none;
           padding: 0.3rem 0.75rem;
-          border: 1px solid rgba(194, 81, 42, 0.4);
+          border: 1px solid rgba(196, 149, 106, 0.4);
           border-radius: 3px;
           transition: background 200ms, color 200ms;
         }
         .btn-signin:hover {
-          background: rgba(194, 81, 42, 0.1);
+          background: rgba(196, 149, 106, 0.08);
         }
         .btn-signin.locked {
           display: flex;
           align-items: center;
           gap: 0.35rem;
-          color: #5a5550;
-          border-color: #3a3530;
+          color: var(--nav-text);
+          border-color: var(--nav-border);
         }
         .btn-signin.locked:hover {
           color: var(--nav-active);
-          border-color: rgba(194,81,42,0.4);
-          background: rgba(194,81,42,0.06);
+          border-color: rgba(196, 149, 106, 0.4);
+          background: rgba(196, 149, 106, 0.06);
         }
 
         .btn-signout {
           font-size: 0.65rem;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: #5a5550;
+          color: var(--nav-text);
           text-decoration: none;
           padding: 0.3rem 0.75rem;
-          border: 1px solid #2a2a30;
+          border: 1px solid var(--nav-border);
           border-radius: 3px;
           transition: color 200ms, border-color 200ms;
         }
-        .btn-signout:hover { color: #9a958a; border-color: #3a3530; }
+        .btn-signout:hover { color: var(--nav-text-hover); }
 
         /* Hamburger */
         .hamburger {
@@ -324,6 +395,7 @@ class TechneNav extends HTMLElement {
           </ul>
 
           <div class="right">
+            ${this._themeToggleBtn()}
             ${this._cta()}
           </div>
         </div>
@@ -360,6 +432,31 @@ class TechneNav extends HTMLElement {
         hamburger.focus();
       }
     });
+
+    // Theme toggle
+    const themeBtn = this.shadowRoot.getElementById('theme-toggle');
+    if (themeBtn) {
+      // Set initial icon state
+      this._updateThemeBtn(themeBtn);
+
+      themeBtn.addEventListener('click', () => {
+        const current = this._currentTheme();
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        try { localStorage.setItem('techne-theme', next); } catch (_) {}
+        this._updateThemeBtn(themeBtn);
+      });
+
+      // Watch for external changes (e.g., another component toggling theme)
+      if (this._themeObserver) this._themeObserver.disconnect();
+      this._themeObserver = new MutationObserver(() => {
+        this._updateThemeBtn(themeBtn);
+      });
+      this._themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+    }
   }
 }
 

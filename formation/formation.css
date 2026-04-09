@@ -218,6 +218,75 @@ h2 .sym { font-size: 0.9em; }
 /* Ecosystem timestamp */
 .ecosystem-ts { font-family: var(--mono); font-size: 0.65rem; color: var(--text-faint); text-align: center; padding: 0.5rem 0 1.5rem; letter-spacing: 0.05em; }
 
+/* ─── Light mode overrides ─── */
+
+[data-theme="light"] {
+  --bg:              #f7f5f0;
+  --bg-card:         rgba(235, 231, 223, 0.7);
+  --bg-card-hover:   #e0dbd3;
+  --bg-table-alt:    #f0ece4;
+  --text:            #1a1614;
+  --text-dim:        #3a3530;
+  --text-faint:      #6a6560;
+  --rule:            #d8d3c8;
+}
+
+[data-theme="light"] html,
+[data-theme="light"] body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+[data-theme="light"] a {
+  color: var(--accent);
+}
+
+[data-theme="light"] a:hover {
+  color: var(--accent-dim);
+}
+
+[data-theme="light"] tbody td {
+  border-bottom-color: rgba(216, 211, 200, 0.5);
+  color: var(--text-dim);
+}
+
+[data-theme="light"] tbody tr:nth-child(even) {
+  background: rgba(235, 231, 223, 0.5);
+}
+
+[data-theme="light"] tbody tr:hover {
+  background: rgba(224, 219, 211, 0.6);
+}
+
+[data-theme="light"] .entity-row {
+  border-bottom-color: rgba(216, 211, 200, 0.4);
+}
+
+[data-theme="light"] .check-item {
+  border-bottom-color: rgba(216, 211, 200, 0.4);
+}
+
+[data-theme="light"] .check-item:hover {
+  background: rgba(235, 231, 223, 0.6);
+}
+
+[data-theme="light"] .health-subcard {
+  background: rgba(248, 245, 240, 0.8);
+  border-color: rgba(216, 211, 200, 0.6);
+}
+
+[data-theme="light"] .bar-track {
+  background: rgba(216, 211, 200, 0.6);
+}
+
+[data-theme="light"] .timeline-node::before {
+  border-color: var(--bg);
+}
+
+[data-theme="light"] .health-subcards {
+  border-top-color: rgba(216, 211, 200, 0.5);
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .hero h1 { font-size: 1.7rem; }

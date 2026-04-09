@@ -735,6 +735,57 @@ footer a {
 
 footer a:hover { color: var(--warm); }
 
+/* ─── Dark mode — vision is natively dark, restore remapped tokens ─── */
+/* tokens.css [data-theme="dark"] remaps --bone and --charcoal for public
+   pages switching to dark. Vision pages are already dark — restore them. */
+[data-theme="dark"] {
+  --bone:      #d8d3c8;   /* restore as text/accent color on dark bg */
+  --charcoal:  #1a1a1f;   /* restore dark surface value */
+  --parchment: #0f0f12;   /* map to dark (hero nav bg if used) */
+  --graphite:  #2a2a30;   /* restore dark border */
+}
+
+/* ─── Light mode overrides ─── */
+[data-theme="light"] body {
+  background: var(--parchment, #f7f5f0);
+  color: var(--charcoal, #1a1a1f);
+}
+
+[data-theme="light"] .hero {
+  background-color: var(--cream, #ebe7df);
+  background-image: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+}
+
+[data-theme="light"] .hero h1,
+[data-theme="light"] h2 {
+  color: var(--charcoal, #1a1a1f);
+}
+
+[data-theme="light"] .hero-etymology-def,
+[data-theme="light"] .hero-sub {
+  color: rgba(26, 26, 31, 0.55);
+}
+
+[data-theme="light"] section + section {
+  border-top-color: var(--bone, #d8d3c8);
+}
+
+[data-theme="light"] p {
+  color: #3a3530;
+}
+
+[data-theme="light"] .callout,
+[data-theme="light"] .substrate-block,
+[data-theme="light"] .dimension-card {
+  background: var(--cream, #ebe7df);
+  border-color: var(--bone, #d8d3c8);
+}
+
+[data-theme="light"] footer {
+  border-top-color: var(--bone, #d8d3c8);
+  color: #6a6560;
+}
+
 /* ============ RESPONSIVE ============ */
 @media (max-width: 640px) {
   section { padding: 3.5rem 0; }
