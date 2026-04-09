@@ -48,7 +48,7 @@ const styles = {
   header: {
     display: 'flex', alignItems: 'center', gap: '1.5rem',
     padding: '0.85rem 2rem', borderBottom: '1px solid #2a2a35',
-    background: '#141418', flexWrap: 'wrap',
+    background: 'var(--surface)', flexWrap: 'wrap',
   },
   wordmark: {
     fontSize: '1rem', fontWeight: 700, color: 'var(--ember, #c4956a)',
@@ -56,13 +56,13 @@ const styles = {
   },
   nav: { display: 'flex', alignItems: 'center', gap: '0.25rem', flex: 1, flexWrap: 'wrap' },
   navLink: {
-    fontSize: '0.8rem', color: '#888', textDecoration: 'none',
+    fontSize: '0.8rem', color: 'var(--text-muted)', textDecoration: 'none',
     padding: '0.3rem 0.6rem', borderRadius: '5px',
   },
-  navLinkActive: { color: '#e8e8e0', background: 'rgba(255,255,255,0.06)' },
+  navLinkActive: { color: 'var(--text-page)', background: 'var(--hover-med)' },
   signOut: {
     background: 'none', border: '1px solid #2a2a35',
-    color: '#888', borderRadius: '6px', padding: '0.3rem 0.65rem',
+    color: 'var(--text-muted)', borderRadius: '6px', padding: '0.3rem 0.65rem',
     fontSize: '0.78rem', cursor: 'pointer', flexShrink: 0,
   },
 }

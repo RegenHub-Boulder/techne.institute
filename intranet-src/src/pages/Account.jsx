@@ -16,8 +16,8 @@ const TYPE_COLORS = {
   labor: '#50b478',
   capital: '#4a9eff',
   patronage: '#b47cd4',
-  draw: '#c46a6a',
-  adjustment: '#888',
+  draw: 'var(--status-err)',
+  adjustment: 'var(--text-muted)',
 }
 
 export default function Account() {
@@ -139,7 +139,7 @@ export default function Account() {
                       <div
                         style={{
                           ...styles.breakdownDot,
-                          background: TYPE_COLORS[type] || '#888',
+                          background: TYPE_COLORS[type] || 'var(--text-muted)',
                         }}
                       />
                       <div style={styles.breakdownLabel}>
@@ -170,7 +170,7 @@ export default function Account() {
                             background: TYPE_COLORS[t.transaction_type]
                               ? `${TYPE_COLORS[t.transaction_type]}22`
                               : 'rgba(128,128,128,0.1)',
-                            color: TYPE_COLORS[t.transaction_type] || '#888',
+                            color: TYPE_COLORS[t.transaction_type] || 'var(--text-muted)',
                           }}
                         >
                           {TYPE_LABELS[t.transaction_type] || t.transaction_type}
@@ -182,7 +182,7 @@ export default function Account() {
                           style={{
                             ...styles.txnAmount,
                             color:
-                              parseFloat(t.amount) < 0 ? '#c46a6a' : '#50b478',
+                              parseFloat(t.amount) < 0 ? 'var(--status-err)' : '#50b478',
                           }}
                         >
                           {parseFloat(t.amount) >= 0 ? '+' : ''}
@@ -450,7 +450,7 @@ const styles = {
     background: 'rgba(220,60,60,0.1)',
     border: '1px solid rgba(220,60,60,0.3)',
     borderRadius: '8px',
-    color: '#c46a6a',
+    color: 'var(--status-err)',
   },
   loadingCard: {
     padding: '1.5rem',

@@ -3,10 +3,10 @@ import { supabase } from '../lib/supabase.js'
 import { useAuth } from '../hooks/useAuth.jsx'
 
 const statusColor = {
-  active: '#4a5f4a',
-  paused: '#c4956a',
-  completed: '#6b836b',
-  archived: '#666',
+  active: 'var(--status-ok)',
+  paused: 'var(--gold)',
+  completed: 'var(--status-info)',
+  archived: 'var(--text-subdim)',
 }
 
 export default function Projects() {
@@ -142,10 +142,10 @@ function ProjectRow({ project, onClick }) {
         </div>
       </div>
       <div style={styles.rowRight}>
-        <span style={{ ...styles.typeBadge, color: project.type === 'venture' ? 'var(--ember, #c4956a)' : '#6b836b' }}>
+        <span style={{ ...styles.typeBadge, color: project.type === 'venture' ? 'var(--ember, #c4956a)' : 'var(--status-info)' }}>
           {project.type}
         </span>
-        <span style={{ ...styles.statusDot, background: statusColor[project.status] || '#888' }} />
+        <span style={{ ...styles.statusDot, background: statusColor[project.status] || 'var(--text-muted)' }} />
         <span style={styles.statusLabel}>{project.status}</span>
       </div>
     </div>
@@ -163,10 +163,10 @@ function ProjectDetail({ project, isSteward, onBack }) {
       <div style={styles.detailHeader}>
         <h1 style={styles.h1}>{project.name}</h1>
         <div style={styles.detailBadges}>
-          <span style={{ ...styles.typeBadge, color: project.type === 'venture' ? 'var(--ember, #c4956a)' : '#6b836b' }}>
+          <span style={{ ...styles.typeBadge, color: project.type === 'venture' ? 'var(--ember, #c4956a)' : 'var(--status-info)' }}>
             {project.type}
           </span>
-          <span style={{ ...styles.statusDot, background: statusColor[project.status] || '#888' }} />
+          <span style={{ ...styles.statusDot, background: statusColor[project.status] || 'var(--text-muted)' }} />
           <span style={styles.statusLabel}>{project.status}</span>
         </div>
       </div>
@@ -200,7 +200,7 @@ function ProjectDetail({ project, isSteward, onBack }) {
           <div style={styles.milestoneList}>
             {milestones.map((m) => (
               <div key={m.id} style={styles.milestone}>
-                <span style={{ ...styles.milestoneStatus, color: statusColor[m.status] || '#888' }}>●</span>
+                <span style={{ ...styles.milestoneStatus, color: statusColor[m.status] || 'var(--text-muted)' }}>●</span>
                 <div>
                   <div style={styles.milestoneTitle}>{m.title}</div>
                   {m.due_date && (
@@ -284,7 +284,7 @@ function CreateProjectModal({ onClose, onCreate }) {
 const styles = {
   page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
   main: { maxWidth: '900px', margin: '0 auto', padding: '2rem' },
-  breadcrumb: { fontSize: '0.85rem', color: '#888', marginBottom: '1rem' },
+  breadcrumb: { fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' },
   breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   pageHeader: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' },
@@ -297,82 +297,82 @@ const styles = {
   },
   filters: { display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap' },
   select: {
-    background: '#141418', border: '1px solid #2a2a35',
-    color: '#e8e8e0', borderRadius: '6px', padding: '0.4rem 0.75rem',
+    background: 'var(--surface)', border: '1px solid #2a2a35',
+    color: 'var(--text-page)', borderRadius: '6px', padding: '0.4rem 0.75rem',
     fontSize: '0.8rem', cursor: 'pointer',
   },
-  loading: { color: '#888', padding: '2rem 0', fontSize: '0.875rem' },
-  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#c46a6a', fontSize: '0.875rem', marginBottom: '1rem' },
-  empty: { padding: '2rem', textAlign: 'center', color: '#888', fontSize: '0.875rem' },
+  loading: { color: 'var(--text-muted)', padding: '2rem 0', fontSize: '0.875rem' },
+  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: 'var(--status-err)', fontSize: '0.875rem', marginBottom: '1rem' },
+  empty: { padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.875rem' },
   list: { display: 'flex', flexDirection: 'column', gap: '0.75rem' },
   row: {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    background: '#141418', border: '1px solid #2a2a35',
+    background: 'var(--surface)', border: '1px solid #2a2a35',
     borderRadius: '10px', padding: '1.25rem', cursor: 'pointer',
     transition: 'border-color 0.15s',
   },
   rowLeft: { flex: 1, minWidth: 0, paddingRight: '1rem' },
   rowName: { fontSize: '1rem', fontWeight: 600, marginBottom: '0.25rem' },
-  rowDesc: { fontSize: '0.8rem', color: '#aaa', marginBottom: '0.5rem', lineHeight: 1.4 },
+  rowDesc: { fontSize: '0.8rem', color: 'var(--text-soft)', marginBottom: '0.5rem', lineHeight: 1.4 },
   rowMeta: { display: 'flex', gap: '1rem' },
-  metaItem: { fontSize: '0.75rem', color: '#888' },
+  metaItem: { fontSize: '0.75rem', color: 'var(--text-muted)' },
   rowRight: { display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 },
   typeBadge: { fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' },
   statusDot: { width: 8, height: 8, borderRadius: '50%' },
-  statusLabel: { fontSize: '0.75rem', color: '#888' },
+  statusLabel: { fontSize: '0.75rem', color: 'var(--text-muted)' },
   backBtn: {
-    background: 'none', border: 'none', color: '#888', cursor: 'pointer',
+    background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer',
     fontSize: '0.875rem', marginBottom: '1.5rem', padding: 0,
   },
   detailHeader: { display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' },
   detailBadges: { display: 'flex', alignItems: 'center', gap: '0.5rem' },
-  detailDesc: { color: '#aaa', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '2rem', maxWidth: '600px' },
+  detailDesc: { color: 'var(--text-soft)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '2rem', maxWidth: '600px' },
   section: { marginBottom: '2rem' },
   contributorList: { display: 'flex', flexWrap: 'wrap', gap: '0.75rem' },
   contributor: {
     display: 'flex', alignItems: 'center', gap: '0.75rem',
-    background: '#141418', border: '1px solid #2a2a35',
+    background: 'var(--surface)', border: '1px solid #2a2a35',
     borderRadius: '8px', padding: '0.75rem 1rem',
   },
   contributorAvatar: {
     width: 32, height: 32, borderRadius: '50%',
-    background: 'rgba(196,149,106,0.15)', color: 'var(--ember, #c4956a)',
+    background: 'var(--gold-15)', color: 'var(--ember, #c4956a)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontSize: '0.875rem', fontWeight: 700, flexShrink: 0,
   },
   contributorName: { fontSize: '0.875rem', fontWeight: 600 },
-  contributorRole: { fontSize: '0.75rem', color: '#888' },
+  contributorRole: { fontSize: '0.75rem', color: 'var(--text-muted)' },
   milestoneList: { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
   milestone: {
     display: 'flex', alignItems: 'flex-start', gap: '0.75rem',
-    background: '#141418', border: '1px solid #2a2a35',
+    background: 'var(--surface)', border: '1px solid #2a2a35',
     borderRadius: '8px', padding: '0.75rem 1rem',
   },
   milestoneStatus: { fontSize: '0.875rem', marginTop: '0.1rem', flexShrink: 0 },
   milestoneTitle: { fontSize: '0.875rem', fontWeight: 500 },
-  milestoneDue: { fontSize: '0.75rem', color: '#888', marginTop: '0.2rem' },
+  milestoneDue: { fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' },
   modalOverlay: {
     position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     zIndex: 100,
   },
   modal: {
-    background: '#141418', border: '1px solid #2a2a35',
+    background: 'var(--surface)', border: '1px solid #2a2a35',
     borderRadius: '12px', padding: '2rem', width: '100%', maxWidth: '480px',
     margin: '1rem',
   },
   modalTitle: { fontSize: '1.2rem', fontWeight: 700, marginBottom: '1.5rem' },
-  label: { display: 'block', fontSize: '0.8rem', color: '#888', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' },
+  label: { display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' },
   input: {
     width: '100%', padding: '0.65rem 0.9rem',
-    background: '#0a0a0f', border: '1px solid #2a2a35',
-    color: '#e8e8e0', borderRadius: '6px', fontSize: '0.875rem',
+    background: 'var(--app-bg)', border: '1px solid #2a2a35',
+    color: 'var(--text-page)', borderRadius: '6px', fontSize: '0.875rem',
     marginBottom: '1rem', boxSizing: 'border-box', outline: 'none',
   },
   modalActions: { display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' },
   cancelBtn: {
     background: 'none', border: '1px solid #2a2a35',
-    color: '#888', borderRadius: '6px', padding: '0.5rem 1rem',
+    color: 'var(--text-muted)', borderRadius: '6px', padding: '0.5rem 1rem',
     fontSize: '0.875rem', cursor: 'pointer',
   },
   submitBtn: {

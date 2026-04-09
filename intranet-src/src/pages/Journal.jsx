@@ -4,12 +4,12 @@ import { supabase } from '../lib/supabase.js'
 const EVENT_TYPES = ['', 'transfer', 'contribution', 'expense', 'vote', 'delegation', 'allocation', 'proposal']
 
 const EVENT_COLORS = {
-  transfer:     '#6b836b',
-  contribution: '#4a5f4a',
-  expense:      '#c46a6a',
-  vote:         '#c4956a',
-  delegation:   '#c4956a',
-  allocation:   '#4a5f4a',
+  transfer:     'var(--status-info)',
+  contribution: 'var(--status-ok)',
+  expense:      'var(--status-err)',
+  vote:         'var(--gold)',
+  delegation:   'var(--gold)',
+  allocation:   'var(--status-ok)',
   proposal:     '#60a5fa',
 }
 
@@ -117,7 +117,7 @@ export default function Journal() {
         {!loading && entries.length === 0 && (
           <div style={styles.empty}>
             <p style={{ marginBottom: '0.5rem' }}>No journal entries yet.</p>
-            <p style={{ fontSize: '0.85rem', color: '#555' }}>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-dim)' }}>
               Entries are created when capital transactions, votes, or labor contributions are recorded
               through the cooperative ledger system.
             </p>
@@ -134,9 +134,9 @@ export default function Journal() {
               <span
                 style={{
                   ...styles.eventTag,
-                  background: `${EVENT_COLORS[e.event_type] || '#888'}20`,
-                  color: EVENT_COLORS[e.event_type] || '#888',
-                  borderColor: `${EVENT_COLORS[e.event_type] || '#888'}40`,
+                  background: `${EVENT_COLORS[e.event_type] || 'var(--text-muted)'}20`,
+                  color: EVENT_COLORS[e.event_type] || 'var(--text-muted)',
+                  borderColor: `${EVENT_COLORS[e.event_type] || 'var(--text-muted)'}40`,
                 }}
               >
                 {e.event_type}
@@ -205,11 +205,11 @@ export default function Journal() {
 function DetailRow({ label, value, mono, highlight }) {
   return (
     <div style={detailRowStyle}>
-      <span style={{ color: '#666', fontSize: '0.82rem' }}>{label}</span>
+      <span style={{ color: 'var(--text-subdim)', fontSize: '0.82rem' }}>{label}</span>
       <span style={{
         fontFamily: mono ? 'var(--font-mono, monospace)' : undefined,
         fontSize: mono ? '0.78rem' : '0.85rem',
-        color: highlight ? '#c4956a' : '#aaa',
+        color: highlight ? 'var(--gold)' : 'var(--text-soft)',
         textAlign: 'right',
         maxWidth: '60%',
         wordBreak: 'break-all',
@@ -226,50 +226,50 @@ const detailRowStyle = {
 }
 
 const styles = {
-  page: { background: '#141418', minHeight: '100vh', color: '#c8c2ba' },
+  page: { background: 'var(--surface)', minHeight: '100vh', color: 'var(--text-warm)' },
   main: { maxWidth: 1000, margin: '0 auto', padding: '2rem 2rem 4rem' },
 
   breadcrumb: { display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', fontFamily: 'monospace', fontSize: '0.78rem' },
-  breadLink: { color: '#888', textDecoration: 'none' },
-  breadSep: { color: '#3a3a42' },
+  breadLink: { color: 'var(--text-muted)', textDecoration: 'none' },
+  breadSep: { color: 'var(--text-ghost)' },
 
   pageHeader: { marginBottom: '2rem' },
-  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c4956a', marginBottom: '0.5rem' },
-  pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: '#ece6de', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
-  pageSub: { fontSize: '0.9rem', color: '#888', lineHeight: 1.65, maxWidth: 600, margin: 0 },
+  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.5rem' },
+  pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: 'var(--text-display)', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
+  pageSub: { fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.65, maxWidth: 600, margin: 0 },
 
   rootBadge: { display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1.25rem', padding: '0.75rem 1rem', background: 'rgba(196,149,106,0.05)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: 6, fontFamily: 'monospace', fontSize: '0.78rem' },
-  rootLabel: { color: '#666', letterSpacing: '0.08em', textTransform: 'uppercase' },
-  rootHash: { color: '#c4956a', flex: 1 },
-  rootVerify: { color: '#888', textDecoration: 'none', fontSize: '0.72rem' },
+  rootLabel: { color: 'var(--text-subdim)', letterSpacing: '0.08em', textTransform: 'uppercase' },
+  rootHash: { color: 'var(--gold)', flex: 1 },
+  rootVerify: { color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.72rem' },
 
   filterBar: { display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '1.5rem' },
-  filterBtn: { background: '#1e1e24', border: '1px solid #2a2a35', color: '#888', borderRadius: 5, padding: '0.3rem 0.75rem', fontSize: '0.78rem', fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.05em' },
-  filterBtnActive: { background: 'rgba(196,149,106,0.08)', color: '#e8e8e0', borderColor: '#c4956a' },
+  filterBtn: { background: 'var(--panel)', border: '1px solid #2a2a35', color: 'var(--text-muted)', borderRadius: 5, padding: '0.3rem 0.75rem', fontSize: '0.78rem', fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.05em' },
+  filterBtnActive: { background: 'var(--gold-06)', color: 'var(--text-page)', borderColor: 'var(--gold)' },
 
-  loading: { color: '#555', fontFamily: 'monospace', fontSize: '0.85rem', padding: '2rem 0' },
-  error: { color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
-  empty: { padding: '3rem 0', color: '#666', fontFamily: 'monospace', fontSize: '0.85rem', textAlign: 'center' },
+  loading: { color: 'var(--text-dim)', fontFamily: 'monospace', fontSize: '0.85rem', padding: '2rem 0' },
+  error: { color: 'var(--status-err)', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
+  empty: { padding: '3rem 0', color: 'var(--text-subdim)', fontFamily: 'monospace', fontSize: '0.85rem', textAlign: 'center' },
 
-  entry: { background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '0.9rem 1.1rem', marginBottom: '0.5rem', cursor: 'pointer', transition: 'border-color 0.15s' },
+  entry: { background: 'var(--panel)', border: '1px solid #2a2a35', borderRadius: 8, padding: '0.9rem 1.1rem', marginBottom: '0.5rem', cursor: 'pointer', transition: 'border-color 0.15s' },
   entryRow: { display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' },
   eventTag: { fontFamily: 'monospace', fontSize: '0.7rem', letterSpacing: '0.08em', padding: '0.2em 0.55em', borderRadius: 4, border: '1px solid', flexShrink: 0 },
-  entrySeq: { fontFamily: 'monospace', fontSize: '0.72rem', color: '#444', flexShrink: 0 },
-  entryDesc: { fontSize: '0.88rem', color: '#aaa', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
-  entryAmount: { fontFamily: 'monospace', fontSize: '0.82rem', color: '#e8e8e0', flexShrink: 0 },
-  entryDate: { fontFamily: 'monospace', fontSize: '0.72rem', color: '#555', flexShrink: 0 },
+  entrySeq: { fontFamily: 'monospace', fontSize: '0.72rem', color: 'var(--text-ghost)', flexShrink: 0 },
+  entryDesc: { fontSize: '0.88rem', color: 'var(--text-soft)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
+  entryAmount: { fontFamily: 'monospace', fontSize: '0.82rem', color: 'var(--text-page)', flexShrink: 0 },
+  entryDate: { fontFamily: 'monospace', fontSize: '0.72rem', color: 'var(--text-dim)', flexShrink: 0 },
 
   entryDetail: { marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #2a2a35' },
   detailGrid: { display: 'flex', flexDirection: 'column', gap: 0 },
 
-  metadataBox: { marginTop: '0.75rem', padding: '0.75rem', background: '#141418', borderRadius: 5 },
-  metaLabel: { fontFamily: 'monospace', fontSize: '0.68rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#444', display: 'block', marginBottom: '0.5rem' },
-  metaPre: { fontFamily: 'monospace', fontSize: '0.75rem', color: '#666', margin: 0, overflow: 'auto' },
+  metadataBox: { marginTop: '0.75rem', padding: '0.75rem', background: 'var(--surface)', borderRadius: 5 },
+  metaLabel: { fontFamily: 'monospace', fontSize: '0.68rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-ghost)', display: 'block', marginBottom: '0.5rem' },
+  metaPre: { fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--text-subdim)', margin: 0, overflow: 'auto' },
 
   pagination: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', margin: '2rem 0', fontFamily: 'monospace', fontSize: '0.82rem' },
-  pageBtn: { background: '#1e1e24', border: '1px solid #2a2a35', color: '#888', borderRadius: 5, padding: '0.4rem 0.85rem', cursor: 'pointer', fontSize: '0.78rem' },
-  pageNum: { color: '#555' },
+  pageBtn: { background: 'var(--panel)', border: '1px solid #2a2a35', color: 'var(--text-muted)', borderRadius: 5, padding: '0.4rem 0.85rem', cursor: 'pointer', fontSize: '0.78rem' },
+  pageNum: { color: 'var(--text-dim)' },
 
   footerNav: { display: 'flex', justifyContent: 'space-between', paddingTop: '1.5rem', borderTop: '1px solid #2a2a35', marginTop: '2rem' },
-  footerLink: { fontFamily: 'monospace', fontSize: '0.78rem', color: '#888', textDecoration: 'none' },
+  footerLink: { fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--text-muted)', textDecoration: 'none' },
 }

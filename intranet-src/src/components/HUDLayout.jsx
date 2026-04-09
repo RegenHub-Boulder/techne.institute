@@ -11,6 +11,8 @@ function Icon({ d, size = 16, fill = 'currentColor' }) {
 }
 
 const ICONS = {
+  sun:       'M8 1v2M8 13v2M1 8H3m10 0h2M3.2 3.2l1.4 1.4m7 7l1.4 1.4M3.2 12.8l1.4-1.4m7-7l1.4-1.4M8 5a3 3 0 1 0 0 6A3 3 0 0 0 8 5z',
+  moon:      'M6 2a6 6 0 1 0 8 8 4.5 4.5 0 0 1-8-8z',
   dashboard: 'M1 1h6v6H1V1zm8 0h6v6H9V1zM1 9h6v6H1V9zm8 0h6v6H9V9z',
   account:   'M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6a5 5 0 0 1 10 0H3z',
   patronage: 'M8 1L9.8 5.6 15 6.1l-3.8 3.4 1.1 5.1L8 12.1l-4.3 2.5 1.1-5.1L1 5.9l5.2-.5z',
@@ -63,9 +65,9 @@ function NavItem({ path, label, icon, currentPath, steward, onClick }) {
         textDecoration: 'none',
         fontSize: '0.8rem',
         fontWeight: active ? 600 : 400,
-        color: active ? '#e0e0f0' : '#52526a',
-        background: active ? 'rgba(196,149,106,0.12)' : 'transparent',
-        borderLeft: active ? '2px solid #c4956a' : '2px solid transparent',
+        color: active ? 'var(--text-primary)' : 'var(--text-nav)',
+        background: active ? 'var(--gold-12)' : 'transparent',
+        borderLeft: active ? '2px solid var(--gold)' : '2px solid transparent',
         transition: 'all 0.12s',
         cursor: 'pointer',
         whiteSpace: 'nowrap',
@@ -74,18 +76,18 @@ function NavItem({ path, label, icon, currentPath, steward, onClick }) {
       }}
       onMouseEnter={e => {
         if (!active) {
-          e.currentTarget.style.color = '#9090b0'
-          e.currentTarget.style.background = 'rgba(255,255,255,0.04)'
+          e.currentTarget.style.color = 'var(--text-mid)'
+          e.currentTarget.style.background = 'var(--hover-light)'
         }
       }}
       onMouseLeave={e => {
         if (!active) {
-          e.currentTarget.style.color = '#52526a'
+          e.currentTarget.style.color = 'var(--text-nav)'
           e.currentTarget.style.background = 'transparent'
         }
       }}
     >
-      <span style={{ color: active ? '#c4956a' : 'inherit', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+      <span style={{ color: active ? 'var(--gold)' : 'inherit', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
         <Icon d={ICONS[icon]} size={14} />
       </span>
       <span>{label}</span>
@@ -93,8 +95,8 @@ function NavItem({ path, label, icon, currentPath, steward, onClick }) {
         <span style={{
           marginLeft: 'auto',
           fontSize: '0.6rem',
-          color: '#c4956a',
-          background: 'rgba(196,149,106,0.1)',
+          color: 'var(--gold)',
+          background: 'var(--gold-12)',
           padding: '1px 4px',
           borderRadius: '3px',
           textTransform: 'uppercase',
@@ -117,11 +119,27 @@ function useIsMobile(breakpoint = 768) {
   return isMobile
 }
 
+function getStoredTheme() {
+  try {
+    const s = localStorage.getItem('techne-theme')
+    if (s === 'light' || s === 'dark') return s
+  } catch (_) {}
+  return document.documentElement.getAttribute('data-theme') || 'dark'
+}
+
 export function HUDLayout({ children }) {
   const { participant, signOut, isSteward } = useAuth()
   const isMobile = useIsMobile(768)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [theme, setTheme] = useState(getStoredTheme)
   const currentPath = window.location.pathname.replace(/^\/intranet\/?/, '').replace(/\/$/, '')
+
+  function toggleTheme() {
+    const next = theme === 'dark' ? 'light' : 'dark'
+    document.documentElement.setAttribute('data-theme', next)
+    try { localStorage.setItem('techne-theme', next) } catch (_) {}
+    setTheme(next)
+  }
 
   // Close sidebar when navigating on mobile
   const handleNavClick = () => {
@@ -181,10 +199,19 @@ export function HUDLayout({ children }) {
             </span>
           )}
           <button
+            onClick={toggleTheme}
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            style={s.themeBtn}
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-nav)'}
+          >
+            <Icon d={theme === 'dark' ? ICONS.sun : ICONS.moon} size={14} />
+          </button>
+          <button
             onClick={signOut}
             style={s.signOutBtn}
-            onMouseEnter={e => e.currentTarget.style.color = '#e0e0f0'}
-            onMouseLeave={e => e.currentTarget.style.color = '#52526a'}
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-nav)'}
           >
             Sign out
           </button>
@@ -223,7 +250,7 @@ export function HUDLayout({ children }) {
             </div>
 
             {(isSteward || (participant?.membership_class === 4)) && (
-              <div style={{ ...s.navSection, marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid #1a1a28' }}>
+              <div style={{ ...s.navSection, marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid var(--border-nav)' }}>
                 {isSteward && STEWARD_ITEMS.map(item => (
                   <NavItem
                     key={item.path}
@@ -247,7 +274,7 @@ export function HUDLayout({ children }) {
             {/* Sidebar footer */}
             <div style={s.sidebarFooter}>
               <div style={s.sidebarFooterText}>
-                <span style={{ color: '#c4956a', fontWeight: 700, fontSize: '0.7rem' }}>◈</span>
+                <span style={{ color: 'var(--gold)', fontWeight: 700, fontSize: '0.7rem' }}>◈</span>
                 {' '}RegenHub, LCA
               </div>
             </div>
@@ -268,8 +295,8 @@ const s = {
     display: 'flex',
     flexDirection: 'column',
     height: '100vh',
-    background: '#08080a',
-    color: '#e0e0f0',
+    background: 'var(--app-bg)',
+    color: 'var(--text-primary)',
     fontFamily: 'var(--font-sans, Inter, system-ui, sans-serif)',
     overflow: 'hidden',
   },
@@ -280,8 +307,8 @@ const s = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '0 1rem',
-    background: '#0c0c1a',
-    borderBottom: '1px solid #1a1a2e',
+    background: 'var(--hud-bar)',
+    borderBottom: '1px solid var(--hud-border)',
     flexShrink: 0,
     zIndex: 20,
   },
@@ -293,7 +320,7 @@ const s = {
   hamburger: {
     background: 'none',
     border: 'none',
-    color: '#52526a',
+    color: 'var(--text-nav)',
     cursor: 'pointer',
     padding: '4px',
     display: 'flex',
@@ -305,23 +332,23 @@ const s = {
   wordmark: {
     fontSize: '0.8rem',
     fontWeight: 800,
-    color: '#c4956a',
+    color: 'var(--gold)',
     letterSpacing: '-0.01em',
     textTransform: 'uppercase',
   },
   statusSep: {
-    color: '#2a2a40',
+    color: 'var(--border-hud2)',
     fontSize: '0.75rem',
   },
   statusLabel: {
     fontSize: '0.72rem',
-    color: '#52526a',
+    color: 'var(--text-nav)',
     textTransform: 'uppercase',
     letterSpacing: '0.08em',
   },
   statusDate: {
     fontSize: '0.72rem',
-    color: '#52526a',
+    color: 'var(--text-nav)',
     fontVariantNumeric: 'tabular-nums',
   },
   statusRight: {
@@ -331,14 +358,14 @@ const s = {
   },
   statusUser: {
     fontSize: '0.75rem',
-    color: '#8888a8',
+    color: 'var(--text-accent)',
     display: 'flex',
     alignItems: 'center',
     gap: '0.35rem',
   },
   stewardPip: {
-    background: 'rgba(196,149,106,0.15)',
-    color: '#c4956a',
+    background: 'var(--gold-15)',
+    color: 'var(--gold)',
     fontSize: '0.6rem',
     fontWeight: 700,
     textTransform: 'uppercase',
@@ -346,10 +373,21 @@ const s = {
     padding: '1px 5px',
     borderRadius: '3px',
   },
+  themeBtn: {
+    background: 'none',
+    border: 'none',
+    color: 'var(--text-nav)',
+    cursor: 'pointer',
+    padding: '4px',
+    display: 'flex',
+    alignItems: 'center',
+    borderRadius: '4px',
+    transition: 'color 0.12s',
+  },
   signOutBtn: {
     background: 'none',
     border: 'none',
-    color: '#52526a',
+    color: 'var(--text-nav)',
     fontSize: '0.72rem',
     cursor: 'pointer',
     padding: '0',
@@ -373,8 +411,8 @@ const s = {
   sidebar: {
     width: '172px',
     minWidth: '172px',
-    background: '#0a0a18',
-    borderRight: '1px solid #1a1a2e',
+    background: 'var(--hud-surface)',
+    borderRight: '1px solid var(--hud-border)',
     display: 'flex',
     flexDirection: 'column',
     padding: '0.75rem 0.5rem',
@@ -391,7 +429,7 @@ const s = {
     width: '200px',
     minWidth: '200px',
     boxShadow: '4px 0 24px rgba(0,0,0,0.5)',
-    borderRight: '1px solid #2a2a3e',
+    borderRight: '1px solid var(--hud-border-deep)',
   },
   navSection: {
     display: 'flex',
@@ -406,13 +444,13 @@ const s = {
   },
   sidebarFooterText: {
     fontSize: '0.68rem',
-    color: '#2a2a40',
+    color: 'var(--border-hud2)',
     letterSpacing: '0.02em',
   },
   panel: {
     flex: 1,
     overflowY: 'auto',
     overflowX: 'hidden',
-    background: '#08080a',
+    background: 'var(--app-bg)',
   },
 }

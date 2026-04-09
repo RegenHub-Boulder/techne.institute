@@ -3,17 +3,17 @@ import { supabase } from '../lib/supabase.js'
 import { useAuth } from '../hooks/useAuth.jsx'
 
 const STATUS_COLORS = {
-  open:     '#4a5f4a',
-  closed:   '#555',
-  passed:   '#6b836b',
-  rejected: '#c46a6a',
-  pending:  '#c4956a',
+  open:     'var(--status-ok)',
+  closed:   'var(--text-dim)',
+  passed:   'var(--status-info)',
+  rejected: 'var(--status-err)',
+  pending:  'var(--gold)',
 }
 
 const VOTE_OPTIONS = [
-  { value: 'yes',     label: 'Yes', color: '#4a5f4a' },
-  { value: 'no',      label: 'No',  color: '#c46a6a' },
-  { value: 'abstain', label: 'Abstain', color: '#555' },
+  { value: 'yes',     label: 'Yes', color: 'var(--status-ok)' },
+  { value: 'no',      label: 'No',  color: 'var(--status-err)' },
+  { value: 'abstain', label: 'Abstain', color: 'var(--text-dim)' },
 ]
 
 function fmtDate(d) {
@@ -27,7 +27,7 @@ function VoteCounts({ votes }) {
     counts[v.vote] = (counts[v.vote] || 0) + 1
   }
   const total = votes?.length || 0
-  if (total === 0) return <span style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: '#444' }}>No votes</span>
+  if (total === 0) return <span style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--text-ghost)' }}>No votes</span>
   return (
     <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
       {VOTE_OPTIONS.map(({ value, label, color }) => (
@@ -37,7 +37,7 @@ function VoteCounts({ votes }) {
           </span>
         )
       ))}
-      <span style={{ fontFamily: 'monospace', fontSize: '0.72rem', color: '#444' }}>({total} total)</span>
+      <span style={{ fontFamily: 'monospace', fontSize: '0.72rem', color: 'var(--text-ghost)' }}>({total} total)</span>
     </div>
   )
 }
@@ -257,7 +257,7 @@ export default function Governance() {
         {proposals.map((p) => {
           const myVote = myVotes[p.id]
           const isVoting = voting[p.id] === 'loading'
-          const statusColor = STATUS_COLORS[p.status] || '#888'
+          const statusColor = STATUS_COLORS[p.status] || 'var(--text-muted)'
 
           return (
             <div key={p.id} style={styles.card}>
@@ -277,7 +277,7 @@ export default function Governance() {
 
               <div style={styles.cardMeta}>
                 <span style={styles.metaItem}>
-                  Proposed by <strong style={{ color: '#c8c2ba' }}>{p.participants?.name || '—'}</strong>
+                  Proposed by <strong style={{ color: 'var(--text-warm)' }}>{p.participants?.name || '—'}</strong>
                 </span>
                 {p.vote_deadline && (
                   <span style={styles.metaItem}>Deadline: {fmtDate(p.vote_deadline)}</span>
@@ -296,9 +296,9 @@ export default function Governance() {
                         disabled={isVoting}
                         style={{
                           ...styles.voteBtn,
-                          borderColor: myVote === value ? color : '#2a2a35',
-                          color: myVote === value ? color : '#666',
-                          background: myVote === value ? `${color}10` : '#1e1e24',
+                          borderColor: myVote === value ? color : 'var(--border-mid)',
+                          color: myVote === value ? color : 'var(--text-subdim)',
+                          background: myVote === value ? `${color}10` : 'var(--panel)',
                         }}
                       >
                         {label}
@@ -312,11 +312,11 @@ export default function Governance() {
               {/* Journal events for this proposal */}
               {p.proposal_votes && p.proposal_votes.length > 0 && (
                 <div style={styles.journalHint}>
-                  <span style={{ color: '#444' }}>
+                  <span style={{ color: 'var(--text-ghost)' }}>
                     {p.proposal_votes.length} vote{p.proposal_votes.length !== 1 ? 's' : ''} →
                     recorded as REA journal events (event_type: vote)
                   </span>
-                  <a href="/intranet/journal/" style={{ color: '#666', textDecoration: 'none', fontSize: '0.72rem' }}>
+                  <a href="/intranet/journal/" style={{ color: 'var(--text-subdim)', textDecoration: 'none', fontSize: '0.72rem' }}>
                     View in journal →
                   </a>
                 </div>
@@ -335,45 +335,45 @@ export default function Governance() {
 }
 
 const styles = {
-  page: { background: '#141418', minHeight: '100vh', color: '#c8c2ba' },
+  page: { background: 'var(--surface)', minHeight: '100vh', color: 'var(--text-warm)' },
   main: { maxWidth: 900, margin: '0 auto', padding: '2rem 2rem 4rem' },
 
   breadcrumb: { display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', fontFamily: 'monospace', fontSize: '0.78rem' },
-  breadLink: { color: '#888', textDecoration: 'none' },
-  breadSep: { color: '#3a3a42' },
+  breadLink: { color: 'var(--text-muted)', textDecoration: 'none' },
+  breadSep: { color: 'var(--text-ghost)' },
 
   pageHeader: { marginBottom: '1.75rem' },
-  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c4956a', marginBottom: '0.5rem' },
-  pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: '#ece6de', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
-  pageSub: { fontSize: '0.9rem', color: '#888', lineHeight: 1.65, maxWidth: 600, margin: 0 },
+  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.5rem' },
+  pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: 'var(--text-display)', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
+  pageSub: { fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.65, maxWidth: 600, margin: 0 },
 
-  journalNote: { background: 'rgba(74,95,74,0.08)', border: '1px solid rgba(74,95,74,0.2)', borderRadius: 6, padding: '0.65rem 1rem', fontFamily: 'monospace', fontSize: '0.8rem', color: '#4a5f4a', marginBottom: '1rem' },
+  journalNote: { background: 'rgba(74,95,74,0.08)', border: '1px solid rgba(74,95,74,0.2)', borderRadius: 6, padding: '0.65rem 1rem', fontFamily: 'monospace', fontSize: '0.8rem', color: 'var(--status-ok)', marginBottom: '1rem' },
 
   actionBar: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' },
   filterBar: { display: 'flex', gap: '0.4rem' },
-  filterBtn: { background: '#1e1e24', border: '1px solid #2a2a35', color: '#888', borderRadius: 5, padding: '0.3rem 0.75rem', fontSize: '0.78rem', fontFamily: 'monospace', cursor: 'pointer' },
-  filterBtnActive: { background: 'rgba(196,149,106,0.08)', color: '#e8e8e0', borderColor: '#c4956a' },
-  newBtn: { background: 'rgba(196,149,106,0.08)', border: '1px solid rgba(196,149,106,0.25)', color: '#c4956a', borderRadius: 6, padding: '0.4rem 1rem', fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'monospace' },
+  filterBtn: { background: 'var(--panel)', border: '1px solid #2a2a35', color: 'var(--text-muted)', borderRadius: 5, padding: '0.3rem 0.75rem', fontSize: '0.78rem', fontFamily: 'monospace', cursor: 'pointer' },
+  filterBtnActive: { background: 'var(--gold-06)', color: 'var(--text-page)', borderColor: 'var(--gold)' },
+  newBtn: { background: 'var(--gold-06)', border: '1px solid rgba(196,149,106,0.25)', color: 'var(--gold)', borderRadius: 6, padding: '0.4rem 1rem', fontSize: '0.82rem', cursor: 'pointer', fontFamily: 'monospace' },
 
-  newForm: { background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '1.25rem', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' },
-  formTitle: { fontFamily: 'monospace', fontSize: '0.78rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#666', marginBottom: '0.25rem' },
-  input: { background: '#141418', border: '1px solid #2a2a35', borderRadius: 5, color: '#c8c2ba', padding: '0.6rem 0.85rem', fontSize: '0.88rem', fontFamily: 'inherit', width: '100%', boxSizing: 'border-box' },
-  submitBtn: { background: 'rgba(196,149,106,0.12)', border: '1px solid rgba(196,149,106,0.3)', color: '#c4956a', borderRadius: 5, padding: '0.5rem 1.1rem', cursor: 'pointer', fontSize: '0.82rem' },
-  cancelBtn: { background: 'none', border: '1px solid #2a2a35', color: '#666', borderRadius: 5, padding: '0.5rem 0.85rem', cursor: 'pointer', fontSize: '0.82rem' },
+  newForm: { background: 'var(--panel)', border: '1px solid #2a2a35', borderRadius: 8, padding: '1.25rem', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' },
+  formTitle: { fontFamily: 'monospace', fontSize: '0.78rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-subdim)', marginBottom: '0.25rem' },
+  input: { background: 'var(--surface)', border: '1px solid #2a2a35', borderRadius: 5, color: 'var(--text-warm)', padding: '0.6rem 0.85rem', fontSize: '0.88rem', fontFamily: 'inherit', width: '100%', boxSizing: 'border-box' },
+  submitBtn: { background: 'var(--gold-12)', border: '1px solid rgba(196,149,106,0.3)', color: 'var(--gold)', borderRadius: 5, padding: '0.5rem 1.1rem', cursor: 'pointer', fontSize: '0.82rem' },
+  cancelBtn: { background: 'none', border: '1px solid #2a2a35', color: 'var(--text-subdim)', borderRadius: 5, padding: '0.5rem 0.85rem', cursor: 'pointer', fontSize: '0.82rem' },
 
-  loading: { color: '#555', fontFamily: 'monospace', fontSize: '0.85rem', padding: '2rem 0' },
-  error: { color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
-  empty: { color: '#555', fontFamily: 'monospace', fontSize: '0.85rem', padding: '3rem 0', textAlign: 'center' },
+  loading: { color: 'var(--text-dim)', fontFamily: 'monospace', fontSize: '0.85rem', padding: '2rem 0' },
+  error: { color: 'var(--status-err)', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
+  empty: { color: 'var(--text-dim)', fontFamily: 'monospace', fontSize: '0.85rem', padding: '3rem 0', textAlign: 'center' },
 
-  card: { background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '1.25rem', marginBottom: '0.75rem' },
+  card: { background: 'var(--panel)', border: '1px solid #2a2a35', borderRadius: 8, padding: '1.25rem', marginBottom: '0.75rem' },
   cardTop: { display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' },
   statusBadge: { fontFamily: 'monospace', fontSize: '0.7rem', letterSpacing: '0.08em', padding: '0.2em 0.55em', borderRadius: 4, border: '1px solid' },
-  category: { fontFamily: 'monospace', fontSize: '0.72rem', color: '#555', letterSpacing: '0.05em' },
-  propDate: { fontFamily: 'monospace', fontSize: '0.72rem', color: '#444', marginLeft: 'auto' },
-  cardTitle: { fontFamily: 'Georgia, serif', fontSize: '1.15rem', fontWeight: 400, color: '#e8e8e0', margin: '0 0 0.5rem' },
-  cardDesc: { fontSize: '0.9rem', color: '#888', lineHeight: 1.6, margin: '0 0 0.75rem' },
+  category: { fontFamily: 'monospace', fontSize: '0.72rem', color: 'var(--text-dim)', letterSpacing: '0.05em' },
+  propDate: { fontFamily: 'monospace', fontSize: '0.72rem', color: 'var(--text-ghost)', marginLeft: 'auto' },
+  cardTitle: { fontFamily: 'Georgia, serif', fontSize: '1.15rem', fontWeight: 400, color: 'var(--text-page)', margin: '0 0 0.5rem' },
+  cardDesc: { fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 0.75rem' },
   cardMeta: { display: 'flex', gap: '1.25rem', flexWrap: 'wrap', marginBottom: '0.75rem' },
-  metaItem: { fontFamily: 'monospace', fontSize: '0.78rem', color: '#555' },
+  metaItem: { fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--text-dim)' },
 
   voteRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #252530' },
   voteBtns: { display: 'flex', gap: '0.4rem' },
@@ -382,5 +382,5 @@ const styles = {
   journalHint: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.75rem', paddingTop: '0.65rem', borderTop: '1px solid #1e1e24', fontFamily: 'monospace', fontSize: '0.72rem' },
 
   footerNav: { display: 'flex', justifyContent: 'space-between', paddingTop: '1.5rem', borderTop: '1px solid #2a2a35', marginTop: '2rem' },
-  footerLink: { fontFamily: 'monospace', fontSize: '0.78rem', color: '#888', textDecoration: 'none' },
+  footerLink: { fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--text-muted)', textDecoration: 'none' },
 }

@@ -30,15 +30,15 @@ export function TabShell({ title, subtitle, tabs, active, onTab, action, childre
                 ...s.tab,
                 ...(isActive ? s.tabActive : {}),
               }}
-              onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = '#9090b0' }}
-              onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = '#52526a' }}
+              onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = 'var(--text-mid)' }}
+              onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'var(--text-nav)' }}
             >
               {label}
               {t.badge != null && (
                 <span style={{
                   ...s.badge,
-                  background: t.badgeColor ? `${t.badgeColor}20` : 'rgba(255,255,255,0.06)',
-                  color: t.badgeColor || '#8888a8',
+                  background: t.badgeColor ? `${t.badgeColor}20` : 'var(--hover-med)',
+                  color: t.badgeColor || 'var(--text-accent)',
                 }}>{t.badge}</span>
               )}
             </button>
@@ -71,13 +71,13 @@ const s = {
     fontSize: '1.4rem',
     fontWeight: 800,
     letterSpacing: '-0.025em',
-    color: '#e0e0f0',
+    color: 'var(--text-primary)',
     margin: 0,
     lineHeight: 1.15,
   },
   subtitle: {
     fontSize: '0.78rem',
-    color: '#52526a',
+    color: 'var(--text-nav)',
     margin: '0.3rem 0 0',
   },
   headerAction: {
@@ -99,7 +99,7 @@ const s = {
     background: 'none',
     border: 'none',
     borderBottom: '2px solid transparent',
-    color: '#52526a',
+    color: 'var(--text-nav)',
     fontSize: '0.82rem',
     fontWeight: 500,
     cursor: 'pointer',
@@ -109,8 +109,8 @@ const s = {
     fontFamily: 'inherit',
   },
   tabActive: {
-    color: '#e0e0f0',
-    borderBottomColor: '#c4956a',
+    color: 'var(--text-primary)',
+    borderBottomColor: 'var(--gold)',
     fontWeight: 600,
   },
   tabBarFill: {

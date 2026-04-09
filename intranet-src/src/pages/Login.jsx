@@ -166,7 +166,7 @@ const styles = {
     background: 'rgba(220, 60, 60, 0.1)',
     border: '1px solid rgba(220, 60, 60, 0.3)',
     borderRadius: '6px',
-    color: '#c46a6a',
+    color: 'var(--status-err)',
     fontSize: '0.875rem',
   },
   sent: {

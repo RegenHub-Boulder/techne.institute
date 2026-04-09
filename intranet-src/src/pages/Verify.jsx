@@ -192,7 +192,7 @@ export default function Verify() {
               borderColor: liveMatch ? 'rgba(74,95,74,0.3)' : 'rgba(255,107,107,0.3)',
               background: liveMatch ? 'rgba(74,95,74,0.05)' : 'rgba(255,107,107,0.05)',
             }}>
-              <div style={{ ...styles.resultStatus, color: liveMatch ? '#4a5f4a' : '#c46a6a' }}>
+              <div style={{ ...styles.resultStatus, color: liveMatch ? 'var(--status-ok)' : 'var(--status-err)' }}>
                 {liveMatch ? '✓ State Verified' : '✗ State Mismatch — possible tampering'}
               </div>
               <div style={styles.resultRows}>
@@ -265,12 +265,12 @@ export default function Verify() {
                 : 'rgba(255,107,107,0.05)',
             }}>
               {proofResult.error ? (
-                <div style={{ color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem' }}>
+                <div style={{ color: 'var(--status-err)', fontFamily: 'monospace', fontSize: '0.85rem' }}>
                   {proofResult.error}
                 </div>
               ) : (
                 <>
-                  <div style={{ ...styles.resultStatus, color: proofResult.valid ? '#4a5f4a' : '#c46a6a' }}>
+                  <div style={{ ...styles.resultStatus, color: proofResult.valid ? 'var(--status-ok)' : 'var(--status-err)' }}>
                     {proofResult.valid ? '✓ Proof Valid' : '✗ Proof Invalid'}
                   </div>
                   <div style={styles.resultRows}>
@@ -322,7 +322,7 @@ export default function Verify() {
                   key={s.id}
                   style={{
                     ...styles.snapCard,
-                    borderColor: selectedSnap === s.id ? 'rgba(196,149,106,0.4)' : '#2a2a35',
+                    borderColor: selectedSnap === s.id ? 'rgba(196,149,106,0.4)' : 'var(--border-mid)',
                   }}
                   onClick={() => {
                     setSelectedSnap(selectedSnap === s.id ? null : s.id)
@@ -340,9 +340,9 @@ export default function Verify() {
                   </div>
                   {s.rea_journal && (
                     <div style={styles.snapEvent}>
-                      <span style={{ color: '#666' }}>{s.rea_journal.event_type}</span>
+                      <span style={{ color: 'var(--text-subdim)' }}>{s.rea_journal.event_type}</span>
                       {' — '}
-                      <span style={{ color: '#555' }}>{s.rea_journal.description || '—'}</span>
+                      <span style={{ color: 'var(--text-dim)' }}>{s.rea_journal.description || '—'}</span>
                     </div>
                   )}
                 </div>
@@ -363,11 +363,11 @@ export default function Verify() {
 function ResultRow({ label, value, mono, highlight }) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.3rem 0', borderBottom: '1px solid #1e1e2410' }}>
-      <span style={{ fontSize: '0.82rem', color: '#666' }}>{label}</span>
+      <span style={{ fontSize: '0.82rem', color: 'var(--text-subdim)' }}>{label}</span>
       <span style={{
         fontFamily: mono ? 'monospace' : undefined,
         fontSize: mono ? '0.78rem' : '0.85rem',
-        color: highlight ? '#4a5f4a' : '#aaa',
+        color: highlight ? 'var(--status-ok)' : 'var(--text-soft)',
       }}>
         {String(value)}
       </span>
@@ -376,47 +376,47 @@ function ResultRow({ label, value, mono, highlight }) {
 }
 
 const styles = {
-  page: { background: '#141418', minHeight: '100vh', color: '#c8c2ba' },
+  page: { background: 'var(--surface)', minHeight: '100vh', color: 'var(--text-warm)' },
   main: { maxWidth: 800, margin: '0 auto', padding: '2rem 2rem 4rem' },
 
   breadcrumb: { display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', fontFamily: 'monospace', fontSize: '0.78rem' },
-  breadLink: { color: '#888', textDecoration: 'none' },
-  breadSep: { color: '#3a3a42' },
+  breadLink: { color: 'var(--text-muted)', textDecoration: 'none' },
+  breadSep: { color: 'var(--text-ghost)' },
 
   pageHeader: { marginBottom: '2rem' },
-  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c4956a', marginBottom: '0.5rem' },
-  pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: '#ece6de', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
-  pageSub: { fontSize: '0.9rem', color: '#888', lineHeight: 1.65, maxWidth: 600, margin: 0 },
+  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.5rem' },
+  pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: 'var(--text-display)', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
+  pageSub: { fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.65, maxWidth: 600, margin: 0 },
 
   section: { marginBottom: '2.5rem', paddingBottom: '2.5rem', borderBottom: '1px solid #2a2a35' },
-  sectionTitle: { fontFamily: 'monospace', fontSize: '0.78rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginBottom: '0.65rem' },
-  sectionDesc: { fontSize: '0.9rem', color: '#666', lineHeight: 1.65, marginBottom: '1.25rem' },
+  sectionTitle: { fontFamily: 'monospace', fontSize: '0.78rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.65rem' },
+  sectionDesc: { fontSize: '0.9rem', color: 'var(--text-subdim)', lineHeight: 1.65, marginBottom: '1.25rem' },
 
-  actionBtn: { background: 'rgba(196,149,106,0.08)', border: '1px solid rgba(196,149,106,0.25)', color: '#c4956a', borderRadius: 6, padding: '0.55rem 1.25rem', fontSize: '0.85rem', fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.05em' },
+  actionBtn: { background: 'var(--gold-06)', border: '1px solid rgba(196,149,106,0.25)', color: 'var(--gold)', borderRadius: 6, padding: '0.55rem 1.25rem', fontSize: '0.85rem', fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.05em' },
 
   resultBox: { border: '1px solid', borderRadius: 8, padding: '1.25rem', marginTop: '1.25rem' },
   resultStatus: { fontFamily: 'monospace', fontSize: '0.95rem', marginBottom: '1rem', fontWeight: 600 },
   resultRows: { display: 'flex', flexDirection: 'column', marginBottom: '1rem' },
-  explainBox: { fontSize: '0.82rem', color: '#555', lineHeight: 1.65, paddingTop: '0.75rem', borderTop: '1px solid #252530' },
-  code: { fontFamily: 'monospace', fontSize: '0.8rem', background: '#1e1e24', padding: '0.1em 0.35em', borderRadius: 3, color: '#c4956a' },
+  explainBox: { fontSize: '0.82rem', color: 'var(--text-dim)', lineHeight: 1.65, paddingTop: '0.75rem', borderTop: '1px solid #252530' },
+  code: { fontFamily: 'monospace', fontSize: '0.8rem', background: 'var(--panel)', padding: '0.1em 0.35em', borderRadius: 3, color: 'var(--gold)' },
 
   inputGroup: { marginBottom: '0.85rem' },
-  label: { display: 'block', fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#555', marginBottom: '0.4rem' },
-  input: { background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 5, color: '#c8c2ba', padding: '0.65rem 0.9rem', fontSize: '0.85rem', fontFamily: 'monospace', width: '100%', boxSizing: 'border-box', marginBottom: '0.25rem' },
+  label: { display: 'block', fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: '0.4rem' },
+  input: { background: 'var(--panel)', border: '1px solid #2a2a35', borderRadius: 5, color: 'var(--text-warm)', padding: '0.65rem 0.9rem', fontSize: '0.85rem', fontFamily: 'monospace', width: '100%', boxSizing: 'border-box', marginBottom: '0.25rem' },
 
   proofPath: { marginTop: '1rem', paddingTop: '0.75rem', borderTop: '1px solid #252530' },
-  proofPathTitle: { fontFamily: 'monospace', fontSize: '0.68rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#444', marginBottom: '0.5rem' },
+  proofPathTitle: { fontFamily: 'monospace', fontSize: '0.68rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-ghost)', marginBottom: '0.5rem' },
   proofStep: { display: 'flex', gap: '1rem', padding: '0.25rem 0', fontFamily: 'monospace', fontSize: '0.78rem' },
-  proofStepPos: { color: '#666', width: '3rem', flexShrink: 0 },
-  proofStepHash: { color: '#555' },
+  proofStepPos: { color: 'var(--text-subdim)', width: '3rem', flexShrink: 0 },
+  proofStepHash: { color: 'var(--text-dim)' },
 
-  snapCard: { background: '#1e1e24', border: '1px solid', borderRadius: 6, padding: '0.85rem 1rem', marginBottom: '0.4rem', cursor: 'pointer' },
+  snapCard: { background: 'var(--panel)', border: '1px solid', borderRadius: 6, padding: '0.85rem 1rem', marginBottom: '0.4rem', cursor: 'pointer' },
   snapTop: { display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' },
-  snapRoot: { fontFamily: 'monospace', fontSize: '0.78rem', color: '#c4956a', flex: 1 },
-  snapMeta: { fontFamily: 'monospace', fontSize: '0.72rem', color: '#555' },
-  snapDate: { fontFamily: 'monospace', fontSize: '0.72rem', color: '#444' },
+  snapRoot: { fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--gold)', flex: 1 },
+  snapMeta: { fontFamily: 'monospace', fontSize: '0.72rem', color: 'var(--text-dim)' },
+  snapDate: { fontFamily: 'monospace', fontSize: '0.72rem', color: 'var(--text-ghost)' },
   snapEvent: { fontFamily: 'monospace', fontSize: '0.72rem', marginTop: '0.35rem' },
 
   footerNav: { display: 'flex', justifyContent: 'space-between', paddingTop: '1.5rem', borderTop: '1px solid #2a2a35', marginTop: '1rem' },
-  footerLink: { fontFamily: 'monospace', fontSize: '0.78rem', color: '#888', textDecoration: 'none' },
+  footerLink: { fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--text-muted)', textDecoration: 'none' },
 }

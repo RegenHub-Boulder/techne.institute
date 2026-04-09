@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -7,57 +7,157 @@
     <title>Techne Intranet</title>
     <meta name="robots" content="noindex,nofollow" />
     <link rel="stylesheet" href="/assets/tokens.css" />
+    <!-- Theme detection: runs before paint to prevent flash -->
+    <script>
+      (function() {
+        var s = localStorage.getItem('techne-theme');
+        if (s === 'light' || s === 'dark') {
+          document.documentElement.setAttribute('data-theme', s);
+        } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
     <style>
-      /* ── HUD design tokens — P416 (extends P412 system) ─────────────── */
+      /* ── HUD design tokens ─────────────────────────────────────────── */
       :root {
-        /* HUD surfaces */
-        --hud-surface:      #0a0a18;  /* sidebar background */
-        --hud-bar:          #0c0c1a;  /* status bar background */
-        --hud-panel:        var(--void, #08080a);  /* content panel background */
-        --hud-border:       #1a1a2e;  /* primary panel border */
-        --hud-border-deep:  #2a2a3e;  /* elevated border, mobile sidebar */
+        /* ── App shell backgrounds ─────────────────── */
+        --app-bg:       #0a0a0f;   /* body / root bg */
+        --hud-surface:  #0a0a18;   /* sidebar bg */
+        --hud-bar:      #0c0c1a;   /* status bar bg */
+        --hud-panel:    #0a0a0f;   /* content panel bg */
+        --ink:          #0f0f1e;   /* deep panel bg */
+        --surface:      #141418;   /* page content bg */
+        --panel:        #1e1e24;   /* card / elevated bg */
+        --raised:       #252530;   /* raised element bg */
 
-        /* HUD glow washes */
-        --hud-glow-ember:   rgba(196, 149, 106, 0.12);  /* active nav item */
-        --hud-glow-green:   rgba(74, 95, 74, 0.15); /* live / verified */
-        --hud-glow-amber:   rgba(196, 149, 106, 0.15); /* warning state */
-        --hud-glow-blue:    rgba(107, 131, 107, 0.12);/* info state */
+        /* ── Borders ──────────────────────────────── */
+        --hud-border:      #1a1a2e;   /* HUD panel border */
+        --hud-border-deep: #2a2a3e;   /* HUD elevated border */
+        --border-nav:      #1a1a28;   /* nav section divider */
+        --border-mid:      #2a2a35;   /* standard border */
+        --border-hud2:     #2a2a40;   /* HUD deep border */
 
-        /* HUD text scale */
-        --hud-text-primary: #e0e0f0;  /* primary content text */
-        --hud-text-muted:   #52526a;  /* secondary / meta text */
-        --hud-text-dim:     #2a2a40;  /* decorative, footer text */
-        --hud-text-accent:  #8888a8;  /* user name, subdued accent */
+        /* ── Glow washes ──────────────────────────── */
+        --hud-glow-ember:  rgba(196,149,106,0.12);
+        --hud-glow-green:  rgba(74,95,74,0.15);
+        --hud-glow-amber:  rgba(196,149,106,0.15);
+        --hud-glow-blue:   rgba(107,131,107,0.12);
 
-        /* Status indicator palette */
-        --hud-status-live:  #4a5f4a;  /* connected, verified, active */
-        --hud-status-warn:  #c4956a;  /* caution, pending */
-        --hud-status-error: #c46a6a;  /* error, failed */
-        --hud-status-info:  #6b836b;  /* informational */
+        /* ── Text ─────────────────────────────────── */
+        --text-primary:  #e0e0f0;   /* primary HUD text */
+        --text-page:     #e8e8e0;   /* page body text */
+        --text-warm:     #c8c2ba;   /* warm body text */
+        --text-display:  #ece6de;   /* display headings */
+        --text-muted:    #888;      /* secondary text */
+        --text-accent:   #8888a8;   /* user name, meta */
+        --text-nav:      #52526a;   /* nav item text */
+        --text-mid:      #9090b0;   /* nav hover / mid */
+        --text-3a5a:     #3a3a5a;   /* raised text */
+        --text-subdim:   #666;      /* subdued */
+        --text-dim:      #555;      /* dim */
+        --text-ghost:    #444;      /* ghost */
+        --text-soft:     #aaa;      /* soft */
+        --text-ccc:      #ccc;      /* lighter */
+        --text-dim2a40:  #2a2a40;   /* very dim */
 
-        /* Monospace data layer */
-        --hud-mono: 'JetBrains Mono', 'IBM Plex Mono', 'Fira Code', Consolas, monospace;
+        /* ── Hover overlays ───────────────────────── */
+        --hover-light:  rgba(255,255,255,0.04);
+        --hover-med:    rgba(255,255,255,0.06);
+        --hover-dim:    rgba(255,255,255,0.03);
 
-        /* HUD motion */
+        /* ── Gold accent ──────────────────────────── */
+        --gold:    #c4956a;
+        --gold-06: rgba(196,149,106,0.06);
+        --gold-12: rgba(196,149,106,0.12);
+        --gold-15: rgba(196,149,106,0.15);
+        --gold-20: rgba(196,149,106,0.20);
+        --gold-25: rgba(196,149,106,0.25);
+        --gold-30: rgba(196,149,106,0.30);
+        --gold-40: rgba(196,149,106,0.40);
+
+        /* ── Status palette ───────────────────────── */
+        --status-ok:      #4a5f4a;
+        --status-ok-bg:   rgba(74,95,74,0.15);
+        --status-warn:    #c4956a;
+        --status-warn-bg: rgba(196,149,106,0.15);
+        --status-err:     #c46a6a;
+        --status-err-bg:  rgba(196,106,106,0.15);
+        --status-info:    #6b836b;
+        --status-info-bg: rgba(107,131,107,0.15);
+
+        /* ── HUD status aliases (legacy compat) ───── */
+        --hud-status-live:  #4a5f4a;
+        --hud-status-warn:  #c4956a;
+        --hud-status-error: #c46a6a;
+        --hud-status-info:  #6b836b;
+
+        /* ── Typography ───────────────────────────── */
+        --hud-mono: 'JetBrains Mono','IBM Plex Mono','Fira Code',Consolas,monospace;
         --hud-transition: 0.12s ease;
 
-        /* HUD z-index layer */
+        /* ── Z-index ──────────────────────────────── */
         --hud-z-panel:    0;
         --hud-z-sidebar:  16;
         --hud-z-backdrop: 15;
         --hud-z-bar:      20;
       }
 
+      /* ── Light mode overrides ──────────────────────────────────────── */
+      [data-theme="light"] {
+        /* App shell */
+        --app-bg:       #f7f5f0;
+        --hud-surface:  #ede8e0;
+        --hud-bar:      #ede8e0;
+        --hud-panel:    #f7f5f0;
+        --ink:          #e8e2d8;
+        --surface:      #f0ece4;
+        --panel:        #e4ddd3;
+        --raised:       #ddd7cc;
+
+        /* Borders */
+        --hud-border:      #c8c2b8;
+        --hud-border-deep: #c8c2b8;
+        --border-nav:      #d0c9bc;
+        --border-mid:      #c8c2b8;
+        --border-hud2:     #c8c2b8;
+
+        /* Glow washes — same (work on both) */
+
+        /* Text — inverted warm scale */
+        --text-primary:  #1a1614;
+        --text-page:     #2a2520;
+        --text-warm:     #3a3530;
+        --text-display:  #1a1614;
+        --text-muted:    #6a6560;
+        --text-accent:   #5a5550;
+        --text-nav:      #5a5550;
+        --text-mid:      #6a6560;
+        --text-3a5a:     #8a8480;
+        --text-subdim:   #6a6560;
+        --text-dim:      #7a7570;
+        --text-ghost:    #8a8480;
+        --text-soft:     #8a8480;
+        --text-ccc:      #9a9490;
+        --text-dim2a40:  #8a8480;
+
+        /* Hover overlays */
+        --hover-light: rgba(0,0,0,0.03);
+        --hover-med:   rgba(0,0,0,0.05);
+        --hover-dim:   rgba(0,0,0,0.02);
+      }
+
       body {
         margin: 0;
         font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
-        background: var(--hud-panel, #08080a);
-        color: var(--hud-text-primary, #e0e0f0);
+        background: var(--app-bg);
+        color: var(--text-primary);
         min-height: 100vh;
+        transition: background 0.2s ease, color 0.2s ease;
       }
       #root { min-height: 100vh; }
     </style>
-    <script type="module" crossorigin src="/intranet/assets/index-BHkAIG5M.js"></script>
+    <script type="module" crossorigin src="/intranet/assets/index-CYIeo7qV.js"></script>
   </head>
   <body>
     <div id="root"></div>

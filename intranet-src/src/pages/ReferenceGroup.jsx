@@ -251,11 +251,11 @@ function DocumentsTab() {
 
   return (
     <div>
-      <p style={{ fontSize: '0.875rem', color: '#888', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+      <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
         Your K-1 tax documents and cooperative filings.
       </p>
 
-      {loading && <div style={{ color: '#888', fontSize: '0.875rem' }}>Loading documents…</div>}
+      {loading && <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Loading documents…</div>}
 
       {!loading && docs.length === 0 && (
         <div style={d.emptyCard}>
@@ -264,9 +264,9 @@ function DocumentsTab() {
             Your K-1 documents will appear here once they've been uploaded by the steward.
             K-1s are typically uploaded in February or March for the prior tax year.
           </p>
-          <p style={{ fontSize: '0.85rem', color: '#888', margin: 0 }}>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0 }}>
             Need a document immediately?{' '}
-            <a href="mailto:steward@techne.studio" style={{ color: '#c4956a', textDecoration: 'none' }}>
+            <a href="mailto:steward@techne.studio" style={{ color: 'var(--gold)', textDecoration: 'none' }}>
               Contact a steward
             </a>
             .
@@ -289,7 +289,7 @@ function DocumentsTab() {
         </p>
         <p style={{ ...d.infoText, margin: 0 }}>
           Questions?{' '}
-          <a href="mailto:steward@techne.studio" style={{ color: '#c4956a', textDecoration: 'none' }}>
+          <a href="mailto:steward@techne.studio" style={{ color: 'var(--gold)', textDecoration: 'none' }}>
             Contact a steward
           </a>{' '}
           or consult your tax advisor.
@@ -332,7 +332,7 @@ const g = {
   },
   sidebarTitle: {
     fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.08em',
-    color: '#444', marginBottom: '0.75rem', paddingLeft: '0.5rem',
+    color: 'var(--text-ghost)', marginBottom: '0.75rem', paddingLeft: '0.5rem',
   },
   docNav: { display: 'flex', flexDirection: 'column', gap: '0.2rem', marginBottom: '1.5rem' },
   docBtn: {
@@ -341,68 +341,68 @@ const g = {
     width: '100%', transition: 'background 0.1s',
   },
   docBtnActive: { background: 'rgba(196,149,106,0.1)' },
-  docBtnTitle:  { fontSize: '0.85rem', fontWeight: 600, color: '#e0e0f0', marginBottom: '0.1rem' },
-  docBtnSub:    { fontSize: '0.7rem', color: '#555', lineHeight: 1.3 },
+  docBtnTitle:  { fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.1rem' },
+  docBtnSub:    { fontSize: '0.7rem', color: 'var(--text-dim)', lineHeight: 1.3 },
   tocSection:   { borderTop: '1px solid #1a1a2e', paddingTop: '1rem' },
-  tocLabel:     { fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#444', marginBottom: '0.4rem', paddingLeft: '0.5rem' },
-  tocLink:      { display: 'block', color: '#666', textDecoration: 'none', padding: '0.18rem 0.5rem', borderRadius: 4, lineHeight: 1.4, fontSize: '0.72rem' },
+  tocLabel:     { fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text-ghost)', marginBottom: '0.4rem', paddingLeft: '0.5rem' },
+  tocLink:      { display: 'block', color: 'var(--text-subdim)', textDecoration: 'none', padding: '0.18rem 0.5rem', borderRadius: 4, lineHeight: 1.4, fontSize: '0.72rem' },
   contentPane:  { flex: 1, padding: '1.75rem 2rem 2.5rem', overflowY: 'auto' },
   placeholder:  { paddingTop: '1rem' },
   placeholderIcon: { fontSize: '2.5rem', color: 'rgba(196,149,106,0.4)', marginBottom: '1rem' },
-  placeholderTitle:{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '0.5rem', color: '#e0e0f0' },
-  placeholderText: { color: '#888', fontSize: '0.875rem', lineHeight: 1.6, marginBottom: '1.5rem', maxWidth: '480px' },
+  placeholderTitle:{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '0.5rem', color: 'var(--text-primary)' },
+  placeholderText: { color: 'var(--text-muted)', fontSize: '0.875rem', lineHeight: 1.6, marginBottom: '1.5rem', maxWidth: '480px' },
   docGrid:  { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.65rem' },
-  docCard:  { background: '#0f0f1e', border: '1px solid #1a1a2e', borderRadius: 9, padding: '1rem', cursor: 'pointer', textAlign: 'left' },
-  docCardTitle: { fontSize: '0.9rem', fontWeight: 600, color: '#e0e0f0', marginBottom: '0.2rem' },
-  docCardSub:   { fontSize: '0.75rem', color: '#666', lineHeight: 1.4 },
+  docCard:  { background: 'var(--ink)', border: '1px solid #1a1a2e', borderRadius: 9, padding: '1rem', cursor: 'pointer', textAlign: 'left' },
+  docCardTitle: { fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.2rem' },
+  docCardSub:   { fontSize: '0.75rem', color: 'var(--text-subdim)', lineHeight: 1.4 },
   docHeader:    { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' },
   docTitle:     { fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 0.2rem' },
-  docSubtitle:  { color: '#888', fontSize: '0.85rem', margin: 0 },
+  docSubtitle:  { color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0 },
   searchInput:  {
-    padding: '0.45rem 0.7rem', background: '#0f0f1e', border: '1px solid #1a1a2e',
-    color: '#e0e0f0', borderRadius: 6, fontSize: '0.8rem', outline: 'none', width: '160px',
+    padding: '0.45rem 0.7rem', background: 'var(--ink)', border: '1px solid #1a1a2e',
+    color: 'var(--text-primary)', borderRadius: 6, fontSize: '0.8rem', outline: 'none', width: '160px',
   },
-  loading: { color: '#888', fontSize: '0.875rem' },
-  error:   { padding: '0.75rem 1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: 8, color: '#c46a6a', fontSize: '0.875rem' },
-  mdBody:  { fontSize: '0.9rem', lineHeight: 1.8, color: '#ccc' },
+  loading: { color: 'var(--text-muted)', fontSize: '0.875rem' },
+  error:   { padding: '0.75rem 1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: 8, color: 'var(--status-err)', fontSize: '0.875rem' },
+  mdBody:  { fontSize: '0.9rem', lineHeight: 1.8, color: 'var(--text-ccc)' },
 }
 
 // ─── Documents tab styles ─────────────────────────────────────────────────────
 
 const d = {
   emptyCard: {
-    padding: '1.75rem', background: '#0f0f1e', border: '1px solid #1a1a2e',
+    padding: '1.75rem', background: 'var(--ink)', border: '1px solid #1a1a2e',
     borderRadius: 10, marginBottom: '1.5rem',
   },
-  emptyTitle: { fontWeight: 600, fontSize: '0.95rem', marginBottom: '0.6rem', color: '#e0e0f0' },
-  emptyBody:  { fontSize: '0.875rem', color: '#888', lineHeight: 1.6, margin: '0 0 0.5rem' },
+  emptyTitle: { fontWeight: 600, fontSize: '0.95rem', marginBottom: '0.6rem', color: 'var(--text-primary)' },
+  emptyBody:  { fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 0.5rem' },
   docRow: {
     display: 'flex', alignItems: 'center', gap: '1rem',
-    padding: '0.9rem', background: '#0f0f1e',
+    padding: '0.9rem', background: 'var(--ink)',
     border: '1px solid #1a1a2e', borderRadius: 8,
   },
   docIcon: {
     width: 38, height: 38, borderRadius: 6,
-    background: 'rgba(196,149,106,0.12)', color: '#c4956a',
+    background: 'var(--gold-12)', color: 'var(--gold)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.04em', flexShrink: 0,
   },
   docName:   { fontWeight: 600, fontSize: '0.875rem', marginBottom: '0.15rem' },
-  docMeta:   { fontSize: '0.78rem', color: '#888' },
+  docMeta:   { fontSize: '0.78rem', color: 'var(--text-muted)' },
   downloadBtn: {
-    padding: '0.4rem 0.85rem', background: '#c4956a',
+    padding: '0.4rem 0.85rem', background: 'var(--gold)',
     color: '#fff', borderRadius: 6, textDecoration: 'none', fontSize: '0.78rem', fontWeight: 600,
     flexShrink: 0,
   },
   downloadPending: {
     padding: '0.4rem 0.85rem', border: '1px solid #1a1a2e',
-    color: '#666', borderRadius: 6, fontSize: '0.78rem', flexShrink: 0,
+    color: 'var(--text-subdim)', borderRadius: 6, fontSize: '0.78rem', flexShrink: 0,
   },
   infoBox: {
     marginTop: '1.75rem', padding: '1.25rem',
     background: 'rgba(196,149,106,0.05)', border: '1px solid rgba(196,149,106,0.12)',
     borderRadius: 8,
   },
-  infoTitle: { fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.6rem', color: '#e0e0f0', display: 'block' },
-  infoText:  { fontSize: '0.85rem', color: '#888', lineHeight: 1.6, margin: '0 0 0.5rem' },
+  infoTitle: { fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.6rem', color: 'var(--text-primary)', display: 'block' },
+  infoText:  { fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 0.5rem' },
 }

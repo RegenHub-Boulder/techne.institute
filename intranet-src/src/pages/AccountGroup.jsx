@@ -80,8 +80,8 @@ const TYPE_LABELS = {
   patronage: 'Patronage', draw: 'Draw', adjustment: 'Adjustment',
 }
 const TYPE_COLORS = {
-  initial: '#c4956a', labor: '#50b478', capital: '#4a9eff',
-  patronage: '#b47cd4', draw: '#c46a6a', adjustment: '#888',
+  initial: 'var(--gold)', labor: '#50b478', capital: '#4a9eff',
+  patronage: '#b47cd4', draw: 'var(--status-err)', adjustment: 'var(--text-muted)',
 }
 const LABOR_TYPE_LABELS = {
   governance: 'Governance', operations: 'Operations',
@@ -93,15 +93,15 @@ const LABOR_TYPE_LABELS = {
 function StatBox({ label, value, sub, color }) {
   return (
     <div style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid #1a1a2e', borderRadius: '8px', padding: '1.1rem 1.25rem' }}>
-      <div style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#52526a', marginBottom: '0.5rem' }}>{label}</div>
-      <div style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.025em', color: color || '#e0e0f0', fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace", lineHeight: 1.1 }}>{value}</div>
-      {sub && <div style={{ fontSize: '0.73rem', color: '#52526a', marginTop: '0.3rem' }}>{sub}</div>}
+      <div style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-nav)', marginBottom: '0.5rem' }}>{label}</div>
+      <div style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '-0.025em', color: color || 'var(--text-primary)', fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace", lineHeight: 1.1 }}>{value}</div>
+      {sub && <div style={{ fontSize: '0.73rem', color: 'var(--text-nav)', marginTop: '0.3rem' }}>{sub}</div>}
     </div>
   )
 }
 
 function TxnRow({ txn }) {
-  const color = TYPE_COLORS[txn.transaction_type] || '#888'
+  const color = TYPE_COLORS[txn.transaction_type] || 'var(--text-muted)'
   const isPositive = parseFloat(txn.amount) >= 0
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', borderBottom: '1px solid #12121e', gap: '1rem' }}>
@@ -109,13 +109,13 @@ function TxnRow({ txn }) {
         <span style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color, background: `${color}15`, padding: '1px 6px', borderRadius: '3px', display: 'inline-block' }}>
           {TYPE_LABELS[txn.transaction_type] || txn.transaction_type}
         </span>
-        {txn.description && <span style={{ fontSize: '0.82rem', color: '#7070a0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{txn.description}</span>}
+        {txn.description && <span style={{ fontSize: '0.82rem', color: 'var(--text-mid)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{txn.description}</span>}
       </div>
       <div style={{ textAlign: 'right', flexShrink: 0 }}>
-        <div style={{ fontSize: '0.95rem', fontWeight: 700, color: isPositive ? '#4a5f4a' : '#c46a6a', fontFamily: 'monospace' }}>
+        <div style={{ fontSize: '0.95rem', fontWeight: 700, color: isPositive ? 'var(--status-ok)' : 'var(--status-err)', fontFamily: 'monospace' }}>
           {isPositive ? '+' : ''}{fmtUSD(txn.amount)}
         </div>
-        <div style={{ fontSize: '0.7rem', color: '#3a3a5a' }}>{fmtDate(txn.effective_date)}</div>
+        <div style={{ fontSize: '0.7rem', color: 'var(--text-3a5a)' }}>{fmtDate(txn.effective_date)}</div>
       </div>
     </div>
   )
@@ -126,14 +126,14 @@ function ContribRow({ c }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.7rem 1rem', borderBottom: '1px solid #12121e', gap: '1rem' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', minWidth: 0 }}>
-        <span style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#6b836b', background: 'rgba(107,131,107,0.1)', padding: '1px 6px', borderRadius: '3px', display: 'inline-block' }}>{label}</span>
-        {c.projects?.name && <span style={{ fontSize: '0.78rem', color: '#52526a' }}>{c.projects.name}</span>}
-        {c.description && <span style={{ fontSize: '0.78rem', color: '#7070a0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.description}</span>}
+        <span style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--status-info)', background: 'rgba(107,131,107,0.1)', padding: '1px 6px', borderRadius: '3px', display: 'inline-block' }}>{label}</span>
+        {c.projects?.name && <span style={{ fontSize: '0.78rem', color: 'var(--text-nav)' }}>{c.projects.name}</span>}
+        {c.description && <span style={{ fontSize: '0.78rem', color: 'var(--text-mid)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.description}</span>}
       </div>
       <div style={{ textAlign: 'right', flexShrink: 0 }}>
-        <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#e0e0f0', fontFamily: 'monospace' }}>{fmtHrs(c.hours)}</div>
-        {c.fmv_total && <div style={{ fontSize: '0.72rem', color: '#4a5f4a', fontFamily: 'monospace' }}>{fmtUSD(c.fmv_total)}</div>}
-        <div style={{ fontSize: '0.68rem', color: '#3a3a5a' }}>{fmtDate(c.date)}</div>
+        <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'monospace' }}>{fmtHrs(c.hours)}</div>
+        {c.fmv_total && <div style={{ fontSize: '0.72rem', color: 'var(--status-ok)', fontFamily: 'monospace' }}>{fmtUSD(c.fmv_total)}</div>}
+        <div style={{ fontSize: '0.68rem', color: 'var(--text-3a5a)' }}>{fmtDate(c.date)}</div>
       </div>
     </div>
   )
@@ -162,7 +162,7 @@ function OverviewTab({ data }) {
           label="Book Balance"
           value={account ? fmtUSD(account.book_balance) : '—'}
           sub={account?.last_updated ? `Updated ${fmtDate(account.last_updated)}` : 'No account'}
-          color="#c4956a"
+          color="var(--gold)"
         />
         <StatBox
           label="Tax Capital (704b)"
@@ -173,7 +173,7 @@ function OverviewTab({ data }) {
           label="Labor YTD"
           value={fmtHrs(totalHours)}
           sub={totalFmv > 0 ? `FMV: ${fmtUSD(totalFmv)}` : 'No FMV data'}
-          color="#6b836b"
+          color="var(--status-info)"
         />
       </div>
 
@@ -190,10 +190,10 @@ function OverviewTab({ data }) {
               Object.entries(breakdown).map(([type, total]) => (
                 <div key={type} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.55rem 0.85rem', borderBottom: '1px solid #12121e' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: TYPE_COLORS[type] || '#888', flexShrink: 0 }} />
-                    <span style={{ fontSize: '0.82rem', color: '#9090b0' }}>{TYPE_LABELS[type] || type}</span>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: TYPE_COLORS[type] || 'var(--text-muted)', flexShrink: 0 }} />
+                    <span style={{ fontSize: '0.82rem', color: 'var(--text-mid)' }}>{TYPE_LABELS[type] || type}</span>
                   </div>
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, fontFamily: 'monospace', color: parseFloat(total) >= 0 ? '#4a5f4a' : '#c46a6a' }}>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 700, fontFamily: 'monospace', color: parseFloat(total) >= 0 ? 'var(--status-ok)' : 'var(--status-err)' }}>
                     {parseFloat(total) >= 0 ? '+' : ''}{fmtUSD(total)}
                   </span>
                 </div>
@@ -207,16 +207,16 @@ function OverviewTab({ data }) {
           <div style={headingStyle}>Patronage Formula</div>
           <div style={tableContainer}>
             {[
-              { pct: '40%', label: 'Labor', desc: 'Hours contributed', color: '#6b836b' },
-              { pct: '30%', label: 'Revenue', desc: 'Patronage transactions', color: '#4a5f4a' },
+              { pct: '40%', label: 'Labor', desc: 'Hours contributed', color: 'var(--status-info)' },
+              { pct: '30%', label: 'Revenue', desc: 'Patronage transactions', color: 'var(--status-ok)' },
               { pct: '20%', label: 'Capital', desc: 'Capital deployed', color: '#4a9eff' },
               { pct: '10%', label: 'Community', desc: 'Civic contributions', color: '#b47cd4' },
             ].map(({ pct, label, desc, color }) => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.55rem 0.85rem', borderBottom: '1px solid #12121e' }}>
                 <div style={{ fontSize: '1rem', fontWeight: 800, color, fontFamily: 'monospace', minWidth: '2.75rem' }}>{pct}</div>
                 <div>
-                  <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#c0c0d0' }}>{label}</div>
-                  <div style={{ fontSize: '0.72rem', color: '#52526a' }}>{desc}</div>
+                  <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-ccc)' }}>{label}</div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-nav)' }}>{desc}</div>
                 </div>
               </div>
             ))}
@@ -247,7 +247,7 @@ function OverviewTab({ data }) {
 
       {/* K-1 link */}
       <div style={{ marginTop: '1.5rem' }}>
-        <a href="/intranet/documents/" style={{ fontSize: '0.8rem', color: '#c4956a', textDecoration: 'none' }}>K-1 documents →</a>
+        <a href="/intranet/documents/" style={{ fontSize: '0.8rem', color: 'var(--gold)', textDecoration: 'none' }}>K-1 documents →</a>
       </div>
     </div>
   )
@@ -297,7 +297,7 @@ function LaborTab({ data, reload }) {
       {/* Summary row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
         <StatBox label="Total Hours" value={fmtHrs(totalHours)} />
-        <StatBox label="Total FMV" value={fmtUSD(totalFmv)} color="#4a5f4a" />
+        <StatBox label="Total FMV" value={fmtUSD(totalFmv)} color="var(--status-ok)" />
         {Object.entries(LABOR_TYPE_LABELS).map(([type, label]) => {
           const hrs = filtered.filter(c => c.labor_type === type).reduce((s, c) => s + parseFloat(c.hours || 0), 0)
           return hrs > 0 ? <StatBox key={type} label={label} value={fmtHrs(hrs)} /> : null
@@ -308,13 +308,13 @@ function LaborTab({ data, reload }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
         <button
           onClick={() => setShowForm(!showForm)}
-          style={{ padding: '0.45rem 0.9rem', background: 'rgba(196,149,106,0.15)', border: '1px solid rgba(196,149,106,0.3)', color: '#c4956a', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
+          style={{ padding: '0.45rem 0.9rem', background: 'var(--gold-15)', border: '1px solid rgba(196,149,106,0.3)', color: 'var(--gold)', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
         >
           {showForm ? 'Cancel' : '+ Log Hours'}
         </button>
         <div style={{ display: 'flex', gap: '0.35rem' }}>
           {['', ...years].map(y => (
-            <button key={y || 'all'} onClick={() => setDateFilter(y)} style={{ padding: '0.3rem 0.6rem', background: dateFilter === y ? 'rgba(196,149,106,0.15)' : 'none', border: `1px solid ${dateFilter === y ? 'rgba(196,149,106,0.4)' : '#1a1a2e'}`, color: dateFilter === y ? '#c4956a' : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+            <button key={y || 'all'} onClick={() => setDateFilter(y)} style={{ padding: '0.3rem 0.6rem', background: dateFilter === y ? 'var(--gold-15)' : 'none', border: `1px solid ${dateFilter === y ? 'rgba(196,149,106,0.4)' : 'var(--hud-border)'}`, color: dateFilter === y ? 'var(--gold)' : 'var(--text-nav)', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
               {y || 'All'}
             </button>
           ))}
@@ -354,12 +354,12 @@ function LaborTab({ data, reload }) {
             </div>
           </div>
           {fmvRates[form.labor_type] && form.hours && (
-            <div style={{ fontSize: '0.78rem', color: '#4a5f4a', marginBottom: '0.75rem' }}>
+            <div style={{ fontSize: '0.78rem', color: 'var(--status-ok)', marginBottom: '0.75rem' }}>
               FMV estimate: {fmtUSD(parseFloat(form.hours) * fmvRates[form.labor_type])} (${fmvRates[form.labor_type]}/hr × {form.hours} hrs)
             </div>
           )}
-          {submitError && <div style={{ color: '#c46a6a', fontSize: '0.8rem', marginBottom: '0.5rem' }}>{submitError}</div>}
-          <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.25rem', background: '#c4956a', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
+          {submitError && <div style={{ color: 'var(--status-err)', fontSize: '0.8rem', marginBottom: '0.5rem' }}>{submitError}</div>}
+          <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.25rem', background: 'var(--gold)', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
             {submitting ? 'Saving…' : 'Log Hours'}
           </button>
         </form>
@@ -386,14 +386,14 @@ function PatronageTab({ data }) {
 
   return (
     <div>
-      <div style={{ fontSize: '0.8rem', color: '#52526a', background: 'rgba(196,149,106,0.06)', border: '1px solid rgba(196,149,106,0.12)', borderRadius: '6px', padding: '0.6rem 0.85rem', marginBottom: '1.25rem' }}>
+      <div style={{ fontSize: '0.8rem', color: 'var(--text-nav)', background: 'rgba(196,149,106,0.06)', border: '1px solid rgba(196,149,106,0.12)', borderRadius: '6px', padding: '0.6rem 0.85rem', marginBottom: '1.25rem' }}>
         Formula: 40% labor · 30% revenue · 20% capital · 10% community
       </div>
 
       {years.length > 0 && (
         <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '1rem' }}>
           {['', ...years].map(y => (
-            <button key={y || 'all'} onClick={() => setYearFilter(y)} style={{ padding: '0.3rem 0.6rem', background: yearFilter === y ? 'rgba(196,149,106,0.15)' : 'none', border: `1px solid ${yearFilter === y ? 'rgba(196,149,106,0.4)' : '#1a1a2e'}`, color: yearFilter === y ? '#c4956a' : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+            <button key={y || 'all'} onClick={() => setYearFilter(y)} style={{ padding: '0.3rem 0.6rem', background: yearFilter === y ? 'var(--gold-15)' : 'none', border: `1px solid ${yearFilter === y ? 'rgba(196,149,106,0.4)' : 'var(--hud-border)'}`, color: yearFilter === y ? 'var(--gold)' : 'var(--text-nav)', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
               {y || 'All'}
             </button>
           ))}
@@ -418,7 +418,7 @@ function CapitalTab({ data }) {
     <div>
       {account && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem', marginBottom: '1.5rem' }}>
-          <StatBox label="Book Balance (GAAP)" value={fmtUSD(account.book_balance)} sub="Economic fair value — basis for ownership and redemption" color="#c4956a" />
+          <StatBox label="Book Balance (GAAP)" value={fmtUSD(account.book_balance)} sub="Economic fair value — basis for ownership and redemption" color="var(--gold)" />
           <StatBox label="Tax Capital (IRC 704b)" value={fmtUSD(account.tax_balance)} sub="Subchapter K basis — used for K-1 preparation" />
         </div>
       )}
@@ -429,7 +429,7 @@ function CapitalTab({ data }) {
         }
       </div>
       <div style={{ marginTop: '1.25rem' }}>
-        <a href="/intranet/documents/" style={{ fontSize: '0.8rem', color: '#c4956a', textDecoration: 'none' }}>K-1 documents →</a>
+        <a href="/intranet/documents/" style={{ fontSize: '0.8rem', color: 'var(--gold)', textDecoration: 'none' }}>K-1 documents →</a>
       </div>
     </div>
   )
@@ -443,10 +443,10 @@ const tableContainer = {
   borderRadius: '8px',
   overflow: 'hidden',
 }
-const emptyStyle = { padding: '1.5rem', color: '#3a3a5a', fontSize: '0.85rem', textAlign: 'center' }
-const headingStyle = { fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#52526a', marginBottom: '0.6rem' }
-const labelStyle = { display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52526a', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.3rem' }
-const inputStyle = { width: '100%', padding: '0.5rem 0.65rem', background: '#0c0c1a', border: '1px solid #2a2a40', borderRadius: '5px', color: '#e0e0f0', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box' }
+const emptyStyle = { padding: '1.5rem', color: 'var(--text-3a5a)', fontSize: '0.85rem', textAlign: 'center' }
+const headingStyle = { fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-nav)', marginBottom: '0.6rem' }
+const labelStyle = { display: 'block', fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-nav)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.3rem' }
+const inputStyle = { width: '100%', padding: '0.5rem 0.65rem', background: 'var(--hud-bar)', border: '1px solid #2a2a40', borderRadius: '5px', color: 'var(--text-primary)', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box' }
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
@@ -476,12 +476,12 @@ export default function AccountGroup({ initialTab = 'overview' }) {
   }
 
   const tabsWithBadge = TABS.map(t => {
-    if (t.key === 'labor') return { ...t, badge: totalHours > 0 ? totalHours.toFixed(0) + 'h' : null, badgeColor: '#6b836b' }
+    if (t.key === 'labor') return { ...t, badge: totalHours > 0 ? totalHours.toFixed(0) + 'h' : null, badgeColor: 'var(--status-info)' }
     return t
   })
 
-  if (data.loading) return <div style={{ padding: '3rem 2rem', color: '#52526a', fontSize: '0.9rem' }}>Loading account…</div>
-  if (data.error) return <div style={{ padding: '2rem', color: '#c46a6a', fontSize: '0.85rem' }}>Error: {data.error}</div>
+  if (data.loading) return <div style={{ padding: '3rem 2rem', color: 'var(--text-nav)', fontSize: '0.9rem' }}>Loading account…</div>
+  if (data.error) return <div style={{ padding: '2rem', color: 'var(--status-err)', fontSize: '0.85rem' }}>Error: {data.error}</div>
 
   return (
     <TabShell

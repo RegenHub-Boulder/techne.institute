@@ -115,10 +115,10 @@ function LoadingList() {
     <div style={styles.grid}>
       {[1, 2, 3, 4].map((i) => (
         <div key={i} style={{ ...styles.card, opacity: 0.4 }}>
-          <div style={{ ...styles.avatar, background: '#2a2a35' }} />
+          <div style={{ ...styles.avatar, background: 'var(--border-mid)' }} />
           <div style={styles.cardBody}>
-            <div style={{ height: '1rem', width: '60%', background: '#2a2a35', borderRadius: 4, marginBottom: '0.5rem' }} />
-            <div style={{ height: '0.75rem', width: '40%', background: '#2a2a35', borderRadius: 4 }} />
+            <div style={{ height: '1rem', width: '60%', background: 'var(--border-mid)', borderRadius: 4, marginBottom: '0.5rem' }} />
+            <div style={{ height: '0.75rem', width: '40%', background: 'var(--border-mid)', borderRadius: 4 }} />
           </div>
         </div>
       ))}
@@ -129,39 +129,39 @@ function LoadingList() {
 const styles = {
   page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
   main: { maxWidth: '900px', margin: '0 auto', padding: '2rem' },
-  breadcrumb: { fontSize: '0.85rem', color: '#888', marginBottom: '1rem' },
+  breadcrumb: { fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' },
   breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 0.25rem' },
-  subtitle: { fontSize: '0.875rem', color: '#888', marginBottom: '1.5rem' },
+  subtitle: { fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1.5rem' },
   search: {
     width: '100%', maxWidth: '400px', padding: '0.6rem 1rem',
-    background: '#141418', border: '1px solid #2a2a35',
-    color: '#e8e8e0', borderRadius: '8px', fontSize: '0.875rem',
+    background: 'var(--surface)', border: '1px solid #2a2a35',
+    color: 'var(--text-page)', borderRadius: '8px', fontSize: '0.875rem',
     marginBottom: '1.5rem', outline: 'none', boxSizing: 'border-box',
   },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '1rem' },
   card: {
     display: 'flex', alignItems: 'flex-start', gap: '1rem',
-    background: '#141418', border: '1px solid #2a2a35',
+    background: 'var(--surface)', border: '1px solid #2a2a35',
     borderRadius: '10px', padding: '1.25rem',
   },
   avatar: {
     width: 44, height: 44, borderRadius: '50%', flexShrink: 0,
-    background: 'rgba(196,149,106,0.15)', color: 'var(--ember, #c4956a)',
+    background: 'var(--gold-15)', color: 'var(--ember, #c4956a)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontSize: '1.1rem', fontWeight: 700,
   },
   cardBody: { flex: 1, minWidth: 0 },
   name: { fontSize: '1rem', fontWeight: 600, marginBottom: '0.25rem' },
-  craft: { fontSize: '0.8rem', color: '#aaa', marginBottom: '0.5rem' },
+  craft: { fontSize: '0.8rem', color: 'var(--text-soft)', marginBottom: '0.5rem' },
   tags: { display: 'flex', flexWrap: 'wrap', gap: '0.35rem' },
   tag: {
     fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase',
-    letterSpacing: '0.05em', color: '#888', background: '#1e1e28',
+    letterSpacing: '0.05em', color: 'var(--text-muted)', background: '#1e1e28',
     border: '1px solid #2a2a35', borderRadius: '4px', padding: '0.2rem 0.5rem',
   },
   tagCopper: { color: 'var(--ember, #c4956a)', background: 'rgba(196,149,106,0.1)', border: '1px solid rgba(196,149,106,0.2)' },
-  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#c46a6a' },
-  empty: { padding: '2rem', textAlign: 'center', color: '#888', fontSize: '0.875rem' },
+  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: 'var(--status-err)' },
+  empty: { padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.875rem' },
 }

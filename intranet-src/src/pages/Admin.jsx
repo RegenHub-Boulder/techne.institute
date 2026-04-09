@@ -126,7 +126,7 @@ function MemberList() {
                 {m.email || '—'} · Class {m.membership_class || '?'} {classLabel[m.membership_class] ? `— ${classLabel[m.membership_class]}` : ''}
               </div>
               <div style={styles.memberMeta}>
-                Auth: {m.auth_user_id ? <span style={{ color: '#4caf88' }}>linked</span> : <span style={{ color: '#c46a6a' }}>NOT LINKED</span>}
+                Auth: {m.auth_user_id ? <span style={{ color: '#4caf88' }}>linked</span> : <span style={{ color: 'var(--status-err)' }}>NOT LINKED</span>}
                 {m.last_allocation_date && <> · Last allocation: {m.last_allocation_date}</>}
               </div>
             </div>
@@ -503,8 +503,8 @@ const styles = {
     background: 'rgba(220,60,60,0.08)', border: '1px solid rgba(220,60,60,0.25)',
     borderRadius: '8px',
   },
-  launchGateTitle: { fontWeight: 700, fontSize: '0.85rem', color: '#c46a6a', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' },
-  launchGateBody: { fontSize: '0.875rem', color: '#aaa', margin: 0 },
+  launchGateTitle: { fontWeight: 700, fontSize: '0.85rem', color: 'var(--status-err)', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' },
+  launchGateBody: { fontSize: '0.875rem', color: 'var(--text-soft)', margin: 0 },
   tabRow: {},
   tabs: { display: 'flex', gap: '0.25rem', marginBottom: '0', borderBottom: '1px solid var(--color-border, #2a2a35)' },
   tab: {
@@ -522,7 +522,7 @@ const styles = {
   error: {
     padding: '0.75rem 1rem', background: 'rgba(220,60,60,0.1)',
     border: '1px solid rgba(220,60,60,0.3)', borderRadius: '6px',
-    color: '#c46a6a', fontSize: '0.875rem', marginBottom: '1rem',
+    color: 'var(--status-err)', fontSize: '0.875rem', marginBottom: '1rem',
   },
   successBox: {
     padding: '0.75rem 1rem', background: 'rgba(76,175,136,0.1)',
@@ -532,7 +532,7 @@ const styles = {
   memberGrid: { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
   memberRow: {
     display: 'flex', alignItems: 'center', gap: '1.5rem',
-    padding: '0.875rem 1rem', background: 'rgba(255,255,255,0.03)',
+    padding: '0.875rem 1rem', background: 'var(--hover-dim)',
     border: '1px solid var(--color-border, #2a2a35)', borderRadius: '6px',
   },
   memberInfo: { flex: 1 },
@@ -553,7 +553,7 @@ const styles = {
     background: 'var(--color-surface, #141418)', border: '1px solid var(--color-border, #2a2a35)',
     borderRadius: '6px', padding: '0.5rem 0.75rem', color: '#fff', fontSize: '0.9rem',
   },
-  fileInput: { fontSize: '0.85rem', color: '#aaa', padding: '0.4rem 0' },
+  fileInput: { fontSize: '0.85rem', color: 'var(--text-soft)', padding: '0.4rem 0' },
   fileHint: { fontSize: '0.8rem', color: '#4caf88' },
   totalLine: { fontSize: '0.9rem', padding: '0.5rem 0', borderTop: '1px solid var(--color-border, #2a2a35)' },
   formulaCheck: { color: 'var(--color-text-muted, #888)' },
@@ -568,7 +568,7 @@ const styles = {
     maxWidth: '480px', margin: '3rem auto',
   },
   deniedTitle: { fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.75rem' },
-  deniedBody: { fontSize: '0.9rem', color: '#aaa', lineHeight: 1.6, margin: '0 0 1rem' },
+  deniedBody: { fontSize: '0.9rem', color: 'var(--text-soft)', lineHeight: 1.6, margin: '0 0 1rem' },
   backLink: { fontSize: '0.875rem', color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   link: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
 }

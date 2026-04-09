@@ -6,13 +6,13 @@ import { TabShell } from '../components/TabShell.jsx'
 // ─── Shared ───────────────────────────────────────────────────────────────────
 
 const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'
-const STATUS_COLOR = { active: '#4a5f4a', paused: '#c4956a', completed: '#6b836b', archived: '#555', open: '#4a5f4a', closed: '#555', passed: '#6b836b', rejected: '#c46a6a', pending: '#c4956a' }
+const STATUS_COLOR = { active: 'var(--status-ok)', paused: 'var(--gold)', completed: 'var(--status-info)', archived: 'var(--text-dim)', open: 'var(--status-ok)', closed: 'var(--text-dim)', passed: 'var(--status-info)', rejected: 'var(--status-err)', pending: 'var(--gold)' }
 const MEMBER_CLASS = { 1: 'Class 1 · Labor', 2: 'Class 2 · Patron', 3: 'Class 3 · Community', 4: 'Class 4 · Investor' }
-const inputStyle = { width: '100%', padding: '0.5rem 0.65rem', background: '#0c0c1a', border: '1px solid #2a2a40', borderRadius: '5px', color: '#e0e0f0', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box' }
+const inputStyle = { width: '100%', padding: '0.5rem 0.65rem', background: 'var(--hud-bar)', border: '1px solid #2a2a40', borderRadius: '5px', color: 'var(--text-primary)', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box' }
 const tableContainer = { background: 'rgba(255,255,255,0.015)', border: '1px solid #1a1a2e', borderRadius: '8px', overflow: 'hidden' }
-const emptyStyle = { padding: '1.5rem', color: '#3a3a5a', fontSize: '0.85rem', textAlign: 'center' }
+const emptyStyle = { padding: '1.5rem', color: 'var(--text-3a5a)', fontSize: '0.85rem', textAlign: 'center' }
 const Badge = ({ label, color }) => (
-  <span style={{ fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: color || '#8888a8', background: `${color || '#8888a8'}18`, padding: '2px 6px', borderRadius: '3px', whiteSpace: 'nowrap' }}>{label}</span>
+  <span style={{ fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: color || 'var(--text-accent)', background: `${color || 'var(--text-accent)'}18`, padding: '2px 6px', borderRadius: '3px', whiteSpace: 'nowrap' }}>{label}</span>
 )
 
 // ─── Projects tab ─────────────────────────────────────────────────────────────
@@ -42,28 +42,28 @@ function ProjectsTab() {
 
   if (selected) return (
     <div>
-      <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', color: '#c4956a', fontSize: '0.82rem', cursor: 'pointer', padding: 0, marginBottom: '1.25rem', fontFamily: 'inherit' }}>← All Projects</button>
+      <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontSize: '0.82rem', cursor: 'pointer', padding: 0, marginBottom: '1.25rem', fontFamily: 'inherit' }}>← All Projects</button>
       <div style={{ marginBottom: '0.75rem' }}>
-        <div style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#e0e0f0', marginBottom: '0.35rem' }}>{selected.name}</div>
+        <div style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--text-primary)', marginBottom: '0.35rem' }}>{selected.name}</div>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <Badge label={selected.status} color={STATUS_COLOR[selected.status]} />
           {selected.type && <Badge label={selected.type} />}
         </div>
       </div>
-      {selected.description && <p style={{ fontSize: '0.88rem', color: '#8888a8', lineHeight: 1.65, marginBottom: '1.25rem' }}>{selected.description}</p>}
+      {selected.description && <p style={{ fontSize: '0.88rem', color: 'var(--text-accent)', lineHeight: 1.65, marginBottom: '1.25rem' }}>{selected.description}</p>}
 
       {selected.project_participants?.length > 0 && (
         <div style={{ marginBottom: '1.25rem' }}>
-          <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#52526a', marginBottom: '0.5rem' }}>Contributors</div>
+          <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-nav)', marginBottom: '0.5rem' }}>Contributors</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
             {selected.project_participants.map((pp, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(255,255,255,0.03)', border: '1px solid #1a1a2e', borderRadius: '6px', padding: '0.4rem 0.7rem' }}>
-                <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(196,149,106,0.15)', color: '#c4956a', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem', fontWeight: 700, flexShrink: 0 }}>
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'var(--hover-dim)', border: '1px solid #1a1a2e', borderRadius: '6px', padding: '0.4rem 0.7rem' }}>
+                <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--gold-15)', color: 'var(--gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem', fontWeight: 700, flexShrink: 0 }}>
                   {(pp.participants?.name || '?').charAt(0)}
                 </span>
                 <div>
-                  <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#c0c0d0' }}>{pp.participants?.name || 'Unknown'}</div>
-                  {pp.role && <div style={{ fontSize: '0.68rem', color: '#52526a' }}>{pp.role}</div>}
+                  <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-ccc)' }}>{pp.participants?.name || 'Unknown'}</div>
+                  {pp.role && <div style={{ fontSize: '0.68rem', color: 'var(--text-nav)' }}>{pp.role}</div>}
                 </div>
               </div>
             ))}
@@ -73,15 +73,15 @@ function ProjectsTab() {
 
       {selected.project_milestones?.length > 0 && (
         <div>
-          <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#52526a', marginBottom: '0.5rem' }}>Milestones</div>
+          <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-nav)', marginBottom: '0.5rem' }}>Milestones</div>
           <div style={tableContainer}>
             {selected.project_milestones.map(m => (
               <div key={m.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.65rem 1rem', borderBottom: '1px solid #12121e' }}>
                 <div style={{ display: 'flex', align: 'center', gap: '0.5rem' }}>
-                  <span style={{ color: m.status === 'completed' ? '#4a5f4a' : '#52526a', fontSize: '0.85rem' }}>{m.status === 'completed' ? '✓' : '○'}</span>
-                  <span style={{ fontSize: '0.85rem', color: m.status === 'completed' ? '#52526a' : '#c0c0d0' }}>{m.title}</span>
+                  <span style={{ color: m.status === 'completed' ? 'var(--status-ok)' : 'var(--text-nav)', fontSize: '0.85rem' }}>{m.status === 'completed' ? '✓' : '○'}</span>
+                  <span style={{ fontSize: '0.85rem', color: m.status === 'completed' ? 'var(--text-nav)' : 'var(--text-ccc)' }}>{m.title}</span>
                 </div>
-                {m.due_date && <span style={{ fontSize: '0.75rem', color: '#3a3a5a' }}>{fmtDate(m.due_date)}</span>}
+                {m.due_date && <span style={{ fontSize: '0.75rem', color: 'var(--text-3a5a)' }}>{fmtDate(m.due_date)}</span>}
               </div>
             ))}
           </div>
@@ -94,14 +94,14 @@ function ProjectsTab() {
     <div>
       <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
         {[['', 'All'], ['active', 'Active'], ['paused', 'Paused'], ['completed', 'Completed']].map(([v, l]) => (
-          <button key={v} onClick={() => setStatusFilter(v)} style={{ padding: '0.3rem 0.65rem', background: statusFilter === v ? 'rgba(196,149,106,0.15)' : 'none', border: `1px solid ${statusFilter === v ? 'rgba(196,149,106,0.4)' : '#1a1a2e'}`, color: statusFilter === v ? '#c4956a' : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+          <button key={v} onClick={() => setStatusFilter(v)} style={{ padding: '0.3rem 0.65rem', background: statusFilter === v ? 'var(--gold-15)' : 'none', border: `1px solid ${statusFilter === v ? 'rgba(196,149,106,0.4)' : 'var(--hud-border)'}`, color: statusFilter === v ? 'var(--gold)' : 'var(--text-nav)', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
             {l}
           </button>
         ))}
       </div>
 
       {loading && <div style={emptyStyle}>Loading projects…</div>}
-      {error && <div style={{ color: '#c46a6a', padding: '0.75rem' }}>{error}</div>}
+      {error && <div style={{ color: 'var(--status-err)', padding: '0.75rem' }}>{error}</div>}
 
       <div style={tableContainer}>
         {!loading && filtered.length === 0 && <div style={emptyStyle}>No projects found.</div>}
@@ -112,19 +112,19 @@ function ProjectsTab() {
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ fontSize: '0.88rem', fontWeight: 600, color: '#d0d0e8' }}>{p.name}</span>
+                <span style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--text-ccc)' }}>{p.name}</span>
                 <Badge label={p.status} color={STATUS_COLOR[p.status]} />
                 {p.type && <Badge label={p.type} />}
               </div>
-              {p.description && <div style={{ fontSize: '0.78rem', color: '#52526a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '400px' }}>{p.description}</div>}
+              {p.description && <div style={{ fontSize: '0.78rem', color: 'var(--text-nav)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '400px' }}>{p.description}</div>}
               {p.project_participants?.length > 0 && (
-                <div style={{ fontSize: '0.72rem', color: '#3a3a5a' }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-3a5a)' }}>
                   {p.project_participants.slice(0, 3).map(pp => pp.participants?.name).filter(Boolean).join(', ')}
                   {p.project_participants.length > 3 ? ` +${p.project_participants.length - 3}` : ''}
                 </div>
               )}
             </div>
-            <span style={{ color: '#3a3a5a', fontSize: '0.9rem' }}>→</span>
+            <span style={{ color: 'var(--text-3a5a)', fontSize: '0.9rem' }}>→</span>
           </div>
         ))}
       </div>
@@ -162,19 +162,19 @@ function MembersTab() {
         style={{ ...inputStyle, maxWidth: '360px', marginBottom: '1.25rem' }}
       />
       {loading && <div style={emptyStyle}>Loading members…</div>}
-      {error && <div style={{ color: '#c46a6a', fontSize: '0.85rem' }}>{error}</div>}
+      {error && <div style={{ color: 'var(--status-err)', fontSize: '0.85rem' }}>{error}</div>}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '0.85rem' }}>
         {filtered.map(m => (
           <div key={m.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem', background: 'rgba(255,255,255,0.025)', border: '1px solid #1a1a2e', borderRadius: '8px', padding: '1rem' }}>
-            <div style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: 'rgba(196,149,106,0.12)', color: '#c4956a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 800 }}>
+            <div style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: 'var(--gold-12)', color: 'var(--gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 800 }}>
               {(m.name || '?').charAt(0)}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontWeight: 700, fontSize: '0.92rem', color: '#e0e0f0', marginBottom: '0.2rem' }}>{m.name || '—'}</div>
-              {m.craft && <div style={{ fontSize: '0.78rem', color: '#8888a8', marginBottom: '0.4rem' }}>{m.craft}</div>}
+              <div style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-primary)', marginBottom: '0.2rem' }}>{m.name || '—'}</div>
+              {m.craft && <div style={{ fontSize: '0.78rem', color: 'var(--text-accent)', marginBottom: '0.4rem' }}>{m.craft}</div>}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
                 {m.participant_type && <Badge label={m.participant_type} />}
-                {m.membership_class && <Badge label={MEMBER_CLASS[m.membership_class] || `Class ${m.membership_class}`} color="#c4956a" />}
+                {m.membership_class && <Badge label={MEMBER_CLASS[m.membership_class] || `Class ${m.membership_class}`} color="var(--gold)" />}
               </div>
             </div>
           </div>
@@ -248,12 +248,12 @@ function GovernanceTab() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div style={{ display: 'flex', gap: '0.35rem' }}>
           {[['open', 'Open'], ['closed', 'Closed'], ['all', 'All']].map(([v, l]) => (
-            <button key={v} onClick={() => setFilter(v)} style={{ padding: '0.3rem 0.65rem', background: filter === v ? 'rgba(196,149,106,0.15)' : 'none', border: `1px solid ${filter === v ? 'rgba(196,149,106,0.4)' : '#1a1a2e'}`, color: filter === v ? '#c4956a' : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+            <button key={v} onClick={() => setFilter(v)} style={{ padding: '0.3rem 0.65rem', background: filter === v ? 'var(--gold-15)' : 'none', border: `1px solid ${filter === v ? 'rgba(196,149,106,0.4)' : 'var(--hud-border)'}`, color: filter === v ? 'var(--gold)' : 'var(--text-nav)', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
               {l}
             </button>
           ))}
         </div>
-        <button onClick={() => setShowNew(!showNew)} style={{ padding: '0.4rem 0.85rem', background: 'rgba(196,149,106,0.12)', border: '1px solid rgba(196,149,106,0.25)', color: '#c4956a', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+        <button onClick={() => setShowNew(!showNew)} style={{ padding: '0.4rem 0.85rem', background: 'var(--gold-12)', border: '1px solid rgba(196,149,106,0.25)', color: 'var(--gold)', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
           {showNew ? 'Cancel' : '+ Propose'}
         </button>
       </div>
@@ -262,21 +262,21 @@ function GovernanceTab() {
       {showNew && (
         <form onSubmit={submitProposal} style={{ background: 'rgba(196,149,106,0.05)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: '8px', padding: '1.25rem', marginBottom: '1.25rem' }}>
           <div style={{ marginBottom: '0.75rem' }}>
-            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#52526a', marginBottom: '0.3rem' }}>Title</label>
+            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.3rem' }}>Title</label>
             <input required value={newForm.title} onChange={e => setNewForm(f => ({...f, title: e.target.value}))} placeholder="Proposal title" style={inputStyle} />
           </div>
           <div style={{ marginBottom: '0.75rem' }}>
-            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#52526a', marginBottom: '0.3rem' }}>Description</label>
+            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.3rem' }}>Description</label>
             <textarea value={newForm.description} onChange={e => setNewForm(f => ({...f, description: e.target.value}))} rows={3} placeholder="Describe the proposal…" style={{ ...inputStyle, resize: 'vertical', minHeight: '80px' }} />
           </div>
-          <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.1rem', background: '#c4956a', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
+          <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.1rem', background: 'var(--gold)', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
             {submitting ? 'Submitting…' : 'Submit Proposal'}
           </button>
         </form>
       )}
 
       {loading && <div style={emptyStyle}>Loading proposals…</div>}
-      {error && <div style={{ color: '#c46a6a', fontSize: '0.85rem' }}>{error}</div>}
+      {error && <div style={{ color: 'var(--status-err)', fontSize: '0.85rem' }}>{error}</div>}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {!loading && proposals.length === 0 && <div style={{ ...emptyStyle, background: 'rgba(255,255,255,0.015)', border: '1px solid #1a1a2e', borderRadius: '8px' }}>No {filter === 'all' ? '' : filter} proposals.</div>}
@@ -288,33 +288,33 @@ function GovernanceTab() {
             <div key={p.id} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid #1a1a2e', borderRadius: '8px', padding: '1.1rem 1.25rem' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', marginBottom: '0.5rem' }}>
                 <div>
-                  <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#d0d0e8', marginBottom: '0.3rem' }}>{p.title}</div>
-                  {p.description && <div style={{ fontSize: '0.8rem', color: '#52526a', lineHeight: 1.5 }}>{p.description}</div>}
+                  <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-ccc)', marginBottom: '0.3rem' }}>{p.title}</div>
+                  {p.description && <div style={{ fontSize: '0.8rem', color: 'var(--text-nav)', lineHeight: 1.5 }}>{p.description}</div>}
                 </div>
                 <Badge label={p.status} color={STATUS_COLOR[p.status]} />
               </div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem' }}>
                 {/* Vote counts */}
                 <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.78rem', fontFamily: 'monospace' }}>
-                  {(counts.yes || 0) > 0 && <span style={{ color: '#4a5f4a' }}>Yes: {counts.yes}</span>}
-                  {(counts.no || 0) > 0 && <span style={{ color: '#c46a6a' }}>No: {counts.no}</span>}
-                  {(counts.abstain || 0) > 0 && <span style={{ color: '#555' }}>Abstain: {counts.abstain}</span>}
-                  {p.proposal_votes?.length === 0 && <span style={{ color: '#3a3a5a' }}>No votes</span>}
+                  {(counts.yes || 0) > 0 && <span style={{ color: 'var(--status-ok)' }}>Yes: {counts.yes}</span>}
+                  {(counts.no || 0) > 0 && <span style={{ color: 'var(--status-err)' }}>No: {counts.no}</span>}
+                  {(counts.abstain || 0) > 0 && <span style={{ color: 'var(--text-dim)' }}>Abstain: {counts.abstain}</span>}
+                  {p.proposal_votes?.length === 0 && <span style={{ color: 'var(--text-3a5a)' }}>No votes</span>}
                 </div>
                 {/* Vote buttons */}
                 {isOpen && (
                   <div style={{ display: 'flex', gap: '0.4rem' }}>
-                    {[['yes', '#4a5f4a', 'Yes'], ['no', '#c46a6a', 'No'], ['abstain', '#555', 'Abstain']].map(([v, c, l]) => (
+                    {[['yes', 'var(--status-ok)', 'Yes'], ['no', 'var(--status-err)', 'No'], ['abstain', 'var(--text-dim)', 'Abstain']].map(([v, c, l]) => (
                       <button key={v}
                         onClick={() => castVote(p.id, v)}
                         disabled={voting[p.id] === 'loading'}
-                        style={{ padding: '0.3rem 0.7rem', background: myVote === v ? `${c}20` : 'none', border: `1px solid ${myVote === v ? c : '#1a1a2e'}`, color: myVote === v ? c : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit', fontWeight: myVote === v ? 700 : 400 }}
+                        style={{ padding: '0.3rem 0.7rem', background: myVote === v ? `${c}20` : 'none', border: `1px solid ${myVote === v ? c : 'var(--hud-border)'}`, color: myVote === v ? c : 'var(--text-nav)', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit', fontWeight: myVote === v ? 700 : 400 }}
                       >{l}</button>
                     ))}
                   </div>
                 )}
               </div>
-              {p.participants?.name && <div style={{ fontSize: '0.7rem', color: '#3a3a5a', marginTop: '0.5rem' }}>Proposed by {p.participants.name} · {fmtDate(p.created_at)}</div>}
+              {p.participants?.name && <div style={{ fontSize: '0.7rem', color: 'var(--text-3a5a)', marginTop: '0.5rem' }}>Proposed by {p.participants.name} · {fmtDate(p.created_at)}</div>}
             </div>
           )
         })}

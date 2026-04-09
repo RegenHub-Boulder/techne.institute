@@ -157,7 +157,7 @@ const styles = {
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 0.25rem' },
   subtitle: { fontSize: '1rem', color: 'var(--color-text-muted, #888)', margin: '0 0 2rem' },
   loading: { color: 'var(--color-text-muted, #888)', padding: '2rem 0' },
-  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#c46a6a' },
+  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: 'var(--status-err)' },
   emptyNotice: {
     padding: '2rem', background: 'var(--color-surface, #141418)',
     border: '1px solid var(--color-border, #2a2a35)', borderRadius: '10px', marginBottom: '2rem',
@@ -176,7 +176,7 @@ const styles = {
   },
   docIcon: {
     width: '40px', height: '40px', borderRadius: '6px',
-    background: 'rgba(196,149,106,0.15)', color: 'var(--ember, #c4956a)',
+    background: 'var(--gold-15)', color: 'var(--ember, #c4956a)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.05em', flexShrink: 0,
   },

@@ -106,7 +106,7 @@ function HardwareLine({ item, qty, unitCost }) {
       <td style={td}>{item}</td>
       <td style={{ ...td, ...num }}>{qty}×</td>
       <td style={{ ...td, ...num }}>{fmtUsd(unitCost)}</td>
-      <td style={{ ...td, ...num, color: '#e8e8e0' }}>{fmtUsd(qty * unitCost)}</td>
+      <td style={{ ...td, ...num, color: 'var(--text-page)' }}>{fmtUsd(qty * unitCost)}</td>
     </tr>
   )
 }
@@ -115,7 +115,7 @@ function StatRow({ label, value, highlight }) {
   return (
     <div style={{ ...styles.statRow, ...(highlight ? styles.statRowHighlight : {}) }}>
       <span style={styles.statLabel}>{label}</span>
-      <span style={{ ...styles.statValue, ...(highlight ? { color: '#c4956a' } : {}) }}>{value}</span>
+      <span style={{ ...styles.statValue, ...(highlight ? { color: 'var(--gold)' } : {}) }}>{value}</span>
     </div>
   )
 }
@@ -225,8 +225,8 @@ export default function Cloud() {
                     <HardwareLine key={h.item} {...h} />
                   ))}
                   <tr style={{ borderTop: '1px solid #2a2a35' }}>
-                    <td style={{ ...td, color: '#e8e8e0', fontWeight: 600 }} colSpan={3}>Total CapEx</td>
-                    <td style={{ ...td, ...num, color: '#c4956a', fontWeight: 600 }}>{fmtUsd(totalCapEx)}</td>
+                    <td style={{ ...td, color: 'var(--text-page)', fontWeight: 600 }} colSpan={3}>Total CapEx</td>
+                    <td style={{ ...td, ...num, color: 'var(--gold)', fontWeight: 600 }}>{fmtUsd(totalCapEx)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -311,7 +311,7 @@ export default function Cloud() {
                   {Object.values(SCENARIOS).map((s) => (
                     <th
                       key={s.id}
-                      style={{ ...th, ...num, color: active === s.id ? '#c4956a' : undefined }}
+                      style={{ ...th, ...num, color: active === s.id ? 'var(--gold)' : undefined }}
                     >
                       {s.label}
                     </th>
@@ -332,7 +332,7 @@ export default function Cloud() {
                   { label: 'Payback (months)', fn: (s) => paybackMonths(s) },
                 ].map(({ label, fn, highlight }) => (
                   <tr key={label}>
-                    <td style={{ ...td, color: '#888' }}>{label}</td>
+                    <td style={{ ...td, color: 'var(--text-muted)' }}>{label}</td>
                     {Object.values(SCENARIOS).map((s) => (
                       <td
                         key={s.id}
@@ -340,8 +340,8 @@ export default function Cloud() {
                           ...td,
                           ...num,
                           color: active === s.id
-                            ? (highlight ? '#c4956a' : '#e8e8e0')
-                            : '#666',
+                            ? (highlight ? 'var(--gold)' : 'var(--text-page)')
+                            : 'var(--text-subdim)',
                           fontWeight: active === s.id ? 600 : 400,
                         }}
                       >
@@ -385,56 +385,56 @@ export default function Cloud() {
 // Styles
 // ---------------------------------------------------------------------------
 const styles = {
-  page: { background: '#141418', minHeight: '100vh', color: '#c8c2ba' },
+  page: { background: 'var(--surface)', minHeight: '100vh', color: 'var(--text-warm)' },
   main: { maxWidth: 1100, margin: '0 auto', padding: '2rem 2rem 4rem' },
 
   breadcrumb: { display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', fontFamily: 'var(--font-mono, monospace)', fontSize: '0.78rem' },
-  breadLink: { color: '#888', textDecoration: 'none' },
-  breadSep: { color: '#3a3a42' },
-  breadCurrent: { color: '#c8c2ba' },
+  breadLink: { color: 'var(--text-muted)', textDecoration: 'none' },
+  breadSep: { color: 'var(--text-ghost)' },
+  breadCurrent: { color: 'var(--text-warm)' },
 
   pageHeader: { marginBottom: '2.5rem' },
-  pageTag: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#c4956a', marginBottom: '0.75rem' },
-  pageTitle: { fontFamily: 'var(--font-display, Georgia, serif)', fontSize: '2.2rem', fontWeight: 400, color: '#ece6de', letterSpacing: '-0.02em', margin: '0 0 0.75rem' },
-  pageSubtitle: { fontSize: '1rem', color: '#888', lineHeight: 1.7, maxWidth: 640, margin: '0 0 1rem' },
-  cloudNote: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.8rem', color: '#888' },
-  cloudBadge: { background: 'rgba(196, 149, 106, 0.1)', color: '#c4956a', border: '1px solid rgba(196,149,106,0.2)', borderRadius: 4, padding: '0.15em 0.5em', fontSize: '0.78rem' },
+  pageTag: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.75rem' },
+  pageTitle: { fontFamily: 'var(--font-display, Georgia, serif)', fontSize: '2.2rem', fontWeight: 400, color: 'var(--text-display)', letterSpacing: '-0.02em', margin: '0 0 0.75rem' },
+  pageSubtitle: { fontSize: '1rem', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: 640, margin: '0 0 1rem' },
+  cloudNote: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.8rem', color: 'var(--text-muted)' },
+  cloudBadge: { background: 'rgba(196, 149, 106, 0.1)', color: 'var(--gold)', border: '1px solid rgba(196,149,106,0.2)', borderRadius: 4, padding: '0.15em 0.5em', fontSize: '0.78rem' },
 
   tabBar: { display: 'flex', gap: '0.5rem', marginBottom: '1.25rem', flexWrap: 'wrap' },
-  tab: { display: 'flex', flexDirection: 'column', alignItems: 'flex-start', background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '0.65rem 1.1rem', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.15s' },
-  tabActive: { borderColor: '#c4956a', background: 'rgba(196,149,106,0.06)' },
-  tabLabel: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.68rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#666', marginBottom: '0.2rem' },
-  tabName: { fontFamily: 'var(--font-display, Georgia, serif)', fontSize: '1rem', fontWeight: 400, color: '#e8e8e0' },
+  tab: { display: 'flex', flexDirection: 'column', alignItems: 'flex-start', background: 'var(--panel)', border: '1px solid #2a2a35', borderRadius: 8, padding: '0.65rem 1.1rem', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.15s' },
+  tabActive: { borderColor: 'var(--gold)', background: 'rgba(196,149,106,0.06)' },
+  tabLabel: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.68rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-subdim)', marginBottom: '0.2rem' },
+  tabName: { fontFamily: 'var(--font-display, Georgia, serif)', fontSize: '1rem', fontWeight: 400, color: 'var(--text-page)' },
 
-  scenarioTagline: { fontSize: '0.95rem', color: '#888', fontStyle: 'italic', marginBottom: '1.75rem' },
+  scenarioTagline: { fontSize: '0.95rem', color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '1.75rem' },
 
   metricsRow: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' },
-  metric: { background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '1.25rem 1.35rem' },
-  metricLabel: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.7rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#666', marginBottom: '0.5rem' },
-  metricValue: { fontFamily: 'var(--font-display, Georgia, serif)', fontSize: '1.9rem', fontWeight: 400, color: '#c4956a', lineHeight: 1.1, marginBottom: '0.35rem' },
-  metricSub: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', color: '#555', lineHeight: 1.4 },
+  metric: { background: 'var(--panel)', border: '1px solid #2a2a35', borderRadius: 8, padding: '1.25rem 1.35rem' },
+  metricLabel: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.7rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-subdim)', marginBottom: '0.5rem' },
+  metricValue: { fontFamily: 'var(--font-display, Georgia, serif)', fontSize: '1.9rem', fontWeight: 400, color: 'var(--gold)', lineHeight: 1.1, marginBottom: '0.35rem' },
+  metricSub: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', color: 'var(--text-dim)', lineHeight: 1.4 },
 
   detailGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(460px, 1fr))', gap: '1rem', marginBottom: '1rem' },
 
-  card: { background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, padding: '1.5rem', marginBottom: '1rem' },
-  cardHeader: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#666', borderBottom: '1px solid #2a2a35', paddingBottom: '0.75rem', marginBottom: '1rem' },
+  card: { background: 'var(--panel)', border: '1px solid #2a2a35', borderRadius: 8, padding: '1.5rem', marginBottom: '1rem' },
+  cardHeader: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-subdim)', borderBottom: '1px solid #2a2a35', paddingBottom: '0.75rem', marginBottom: '1rem' },
 
   table: { width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' },
 
   statRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '0.45rem 0', borderBottom: '1px solid #1e1e24' },
   statRowHighlight: { borderBottom: '1px solid #252530' },
-  statLabel: { color: '#666', fontSize: '0.85rem' },
-  statValue: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.8rem', color: '#aaa', textAlign: 'right', maxWidth: '55%' },
+  statLabel: { color: 'var(--text-subdim)', fontSize: '0.85rem' },
+  statValue: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.8rem', color: 'var(--text-soft)', textAlign: 'right', maxWidth: '55%' },
 
-  solarNote: { marginTop: '1rem', fontSize: '0.78rem', color: '#555', lineHeight: 1.6, borderTop: '1px solid #252530', paddingTop: '0.75rem' },
+  solarNote: { marginTop: '1rem', fontSize: '0.78rem', color: 'var(--text-dim)', lineHeight: 1.6, borderTop: '1px solid #252530', paddingTop: '0.75rem' },
 
   noticeBox: { background: 'rgba(196, 149, 106, 0.04)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: 8, padding: '1.5rem', marginTop: '2rem', marginBottom: '2rem' },
-  noticeTitle: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c4956a', marginBottom: '0.75rem' },
-  noticeText: { fontSize: '0.9rem', color: '#888', lineHeight: 1.65, marginBottom: '0.75rem' },
-  noticeLink: { color: '#c4956a', textDecoration: 'none' },
+  noticeTitle: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.75rem' },
+  noticeText: { fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.65, marginBottom: '0.75rem' },
+  noticeLink: { color: 'var(--gold)', textDecoration: 'none' },
 
   footerNav: { display: 'flex', justifyContent: 'space-between', paddingTop: '1.5rem', borderTop: '1px solid #2a2a35' },
-  footerNavLink: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.78rem', color: '#888', textDecoration: 'none' },
+  footerNavLink: { fontFamily: 'var(--font-mono, monospace)', fontSize: '0.78rem', color: 'var(--text-muted)', textDecoration: 'none' },
 }
 
 const th = {
@@ -442,7 +442,7 @@ const th = {
   fontSize: '0.7rem',
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
-  color: '#555',
+  color: 'var(--text-dim)',
   textAlign: 'left',
   padding: '0.5rem 0.75rem',
   borderBottom: '1px solid #2a2a35',
@@ -453,7 +453,7 @@ const td = {
   padding: '0.5rem 0.75rem',
   borderBottom: '1px solid #1e1e24',
   fontSize: '0.85rem',
-  color: '#888',
+  color: 'var(--text-muted)',
   verticalAlign: 'top',
 }
 

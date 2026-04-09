@@ -3,10 +3,10 @@ import { supabase } from '../lib/supabase.js'
 import { computeMerkleRoot, computeLeafHash } from '../lib/merkle.js'
 
 const RESOURCE_COLORS = {
-  USD:          '#4a5f4a',
-  CLOUD:        '#c4956a',
-  labor_hours:  '#6b836b',
-  voting_power: '#c4956a',
+  USD:          'var(--status-ok)',
+  CLOUD:        'var(--gold)',
+  labor_hours:  'var(--status-info)',
+  voting_power: 'var(--gold)',
 }
 
 const RESOURCE_LABELS = {
@@ -140,15 +140,15 @@ export default function Ledger() {
             ? 'rgba(74,95,74,0.25)'
             : rootMatch === false
             ? 'rgba(255,107,107,0.25)'
-            : 'rgba(196,149,106,0.15)',
+            : 'var(--gold-15)',
         }}>
           <div style={styles.verifyRow}>
             <span style={styles.verifyLabel}>Stored state root</span>
-            <span style={{ ...styles.verifyHash, color: '#888' }}>{truncHash(storedRoot)}</span>
+            <span style={{ ...styles.verifyHash, color: 'var(--text-muted)' }}>{truncHash(storedRoot)}</span>
           </div>
           <div style={styles.verifyRow}>
             <span style={styles.verifyLabel}>Client-computed root</span>
-            <span style={{ ...styles.verifyHash, color: verifying ? '#555' : '#c4956a' }}>
+            <span style={{ ...styles.verifyHash, color: verifying ? 'var(--text-dim)' : 'var(--gold)' }}>
               {verifying ? 'Computing…' : truncHash(computedRoot)}
             </span>
           </div>
@@ -156,7 +156,7 @@ export default function Ledger() {
             <span style={styles.verifyLabel}>State integrity</span>
             <span style={{
               fontFamily: 'monospace', fontSize: '0.78rem',
-              color: rootMatch === true ? '#4a5f4a' : rootMatch === false ? '#c46a6a' : '#555',
+              color: rootMatch === true ? 'var(--status-ok)' : rootMatch === false ? 'var(--status-err)' : 'var(--text-dim)',
             }}>
               {rootMatch === true ? '✓ Verified' : rootMatch === false ? '✗ Mismatch' : '—'}
             </span>
@@ -190,7 +190,7 @@ export default function Ledger() {
         {error && <div style={styles.error}>{error}</div>}
 
         {Object.entries(grouped).map(([resourceType, accts]) => {
-          const color = RESOURCE_COLORS[resourceType] || '#888'
+          const color = RESOURCE_COLORS[resourceType] || 'var(--text-muted)'
           const total = accts.reduce((s, a) => s + Number(a.balance || 0), 0)
 
           return (
@@ -216,20 +216,20 @@ export default function Ledger() {
                   {accts.map((a) => (
                     <tr key={a.id}>
                       <td style={td}>
-                        <div style={{ fontSize: '0.88rem', color: '#c8c2ba' }}>
+                        <div style={{ fontSize: '0.88rem', color: 'var(--text-warm)' }}>
                           {a.participants?.name || a.account_name}
                         </div>
-                        <div style={{ fontFamily: 'monospace', fontSize: '0.68rem', color: '#555', marginTop: '0.15rem' }}>
+                        <div style={{ fontFamily: 'monospace', fontSize: '0.68rem', color: 'var(--text-dim)', marginTop: '0.15rem' }}>
                           {a.account_key}
                         </div>
                       </td>
-                      <td style={{ ...td, fontFamily: 'monospace', fontSize: '0.75rem', color: '#666' }}>
+                      <td style={{ ...td, fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--text-subdim)' }}>
                         {a.account_type}
                       </td>
                       <td style={{ ...td, textAlign: 'right', fontFamily: 'monospace', fontSize: '0.88rem', color }}>
                         {fmtBalance(a.balance, resourceType)}
                       </td>
-                      <td style={{ ...td, textAlign: 'right', fontFamily: 'monospace', fontSize: '0.68rem', color: '#444' }}>
+                      <td style={{ ...td, textAlign: 'right', fontFamily: 'monospace', fontSize: '0.68rem', color: 'var(--text-ghost)' }}>
                         {leafHashes[a.account_key]
                           ? truncHash(leafHashes[a.account_key])
                           : '—'}
@@ -252,49 +252,49 @@ export default function Ledger() {
 }
 
 const styles = {
-  page: { background: '#141418', minHeight: '100vh', color: '#c8c2ba' },
+  page: { background: 'var(--surface)', minHeight: '100vh', color: 'var(--text-warm)' },
   main: { maxWidth: 1000, margin: '0 auto', padding: '2rem 2rem 4rem' },
 
   breadcrumb: { display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', fontFamily: 'monospace', fontSize: '0.78rem' },
-  breadLink: { color: '#888', textDecoration: 'none' },
-  breadSep: { color: '#3a3a42' },
+  breadLink: { color: 'var(--text-muted)', textDecoration: 'none' },
+  breadSep: { color: 'var(--text-ghost)' },
 
   pageHeader: { marginBottom: '1.5rem' },
-  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c4956a', marginBottom: '0.5rem' },
-  pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: '#ece6de', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
-  pageSub: { fontSize: '0.9rem', color: '#888', lineHeight: 1.65, maxWidth: 600, margin: 0 },
+  pageTag: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '0.5rem' },
+  pageTitle: { fontFamily: 'Georgia, serif', fontSize: '2rem', fontWeight: 400, color: 'var(--text-display)', letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
+  pageSub: { fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.65, maxWidth: 600, margin: 0 },
 
   verifyBanner: { border: '1px solid', borderRadius: 8, padding: '1rem 1.25rem', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' },
   verifyRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-  verifyLabel: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#555' },
+  verifyLabel: { fontFamily: 'monospace', fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-dim)' },
   verifyHash: { fontFamily: 'monospace', fontSize: '0.78rem' },
 
   filterBar: { display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '1.5rem' },
-  filterBtn: { background: '#1e1e24', border: '1px solid #2a2a35', color: '#888', borderRadius: 5, padding: '0.3rem 0.75rem', fontSize: '0.78rem', fontFamily: 'monospace', cursor: 'pointer' },
-  filterBtnActive: { background: 'rgba(196,149,106,0.08)', color: '#e8e8e0', borderColor: '#c4956a' },
+  filterBtn: { background: 'var(--panel)', border: '1px solid #2a2a35', color: 'var(--text-muted)', borderRadius: 5, padding: '0.3rem 0.75rem', fontSize: '0.78rem', fontFamily: 'monospace', cursor: 'pointer' },
+  filterBtnActive: { background: 'var(--gold-06)', color: 'var(--text-page)', borderColor: 'var(--gold)' },
 
-  loading: { color: '#555', fontFamily: 'monospace', fontSize: '0.85rem', padding: '2rem 0' },
-  error: { color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
+  loading: { color: 'var(--text-dim)', fontFamily: 'monospace', fontSize: '0.85rem', padding: '2rem 0' },
+  error: { color: 'var(--status-err)', fontFamily: 'monospace', fontSize: '0.85rem', padding: '1rem', background: 'rgba(255,107,107,0.06)', borderRadius: 6 },
 
   group: { marginBottom: '2rem' },
   groupHeader: { display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' },
   groupDot: { width: 8, height: 8, borderRadius: '50%', flexShrink: 0 },
-  groupTitle: { fontFamily: 'monospace', fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#888' },
+  groupTitle: { fontFamily: 'monospace', fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)' },
   groupTotal: { fontFamily: 'monospace', fontSize: '0.82rem', marginLeft: 'auto' },
 
-  table: { width: '100%', borderCollapse: 'collapse', background: '#1e1e24', border: '1px solid #2a2a35', borderRadius: 8, overflow: 'hidden' },
+  table: { width: '100%', borderCollapse: 'collapse', background: 'var(--panel)', border: '1px solid #2a2a35', borderRadius: 8, overflow: 'hidden' },
 
   footerNav: { display: 'flex', justifyContent: 'space-between', paddingTop: '1.5rem', borderTop: '1px solid #2a2a35', marginTop: '2rem' },
-  footerLink: { fontFamily: 'monospace', fontSize: '0.78rem', color: '#888', textDecoration: 'none' },
+  footerLink: { fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--text-muted)', textDecoration: 'none' },
 }
 
 const th = {
   fontFamily: 'monospace', fontSize: '0.7rem', letterSpacing: '0.08em',
-  textTransform: 'uppercase', color: '#555', textAlign: 'left',
+  textTransform: 'uppercase', color: 'var(--text-dim)', textAlign: 'left',
   padding: '0.6rem 1rem', borderBottom: '1px solid #2a2a35', whiteSpace: 'nowrap',
 }
 
 const td = {
   padding: '0.65rem 1rem', borderBottom: '1px solid #1e1e24',
-  verticalAlign: 'middle', color: '#888',
+  verticalAlign: 'middle', color: 'var(--text-muted)',
 }

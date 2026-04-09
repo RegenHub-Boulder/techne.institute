@@ -79,11 +79,11 @@ function MetricCard({ title, icon, href, color, children, badge }) {
         cursor: 'pointer',
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.borderColor = color || '#c4956a'
-        e.currentTarget.style.background = 'rgba(255,255,255,0.04)'
+        e.currentTarget.style.borderColor = color || 'var(--gold)'
+        e.currentTarget.style.background = 'var(--hover-light)'
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.borderColor = '#1a1a2e'
+        e.currentTarget.style.borderColor = 'var(--hud-border)'
         e.currentTarget.style.background = 'rgba(255,255,255,0.025)'
       }}
     >
@@ -91,7 +91,7 @@ function MetricCard({ title, icon, href, color, children, badge }) {
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0,
         height: '2px',
-        background: `linear-gradient(90deg, ${color || '#c4956a'} 0%, transparent 100%)`,
+        background: `linear-gradient(90deg, ${color || 'var(--gold)'} 0%, transparent 100%)`,
         opacity: 0.7,
       }} />
 
@@ -102,7 +102,7 @@ function MetricCard({ title, icon, href, color, children, badge }) {
           fontWeight: 700,
           textTransform: 'uppercase',
           letterSpacing: '0.1em',
-          color: '#52526a',
+          color: 'var(--text-nav)',
         }}>{title}</span>
         <span style={{ fontSize: '1rem', opacity: 0.5 }}>{icon}</span>
       </div>
@@ -113,8 +113,8 @@ function MetricCard({ title, icon, href, color, children, badge }) {
       {badge && (
         <div style={{
           position: 'absolute', bottom: '0.75rem', right: '0.75rem',
-          fontSize: '0.62rem', color: color || '#c4956a',
-          background: `${color || '#c4956a'}18`,
+          fontSize: '0.62rem', color: color || 'var(--gold)',
+          background: `${color || 'var(--gold)'}18`,
           padding: '2px 6px', borderRadius: '3px',
           textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700,
         }}>{badge}</div>
@@ -130,14 +130,14 @@ function MetricValue({ value, sub, mono }) {
         fontSize: '1.6rem',
         fontWeight: 700,
         letterSpacing: '-0.03em',
-        color: '#e0e0f0',
+        color: 'var(--text-primary)',
         fontFamily: mono ? "'JetBrains Mono', 'Fira Code', Consolas, monospace" : 'inherit',
         lineHeight: 1.1,
       }}>{value}</div>
       {sub && (
         <div style={{
           fontSize: '0.75rem',
-          color: '#52526a',
+          color: 'var(--text-nav)',
           marginTop: '0.3rem',
           lineHeight: 1.4,
         }}>{sub}</div>
@@ -149,7 +149,7 @@ function MetricValue({ value, sub, mono }) {
 function MerkleIndicator({ root }) {
   if (!root) return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-      <span style={{ color: '#c4956a', fontSize: '0.7rem' }}>◎ No root</span>
+      <span style={{ color: 'var(--gold)', fontSize: '0.7rem' }}>◎ No root</span>
     </div>
   )
   return (
@@ -157,12 +157,12 @@ function MerkleIndicator({ root }) {
       <div style={{
         display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.35rem',
       }}>
-        <span style={{ color: '#4a5f4a', fontSize: '0.72rem', fontWeight: 700 }}>✓ Verifiable</span>
+        <span style={{ color: 'var(--status-ok)', fontSize: '0.72rem', fontWeight: 700 }}>✓ Verifiable</span>
       </div>
       <div style={{
         fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
         fontSize: '0.68rem',
-        color: '#52526a',
+        color: 'var(--text-nav)',
         letterSpacing: '0.02em',
         wordBreak: 'break-all',
       }}>
@@ -203,7 +203,7 @@ export default function Home() {
               ? membershipLabel[participant.membership_class]
               : 'Cooperative member'}
             {' · '}
-            <span style={{ color: '#52526a' }}>techne.institute</span>
+            <span style={{ color: 'var(--text-nav)' }}>techne.institute</span>
           </p>
         </div>
         <div style={styles.headerMeta}>
@@ -227,7 +227,7 @@ export default function Home() {
             title="Capital Account"
             icon="◉"
             href="/intranet/account/"
-            color="#c4956a"
+            color="var(--gold)"
           >
             <MetricValue
               value={data.capital ? fmt(data.capital.book_balance) : '—'}
@@ -243,7 +243,7 @@ export default function Home() {
             title="Labor Contributions"
             icon="⏱"
             href="/intranet/labor/"
-            color="#6b836b"
+            color="var(--status-info)"
           >
             <MetricValue
               value={fmtHrs(data.laborHours)}
@@ -256,7 +256,7 @@ export default function Home() {
             title="Active Projects"
             icon="◇"
             href="/intranet/projects/"
-            color="#c4956a"
+            color="var(--gold)"
           >
             <MetricValue
               value={String(data.activeProjects ?? 0)}
@@ -269,7 +269,7 @@ export default function Home() {
             title="Governance"
             icon="⊕"
             href="/intranet/governance/"
-            color={data.openProposals > 0 ? '#c4956a' : '#4a5f4a'}
+            color={data.openProposals > 0 ? 'var(--gold)' : 'var(--status-ok)'}
             badge={data.openProposals > 0 ? `${data.openProposals} open` : null}
           >
             <MetricValue
@@ -283,7 +283,7 @@ export default function Home() {
             title="State Verifier"
             icon="◈"
             href="/intranet/verify/"
-            color="#4a5f4a"
+            color="var(--status-ok)"
           >
             <MerkleIndicator root={data.merkleRoot} />
           </MetricCard>
@@ -293,7 +293,7 @@ export default function Home() {
             title="Cloud Micro-Grid"
             icon="⬡"
             href="/intranet/cloud/"
-            color="#6b836b"
+            color="var(--status-info)"
           >
             <MetricValue
               value="R13"
@@ -306,7 +306,7 @@ export default function Home() {
             title="REA Journal"
             icon="≡"
             href="/intranet/journal/"
-            color="#8888a8"
+            color="var(--text-accent)"
           >
             <MetricValue
               value="Append-only"
@@ -319,7 +319,7 @@ export default function Home() {
             title="REA Ledger"
             icon="⊞"
             href="/intranet/ledger/"
-            color="#52526a"
+            color="var(--text-nav)"
           >
             <MetricValue
               value={String(data.ledger?.length ?? 0)}
@@ -332,7 +332,7 @@ export default function Home() {
             title="Patronage"
             icon="★"
             href="/intranet/patronage/"
-            color="#c4956a"
+            color="var(--gold)"
           >
             <MetricValue
               value="40/30/20/10"
@@ -346,7 +346,7 @@ export default function Home() {
               title="Treasury"
               icon="⌖"
               href="/intranet/treasury/"
-              color="#c4956a"
+              color="var(--gold)"
               badge="Steward"
             >
               <MetricValue
@@ -361,7 +361,7 @@ export default function Home() {
             title="Member Guide"
             icon="≡"
             href="/intranet/guide/"
-            color="#2a2a40"
+            color="var(--border-hud2)"
           >
             <MetricValue
               value="Bylaws &amp; Docs"
@@ -374,7 +374,7 @@ export default function Home() {
             title="Directory"
             icon="⊛"
             href="/intranet/directory/"
-            color="#4a5f4a"
+            color="var(--status-ok)"
           >
             <MetricValue
               value="Organizers"
@@ -403,13 +403,13 @@ const styles = {
     fontSize: '1.75rem',
     fontWeight: 800,
     letterSpacing: '-0.03em',
-    color: '#e0e0f0',
+    color: 'var(--text-primary)',
     margin: 0,
     lineHeight: 1.15,
   },
   subtitle: {
     fontSize: '0.8rem',
-    color: '#52526a',
+    color: 'var(--text-nav)',
     margin: '0.35rem 0 0',
   },
   headerMeta: {
@@ -422,13 +422,13 @@ const styles = {
     width: '6px',
     height: '6px',
     borderRadius: '50%',
-    background: '#4a5f4a',
+    background: 'var(--status-ok)',
     boxShadow: '0 0 6px #4a5f4a',
     flexShrink: 0,
   },
   onlineLabel: {
     fontSize: '0.68rem',
-    color: '#4a5f4a',
+    color: 'var(--status-ok)',
     textTransform: 'uppercase',
     letterSpacing: '0.1em',
     fontWeight: 700,

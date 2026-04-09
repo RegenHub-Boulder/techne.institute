@@ -11,12 +11,12 @@ const categoryLabel = {
 }
 
 const categoryColor = {
-  income: '#4a5f4a',
-  expense: '#c46a6a',
+  income: 'var(--status-ok)',
+  expense: 'var(--status-err)',
   capital_call: 'var(--ember, #c4956a)',
-  distribution: '#6b836b',
-  transfer: '#aaa',
-  other: '#888',
+  distribution: 'var(--status-info)',
+  transfer: 'var(--text-soft)',
+  other: 'var(--text-muted)',
 }
 
 export default function Treasury() {
@@ -149,14 +149,14 @@ export default function Treasury() {
                       <span>
                         <span style={{
                           ...styles.categoryBadge,
-                          color: categoryColor[t.category] || '#888',
+                          color: categoryColor[t.category] || 'var(--text-muted)',
                         }}>
                           {categoryLabel[t.category] || t.category}
                         </span>
                       </span>
                       <span style={{
                         ...styles.txnAmount,
-                        color: t.amount >= 0 ? '#4a5f4a' : '#c46a6a',
+                        color: t.amount >= 0 ? 'var(--status-ok)' : 'var(--status-err)',
                       }}>
                         {t.amount >= 0 ? '+' : ''}{fmt(t.amount)}
                       </span>
@@ -193,57 +193,57 @@ export default function Treasury() {
 const styles = {
   page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
   main: { maxWidth: '900px', margin: '0 auto', padding: '2rem' },
-  breadcrumb: { fontSize: '0.85rem', color: '#888', marginBottom: '1rem' },
+  breadcrumb: { fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' },
   breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 1.5rem' },
   h2: { fontSize: '1.1rem', fontWeight: 600, margin: '0' },
-  loading: { color: '#888', padding: '2rem 0', fontSize: '0.875rem' },
-  error: { padding: '1rem 1.25rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#c46a6a', fontSize: '0.875rem' },
+  loading: { color: 'var(--text-muted)', padding: '2rem 0', fontSize: '0.875rem' },
+  error: { padding: '1rem 1.25rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: 'var(--status-err)', fontSize: '0.875rem' },
   summaryCard: {
-    background: '#141418', border: '1px solid #2a2a35',
+    background: 'var(--surface)', border: '1px solid #2a2a35',
     borderRadius: '12px', padding: '1.75rem 2rem', marginBottom: '2rem',
   },
-  summaryLabel: { fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#888', marginBottom: '0.5rem' },
+  summaryLabel: { fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)', marginBottom: '0.5rem' },
   summaryValue: { fontSize: '2.5rem', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: '0.25rem' },
-  summaryMeta: { fontSize: '0.8rem', color: '#888' },
+  summaryMeta: { fontSize: '0.8rem', color: 'var(--text-muted)' },
   section: { marginBottom: '2rem' },
   accountGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '0.75rem', marginTop: '1rem' },
   accountCard: {
-    background: '#141418', border: '1px solid #2a2a35',
+    background: 'var(--surface)', border: '1px solid #2a2a35',
     borderRadius: '10px', padding: '1.25rem',
   },
   accountName: { fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.2rem' },
-  accountInst: { fontSize: '0.8rem', color: '#888', marginBottom: '0.2rem' },
-  accountType: { fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#666', marginBottom: '0.75rem' },
+  accountInst: { fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.2rem' },
+  accountType: { fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-subdim)', marginBottom: '0.75rem' },
   accountBalance: { fontSize: '1.4rem', fontWeight: 700, letterSpacing: '-0.02em' },
   txnHeader: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' },
   select: {
-    background: '#141418', border: '1px solid #2a2a35',
-    color: '#e8e8e0', borderRadius: '6px', padding: '0.4rem 0.75rem',
+    background: 'var(--surface)', border: '1px solid #2a2a35',
+    color: 'var(--text-page)', borderRadius: '6px', padding: '0.4rem 0.75rem',
     fontSize: '0.8rem', cursor: 'pointer',
   },
-  txnTable: { background: '#141418', border: '1px solid #2a2a35', borderRadius: '10px', overflow: 'hidden' },
+  txnTable: { background: 'var(--surface)', border: '1px solid #2a2a35', borderRadius: '10px', overflow: 'hidden' },
   txnHead: {
     display: 'grid', gridTemplateColumns: '110px 1fr 120px 110px',
     padding: '0.75rem 1rem', borderBottom: '1px solid #2a2a35',
-    fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#888',
+    fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)',
   },
   txnRow: {
     display: 'grid', gridTemplateColumns: '110px 1fr 120px 110px',
     padding: '0.85rem 1rem', borderBottom: '1px solid #1e1e28',
     fontSize: '0.875rem', alignItems: 'center',
   },
-  txnDate: { color: '#888', fontSize: '0.8rem' },
+  txnDate: { color: 'var(--text-muted)', fontSize: '0.8rem' },
   txnDesc: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingRight: '1rem' },
   txnAmount: { textAlign: 'right', fontVariantNumeric: 'tabular-nums', fontWeight: 600 },
   categoryBadge: { fontSize: '0.75rem', fontWeight: 500 },
   pagination: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginTop: '1rem', fontSize: '0.875rem' },
   pageBtn: {
     background: 'none', border: '1px solid #2a2a35',
-    color: '#888', borderRadius: '6px', padding: '0.35rem 0.75rem',
+    color: 'var(--text-muted)', borderRadius: '6px', padding: '0.35rem 0.75rem',
     cursor: 'pointer', fontSize: '0.8rem',
   },
-  pageInfo: { color: '#888' },
-  empty: { padding: '2rem', textAlign: 'center', color: '#888', fontSize: '0.875rem', background: '#141418', borderRadius: '10px', border: '1px solid #2a2a35' },
+  pageInfo: { color: 'var(--text-muted)' },
+  empty: { padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.875rem', background: 'var(--surface)', borderRadius: '10px', border: '1px solid #2a2a35' },
 }

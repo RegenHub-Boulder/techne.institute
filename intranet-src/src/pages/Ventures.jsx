@@ -23,8 +23,8 @@ export default function Ventures() {
   const statusColor = {
     active: '#4caf88',
     exited: 'var(--ember, #c4956a)',
-    written_off: '#888',
-    pending: '#aaa',
+    written_off: 'var(--text-muted)',
+    pending: 'var(--text-soft)',
   }
 
   return (
@@ -150,8 +150,8 @@ function PositionRow({ pos, statusLabel, statusColor }) {
       <div
         style={{
           ...styles.statusBadge,
-          color: statusColor[pos.status] || '#888',
-          borderColor: statusColor[pos.status] || '#888',
+          color: statusColor[pos.status] || 'var(--text-muted)',
+          borderColor: statusColor[pos.status] || 'var(--text-muted)',
         }}
       >
         {statusLabel[pos.status] || pos.status || 'Unknown'}
@@ -196,7 +196,7 @@ const styles = {
   loading: { color: 'var(--color-text-muted, #888)', padding: '2rem 0' },
   error: {
     padding: '1rem', background: 'rgba(220,60,60,0.1)',
-    border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#c46a6a',
+    border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: 'var(--status-err)',
   },
   summaryRow: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',

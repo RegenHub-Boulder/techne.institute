@@ -10,14 +10,14 @@ import { TabShell } from '../components/TabShell.jsx'
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const RESOURCE_COLORS = {
-  USD: '#4a5f4a', CLOUD: '#c4956a', labor_hours: '#6b836b', voting_power: '#c4956a',
+  USD: 'var(--status-ok)', CLOUD: 'var(--gold)', labor_hours: 'var(--status-info)', voting_power: 'var(--gold)',
 }
 const RESOURCE_LABELS = {
   USD: 'USD', CLOUD: 'CLOUD Credits', labor_hours: 'Labor Hours', voting_power: 'Voting Power',
 }
 const EVENT_COLORS = {
-  transfer: '#6b836b', contribution: '#4a5f4a', expense: '#c46a6a',
-  vote: '#c4956a', delegation: '#c4956a', allocation: '#4a5f4a', proposal: '#60a5fa',
+  transfer: 'var(--status-info)', contribution: 'var(--status-ok)', expense: 'var(--status-err)',
+  vote: 'var(--gold)', delegation: 'var(--gold)', allocation: 'var(--status-ok)', proposal: '#60a5fa',
 }
 const EVENT_TYPES = ['', 'transfer', 'contribution', 'expense', 'vote', 'delegation', 'allocation', 'proposal']
 
@@ -101,7 +101,7 @@ export default function FinanceGroup({ initialTab = 'overview' }) {
     { key: 'ledger',   label: 'Ledger' },
     { key: 'journal',  label: 'Journal' },
     { key: 'verify',   label: 'Verify' },
-    ...(isSteward ? [{ key: 'treasury', label: 'Treasury', badge: 'S', badgeColor: '#c4956a' }] : []),
+    ...(isSteward ? [{ key: 'treasury', label: 'Treasury', badge: 'S', badgeColor: 'var(--gold)' }] : []),
   ]
 
   return (
@@ -148,7 +148,7 @@ function OverviewTab({ data }) {
           ? 'rgba(74,95,74,0.25)'
           : rootMatch === false
           ? 'rgba(255,107,107,0.25)'
-          : 'rgba(196,149,106,0.15)',
+          : 'var(--gold-15)',
         background: rootMatch === true
           ? 'rgba(74,95,74,0.04)'
           : rootMatch === false
@@ -160,7 +160,7 @@ function OverviewTab({ data }) {
           <span style={s.integrityHash}>{truncHash(storedRoot)}</span>
           <span style={{
             ...s.integrityStatus,
-            color: rootMatch === true ? '#4a5f4a' : rootMatch === false ? '#c46a6a' : '#555',
+            color: rootMatch === true ? 'var(--status-ok)' : rootMatch === false ? 'var(--status-err)' : 'var(--text-dim)',
           }}>
             {verifying ? 'verifying…' : rootMatch === true ? '✓ verified' : rootMatch === false ? '✗ mismatch' : '—'}
           </span>
@@ -172,9 +172,9 @@ function OverviewTab({ data }) {
         <div style={s.resourceGrid}>
           {Object.entries(totals).map(([rt, total]) => (
             <div key={rt} style={s.resourceCard}>
-              <div style={{ ...s.resourceDot, background: RESOURCE_COLORS[rt] || '#888' }} />
+              <div style={{ ...s.resourceDot, background: RESOURCE_COLORS[rt] || 'var(--text-muted)' }} />
               <div style={s.resourceLabel}>{RESOURCE_LABELS[rt] || rt}</div>
-              <div style={{ ...s.resourceValue, color: RESOURCE_COLORS[rt] || '#e0e0f0' }}>
+              <div style={{ ...s.resourceValue, color: RESOURCE_COLORS[rt] || 'var(--text-primary)' }}>
                 {fmtBalance(total, rt)}
               </div>
               <div style={s.resourceCount}>
@@ -201,8 +201,8 @@ function OverviewTab({ data }) {
               <div key={e.id} style={s.eventRow}>
                 <span style={{
                   ...s.eventTag,
-                  background: `${EVENT_COLORS[e.event_type] || '#888'}18`,
-                  color: EVENT_COLORS[e.event_type] || '#888',
+                  background: `${EVENT_COLORS[e.event_type] || 'var(--text-muted)'}18`,
+                  color: EVENT_COLORS[e.event_type] || 'var(--text-muted)',
                 }}>
                   {e.event_type}
                 </span>
@@ -265,13 +265,13 @@ function LedgerTab({ data }) {
       </div>
 
       {Object.entries(grouped).map(([rt, accts]) => {
-        const color = RESOURCE_COLORS[rt] || '#888'
+        const color = RESOURCE_COLORS[rt] || 'var(--text-muted)'
         const total = accts.reduce((sum, a) => sum + Number(a.balance || 0), 0)
         return (
           <div key={rt} style={{ marginBottom: '1.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.6rem' }}>
               <span style={{ width: 8, height: 8, borderRadius: '50%', background: color, display: 'inline-block', flexShrink: 0 }} />
-              <span style={{ fontFamily: 'monospace', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#888' }}>
+              <span style={{ fontFamily: 'monospace', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-muted)' }}>
                 {RESOURCE_LABELS[rt] || rt}
               </span>
               <span style={{ fontFamily: 'monospace', fontSize: '0.78rem', color, marginLeft: 'auto' }}>
@@ -290,14 +290,14 @@ function LedgerTab({ data }) {
                 {accts.map(a => (
                   <tr key={a.id}>
                     <td style={s.td}>
-                      <div style={{ fontSize: '0.88rem', color: '#c8c2ba' }}>
+                      <div style={{ fontSize: '0.88rem', color: 'var(--text-warm)' }}>
                         {a.participants?.name || a.account_name}
                       </div>
-                      <div style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#444', marginTop: '0.1rem' }}>
+                      <div style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: 'var(--text-ghost)', marginTop: '0.1rem' }}>
                         {a.account_key}
                       </div>
                     </td>
-                    <td style={{ ...s.td, fontFamily: 'monospace', fontSize: '0.72rem', color: '#666' }}>
+                    <td style={{ ...s.td, fontFamily: 'monospace', fontSize: '0.72rem', color: 'var(--text-subdim)' }}>
                       {a.account_type}
                     </td>
                     <td style={{ ...s.td, textAlign: 'right', fontFamily: 'monospace', fontSize: '0.85rem', color }}>
@@ -358,13 +358,13 @@ function JournalTab() {
     <div>
       {currentRoot && (
         <div style={{
-          fontFamily: 'monospace', fontSize: '0.72rem', color: '#666',
+          fontFamily: 'monospace', fontSize: '0.72rem', color: 'var(--text-subdim)',
           marginBottom: '1rem', padding: '0.5rem 0.75rem',
           background: 'rgba(196,149,106,0.04)',
           border: '1px solid rgba(196,149,106,0.1)',
           borderRadius: 5,
         }}>
-          Current root: <span style={{ color: '#c4956a' }}>{truncHash(currentRoot)}</span>
+          Current root: <span style={{ color: 'var(--gold)' }}>{truncHash(currentRoot)}</span>
         </div>
       )}
 
@@ -393,23 +393,23 @@ function JournalTab() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
             <span style={{
               ...s.eventTag,
-              background: `${EVENT_COLORS[e.event_type] || '#888'}20`,
-              color: EVENT_COLORS[e.event_type] || '#888',
-              border: `1px solid ${EVENT_COLORS[e.event_type] || '#888'}40`,
+              background: `${EVENT_COLORS[e.event_type] || 'var(--text-muted)'}20`,
+              color: EVENT_COLORS[e.event_type] || 'var(--text-muted)',
+              border: `1px solid ${EVENT_COLORS[e.event_type] || 'var(--text-muted)'}40`,
             }}>
               {e.event_type}
             </span>
-            <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: '#444' }}>#{e.seq}</span>
+            <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: 'var(--text-ghost)' }}>#{e.seq}</span>
             <span style={{
-              flex: 1, fontSize: '0.875rem', color: '#aaa',
+              flex: 1, fontSize: '0.875rem', color: 'var(--text-soft)',
               overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
             }}>
               {e.description || '—'}
             </span>
-            <span style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: '#c8c2ba', flexShrink: 0 }}>
+            <span style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: 'var(--text-warm)', flexShrink: 0 }}>
               {fmtAmt(e.amount, e.resource_type)}
             </span>
-            <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: '#555', flexShrink: 0 }}>
+            <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: 'var(--text-dim)', flexShrink: 0 }}>
               {new Date(e.recorded_at || e.created_at).toLocaleDateString('en-US', {
                 month: 'short', day: 'numeric',
               })}
@@ -429,10 +429,10 @@ function JournalTab() {
                 ['New root', truncHash(e.new_merkle_root),               true],
               ].map(([label, val, mono]) => (
                 <div key={label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem' }}>
-                  <span style={{ color: '#555' }}>{label}</span>
+                  <span style={{ color: 'var(--text-dim)' }}>{label}</span>
                   <span style={{
                     fontFamily: mono ? 'monospace' : undefined,
-                    color: '#888',
+                    color: 'var(--text-muted)',
                     fontSize: mono ? '0.75rem' : undefined,
                   }}>
                     {val}
@@ -456,7 +456,7 @@ function JournalTab() {
         >
           ← Prev
         </button>
-        <span style={{ color: '#555' }}>Page {page + 1}</span>
+        <span style={{ color: 'var(--text-dim)' }}>Page {page + 1}</span>
         <button
           style={s.pageBtn}
           onClick={() => setPage(page + 1)}
@@ -565,7 +565,7 @@ function VerifyTab() {
 
       {mode === 'live' && (
         <div>
-          <p style={{ fontSize: '0.875rem', color: '#888', marginBottom: '1.25rem', lineHeight: 1.6, maxWidth: 560 }}>
+          <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1.25rem', lineHeight: 1.6, maxWidth: 560 }}>
             Fetch the current ledger and recompute the merkle root client-side (Web Crypto API)
             to verify no unauthorized state changes have occurred.
           </p>
@@ -580,7 +580,7 @@ function VerifyTab() {
               marginTop: '1.25rem',
             }}>
               <div style={{
-                color: liveResult.match ? '#4a5f4a' : '#c46a6a',
+                color: liveResult.match ? 'var(--status-ok)' : 'var(--status-err)',
                 fontWeight: 600, marginBottom: '0.75rem', fontFamily: 'monospace',
               }}>
                 {liveResult.match ? '✓ State Verified' : '✗ State Mismatch — possible tampering'}
@@ -591,13 +591,13 @@ function VerifyTab() {
                 ['Computed root',    truncHash(liveResult.computed),  true],
               ].map(([l, v, mono]) => (
                 <div key={l} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.25rem 0', fontSize: '0.82rem', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                  <span style={{ color: '#666' }}>{l}</span>
-                  <span style={{ fontFamily: mono ? 'monospace' : undefined, color: '#aaa', fontSize: mono ? '0.75rem' : undefined }}>{v}</span>
+                  <span style={{ color: 'var(--text-subdim)' }}>{l}</span>
+                  <span style={{ fontFamily: mono ? 'monospace' : undefined, color: 'var(--text-soft)', fontSize: mono ? '0.75rem' : undefined }}>{v}</span>
                 </div>
               ))}
-              <div style={{ fontSize: '0.78rem', color: '#555', lineHeight: 1.6, marginTop: '0.75rem' }}>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', lineHeight: 1.6, marginTop: '0.75rem' }}>
                 Each balance is hashed as{' '}
-                <code style={{ fontFamily: 'monospace', background: 'rgba(255,255,255,0.05)', padding: '0.1em 0.35em', borderRadius: 3, color: '#c4956a' }}>
+                <code style={{ fontFamily: 'monospace', background: 'rgba(255,255,255,0.05)', padding: '0.1em 0.35em', borderRadius: 3, color: 'var(--gold)' }}>
                   sha256(account_key + ':' + balance)
                 </code>
                 . Leaf hashes are concatenated alphabetically and re-hashed to produce the root.
@@ -609,7 +609,7 @@ function VerifyTab() {
 
       {mode === 'proof' && (
         <div>
-          <p style={{ fontSize: '0.875rem', color: '#888', marginBottom: '1.25rem', lineHeight: 1.6, maxWidth: 560 }}>
+          <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1.25rem', lineHeight: 1.6, maxWidth: 560 }}>
             Verify that a specific account held a balance at a historical state root.
             An external auditor can confirm any balance without access to the full ledger.
           </p>
@@ -647,13 +647,13 @@ function VerifyTab() {
               marginTop: '1.25rem',
             }}>
               {proofResult.error ? (
-                <div style={{ color: '#c46a6a', fontFamily: 'monospace', fontSize: '0.85rem' }}>
+                <div style={{ color: 'var(--status-err)', fontFamily: 'monospace', fontSize: '0.85rem' }}>
                   {proofResult.error}
                 </div>
               ) : (
                 <>
                   <div style={{
-                    color: proofResult.valid ? '#4a5f4a' : '#c46a6a',
+                    color: proofResult.valid ? 'var(--status-ok)' : 'var(--status-err)',
                     fontWeight: 600, marginBottom: '0.75rem', fontFamily: 'monospace',
                   }}>
                     {proofResult.valid ? '✓ Proof Valid' : '✗ Proof Invalid'}
@@ -664,19 +664,19 @@ function VerifyTab() {
                     ['Proof depth', `${proofResult.steps} steps`,     false],
                   ].map(([l, v, mono]) => (
                     <div key={l} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.25rem 0', fontSize: '0.82rem', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                      <span style={{ color: '#666' }}>{l}</span>
-                      <span style={{ fontFamily: mono ? 'monospace' : undefined, color: '#aaa' }}>{v}</span>
+                      <span style={{ color: 'var(--text-subdim)' }}>{l}</span>
+                      <span style={{ fontFamily: mono ? 'monospace' : undefined, color: 'var(--text-soft)' }}>{v}</span>
                     </div>
                   ))}
                   {proofPath.length > 0 && (
                     <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
-                      <div style={{ fontFamily: 'monospace', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#444', marginBottom: '0.4rem' }}>
+                      <div style={{ fontFamily: 'monospace', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-ghost)', marginBottom: '0.4rem' }}>
                         Proof path
                       </div>
                       {proofPath.map((step, i) => (
                         <div key={i} style={{ display: 'flex', gap: '0.75rem', fontFamily: 'monospace', fontSize: '0.75rem', padding: '0.2rem 0' }}>
-                          <span style={{ color: '#555', width: '3rem' }}>{step.position}</span>
-                          <span style={{ color: '#444' }}>{truncHash(step.hash)}</span>
+                          <span style={{ color: 'var(--text-dim)', width: '3rem' }}>{step.position}</span>
+                          <span style={{ color: 'var(--text-ghost)' }}>{truncHash(step.hash)}</span>
                         </div>
                       ))}
                     </div>
@@ -698,8 +698,8 @@ const CATEGORY_LABEL = {
   distribution: 'Distribution', transfer: 'Transfer', other: 'Other',
 }
 const CATEGORY_COLOR = {
-  income: '#4a5f4a', expense: '#c46a6a', capital_call: '#c4956a',
-  distribution: '#6b836b', transfer: '#aaa', other: '#888',
+  income: 'var(--status-ok)', expense: 'var(--status-err)', capital_call: 'var(--gold)',
+  distribution: 'var(--status-info)', transfer: 'var(--text-soft)', other: 'var(--text-muted)',
 }
 const TREASURY_PAGE_SIZE = 20
 
@@ -745,14 +745,14 @@ function TreasuryTab() {
   return (
     <div>
       {/* Summary */}
-      <div style={{ background: '#0f0f1e', border: '1px solid #1a1a2e', borderRadius: 10, padding: '1.5rem', marginBottom: '1.5rem' }}>
-        <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#555', marginBottom: '0.4rem' }}>
+      <div style={{ background: 'var(--ink)', border: '1px solid #1a1a2e', borderRadius: 10, padding: '1.5rem', marginBottom: '1.5rem' }}>
+        <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-dim)', marginBottom: '0.4rem' }}>
           Total Assets
         </div>
         <div style={{ fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.02em', marginBottom: '0.2rem' }}>
           {fmt(totalAssets)}
         </div>
-        <div style={{ fontSize: '0.78rem', color: '#555' }}>
+        <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)' }}>
           {accounts.length} active account{accounts.length !== 1 ? 's' : ''}
         </div>
       </div>
@@ -764,9 +764,9 @@ function TreasuryTab() {
           gap: '0.6rem', marginBottom: '1.75rem',
         }}>
           {accounts.map(a => (
-            <div key={a.id} style={{ background: '#0f0f1e', border: '1px solid #1a1a2e', borderRadius: 8, padding: '1rem' }}>
+            <div key={a.id} style={{ background: 'var(--ink)', border: '1px solid #1a1a2e', borderRadius: 8, padding: '1rem' }}>
               <div style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.15rem' }}>{a.account_name}</div>
-              <div style={{ fontSize: '0.72rem', color: '#666', marginBottom: '0.75rem' }}>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-subdim)', marginBottom: '0.75rem' }}>
                 {a.institution} · {a.account_type}
               </div>
               <div style={{ fontSize: '1.3rem', fontWeight: 700, letterSpacing: '-0.01em' }}>
@@ -784,8 +784,8 @@ function TreasuryTab() {
           value={catFilter}
           onChange={e => { setCatFilter(e.target.value); setPage(0) }}
           style={{
-            background: '#0f0f1e', border: '1px solid #1a1a2e',
-            color: '#c8c2ba', borderRadius: 6, padding: '0.35rem 0.6rem',
+            background: 'var(--ink)', border: '1px solid #1a1a2e',
+            color: 'var(--text-warm)', borderRadius: 6, padding: '0.35rem 0.6rem',
             fontSize: '0.78rem', cursor: 'pointer',
           }}
         >
@@ -796,9 +796,9 @@ function TreasuryTab() {
         </select>
       </div>
 
-      <div style={{ background: '#0f0f1e', border: '1px solid #1a1a2e', borderRadius: 8, overflow: 'hidden' }}>
+      <div style={{ background: 'var(--ink)', border: '1px solid #1a1a2e', borderRadius: 8, overflow: 'hidden' }}>
         {paginated.length === 0 ? (
-          <div style={{ padding: '2rem', textAlign: 'center', color: '#555', fontSize: '0.875rem' }}>
+          <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-dim)', fontSize: '0.875rem' }}>
             No transactions.
           </div>
         ) : (
@@ -814,16 +814,16 @@ function TreasuryTab() {
                 alignItems: 'center',
               }}
             >
-              <span style={{ color: '#666', fontSize: '0.78rem' }}>{fmtDate(t.date)}</span>
-              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingRight: '1rem', color: '#c8c2ba' }}>
+              <span style={{ color: 'var(--text-subdim)', fontSize: '0.78rem' }}>{fmtDate(t.date)}</span>
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingRight: '1rem', color: 'var(--text-warm)' }}>
                 {t.description}
               </span>
-              <span style={{ color: CATEGORY_COLOR[t.category] || '#888', fontSize: '0.78rem' }}>
+              <span style={{ color: CATEGORY_COLOR[t.category] || 'var(--text-muted)', fontSize: '0.78rem' }}>
                 {CATEGORY_LABEL[t.category] || t.category}
               </span>
               <span style={{
                 textAlign: 'right', fontWeight: 600,
-                color: t.amount >= 0 ? '#4a5f4a' : '#c46a6a',
+                color: t.amount >= 0 ? 'var(--status-ok)' : 'var(--status-err)',
                 fontFamily: 'monospace', fontSize: '0.82rem',
               }}>
                 {t.amount >= 0 ? '+' : ''}{fmt(t.amount)}
@@ -838,7 +838,7 @@ function TreasuryTab() {
           <button style={s.pageBtn} onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}>
             ← Prev
           </button>
-          <span style={{ color: '#666' }}>{page + 1} / {totalPages}</span>
+          <span style={{ color: 'var(--text-subdim)' }}>{page + 1} / {totalPages}</span>
           <button style={s.pageBtn} onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page >= totalPages - 1}>
             Next →
           </button>
@@ -852,16 +852,16 @@ function TreasuryTab() {
 
 const s = {
   loading: {
-    color: '#555', padding: '3rem 0', textAlign: 'center', fontSize: '0.875rem',
+    color: 'var(--text-dim)', padding: '3rem 0', textAlign: 'center', fontSize: '0.875rem',
   },
   error: {
     padding: '1rem', background: 'rgba(220,60,60,0.1)',
-    border: '1px solid rgba(220,60,60,0.3)', borderRadius: 8, color: '#c46a6a', fontSize: '0.875rem',
+    border: '1px solid rgba(220,60,60,0.3)', borderRadius: 8, color: 'var(--status-err)', fontSize: '0.875rem',
   },
   emptyNotice: {
     padding: '1.5rem', background: 'rgba(196,149,106,0.05)',
     border: '1px solid rgba(196,149,106,0.12)', borderRadius: 8,
-    fontSize: '0.875rem', color: '#888', lineHeight: 1.6,
+    fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.6,
   },
   integrityBadge: {
     border: '1px solid', borderRadius: 6, padding: '0.65rem 1rem', marginBottom: '1.5rem',
@@ -871,31 +871,31 @@ const s = {
     fontFamily: 'monospace', fontSize: '0.78rem',
   },
   integrityLabel: {
-    color: '#444', textTransform: 'uppercase', letterSpacing: '0.07em', fontSize: '0.68rem',
+    color: 'var(--text-ghost)', textTransform: 'uppercase', letterSpacing: '0.07em', fontSize: '0.68rem',
   },
-  integrityHash: { color: '#c4956a', flex: 1 },
+  integrityHash: { color: 'var(--gold)', flex: 1 },
   integrityStatus: { fontWeight: 600, flexShrink: 0 },
   resourceGrid: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
     gap: '0.75rem', marginBottom: '1.75rem',
   },
   resourceCard: {
-    background: '#0f0f1e', border: '1px solid #1a1a2e', borderRadius: 8, padding: '1rem',
+    background: 'var(--ink)', border: '1px solid #1a1a2e', borderRadius: 8, padding: '1rem',
   },
   resourceDot: { width: 8, height: 8, borderRadius: '50%', marginBottom: '0.5rem' },
   resourceLabel: {
     fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em',
-    color: '#444', marginBottom: '0.35rem',
+    color: 'var(--text-ghost)', marginBottom: '0.35rem',
   },
   resourceValue: { fontSize: '1.25rem', fontWeight: 700, letterSpacing: '-0.01em', marginBottom: '0.15rem' },
   resourceCount: { fontSize: '0.7rem', color: '#333' },
   section: { marginTop: '1.5rem' },
   sectionTitle: {
     fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.08em',
-    color: '#444', marginBottom: '0.65rem',
+    color: 'var(--text-ghost)', marginBottom: '0.65rem',
   },
   eventList: {
-    background: '#0f0f1e', border: '1px solid #1a1a2e', borderRadius: 8, overflow: 'hidden',
+    background: 'var(--ink)', border: '1px solid #1a1a2e', borderRadius: 8, overflow: 'hidden',
   },
   eventRow: {
     display: 'flex', alignItems: 'center', gap: '0.65rem',
@@ -906,59 +906,59 @@ const s = {
     borderRadius: 3, flexShrink: 0, letterSpacing: '0.04em',
   },
   eventDesc: {
-    flex: 1, fontSize: '0.85rem', color: '#888',
+    flex: 1, fontSize: '0.85rem', color: 'var(--text-muted)',
     overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
   },
-  eventAmt: { fontFamily: 'monospace', fontSize: '0.78rem', color: '#c8c2ba', flexShrink: 0 },
-  eventDate: { fontFamily: 'monospace', fontSize: '0.7rem', color: '#444', flexShrink: 0 },
+  eventAmt: { fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--text-warm)', flexShrink: 0 },
+  eventDate: { fontFamily: 'monospace', fontSize: '0.7rem', color: 'var(--text-ghost)', flexShrink: 0 },
   filterBar: { display: 'flex', gap: '0.35rem', flexWrap: 'wrap', marginBottom: '1.25rem' },
   filterBtn: {
-    background: 'rgba(255,255,255,0.03)', border: '1px solid #1a1a2e',
-    color: '#52526a', borderRadius: 5, padding: '0.3rem 0.7rem',
+    background: 'var(--hover-dim)', border: '1px solid #1a1a2e',
+    color: 'var(--text-nav)', borderRadius: 5, padding: '0.3rem 0.7rem',
     fontSize: '0.78rem', fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.03em',
   },
   filterBtnActive: {
-    background: 'rgba(196,149,106,0.1)', color: '#e0e0f0',
+    background: 'rgba(196,149,106,0.1)', color: 'var(--text-primary)',
     borderColor: 'rgba(196,149,106,0.3)',
   },
   table: {
-    background: '#0f0f1e', border: '1px solid #1a1a2e',
+    background: 'var(--ink)', border: '1px solid #1a1a2e',
     borderRadius: 8, overflow: 'hidden',
   },
   th: {
     fontFamily: 'monospace', fontSize: '0.68rem', letterSpacing: '0.08em',
-    textTransform: 'uppercase', color: '#444', textAlign: 'left',
-    padding: '0.55rem 1rem', borderBottom: '1px solid #1a1a2e', background: '#0a0a18',
+    textTransform: 'uppercase', color: 'var(--text-ghost)', textAlign: 'left',
+    padding: '0.55rem 1rem', borderBottom: '1px solid #1a1a2e', background: 'var(--hud-surface)',
   },
-  td: { padding: '0.65rem 1rem', borderBottom: '1px solid #1a1a28', verticalAlign: 'middle', color: '#888' },
+  td: { padding: '0.65rem 1rem', borderBottom: '1px solid #1a1a28', verticalAlign: 'middle', color: 'var(--text-muted)' },
   journalEntry: {
-    background: '#0f0f1e', border: '1px solid #1a1a2e',
+    background: 'var(--ink)', border: '1px solid #1a1a2e',
     borderRadius: 7, padding: '0.85rem 1rem', marginBottom: '0.4rem', cursor: 'pointer',
   },
   pageBtn: {
-    background: 'rgba(255,255,255,0.03)', border: '1px solid #1a1a2e',
-    color: '#666', borderRadius: 5, padding: '0.35rem 0.75rem',
+    background: 'var(--hover-dim)', border: '1px solid #1a1a2e',
+    color: 'var(--text-subdim)', borderRadius: 5, padding: '0.35rem 0.75rem',
     cursor: 'pointer', fontSize: '0.78rem', fontFamily: 'monospace',
   },
   actionBtn: {
-    background: 'rgba(196,149,106,0.08)', border: '1px solid rgba(196,149,106,0.25)',
-    color: '#c4956a', borderRadius: 6, padding: '0.5rem 1.1rem',
+    background: 'var(--gold-06)', border: '1px solid rgba(196,149,106,0.25)',
+    color: 'var(--gold)', borderRadius: 6, padding: '0.5rem 1.1rem',
     fontSize: '0.82rem', fontFamily: 'monospace', cursor: 'pointer', letterSpacing: '0.04em',
   },
   resultBox: { border: '1px solid', borderRadius: 8, padding: '1.1rem 1.25rem' },
   inputLabel: {
     display: 'block', fontFamily: 'monospace', fontSize: '0.7rem',
     textTransform: 'uppercase', letterSpacing: '0.08em',
-    color: '#555', marginBottom: '0.35rem',
+    color: 'var(--text-dim)', marginBottom: '0.35rem',
   },
   input: {
-    background: '#0f0f1e', border: '1px solid #1a1a2e',
-    borderRadius: 5, color: '#c8c2ba', padding: '0.6rem 0.85rem',
+    background: 'var(--ink)', border: '1px solid #1a1a2e',
+    borderRadius: 5, color: 'var(--text-warm)', padding: '0.6rem 0.85rem',
     fontSize: '0.82rem', fontFamily: 'monospace',
     width: '100%', boxSizing: 'border-box',
   },
   empty: {
-    padding: '2rem', textAlign: 'center', color: '#444',
+    padding: '2rem', textAlign: 'center', color: 'var(--text-ghost)',
     fontFamily: 'monospace', fontSize: '0.85rem',
   },
 }
