@@ -3,23 +3,15 @@ import { AuthProvider, useAuth } from './hooks/useAuth.jsx'
 import { HUDLayout } from './components/HUDLayout.jsx'
 import Login from './pages/Login'
 import Home from './pages/Home'
-import Account from './pages/Account'
-import Patronage from './pages/Patronage'
-import Documents from './pages/Documents'
-import Ventures from './pages/Ventures'
+import Cloud from './pages/Cloud'
 import Admin from './pages/Admin'
 import FAQ from './pages/FAQ'
 import NotLinked from './pages/NotLinked'
-import Directory from './pages/Directory'
-import Treasury from './pages/Treasury'
-import Projects from './pages/Projects'
-import Labor from './pages/Labor'
-import Guide from './pages/Guide'
-import Cloud from './pages/Cloud'
-import Journal from './pages/Journal'
-import Ledger from './pages/Ledger'
-import Governance from './pages/Governance'
-import Verify from './pages/Verify'
+import Ventures from './pages/Ventures'
+import AccountGroup from './pages/AccountGroup'
+import CooperativeGroup from './pages/CooperativeGroup'
+import FinanceGroup from './pages/FinanceGroup'
+import ReferenceGroup from './pages/ReferenceGroup'
 
 // GitHub Pages SPA routing shim
 // On 404, GH Pages redirects to 404.html which encodes the path as ?p=/path
@@ -65,23 +57,30 @@ function Router() {
   // Authenticated but no participant record linked
   if (!participant) return <NotLinked />
 
-  // Resolve page component
+  // Resolve page component — grouped views
   let PageComponent
-  if (path === 'account' || path === 'capital') PageComponent = <Account />
-  else if (path === 'patronage')  PageComponent = <Patronage />
-  else if (path === 'documents')  PageComponent = <Documents />
-  else if (path === 'ventures')   PageComponent = <Ventures />
-  else if (path === 'admin')      PageComponent = <Admin />
-  else if (path === 'directory')  PageComponent = <Directory />
-  else if (path === 'treasury')   PageComponent = <Treasury />
-  else if (path === 'projects')   PageComponent = <Projects />
-  else if (path === 'labor')      PageComponent = <Labor />
-  else if (path === 'guide')      PageComponent = <Guide />
+  // Account group: account, capital, labor, patronage
+  if (['account', 'capital', 'labor', 'patronage'].includes(path)) {
+    const tab = path === 'labor' ? 'labor' : path === 'patronage' ? 'patronage' : 'overview'
+    PageComponent = <AccountGroup initialTab={tab} />
+  }
+  // Cooperative group: projects, directory, governance
+  else if (['projects', 'directory', 'governance'].includes(path)) {
+    const tab = path === 'directory' ? 'members' : path
+    PageComponent = <CooperativeGroup initialTab={tab} />
+  }
+  // Finance group: journal, ledger, treasury, verify
+  else if (['journal', 'ledger', 'treasury', 'verify'].includes(path)) {
+    PageComponent = <FinanceGroup initialTab={path} />
+  }
+  // Reference group: guide, documents
+  else if (['guide', 'documents'].includes(path)) {
+    PageComponent = <ReferenceGroup initialTab={path} />
+  }
+  // Standalone pages
   else if (path === 'cloud')      PageComponent = <Cloud />
-  else if (path === 'journal')    PageComponent = <Journal />
-  else if (path === 'ledger')     PageComponent = <Ledger />
-  else if (path === 'governance') PageComponent = <Governance />
-  else if (path === 'verify')     PageComponent = <Verify />
+  else if (path === 'admin')      PageComponent = <Admin />
+  else if (path === 'ventures')   PageComponent = <Ventures />
   else                            PageComponent = <Home />
 
   // Wrap all authenticated pages in HUD shell

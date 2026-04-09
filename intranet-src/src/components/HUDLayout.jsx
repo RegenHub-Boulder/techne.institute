@@ -28,22 +28,15 @@ const ICONS = {
 }
 
 const NAV_ITEMS = [
-  { path: '',           label: 'Dashboard',  icon: 'dashboard'  },
-  { path: 'account',    label: 'Account',    icon: 'account'    },
-  { path: 'patronage',  label: 'Patronage',  icon: 'patronage'  },
-  { path: 'labor',      label: 'Labor',      icon: 'labor'      },
-  { path: 'projects',   label: 'Projects',   icon: 'projects'   },
-  { path: 'directory',  label: 'Directory',  icon: 'directory'  },
-  { path: 'documents',  label: 'Documents',  icon: 'documents'  },
-  { path: 'cloud',      label: 'Cloud',      icon: 'cloud'      },
-  { path: 'journal',    label: 'Journal',    icon: 'journal'    },
-  { path: 'ledger',     label: 'Ledger',     icon: 'ledger'     },
-  { path: 'governance', label: 'Governance', icon: 'governance' },
-  { path: 'verify',     label: 'Verify',     icon: 'verify'     },
+  { path: '',            label: 'Dashboard',  icon: 'dashboard'  },
+  { path: 'account',     label: 'Account',    icon: 'account'    },
+  { path: 'projects',    label: 'Cooperative',icon: 'projects'   },
+  { path: 'journal',     label: 'Finance',    icon: 'ledger'     },
+  { path: 'cloud',       label: 'Cloud',      icon: 'cloud'      },
+  { path: 'guide',       label: 'Reference',  icon: 'documents'  },
 ]
 
 const STEWARD_ITEMS = [
-  { path: 'treasury',   label: 'Treasury',   icon: 'treasury'   },
   { path: 'admin',      label: 'Admin',      icon: 'admin'      },
 ]
 
