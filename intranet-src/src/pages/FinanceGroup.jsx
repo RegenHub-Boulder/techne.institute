@@ -101,7 +101,7 @@ export default function FinanceGroup({ initialTab = 'overview' }) {
     { key: 'ledger',   label: 'Ledger' },
     { key: 'journal',  label: 'Journal' },
     { key: 'verify',   label: 'Verify' },
-    ...(isSteward ? [{ key: 'treasury', label: 'Treasury', badge: 'S', badgeColor: '#c2512a' }] : []),
+    ...(isSteward ? [{ key: 'treasury', label: 'Treasury', badge: 'S', badgeColor: '#c4956a' }] : []),
   ]
 
   return (
@@ -698,7 +698,7 @@ const CATEGORY_LABEL = {
   distribution: 'Distribution', transfer: 'Transfer', other: 'Other',
 }
 const CATEGORY_COLOR = {
-  income: '#4caf82', expense: '#ff6b6b', capital_call: '#c2512a',
+  income: '#4caf82', expense: '#ff6b6b', capital_call: '#c4956a',
   distribution: '#7eb8e8', transfer: '#aaa', other: '#888',
 }
 const TREASURY_PAGE_SIZE = 20
@@ -859,8 +859,8 @@ const s = {
     border: '1px solid rgba(220,60,60,0.3)', borderRadius: 8, color: '#ff6b6b', fontSize: '0.875rem',
   },
   emptyNotice: {
-    padding: '1.5rem', background: 'rgba(194,81,42,0.05)',
-    border: '1px solid rgba(194,81,42,0.12)', borderRadius: 8,
+    padding: '1.5rem', background: 'rgba(196,149,106,0.05)',
+    border: '1px solid rgba(196,149,106,0.12)', borderRadius: 8,
     fontSize: '0.875rem', color: '#888', lineHeight: 1.6,
   },
   integrityBadge: {

@@ -128,7 +128,7 @@ const styles = {
     padding: '1rem 2rem', borderBottom: '1px solid var(--color-border, #2a2a35)',
     background: 'var(--color-surface, #141418)',
   },
-  wordmark: { fontSize: '1.1rem', fontWeight: 700, color: 'var(--ember, #c2512a)', textDecoration: 'none' },
+  wordmark: { fontSize: '1.1rem', fontWeight: 700, color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   headerNav: { display: 'flex', alignItems: 'center', gap: '1.5rem' },
   navLink: { fontSize: '0.875rem', color: 'var(--color-text-muted, #888)', textDecoration: 'none' },
   signOut: {
@@ -138,11 +138,11 @@ const styles = {
   },
   main: { maxWidth: '760px', margin: '0 auto', padding: '2rem' },
   breadcrumb: { fontSize: '0.85rem', color: 'var(--color-text-muted, #888)', marginBottom: '1rem' },
-  breadLink: { color: 'var(--ember, #c2512a)', textDecoration: 'none' },
+  breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 0.5rem' },
   subtitle: { fontSize: '1rem', color: 'var(--color-text-muted, #888)', margin: '0 0 2rem', lineHeight: 1.6 },
-  link: { color: 'var(--ember, #c2512a)', textDecoration: 'none' },
+  link: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   faqList: { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
   faqItem: {
     background: 'var(--color-surface, #141418)',
@@ -153,7 +153,7 @@ const styles = {
     padding: '1rem 1.25rem', background: 'none', border: 'none', color: '#e8e8e8',
     fontSize: '0.95rem', fontWeight: 600, cursor: 'pointer', textAlign: 'left', gap: '1rem',
   },
-  arrow: { fontSize: '1.2rem', color: 'var(--ember, #c2512a)', flexShrink: 0, transition: 'transform 0.15s' },
+  arrow: { fontSize: '1.2rem', color: 'var(--ember, #c4956a)', flexShrink: 0, transition: 'transform 0.15s' },
   faqA: {
     padding: '0 1.25rem 1rem', fontSize: '0.9rem', color: 'var(--color-text-muted, #aaa)',
     lineHeight: 1.65, borderTop: '1px solid var(--color-border, #2a2a35)',

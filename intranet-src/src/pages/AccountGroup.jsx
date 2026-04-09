@@ -80,7 +80,7 @@ const TYPE_LABELS = {
   patronage: 'Patronage', draw: 'Draw', adjustment: 'Adjustment',
 }
 const TYPE_COLORS = {
-  initial: '#c2512a', labor: '#50b478', capital: '#4a9eff',
+  initial: '#c4956a', labor: '#50b478', capital: '#4a9eff',
   patronage: '#b47cd4', draw: '#ff6b6b', adjustment: '#888',
 }
 const LABOR_TYPE_LABELS = {
@@ -162,7 +162,7 @@ function OverviewTab({ data }) {
           label="Book Balance"
           value={account ? fmtUSD(account.book_balance) : '—'}
           sub={account?.last_updated ? `Updated ${fmtDate(account.last_updated)}` : 'No account'}
-          color="#c2512a"
+          color="#c4956a"
         />
         <StatBox
           label="Tax Capital (704b)"
@@ -247,7 +247,7 @@ function OverviewTab({ data }) {
 
       {/* K-1 link */}
       <div style={{ marginTop: '1.5rem' }}>
-        <a href="/intranet/documents/" style={{ fontSize: '0.8rem', color: '#c2512a', textDecoration: 'none' }}>K-1 documents →</a>
+        <a href="/intranet/documents/" style={{ fontSize: '0.8rem', color: '#c4956a', textDecoration: 'none' }}>K-1 documents →</a>
       </div>
     </div>
   )
@@ -308,13 +308,13 @@ function LaborTab({ data, reload }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
         <button
           onClick={() => setShowForm(!showForm)}
-          style={{ padding: '0.45rem 0.9rem', background: 'rgba(194,81,42,0.15)', border: '1px solid rgba(194,81,42,0.3)', color: '#c2512a', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
+          style={{ padding: '0.45rem 0.9rem', background: 'rgba(196,149,106,0.15)', border: '1px solid rgba(196,149,106,0.3)', color: '#c4956a', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
         >
           {showForm ? 'Cancel' : '+ Log Hours'}
         </button>
         <div style={{ display: 'flex', gap: '0.35rem' }}>
           {['', ...years].map(y => (
-            <button key={y || 'all'} onClick={() => setDateFilter(y)} style={{ padding: '0.3rem 0.6rem', background: dateFilter === y ? 'rgba(194,81,42,0.15)' : 'none', border: `1px solid ${dateFilter === y ? 'rgba(194,81,42,0.4)' : '#1a1a2e'}`, color: dateFilter === y ? '#c2512a' : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+            <button key={y || 'all'} onClick={() => setDateFilter(y)} style={{ padding: '0.3rem 0.6rem', background: dateFilter === y ? 'rgba(196,149,106,0.15)' : 'none', border: `1px solid ${dateFilter === y ? 'rgba(196,149,106,0.4)' : '#1a1a2e'}`, color: dateFilter === y ? '#c4956a' : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
               {y || 'All'}
             </button>
           ))}
@@ -323,7 +323,7 @@ function LaborTab({ data, reload }) {
 
       {/* Log form */}
       {showForm && (
-        <form onSubmit={submit} style={{ background: 'rgba(194,81,42,0.06)', border: '1px solid rgba(194,81,42,0.15)', borderRadius: '8px', padding: '1.25rem', marginBottom: '1.25rem' }}>
+        <form onSubmit={submit} style={{ background: 'rgba(196,149,106,0.06)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: '8px', padding: '1.25rem', marginBottom: '1.25rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
             <div>
               <label style={labelStyle}>Date</label>
@@ -359,7 +359,7 @@ function LaborTab({ data, reload }) {
             </div>
           )}
           {submitError && <div style={{ color: '#ff6b6b', fontSize: '0.8rem', marginBottom: '0.5rem' }}>{submitError}</div>}
-          <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.25rem', background: '#c2512a', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
+          <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.25rem', background: '#c4956a', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
             {submitting ? 'Saving…' : 'Log Hours'}
           </button>
         </form>
@@ -386,14 +386,14 @@ function PatronageTab({ data }) {
 
   return (
     <div>
-      <div style={{ fontSize: '0.8rem', color: '#52526a', background: 'rgba(194,81,42,0.06)', border: '1px solid rgba(194,81,42,0.12)', borderRadius: '6px', padding: '0.6rem 0.85rem', marginBottom: '1.25rem' }}>
+      <div style={{ fontSize: '0.8rem', color: '#52526a', background: 'rgba(196,149,106,0.06)', border: '1px solid rgba(196,149,106,0.12)', borderRadius: '6px', padding: '0.6rem 0.85rem', marginBottom: '1.25rem' }}>
         Formula: 40% labor · 30% revenue · 20% capital · 10% community
       </div>
 
       {years.length > 0 && (
         <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '1rem' }}>
           {['', ...years].map(y => (
-            <button key={y || 'all'} onClick={() => setYearFilter(y)} style={{ padding: '0.3rem 0.6rem', background: yearFilter === y ? 'rgba(194,81,42,0.15)' : 'none', border: `1px solid ${yearFilter === y ? 'rgba(194,81,42,0.4)' : '#1a1a2e'}`, color: yearFilter === y ? '#c2512a' : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+            <button key={y || 'all'} onClick={() => setYearFilter(y)} style={{ padding: '0.3rem 0.6rem', background: yearFilter === y ? 'rgba(196,149,106,0.15)' : 'none', border: `1px solid ${yearFilter === y ? 'rgba(196,149,106,0.4)' : '#1a1a2e'}`, color: yearFilter === y ? '#c4956a' : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
               {y || 'All'}
             </button>
           ))}
@@ -418,7 +418,7 @@ function CapitalTab({ data }) {
     <div>
       {account && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem', marginBottom: '1.5rem' }}>
-          <StatBox label="Book Balance (GAAP)" value={fmtUSD(account.book_balance)} sub="Economic fair value — basis for ownership and redemption" color="#c2512a" />
+          <StatBox label="Book Balance (GAAP)" value={fmtUSD(account.book_balance)} sub="Economic fair value — basis for ownership and redemption" color="#c4956a" />
           <StatBox label="Tax Capital (IRC 704b)" value={fmtUSD(account.tax_balance)} sub="Subchapter K basis — used for K-1 preparation" />
         </div>
       )}
@@ -429,7 +429,7 @@ function CapitalTab({ data }) {
         }
       </div>
       <div style={{ marginTop: '1.25rem' }}>
-        <a href="/intranet/documents/" style={{ fontSize: '0.8rem', color: '#c2512a', textDecoration: 'none' }}>K-1 documents →</a>
+        <a href="/intranet/documents/" style={{ fontSize: '0.8rem', color: '#c4956a', textDecoration: 'none' }}>K-1 documents →</a>
       </div>
     </div>
   )

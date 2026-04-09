@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Techne Design System · Palette Reference</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────────── */
+    :root {
+      /* Backgrounds */
+      --void:    #08080a;
+      --ink:     #0f0f12;
+      --surface: #141418;
+      --panel:   #1e1e24;
+      --raised:  #252530;
+
+      /* Borders */
+      --border:  #2a2a35;
+      --border-dim: #1e1e24;
+
+      /* Primary accent — copper gold */
+      --gold:    #c4956a;
+      --gold-12: rgba(196,149,106,0.12);
+      --gold-20: rgba(196,149,106,0.20);
+      --gold-06: rgba(196,149,106,0.06);
+
+      /* Text */
+      --parchment: #ece6de;
+      --warm:    #c8c2ba;
+      --muted:   #888;
+      --dim:     #555;
+      --ghost:   #333;
+
+      /* Status — for discussion */
+      --status-ok:   #4a5f4a;  /* sage — verified, active */
+      --status-warn: #c4956a;  /* gold — pending, caution */
+      --status-err:  #c46a6a;  /* warm red — error, rejected */
+      --status-info: #6b836b;  /* sage-light — informational */
+
+      /* Mono */
+      --mono: 'JetBrains Mono', 'IBM Plex Mono', 'Fira Code', Consolas, monospace;
+      --serif: Georgia, 'Times New Roman', serif;
+      --sans: Inter, system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--void);
+      color: var(--warm);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ── Layout ──────────────────────────────────────────────────── */
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    /* ── Page header ─────────────────────────────────────────────── */
+    .site-tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .page-title {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: var(--parchment);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 0.65rem;
+    }
+
+    .page-sub {
+      font-size: 0.95rem;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 3.5rem;
+    }
+
+    /* ── Section ─────────────────────────────────────────────────── */
+    .section {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    /* ── Swatches ─────────────────────────────────────────────────── */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .swatch {
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .swatch-color {
+      height: 64px;
+      border-radius: 6px 6px 0 0;
+    }
+
+    .swatch-info {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-top: none;
+      padding: 0.6rem 0.75rem;
+      border-radius: 0 0 6px 6px;
+    }
+
+    .swatch-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--warm);
+      margin-bottom: 0.15rem;
+    }
+
+    .swatch-hex {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .swatch-role {
+      font-size: 0.68rem;
+      color: var(--dim);
+      margin-top: 0.2rem;
+    }
+
+    /* ── Typography ──────────────────────────────────────────────── */
+    .type-row {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    .type-row:last-child { border-bottom: none; }
+
+    .type-sample { margin-bottom: 0.25rem; }
+    .type-meta {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--dim);
+    }
+
+    /* ── Component examples ──────────────────────────────────────── */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .comp-grid { grid-template-columns: 1fr; }
+    }
+
+    .comp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+
+    .comp-card-title {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Buttons */
+    .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: default;
+      border: 1px solid transparent;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .btn-primary {
+      background: var(--gold-20);
+      border-color: rgba(196,149,106,0.4);
+      color: var(--parchment);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--muted);
+    }
+
+    .btn-active {
+      background: var(--gold-12);
+      border-color: rgba(196,149,106,0.3);
+      color: var(--gold);
+    }
+
+    /* Badges */
+    .badge-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+    .badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.63rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+
+    /* MetricCard */
+    .metric-card {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border-dim);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+
+    .metric-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.65rem;
+    }
+
+    .metric-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--parchment);
+      letter-spacing: -0.03em;
+      font-family: var(--mono);
+    }
+
+    .metric-sub {
+      font-size: 0.74rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Nav item */
+    .nav-demo {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      border-left: 2px solid transparent;
+    }
+
+    .nav-item-active {
+      background: rgba(196,149,106,0.12);
+      border-left-color: var(--gold);
+      color: var(--parchment);
+      font-weight: 600;
+    }
+
+    .nav-item-idle {
+      color: var(--dim);
+    }
+
+    .nav-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; background: var(--raised); }
+    .nav-dot-gold { background: var(--gold-20); }
+
+    /* Status bar */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--ink);
+      border: 1px solid var(--border-dim);
+      border-radius: 8px;
+      padding: 0 1rem;
+      height: 44px;
+      font-size: 0.78rem;
+    }
+
+    .wordmark {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+
+    .sep { color: #2a2a40; }
+
+    /* Status colors section */
+    .status-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .status-swatch {
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .status-color { height: 48px; }
+    .status-info-block {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-top: none;
+      padding: 0.5rem 0.65rem;
+      border-radius: 0 0 6px 6px;
+    }
+    .status-name { font-size: 0.75rem; font-weight: 600; color: var(--warm); }
+    .status-hex { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); }
+    .status-use { font-size: 0.65rem; color: var(--dim); margin-top: 0.15rem; }
+
+    /* Discussion note */
+    .note {
+      background: rgba(196,149,106,0.04);
+      border: 1px solid rgba(196,149,106,0.15);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .note strong { color: var(--gold); font-weight: 600; }
+
+    /* Token table */
+    .token-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+    }
+
+    .token-table th {
+      text-align: left;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    .token-table td {
+      padding: 0.55rem 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      color: var(--muted);
+    }
+
+    .token-table td:first-child { color: var(--warm); }
+    .token-table tr:last-child td { border-bottom: none; }
+
+    .token-dot {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: 0.4rem;
+      vertical-align: middle;
+    }
+
+    /* Page tag on document pages */
+    .page-tag-demo {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .doc-title {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--parchment);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .doc-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .hr { border: none; border-top: 1px solid var(--border-dim); margin: 3rem 0; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Page header -->
+    <div class="site-tag">Techne Institute · Design System · P421 Reference</div>
+    <h1 class="page-title">Palette &amp; Component Reference</h1>
+    <p class="page-sub">
+      Working reference for the Techne intranet design system.
+      Copper gold as primary accent throughout — document pages and HUD chrome.
+      Review this page before finalizing the intranet palette.
+    </p>
+
+    <hr class="hr" />
+
+    <!-- SECTION: Core palette -->
+    <section class="section">
+      <div class="section-label">Core Palette</div>
+      <div class="swatch-grid">
+
+        <div class="swatch">
+          <div class="swatch-color" style="background:#08080a;border:1px solid #1a1a1a;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Void</div>
+            <div class="swatch-hex">#08080a</div>
+            <div class="swatch-role">App background</div>
+          </div>
+        </div>
+
+        <div class="swatch">
+          <div class="swatch-color" style="background:#0f0f12;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Ink</div>
+            <div class="swatch-hex">#0f0f12</div>
+            <div class="swatch-role">Status bar, panels</div>
+          </div>
+        </div>
+
+        <div class="swatch">
+          <div class="swatch-color" style="background:#141418;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Surface</div>
+            <div class="swatch-hex">#141418</div>
+            <div class="swatch-role">Page background</div>
+          </div>
+        </div>
+
+        <div class="swatch">
+          <div class="swatch-color" style="background:#1e1e24;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Panel</div>
+            <div class="swatch-hex">#1e1e24</div>
+            <div class="swatch-role">Cards, elevated</div>
+          </div>
+        </div>
+
+        <div class="swatch">
+          <div class="swatch-color" style="background:#c4956a;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Copper Gold</div>
+            <div class="swatch-hex">#c4956a</div>
+            <div class="swatch-role">Primary accent</div>
+          </div>
+        </div>
+
+        <div class="swatch">
+          <div class="swatch-color" style="background:#ece6de;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Parchment</div>
+            <div class="swatch-hex">#ece6de</div>
+            <div class="swatch-role">Display headings</div>
+          </div>
+        </div>
+
+        <div class="swatch">
+          <div class="swatch-color" style="background:#c8c2ba;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Warm</div>
+            <div class="swatch-hex">#c8c2ba</div>
+            <div class="swatch-role">Body text</div>
+          </div>
+        </div>
+
+        <div class="swatch">
+          <div class="swatch-color" style="background:#888;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Muted</div>
+            <div class="swatch-hex">#888888</div>
+            <div class="swatch-role">Secondary text</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION: Status colors (for discussion) -->
+    <section class="section">
+      <div class="section-label">Status Colors — Proposed (for review)</div>
+
+      <div class="status-row">
+        <div class="status-swatch">
+          <div class="status-color" style="background:#4a5f4a;"></div>
+          <div class="status-info-block">
+            <div class="status-name">Sage</div>
+            <div class="status-hex">#4a5f4a</div>
+            <div class="status-use">Active · Verified · Live</div>
+          </div>
+        </div>
+        <div class="status-swatch">
+          <div class="status-color" style="background:#c4956a;"></div>
+          <div class="status-info-block">
+            <div class="status-name">Gold</div>
+            <div class="status-hex">#c4956a</div>
+            <div class="status-use">Pending · Warning</div>
+          </div>
+        </div>
+        <div class="status-swatch">
+          <div class="status-color" style="background:#c46a6a;"></div>
+          <div class="status-info-block">
+            <div class="status-name">Warm Red</div>
+            <div class="status-hex">#c46a6a</div>
+            <div class="status-use">Error · Rejected</div>
+          </div>
+        </div>
+        <div class="status-swatch">
+          <div class="status-color" style="background:#6b836b;"></div>
+          <div class="status-info-block">
+            <div class="status-name">Sage Light</div>
+            <div class="status-hex">#6b836b</div>
+            <div class="status-use">Info · Completed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <strong>For alignment:</strong> the status color system was previously using
+        bright green (#4caf82), blue (#7eb8e8), amber (#f59e0b), and purple (#a78bfa).
+        The proposal above replaces those with a warmer, lower-contrast set that
+        complements the copper gold accent. Purple is removed entirely.
+        Does this set work — or should any of these be adjusted?
+      </div>
+    </section>
+
+    <hr class="hr" />
+
+    <!-- SECTION: HUD chrome -->
+    <section class="section">
+      <div class="section-label">HUD Chrome — Status Bar + Navigation</div>
+
+      <div class="comp-card" style="background: #0a0a18; margin-bottom: 1rem;">
+
+        <!-- Status bar mock -->
+        <div class="status-bar" style="margin-bottom: 1.25rem; border-radius: 6px;">
+          <div style="display:flex;align-items:center;gap:0.6rem;">
+            <span class="wordmark">Techne</span>
+            <span class="sep">·</span>
+            <span style="font-size:0.72rem;color:#555;text-transform:uppercase;letter-spacing:0.08em;">Intranet</span>
+            <span class="sep">·</span>
+            <span style="font-size:0.72rem;color:#555;">Apr 9, 2026</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.75rem;">
+            <span style="font-size:0.75rem;color:#8888a8;">Todd</span>
+            <span style="background:rgba(196,149,106,0.15);color:#c4956a;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:1px 5px;border-radius:3px;">steward</span>
+            <span style="font-size:0.72rem;color:#555;text-decoration:underline;">Sign out</span>
+          </div>
+        </div>
+
+        <!-- Nav mock -->
+        <div class="nav-demo">
+          <div class="nav-item nav-item-active">
+            <span class="nav-dot nav-dot-gold" style="border-radius:50%;width:6px;height:6px;"></span>
+            Dashboard
+          </div>
+          <div class="nav-item nav-item-idle">
+            <span class="nav-dot" style="border-radius:50%;width:6px;height:6px;"></span>
+            Account
+          </div>
+          <div class="nav-item nav-item-idle">
+            <span class="nav-dot" style="border-radius:50%;width:6px;height:6px;"></span>
+            Cooperative
+          </div>
+          <div class="nav-item nav-item-idle">
+            <span class="nav-dot" style="border-radius:50%;width:6px;height:6px;"></span>
+            Finance
+          </div>
+          <div class="nav-item nav-item-idle">
+            <span class="nav-dot" style="border-radius:50%;width:6px;height:6px;"></span>
+            Cloud
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Components -->
+    <section class="section">
+      <div class="section-label">Components</div>
+      <div class="comp-grid">
+
+        <!-- Buttons -->
+        <div class="comp-card">
+          <div class="comp-card-title">Buttons</div>
+          <div class="btn-row">
+            <span class="btn btn-primary">Primary</span>
+            <span class="btn btn-active">Active</span>
+            <span class="btn btn-ghost">Ghost</span>
+          </div>
+          <div class="btn-row">
+            <span class="btn" style="background:rgba(196,149,106,0.12);border-color:rgba(196,149,106,0.25);color:#c4956a;">+ Propose</span>
+            <span class="btn" style="background:transparent;border-color:#2a2a35;color:#c4956a;font-size:0.75rem;padding:0.3rem 0.65rem;">Active ×</span>
+          </div>
+        </div>
+
+        <!-- Badges -->
+        <div class="comp-card">
+          <div class="comp-card-title">Status Badges</div>
+          <div class="badge-row">
+            <span class="badge" style="background:rgba(74,95,74,0.15);color:#4a5f4a;">Active</span>
+            <span class="badge" style="background:rgba(196,149,106,0.15);color:#c4956a;">Pending</span>
+            <span class="badge" style="background:rgba(196,106,106,0.15);color:#c46a6a;">Rejected</span>
+            <span class="badge" style="background:rgba(107,131,107,0.15);color:#6b836b;">Completed</span>
+          </div>
+          <div class="badge-row" style="margin-top:0.6rem;">
+            <span class="badge" style="background:rgba(74,95,74,0.15);color:#4a5f4a;">Open</span>
+            <span class="badge" style="background:rgba(85,85,85,0.2);color:#666;">Archived</span>
+            <span class="badge" style="background:rgba(196,149,106,0.15);color:#c4956a;">Steward</span>
+            <span class="badge" style="background:rgba(196,149,106,0.15);color:#c4956a;">Class 1 · Labor</span>
+          </div>
+        </div>
+
+        <!-- Metric card -->
+        <div class="comp-card">
+          <div class="comp-card-title">Metric Cards (Dashboard)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.65rem;">
+            <div class="metric-card">
+              <div class="metric-accent" style="background:linear-gradient(90deg,#c4956a 0%,transparent 100%);opacity:0.7;"></div>
+              <div class="metric-label">Capital Account</div>
+              <div class="metric-value">$2,400</div>
+              <div class="metric-sub">Updated Apr 1</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-accent" style="background:linear-gradient(90deg,#4a5f4a 0%,transparent 100%);opacity:0.7;"></div>
+              <div class="metric-label">State Verifier</div>
+              <div class="metric-value" style="font-size:0.9rem;color:#4a5f4a;font-weight:700;padding-top:0.2rem;">✓ Verified</div>
+              <div class="metric-sub">a1b2c3d4…ef56</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-accent" style="background:linear-gradient(90deg,#c46a6a 0%,transparent 100%);opacity:0.7;"></div>
+              <div class="metric-label">Governance</div>
+              <div class="metric-value">3</div>
+              <div class="metric-sub">Proposals awaiting votes</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-accent" style="background:linear-gradient(90deg,#6b836b 0%,transparent 100%);opacity:0.7;"></div>
+              <div class="metric-label">Labor</div>
+              <div class="metric-value">48.5 hrs</div>
+              <div class="metric-sub">FMV: $5,820</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Document page header -->
+        <div class="comp-card">
+          <div class="comp-card-title">Document Page Header</div>
+          <div>
+            <div class="page-tag-demo">REA · Current Account Balances</div>
+            <div class="doc-title">Cooperative Ledger</div>
+            <div class="doc-sub">Materialized view of all cooperative accounts — capital, CLOUD credits, labor, voting power.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <hr class="hr" />
+
+    <!-- SECTION: Typography -->
+    <section class="section">
+      <div class="section-label">Typography</div>
+
+      <div class="type-row">
+        <div class="type-sample" style="font-family:Georgia,serif;font-size:2.2rem;font-weight:400;color:#ece6de;letter-spacing:-0.02em;line-height:1.2;">Display Heading</div>
+        <div class="type-meta">Georgia · 2.2rem · 400 · #ece6de — page titles, document headings</div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-sample" style="font-size:1.75rem;font-weight:800;color:#e0e0f0;letter-spacing:-0.03em;">Dashboard Heading</div>
+        <div class="type-meta">Inter · 1.75rem · 800 · #e0e0f0 — HUD panel titles</div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-sample" style="font-size:0.95rem;color:#888;line-height:1.7;">Body text in secondary tone, used for descriptions, subtitles, and supporting copy throughout the cooperative portal.</div>
+        <div class="type-meta">Inter · 0.95rem · 400 · #888</div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-sample" style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:#c4956a;">REA · Current Account Balances · 0x1a2b3c…</div>
+        <div class="type-meta">JetBrains Mono · 0.82rem · #c4956a — labels, hashes, data</div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-sample" style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#555;">Section Label</div>
+        <div class="type-meta">Inter · 0.68rem · 700 · uppercase · #555 — section dividers</div>
+      </div>
+    </section>
+
+    <hr class="hr" />
+
+    <!-- SECTION: Design tokens reference -->
+    <section class="section">
+      <div class="section-label">Design Token Reference</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+        <table class="token-table">
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>Value</th>
+              <th>Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>--void</td>
+              <td><span class="token-dot" style="background:#08080a;border:1px solid #333;"></span>#08080a</td>
+              <td>App background</td>
+            </tr>
+            <tr>
+              <td>--ink</td>
+              <td><span class="token-dot" style="background:#0f0f12;"></span>#0f0f12</td>
+              <td>Status bar, panels</td>
+            </tr>
+            <tr>
+              <td>--surface</td>
+              <td><span class="token-dot" style="background:#141418;"></span>#141418</td>
+              <td>Document page background</td>
+            </tr>
+            <tr>
+              <td>--panel</td>
+              <td><span class="token-dot" style="background:#1e1e24;"></span>#1e1e24</td>
+              <td>Cards, elevated surfaces</td>
+            </tr>
+            <tr>
+              <td>--gold (primary)</td>
+              <td><span class="token-dot" style="background:#c4956a;"></span>#c4956a</td>
+              <td>Accent, active states, highlights</td>
+            </tr>
+            <tr>
+              <td>--parchment</td>
+              <td><span class="token-dot" style="background:#ece6de;"></span>#ece6de</td>
+              <td>Display headings</td>
+            </tr>
+            <tr>
+              <td>--warm</td>
+              <td><span class="token-dot" style="background:#c8c2ba;"></span>#c8c2ba</td>
+              <td>Body text</td>
+            </tr>
+            <tr>
+              <td>--status-ok</td>
+              <td><span class="token-dot" style="background:#4a5f4a;"></span>#4a5f4a</td>
+              <td>Active, verified, live</td>
+            </tr>
+            <tr>
+              <td>--status-warn</td>
+              <td><span class="token-dot" style="background:#c4956a;"></span>#c4956a</td>
+              <td>Pending, caution (same as gold)</td>
+            </tr>
+            <tr>
+              <td>--status-err</td>
+              <td><span class="token-dot" style="background:#c46a6a;"></span>#c46a6a</td>
+              <td>Error, rejected, failed</td>
+            </tr>
+            <tr>
+              <td>--status-info</td>
+              <td><span class="token-dot" style="background:#6b836b;"></span>#6b836b</td>
+              <td>Informational, completed</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div style="font-family:monospace;font-size:0.72rem;color:#333;text-align:center;padding-top:2rem;">
+      P421 · techne.institute/design-system/ · Apr 2026
+    </div>
+
+  </div>
+</body>
+</html>

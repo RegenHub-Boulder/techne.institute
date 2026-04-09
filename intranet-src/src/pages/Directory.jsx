@@ -130,7 +130,7 @@ const styles = {
   page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
   main: { maxWidth: '900px', margin: '0 auto', padding: '2rem' },
   breadcrumb: { fontSize: '0.85rem', color: '#888', marginBottom: '1rem' },
-  breadLink: { color: 'var(--ember, #c2512a)', textDecoration: 'none' },
+  breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 0.25rem' },
   subtitle: { fontSize: '0.875rem', color: '#888', marginBottom: '1.5rem' },
@@ -148,7 +148,7 @@ const styles = {
   },
   avatar: {
     width: 44, height: 44, borderRadius: '50%', flexShrink: 0,
-    background: 'rgba(194,81,42,0.15)', color: 'var(--ember, #c2512a)',
+    background: 'rgba(196,149,106,0.15)', color: 'var(--ember, #c4956a)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontSize: '1.1rem', fontWeight: 700,
   },
@@ -161,7 +161,7 @@ const styles = {
     letterSpacing: '0.05em', color: '#888', background: '#1e1e28',
     border: '1px solid #2a2a35', borderRadius: '4px', padding: '0.2rem 0.5rem',
   },
-  tagCopper: { color: 'var(--ember, #c2512a)', background: 'rgba(194,81,42,0.1)', border: '1px solid rgba(194,81,42,0.2)' },
+  tagCopper: { color: 'var(--ember, #c4956a)', background: 'rgba(196,149,106,0.1)', border: '1px solid rgba(196,149,106,0.2)' },
   error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: '#ff6b6b' },
   empty: { padding: '2rem', textAlign: 'center', color: '#888', fontSize: '0.875rem' },
 }

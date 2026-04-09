@@ -64,8 +64,8 @@ function NavItem({ path, label, icon, currentPath, steward, onClick }) {
         fontSize: '0.8rem',
         fontWeight: active ? 600 : 400,
         color: active ? '#e0e0f0' : '#52526a',
-        background: active ? 'rgba(194,81,42,0.12)' : 'transparent',
-        borderLeft: active ? '2px solid #c2512a' : '2px solid transparent',
+        background: active ? 'rgba(196,149,106,0.12)' : 'transparent',
+        borderLeft: active ? '2px solid #c4956a' : '2px solid transparent',
         transition: 'all 0.12s',
         cursor: 'pointer',
         whiteSpace: 'nowrap',
@@ -85,7 +85,7 @@ function NavItem({ path, label, icon, currentPath, steward, onClick }) {
         }
       }}
     >
-      <span style={{ color: active ? '#c2512a' : 'inherit', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+      <span style={{ color: active ? '#c4956a' : 'inherit', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
         <Icon d={ICONS[icon]} size={14} />
       </span>
       <span>{label}</span>
@@ -93,8 +93,8 @@ function NavItem({ path, label, icon, currentPath, steward, onClick }) {
         <span style={{
           marginLeft: 'auto',
           fontSize: '0.6rem',
-          color: '#c2512a',
-          background: 'rgba(194,81,42,0.1)',
+          color: '#c4956a',
+          background: 'rgba(196,149,106,0.1)',
           padding: '1px 4px',
           borderRadius: '3px',
           textTransform: 'uppercase',
@@ -247,7 +247,7 @@ export function HUDLayout({ children }) {
             {/* Sidebar footer */}
             <div style={s.sidebarFooter}>
               <div style={s.sidebarFooterText}>
-                <span style={{ color: '#c2512a', fontWeight: 700, fontSize: '0.7rem' }}>◈</span>
+                <span style={{ color: '#c4956a', fontWeight: 700, fontSize: '0.7rem' }}>◈</span>
                 {' '}RegenHub, LCA
               </div>
             </div>
@@ -305,7 +305,7 @@ const s = {
   wordmark: {
     fontSize: '0.8rem',
     fontWeight: 800,
-    color: '#c2512a',
+    color: '#c4956a',
     letterSpacing: '-0.01em',
     textTransform: 'uppercase',
   },
@@ -337,8 +337,8 @@ const s = {
     gap: '0.35rem',
   },
   stewardPip: {
-    background: 'rgba(194,81,42,0.15)',
-    color: '#c2512a',
+    background: 'rgba(196,149,106,0.15)',
+    color: '#c4956a',
     fontSize: '0.6rem',
     fontWeight: 700,
     textTransform: 'uppercase',

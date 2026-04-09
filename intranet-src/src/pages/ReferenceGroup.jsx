@@ -140,7 +140,7 @@ function GuideTab() {
     const esc = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     return html.replace(
       new RegExp(`(${esc})`, 'gi'),
-      '<mark style="background:rgba(194,81,42,0.3);color:inherit">$1</mark>'
+      '<mark style="background:rgba(196,149,106,0.3);color:inherit">$1</mark>'
     )
   }
 
@@ -266,7 +266,7 @@ function DocumentsTab() {
           </p>
           <p style={{ fontSize: '0.85rem', color: '#888', margin: 0 }}>
             Need a document immediately?{' '}
-            <a href="mailto:steward@techne.studio" style={{ color: '#c2512a', textDecoration: 'none' }}>
+            <a href="mailto:steward@techne.studio" style={{ color: '#c4956a', textDecoration: 'none' }}>
               Contact a steward
             </a>
             .
@@ -289,7 +289,7 @@ function DocumentsTab() {
         </p>
         <p style={{ ...d.infoText, margin: 0 }}>
           Questions?{' '}
-          <a href="mailto:steward@techne.studio" style={{ color: '#c2512a', textDecoration: 'none' }}>
+          <a href="mailto:steward@techne.studio" style={{ color: '#c4956a', textDecoration: 'none' }}>
             Contact a steward
           </a>{' '}
           or consult your tax advisor.
@@ -340,7 +340,7 @@ const g = {
     padding: '0.55rem 0.65rem', borderRadius: 6, textAlign: 'left',
     width: '100%', transition: 'background 0.1s',
   },
-  docBtnActive: { background: 'rgba(194,81,42,0.1)' },
+  docBtnActive: { background: 'rgba(196,149,106,0.1)' },
   docBtnTitle:  { fontSize: '0.85rem', fontWeight: 600, color: '#e0e0f0', marginBottom: '0.1rem' },
   docBtnSub:    { fontSize: '0.7rem', color: '#555', lineHeight: 1.3 },
   tocSection:   { borderTop: '1px solid #1a1a2e', paddingTop: '1rem' },
@@ -348,7 +348,7 @@ const g = {
   tocLink:      { display: 'block', color: '#666', textDecoration: 'none', padding: '0.18rem 0.5rem', borderRadius: 4, lineHeight: 1.4, fontSize: '0.72rem' },
   contentPane:  { flex: 1, padding: '1.75rem 2rem 2.5rem', overflowY: 'auto' },
   placeholder:  { paddingTop: '1rem' },
-  placeholderIcon: { fontSize: '2.5rem', color: 'rgba(194,81,42,0.4)', marginBottom: '1rem' },
+  placeholderIcon: { fontSize: '2.5rem', color: 'rgba(196,149,106,0.4)', marginBottom: '1rem' },
   placeholderTitle:{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '0.5rem', color: '#e0e0f0' },
   placeholderText: { color: '#888', fontSize: '0.875rem', lineHeight: 1.6, marginBottom: '1.5rem', maxWidth: '480px' },
   docGrid:  { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.65rem' },
@@ -383,14 +383,14 @@ const d = {
   },
   docIcon: {
     width: 38, height: 38, borderRadius: 6,
-    background: 'rgba(194,81,42,0.12)', color: '#c2512a',
+    background: 'rgba(196,149,106,0.12)', color: '#c4956a',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.04em', flexShrink: 0,
   },
   docName:   { fontWeight: 600, fontSize: '0.875rem', marginBottom: '0.15rem' },
   docMeta:   { fontSize: '0.78rem', color: '#888' },
   downloadBtn: {
-    padding: '0.4rem 0.85rem', background: '#c2512a',
+    padding: '0.4rem 0.85rem', background: '#c4956a',
     color: '#fff', borderRadius: 6, textDecoration: 'none', fontSize: '0.78rem', fontWeight: 600,
     flexShrink: 0,
   },
@@ -400,7 +400,7 @@ const d = {
   },
   infoBox: {
     marginTop: '1.75rem', padding: '1.25rem',
-    background: 'rgba(194,81,42,0.05)', border: '1px solid rgba(194,81,42,0.12)',
+    background: 'rgba(196,149,106,0.05)', border: '1px solid rgba(196,149,106,0.12)',
     borderRadius: 8,
   },
   infoTitle: { fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.6rem', color: '#e0e0f0', display: 'block' },

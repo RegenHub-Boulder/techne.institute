@@ -22,7 +22,7 @@ export default function Ventures() {
 
   const statusColor = {
     active: '#4caf88',
-    exited: 'var(--ember, #c2512a)',
+    exited: 'var(--ember, #c4956a)',
     written_off: '#888',
     pending: '#aaa',
   }
@@ -179,7 +179,7 @@ const styles = {
     padding: '1rem 2rem', borderBottom: '1px solid var(--color-border, #2a2a35)',
     background: 'var(--color-surface, #141418)',
   },
-  wordmark: { fontSize: '1.1rem', fontWeight: 700, color: 'var(--ember, #c2512a)', textDecoration: 'none' },
+  wordmark: { fontSize: '1.1rem', fontWeight: 700, color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   headerNav: { display: 'flex', alignItems: 'center', gap: '1.5rem' },
   navLink: { fontSize: '0.875rem', color: 'var(--color-text-muted, #888)', textDecoration: 'none' },
   signOut: {
@@ -189,7 +189,7 @@ const styles = {
   },
   main: { maxWidth: '900px', margin: '0 auto', padding: '2rem' },
   breadcrumb: { fontSize: '0.85rem', color: 'var(--color-text-muted, #888)', marginBottom: '1rem' },
-  breadLink: { color: 'var(--ember, #c2512a)', textDecoration: 'none' },
+  breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 0.25rem' },
   subtitle: { fontSize: '1rem', color: 'var(--color-text-muted, #888)', margin: '0 0 2rem' },
@@ -236,10 +236,10 @@ const styles = {
   emptyBody: { fontSize: '0.9rem', color: 'var(--color-text-muted, #aaa)', lineHeight: 1.6, margin: 0 },
   disclosureBox: {
     marginTop: '2.5rem', padding: '1.25rem',
-    background: 'rgba(194,81,42,0.04)', border: '1px solid rgba(194,81,42,0.12)',
+    background: 'rgba(196,149,106,0.04)', border: '1px solid rgba(196,149,106,0.12)',
     borderRadius: '8px',
   },
   disclosureTitle: { display: 'block', marginBottom: '0.75rem', fontSize: '0.875rem' },
   disclosureText: { fontSize: '0.8rem', color: 'var(--color-text-muted, #999)', lineHeight: 1.6, margin: '0 0 0.5rem' },
-  link: { color: 'var(--ember, #c2512a)', textDecoration: 'none' },
+  link: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
 }

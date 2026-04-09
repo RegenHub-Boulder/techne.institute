@@ -12,7 +12,7 @@ const TYPE_LABELS = {
 }
 
 const TYPE_COLORS = {
-  initial: 'var(--ember, #c2512a)',
+  initial: 'var(--ember, #c4956a)',
   labor: '#50b478',
   capital: '#4a9eff',
   patronage: '#b47cd4',
@@ -259,7 +259,7 @@ const styles = {
     color: 'var(--color-text-muted, #888)',
     marginBottom: '1rem',
   },
-  breadLink: { color: 'var(--ember, #c2512a)', textDecoration: 'none' },
+  breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   h1: {
     fontSize: '1.75rem',
@@ -407,7 +407,7 @@ const styles = {
   formulaPct: {
     fontSize: '1.5rem',
     fontWeight: 700,
-    color: 'var(--ember, #c2512a)',
+    color: 'var(--ember, #c4956a)',
     marginBottom: '0.25rem',
   },
   formulaLabel: {
@@ -437,8 +437,8 @@ const styles = {
   },
   emptyNotice: {
     padding: '1.25rem',
-    background: 'rgba(194,81,42,0.06)',
-    border: '1px solid rgba(194,81,42,0.15)',
+    background: 'rgba(196,149,106,0.06)',
+    border: '1px solid rgba(196,149,106,0.15)',
     borderRadius: '8px',
     fontSize: '0.875rem',
     color: 'var(--color-text-muted, #aaa)',

@@ -142,7 +142,7 @@ function ProjectRow({ project, onClick }) {
         </div>
       </div>
       <div style={styles.rowRight}>
-        <span style={{ ...styles.typeBadge, color: project.type === 'venture' ? 'var(--ember, #c2512a)' : '#7eb8e8' }}>
+        <span style={{ ...styles.typeBadge, color: project.type === 'venture' ? 'var(--ember, #c4956a)' : '#7eb8e8' }}>
           {project.type}
         </span>
         <span style={{ ...styles.statusDot, background: statusColor[project.status] || '#888' }} />
@@ -163,7 +163,7 @@ function ProjectDetail({ project, isSteward, onBack }) {
       <div style={styles.detailHeader}>
         <h1 style={styles.h1}>{project.name}</h1>
         <div style={styles.detailBadges}>
-          <span style={{ ...styles.typeBadge, color: project.type === 'venture' ? 'var(--ember, #c2512a)' : '#7eb8e8' }}>
+          <span style={{ ...styles.typeBadge, color: project.type === 'venture' ? 'var(--ember, #c4956a)' : '#7eb8e8' }}>
             {project.type}
           </span>
           <span style={{ ...styles.statusDot, background: statusColor[project.status] || '#888' }} />
@@ -285,13 +285,13 @@ const styles = {
   page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
   main: { maxWidth: '900px', margin: '0 auto', padding: '2rem' },
   breadcrumb: { fontSize: '0.85rem', color: '#888', marginBottom: '1rem' },
-  breadLink: { color: 'var(--ember, #c2512a)', textDecoration: 'none' },
+  breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   pageHeader: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' },
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: 0 },
   h2: { fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.75rem' },
   addBtn: {
-    padding: '0.5rem 1rem', background: 'var(--ember, #c2512a)',
+    padding: '0.5rem 1rem', background: 'var(--ember, #c4956a)',
     color: '#fff', border: 'none', borderRadius: '8px', fontSize: '0.875rem',
     fontWeight: 600, cursor: 'pointer',
   },
@@ -336,7 +336,7 @@ const styles = {
   },
   contributorAvatar: {
     width: 32, height: 32, borderRadius: '50%',
-    background: 'rgba(194,81,42,0.15)', color: 'var(--ember, #c2512a)',
+    background: 'rgba(196,149,106,0.15)', color: 'var(--ember, #c4956a)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontSize: '0.875rem', fontWeight: 700, flexShrink: 0,
   },
@@ -376,7 +376,7 @@ const styles = {
     fontSize: '0.875rem', cursor: 'pointer',
   },
   submitBtn: {
-    background: 'var(--ember, #c2512a)', border: 'none',
+    background: 'var(--ember, #c4956a)', border: 'none',
     color: '#fff', borderRadius: '6px', padding: '0.5rem 1rem',
     fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer',
   },

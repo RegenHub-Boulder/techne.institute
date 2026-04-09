@@ -42,7 +42,7 @@ function ProjectsTab() {
 
   if (selected) return (
     <div>
-      <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', color: '#c2512a', fontSize: '0.82rem', cursor: 'pointer', padding: 0, marginBottom: '1.25rem', fontFamily: 'inherit' }}>← All Projects</button>
+      <button onClick={() => setSelected(null)} style={{ background: 'none', border: 'none', color: '#c4956a', fontSize: '0.82rem', cursor: 'pointer', padding: 0, marginBottom: '1.25rem', fontFamily: 'inherit' }}>← All Projects</button>
       <div style={{ marginBottom: '0.75rem' }}>
         <div style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#e0e0f0', marginBottom: '0.35rem' }}>{selected.name}</div>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -58,7 +58,7 @@ function ProjectsTab() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
             {selected.project_participants.map((pp, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(255,255,255,0.03)', border: '1px solid #1a1a2e', borderRadius: '6px', padding: '0.4rem 0.7rem' }}>
-                <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(194,81,42,0.15)', color: '#c2512a', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem', fontWeight: 700, flexShrink: 0 }}>
+                <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(196,149,106,0.15)', color: '#c4956a', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem', fontWeight: 700, flexShrink: 0 }}>
                   {(pp.participants?.name || '?').charAt(0)}
                 </span>
                 <div>
@@ -94,7 +94,7 @@ function ProjectsTab() {
     <div>
       <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
         {[['', 'All'], ['active', 'Active'], ['paused', 'Paused'], ['completed', 'Completed']].map(([v, l]) => (
-          <button key={v} onClick={() => setStatusFilter(v)} style={{ padding: '0.3rem 0.65rem', background: statusFilter === v ? 'rgba(194,81,42,0.15)' : 'none', border: `1px solid ${statusFilter === v ? 'rgba(194,81,42,0.4)' : '#1a1a2e'}`, color: statusFilter === v ? '#c2512a' : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+          <button key={v} onClick={() => setStatusFilter(v)} style={{ padding: '0.3rem 0.65rem', background: statusFilter === v ? 'rgba(196,149,106,0.15)' : 'none', border: `1px solid ${statusFilter === v ? 'rgba(196,149,106,0.4)' : '#1a1a2e'}`, color: statusFilter === v ? '#c4956a' : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
             {l}
           </button>
         ))}
@@ -166,7 +166,7 @@ function MembersTab() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '0.85rem' }}>
         {filtered.map(m => (
           <div key={m.id} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem', background: 'rgba(255,255,255,0.025)', border: '1px solid #1a1a2e', borderRadius: '8px', padding: '1rem' }}>
-            <div style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: 'rgba(194,81,42,0.12)', color: '#c2512a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 800 }}>
+            <div style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: 'rgba(196,149,106,0.12)', color: '#c4956a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 800 }}>
               {(m.name || '?').charAt(0)}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
@@ -174,7 +174,7 @@ function MembersTab() {
               {m.craft && <div style={{ fontSize: '0.78rem', color: '#8888a8', marginBottom: '0.4rem' }}>{m.craft}</div>}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
                 {m.participant_type && <Badge label={m.participant_type} />}
-                {m.membership_class && <Badge label={MEMBER_CLASS[m.membership_class] || `Class ${m.membership_class}`} color="#c2512a" />}
+                {m.membership_class && <Badge label={MEMBER_CLASS[m.membership_class] || `Class ${m.membership_class}`} color="#c4956a" />}
               </div>
             </div>
           </div>
@@ -248,19 +248,19 @@ function GovernanceTab() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div style={{ display: 'flex', gap: '0.35rem' }}>
           {[['open', 'Open'], ['closed', 'Closed'], ['all', 'All']].map(([v, l]) => (
-            <button key={v} onClick={() => setFilter(v)} style={{ padding: '0.3rem 0.65rem', background: filter === v ? 'rgba(194,81,42,0.15)' : 'none', border: `1px solid ${filter === v ? 'rgba(194,81,42,0.4)' : '#1a1a2e'}`, color: filter === v ? '#c2512a' : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+            <button key={v} onClick={() => setFilter(v)} style={{ padding: '0.3rem 0.65rem', background: filter === v ? 'rgba(196,149,106,0.15)' : 'none', border: `1px solid ${filter === v ? 'rgba(196,149,106,0.4)' : '#1a1a2e'}`, color: filter === v ? '#c4956a' : '#52526a', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
               {l}
             </button>
           ))}
         </div>
-        <button onClick={() => setShowNew(!showNew)} style={{ padding: '0.4rem 0.85rem', background: 'rgba(194,81,42,0.12)', border: '1px solid rgba(194,81,42,0.25)', color: '#c2512a', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+        <button onClick={() => setShowNew(!showNew)} style={{ padding: '0.4rem 0.85rem', background: 'rgba(196,149,106,0.12)', border: '1px solid rgba(196,149,106,0.25)', color: '#c4956a', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
           {showNew ? 'Cancel' : '+ Propose'}
         </button>
       </div>
 
       {/* New proposal form */}
       {showNew && (
-        <form onSubmit={submitProposal} style={{ background: 'rgba(194,81,42,0.05)', border: '1px solid rgba(194,81,42,0.15)', borderRadius: '8px', padding: '1.25rem', marginBottom: '1.25rem' }}>
+        <form onSubmit={submitProposal} style={{ background: 'rgba(196,149,106,0.05)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: '8px', padding: '1.25rem', marginBottom: '1.25rem' }}>
           <div style={{ marginBottom: '0.75rem' }}>
             <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#52526a', marginBottom: '0.3rem' }}>Title</label>
             <input required value={newForm.title} onChange={e => setNewForm(f => ({...f, title: e.target.value}))} placeholder="Proposal title" style={inputStyle} />
@@ -269,7 +269,7 @@ function GovernanceTab() {
             <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#52526a', marginBottom: '0.3rem' }}>Description</label>
             <textarea value={newForm.description} onChange={e => setNewForm(f => ({...f, description: e.target.value}))} rows={3} placeholder="Describe the proposal…" style={{ ...inputStyle, resize: 'vertical', minHeight: '80px' }} />
           </div>
-          <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.1rem', background: '#c2512a', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
+          <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.1rem', background: '#c4956a', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
             {submitting ? 'Submitting…' : 'Submit Proposal'}
           </button>
         </form>

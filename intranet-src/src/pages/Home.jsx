@@ -79,7 +79,7 @@ function MetricCard({ title, icon, href, color, children, badge }) {
         cursor: 'pointer',
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.borderColor = color || '#c2512a'
+        e.currentTarget.style.borderColor = color || '#c4956a'
         e.currentTarget.style.background = 'rgba(255,255,255,0.04)'
       }}
       onMouseLeave={e => {
@@ -91,7 +91,7 @@ function MetricCard({ title, icon, href, color, children, badge }) {
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0,
         height: '2px',
-        background: `linear-gradient(90deg, ${color || '#c2512a'} 0%, transparent 100%)`,
+        background: `linear-gradient(90deg, ${color || '#c4956a'} 0%, transparent 100%)`,
         opacity: 0.7,
       }} />
 
@@ -113,8 +113,8 @@ function MetricCard({ title, icon, href, color, children, badge }) {
       {badge && (
         <div style={{
           position: 'absolute', bottom: '0.75rem', right: '0.75rem',
-          fontSize: '0.62rem', color: color || '#c2512a',
-          background: `${color || '#c2512a'}18`,
+          fontSize: '0.62rem', color: color || '#c4956a',
+          background: `${color || '#c4956a'}18`,
           padding: '2px 6px', borderRadius: '3px',
           textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700,
         }}>{badge}</div>
@@ -227,7 +227,7 @@ export default function Home() {
             title="Capital Account"
             icon="◉"
             href="/intranet/account/"
-            color="#c2512a"
+            color="#c4956a"
           >
             <MetricValue
               value={data.capital ? fmt(data.capital.book_balance) : '—'}
@@ -332,7 +332,7 @@ export default function Home() {
             title="Patronage"
             icon="★"
             href="/intranet/patronage/"
-            color="#c2512a"
+            color="#c4956a"
           >
             <MetricValue
               value="40/30/20/10"
@@ -346,7 +346,7 @@ export default function Home() {
               title="Treasury"
               icon="⌖"
               href="/intranet/treasury/"
-              color="#c2512a"
+              color="#c4956a"
               badge="Steward"
             >
               <MetricValue

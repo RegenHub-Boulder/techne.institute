@@ -54,7 +54,7 @@ const styles = {
   wordmark: {
     fontSize: '1.1rem',
     fontWeight: 700,
-    color: 'var(--ember, #c2512a)',
+    color: 'var(--ember, #c4956a)',
     marginBottom: '0.25rem',
   },
   subtitle: {
@@ -92,7 +92,7 @@ const styles = {
     display: 'block',
     marginTop: '1.5rem',
     padding: '0.75rem 1rem',
-    background: 'var(--ember, #c2512a)',
+    background: 'var(--ember, #c4956a)',
     color: '#fff',
     borderRadius: '8px',
     fontWeight: 600,

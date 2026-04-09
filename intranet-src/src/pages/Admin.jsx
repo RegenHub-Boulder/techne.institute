@@ -484,7 +484,7 @@ const styles = {
     padding: '1rem 2rem', borderBottom: '1px solid var(--color-border, #2a2a35)',
     background: 'var(--color-surface, #141418)',
   },
-  wordmark: { fontSize: '1.1rem', fontWeight: 700, color: 'var(--ember, #c2512a)', textDecoration: 'none' },
+  wordmark: { fontSize: '1.1rem', fontWeight: 700, color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   headerNav: { display: 'flex', alignItems: 'center', gap: '1.5rem' },
   navLink: { fontSize: '0.875rem', color: 'var(--color-text-muted, #888)', textDecoration: 'none' },
   signOut: {
@@ -494,7 +494,7 @@ const styles = {
   },
   main: { maxWidth: '960px', margin: '0 auto', padding: '2rem' },
   breadcrumb: { fontSize: '0.85rem', color: 'var(--color-text-muted, #888)', marginBottom: '1rem' },
-  breadLink: { color: 'var(--ember, #c2512a)', textDecoration: 'none' },
+  breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 0.25rem' },
   subtitle: { fontSize: '1rem', color: 'var(--color-text-muted, #888)', margin: '0 0 1.5rem' },
@@ -512,7 +512,7 @@ const styles = {
     color: 'var(--color-text-muted, #888)', fontSize: '0.875rem', cursor: 'pointer',
     borderBottom: '2px solid transparent', marginBottom: '-1px',
   },
-  tabActive: { color: 'var(--ember, #c2512a)', borderBottom: '2px solid var(--ember, #c2512a)', fontWeight: 600 },
+  tabActive: { color: 'var(--ember, #c4956a)', borderBottom: '2px solid var(--ember, #c4956a)', fontWeight: 600 },
   tabContent: {
     padding: '1.5rem', background: 'var(--color-surface, #141418)',
     border: '1px solid var(--color-border, #2a2a35)', borderTop: 'none', borderRadius: '0 0 10px 10px',
@@ -558,7 +558,7 @@ const styles = {
   totalLine: { fontSize: '0.9rem', padding: '0.5rem 0', borderTop: '1px solid var(--color-border, #2a2a35)' },
   formulaCheck: { color: 'var(--color-text-muted, #888)' },
   submitBtn: {
-    background: 'var(--ember, #c2512a)', border: 'none', color: '#fff',
+    background: 'var(--ember, #c4956a)', border: 'none', color: '#fff',
     borderRadius: '8px', padding: '0.65rem 1.25rem', fontSize: '0.9rem',
     fontWeight: 600, cursor: 'pointer', alignSelf: 'flex-start',
   },
@@ -569,6 +569,6 @@ const styles = {
   },
   deniedTitle: { fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.75rem' },
   deniedBody: { fontSize: '0.9rem', color: '#aaa', lineHeight: 1.6, margin: '0 0 1rem' },
-  backLink: { fontSize: '0.875rem', color: 'var(--ember, #c2512a)', textDecoration: 'none' },
-  link: { color: 'var(--ember, #c2512a)', textDecoration: 'none' },
+  backLink: { fontSize: '0.875rem', color: 'var(--ember, #c4956a)', textDecoration: 'none' },
+  link: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
 }
