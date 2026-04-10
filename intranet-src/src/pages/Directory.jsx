@@ -19,7 +19,7 @@ export default function Directory() {
       setLoading(true)
       const { data, error } = await supabase
         .from('participants')
-        .select('id, name, email, participant_type, account_type, membership_class, craft')
+        .select('id, name, email, participant_type, account_type, membership_class, craft_primary')
         .order('name')
 
       if (error) {
@@ -37,7 +37,7 @@ export default function Directory() {
     return (
       !q ||
       m.name?.toLowerCase().includes(q) ||
-      m.craft?.toLowerCase().includes(q) ||
+      m.craft_primary?.toLowerCase().includes(q) ||
       m.participant_type?.toLowerCase().includes(q)
     )
   })
@@ -94,7 +94,7 @@ function MemberCard({ member }) {
       </div>
       <div style={styles.cardBody}>
         <div style={styles.name}>{member.name || '—'}</div>
-        {member.craft && <div style={styles.craft}>{member.craft}</div>}
+        {member.craft_primary && <div style={styles.craft}>{member.craft_primary}</div>}
         <div style={styles.tags}>
           {member.participant_type && (
             <span style={styles.tag}>{member.participant_type}</span>
