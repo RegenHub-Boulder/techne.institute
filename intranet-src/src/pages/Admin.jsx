@@ -55,7 +55,7 @@ function AdminTabView() {
   return (
     <>
       <div style={styles.tabs}>
-        {[['members', 'Member List'], ['allocation', 'Allocation Entry'], ['upload', 'K-1 Upload'], ['governance', 'Governance Params']].map(([id, label]) => (
+        {[['members', 'Member List'], ['allocation', 'Allocation Entry'], ['upload', 'K-1 Upload'], ['governance', 'Governance Params'], ['labor', 'Labor Review']].map(([id, label]) => (
           <button
             key={id}
             onClick={() => setTab(id)}
@@ -70,6 +70,7 @@ function AdminTabView() {
         {tab === 'allocation' && <AllocationEntry />}
         {tab === 'upload' && <DocumentUpload />}
         {tab === 'governance' && <GovernanceParamsPanel />}
+        {tab === 'labor' && <LaborAdmin />}
       </div>
     </>
   )
@@ -607,6 +608,283 @@ function GovernanceParamsPanel() {
           )}
         </div>
       </div>
+    </div>
+  )
+}
+
+// ─── Labor Admin ─────────────────────────────────────────────────────────────
+
+const LABOR_STATUS_STYLE = {
+  draft:     { bg: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)',  label: 'Draft'     },
+  submitted: { bg: 'rgba(196,149,106,0.14)', color: 'var(--ember, #c4956a)', label: 'Submitted' },
+  approved:  { bg: 'rgba(76,175,136,0.14)',  color: 'var(--status-ok)',       label: 'Approved'  },
+  rejected:  { bg: 'rgba(220,60,60,0.14)',   color: 'var(--status-err)',      label: 'Rejected'  },
+}
+function LaborStatusBadge({ status }) {
+  const s = LABOR_STATUS_STYLE[status] || LABOR_STATUS_STYLE.draft
+  return (
+    <span style={{ background: s.bg, color: s.color, border: `1px solid ${s.color}30`, borderRadius: '4px', padding: '1px 7px', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.04em' }}>
+      {s.label}
+    </span>
+  )
+}
+
+function LaborAdmin() {
+  const [subTab, setSubTab] = useState('entries')
+  return (
+    <div>
+      <p style={styles.sectionNote}>Review submitted labor entries and manage FMV rate table.</p>
+      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.25rem' }}>
+        {[['entries', 'Entry Review'], ['rates', 'Rate Table']].map(([id, label]) => (
+          <button key={id} onClick={() => setSubTab(id)} style={{
+            padding: '0.35rem 0.9rem', fontSize: '0.8rem', cursor: 'pointer',
+            borderRadius: '6px', border: '1px solid var(--color-border, #2a2a35)',
+            background: subTab === id ? 'var(--ember, #c4956a)' : 'none',
+            color: subTab === id ? '#fff' : 'var(--color-text-muted, #888)',
+            fontFamily: 'inherit', fontWeight: subTab === id ? 600 : 400,
+          }}>{label}</button>
+        ))}
+      </div>
+      {subTab === 'entries' && <LaborEntryReview />}
+      {subTab === 'rates'   && <LaborRateTable />}
+    </div>
+  )
+}
+
+function LaborEntryReview() {
+  const [entries, setEntries] = useState(null)
+  const [statusFilter, setStatusFilter] = useState('submitted')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [acting, setActing] = useState(null) // entry id being actioned
+
+  async function load(filter) {
+    setLoading(true)
+    setError(null)
+    try {
+      const session = (await supabase.auth.getSession()).data.session
+      const res = await fetch(`${EDGE_BASE}/labor-entry-review`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'list_entries', status_filter: filter }),
+      })
+      const json = await res.json()
+      if (json.ok) setEntries(json.data)
+      else setError(json.error)
+    } catch (e) { setError(e.message) }
+    finally { setLoading(false) }
+  }
+
+  useEffect(() => { load(statusFilter) }, [statusFilter])
+
+  async function review(entryId, status) {
+    setActing(entryId)
+    try {
+      const session = (await supabase.auth.getSession()).data.session
+      const res = await fetch(`${EDGE_BASE}/labor-entry-review`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'review_entry', entry_id: entryId, status }),
+      })
+      const json = await res.json()
+      if (json.ok) {
+        setEntries(prev => prev.map(e => e.id === entryId ? { ...e, status, approved_by: json.data.approved_by, approved_at: json.data.approved_at } : e))
+      } else { setError(json.error) }
+    } catch (e) { setError(e.message) }
+    finally { setActing(null) }
+  }
+
+  const fmtDate = (d) => d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'
+  const fmtUSDDec = (n) => Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+
+  const pendingCount = entries?.filter(e => e.status === 'submitted').length ?? 0
+
+  return (
+    <div>
+      {/* Filter row */}
+      <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '1rem', alignItems: 'center' }}>
+        {[['all','All'],['submitted','Submitted'],['approved','Approved'],['rejected','Rejected']].map(([val, label]) => (
+          <button key={val} onClick={() => setStatusFilter(val)} style={{
+            padding: '0.3rem 0.7rem', fontSize: '0.78rem', cursor: 'pointer',
+            borderRadius: '5px', border: `1px solid ${statusFilter === val ? 'rgba(196,149,106,0.5)' : 'var(--color-border, #2a2a35)'}`,
+            background: statusFilter === val ? 'rgba(196,149,106,0.1)' : 'none',
+            color: statusFilter === val ? 'var(--ember, #c4956a)' : 'var(--color-text-muted, #888)',
+            fontFamily: 'inherit',
+          }}>{label}{val === 'submitted' && pendingCount > 0 ? ` (${pendingCount})` : ''}</button>
+        ))}
+        <button onClick={() => load(statusFilter)} style={{ marginLeft: 'auto', padding: '0.3rem 0.7rem', fontSize: '0.78rem', background: 'none', border: '1px solid var(--color-border, #2a2a35)', borderRadius: '5px', color: 'var(--color-text-muted, #888)', cursor: 'pointer', fontFamily: 'inherit' }}>Refresh</button>
+      </div>
+
+      {error && <div style={styles.error}>{error}</div>}
+      {loading && <div style={styles.loading}>Loading entries…</div>}
+
+      {!loading && entries?.length === 0 && (
+        <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted, #888)', fontSize: '0.875rem', border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px' }}>
+          No entries with status: {statusFilter}.
+        </div>
+      )}
+
+      {!loading && entries && entries.length > 0 && (
+        <div style={{ border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px', overflow: 'hidden' }}>
+          {/* Header */}
+          <div style={{ display: 'grid', gridTemplateColumns: '140px 90px 110px 60px 70px 80px 90px 1fr', padding: '0.6rem 1rem', borderBottom: '1px solid var(--color-border, #2a2a35)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)' }}>
+            <span>Member</span><span>Date</span><span>Craft</span><span>Hrs</span><span>Rate</span><span>Total</span><span>Status</span><span>Actions</span>
+          </div>
+          {entries.map(e => {
+            const rate = e.rate?.hourly_rate ?? 0
+            const total = parseFloat(e.hours || 0) * parseFloat(rate)
+            const memberName = e.member?.display_name || e.member?.name || e.member?.email || '—'
+            return (
+              <div key={e.id} style={{ display: 'grid', gridTemplateColumns: '140px 90px 110px 60px 70px 80px 90px 1fr', padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '0.83rem', alignItems: 'center' }}>
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 500 }}>{memberName}</span>
+                <span style={{ color: 'var(--color-text-muted, #888)', fontSize: '0.78rem' }}>{fmtDate(e.date)}</span>
+                <span style={{ fontSize: '0.78rem', color: 'var(--text-soft)' }}>{e.labor_type}</span>
+                <span style={{ fontVariantNumeric: 'tabular-nums' }}>{parseFloat(e.hours).toFixed(1)}</span>
+                <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--color-text-muted, #888)', fontSize: '0.78rem' }}>{fmtUSDDec(rate)}</span>
+                <span style={{ fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}>{fmtUSDDec(total)}</span>
+                <span><LaborStatusBadge status={e.status} /></span>
+                <span style={{ display: 'flex', gap: '0.4rem' }}>
+                  {e.status === 'submitted' && (
+                    <>
+                      <button
+                        disabled={acting === e.id}
+                        onClick={() => review(e.id, 'approved')}
+                        style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', background: 'rgba(76,175,136,0.15)', border: '1px solid rgba(76,175,136,0.4)', color: 'var(--status-ok)', borderRadius: '4px', cursor: 'pointer', fontFamily: 'inherit' }}
+                      >Approve</button>
+                      <button
+                        disabled={acting === e.id}
+                        onClick={() => review(e.id, 'rejected')}
+                        style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', color: 'var(--status-err)', borderRadius: '4px', cursor: 'pointer', fontFamily: 'inherit' }}
+                      >Reject</button>
+                    </>
+                  )}
+                  {e.status !== 'submitted' && e.approved_at && (
+                    <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted, #888)' }}>
+                      {new Date(e.approved_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </span>
+                  )}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function LaborRateTable() {
+  const { participant } = useAuth()
+  const [rates, setRates] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [showAdd, setShowAdd] = useState(false)
+  const [form, setForm] = useState({ labor_type: '', hourly_rate: '', level: '', notes: '' })
+  const [saving, setSaving] = useState(false)
+  const [saveOk, setSaveOk] = useState(null)
+
+  async function loadRates() {
+    setLoading(true)
+    setError(null)
+    try {
+      const session = (await supabase.auth.getSession()).data.session
+      const res = await fetch(`${EDGE_BASE}/labor-entry-review`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'list_rates' }),
+      })
+      const json = await res.json()
+      if (json.ok) { setRates(json.data); if (json.data.length) setForm(f => ({ ...f, labor_type: f.labor_type || json.data[0].labor_type })) }
+      else setError(json.error)
+    } catch (e) { setError(e.message) }
+    finally { setLoading(false) }
+  }
+
+  useEffect(() => { loadRates() }, [])
+
+  async function handleAddRate(e) {
+    e.preventDefault()
+    if (!form.labor_type || !form.hourly_rate) { setError('Craft and rate are required.'); return }
+    setSaving(true)
+    setSaveOk(null)
+    setError(null)
+    try {
+      const session = (await supabase.auth.getSession()).data.session
+      const res = await fetch(`${EDGE_BASE}/labor-entry-review`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'add_rate', ...form }),
+      })
+      const json = await res.json()
+      if (json.ok) {
+        setSaveOk(`New rate for ${form.labor_type} set to $${parseFloat(form.hourly_rate).toFixed(2)}/hr. Prior rate deprecated.`)
+        setForm(f => ({ ...f, hourly_rate: '', level: '', notes: '' }))
+        setShowAdd(false)
+        loadRates()
+      } else { setError(json.error) }
+    } catch (e) { setError(e.message) }
+    finally { setSaving(false) }
+  }
+
+  const fmtDate = (d) => d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'
+  const fmtUSDDec = (n) => Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+        <p style={{ ...styles.sectionNote, margin: 0 }}>Current active FMV rates. Adding a new rate for a craft automatically deprecates the prior one.</p>
+        <button onClick={() => { setShowAdd(s => !s); setSaveOk(null) }} style={{ ...styles.submitBtn, padding: '0.4rem 0.9rem', fontSize: '0.8rem' }}>
+          {showAdd ? 'Cancel' : '+ Add New Rate'}
+        </button>
+      </div>
+
+      {error && <div style={styles.error}>{error}</div>}
+      {saveOk && <div style={styles.successBox}>{saveOk}</div>}
+
+      {showAdd && (
+        <form onSubmit={handleAddRate} style={{ ...styles.form, background: 'rgba(196,149,106,0.05)', border: '1px solid rgba(196,149,106,0.2)', borderRadius: '8px', padding: '1rem', marginBottom: '1.25rem' }}>
+          <div style={{ fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.25rem' }}>New Rate</div>
+          <div style={styles.formRow}>
+            <label style={styles.label}>
+              Craft
+              <select value={form.labor_type} onChange={e => setForm(f => ({ ...f, labor_type: e.target.value }))} style={styles.select} required>
+                {(rates || []).map(r => <option key={r.id} value={r.labor_type}>{r.labor_type}</option>)}
+              </select>
+            </label>
+            <label style={styles.label}>
+              Rate ($/hr)
+              <input type="number" step="0.01" min="0" value={form.hourly_rate} onChange={e => setForm(f => ({ ...f, hourly_rate: e.target.value }))} style={styles.input} placeholder="0.00" required />
+            </label>
+            <label style={styles.label}>
+              Level (optional)
+              <input type="text" value={form.level} onChange={e => setForm(f => ({ ...f, level: e.target.value }))} style={styles.input} placeholder="e.g. senior" />
+            </label>
+          </div>
+          <label style={styles.label}>
+            Notes (optional)
+            <input type="text" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} style={styles.input} placeholder="Reason for rate change" />
+          </label>
+          <button type="submit" disabled={saving} style={styles.submitBtn}>{saving ? 'Saving…' : 'Save New Rate'}</button>
+        </form>
+      )}
+
+      {loading && <div style={styles.loading}>Loading rates…</div>}
+      {!loading && rates && (
+        <div style={{ border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px', overflow: 'hidden' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px 80px 130px 1fr', padding: '0.6rem 1rem', borderBottom: '1px solid var(--color-border, #2a2a35)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)' }}>
+            <span>Craft</span><span>Rate/hr</span><span>Level</span><span>Effective</span><span>Notes</span>
+          </div>
+          {rates.map(r => (
+            <div key={r.id} style={{ display: 'grid', gridTemplateColumns: '1fr 100px 80px 130px 1fr', padding: '0.7rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '0.85rem', alignItems: 'center' }}>
+              <span style={{ fontWeight: 500 }}>{r.labor_type}</span>
+              <span style={{ fontVariantNumeric: 'tabular-nums', fontWeight: 700, color: 'var(--ember, #c4956a)' }}>{fmtUSDDec(r.hourly_rate)}</span>
+              <span style={{ color: 'var(--color-text-muted, #888)', fontSize: '0.78rem' }}>{r.level || '—'}</span>
+              <span style={{ color: 'var(--color-text-muted, #888)', fontSize: '0.78rem' }}>{fmtDate(r.effective_date)}</span>
+              <span style={{ color: 'var(--color-text-muted, #888)', fontSize: '0.78rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.notes || '—'}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
