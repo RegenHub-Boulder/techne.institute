@@ -633,9 +633,9 @@ function LaborAdmin() {
   const [subTab, setSubTab] = useState('entries')
   return (
     <div>
-      <p style={styles.sectionNote}>Review submitted labor entries and manage FMV rate table.</p>
+      <p style={styles.sectionNote}>Review submitted labor entries, manage FMV rate table, and generate member reports.</p>
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.25rem' }}>
-        {[['entries', 'Entry Review'], ['rates', 'Rate Table']].map(([id, label]) => (
+        {[['entries', 'Entry Review'], ['rates', 'Rate Table'], ['reports', 'Reports']].map(([id, label]) => (
           <button key={id} onClick={() => setSubTab(id)} style={{
             padding: '0.35rem 0.9rem', fontSize: '0.8rem', cursor: 'pointer',
             borderRadius: '6px', border: '1px solid var(--color-border, #2a2a35)',
@@ -647,6 +647,7 @@ function LaborAdmin() {
       </div>
       {subTab === 'entries' && <LaborEntryReview />}
       {subTab === 'rates'   && <LaborRateTable />}
+      {subTab === 'reports' && <LaborReportPanel />}
     </div>
   )
 }
@@ -883,6 +884,193 @@ function LaborRateTable() {
               <span style={{ color: 'var(--color-text-muted, #888)', fontSize: '0.78rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.notes || '—'}</span>
             </div>
           ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function LaborReportPanel() {
+  const [members, setMembers] = useState([])
+  const [membersLoading, setMembersLoading] = useState(true)
+  const [memberId, setMemberId] = useState('')
+  const [fromDate, setFromDate] = useState(() => `${new Date().getFullYear()}-01-01`)
+  const [toDate, setToDate] = useState(() => new Date().toISOString().slice(0, 10))
+  const [report, setReport] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    async function loadMembers() {
+      try {
+        const session = (await supabase.auth.getSession()).data.session
+        const res = await fetch(`${EDGE_BASE}/admin-allocation-entry`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'list_members' }),
+        })
+        const json = await res.json()
+        if (json.ok) {
+          setMembers(json.members || [])
+          if (json.members?.length) setMemberId(json.members[0].id)
+        }
+      } catch (_) {}
+      finally { setMembersLoading(false) }
+    }
+    loadMembers()
+  }, [])
+
+  async function generate() {
+    if (!memberId) return
+    setLoading(true)
+    setError(null)
+    setReport(null)
+    try {
+      const session = (await supabase.auth.getSession()).data.session
+      const res = await fetch(`${EDGE_BASE}/labor-fmv-report`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ member_id: memberId, from_date: fromDate, to_date: toDate }),
+      })
+      const json = await res.json()
+      if (json.ok) setReport(json.data)
+      else setError(json.error)
+    } catch (e) { setError(e.message) }
+    finally { setLoading(false) }
+  }
+
+  function downloadCSV() {
+    if (!report) return
+    const rows = [
+      ['Date', 'Craft', 'Hours', 'Rate', 'Total FMV', 'Status', 'Tax Class'],
+      ...report.entries.map(e => [e.date, e.labor_type, e.hours, e.hourly_rate, e.total_fmv, e.status, e.tax_class]),
+    ]
+    const csv = rows.map(r => r.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\n')
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `labor-fmv-${(report.member.name || report.member.id).replace(/\s+/g,'-')}-${fromDate}-${toDate}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const fmtUSDDec = (n) => Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+  const fmtDateShort = (d) => d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'
+
+  return (
+    <div>
+      <p style={styles.sectionNote}>Generate an FMV labor report for any member over any period. Tax classification is a display scaffold — not legal advice.</p>
+
+      {/* Controls */}
+      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'flex-end', marginBottom: '1.5rem' }}>
+        <label style={styles.label}>
+          Member
+          <select value={memberId} onChange={e => setMemberId(e.target.value)} style={styles.select} disabled={membersLoading}>
+            {membersLoading && <option>Loading…</option>}
+            {members.map(m => <option key={m.id} value={m.id}>{m.name || m.email || m.id}</option>)}
+          </select>
+        </label>
+        <label style={styles.label}>
+          From
+          <input type="date" value={fromDate} onChange={e => setFromDate(e.target.value)} style={styles.input} />
+        </label>
+        <label style={styles.label}>
+          To
+          <input type="date" value={toDate} onChange={e => setToDate(e.target.value)} style={styles.input} />
+        </label>
+        <button
+          onClick={generate}
+          disabled={loading || !memberId}
+          style={{ ...styles.submitBtn, alignSelf: 'flex-end', opacity: (!memberId || loading) ? 0.6 : 1 }}
+        >
+          {loading ? 'Generating…' : 'Generate Report'}
+        </button>
+      </div>
+
+      {error && <div style={styles.error}>{error}</div>}
+
+      {report && (
+        <div>
+          {/* Report header */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '1rem' }}>{report.member.name}</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted, #888)' }}>
+                {report.member.email}
+                {report.period.from_date && <> &middot; {report.period.from_date} → {report.period.to_date || 'today'}</>}
+              </div>
+            </div>
+            <button onClick={downloadCSV} style={{ padding: '0.35rem 0.85rem', fontSize: '0.78rem', background: 'none', border: '1px solid var(--color-border, #2a2a35)', borderRadius: '6px', color: 'var(--color-text-muted, #888)', cursor: 'pointer', fontFamily: 'inherit' }}>
+              Export CSV
+            </button>
+          </div>
+
+          {/* Totals grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
+            {[
+              ['Total Hours', report.totals.hours.toFixed(1) + ' hrs', null],
+              ['Total FMV', fmtUSDDec(report.totals.fmv), null],
+              ['Approved Hours', report.totals.approved_hours.toFixed(1) + ' hrs', 'var(--status-ok, #4caf88)'],
+              ['Approved FMV', fmtUSDDec(report.totals.approved_fmv), 'var(--status-ok, #4caf88)'],
+            ].map(([label, value, color]) => (
+              <div key={label} style={{ padding: '0.85rem', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px' }}>
+                <div style={{ fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)', marginBottom: '0.3rem' }}>{label}</div>
+                <div style={{ fontSize: '1rem', fontWeight: 700, color: color || 'inherit', fontVariantNumeric: 'tabular-nums' }}>{value}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* By-craft breakdown */}
+          {Object.keys(report.by_craft).length > 0 && (
+            <div style={{ marginBottom: '1.5rem' }}>
+              <div style={{ fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)', marginBottom: '0.6rem' }}>By Craft</div>
+              <div style={{ border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px', overflow: 'hidden' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 75px 100px 90px 120px', padding: '0.5rem 1rem', borderBottom: '1px solid var(--color-border, #2a2a35)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)' }}>
+                  <span>Craft</span><span>Hrs</span><span>FMV</span><span>Appr. Hrs</span><span>Appr. FMV</span>
+                </div>
+                {Object.entries(report.by_craft).map(([craft, stats]) => (
+                  <div key={craft} style={{ display: 'grid', gridTemplateColumns: '1fr 75px 100px 90px 120px', padding: '0.65rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '0.85rem', alignItems: 'center' }}>
+                    <span style={{ fontWeight: 500 }}>{craft}</span>
+                    <span style={{ fontVariantNumeric: 'tabular-nums' }}>{stats.hours.toFixed(1)}</span>
+                    <span style={{ fontVariantNumeric: 'tabular-nums' }}>{fmtUSDDec(stats.fmv)}</span>
+                    <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--status-ok, #4caf88)' }}>{stats.approved_hours.toFixed(1)}</span>
+                    <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--status-ok, #4caf88)', fontWeight: 600 }}>{fmtUSDDec(stats.approved_fmv)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Entry detail */}
+          {report.entries.length === 0 ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted, #888)', fontSize: '0.875rem', border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px' }}>
+              No entries in this period.
+            </div>
+          ) : (
+            <div>
+              <div style={{ fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)', marginBottom: '0.6rem' }}>Entries ({report.entries.length})</div>
+              <div style={{ border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px', overflow: 'hidden' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '95px 1fr 50px 80px 90px 75px 165px', padding: '0.5rem 1rem', borderBottom: '1px solid var(--color-border, #2a2a35)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)' }}>
+                  <span>Date</span><span>Craft</span><span>Hrs</span><span>Rate</span><span>Total</span><span>Status</span><span>Tax Class</span>
+                </div>
+                {report.entries.map(e => (
+                  <div key={e.id} style={{ display: 'grid', gridTemplateColumns: '95px 1fr 50px 80px 90px 75px 165px', padding: '0.65rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '0.83rem', alignItems: 'center' }}>
+                    <span style={{ color: 'var(--color-text-muted, #888)', fontSize: '0.78rem' }}>{fmtDateShort(e.date)}</span>
+                    <span>{e.labor_type}</span>
+                    <span style={{ fontVariantNumeric: 'tabular-nums' }}>{e.hours.toFixed(1)}</span>
+                    <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--color-text-muted, #888)', fontSize: '0.78rem' }}>{fmtUSDDec(e.hourly_rate)}</span>
+                    <span style={{ fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}>{fmtUSDDec(e.total_fmv)}</span>
+                    <span><LaborStatusBadge status={e.status} /></span>
+                    <span style={{ fontSize: '0.75rem', color: e.tax_class === 'Patronage Dividend' ? 'var(--status-ok, #4caf88)' : e.tax_class.startsWith('Pending') ? 'var(--color-text-muted, #888)' : 'var(--ember, #c4956a)' }}>{e.tax_class}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ marginTop: '0.5rem', fontSize: '0.72rem', color: 'var(--color-text-muted, #888)', fontStyle: 'italic' }}>
+                Tax classification is a display scaffold only — not legal advice. Consult a qualified tax advisor.
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

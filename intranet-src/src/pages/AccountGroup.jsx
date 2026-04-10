@@ -297,6 +297,7 @@ function LaborTab() {
   const { session, participant } = useAuth()
   const accessToken = session?.access_token
 
+  const [view, setView]           = useState('log') // 'log' | 'report'
   const [entries, setEntries]     = useState([])
   const [rates, setRates]         = useState([])
   const [entriesLoading, setEntriesLoading] = useState(true)
@@ -305,6 +306,30 @@ function LaborTab() {
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(null)
   const [dateFilter, setDateFilter] = useState('')
+
+  // Report view state
+  const [reportFrom, setReportFrom] = useState(() => `${new Date().getFullYear()}-01-01`)
+  const [reportTo, setReportTo]     = useState(() => new Date().toISOString().slice(0, 10))
+  const [report, setReport]         = useState(null)
+  const [reportLoading, setReportLoading] = useState(false)
+  const [reportError, setReportError]     = useState(null)
+
+  async function generateReport() {
+    if (!accessToken) return
+    setReportLoading(true)
+    setReportError(null)
+    setReport(null)
+    try {
+      const url = new URL(`${SUPABASE_EDGE}/labor-fmv-report`)
+      url.searchParams.set('from_date', reportFrom)
+      url.searchParams.set('to_date', reportTo)
+      const res = await fetch(url.toString(), { headers: { Authorization: `Bearer ${accessToken}` } })
+      const d = await res.json()
+      if (d.ok) setReport(d.data)
+      else setReportError(d.error || 'Report failed')
+    } catch (e) { setReportError(e.message) }
+    finally { setReportLoading(false) }
+  }
 
   // Load FMV rates from edge function (public — no JWT needed)
   useEffect(() => {
@@ -386,92 +411,199 @@ function LaborTab() {
         <StatBox label="Approved FMV" value={fmtUSD(approvedFmv)} color="var(--status-ok)" />
       </div>
 
-      {/* Controls */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          style={{ padding: '0.45rem 0.9rem', background: 'var(--gold-15)', border: '1px solid rgba(196,149,106,0.3)', color: 'var(--gold)', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
-        >
-          {showForm ? 'Cancel' : '+ Log Hours'}
-        </button>
-        {years.length > 0 && (
-          <div style={{ display: 'flex', gap: '0.35rem' }}>
-            {['', ...years].map(y => (
-              <button key={y || 'all'} onClick={() => setDateFilter(y)} style={{ padding: '0.3rem 0.6rem', background: dateFilter === y ? 'var(--gold-15)' : 'none', border: `1px solid ${dateFilter === y ? 'rgba(196,149,106,0.4)' : 'var(--hud-border)'}`, color: dateFilter === y ? 'var(--gold)' : 'var(--text-nav)', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
-                {y || 'All'}
-              </button>
-            ))}
-          </div>
-        )}
+      {/* View toggle */}
+      <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '1rem' }}>
+        {[['log', 'Labor Log'], ['report', 'FMV Report']].map(([id, label]) => (
+          <button key={id} onClick={() => setView(id)} style={{ padding: '0.3rem 0.75rem', fontSize: '0.78rem', cursor: 'pointer', borderRadius: '5px', border: `1px solid ${view === id ? 'rgba(196,149,106,0.4)' : 'var(--hud-border)'}`, background: view === id ? 'var(--gold-15)' : 'none', color: view === id ? 'var(--gold)' : 'var(--text-nav)', fontFamily: 'inherit', fontWeight: view === id ? 600 : 400 }}>{label}</button>
+        ))}
       </div>
 
-      {/* Log form */}
-      {showForm && (
-        <form onSubmit={submit} style={{ background: 'rgba(196,149,106,0.06)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: '8px', padding: '1.25rem', marginBottom: '1.25rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '0.75rem', marginBottom: '0.75rem' }}>
-            <div>
-              <label style={labelStyle}>Date</label>
-              <input type="date" required value={form.date} max={new Date().toISOString().slice(0,10)} onChange={e => setForm(f => ({...f, date: e.target.value}))} style={inputStyle} />
-            </div>
-            <div>
-              <label style={labelStyle}>Hours</label>
-              <input type="number" step="0.25" min="0.25" max="24" required value={form.hours} onChange={e => setForm(f => ({...f, hours: e.target.value}))} placeholder="0.0" style={inputStyle} />
-            </div>
-            <div>
-              <label style={labelStyle}>Craft</label>
-              <select value={form.labor_type} onChange={e => setForm(f => ({...f, labor_type: e.target.value}))} style={inputStyle} required>
-                {rates.length === 0 && <option value="">Loading…</option>}
-                {rates.map(r => (
-                  <option key={r.id} value={r.labor_type}>
-                    {r.labor_type}{r.level ? ` (${r.level})` : ''} — {fmtUSD(r.hourly_rate)}/hr
-                  </option>
+      {/* ── Labor Log view ── */}
+      {view === 'log' && (
+        <>
+          {/* Controls */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => setShowForm(!showForm)}
+              style={{ padding: '0.45rem 0.9rem', background: 'var(--gold-15)', border: '1px solid rgba(196,149,106,0.3)', color: 'var(--gold)', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
+            >
+              {showForm ? 'Cancel' : '+ Log Hours'}
+            </button>
+            {years.length > 0 && (
+              <div style={{ display: 'flex', gap: '0.35rem' }}>
+                {['', ...years].map(y => (
+                  <button key={y || 'all'} onClick={() => setDateFilter(y)} style={{ padding: '0.3rem 0.6rem', background: dateFilter === y ? 'var(--gold-15)' : 'none', border: `1px solid ${dateFilter === y ? 'rgba(196,149,106,0.4)' : 'var(--hud-border)'}`, color: dateFilter === y ? 'var(--gold)' : 'var(--text-nav)', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+                    {y || 'All'}
+                  </button>
                 ))}
-              </select>
-            </div>
+              </div>
+            )}
           </div>
-          <div style={{ marginBottom: '0.75rem' }}>
-            <label style={labelStyle}>Notes (optional)</label>
-            <input type="text" value={form.notes} onChange={e => setForm(f => ({...f, notes: e.target.value}))} placeholder="What did you work on?" style={inputStyle} />
-          </div>
-          {currentRate && form.hours && (
-            <div style={{ fontSize: '0.78rem', color: 'var(--status-ok)', marginBottom: '0.75rem' }}>
-              FMV: {parseFloat(form.hours).toFixed(2)} hrs × {fmtUSD(currentRate.hourly_rate)}/hr = <strong>{fmtUSD(parseFloat(form.hours) * currentRate.hourly_rate)}</strong>
-            </div>
+
+          {/* Log form */}
+          {showForm && (
+            <form onSubmit={submit} style={{ background: 'rgba(196,149,106,0.06)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: '8px', padding: '1.25rem', marginBottom: '1.25rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                <div>
+                  <label style={labelStyle}>Date</label>
+                  <input type="date" required value={form.date} max={new Date().toISOString().slice(0,10)} onChange={e => setForm(f => ({...f, date: e.target.value}))} style={inputStyle} />
+                </div>
+                <div>
+                  <label style={labelStyle}>Hours</label>
+                  <input type="number" step="0.25" min="0.25" max="24" required value={form.hours} onChange={e => setForm(f => ({...f, hours: e.target.value}))} placeholder="0.0" style={inputStyle} />
+                </div>
+                <div>
+                  <label style={labelStyle}>Craft</label>
+                  <select value={form.labor_type} onChange={e => setForm(f => ({...f, labor_type: e.target.value}))} style={inputStyle} required>
+                    {rates.length === 0 && <option value="">Loading…</option>}
+                    {rates.map(r => (
+                      <option key={r.id} value={r.labor_type}>
+                        {r.labor_type}{r.level ? ` (${r.level})` : ''} — {fmtUSD(r.hourly_rate)}/hr
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div style={{ marginBottom: '0.75rem' }}>
+                <label style={labelStyle}>Notes (optional)</label>
+                <input type="text" value={form.notes} onChange={e => setForm(f => ({...f, notes: e.target.value}))} placeholder="What did you work on?" style={inputStyle} />
+              </div>
+              {currentRate && form.hours && (
+                <div style={{ fontSize: '0.78rem', color: 'var(--status-ok)', marginBottom: '0.75rem' }}>
+                  FMV: {parseFloat(form.hours).toFixed(2)} hrs × {fmtUSD(currentRate.hourly_rate)}/hr = <strong>{fmtUSD(parseFloat(form.hours) * currentRate.hourly_rate)}</strong>
+                </div>
+              )}
+              {submitError && <div style={{ color: 'var(--status-err)', fontSize: '0.8rem', marginBottom: '0.5rem' }}>{submitError}</div>}
+              <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.25rem', background: 'var(--gold)', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
+                {submitting ? 'Saving…' : 'Log Hours'}
+              </button>
+            </form>
           )}
-          {submitError && <div style={{ color: 'var(--status-err)', fontSize: '0.8rem', marginBottom: '0.5rem' }}>{submitError}</div>}
-          <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.25rem', background: 'var(--gold)', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
-            {submitting ? 'Saving…' : 'Log Hours'}
-          </button>
-        </form>
+
+          {/* Entry list */}
+          <div style={tableContainer}>
+            {entriesLoading ? (
+              <div style={emptyStyle}>Loading…</div>
+            ) : filtered.length === 0 ? (
+              <div style={emptyStyle}>No entries{dateFilter ? ` in ${dateFilter}` : ''} yet.</div>
+            ) : (
+              <>
+                <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr 60px 95px 95px 80px', gap: '0.5rem', padding: '0.6rem 1rem', borderBottom: '1px solid #1a1a2e', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text-nav)', fontWeight: 700 }}>
+                  <span>Date</span><span>Craft</span><span style={{textAlign:'right'}}>Hrs</span><span style={{textAlign:'right'}}>Rate</span><span style={{textAlign:'right'}}>Total FMV</span><span style={{textAlign:'right'}}>Status</span>
+                </div>
+                {filtered.map(entry => (
+                  <div key={entry.id} style={{ display: 'grid', gridTemplateColumns: '100px 1fr 60px 95px 95px 80px', gap: '0.5rem', padding: '0.8rem 1rem', borderBottom: '1px solid #111120', fontSize: '0.85rem', alignItems: 'center' }}>
+                    <span style={{ color: 'var(--text-nav)', fontSize: '0.78rem' }}>{fmtDate(entry.date)}</span>
+                    <span>
+                      <div>{entry.labor_type}</div>
+                      {entry.notes && <div style={{ fontSize: '0.72rem', color: 'var(--text-nav)', marginTop: '1px' }}>{entry.notes}</div>}
+                    </span>
+                    <span style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{parseFloat(entry.hours).toFixed(2)}</span>
+                    <span style={{ textAlign: 'right', color: 'var(--text-nav)', fontSize: '0.78rem', fontVariantNumeric: 'tabular-nums' }}>{fmtUSD(entry.hourly_rate)}/hr</span>
+                    <span style={{ textAlign: 'right', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{fmtUSD(entry.total_fmv_usd)}</span>
+                    <span style={{ textAlign: 'right' }}><StatusBadge status={entry.status} /></span>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        </>
       )}
 
-      {/* Entry list */}
-      <div style={tableContainer}>
-        {entriesLoading ? (
-          <div style={emptyStyle}>Loading…</div>
-        ) : filtered.length === 0 ? (
-          <div style={emptyStyle}>No entries{dateFilter ? ` in ${dateFilter}` : ''} yet.</div>
-        ) : (
-          <>
-            <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr 60px 95px 95px 80px', gap: '0.5rem', padding: '0.6rem 1rem', borderBottom: '1px solid #1a1a2e', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text-nav)', fontWeight: 700 }}>
-              <span>Date</span><span>Craft</span><span style={{textAlign:'right'}}>Hrs</span><span style={{textAlign:'right'}}>Rate</span><span style={{textAlign:'right'}}>Total FMV</span><span style={{textAlign:'right'}}>Status</span>
+      {/* ── FMV Report view ── */}
+      {view === 'report' && (
+        <div>
+          {/* Period controls */}
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-end', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
+            <div>
+              <label style={labelStyle}>From</label>
+              <input type="date" value={reportFrom} onChange={e => setReportFrom(e.target.value)} style={inputStyle} />
             </div>
-            {filtered.map(entry => (
-              <div key={entry.id} style={{ display: 'grid', gridTemplateColumns: '100px 1fr 60px 95px 95px 80px', gap: '0.5rem', padding: '0.8rem 1rem', borderBottom: '1px solid #111120', fontSize: '0.85rem', alignItems: 'center' }}>
-                <span style={{ color: 'var(--text-nav)', fontSize: '0.78rem' }}>{fmtDate(entry.date)}</span>
-                <span>
-                  <div>{entry.labor_type}</div>
-                  {entry.notes && <div style={{ fontSize: '0.72rem', color: 'var(--text-nav)', marginTop: '1px' }}>{entry.notes}</div>}
-                </span>
-                <span style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{parseFloat(entry.hours).toFixed(2)}</span>
-                <span style={{ textAlign: 'right', color: 'var(--text-nav)', fontSize: '0.78rem', fontVariantNumeric: 'tabular-nums' }}>{fmtUSD(entry.hourly_rate)}/hr</span>
-                <span style={{ textAlign: 'right', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{fmtUSD(entry.total_fmv_usd)}</span>
-                <span style={{ textAlign: 'right' }}><StatusBadge status={entry.status} /></span>
+            <div>
+              <label style={labelStyle}>To</label>
+              <input type="date" value={reportTo} onChange={e => setReportTo(e.target.value)} style={inputStyle} />
+            </div>
+            <button
+              onClick={generateReport}
+              disabled={reportLoading}
+              style={{ padding: '0.45rem 1rem', background: 'var(--gold-15)', border: '1px solid rgba(196,149,106,0.3)', color: 'var(--gold)', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', alignSelf: 'flex-end' }}
+            >
+              {reportLoading ? 'Generating…' : 'Generate Report'}
+            </button>
+          </div>
+
+          {reportError && <div style={{ color: 'var(--status-err)', fontSize: '0.85rem', marginBottom: '1rem' }}>{reportError}</div>}
+
+          {report && (
+            <div>
+              {/* Period + approved totals */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '0.65rem', marginBottom: '1.25rem' }}>
+                {[
+                  ['All Hours', report.totals.hours.toFixed(1) + ' hrs', null],
+                  ['All FMV', fmtUSD(report.totals.fmv), null],
+                  ['Approved Hours', report.totals.approved_hours.toFixed(1) + ' hrs', 'var(--status-ok)'],
+                  ['Approved FMV', fmtUSD(report.totals.approved_fmv), 'var(--status-ok)'],
+                ].map(([label, value, color]) => (
+                  <StatBox key={label} label={label} value={value} color={color} />
+                ))}
               </div>
-            ))}
-          </>
-        )}
-      </div>
+
+              {/* By-craft */}
+              {Object.keys(report.by_craft).length > 0 && (
+                <div style={{ marginBottom: '1.25rem' }}>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text-nav)', marginBottom: '0.5rem' }}>By Craft</div>
+                  <div style={tableContainer}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 70px 90px 80px 110px', padding: '0.5rem 1rem', borderBottom: '1px solid #1a1a2e', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text-nav)' }}>
+                      <span>Craft</span><span style={{textAlign:'right'}}>Hrs</span><span style={{textAlign:'right'}}>FMV</span><span style={{textAlign:'right'}}>Appr. Hrs</span><span style={{textAlign:'right'}}>Appr. FMV</span>
+                    </div>
+                    {Object.entries(report.by_craft).map(([craft, s]) => (
+                      <div key={craft} style={{ display: 'grid', gridTemplateColumns: '1fr 70px 90px 80px 110px', padding: '0.65rem 1rem', borderBottom: '1px solid #111120', fontSize: '0.85rem', alignItems: 'center' }}>
+                        <span style={{ fontWeight: 500 }}>{craft}</span>
+                        <span style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{s.hours.toFixed(1)}</span>
+                        <span style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmtUSD(s.fmv)}</span>
+                        <span style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: 'var(--status-ok)' }}>{s.approved_hours.toFixed(1)}</span>
+                        <span style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: 'var(--status-ok)', fontWeight: 600 }}>{fmtUSD(s.approved_fmv)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Entry detail with tax class */}
+              {report.entries.length > 0 && (
+                <div>
+                  <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text-nav)', marginBottom: '0.5rem' }}>Entry Detail</div>
+                  <div style={tableContainer}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '95px 1fr 55px 85px 155px', gap: '0.5rem', padding: '0.6rem 1rem', borderBottom: '1px solid #1a1a2e', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text-nav)', fontWeight: 700 }}>
+                      <span>Date</span><span>Craft</span><span style={{textAlign:'right'}}>Hrs</span><span style={{textAlign:'right'}}>Total</span><span>Tax Class</span>
+                    </div>
+                    {report.entries.map(e => (
+                      <div key={e.id} style={{ display: 'grid', gridTemplateColumns: '95px 1fr 55px 85px 155px', gap: '0.5rem', padding: '0.75rem 1rem', borderBottom: '1px solid #111120', fontSize: '0.85rem', alignItems: 'center' }}>
+                        <span style={{ color: 'var(--text-nav)', fontSize: '0.78rem' }}>{fmtDate(e.date)}</span>
+                        <span>{e.labor_type}</span>
+                        <span style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{e.hours.toFixed(1)}</span>
+                        <span style={{ textAlign: 'right', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{fmtUSD(e.total_fmv)}</span>
+                        <span style={{ fontSize: '0.75rem', color: e.tax_class === 'Patronage Dividend' ? 'var(--status-ok)' : e.tax_class.startsWith('Pending') ? 'var(--text-nav)' : 'var(--gold)' }}>{e.tax_class}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ marginTop: '0.5rem', fontSize: '0.72rem', color: 'var(--text-nav)', fontStyle: 'italic' }}>
+                    Tax classification is a display scaffold only — not legal advice.
+                  </div>
+                </div>
+              )}
+
+              {report.entries.length === 0 && (
+                <div style={emptyStyle}>No entries in this period.</div>
+              )}
+            </div>
+          )}
+
+          {!report && !reportLoading && !reportError && (
+            <div style={emptyStyle}>Select a date range and generate to see your FMV summary.</div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
