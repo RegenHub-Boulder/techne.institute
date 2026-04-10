@@ -20,7 +20,7 @@ function useDashboardMetrics(participantId) {
           .maybeSingle(),
         supabase
           .from('labor_contributions')
-          .select('hours, fmv_value')
+          .select('hours, fmv_total')
           .eq('participant_id', participantId),
         supabase
           .from('projects')
@@ -37,7 +37,7 @@ function useDashboardMetrics(participantId) {
       ])
 
       const totalLabor = (laborRes.data || []).reduce((s, r) => s + Number(r.hours || 0), 0)
-      const totalFmv   = (laborRes.data || []).reduce((s, r) => s + Number(r.fmv_value || 0), 0)
+      const totalFmv   = (laborRes.data || []).reduce((s, r) => s + Number(r.fmv_total || 0), 0)
 
       // Get the most recent merkle root (from first rea_ledger entry that has one)
       const rootEntry = (ledgerRes.data || []).find(r => r.state_merkle_root)

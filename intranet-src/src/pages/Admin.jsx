@@ -6,12 +6,11 @@ import { useGovernanceParam } from '../hooks/useGovernanceParam.jsx'
 const EDGE_BASE = 'https://hvbdpgkdcdskhpbdeeim.supabase.co/functions/v1'
 
 export default function Admin() {
-  const { participant, isSteward, signOut } = useAuth()
+  const { participant, isSteward } = useAuth()
 
   if (!isSteward) {
     return (
       <div style={styles.page}>
-        <IntranetHeader signOut={signOut} />
         <div style={styles.main}>
           <div style={styles.denied}>
             <div style={styles.deniedTitle}>Steward access required</div>
@@ -25,7 +24,6 @@ export default function Admin() {
 
   return (
     <div style={styles.page}>
-      <IntranetHeader signOut={signOut} />
       <div style={styles.main}>
         <nav style={styles.breadcrumb}>
           <a href="/intranet/" style={styles.breadLink}>Home</a>
