@@ -1022,8 +1022,114 @@
       </div>
     </section>
 
+    <section class="section">
+      <div class="section-label">Icon System</div>
+      <div style="margin-bottom:1.5rem;font-size:0.82rem;color:var(--secondary);line-height:1.65;max-width:600px;">
+        Techne uses inline SVG icons throughout — no emoji, no icon font, no external icon library required.
+        Icons are rendered via a shared <code style="font-family:monospace;background:var(--surface-2,rgba(255,255,255,0.06));padding:0.1em 0.35em;border-radius:3px;">Icon</code> component
+        that accepts an SVG <code style="font-family:monospace;background:var(--surface-2,rgba(255,255,255,0.06));padding:0.1em 0.35em;border-radius:3px;">d</code> path string and a <code style="font-family:monospace;background:var(--surface-2,rgba(255,255,255,0.06));padding:0.1em 0.35em;border-radius:3px;">size</code> prop.
+        All icons use a 16×16 or 24×24 viewBox, 1.5px stroke, round linecap/linejoin.
+        Color inherits from <code style="font-family:monospace;background:var(--surface-2,rgba(255,255,255,0.06));padding:0.1em 0.35em;border-radius:3px;">currentColor</code>.
+      </div>
+
+      <!-- Icon component pattern -->
+      <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;font-size:0.78rem;line-height:1.7;font-family:'SF Mono','Fira Code',monospace;color:var(--secondary);">
+        <div style="color:var(--dim,#555);margin-bottom:0.5rem;">// Icon component (HUDLayout, intranet-src)</div>
+        <div><span style="color:#c4956a;">function</span> <span style="color:#9cdcfe;">Icon</span>({ d, size = 16 }) {</div>
+        <div style="padding-left:1.25rem;"><span style="color:#c4956a;">return</span> &lt;<span style="color:#9cdcfe;">svg</span> width={size} height={size} viewBox=<span style="color:#ce9178;">"0 0 16 16"</span></div>
+        <div style="padding-left:2.5rem;">fill=<span style="color:#ce9178;">"none"</span> stroke=<span style="color:#ce9178;">"currentColor"</span> strokeWidth=<span style="color:#ce9178;">"1.5"</span></div>
+        <div style="padding-left:2.5rem;">strokeLinecap=<span style="color:#ce9178;">"round"</span> strokeLinejoin=<span style="color:#ce9178;">"round"</span>&gt;</div>
+        <div style="padding-left:2.5rem;">&lt;<span style="color:#9cdcfe;">path</span> d={d} /&gt;</div>
+        <div style="padding-left:1.25rem;">&lt;/<span style="color:#9cdcfe;">svg</span>&gt;</div>
+        <div>}</div>
+      </div>
+
+      <!-- Icon grid -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.75rem;">
+
+        <!-- Navigation icons -->
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M1 1h6v6H1V1zm8 0h6v6H9V1zM1 9h6v6H1V9zm8 0h6v6H9V9z"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">dashboard</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6a5 5 0 0 1 10 0H3z"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">account</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M8 1L9.8 5.6 15 6.1l-3.8 3.4 1.1 5.1L8 12.1l-4.3 2.5 1.1-5.1L1 5.9l5.2-.5z"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">patronage</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 2v5l3 2-1 1.7L7 9.5V3h1z"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">labor</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M8 1l7 4-7 4-7-4 7-4zM1 9l7 4 7-4M1 13l7 4 7-4"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">projects</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M8 2l2 4h4l-3 2.5 1.2 4L8 10.5 3.8 12.5 5 8 2 5.5h4z"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">governance</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M11 9a3 3 0 0 0-2.8-4 4 4 0 0 0-7.2 2 2.5 2.5 0 0 0 .5 5h9.5z"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">cloud</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M2 2h12v12H2V2zm2 3h8M4 8h8M4 11h5"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">journal</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M8 1v14M3 4h10M3 12h10M1 8h14"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">ledger</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M7 13L2 8l1.4-1.4L7 10.2 12.6 4 14 5.4z"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">verify</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M1 3h14M1 3h14M1 8h14M1 13h14"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">menu</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M2 2l12 12M14 2L2 14"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">close</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M12 6a6 6 0 1 0 0 12A6 6 0 0 0 12 6z"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">sun (light mode)</span>
+        </div>
+
+        <div style="background:var(--surface,#13131a);border:1px solid var(--border,#1e1e2e);border-radius:6px;padding:1rem;display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary,#c4956a)"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <span style="font-size:0.7rem;color:var(--dim,#555);font-family:monospace;">moon (dark mode)</span>
+        </div>
+
+      </div>
+
+      <div style="margin-top:1.25rem;font-size:0.78rem;color:var(--dim,#555);line-height:1.6;">
+        Icons are defined as SVG path strings in <code style="font-family:monospace;background:var(--surface-2,rgba(255,255,255,0.06));padding:0.1em 0.35em;border-radius:3px;">HUDLayout.jsx</code> under the
+        <code style="font-family:monospace;background:var(--surface-2,rgba(255,255,255,0.06));padding:0.1em 0.35em;border-radius:3px;">ICONS</code> constant.
+        New icons: add a path to that constant and reference by key. No imports, no bundle overhead.
+        Viewbox is 16×16 for nav icons; use 24×24 for larger contexts (onboarding, profile).
+      </div>
+    </section>
+
     <div style="font-family:monospace;font-size:0.72rem;color:var(--dim);text-align:center;padding-top:2rem;">
-      P421 / P423 · techne.institute/design-system/ · Apr 2026
+      P421 / P423 / P436 · techne.institute/design-system/ · Apr 2026
     </div>
 
   </div>

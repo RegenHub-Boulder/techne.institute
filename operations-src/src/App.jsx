@@ -450,7 +450,15 @@ function AppFooter({ user, mode, toggleTheme }) {
             onMouseEnter={e => { e.currentTarget.style.borderColor = palette.primary; e.currentTarget.style.color = palette.primary; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = palette.border; e.currentTarget.style.color = palette.textFaint; }}
           >
-            {mode === "dark" ? "☀ light" : "☽ dark"}
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }}>
+              {mode === "dark"
+                ? <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42M12 6a6 6 0 1 0 0 12A6 6 0 0 0 12 6z" />
+                : <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              }
+            </svg>
+            {mode === "dark" ? "light" : "dark"}
           </button>
           </div>
         </div>

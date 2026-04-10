@@ -104,7 +104,15 @@ function MetricCard({ title, icon, href, color, children, badge }) {
           letterSpacing: '0.1em',
           color: 'var(--text-nav)',
         }}>{title}</span>
-        <span style={{ fontSize: '1rem', opacity: 0.5 }}>{icon}</span>
+        {icon && icon.startsWith('M') ? (
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+            style={{ opacity: 0.45, color: color || 'var(--gold)' }}>
+            <path d={icon} />
+          </svg>
+        ) : (
+          <span style={{ fontSize: '1rem', opacity: 0.5 }}>{icon}</span>
+        )}
       </div>
 
       {/* Content */}
@@ -330,7 +338,7 @@ export default function Home() {
           {/* Patronage */}
           <MetricCard
             title="Patronage"
-            icon="★"
+            icon="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"
             href="/intranet/patronage/"
             color="var(--gold)"
           >

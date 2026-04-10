@@ -1,12 +1,30 @@
 import { useState } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
 
+// Inline SVG icons for onboarding steps (no emoji, no external dependency)
+function StepIcon({ d, size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+      style={{ color: 'var(--gold, #c4956a)', display: 'block' }}>
+      <path d={d} />
+    </svg>
+  )
+}
+
+// SVG path data for each step
+const STEP_ICONS = {
+  welcome:     'M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4z',
+  cooperative: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm14 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',
+  structure:   'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9zM9 22V12h6v10',
+  nextsteps:   'M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4 12 14.01l-3-3',
+}
+
 // Onboarding steps
 const STEPS = [
   {
     id: 'welcome',
     title: 'Welcome to Techne',
-    icon: '🌿',
     body: [
       'You\'re entering the internal coordination space for RegenHub, LCA — a Colorado Limited Cooperative Association building regenerative infrastructure in Boulder.',
       'Techne is the studio brand. The intranet is where members track capital accounts, labor contributions, cooperative decisions, and shared resources.',
@@ -16,7 +34,6 @@ const STEPS = [
   {
     id: 'cooperative',
     title: 'The Cooperative Structure',
-    icon: '⬡',
     body: [
       'RegenHub operates as a worker cooperative. Membership is earned through contribution — labor, capital, and community participation all flow into your patronage account.',
       'Decisions are made through transparent governance. Proposals, ratification votes, and policy parameters are visible under the Cooperative section.',
@@ -26,7 +43,6 @@ const STEPS = [
   {
     id: 'structure',
     title: 'Navigating the Intranet',
-    icon: '◈',
     sections: [
       { label: 'Account', desc: 'Your capital account, patronage allocations, and labor hours. The primary record of your stake.' },
       { label: 'Cooperative', desc: 'Active projects, member directory, and governance proposals.' },
@@ -38,7 +54,6 @@ const STEPS = [
   {
     id: 'nextsteps',
     title: 'You\'re in',
-    icon: '✦',
     body: [
       'Your profile and account are linked. You can update your bio, role, and contact information from the Profile page at any time.',
       'If something is missing or doesn\'t look right, reach out to a steward.',
@@ -94,7 +109,7 @@ export default function OnboardingWizard({ onComplete }) {
 
         {/* Content */}
         <div style={s.content}>
-          <div style={s.icon}>{current.icon}</div>
+          <div style={s.icon}><StepIcon d={STEP_ICONS[current.id]} /></div>
           <h2 style={s.title}>{current.title}</h2>
 
           {current.body && (
@@ -202,9 +217,9 @@ const s = {
     flex: 1,
   },
   icon: {
-    fontSize: '2rem',
-    lineHeight: 1,
     marginBottom: '0.75rem',
+    display: 'flex',
+    alignItems: 'center',
   },
   title: {
     margin: '0 0 1.25rem',
