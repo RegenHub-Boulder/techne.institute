@@ -34,7 +34,7 @@ export function AuthProvider({ children }) {
     // First: try direct auth_user_id link
     const { data, error } = await supabase
       .from('participants')
-      .select('id, name, first_name, last_name, display_name, email, participant_type, account_type, auth_user_id, onboarding_completed, role, bio, location')
+      .select('id, name, first_name, last_name, display_name, email, participant_type, account_type, auth_user_id, onboarding_completed, role, bio, location, membership_class')
       .eq('auth_user_id', authUserId)
       .maybeSingle()
 
@@ -58,7 +58,7 @@ export function AuthProvider({ children }) {
 
     const { data: p2, error: e2 } = await supabase
       .from('participants')
-      .select('id, name, first_name, last_name, display_name, email, participant_type, account_type, auth_user_id, onboarding_completed, role, bio, location')
+      .select('id, name, first_name, last_name, display_name, email, participant_type, account_type, auth_user_id, onboarding_completed, role, bio, location, membership_class')
       .eq('id', alias.participant_id)
       .maybeSingle()
 

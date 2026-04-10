@@ -4,27 +4,72 @@ import { supabase } from '../lib/supabase.js'
 
 export default function Ventures() {
   const { participant } = useAuth()
-  const [data, setData] = useState(null)
+  const [positions, setPositions] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  // Class 4 gate — non-investors see an explanatory redirect notice
+  const isClass4 = participant?.membership_class === 4
+
   useEffect(() => {
-    // Venture basket data not yet available — show empty state
-    setLoading(false)
-  }, [])
+    if (!participant?.id || !isClass4) { setLoading(false); return }
 
-  const statusLabel = {
-    active: 'Active',
-    exited: 'Exited',
-    written_off: 'Written Off',
-    pending: 'Pending',
-  }
+    async function load() {
+      try {
+        const { data, error: fetchErr } = await supabase
+          .from('venture_basket')
+          .select('id, venture_name, equity_pct_absolute, equity_pct_relative, status, initial_contribution, accumulated_allocations, current_book_value, conversion_timeline, redemption_options, annualized_return_pct, entry_date, exit_date, notes')
+          .eq('participant_id', participant.id)
+          .order('entry_date', { ascending: true, nullsFirst: true })
 
-  const statusColor = {
-    active: '#4caf88',
-    exited: 'var(--ember, #c4956a)',
-    written_off: 'var(--text-muted)',
-    pending: 'var(--text-soft)',
+        if (fetchErr) { setError(fetchErr.message); setLoading(false); return }
+        setPositions(data || [])
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    load()
+  }, [participant?.id, isClass4])
+
+  // Compute summary totals from positions
+  const summary = positions ? {
+    totalCommitted:   positions.reduce((s, p) => s + Number(p.initial_contribution    || 0), 0),
+    totalCurrentValue: positions.reduce((s, p) => s + Number(p.current_book_value      || 0), 0),
+    totalAllocations: positions.reduce((s, p) => s + Number(p.accumulated_allocations || 0), 0),
+    activeCount: positions.filter(p => p.status === 'active').length,
+  } : null
+
+  const statusLabel = { active: 'Active', exited: 'Exited', dissolved: 'Dissolved', transferred: 'Transferred', written_off: 'Written Off', pending: 'Pending' }
+  const statusColor = { active: '#4caf88', exited: 'var(--ember, #c4956a)', dissolved: 'var(--text-muted)', written_off: 'var(--text-muted)', transferred: 'var(--text-muted)', pending: 'var(--text-soft)' }
+
+  // Not Class 4 — show redirect notice
+  if (!loading && !isClass4) {
+    return (
+      <div style={styles.page}>
+        <div style={styles.main}>
+          <nav style={styles.breadcrumb}>
+            <a href="/intranet/" style={styles.breadLink}>Home</a>
+            <span style={styles.breadSep}>/</span>
+            <span>Venture Basket</span>
+          </nav>
+          <div style={styles.gateNotice}>
+            <div style={styles.gateTitle}>Class 4 members only</div>
+            <p style={styles.gateBody}>
+              The Venture Basket portal is available to Class 4 (Investor) members.
+              Your current membership class does not include access to this section.
+            </p>
+            <p style={styles.gateBody}>
+              Interested in becoming a Class 4 investor?{' '}
+              <a href="mailto:steward@techne.studio" style={styles.link}>Contact a steward</a> to learn more.
+            </p>
+            <a href="/intranet/" style={styles.backLink}>Back to home</a>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -42,42 +87,34 @@ export default function Ventures() {
         {loading && <div style={styles.loading}>Loading portfolio…</div>}
         {!loading && error && <div style={styles.error}>Error: {error}</div>}
 
-        {!loading && !error && data && (
+        {!loading && !error && summary && (
           <>
             {/* Summary strip */}
             <div style={styles.summaryRow}>
               <div style={styles.summaryCard}>
                 <div style={styles.summaryLabel}>Total Committed</div>
-                <div style={styles.summaryValue}>
-                  {formatUSD(data.summary?.total_committed_cents)}
-                </div>
-              </div>
-              <div style={styles.summaryCard}>
-                <div style={styles.summaryLabel}>Total Deployed</div>
-                <div style={styles.summaryValue}>
-                  {formatUSD(data.summary?.total_deployed_cents)}
-                </div>
+                <div style={styles.summaryValue}>{fmt(summary.totalCommitted)}</div>
               </div>
               <div style={styles.summaryCard}>
                 <div style={styles.summaryLabel}>Current Value</div>
-                <div style={styles.summaryValue}>
-                  {formatUSD(data.summary?.total_current_value_cents)}
-                </div>
+                <div style={styles.summaryValue}>{fmt(summary.totalCurrentValue)}</div>
               </div>
               <div style={styles.summaryCard}>
-                <div style={styles.summaryLabel}>Distributions</div>
-                <div style={styles.summaryValue}>
-                  {formatUSD(data.summary?.total_distributions_cents)}
-                </div>
+                <div style={styles.summaryLabel}>Accumulated Allocations</div>
+                <div style={styles.summaryValue}>{fmt(summary.totalAllocations)}</div>
+              </div>
+              <div style={styles.summaryCard}>
+                <div style={styles.summaryLabel}>Active Positions</div>
+                <div style={styles.summaryValue}>{summary.activeCount}</div>
               </div>
             </div>
 
-            {/* Position table */}
-            {data.positions && data.positions.length > 0 ? (
+            {/* Position list */}
+            {positions.length > 0 ? (
               <div style={styles.section}>
                 <h2 style={styles.h2}>Positions</h2>
                 <div style={styles.positionList}>
-                  {data.positions.map((pos) => (
+                  {positions.map((pos) => (
                     <PositionRow key={pos.id} pos={pos} statusLabel={statusLabel} statusColor={statusColor} />
                   ))}
                 </div>
@@ -104,10 +141,7 @@ export default function Ventures() {
           </p>
           <p style={styles.disclosureText}>
             Questions about your position?{' '}
-            <a href="mailto:steward@techne.studio" style={styles.link}>
-              Contact a steward
-            </a>
-            .
+            <a href="mailto:steward@techne.studio" style={styles.link}>Contact a steward</a>.
           </p>
         </div>
       </div>
@@ -116,77 +150,76 @@ export default function Ventures() {
 }
 
 function PositionRow({ pos, statusLabel, statusColor }) {
-  const moic =
-    pos.committed_cents && pos.current_value_cents
-      ? (pos.current_value_cents / pos.committed_cents).toFixed(2)
-      : null
+  const moic = pos.initial_contribution && pos.current_book_value
+    ? (Number(pos.current_book_value) / Number(pos.initial_contribution)).toFixed(2)
+    : null
 
   return (
     <div style={styles.posRow}>
       <div style={styles.posMain}>
         <div style={styles.posName}>{pos.venture_name || 'Unnamed venture'}</div>
         <div style={styles.posMeta}>
-          {pos.vintage_year ? `Vintage ${pos.vintage_year}` : ''}
-          {pos.vintage_year && pos.instrument ? ' · ' : ''}
-          {pos.instrument || ''}
+          {pos.entry_date ? `Entry ${new Date(pos.entry_date).getFullYear()}` : ''}
+          {pos.entry_date && (pos.equity_pct_absolute != null) ? ' · ' : ''}
+          {pos.equity_pct_absolute != null ? `${Number(pos.equity_pct_absolute).toFixed(2)}% equity` : ''}
+          {pos.equity_pct_relative != null ? ` (${Number(pos.equity_pct_relative).toFixed(1)}% of basket)` : ''}
         </div>
-      </div>
-      <div style={styles.posNumbers}>
-        <div style={styles.posAmt}>
-          <span style={styles.posAmtLabel}>Committed</span>
-          <span>{formatUSD(pos.committed_cents)}</span>
-        </div>
-        <div style={styles.posAmt}>
-          <span style={styles.posAmtLabel}>Value</span>
-          <span>{formatUSD(pos.current_value_cents)}</span>
-        </div>
-        {moic && (
-          <div style={styles.posAmt}>
-            <span style={styles.posAmtLabel}>MOIC</span>
-            <span>{moic}×</span>
+        {(pos.conversion_timeline || pos.redemption_options) && (
+          <div style={{ ...styles.posMeta, marginTop: '0.25rem' }}>
+            {pos.conversion_timeline && `Conversion: ${pos.conversion_timeline}`}
+            {pos.conversion_timeline && pos.redemption_options ? ' · ' : ''}
+            {pos.redemption_options && `Redemption: ${pos.redemption_options}`}
           </div>
         )}
       </div>
-      <div
-        style={{
-          ...styles.statusBadge,
-          color: statusColor[pos.status] || 'var(--text-muted)',
-          borderColor: statusColor[pos.status] || 'var(--text-muted)',
-        }}
-      >
+
+      <div style={styles.posNumbers}>
+        <div style={styles.posAmt}>
+          <span style={styles.posAmtLabel}>Committed</span>
+          <span>{fmt(pos.initial_contribution)}</span>
+        </div>
+        <div style={styles.posAmt}>
+          <span style={styles.posAmtLabel}>Book Value</span>
+          <span>{fmt(pos.current_book_value)}</span>
+        </div>
+        {pos.accumulated_allocations > 0 && (
+          <div style={styles.posAmt}>
+            <span style={styles.posAmtLabel}>Allocations</span>
+            <span>{fmt(pos.accumulated_allocations)}</span>
+          </div>
+        )}
+        {moic && (
+          <div style={styles.posAmt}>
+            <span style={styles.posAmtLabel}>MOIC</span>
+            <span>{moic}x</span>
+          </div>
+        )}
+        {pos.annualized_return_pct != null && (
+          <div style={styles.posAmt}>
+            <span style={styles.posAmtLabel}>Ann. Return</span>
+            <span>{Number(pos.annualized_return_pct).toFixed(1)}%</span>
+          </div>
+        )}
+      </div>
+
+      <div style={{
+        ...styles.statusBadge,
+        color: statusColor[pos.status] || 'var(--text-muted)',
+        borderColor: statusColor[pos.status] || 'var(--text-muted)',
+      }}>
         {statusLabel[pos.status] || pos.status || 'Unknown'}
       </div>
     </div>
   )
 }
 
-function formatUSD(cents) {
-  if (cents == null) return '—'
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(cents / 100)
+function fmt(val) {
+  if (val == null) return '—'
+  return Number(val).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })
 }
-
-
 
 const styles = {
   page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
-  header: {
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    padding: '1rem 2rem', borderBottom: '1px solid var(--color-border, #2a2a35)',
-    background: 'var(--color-surface, #141418)',
-  },
-  wordmark: { fontSize: '1.1rem', fontWeight: 700, color: 'var(--ember, #c4956a)', textDecoration: 'none' },
-  headerNav: { display: 'flex', alignItems: 'center', gap: '1.5rem' },
-  navLink: { fontSize: '0.875rem', color: 'var(--color-text-muted, #888)', textDecoration: 'none' },
-  signOut: {
-    background: 'none', border: '1px solid var(--color-border, #2a2a35)',
-    color: 'var(--color-text-muted, #888)', borderRadius: '6px',
-    padding: '0.35rem 0.7rem', fontSize: '0.8rem', cursor: 'pointer',
-  },
   main: { maxWidth: '900px', margin: '0 auto', padding: '2rem' },
   breadcrumb: { fontSize: '0.85rem', color: 'var(--color-text-muted, #888)', marginBottom: '1rem' },
   breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
@@ -194,10 +227,15 @@ const styles = {
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 0.25rem' },
   subtitle: { fontSize: '1rem', color: 'var(--color-text-muted, #888)', margin: '0 0 2rem' },
   loading: { color: 'var(--color-text-muted, #888)', padding: '2rem 0' },
-  error: {
-    padding: '1rem', background: 'rgba(220,60,60,0.1)',
-    border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: 'var(--status-err)',
+  error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: 'var(--status-err)' },
+  gateNotice: {
+    padding: '2rem', background: 'var(--color-surface, #141418)',
+    border: '1px solid var(--color-border, #2a2a35)', borderRadius: '10px', maxWidth: '560px',
   },
+  gateTitle: { fontWeight: 700, fontSize: '1.1rem', marginBottom: '1rem' },
+  gateBody: { fontSize: '0.9rem', color: 'var(--color-text-muted, #aaa)', lineHeight: 1.6, margin: '0 0 0.75rem' },
+  backLink: { display: 'inline-block', marginTop: '0.5rem', fontSize: '0.85rem', color: 'var(--ember, #c4956a)', textDecoration: 'none' },
+  link: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
   summaryRow: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
     gap: '1rem', marginBottom: '2rem',
@@ -212,21 +250,21 @@ const styles = {
   h2: { fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.75rem' },
   positionList: { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
   posRow: {
-    display: 'flex', alignItems: 'center', gap: '1.5rem',
+    display: 'flex', alignItems: 'flex-start', gap: '1.5rem',
     padding: '1rem 1.25rem', background: 'var(--color-surface, #141418)',
     border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px',
     flexWrap: 'wrap',
   },
   posMain: { flex: 1, minWidth: '160px' },
-  posName: { fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.2rem' },
+  posName: { fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.25rem' },
   posMeta: { fontSize: '0.8rem', color: 'var(--color-text-muted, #888)' },
-  posNumbers: { display: 'flex', gap: '1.5rem', flexWrap: 'wrap' },
+  posNumbers: { display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'flex-start' },
   posAmt: { display: 'flex', flexDirection: 'column', gap: '0.15rem', fontSize: '0.85rem' },
   posAmtLabel: { fontSize: '0.7rem', color: 'var(--color-text-muted, #888)', textTransform: 'uppercase', letterSpacing: '0.05em' },
   statusBadge: {
     padding: '0.25rem 0.6rem', borderRadius: '4px',
     border: '1px solid', fontSize: '0.75rem', fontWeight: 600,
-    textTransform: 'uppercase', letterSpacing: '0.05em', flexShrink: 0,
+    textTransform: 'uppercase', letterSpacing: '0.05em', flexShrink: 0, alignSelf: 'flex-start',
   },
   emptyNotice: {
     padding: '2rem', background: 'var(--color-surface, #141418)',
@@ -241,5 +279,4 @@ const styles = {
   },
   disclosureTitle: { display: 'block', marginBottom: '0.75rem', fontSize: '0.875rem' },
   disclosureText: { fontSize: '0.8rem', color: 'var(--color-text-muted, #999)', lineHeight: 1.6, margin: '0 0 0.5rem' },
-  link: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
 }

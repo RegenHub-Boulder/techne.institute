@@ -9,14 +9,40 @@ export default function Documents() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    // Document vault not yet populated — show empty state
-    setLoading(false)
-  }, [])
+    if (!participant?.id) return
 
-  const docTypeLabel = { k1: 'K-1', bylaws: 'Bylaws', formation: 'Formation', other: 'Other' }
+    async function load() {
+      try {
+        // Fetch member_documents — RLS enforces participant_id filter server-side
+        const { data, error: fetchErr } = await supabase
+          .from('member_documents')
+          .select('id, document_type, tax_year, filename, file_size_bytes, storage_path, uploaded_at, notes')
+          .eq('participant_id', participant.id)
+          .order('tax_year', { ascending: false, nullsFirst: false })
 
-  // Group by type
-  const k1docs = docs.filter((d) => d.document_type === 'k1').sort((a, b) => (b.tax_year || 0) - (a.tax_year || 0))
+        if (fetchErr) { setError(fetchErr.message); setLoading(false); return }
+
+        // Generate signed download URLs (1-hour TTL) for each document
+        const withUrls = await Promise.all((data || []).map(async (doc) => {
+          if (!doc.storage_path) return { ...doc, download_url: null }
+          const { data: signed, error: signErr } = await supabase.storage
+            .from('member-documents')
+            .createSignedUrl(doc.storage_path, 3600, { download: true })
+          return { ...doc, download_url: signErr ? null : signed?.signedUrl }
+        }))
+
+        setDocs(withUrls)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    load()
+  }, [participant?.id])
+
+  const k1docs   = docs.filter((d) => d.document_type === 'k1').sort((a, b) => (b.tax_year || 0) - (a.tax_year || 0))
   const otherDocs = docs.filter((d) => d.document_type !== 'k1')
 
   return (
@@ -121,35 +147,18 @@ function DocRow({ doc }) {
         </div>
       </div>
       {doc.download_url ? (
-        <a href={doc.download_url} download style={styles.downloadBtn}>
+        <a href={doc.download_url} target="_blank" rel="noreferrer" style={styles.downloadBtn}>
           Download
         </a>
       ) : (
-        <div style={styles.downloadPending}>
-          Contact steward
-        </div>
+        <div style={styles.downloadPending}>Contact steward</div>
       )}
     </div>
   )
 }
 
-
-
 const styles = {
   page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
-  header: {
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    padding: '1rem 2rem', borderBottom: '1px solid var(--color-border, #2a2a35)',
-    background: 'var(--color-surface, #141418)',
-  },
-  wordmark: { fontSize: '1.1rem', fontWeight: 700, color: 'var(--ember, #c4956a)', textDecoration: 'none' },
-  headerNav: { display: 'flex', alignItems: 'center', gap: '1.5rem' },
-  navLink: { fontSize: '0.875rem', color: 'var(--color-text-muted, #888)', textDecoration: 'none' },
-  signOut: {
-    background: 'none', border: '1px solid var(--color-border, #2a2a35)',
-    color: 'var(--color-text-muted, #888)', borderRadius: '6px',
-    padding: '0.35rem 0.7rem', fontSize: '0.8rem', cursor: 'pointer',
-  },
   main: { maxWidth: '800px', margin: '0 auto', padding: '2rem' },
   breadcrumb: { fontSize: '0.85rem', color: 'var(--color-text-muted, #888)', marginBottom: '1rem' },
   breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
@@ -186,10 +195,12 @@ const styles = {
   downloadBtn: {
     padding: '0.4rem 0.9rem', background: 'var(--ember, #c4956a)',
     color: '#fff', borderRadius: '6px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 600,
+    whiteSpace: 'nowrap',
   },
   downloadPending: {
     padding: '0.4rem 0.9rem', border: '1px solid var(--color-border, #2a2a35)',
     color: 'var(--color-text-muted, #888)', borderRadius: '6px', fontSize: '0.8rem',
+    whiteSpace: 'nowrap',
   },
   infoBox: {
     marginTop: '2.5rem', padding: '1.25rem',
