@@ -28,15 +28,16 @@ function resolveInitialPath() {
   return window.location.pathname.replace(/^\/intranet\/?/, '').replace(/\/$/, '')
 }
 
+// localStorage key for suppressing repeat onboarding within a session
+const ONBOARDING_DISMISSED_KEY = 'techne-onboarding-dismissed'
+
 function Router() {
-  const { loading, isAuthenticated, participant, needsOnboarding, markOnboardingComplete } = useAuth()
+  const { loading, isAuthenticated, participant, needsOnboarding } = useAuth()
   const [path, setPath] = useState(resolveInitialPath)
-  // showOnboarding: true when needsOnboarding first resolves, or when user requests rerun
   const [showOnboarding, setShowOnboarding] = useState(false)
-  // Track whether we've synced initial onboarding state after auth loads
   const [onboardingChecked, setOnboardingChecked] = useState(false)
 
-  // Listen for popstate (browser back/forward)
+  // Listen for popstate (browser back/forward + pushState nav)
   useEffect(() => {
     const handler = () => {
       setPath(window.location.pathname.replace(/^\/intranet\/?/, '').replace(/\/$/, ''))
@@ -45,11 +46,16 @@ function Router() {
     return () => window.removeEventListener('popstate', handler)
   }, [])
 
-  // Once auth finishes loading and we have a participant, check if onboarding is needed
+  // Once auth finishes loading and we have a participant, check if onboarding is needed.
+  // Guard with localStorage so the wizard can't reappear after being dismissed,
+  // even if the DB update hasn't propagated yet or a full page reload occurs.
   useEffect(() => {
     if (!loading && participant && !onboardingChecked) {
       setOnboardingChecked(true)
-      if (needsOnboarding) {
+      const alreadyDismissed = (() => {
+        try { return localStorage.getItem(ONBOARDING_DISMISSED_KEY) === participant.id } catch (_) { return false }
+      })()
+      if (needsOnboarding && !alreadyDismissed) {
         setShowOnboarding(true)
       }
     }
@@ -75,11 +81,12 @@ function Router() {
 
   // Show onboarding wizard (first-login or re-run)
   if (showOnboarding) {
-    return (
-      <OnboardingWizard
-        onComplete={() => setShowOnboarding(false)}
-      />
-    )
+    const handleOnboardingDone = () => {
+      // Stamp localStorage so the wizard won't reappear even on full reload
+      try { localStorage.setItem(ONBOARDING_DISMISSED_KEY, participant.id) } catch (_) {}
+      setShowOnboarding(false)
+    }
+    return <OnboardingWizard onComplete={handleOnboardingDone} />
   }
 
   // Resolve page component — grouped views
@@ -106,7 +113,10 @@ function Router() {
   else if (path === 'cloud')      PageComponent = <Cloud />
   else if (path === 'admin')      PageComponent = <Admin />
   else if (path === 'ventures')   PageComponent = <Ventures />
-  else if (path === 'profile')    PageComponent = <Profile onRerunOnboarding={() => setShowOnboarding(true)} />
+  else if (path === 'profile')    PageComponent = <Profile onRerunOnboarding={() => {
+    try { localStorage.removeItem(ONBOARDING_DISMISSED_KEY) } catch (_) {}
+    setShowOnboarding(true)
+  }} />
   else                            PageComponent = <Home />
 
   // Wrap all authenticated pages in HUD shell

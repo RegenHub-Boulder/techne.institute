@@ -49,13 +49,19 @@ const INVESTOR_ITEMS = [
   { path: 'ventures',   label: 'Ventures',   icon: 'ventures'   },
 ]
 
+function navigate(path) {
+  const href = `/intranet/${path ? path + '/' : ''}`
+  window.history.pushState(null, '', href)
+  window.dispatchEvent(new PopStateEvent('popstate'))
+}
+
 function NavItem({ path, label, icon, currentPath, steward, onClick }) {
   const active = currentPath === path
   const href = `/intranet/${path ? path + '/' : ''}`
   return (
     <a
       href={href}
-      onClick={onClick}
+      onClick={e => { e.preventDefault(); navigate(path); onClick && onClick() }}
       style={{
         display: 'flex',
         alignItems: 'center',
