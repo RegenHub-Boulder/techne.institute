@@ -28,9 +28,9 @@ export default function Admin() {
         <nav style={styles.breadcrumb}>
           <a href="/intranet/" style={styles.breadLink}>Home</a>
           <span style={styles.breadSep}>/</span>
-          <span>Admin</span>
+          <span>Steward</span>
         </nav>
-        <h1 style={styles.h1}>Admin</h1>
+        <h1 style={styles.h1}>Steward</h1>
         <p style={styles.subtitle}>Steward tools — allocation entry, document upload, member management.</p>
 
         <div style={styles.launchGate}>

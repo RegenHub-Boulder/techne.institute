@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
 
-// SVG icons at 16×16
+// SVG icons at 16×16 — stroke-based for line icons
 function Icon({ d, size = 16, fill = 'currentColor' }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 16 16" fill={fill} xmlns="http://www.w3.org/2000/svg">
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" stroke={fill} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
       <path d={d} />
     </svg>
   )
@@ -38,12 +38,11 @@ const NAV_ITEMS = [
   { path: 'account',     label: 'Account',    icon: 'account'    },
   { path: 'projects',    label: 'Cooperative',icon: 'projects'   },
   { path: 'journal',     label: 'Finance',    icon: 'ledger'     },
-  { path: 'cloud',       label: 'Cloud',      icon: 'cloud'      },
   { path: 'guide',       label: 'Reference',  icon: 'documents'  },
 ]
 
 const STEWARD_ITEMS = [
-  { path: 'admin',      label: 'Admin',      icon: 'admin'      },
+  { path: 'admin',      label: 'Steward',    icon: 'admin'      },
 ]
 
 const INVESTOR_ITEMS = [
