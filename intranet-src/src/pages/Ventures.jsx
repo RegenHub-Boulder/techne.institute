@@ -43,7 +43,7 @@ export default function Ventures() {
   } : null
 
   const statusLabel = { active: 'Active', exited: 'Exited', dissolved: 'Dissolved', transferred: 'Transferred', written_off: 'Written Off', pending: 'Pending' }
-  const statusColor = { active: '#4caf88', exited: 'var(--ember, #c4956a)', dissolved: 'var(--text-muted)', written_off: 'var(--text-muted)', transferred: 'var(--text-muted)', pending: 'var(--text-soft)' }
+  const statusColor = { active: '#4caf88', exited: 'var(--gold)', dissolved: 'var(--text-muted)', written_off: 'var(--text-muted)', transferred: 'var(--text-muted)', pending: 'var(--text-soft)' }
 
   // Not Class 4 — show redirect notice
   if (!loading && !isClass4) {
@@ -219,64 +219,64 @@ function fmt(val) {
 }
 
 const styles = {
-  page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
+  page: { minHeight: '100vh', background: 'var(--app-bg)' },
   main: { maxWidth: '900px', margin: '0 auto', padding: '2rem' },
-  breadcrumb: { fontSize: '0.85rem', color: 'var(--color-text-muted, #888)', marginBottom: '1rem' },
-  breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
+  breadcrumb: { fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' },
+  breadLink: { color: 'var(--gold)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 0.25rem' },
-  subtitle: { fontSize: '1rem', color: 'var(--color-text-muted, #888)', margin: '0 0 2rem' },
-  loading: { color: 'var(--color-text-muted, #888)', padding: '2rem 0' },
+  subtitle: { fontSize: '1rem', color: 'var(--text-muted)', margin: '0 0 2rem' },
+  loading: { color: 'var(--text-muted)', padding: '2rem 0' },
   error: { padding: '1rem', background: 'rgba(220,60,60,0.1)', border: '1px solid rgba(220,60,60,0.3)', borderRadius: '8px', color: 'var(--status-err)' },
   gateNotice: {
-    padding: '2rem', background: 'var(--color-surface, #141418)',
-    border: '1px solid var(--color-border, #2a2a35)', borderRadius: '10px', maxWidth: '560px',
+    padding: '2rem', background: 'var(--surface)',
+    border: '1px solid var(--border-mid)', borderRadius: '10px', maxWidth: '560px',
   },
   gateTitle: { fontWeight: 700, fontSize: '1.1rem', marginBottom: '1rem' },
-  gateBody: { fontSize: '0.9rem', color: 'var(--color-text-muted, #aaa)', lineHeight: 1.6, margin: '0 0 0.75rem' },
-  backLink: { display: 'inline-block', marginTop: '0.5rem', fontSize: '0.85rem', color: 'var(--ember, #c4956a)', textDecoration: 'none' },
-  link: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
+  gateBody: { fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 0.75rem' },
+  backLink: { display: 'inline-block', marginTop: '0.5rem', fontSize: '0.85rem', color: 'var(--gold)', textDecoration: 'none' },
+  link: { color: 'var(--gold)', textDecoration: 'none' },
   summaryRow: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
     gap: '1rem', marginBottom: '2rem',
   },
   summaryCard: {
-    padding: '1.25rem', background: 'var(--color-surface, #141418)',
-    border: '1px solid var(--color-border, #2a2a35)', borderRadius: '10px',
+    padding: '1.25rem', background: 'var(--surface)',
+    border: '1px solid var(--border-mid)', borderRadius: '10px',
   },
-  summaryLabel: { fontSize: '0.75rem', color: 'var(--color-text-muted, #888)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem' },
+  summaryLabel: { fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem' },
   summaryValue: { fontSize: '1.4rem', fontWeight: 700, letterSpacing: '-0.02em' },
   section: { marginBottom: '2rem' },
   h2: { fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.75rem' },
   positionList: { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
   posRow: {
     display: 'flex', alignItems: 'flex-start', gap: '1.5rem',
-    padding: '1rem 1.25rem', background: 'var(--color-surface, #141418)',
-    border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px',
+    padding: '1rem 1.25rem', background: 'var(--surface)',
+    border: '1px solid var(--border-mid)', borderRadius: '8px',
     flexWrap: 'wrap',
   },
   posMain: { flex: 1, minWidth: '160px' },
   posName: { fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.25rem' },
-  posMeta: { fontSize: '0.8rem', color: 'var(--color-text-muted, #888)' },
+  posMeta: { fontSize: '0.8rem', color: 'var(--text-muted)' },
   posNumbers: { display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'flex-start' },
   posAmt: { display: 'flex', flexDirection: 'column', gap: '0.15rem', fontSize: '0.85rem' },
-  posAmtLabel: { fontSize: '0.7rem', color: 'var(--color-text-muted, #888)', textTransform: 'uppercase', letterSpacing: '0.05em' },
+  posAmtLabel: { fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' },
   statusBadge: {
     padding: '0.25rem 0.6rem', borderRadius: '4px',
     border: '1px solid', fontSize: '0.75rem', fontWeight: 600,
     textTransform: 'uppercase', letterSpacing: '0.05em', flexShrink: 0, alignSelf: 'flex-start',
   },
   emptyNotice: {
-    padding: '2rem', background: 'var(--color-surface, #141418)',
-    border: '1px solid var(--color-border, #2a2a35)', borderRadius: '10px', marginBottom: '2rem',
+    padding: '2rem', background: 'var(--surface)',
+    border: '1px solid var(--border-mid)', borderRadius: '10px', marginBottom: '2rem',
   },
   emptyTitle: { fontWeight: 600, fontSize: '1rem', marginBottom: '0.75rem' },
-  emptyBody: { fontSize: '0.9rem', color: 'var(--color-text-muted, #aaa)', lineHeight: 1.6, margin: 0 },
+  emptyBody: { fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 },
   disclosureBox: {
     marginTop: '2.5rem', padding: '1.25rem',
     background: 'rgba(196,149,106,0.04)', border: '1px solid rgba(196,149,106,0.12)',
     borderRadius: '8px',
   },
   disclosureTitle: { display: 'block', marginBottom: '0.75rem', fontSize: '0.875rem' },
-  disclosureText: { fontSize: '0.8rem', color: 'var(--color-text-muted, #999)', lineHeight: 1.6, margin: '0 0 0.5rem' },
+  disclosureText: { fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 0.5rem' },
 }

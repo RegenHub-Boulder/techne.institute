@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Techne Design System · Palette Reference</title>
   <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <!-- Theme detection: runs before paint to prevent flash -->
   <script>
     (function() {
@@ -19,16 +22,16 @@
   <style>
     /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
-      /* Backgrounds */
-      --void:    #08080a;
-      --ink:     #0f0f12;
-      --surface: #141418;
-      --panel:   #1e1e24;
-      --raised:  #252530;
+      /* Backgrounds — co-op.us coordinate palette */
+      --void:    #0c0c0c;   /* app bg */
+      --ink:     #111111;   /* sidebar bg */
+      --surface: #161616;   /* page content bg */
+      --panel:   #222222;   /* card / elevated bg */
+      --raised:  #2a2a2a;   /* raised element bg */
 
       /* Borders */
-      --border:  #2a2a35;
-      --border-dim: #1e1e24;
+      --border:     #383838;
+      --border-dim: #2a2a2a;
 
       /* Primary accent — copper gold */
       --gold:    #c4956a;
@@ -37,20 +40,23 @@
       --gold-06: rgba(196,149,106,0.06);
 
       /* Text */
-      --parchment: #ece6de;
-      --warm:    #c8c2ba;
-      --muted:   #888;
-      --dim:     #555;
-      --ghost:   #333;
+      --parchment: #f0f0f0;   /* primary text */
+      --warm:      #d0d0d0;   /* warm body text */
+      --muted:     #9a9a9a;   /* muted / nav text */
+      --dim:       #707070;   /* dim */
+      --ghost:     #505050;   /* ghost */
 
-      /* Status — for discussion */
-      --status-ok:   #4a5f4a;  /* sage — verified, active */
-      --status-warn: #c4956a;  /* gold — pending, caution */
-      --status-err:  #c46a6a;  /* warm red — error, rejected */
-      --status-info: #6b836b;  /* sage-light — informational */
+      /* Status — vivid, co-op.us coordinate system */
+      --status-ok:      #4ade80;   /* green — active, verified, live */
+      --status-warn:    #fbbf24;   /* amber — pending, caution */
+      --status-err:     #ef4444;   /* red — error, rejected */
+      --status-info:    #8bbfff;   /* blue — informational */
+      --status-teal:    #7ccfb8;   /* teal accent */
+      --status-purple:  #a78bfa;   /* purple accent */
+      --status-orange:  #fb923c;   /* orange */
 
-      /* Mono */
-      --mono: 'JetBrains Mono', 'IBM Plex Mono', 'Fira Code', Consolas, monospace;
+      /* Mono — IBM Plex Mono first */
+      --mono: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', Consolas, monospace;
       --serif: Georgia, 'Times New Roman', serif;
       --sans: Inter, system-ui, sans-serif;
     }
@@ -447,35 +453,38 @@
 
     /* ── Light mode tokens ───────────────────────────────────── */
     [data-theme="light"] {
-      /* Backgrounds — warm parchment scale */
-      --void:    #f7f5f0;
-      --ink:     #ede8e0;
-      --surface: #f0ece4;
-      --panel:   #e8e2d8;
-      --raised:  #ddd7cc;
+      /* Backgrounds — co-op.us light palette */
+      --void:    #f5f3f0;
+      --ink:     #fffdf9;
+      --surface: #ffffff;
+      --panel:   #f0ede8;
+      --raised:  #e8e4dd;
 
       /* Borders */
-      --border:     #c8c2b8;
-      --border-dim: #ddd7cc;
+      --border:     #d5cfc6;
+      --border-dim: #ddd7ce;
 
-      /* Gold — unchanged, the thread through both modes */
-      --gold:    #c4956a;
-      --gold-12: rgba(196,149,106,0.12);
-      --gold-20: rgba(196,149,106,0.20);
-      --gold-06: rgba(196,149,106,0.06);
+      /* Gold — slightly darker on light */
+      --gold:    #a07850;
+      --gold-12: rgba(160,120,80,0.12);
+      --gold-20: rgba(160,120,80,0.20);
+      --gold-06: rgba(160,120,80,0.06);
 
-      /* Text — warm dark scale */
-      --parchment: #1a1614;
-      --warm:      #3a3530;
-      --muted:     #6a6560;
-      --dim:       #8a8480;
-      --ghost:     #aaa49c;
+      /* Text — dark on light */
+      --parchment: #1a1a1a;
+      --warm:      #333333;
+      --muted:     #888888;
+      --dim:       #888888;
+      --ghost:     #aaaaaa;
 
-      /* Status — same (work in both modes) */
-      --status-ok:   #4a5f4a;
-      --status-warn: #c4956a;
-      --status-err:  #c46a6a;
-      --status-info: #6b836b;
+      /* Status — adjusted for light mode contrast */
+      --status-ok:      #16a34a;
+      --status-warn:    #d97706;
+      --status-err:     #dc2626;
+      --status-info:    #2563eb;
+      --status-teal:    #0d9488;
+      --status-purple:  #7c3aed;
+      --status-orange:  #ea580c;
     }
 
     /* Light mode component overrides */
@@ -737,51 +746,74 @@
       </div>
     </section>
 
-    <!-- SECTION: Status colors (for discussion) -->
+    <!-- SECTION: Status colors -->
     <section class="section">
-      <div class="section-label">Status Colors — Proposed (for review)</div>
+      <div class="section-label">Status Colors</div>
 
       <div class="status-row">
         <div class="status-swatch">
-          <div class="status-color" style="background:#4a5f4a;"></div>
+          <div class="status-color" style="background:#4ade80;"></div>
           <div class="status-info-block">
-            <div class="status-name">Sage</div>
-            <div class="status-hex">#4a5f4a</div>
+            <div class="status-name">Green</div>
+            <div class="status-hex">#4ade80</div>
             <div class="status-use">Active · Verified · Live</div>
           </div>
         </div>
         <div class="status-swatch">
-          <div class="status-color" style="background:#c4956a;"></div>
+          <div class="status-color" style="background:#fbbf24;"></div>
           <div class="status-info-block">
-            <div class="status-name">Gold</div>
-            <div class="status-hex">#c4956a</div>
+            <div class="status-name">Amber</div>
+            <div class="status-hex">#fbbf24</div>
             <div class="status-use">Pending · Warning</div>
           </div>
         </div>
         <div class="status-swatch">
-          <div class="status-color" style="background:#c46a6a;"></div>
+          <div class="status-color" style="background:#ef4444;"></div>
           <div class="status-info-block">
-            <div class="status-name">Warm Red</div>
-            <div class="status-hex">#c46a6a</div>
+            <div class="status-name">Red</div>
+            <div class="status-hex">#ef4444</div>
             <div class="status-use">Error · Rejected</div>
           </div>
         </div>
         <div class="status-swatch">
-          <div class="status-color" style="background:#6b836b;"></div>
+          <div class="status-color" style="background:#8bbfff;"></div>
           <div class="status-info-block">
-            <div class="status-name">Sage Light</div>
-            <div class="status-hex">#6b836b</div>
-            <div class="status-use">Info · Completed</div>
+            <div class="status-name">Blue</div>
+            <div class="status-hex">#8bbfff</div>
+            <div class="status-use">Info · Informational</div>
+          </div>
+        </div>
+        <div class="status-swatch">
+          <div class="status-color" style="background:#7ccfb8;"></div>
+          <div class="status-info-block">
+            <div class="status-name">Teal</div>
+            <div class="status-hex">#7ccfb8</div>
+            <div class="status-use">Teal accent</div>
+          </div>
+        </div>
+        <div class="status-swatch">
+          <div class="status-color" style="background:#a78bfa;"></div>
+          <div class="status-info-block">
+            <div class="status-name">Purple</div>
+            <div class="status-hex">#a78bfa</div>
+            <div class="status-use">Purple accent</div>
+          </div>
+        </div>
+        <div class="status-swatch">
+          <div class="status-color" style="background:#fb923c;"></div>
+          <div class="status-info-block">
+            <div class="status-name">Orange</div>
+            <div class="status-hex">#fb923c</div>
+            <div class="status-use">Orange accent</div>
           </div>
         </div>
       </div>
 
       <div class="note">
-        <strong>For alignment:</strong> the status color system was previously using
-        bright green (#4caf82), blue (#7eb8e8), amber (#f59e0b), and purple (#a78bfa).
-        The proposal above replaces those with a warmer, lower-contrast set that
-        complements the copper gold accent. Purple is removed entirely.
-        Does this set work — or should any of these be adjusted?
+        Status colors aligned with the co-op.us coordinate palette — vivid,
+        accessible against dark backgrounds, consistent across the Techne ecosystem.
+        The copper gold accent (<strong>#c4956a</strong>) remains the primary brand color;
+        status colors are functional indicators only.
       </div>
     </section>
 
@@ -791,21 +823,21 @@
     <section class="section">
       <div class="section-label">HUD Chrome — Status Bar + Navigation</div>
 
-      <div class="comp-card" style="background: #0a0a18; margin-bottom: 1rem;">
+      <div class="comp-card" style="background: #0c0c0c; margin-bottom: 1rem;">
 
         <!-- Status bar mock -->
         <div class="status-bar" style="margin-bottom: 1.25rem; border-radius: 6px;">
           <div style="display:flex;align-items:center;gap:0.6rem;">
             <span class="wordmark">Techne</span>
             <span class="sep">·</span>
-            <span style="font-size:0.72rem;color:#555;text-transform:uppercase;letter-spacing:0.08em;">Intranet</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:#9a9a9a;text-transform:uppercase;letter-spacing:0.06em;">Intranet</span>
             <span class="sep">·</span>
-            <span style="font-size:0.72rem;color:#555;">Apr 9, 2026</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:#9a9a9a;">Apr 10, 2026</span>
           </div>
           <div style="display:flex;align-items:center;gap:0.75rem;">
-            <span style="font-size:0.75rem;color:#8888a8;">Todd</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:#9a9a9a;">Todd</span>
             <span style="background:rgba(196,149,106,0.15);color:#c4956a;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:1px 5px;border-radius:3px;">steward</span>
-            <span style="font-size:0.72rem;color:#555;text-decoration:underline;">Sign out</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:#9a9a9a;text-decoration:underline;">Sign out</span>
           </div>
         </div>
 
@@ -937,8 +969,8 @@
       </div>
 
       <div class="type-row">
-        <div class="type-sample" style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:#c4956a;">REA · Current Account Balances · 0x1a2b3c…</div>
-        <div class="type-meta">JetBrains Mono · 0.82rem · #c4956a — labels, hashes, data</div>
+        <div class="type-sample" style="font-family:'IBM Plex Mono',monospace;font-size:0.82rem;color:#c4956a;">REA · Current Account Balances · 0x1a2b3c…</div>
+        <div class="type-meta">IBM Plex Mono · 0.82rem · #c4956a — labels, hashes, data, HUD status bar</div>
       </div>
 
       <div class="type-row">
@@ -964,22 +996,22 @@
           <tbody>
             <tr>
               <td>--void</td>
-              <td><span class="token-dot" style="background:#08080a;border:1px solid #333;"></span>#08080a</td>
+              <td><span class="token-dot" style="background:#0c0c0c;border:1px solid #333;"></span>#0c0c0c</td>
               <td>App background</td>
             </tr>
             <tr>
               <td>--ink</td>
-              <td><span class="token-dot" style="background:#0f0f12;"></span>#0f0f12</td>
-              <td>Status bar, panels</td>
+              <td><span class="token-dot" style="background:#111111;"></span>#111111</td>
+              <td>Sidebar bg</td>
             </tr>
             <tr>
               <td>--surface</td>
-              <td><span class="token-dot" style="background:#141418;"></span>#141418</td>
-              <td>Document page background</td>
+              <td><span class="token-dot" style="background:#161616;"></span>#161616</td>
+              <td>Page content background</td>
             </tr>
             <tr>
               <td>--panel</td>
-              <td><span class="token-dot" style="background:#1e1e24;"></span>#1e1e24</td>
+              <td><span class="token-dot" style="background:#222222;"></span>#222222</td>
               <td>Cards, elevated surfaces</td>
             </tr>
             <tr>
@@ -989,23 +1021,23 @@
             </tr>
             <tr>
               <td>--parchment</td>
-              <td><span class="token-dot" style="background:#ece6de;"></span>#ece6de</td>
-              <td>Display headings</td>
+              <td><span class="token-dot" style="background:#f0f0f0;border:1px solid #333;"></span>#f0f0f0</td>
+              <td>Primary text</td>
             </tr>
             <tr>
-              <td>--warm</td>
-              <td><span class="token-dot" style="background:#c8c2ba;"></span>#c8c2ba</td>
-              <td>Body text</td>
+              <td>--muted</td>
+              <td><span class="token-dot" style="background:#9a9a9a;"></span>#9a9a9a</td>
+              <td>Muted / nav text</td>
             </tr>
             <tr>
               <td>--status-ok</td>
-              <td><span class="token-dot" style="background:#4a5f4a;"></span>#4a5f4a</td>
+              <td><span class="token-dot" style="background:#4ade80;"></span>#4ade80</td>
               <td>Active, verified, live</td>
             </tr>
             <tr>
               <td>--status-warn</td>
-              <td><span class="token-dot" style="background:#c4956a;"></span>#c4956a</td>
-              <td>Pending, caution (same as gold)</td>
+              <td><span class="token-dot" style="background:#fbbf24;"></span>#fbbf24</td>
+              <td>Pending, caution</td>
             </tr>
             <tr>
               <td>--status-err</td>

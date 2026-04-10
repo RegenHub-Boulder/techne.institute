@@ -52,7 +52,7 @@ const HEALTH_INDICATORS = [
     key: 'growth',
     label: 'Growth',
     status: 'Expanding',
-    color: '#4ade80',
+    color: 'var(--status-ok)',
     summary: 'Third floor lease active. Revenue generation mode begins.',
     metrics: ['lease_monthly', 'capital_committed', 'pipeline_leads'],
   },
@@ -60,7 +60,7 @@ const HEALTH_INDICATORS = [
     key: 'homeostasis',
     label: 'Homeostasis',
     status: 'Stabilizing',
-    color: '#facc15',
+    color: 'var(--status-warn)',
     summary: 'Governance structures forming. Family meetings formalized.',
     govKeys: ['board_formed', 'family_meetings', 'schedule_a_approved'],
   },
@@ -68,7 +68,7 @@ const HEALTH_INDICATORS = [
     key: 'circulation',
     label: 'Circulation',
     status: '~$5K MRR',
-    color: '#60a5fa',
+    color: 'var(--status-info)',
     summary: 'Revenue growing. Target: $10–11K/mo by June 2027.',
     metrics: ['mrr_current', 'mrr_target'],
   },
@@ -76,7 +76,7 @@ const HEALTH_INDICATORS = [
     key: 'symbiosis',
     label: 'Symbiosis',
     status: 'Deepening',
-    color: '#c084fc',
+    color: 'var(--status-purple)',
     summary: 'Ethereum Foundation, Boulder tech community, 3 ventures committed.',
     metrics: ['institutional_committed', 'ventures_committed'],
   },
@@ -112,7 +112,7 @@ function PulseIndicator({ color }) {
 function StatBox({ label, value, sub, color }) {
   return (
     <div style={s.statBox}>
-      <div style={{ ...s.statVal, color: color || 'var(--text-primary, #e8e0d4)' }}>{value}</div>
+      <div style={{ ...s.statVal, color: color || 'var(--text-primary)' }}>{value}</div>
       <div style={s.statLabel}>{label}</div>
       {sub && <div style={s.statSub}>{sub}</div>}
     </div>
@@ -237,7 +237,7 @@ export default function Ecosystem() {
             label="Total"
             value={fmt$(totalTreasury)}
             sub="Combined"
-            color="var(--text-primary, #e8e0d4)"
+            color="var(--text-primary)"
           />
           <StatBox
             label="MRR"
@@ -262,7 +262,7 @@ export default function Ecosystem() {
       {blockers.length > 0 && (
         <div style={s.blockersPanel}>
           <div style={s.blockersPanelTitle}>
-            <span style={{ color: '#f87171' }}>●</span> Active Blockers
+            <span style={{ color: 'var(--status-err)' }}>●</span> Active Blockers
           </div>
           {blockers.map(b => (
             <div key={b.status_key} style={s.blockerItem}>
@@ -317,16 +317,16 @@ export default function Ecosystem() {
 
 const s = {
   page: { padding: '1.5rem', maxWidth: '720px' },
-  loadingText: { color: 'var(--text-dim, #666)', fontSize: '0.875rem', padding: '2rem 0' },
-  errorText: { color: '#f87171', fontSize: '0.875rem', padding: '2rem 0' },
+  loadingText: { color: 'var(--text-dim)', fontSize: '0.875rem', padding: '2rem 0' },
+  errorText: { color: 'var(--status-err)', fontSize: '0.875rem', padding: '2rem 0' },
 
   header: { marginBottom: '1.5rem' },
-  headerTitle: { fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-primary, #e8e0d4)', marginBottom: '0.2rem' },
-  headerSub: { fontSize: '0.75rem', color: 'var(--text-dim, #666)' },
+  headerTitle: { fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.2rem' },
+  headerSub: { fontSize: '0.75rem', color: 'var(--text-dim)' },
 
   // Treasury bar
   treasuryBar: {
-    background: 'var(--color-surface, #13131a)',
+    background: 'var(--surface)',
     border: '1px solid rgba(255,255,255,0.07)',
     borderRadius: '10px',
     padding: '1.25rem',
@@ -334,15 +334,15 @@ const s = {
   },
   treasuryTitle: {
     fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase',
-    color: 'var(--text-dim, #555)', marginBottom: '1rem',
+    color: 'var(--text-dim)', marginBottom: '1rem',
   },
   treasuryStats: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', marginBottom: '1rem' },
   statBox: { display: 'flex', flexDirection: 'column', gap: '0.15rem' },
   statVal: { fontSize: '1.1rem', fontWeight: 700 },
-  statLabel: { fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-dim, #666)', textTransform: 'uppercase', letterSpacing: '0.04em' },
-  statSub: { fontSize: '0.65rem', color: 'var(--text-dim, #555)' },
+  statLabel: { fontSize: '0.68rem', fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.04em' },
+  statSub: { fontSize: '0.65rem', color: 'var(--text-dim)' },
   mrrBar: { display: 'flex', flexDirection: 'column', gap: '0.3rem' },
-  mrrBarLabel: { display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-dim, #666)' },
+  mrrBarLabel: { display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-dim)' },
   mrrBarTrack: { height: '4px', background: 'rgba(255,255,255,0.06)', borderRadius: '2px', overflow: 'hidden' },
   mrrBarFill: { height: '100%', background: '#4ade80', borderRadius: '2px', transition: 'width 0.3s' },
 
@@ -353,41 +353,41 @@ const s = {
   },
   blockersPanelTitle: {
     fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase',
-    color: 'var(--text-dim, #666)', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.4rem',
+    color: 'var(--text-dim)', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.4rem',
   },
   blockerItem: { display: 'flex', flexDirection: 'column', gap: '0.1rem', marginBottom: '0.5rem' },
-  blockerItemLabel: { fontSize: '0.8rem', fontWeight: 600, color: '#f87171' },
-  blockerItemDetail: { fontSize: '0.75rem', color: 'var(--text-secondary, #aaa)', lineHeight: 1.45 },
+  blockerItemLabel: { fontSize: '0.8rem', fontWeight: 600, color: 'var(--status-err)' },
+  blockerItemDetail: { fontSize: '0.75rem', color: 'var(--text-accent)', lineHeight: 1.45 },
 
   // Health grid
   healthGrid: {
     display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', marginBottom: '1rem',
   },
   healthCard: {
-    background: 'var(--color-surface, #13131a)',
+    background: 'var(--surface)',
     border: '1px solid rgba(255,255,255,0.07)',
     borderRadius: '10px', padding: '1rem',
   },
   healthHeader: { display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' },
-  healthLabel: { fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-primary, #e8e0d4)', flex: 1 },
+  healthLabel: { fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-primary)', flex: 1 },
   healthStatus: { fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.04em' },
-  healthSummary: { margin: '0 0 0.6rem', fontSize: '0.75rem', color: 'var(--text-secondary, #aaa)', lineHeight: 1.5 },
+  healthSummary: { margin: '0 0 0.6rem', fontSize: '0.75rem', color: 'var(--text-accent)', lineHeight: 1.5 },
   healthMetrics: { display: 'flex', flexDirection: 'column', gap: '0.2rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.5rem' },
   healthGov: { display: 'flex', flexDirection: 'column', gap: '0.2rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.5rem' },
   healthMetric: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' },
   healthGovRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' },
-  healthMetricLabel: { fontSize: '0.7rem', color: 'var(--text-dim, #666)' },
-  healthMetricVal: { fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary, #aaa)' },
+  healthMetricLabel: { fontSize: '0.7rem', color: 'var(--text-dim)' },
+  healthMetricVal: { fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-accent)' },
 
   // Governance panel
   govPanel: {
-    background: 'var(--color-surface, #13131a)',
+    background: 'var(--surface)',
     border: '1px solid rgba(255,255,255,0.07)',
     borderRadius: '10px', padding: '1.25rem', marginBottom: '1rem',
   },
   govPanelTitle: {
     fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase',
-    color: 'var(--text-dim, #555)', marginBottom: '0.75rem',
+    color: 'var(--text-dim)', marginBottom: '0.75rem',
   },
   govRow: {
     display: 'grid', gridTemplateColumns: '1fr auto',
@@ -395,19 +395,19 @@ const s = {
     padding: '0.45rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
   },
   govLeft: { display: 'flex', alignItems: 'center', gap: '0.4rem' },
-  govLabel: { fontSize: '0.825rem', color: 'var(--text-secondary, #aaa)' },
+  govLabel: { fontSize: '0.825rem', color: 'var(--text-accent)' },
   govStatus: { fontSize: '0.72rem', fontWeight: 700, textTransform: 'capitalize', textAlign: 'right' },
   govDetail: {
-    gridColumn: '1 / -1', fontSize: '0.72rem', color: 'var(--text-dim, #666)',
+    gridColumn: '1 / -1', fontSize: '0.72rem', color: 'var(--text-dim)',
     lineHeight: 1.45, paddingBottom: '0.25rem',
   },
   blockerChip: {
     fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase',
-    color: '#f87171', background: 'rgba(248,113,113,0.1)',
+    color: 'var(--status-err)', background: 'rgba(248,113,113,0.1)',
     border: '1px solid rgba(248,113,113,0.25)', borderRadius: '3px',
     padding: '1px 4px', flexShrink: 0,
   },
-  govNote: { margin: '0.75rem 0 0', fontSize: '0.7rem', color: 'var(--text-dim, #555)', fontStyle: 'italic' },
+  govNote: { margin: '0.75rem 0 0', fontSize: '0.7rem', color: 'var(--text-dim)', fontStyle: 'italic' },
 
   // Formation link
   formationLink: {
@@ -420,5 +420,5 @@ const s = {
   formationAnchor: {
     color: 'var(--gold, #c4956a)', fontSize: '0.825rem', fontWeight: 600, textDecoration: 'none',
   },
-  formationSub: { fontSize: '0.7rem', color: 'var(--text-dim, #666)' },
+  formationSub: { fontSize: '0.7rem', color: 'var(--text-dim)' },
 }

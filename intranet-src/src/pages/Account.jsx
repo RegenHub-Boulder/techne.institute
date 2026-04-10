@@ -13,7 +13,7 @@ const TYPE_LABELS = {
 }
 
 const TYPE_COLORS = {
-  initial: 'var(--ember, #c4956a)',
+  initial: 'var(--gold)',
   labor: '#50b478',
   capital: '#4a9eff',
   patronage: '#b47cd4',
@@ -271,14 +271,14 @@ function LoadingCard() {
 }
 
 const styles = {
-  page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
+  page: { minHeight: '100vh', background: 'var(--app-bg)' },
   main: { maxWidth: '800px', margin: '0 auto', padding: '2rem' },
   breadcrumb: {
     fontSize: '0.85rem',
-    color: 'var(--color-text-muted, #888)',
+    color: 'var(--text-muted)',
     marginBottom: '1rem',
   },
-  breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
+  breadLink: { color: 'var(--gold)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   h1: {
     fontSize: '1.75rem',
@@ -288,7 +288,7 @@ const styles = {
   },
   memberName: {
     fontSize: '0.9rem',
-    color: 'var(--color-text-muted, #888)',
+    color: 'var(--text-muted)',
     marginBottom: '1.5rem',
   },
   balanceRow: {
@@ -298,14 +298,14 @@ const styles = {
     marginBottom: '1.25rem',
   },
   balanceCard: {
-    background: 'var(--color-surface, #141418)',
-    border: '1px solid var(--color-border, #2a2a35)',
+    background: 'var(--surface)',
+    border: '1px solid var(--border-mid)',
     borderRadius: '10px',
     padding: '1.5rem',
   },
   balanceLabel: {
     fontSize: '0.75rem',
-    color: 'var(--color-text-muted, #888)',
+    color: 'var(--text-muted)',
     textTransform: 'uppercase',
     letterSpacing: '0.06em',
     marginBottom: '0.5rem',
@@ -318,12 +318,12 @@ const styles = {
   },
   balanceSub: {
     fontSize: '0.8rem',
-    color: 'var(--color-text-muted, #666)',
+    color: 'var(--text-muted)',
     lineHeight: 1.4,
   },
   lastUpdated: {
     fontSize: '0.8rem',
-    color: 'var(--color-text-muted, #666)',
+    color: 'var(--text-muted)',
     marginBottom: '2rem',
   },
   section: { marginTop: '2rem' },
@@ -334,8 +334,8 @@ const styles = {
     gap: '0.75rem',
   },
   breakdownCard: {
-    background: 'var(--color-surface, #141418)',
-    border: '1px solid var(--color-border, #2a2a35)',
+    background: 'var(--surface)',
+    border: '1px solid var(--border-mid)',
     borderRadius: '8px',
     padding: '1rem',
     display: 'flex',
@@ -349,7 +349,7 @@ const styles = {
   },
   breakdownLabel: {
     fontSize: '0.8rem',
-    color: 'var(--color-text-muted, #888)',
+    color: 'var(--text-muted)',
   },
   breakdownValue: {
     fontSize: '1.1rem',
@@ -360,8 +360,8 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     gap: '0',
-    background: 'var(--color-surface, #141418)',
-    border: '1px solid var(--color-border, #2a2a35)',
+    background: 'var(--surface)',
+    border: '1px solid var(--border-mid)',
     borderRadius: '10px',
     overflow: 'hidden',
   },
@@ -370,7 +370,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '0.9rem 1.25rem',
-    borderBottom: '1px solid var(--color-border, #2a2a35)',
+    borderBottom: '1px solid var(--border-mid)',
     gap: '1rem',
   },
   txnLeft: {
@@ -397,7 +397,7 @@ const styles = {
   },
   txnDesc: {
     fontSize: '0.875rem',
-    color: 'var(--color-text-muted, #aaa)',
+    color: 'var(--text-muted)',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -409,7 +409,7 @@ const styles = {
   },
   txnDate: {
     fontSize: '0.75rem',
-    color: 'var(--color-text-muted, #666)',
+    color: 'var(--text-muted)',
   },
   formulaGrid: {
     display: 'grid',
@@ -417,8 +417,8 @@ const styles = {
     gap: '0.75rem',
   },
   formulaCard: {
-    background: 'var(--color-surface, #141418)',
-    border: '1px solid var(--color-border, #2a2a35)',
+    background: 'var(--surface)',
+    border: '1px solid var(--border-mid)',
     borderRadius: '8px',
     padding: '1rem',
     textAlign: 'center',
@@ -426,7 +426,7 @@ const styles = {
   formulaPct: {
     fontSize: '1.5rem',
     fontWeight: 700,
-    color: 'var(--ember, #c4956a)',
+    color: 'var(--gold)',
     marginBottom: '0.25rem',
   },
   formulaLabel: {
@@ -436,7 +436,7 @@ const styles = {
   },
   formulaDesc: {
     fontSize: '0.75rem',
-    color: 'var(--color-text-muted, #888)',
+    color: 'var(--text-muted)',
     lineHeight: 1.4,
   },
   linksRow: {
@@ -448,8 +448,8 @@ const styles = {
   linkBtnSecondary: {
     padding: '0.65rem 1.25rem',
     background: 'none',
-    border: '1px solid var(--color-border, #2a2a35)',
-    color: 'var(--color-text-muted, #888)',
+    border: '1px solid var(--border-mid)',
+    color: 'var(--text-muted)',
     borderRadius: '8px',
     textDecoration: 'none',
     fontSize: '0.875rem',
@@ -460,7 +460,7 @@ const styles = {
     border: '1px solid rgba(196,149,106,0.15)',
     borderRadius: '8px',
     fontSize: '0.875rem',
-    color: 'var(--color-text-muted, #aaa)',
+    color: 'var(--text-muted)',
     lineHeight: 1.6,
     marginTop: '1.5rem',
   },
@@ -473,13 +473,13 @@ const styles = {
   },
   loadingCard: {
     padding: '1.5rem',
-    background: 'var(--color-surface, #141418)',
+    background: 'var(--surface)',
     borderRadius: '10px',
-    border: '1px solid var(--color-border, #2a2a35)',
+    border: '1px solid var(--border-mid)',
   },
   loadingPulse: {
     height: '1.5rem',
-    background: 'var(--color-border, #2a2a35)',
+    background: 'var(--border-mid)',
     borderRadius: '4px',
     animation: 'pulse 1.5s ease-in-out infinite',
   },

@@ -13,7 +13,7 @@ const categoryLabel = {
 const categoryColor = {
   income: 'var(--status-ok)',
   expense: 'var(--status-err)',
-  capital_call: 'var(--ember, #c4956a)',
+  capital_call: 'var(--gold)',
   distribution: 'var(--status-info)',
   transfer: 'var(--text-soft)',
   other: 'var(--text-muted)',
@@ -191,10 +191,10 @@ export default function Treasury() {
 }
 
 const styles = {
-  page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
+  page: { minHeight: '100vh', background: 'var(--app-bg)' },
   main: { maxWidth: '900px', margin: '0 auto', padding: '2rem' },
   breadcrumb: { fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' },
-  breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
+  breadLink: { color: 'var(--gold)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 1.5rem' },
   h2: { fontSize: '1.1rem', fontWeight: 600, margin: '0' },

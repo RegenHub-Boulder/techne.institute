@@ -371,28 +371,33 @@ const s = {
     fontWeight: 700,
     textTransform: 'uppercase',
     letterSpacing: '0.06em',
+    fontFamily: 'var(--hud-mono)',
   },
   wordmark: {
     fontSize: '0.8rem',
-    fontWeight: 800,
+    fontWeight: 700,
     color: 'var(--gold)',
-    letterSpacing: '-0.01em',
+    letterSpacing: '0.04em',
     textTransform: 'uppercase',
+    fontFamily: 'var(--hud-mono)',
   },
   statusSep: {
     color: 'var(--border-hud2)',
     fontSize: '0.75rem',
+    fontFamily: 'var(--hud-mono)',
   },
   statusLabel: {
     fontSize: '0.72rem',
     color: 'var(--text-nav)',
     textTransform: 'uppercase',
-    letterSpacing: '0.08em',
+    letterSpacing: '0.06em',
+    fontFamily: 'var(--hud-mono)',
   },
   statusDate: {
     fontSize: '0.72rem',
     color: 'var(--text-nav)',
     fontVariantNumeric: 'tabular-nums',
+    fontFamily: 'var(--hud-mono)',
   },
   statusRight: {
     display: 'flex',
@@ -400,7 +405,7 @@ const s = {
     gap: '0.75rem',
   },
   statusUser: {
-    fontSize: '0.75rem',
+    fontSize: '0.72rem',
     color: 'var(--text-nav)',
     display: 'flex',
     alignItems: 'center',
@@ -408,6 +413,7 @@ const s = {
     textDecoration: 'none',
     cursor: 'pointer',
     transition: 'color 0.12s',
+    fontFamily: 'var(--hud-mono)',
   },
   stewardPip: {
     background: 'var(--gold-15)',
@@ -440,6 +446,7 @@ const s = {
     textDecoration: 'underline',
     textDecorationColor: 'transparent',
     transition: 'color 0.12s',
+    fontFamily: 'var(--hud-mono)',
   },
   body: {
     display: 'flex',
@@ -490,8 +497,9 @@ const s = {
   },
   sidebarFooterText: {
     fontSize: '0.68rem',
-    color: 'var(--border-hud2)',
+    color: 'var(--text-ghost)',
     letterSpacing: '0.02em',
+    fontFamily: 'var(--hud-mono)',
   },
   panel: {
     flex: 1,

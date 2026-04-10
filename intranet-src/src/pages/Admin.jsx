@@ -616,7 +616,7 @@ function GovernanceParamsPanel() {
 
 const LABOR_STATUS_STYLE = {
   draft:     { bg: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)',  label: 'Draft'     },
-  submitted: { bg: 'rgba(196,149,106,0.14)', color: 'var(--ember, #c4956a)', label: 'Submitted' },
+  submitted: { bg: 'rgba(196,149,106,0.14)', color: 'var(--gold)', label: 'Submitted' },
   approved:  { bg: 'rgba(76,175,136,0.14)',  color: 'var(--status-ok)',       label: 'Approved'  },
   rejected:  { bg: 'rgba(220,60,60,0.14)',   color: 'var(--status-err)',      label: 'Rejected'  },
 }
@@ -638,9 +638,9 @@ function LaborAdmin() {
         {[['entries', 'Entry Review'], ['rates', 'Rate Table'], ['reports', 'Reports']].map(([id, label]) => (
           <button key={id} onClick={() => setSubTab(id)} style={{
             padding: '0.35rem 0.9rem', fontSize: '0.8rem', cursor: 'pointer',
-            borderRadius: '6px', border: '1px solid var(--color-border, #2a2a35)',
-            background: subTab === id ? 'var(--ember, #c4956a)' : 'none',
-            color: subTab === id ? '#fff' : 'var(--color-text-muted, #888)',
+            borderRadius: '6px', border: '1px solid var(--border-mid)',
+            background: subTab === id ? 'var(--gold)' : 'none',
+            color: subTab === id ? '#fff' : 'var(--text-muted)',
             fontFamily: 'inherit', fontWeight: subTab === id ? 600 : 400,
           }}>{label}</button>
         ))}
@@ -707,28 +707,28 @@ function LaborEntryReview() {
         {[['all','All'],['submitted','Submitted'],['approved','Approved'],['rejected','Rejected']].map(([val, label]) => (
           <button key={val} onClick={() => setStatusFilter(val)} style={{
             padding: '0.3rem 0.7rem', fontSize: '0.78rem', cursor: 'pointer',
-            borderRadius: '5px', border: `1px solid ${statusFilter === val ? 'rgba(196,149,106,0.5)' : 'var(--color-border, #2a2a35)'}`,
+            borderRadius: '5px', border: `1px solid ${statusFilter === val ? 'rgba(196,149,106,0.5)' : 'var(--border-mid)'}`,
             background: statusFilter === val ? 'rgba(196,149,106,0.1)' : 'none',
-            color: statusFilter === val ? 'var(--ember, #c4956a)' : 'var(--color-text-muted, #888)',
+            color: statusFilter === val ? 'var(--gold)' : 'var(--text-muted)',
             fontFamily: 'inherit',
           }}>{label}{val === 'submitted' && pendingCount > 0 ? ` (${pendingCount})` : ''}</button>
         ))}
-        <button onClick={() => load(statusFilter)} style={{ marginLeft: 'auto', padding: '0.3rem 0.7rem', fontSize: '0.78rem', background: 'none', border: '1px solid var(--color-border, #2a2a35)', borderRadius: '5px', color: 'var(--color-text-muted, #888)', cursor: 'pointer', fontFamily: 'inherit' }}>Refresh</button>
+        <button onClick={() => load(statusFilter)} style={{ marginLeft: 'auto', padding: '0.3rem 0.7rem', fontSize: '0.78rem', background: 'none', border: '1px solid var(--border-mid)', borderRadius: '5px', color: 'var(--text-muted)', cursor: 'pointer', fontFamily: 'inherit' }}>Refresh</button>
       </div>
 
       {error && <div style={styles.error}>{error}</div>}
       {loading && <div style={styles.loading}>Loading entries…</div>}
 
       {!loading && entries?.length === 0 && (
-        <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted, #888)', fontSize: '0.875rem', border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px' }}>
+        <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.875rem', border: '1px solid var(--border-mid)', borderRadius: '8px' }}>
           No entries with status: {statusFilter}.
         </div>
       )}
 
       {!loading && entries && entries.length > 0 && (
-        <div style={{ border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px', overflow: 'hidden' }}>
+        <div style={{ border: '1px solid var(--border-mid)', borderRadius: '8px', overflow: 'hidden' }}>
           {/* Header */}
-          <div style={{ display: 'grid', gridTemplateColumns: '140px 90px 110px 60px 70px 80px 90px 1fr', padding: '0.6rem 1rem', borderBottom: '1px solid var(--color-border, #2a2a35)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '140px 90px 110px 60px 70px 80px 90px 1fr', padding: '0.6rem 1rem', borderBottom: '1px solid var(--border-mid)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)' }}>
             <span>Member</span><span>Date</span><span>Craft</span><span>Hrs</span><span>Rate</span><span>Total</span><span>Status</span><span>Actions</span>
           </div>
           {entries.map(e => {
@@ -738,10 +738,10 @@ function LaborEntryReview() {
             return (
               <div key={e.id} style={{ display: 'grid', gridTemplateColumns: '140px 90px 110px 60px 70px 80px 90px 1fr', padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '0.83rem', alignItems: 'center' }}>
                 <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 500 }}>{memberName}</span>
-                <span style={{ color: 'var(--color-text-muted, #888)', fontSize: '0.78rem' }}>{fmtDate(e.date)}</span>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{fmtDate(e.date)}</span>
                 <span style={{ fontSize: '0.78rem', color: 'var(--text-soft)' }}>{e.labor_type}</span>
                 <span style={{ fontVariantNumeric: 'tabular-nums' }}>{parseFloat(e.hours).toFixed(1)}</span>
-                <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--color-text-muted, #888)', fontSize: '0.78rem' }}>{fmtUSDDec(rate)}</span>
+                <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--text-muted)', fontSize: '0.78rem' }}>{fmtUSDDec(rate)}</span>
                 <span style={{ fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}>{fmtUSDDec(total)}</span>
                 <span><LaborStatusBadge status={e.status} /></span>
                 <span style={{ display: 'flex', gap: '0.4rem' }}>
@@ -760,7 +760,7 @@ function LaborEntryReview() {
                     </>
                   )}
                   {e.status !== 'submitted' && e.approved_at && (
-                    <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted, #888)' }}>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
                       {new Date(e.approved_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </span>
                   )}
@@ -871,17 +871,17 @@ function LaborRateTable() {
 
       {loading && <div style={styles.loading}>Loading rates…</div>}
       {!loading && rates && (
-        <div style={{ border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px', overflow: 'hidden' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px 80px 130px 1fr', padding: '0.6rem 1rem', borderBottom: '1px solid var(--color-border, #2a2a35)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)' }}>
+        <div style={{ border: '1px solid var(--border-mid)', borderRadius: '8px', overflow: 'hidden' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px 80px 130px 1fr', padding: '0.6rem 1rem', borderBottom: '1px solid var(--border-mid)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)' }}>
             <span>Craft</span><span>Rate/hr</span><span>Level</span><span>Effective</span><span>Notes</span>
           </div>
           {rates.map(r => (
             <div key={r.id} style={{ display: 'grid', gridTemplateColumns: '1fr 100px 80px 130px 1fr', padding: '0.7rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '0.85rem', alignItems: 'center' }}>
               <span style={{ fontWeight: 500 }}>{r.labor_type}</span>
-              <span style={{ fontVariantNumeric: 'tabular-nums', fontWeight: 700, color: 'var(--ember, #c4956a)' }}>{fmtUSDDec(r.hourly_rate)}</span>
-              <span style={{ color: 'var(--color-text-muted, #888)', fontSize: '0.78rem' }}>{r.level || '—'}</span>
-              <span style={{ color: 'var(--color-text-muted, #888)', fontSize: '0.78rem' }}>{fmtDate(r.effective_date)}</span>
-              <span style={{ color: 'var(--color-text-muted, #888)', fontSize: '0.78rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.notes || '—'}</span>
+              <span style={{ fontVariantNumeric: 'tabular-nums', fontWeight: 700, color: 'var(--gold)' }}>{fmtUSDDec(r.hourly_rate)}</span>
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{r.level || '—'}</span>
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{fmtDate(r.effective_date)}</span>
+              <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.notes || '—'}</span>
             </div>
           ))}
         </div>
@@ -996,12 +996,12 @@ function LaborReportPanel() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
             <div>
               <div style={{ fontWeight: 700, fontSize: '1rem' }}>{report.member.name}</div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted, #888)' }}>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 {report.member.email}
                 {report.period.from_date && <> &middot; {report.period.from_date} → {report.period.to_date || 'today'}</>}
               </div>
             </div>
-            <button onClick={downloadCSV} style={{ padding: '0.35rem 0.85rem', fontSize: '0.78rem', background: 'none', border: '1px solid var(--color-border, #2a2a35)', borderRadius: '6px', color: 'var(--color-text-muted, #888)', cursor: 'pointer', fontFamily: 'inherit' }}>
+            <button onClick={downloadCSV} style={{ padding: '0.35rem 0.85rem', fontSize: '0.78rem', background: 'none', border: '1px solid var(--border-mid)', borderRadius: '6px', color: 'var(--text-muted)', cursor: 'pointer', fontFamily: 'inherit' }}>
               Export CSV
             </button>
           </div>
@@ -1011,11 +1011,11 @@ function LaborReportPanel() {
             {[
               ['Total Hours', report.totals.hours.toFixed(1) + ' hrs', null],
               ['Total FMV', fmtUSDDec(report.totals.fmv), null],
-              ['Approved Hours', report.totals.approved_hours.toFixed(1) + ' hrs', 'var(--status-ok, #4caf88)'],
-              ['Approved FMV', fmtUSDDec(report.totals.approved_fmv), 'var(--status-ok, #4caf88)'],
+              ['Approved Hours', report.totals.approved_hours.toFixed(1) + ' hrs', 'var(--status-ok)'],
+              ['Approved FMV', fmtUSDDec(report.totals.approved_fmv), 'var(--status-ok)'],
             ].map(([label, value, color]) => (
-              <div key={label} style={{ padding: '0.85rem', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px' }}>
-                <div style={{ fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)', marginBottom: '0.3rem' }}>{label}</div>
+              <div key={label} style={{ padding: '0.85rem', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-mid)', borderRadius: '8px' }}>
+                <div style={{ fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)', marginBottom: '0.3rem' }}>{label}</div>
                 <div style={{ fontSize: '1rem', fontWeight: 700, color: color || 'inherit', fontVariantNumeric: 'tabular-nums' }}>{value}</div>
               </div>
             ))}
@@ -1024,9 +1024,9 @@ function LaborReportPanel() {
           {/* By-craft breakdown */}
           {Object.keys(report.by_craft).length > 0 && (
             <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)', marginBottom: '0.6rem' }}>By Craft</div>
-              <div style={{ border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px', overflow: 'hidden' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 75px 100px 90px 120px', padding: '0.5rem 1rem', borderBottom: '1px solid var(--color-border, #2a2a35)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)' }}>
+              <div style={{ fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)', marginBottom: '0.6rem' }}>By Craft</div>
+              <div style={{ border: '1px solid var(--border-mid)', borderRadius: '8px', overflow: 'hidden' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 75px 100px 90px 120px', padding: '0.5rem 1rem', borderBottom: '1px solid var(--border-mid)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)' }}>
                   <span>Craft</span><span>Hrs</span><span>FMV</span><span>Appr. Hrs</span><span>Appr. FMV</span>
                 </div>
                 {Object.entries(report.by_craft).map(([craft, stats]) => (
@@ -1034,8 +1034,8 @@ function LaborReportPanel() {
                     <span style={{ fontWeight: 500 }}>{craft}</span>
                     <span style={{ fontVariantNumeric: 'tabular-nums' }}>{stats.hours.toFixed(1)}</span>
                     <span style={{ fontVariantNumeric: 'tabular-nums' }}>{fmtUSDDec(stats.fmv)}</span>
-                    <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--status-ok, #4caf88)' }}>{stats.approved_hours.toFixed(1)}</span>
-                    <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--status-ok, #4caf88)', fontWeight: 600 }}>{fmtUSDDec(stats.approved_fmv)}</span>
+                    <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--status-ok)' }}>{stats.approved_hours.toFixed(1)}</span>
+                    <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--status-ok)', fontWeight: 600 }}>{fmtUSDDec(stats.approved_fmv)}</span>
                   </div>
                 ))}
               </div>
@@ -1044,29 +1044,29 @@ function LaborReportPanel() {
 
           {/* Entry detail */}
           {report.entries.length === 0 ? (
-            <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted, #888)', fontSize: '0.875rem', border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px' }}>
+            <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.875rem', border: '1px solid var(--border-mid)', borderRadius: '8px' }}>
               No entries in this period.
             </div>
           ) : (
             <div>
-              <div style={{ fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)', marginBottom: '0.6rem' }}>Entries ({report.entries.length})</div>
-              <div style={{ border: '1px solid var(--color-border, #2a2a35)', borderRadius: '8px', overflow: 'hidden' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '95px 1fr 50px 80px 90px 75px 165px', padding: '0.5rem 1rem', borderBottom: '1px solid var(--color-border, #2a2a35)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-muted, #888)' }}>
+              <div style={{ fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)', marginBottom: '0.6rem' }}>Entries ({report.entries.length})</div>
+              <div style={{ border: '1px solid var(--border-mid)', borderRadius: '8px', overflow: 'hidden' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '95px 1fr 50px 80px 90px 75px 165px', padding: '0.5rem 1rem', borderBottom: '1px solid var(--border-mid)', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)' }}>
                   <span>Date</span><span>Craft</span><span>Hrs</span><span>Rate</span><span>Total</span><span>Status</span><span>Tax Class</span>
                 </div>
                 {report.entries.map(e => (
                   <div key={e.id} style={{ display: 'grid', gridTemplateColumns: '95px 1fr 50px 80px 90px 75px 165px', padding: '0.65rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: '0.83rem', alignItems: 'center' }}>
-                    <span style={{ color: 'var(--color-text-muted, #888)', fontSize: '0.78rem' }}>{fmtDateShort(e.date)}</span>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{fmtDateShort(e.date)}</span>
                     <span>{e.labor_type}</span>
                     <span style={{ fontVariantNumeric: 'tabular-nums' }}>{e.hours.toFixed(1)}</span>
-                    <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--color-text-muted, #888)', fontSize: '0.78rem' }}>{fmtUSDDec(e.hourly_rate)}</span>
+                    <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--text-muted)', fontSize: '0.78rem' }}>{fmtUSDDec(e.hourly_rate)}</span>
                     <span style={{ fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}>{fmtUSDDec(e.total_fmv)}</span>
                     <span><LaborStatusBadge status={e.status} /></span>
-                    <span style={{ fontSize: '0.75rem', color: e.tax_class === 'Patronage Dividend' ? 'var(--status-ok, #4caf88)' : e.tax_class.startsWith('Pending') ? 'var(--color-text-muted, #888)' : 'var(--ember, #c4956a)' }}>{e.tax_class}</span>
+                    <span style={{ fontSize: '0.75rem', color: e.tax_class === 'Patronage Dividend' ? 'var(--status-ok)' : e.tax_class.startsWith('Pending') ? 'var(--text-muted)' : 'var(--gold)' }}>{e.tax_class}</span>
                   </div>
                 ))}
               </div>
-              <div style={{ marginTop: '0.5rem', fontSize: '0.72rem', color: 'var(--color-text-muted, #888)', fontStyle: 'italic' }}>
+              <div style={{ marginTop: '0.5rem', fontSize: '0.72rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
                 Tax classification is a display scaffold only — not legal advice. Consult a qualified tax advisor.
               </div>
             </div>
@@ -1094,26 +1094,26 @@ function pct(part, total) {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 
 const styles = {
-  page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
+  page: { minHeight: '100vh', background: 'var(--app-bg)' },
   header: {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    padding: '1rem 2rem', borderBottom: '1px solid var(--color-border, #2a2a35)',
-    background: 'var(--color-surface, #141418)',
+    padding: '1rem 2rem', borderBottom: '1px solid var(--border-mid)',
+    background: 'var(--surface)',
   },
-  wordmark: { fontSize: '1.1rem', fontWeight: 700, color: 'var(--ember, #c4956a)', textDecoration: 'none' },
+  wordmark: { fontSize: '1.1rem', fontWeight: 700, color: 'var(--gold)', textDecoration: 'none' },
   headerNav: { display: 'flex', alignItems: 'center', gap: '1.5rem' },
-  navLink: { fontSize: '0.875rem', color: 'var(--color-text-muted, #888)', textDecoration: 'none' },
+  navLink: { fontSize: '0.875rem', color: 'var(--text-muted)', textDecoration: 'none' },
   signOut: {
-    background: 'none', border: '1px solid var(--color-border, #2a2a35)',
-    color: 'var(--color-text-muted, #888)', borderRadius: '6px',
+    background: 'none', border: '1px solid var(--border-mid)',
+    color: 'var(--text-muted)', borderRadius: '6px',
     padding: '0.35rem 0.7rem', fontSize: '0.8rem', cursor: 'pointer',
   },
   main: { maxWidth: '960px', margin: '0 auto', padding: '2rem' },
-  breadcrumb: { fontSize: '0.85rem', color: 'var(--color-text-muted, #888)', marginBottom: '1rem' },
-  breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
+  breadcrumb: { fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' },
+  breadLink: { color: 'var(--gold)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 0.25rem' },
-  subtitle: { fontSize: '1rem', color: 'var(--color-text-muted, #888)', margin: '0 0 1.5rem' },
+  subtitle: { fontSize: '1rem', color: 'var(--text-muted)', margin: '0 0 1.5rem' },
   launchGate: {
     padding: '1rem 1.25rem', marginBottom: '1.5rem',
     background: 'rgba(220,60,60,0.08)', border: '1px solid rgba(220,60,60,0.25)',
@@ -1122,19 +1122,19 @@ const styles = {
   launchGateTitle: { fontWeight: 700, fontSize: '0.85rem', color: 'var(--status-err)', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' },
   launchGateBody: { fontSize: '0.875rem', color: 'var(--text-soft)', margin: 0 },
   tabRow: {},
-  tabs: { display: 'flex', gap: '0.25rem', marginBottom: '0', borderBottom: '1px solid var(--color-border, #2a2a35)' },
+  tabs: { display: 'flex', gap: '0.25rem', marginBottom: '0', borderBottom: '1px solid var(--border-mid)' },
   tab: {
     padding: '0.6rem 1.1rem', background: 'none', border: 'none',
-    color: 'var(--color-text-muted, #888)', fontSize: '0.875rem', cursor: 'pointer',
+    color: 'var(--text-muted)', fontSize: '0.875rem', cursor: 'pointer',
     borderBottom: '2px solid transparent', marginBottom: '-1px',
   },
-  tabActive: { color: 'var(--ember, #c4956a)', borderBottom: '2px solid var(--ember, #c4956a)', fontWeight: 600 },
+  tabActive: { color: 'var(--gold)', borderBottom: '2px solid var(--gold)', fontWeight: 600 },
   tabContent: {
-    padding: '1.5rem', background: 'var(--color-surface, #141418)',
-    border: '1px solid var(--color-border, #2a2a35)', borderTop: 'none', borderRadius: '0 0 10px 10px',
+    padding: '1.5rem', background: 'var(--surface)',
+    border: '1px solid var(--border-mid)', borderTop: 'none', borderRadius: '0 0 10px 10px',
   },
-  sectionNote: { fontSize: '0.85rem', color: 'var(--color-text-muted, #999)', margin: '0 0 1.25rem', lineHeight: 1.6 },
-  loading: { color: 'var(--color-text-muted, #888)', padding: '1rem 0' },
+  sectionNote: { fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0 0 1.25rem', lineHeight: 1.6 },
+  loading: { color: 'var(--text-muted)', padding: '1rem 0' },
   error: {
     padding: '0.75rem 1rem', background: 'rgba(220,60,60,0.1)',
     border: '1px solid rgba(220,60,60,0.3)', borderRadius: '6px',
@@ -1149,42 +1149,42 @@ const styles = {
   memberRow: {
     display: 'flex', alignItems: 'center', gap: '1.5rem',
     padding: '0.875rem 1rem', background: 'var(--hover-dim)',
-    border: '1px solid var(--color-border, #2a2a35)', borderRadius: '6px',
+    border: '1px solid var(--border-mid)', borderRadius: '6px',
   },
   memberInfo: { flex: 1 },
   memberName: { fontWeight: 600, fontSize: '0.9rem', marginBottom: '0.2rem' },
-  memberMeta: { fontSize: '0.8rem', color: 'var(--color-text-muted, #888)', marginBottom: '0.1rem' },
+  memberMeta: { fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.1rem' },
   memberBalance: { textAlign: 'right', flexShrink: 0 },
   balanceAmt: { fontWeight: 700, fontSize: '1rem', letterSpacing: '-0.02em' },
-  balanceEmpty: { fontSize: '0.8rem', color: 'var(--color-text-muted, #888)' },
-  balanceLabel: { fontSize: '0.7rem', color: 'var(--color-text-muted, #888)', textTransform: 'uppercase', letterSpacing: '0.05em' },
+  balanceEmpty: { fontSize: '0.8rem', color: 'var(--text-muted)' },
+  balanceLabel: { fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' },
   form: { display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '640px' },
   formRow: { display: 'flex', gap: '1rem', flexWrap: 'wrap' },
-  label: { display: 'flex', flexDirection: 'column', gap: '0.35rem', fontSize: '0.85rem', color: 'var(--color-text-muted, #aaa)', flex: 1, minWidth: '140px' },
+  label: { display: 'flex', flexDirection: 'column', gap: '0.35rem', fontSize: '0.85rem', color: 'var(--text-muted)', flex: 1, minWidth: '140px' },
   input: {
-    background: 'rgba(255,255,255,0.05)', border: '1px solid var(--color-border, #2a2a35)',
+    background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-mid)',
     borderRadius: '6px', padding: '0.5rem 0.75rem', color: '#fff', fontSize: '0.9rem',
   },
   select: {
-    background: 'var(--color-surface, #141418)', border: '1px solid var(--color-border, #2a2a35)',
+    background: 'var(--surface)', border: '1px solid var(--border-mid)',
     borderRadius: '6px', padding: '0.5rem 0.75rem', color: '#fff', fontSize: '0.9rem',
   },
   fileInput: { fontSize: '0.85rem', color: 'var(--text-soft)', padding: '0.4rem 0' },
   fileHint: { fontSize: '0.8rem', color: '#4caf88' },
-  totalLine: { fontSize: '0.9rem', padding: '0.5rem 0', borderTop: '1px solid var(--color-border, #2a2a35)' },
-  formulaCheck: { color: 'var(--color-text-muted, #888)' },
+  totalLine: { fontSize: '0.9rem', padding: '0.5rem 0', borderTop: '1px solid var(--border-mid)' },
+  formulaCheck: { color: 'var(--text-muted)' },
   submitBtn: {
-    background: 'var(--ember, #c4956a)', border: 'none', color: '#fff',
+    background: 'var(--gold)', border: 'none', color: '#fff',
     borderRadius: '8px', padding: '0.65rem 1.25rem', fontSize: '0.9rem',
     fontWeight: 600, cursor: 'pointer', alignSelf: 'flex-start',
   },
   denied: {
-    padding: '2rem', background: 'var(--color-surface, #141418)',
-    border: '1px solid var(--color-border, #2a2a35)', borderRadius: '10px',
+    padding: '2rem', background: 'var(--surface)',
+    border: '1px solid var(--border-mid)', borderRadius: '10px',
     maxWidth: '480px', margin: '3rem auto',
   },
   deniedTitle: { fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.75rem' },
   deniedBody: { fontSize: '0.9rem', color: 'var(--text-soft)', lineHeight: 1.6, margin: '0 0 1rem' },
-  backLink: { fontSize: '0.875rem', color: 'var(--ember, #c4956a)', textDecoration: 'none' },
-  link: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
+  backLink: { fontSize: '0.875rem', color: 'var(--gold)', textDecoration: 'none' },
+  link: { color: 'var(--gold)', textDecoration: 'none' },
 }

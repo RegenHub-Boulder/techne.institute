@@ -208,7 +208,7 @@ export default function Guide() {
 }
 
 const styles = {
-  page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
+  page: { minHeight: '100vh', background: 'var(--app-bg)' },
   layout: { display: 'flex', minHeight: 'calc(100vh - 60px)' },
   sidebar: {
     width: '240px', flexShrink: 0, borderRight: '1px solid #2a2a35',

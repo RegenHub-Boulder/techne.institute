@@ -18,55 +18,58 @@
         }
       })();
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <style>
-      /* ── HUD design tokens ─────────────────────────────────────────── */
+      /* ── HUD design tokens — co-op.us coordinate palette ────────────── */
       :root {
         /* ── App shell backgrounds ─────────────────── */
-        --app-bg:       #0a0a0f;   /* body / root bg */
-        --hud-surface:  #0a0a18;   /* sidebar bg */
-        --hud-bar:      #0c0c1a;   /* status bar bg */
-        --hud-panel:    #0a0a0f;   /* content panel bg */
-        --ink:          #0f0f1e;   /* deep panel bg */
-        --surface:      #141418;   /* page content bg */
-        --panel:        #1e1e24;   /* card / elevated bg */
-        --raised:       #252530;   /* raised element bg */
+        --app-bg:       #0c0c0c;   /* body / root bg — co-op.us --co-bg */
+        --hud-surface:  #111111;   /* sidebar bg */
+        --hud-bar:      #0c0c0c;   /* status bar bg — flush with bg */
+        --hud-panel:    #0c0c0c;   /* content panel bg */
+        --ink:          #111111;   /* deep panel bg */
+        --surface:      #161616;   /* page content bg — co-op.us --co-surface */
+        --panel:        #222222;   /* card / elevated bg — co-op.us --co-surface-hover */
+        --raised:       #2a2a2a;   /* raised element bg — co-op.us --co-surface-active */
 
-        /* ── Borders ──────────────────────────────── */
-        --hud-border:      #1a1a2e;   /* HUD panel border */
-        --hud-border-deep: #2a2a3e;   /* HUD elevated border */
-        --border-nav:      #1a1a28;   /* nav section divider */
-        --border-mid:      #2a2a35;   /* standard border */
-        --border-hud2:     #2a2a40;   /* HUD deep border */
+        /* ── Borders — visible, co-op.us standard ─── */
+        --hud-border:      #2a2a2a;   /* HUD panel border */
+        --hud-border-deep: #383838;   /* HUD elevated border — co-op.us --co-border */
+        --border-nav:      #2a2a2a;   /* nav section divider */
+        --border-mid:      #383838;   /* standard border — co-op.us --co-border */
+        --border-hud2:     #505050;   /* HUD deep border — co-op.us --co-border-hover */
 
         /* ── Glow washes ──────────────────────────── */
-        --hud-glow-ember:  rgba(196,149,106,0.12);
-        --hud-glow-green:  rgba(74,95,74,0.15);
-        --hud-glow-amber:  rgba(196,149,106,0.15);
-        --hud-glow-blue:   rgba(107,131,107,0.12);
+        --hud-glow-ember:  rgba(196,149,106,0.10);
+        --hud-glow-green:  rgba(74,222,128,0.10);
+        --hud-glow-amber:  rgba(251,191,36,0.10);
+        --hud-glow-blue:   rgba(139,191,255,0.10);
 
-        /* ── Text ─────────────────────────────────── */
-        --text-primary:  #e0e0f0;   /* primary HUD text */
-        --text-page:     #e8e8e0;   /* page body text */
-        --text-warm:     #c8c2ba;   /* warm body text */
-        --text-display:  #ece6de;   /* display headings */
-        --text-muted:    #888;      /* secondary text */
-        --text-accent:   #8888a8;   /* user name, meta */
-        --text-nav:      #52526a;   /* nav item text */
-        --text-mid:      #9090b0;   /* nav hover / mid */
-        --text-3a5a:     #3a3a5a;   /* raised text */
-        --text-subdim:   #666;      /* subdued */
-        --text-dim:      #555;      /* dim */
-        --text-ghost:    #444;      /* ghost */
-        --text-soft:     #aaa;      /* soft */
-        --text-ccc:      #ccc;      /* lighter */
-        --text-dim2a40:  #2a2a40;   /* very dim */
+        /* ── Text — high contrast, co-op.us scale ──── */
+        --text-primary:  #f0f0f0;   /* co-op.us --co-text */
+        --text-page:     #f0f0f0;   /* page body text */
+        --text-warm:     #d0d0d0;   /* warm body text */
+        --text-display:  #f0f0f0;   /* display headings */
+        --text-muted:    #9a9a9a;   /* co-op.us --co-text-muted */
+        --text-accent:   #b8b8b8;   /* co-op.us --co-text-secondary */
+        --text-nav:      #9a9a9a;   /* nav item text — legible by default */
+        --text-mid:      #b8b8b8;   /* nav hover / mid — co-op.us --co-text-secondary */
+        --text-3a5a:     #707070;   /* raised text */
+        --text-subdim:   #707070;   /* subdued */
+        --text-dim:      #707070;   /* dim */
+        --text-ghost:    #505050;   /* ghost */
+        --text-soft:     #b8b8b8;   /* soft */
+        --text-ccc:      #cccccc;   /* lighter */
+        --text-dim2a40:  #505050;   /* very dim */
 
         /* ── Hover overlays ───────────────────────── */
-        --hover-light:  rgba(255,255,255,0.04);
-        --hover-med:    rgba(255,255,255,0.06);
+        --hover-light:  rgba(255,255,255,0.05);
+        --hover-med:    rgba(255,255,255,0.08);
         --hover-dim:    rgba(255,255,255,0.03);
 
-        /* ── Gold accent ──────────────────────────── */
+        /* ── Gold accent — unchanged ──────────────── */
         --gold:    #c4956a;
         --gold-06: rgba(196,149,106,0.06);
         --gold-12: rgba(196,149,106,0.12);
@@ -76,24 +79,27 @@
         --gold-30: rgba(196,149,106,0.30);
         --gold-40: rgba(196,149,106,0.40);
 
-        /* ── Status palette ───────────────────────── */
-        --status-ok:      #4a5f4a;
-        --status-ok-bg:   rgba(74,95,74,0.15);
-        --status-warn:    #c4956a;
-        --status-warn-bg: rgba(196,149,106,0.15);
-        --status-err:     #c46a6a;
-        --status-err-bg:  rgba(196,106,106,0.15);
-        --status-info:    #6b836b;
-        --status-info-bg: rgba(107,131,107,0.15);
+        /* ── Status palette — co-op.us vivid system ── */
+        --status-ok:      #4ade80;   /* teal-green — co-op.us success */
+        --status-ok-bg:   rgba(74,222,128,0.10);
+        --status-warn:    #fbbf24;   /* amber — co-op.us warning */
+        --status-warn-bg: rgba(251,191,36,0.10);
+        --status-err:     #ef4444;   /* red — co-op.us error */
+        --status-err-bg:  rgba(239,68,68,0.10);
+        --status-info:    #8bbfff;   /* blue — co-op.us info */
+        --status-info-bg: rgba(139,191,255,0.10);
+        --status-teal:    #7ccfb8;   /* teal accent — co-op.us */
+        --status-purple:  #a78bfa;   /* purple accent — co-op.us */
+        --status-orange:  #fb923c;   /* orange — co-op.us */
 
-        /* ── HUD status aliases (legacy compat) ───── */
-        --hud-status-live:  #4a5f4a;
-        --hud-status-warn:  #c4956a;
-        --hud-status-error: #c46a6a;
-        --hud-status-info:  #6b836b;
+        /* ── HUD status aliases ───────────────────── */
+        --hud-status-live:  #4ade80;
+        --hud-status-warn:  #fbbf24;
+        --hud-status-error: #ef4444;
+        --hud-status-info:  #8bbfff;
 
-        /* ── Typography ───────────────────────────── */
-        --hud-mono: 'JetBrains Mono','IBM Plex Mono','Fira Code',Consolas,monospace;
+        /* ── Typography — IBM Plex Mono first ──────── */
+        --hud-mono: 'IBM Plex Mono','JetBrains Mono','Fira Code',Consolas,monospace;
         --hud-transition: 0.12s ease;
 
         /* ── Z-index ──────────────────────────────── */
@@ -103,43 +109,54 @@
         --hud-z-bar:      20;
       }
 
-      /* ── Light mode overrides ──────────────────────────────────────── */
+      /* ── Light mode overrides — co-op.us light palette ───────────── */
       [data-theme="light"] {
         /* App shell */
-        --app-bg:       #f7f5f0;
-        --hud-surface:  #ede8e0;
-        --hud-bar:      #ede8e0;
-        --hud-panel:    #f7f5f0;
-        --ink:          #e8e2d8;
-        --surface:      #f0ece4;
-        --panel:        #e4ddd3;
-        --raised:       #ddd7cc;
+        --app-bg:       #f5f3f0;   /* co-op.us --co-bg light */
+        --hud-surface:  #fffdf9;   /* co-op.us --co-nav-bg light */
+        --hud-bar:      #fffdf9;
+        --hud-panel:    #f5f3f0;
+        --ink:          #ebe8e2;
+        --surface:      #ffffff;   /* co-op.us --co-surface light */
+        --panel:        #f0ede8;   /* co-op.us --co-surface-hover light */
+        --raised:       #e8e4dd;
 
         /* Borders */
-        --hud-border:      #c8c2b8;
-        --hud-border-deep: #c8c2b8;
-        --border-nav:      #d0c9bc;
-        --border-mid:      #c8c2b8;
-        --border-hud2:     #c8c2b8;
+        --hud-border:      #d5cfc6;   /* co-op.us --co-border light */
+        --hud-border-deep: #c0b8ab;
+        --border-nav:      #ddd7ce;
+        --border-mid:      #d5cfc6;
+        --border-hud2:     #c0b8ab;
 
-        /* Glow washes — same (work on both) */
+        /* Text */
+        --text-primary:  #1a1a1a;   /* co-op.us --co-text light */
+        --text-page:     #1a1a1a;
+        --text-warm:     #333333;
+        --text-display:  #1a1a1a;
+        --text-muted:    #888888;   /* co-op.us --co-text-muted light */
+        --text-accent:   #555555;
+        --text-nav:      #555555;
+        --text-mid:      #666666;
+        --text-3a5a:     #888888;
+        --text-subdim:   #777777;
+        --text-dim:      #888888;
+        --text-ghost:    #aaaaaa;
+        --text-soft:     #777777;
+        --text-ccc:      #999999;
+        --text-dim2a40:  #aaaaaa;
 
-        /* Text — inverted warm scale */
-        --text-primary:  #1a1614;
-        --text-page:     #2a2520;
-        --text-warm:     #3a3530;
-        --text-display:  #1a1614;
-        --text-muted:    #6a6560;
-        --text-accent:   #5a5550;
-        --text-nav:      #5a5550;
-        --text-mid:      #6a6560;
-        --text-3a5a:     #8a8480;
-        --text-subdim:   #6a6560;
-        --text-dim:      #7a7570;
-        --text-ghost:    #8a8480;
-        --text-soft:     #8a8480;
-        --text-ccc:      #9a9490;
-        --text-dim2a40:  #8a8480;
+        /* Gold — darker for contrast on light */
+        --gold: #a07850;
+
+        /* Status — same vivid colors work on light too */
+        --status-ok:      #16a34a;
+        --status-ok-bg:   rgba(22,163,74,0.08);
+        --status-warn:    #d97706;
+        --status-warn-bg: rgba(217,119,6,0.08);
+        --status-err:     #dc2626;
+        --status-err-bg:  rgba(220,38,38,0.08);
+        --status-info:    #2563eb;
+        --status-info-bg: rgba(37,99,235,0.08);
 
         /* Hover overlays */
         --hover-light: rgba(0,0,0,0.03);
@@ -157,7 +174,7 @@
       }
       #root { min-height: 100vh; }
     </style>
-    <script type="module" crossorigin src="/intranet/assets/index-BsDKDPbf.js"></script>
+    <script type="module" crossorigin src="/intranet/assets/index-J5K8oXbq.js"></script>
   </head>
   <body>
     <div id="root"></div>

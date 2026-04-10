@@ -138,14 +138,14 @@ const loadingStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: 'var(--color-void, #0a0a0f)',
+  background: 'var(--app-bg)',
 }
 
 const spinnerStyle = {
   width: '32px',
   height: '32px',
   border: '3px solid rgba(200, 117, 51, 0.2)',
-  borderTopColor: 'var(--ember, #c4956a)',
+  borderTopColor: 'var(--gold)',
   borderRadius: '50%',
   animation: 'spin 0.8s linear infinite',
 }

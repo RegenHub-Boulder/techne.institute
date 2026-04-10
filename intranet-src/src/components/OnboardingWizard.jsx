@@ -166,7 +166,7 @@ const s = {
     padding: '1rem',
   },
   modal: {
-    background: 'var(--color-surface, #13131a)',
+    background: 'var(--surface)',
     border: '1px solid rgba(196, 149, 106, 0.18)',
     borderRadius: '12px',
     width: '100%',

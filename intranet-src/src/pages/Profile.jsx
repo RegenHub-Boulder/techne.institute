@@ -191,7 +191,7 @@ export default function Profile({ onRerunOnboarding }) {
                 placeholder="Brief bio"
                 rows={3}
               />
-              <span style={{ ...s.fieldNote, color: fields.bio.length > BIO_MAX ? '#f87171' : 'var(--text-dim, #555)' }}>
+              <span style={{ ...s.fieldNote, color: fields.bio.length > BIO_MAX ? '#f87171' : 'var(--text-dim)' }}>
                 {fields.bio.length}/{BIO_MAX}
               </span>
             </FieldRow>
@@ -331,7 +331,7 @@ function LockedRow({ label, value }) {
 const s = {
   page: { padding: '2rem', maxWidth: '560px' },
   card: {
-    background: 'var(--color-surface, #13131a)',
+    background: 'var(--surface)',
     border: '1px solid rgba(255,255,255,0.07)',
     borderRadius: '10px',
     padding: '1.75rem',
@@ -346,7 +346,7 @@ const s = {
     justifyContent: 'center', fontSize: '1.25rem', fontWeight: 700, flexShrink: 0,
   },
   avatarMeta: { display: 'flex', flexDirection: 'column', gap: '0.3rem', flex: 1 },
-  name: { fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary, #e8e0d4)' },
+  name: { fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)' },
   typeBadge: {
     fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase',
     color: 'var(--gold, #c4956a)', background: 'rgba(196,149,106,0.12)',
@@ -355,7 +355,7 @@ const s = {
   },
   editBtn: {
     background: 'none', border: '1px solid rgba(255,255,255,0.12)',
-    color: 'var(--text-secondary, #aaa)', fontSize: '0.8rem',
+    color: 'var(--text-accent)', fontSize: '0.8rem',
     padding: '0.35rem 0.85rem', borderRadius: '5px', cursor: 'pointer', flexShrink: 0,
   },
 
@@ -364,7 +364,7 @@ const s = {
   sectionBlock: { display: 'flex', flexDirection: 'column', gap: '0' },
   sectionHeader: {
     fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase',
-    color: 'var(--text-dim, #555)', marginBottom: '0.35rem',
+    color: 'var(--text-dim)', marginBottom: '0.35rem',
   },
   row: {
     display: 'grid', gridTemplateColumns: '100px 1fr', gap: '1rem', alignItems: 'baseline',
@@ -375,11 +375,11 @@ const s = {
     padding: '0.3rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
   },
   label: {
-    fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-dim, #666)',
+    fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-dim)',
     letterSpacing: '0.04em', textTransform: 'uppercase',
   },
-  value: { fontSize: '0.875rem', color: 'var(--text-secondary, #aaa)' },
-  bioValue: { fontSize: '0.875rem', color: 'var(--text-secondary, #aaa)', lineHeight: 1.55 },
+  value: { fontSize: '0.875rem', color: 'var(--text-accent)' },
+  bioValue: { fontSize: '0.875rem', color: 'var(--text-accent)', lineHeight: 1.55 },
 
   // Edit mode
   editForm: { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
@@ -389,14 +389,14 @@ const s = {
   },
   lockedLabel: {
     fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase',
-    color: 'var(--text-dim, #555)', marginBottom: '0.5rem',
+    color: 'var(--text-dim)', marginBottom: '0.5rem',
   },
   lockedGrid: { display: 'flex', flexDirection: 'column', gap: '0.15rem' },
   lockedRow: {
     display: 'grid', gridTemplateColumns: '90px 1fr', gap: '0.75rem',
   },
   lockedRowLabel: {
-    fontSize: '0.7rem', color: 'var(--text-dim, #555)', fontWeight: 600,
+    fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: 600,
     textTransform: 'uppercase', letterSpacing: '0.04em',
   },
   lockedRowValue: { fontSize: '0.8rem', color: 'rgba(200,192,182,0.5)' },
@@ -407,31 +407,31 @@ const s = {
   fieldRight: { display: 'flex', flexDirection: 'column', gap: '0.2rem' },
   input: {
     background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: '5px', color: 'var(--text-primary, #e8e0d4)',
+    borderRadius: '5px', color: 'var(--text-primary)',
     fontSize: '0.875rem', padding: '0.4rem 0.6rem', width: '100%',
     outline: 'none', boxSizing: 'border-box',
   },
   textarea: {
     background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: '5px', color: 'var(--text-primary, #e8e0d4)',
+    borderRadius: '5px', color: 'var(--text-primary)',
     fontSize: '0.875rem', padding: '0.4rem 0.6rem', width: '100%',
     outline: 'none', resize: 'vertical', fontFamily: 'inherit', boxSizing: 'border-box',
   },
   select: {
     background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: '5px', color: 'var(--text-primary, #e8e0d4)',
+    borderRadius: '5px', color: 'var(--text-primary)',
     fontSize: '0.875rem', padding: '0.4rem 0.6rem', width: '100%',
     outline: 'none', boxSizing: 'border-box', cursor: 'pointer',
   },
   inputError: { borderColor: 'rgba(248,113,113,0.5)' },
   textareaOver: { borderColor: 'rgba(248,113,113,0.5)' },
   fieldError: { fontSize: '0.7rem', color: '#f87171' },
-  fieldNote: { fontSize: '0.7rem', color: 'var(--text-dim, #555)' },
+  fieldNote: { fontSize: '0.7rem', color: 'var(--text-dim)' },
   error: { color: '#f87171', fontSize: '0.8rem', marginTop: '0.25rem' },
   formActions: { display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '0.75rem' },
   cancelBtn: {
     background: 'none', border: '1px solid rgba(255,255,255,0.12)',
-    color: 'var(--text-secondary, #aaa)', fontSize: '0.825rem',
+    color: 'var(--text-accent)', fontSize: '0.825rem',
     padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer',
   },
   saveBtn: {
@@ -446,16 +446,16 @@ const s = {
   section: { display: 'flex', flexDirection: 'column', gap: '0.6rem' },
   sectionTitle: {
     fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.06em',
-    textTransform: 'uppercase', color: 'var(--text-dim, #666)',
+    textTransform: 'uppercase', color: 'var(--text-dim)',
   },
-  sectionDesc: { margin: 0, fontSize: '0.825rem', color: 'var(--text-secondary, #aaa)', lineHeight: 1.55 },
+  sectionDesc: { margin: 0, fontSize: '0.825rem', color: 'var(--text-accent)', lineHeight: 1.55 },
   rerunBtn: {
     background: 'rgba(196,149,106,0.1)', border: '1px solid rgba(196,149,106,0.25)',
     color: 'var(--gold, #c4956a)', fontSize: '0.825rem', fontWeight: 600,
     padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer', alignSelf: 'flex-start',
   },
   confirmRow: { display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' },
-  confirmText: { fontSize: '0.825rem', color: 'var(--text-secondary, #aaa)' },
+  confirmText: { fontSize: '0.825rem', color: 'var(--text-accent)' },
   confirmBtn: {
     background: 'var(--gold, #c4956a)', border: 'none', color: '#0a0a0f',
     fontSize: '0.8rem', fontWeight: 700, padding: '0.4rem 0.9rem',
@@ -463,7 +463,7 @@ const s = {
   },
   cancelBtn2: {
     background: 'none', border: '1px solid rgba(255,255,255,0.12)',
-    color: 'var(--text-secondary, #aaa)', fontSize: '0.8rem',
+    color: 'var(--text-accent)', fontSize: '0.8rem',
     padding: '0.4rem 0.9rem', borderRadius: '5px', cursor: 'pointer',
   },
   signOutBtn: {

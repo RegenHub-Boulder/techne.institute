@@ -261,15 +261,15 @@ function LaborEntryModal({ participant, projects, fmvRates, onClose, onSave }) {
 }
 
 const styles = {
-  page: { minHeight: '100vh', background: 'var(--color-void, #0a0a0f)' },
+  page: { minHeight: '100vh', background: 'var(--app-bg)' },
   main: { maxWidth: '900px', margin: '0 auto', padding: '2rem' },
   breadcrumb: { fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem' },
-  breadLink: { color: 'var(--ember, #c4956a)', textDecoration: 'none' },
+  breadLink: { color: 'var(--gold)', textDecoration: 'none' },
   breadSep: { margin: '0 0.5rem' },
   pageHeader: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' },
   h1: { fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', margin: 0 },
   addBtn: {
-    padding: '0.5rem 1rem', background: 'var(--ember, #c4956a)',
+    padding: '0.5rem 1rem', background: 'var(--gold)',
     color: '#fff', border: 'none', borderRadius: '8px', fontSize: '0.875rem',
     fontWeight: 600, cursor: 'pointer',
   },
@@ -310,5 +310,5 @@ const styles = {
   fmvPreview: { background: 'var(--gold-06)', border: '1px solid rgba(196,149,106,0.2)', borderRadius: '6px', padding: '0.65rem 1rem', fontSize: '0.85rem', color: 'var(--text-ccc)', marginBottom: '1rem' },
   modalActions: { display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' },
   cancelBtn: { background: 'none', border: '1px solid #2a2a35', color: 'var(--text-muted)', borderRadius: '6px', padding: '0.5rem 1rem', fontSize: '0.875rem', cursor: 'pointer' },
-  submitBtn: { background: 'var(--ember, #c4956a)', border: 'none', color: '#fff', borderRadius: '6px', padding: '0.5rem 1rem', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' },
+  submitBtn: { background: 'var(--gold)', border: 'none', color: '#fff', borderRadius: '6px', padding: '0.5rem 1rem', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' },
 }
