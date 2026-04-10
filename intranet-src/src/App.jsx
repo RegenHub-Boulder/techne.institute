@@ -14,6 +14,7 @@ import AccountGroup from './pages/AccountGroup'
 import CooperativeGroup from './pages/CooperativeGroup'
 import FinanceGroup from './pages/FinanceGroup'
 import ReferenceGroup from './pages/ReferenceGroup'
+import Ecosystem from './pages/Ecosystem'
 
 // GitHub Pages SPA routing shim
 // On 404, GH Pages redirects to 404.html which encodes the path as ?p=/path
@@ -110,6 +111,7 @@ function Router() {
     PageComponent = <ReferenceGroup initialTab={path} />
   }
   // Standalone pages
+  else if (path === 'ecosystem')  PageComponent = <Ecosystem />
   else if (path === 'cloud')      PageComponent = <Cloud />
   else if (path === 'admin')      PageComponent = <Admin />
   else if (path === 'ventures')   PageComponent = <Ventures />

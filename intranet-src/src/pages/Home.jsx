@@ -309,6 +309,19 @@ export default function Home() {
             />
           </MetricCard>
 
+          {/* Ecosystem */}
+          <MetricCard
+            title="Ecosystem Health"
+            icon="○"
+            href="/intranet/ecosystem/"
+            color="var(--status-ok)"
+          >
+            <MetricValue
+              value="Formation"
+              sub="Treasury · Governance · Metrics"
+            />
+          </MetricCard>
+
           {/* REA Journal */}
           <MetricCard
             title="REA Journal"
