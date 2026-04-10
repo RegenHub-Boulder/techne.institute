@@ -111,7 +111,6 @@ function Router() {
     PageComponent = <ReferenceGroup initialTab={path} />
   }
   // Standalone pages
-  else if (path === 'ecosystem')  PageComponent = <Ecosystem />
   else if (path === 'cloud')      PageComponent = <Cloud />
   else if (path === 'admin')      PageComponent = <Admin />
   else if (path === 'ventures')   PageComponent = <Ventures />
@@ -119,7 +118,8 @@ function Router() {
     try { localStorage.removeItem(ONBOARDING_DISMISSED_KEY) } catch (_) {}
     setShowOnboarding(true)
   }} />
-  else                            PageComponent = <Home />
+  // Ecosystem is the primary landing — also handles 'ecosystem' path for direct links
+  else                            PageComponent = <Ecosystem />
 
   // Wrap all authenticated pages in HUD shell
   return <HUDLayout>{PageComponent}</HUDLayout>

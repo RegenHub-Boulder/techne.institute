@@ -34,13 +34,12 @@ const ICONS = {
 }
 
 const NAV_ITEMS = [
-  { path: '',            label: 'Dashboard',  icon: 'dashboard'  },
+  { path: '',            label: 'Ecosystem',  icon: 'ecosystem'  },
   { path: 'account',     label: 'Account',    icon: 'account'    },
   { path: 'projects',    label: 'Cooperative',icon: 'projects'   },
   { path: 'journal',     label: 'Finance',    icon: 'ledger'     },
   { path: 'cloud',       label: 'Cloud',      icon: 'cloud'      },
   { path: 'guide',       label: 'Reference',  icon: 'documents'  },
-  { path: 'ecosystem',   label: 'Ecosystem',  icon: 'ecosystem'  },
 ]
 
 const STEWARD_ITEMS = [
