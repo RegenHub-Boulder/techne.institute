@@ -269,54 +269,121 @@ function OverviewTab({ data }) {
 }
 
 // ─── Labor tab ────────────────────────────────────────────────────────────────
+// P392: upgraded to use labor_entries table via edge functions (labor-fmv-rates,
+// labor-entry-submit, labor-entry-list). Adds status lifecycle + realtime.
 
-function LaborTab({ data, reload }) {
-  const { contributions, projects, fmvRates, loading } = data
-  const { participant } = useAuth()
-  const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState({ date: '', hours: '', labor_type: 'operations', project_id: '', description: '' })
+const SUPABASE_EDGE = 'https://hvbdpgkdcdskhpbdeeim.supabase.co/functions/v1'
+
+const STATUS_STYLES = {
+  draft:     { bg: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)',  label: 'Draft'     },
+  submitted: { bg: 'rgba(196,149,106,0.14)', color: 'var(--gold)',            label: 'Submitted' },
+  approved:  { bg: 'rgba(80,180,120,0.14)',  color: 'var(--status-ok)',       label: 'Approved'  },
+  rejected:  { bg: 'rgba(220,60,60,0.14)',   color: 'var(--status-err)',      label: 'Rejected'  },
+}
+
+function StatusBadge({ status }) {
+  const s = STATUS_STYLES[status] || STATUS_STYLES.draft
+  return (
+    <span style={{
+      background: s.bg, color: s.color, border: `1px solid ${s.color}30`,
+      borderRadius: '4px', padding: '1px 7px', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.04em',
+    }}>
+      {s.label}
+    </span>
+  )
+}
+
+function LaborTab() {
+  const { session, participant } = useAuth()
+  const accessToken = session?.access_token
+
+  const [entries, setEntries]     = useState([])
+  const [rates, setRates]         = useState([])
+  const [entriesLoading, setEntriesLoading] = useState(true)
+  const [showForm, setShowForm]   = useState(false)
+  const [form, setForm]           = useState({ date: new Date().toISOString().slice(0,10), hours: '', labor_type: '', notes: '' })
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(null)
   const [dateFilter, setDateFilter] = useState('')
 
-  const filtered = contributions.filter(c => !dateFilter || c.date?.startsWith(dateFilter))
-  const totalHours = filtered.reduce((s, c) => s + parseFloat(c.hours || 0), 0)
-  const totalFmv   = filtered.reduce((s, c) => s + parseFloat(c.fmv_total || 0), 0)
-  const years = [...new Set(contributions.map(c => c.date?.slice(0, 4)).filter(Boolean))].sort().reverse()
+  // Load FMV rates from edge function (public — no JWT needed)
+  useEffect(() => {
+    fetch(`${SUPABASE_EDGE}/labor-fmv-rates`)
+      .then(r => r.json())
+      .then(d => {
+        const list = d.data ?? d ?? []
+        setRates(list)
+        if (list.length) setForm(f => ({ ...f, labor_type: f.labor_type || list[0].labor_type }))
+      })
+      .catch(() => {})
+  }, [])
 
+  // Load entries from edge function (requires JWT)
+  async function loadEntries() {
+    if (!accessToken) return
+    setEntriesLoading(true)
+    try {
+      const res = await fetch(`${SUPABASE_EDGE}/labor-entry-list`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      })
+      const d = await res.json()
+      setEntries(d.data ?? d ?? [])
+    } catch (_) {}
+    setEntriesLoading(false)
+  }
+
+  useEffect(() => { if (accessToken) loadEntries() }, [accessToken])
+
+  // Realtime: refresh on INSERT or UPDATE for own entries
+  useEffect(() => {
+    if (!participant?.id || !accessToken) return
+    const ch = supabase
+      .channel(`labor-entries-${participant.id}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'labor_entries', filter: `participant_id=eq.${participant.id}` }, loadEntries)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'labor_entries', filter: `participant_id=eq.${participant.id}` }, loadEntries)
+      .subscribe()
+    return () => supabase.removeChannel(ch)
+  }, [participant?.id, accessToken])
+
+  // Submit via edge function
   async function submit(e) {
     e.preventDefault()
     setSubmitting(true)
     setSubmitError(null)
-    const rate = fmvRates[form.labor_type] || 0
-    const fmv = parseFloat(form.hours || 0) * parseFloat(rate)
-    const { error } = await supabase.from('labor_contributions').insert({
-      participant_id: participant.id,
-      date: form.date,
-      hours: parseFloat(form.hours),
-      labor_type: form.labor_type,
-      project_id: form.project_id || null,
-      description: form.description || null,
-      fmv_rate: rate,
-      fmv_total: fmv,
-    })
-    if (error) { setSubmitError(error.message); setSubmitting(false); return }
-    setShowForm(false)
-    setForm({ date: '', hours: '', labor_type: 'operations', project_id: '', description: '' })
+    try {
+      const body = { date: form.date, labor_type: form.labor_type, hours: parseFloat(form.hours) }
+      if (form.notes.trim()) body.notes = form.notes.trim()
+      const res = await fetch(`${SUPABASE_EDGE}/labor-entry-submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify(body),
+      })
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}))
+        throw new Error(d.error || d.message || `HTTP ${res.status}`)
+      }
+      setShowForm(false)
+      setForm(f => ({ ...f, hours: '', notes: '' }))
+    } catch (err) {
+      setSubmitError(err.message)
+    }
     setSubmitting(false)
-    reload()
   }
+
+  const filtered  = entries.filter(e => !dateFilter || e.date?.startsWith(dateFilter))
+  const totalHours = filtered.reduce((s, e) => s + parseFloat(e.hours || 0), 0)
+  const totalFmv   = filtered.reduce((s, e) => s + parseFloat(e.total_fmv_usd || 0), 0)
+  const approvedFmv = filtered.filter(e => e.status === 'approved').reduce((s, e) => s + parseFloat(e.total_fmv_usd || 0), 0)
+  const years = [...new Set(entries.map(e => e.date?.slice(0,4)).filter(Boolean))].sort().reverse()
+  const currentRate = rates.find(r => r.labor_type === form.labor_type)
 
   return (
     <div>
       {/* Summary row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
         <StatBox label="Total Hours" value={fmtHrs(totalHours)} />
-        <StatBox label="Total FMV" value={fmtUSD(totalFmv)} color="var(--status-ok)" />
-        {Object.entries(LABOR_TYPE_LABELS).map(([type, label]) => {
-          const hrs = filtered.filter(c => c.labor_type === type).reduce((s, c) => s + parseFloat(c.hours || 0), 0)
-          return hrs > 0 ? <StatBox key={type} label={label} value={fmtHrs(hrs)} /> : null
-        })}
+        <StatBox label="Total FMV" value={fmtUSD(totalFmv)} />
+        <StatBox label="Approved FMV" value={fmtUSD(approvedFmv)} color="var(--status-ok)" />
       </div>
 
       {/* Controls */}
@@ -327,13 +394,15 @@ function LaborTab({ data, reload }) {
         >
           {showForm ? 'Cancel' : '+ Log Hours'}
         </button>
-        <div style={{ display: 'flex', gap: '0.35rem' }}>
-          {['', ...years].map(y => (
-            <button key={y || 'all'} onClick={() => setDateFilter(y)} style={{ padding: '0.3rem 0.6rem', background: dateFilter === y ? 'var(--gold-15)' : 'none', border: `1px solid ${dateFilter === y ? 'rgba(196,149,106,0.4)' : 'var(--hud-border)'}`, color: dateFilter === y ? 'var(--gold)' : 'var(--text-nav)', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
-              {y || 'All'}
-            </button>
-          ))}
-        </div>
+        {years.length > 0 && (
+          <div style={{ display: 'flex', gap: '0.35rem' }}>
+            {['', ...years].map(y => (
+              <button key={y || 'all'} onClick={() => setDateFilter(y)} style={{ padding: '0.3rem 0.6rem', background: dateFilter === y ? 'var(--gold-15)' : 'none', border: `1px solid ${dateFilter === y ? 'rgba(196,149,106,0.4)' : 'var(--hud-border)'}`, color: dateFilter === y ? 'var(--gold)' : 'var(--text-nav)', borderRadius: '4px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+                {y || 'All'}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Log form */}
@@ -342,35 +411,31 @@ function LaborTab({ data, reload }) {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '0.75rem', marginBottom: '0.75rem' }}>
             <div>
               <label style={labelStyle}>Date</label>
-              <input type="date" required value={form.date} onChange={e => setForm(f => ({...f, date: e.target.value}))} style={inputStyle} />
+              <input type="date" required value={form.date} max={new Date().toISOString().slice(0,10)} onChange={e => setForm(f => ({...f, date: e.target.value}))} style={inputStyle} />
             </div>
             <div>
               <label style={labelStyle}>Hours</label>
-              <input type="number" step="0.25" min="0.25" required value={form.hours} onChange={e => setForm(f => ({...f, hours: e.target.value}))} placeholder="0.0" style={inputStyle} />
+              <input type="number" step="0.25" min="0.25" max="24" required value={form.hours} onChange={e => setForm(f => ({...f, hours: e.target.value}))} placeholder="0.0" style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Type</label>
-              <select value={form.labor_type} onChange={e => setForm(f => ({...f, labor_type: e.target.value}))} style={inputStyle}>
-                {Object.entries(LABOR_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+              <label style={labelStyle}>Craft</label>
+              <select value={form.labor_type} onChange={e => setForm(f => ({...f, labor_type: e.target.value}))} style={inputStyle} required>
+                {rates.length === 0 && <option value="">Loading…</option>}
+                {rates.map(r => (
+                  <option key={r.id} value={r.labor_type}>
+                    {r.labor_type}{r.level ? ` (${r.level})` : ''} — {fmtUSD(r.hourly_rate)}/hr
+                  </option>
+                ))}
               </select>
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.75rem', marginBottom: '0.75rem' }}>
-            <div>
-              <label style={labelStyle}>Project (optional)</label>
-              <select value={form.project_id} onChange={e => setForm(f => ({...f, project_id: e.target.value}))} style={inputStyle}>
-                <option value="">None</option>
-                {data.projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-              </select>
-            </div>
-            <div>
-              <label style={labelStyle}>Notes</label>
-              <input type="text" value={form.description} onChange={e => setForm(f => ({...f, description: e.target.value}))} placeholder="What did you work on?" style={inputStyle} />
-            </div>
+          <div style={{ marginBottom: '0.75rem' }}>
+            <label style={labelStyle}>Notes (optional)</label>
+            <input type="text" value={form.notes} onChange={e => setForm(f => ({...f, notes: e.target.value}))} placeholder="What did you work on?" style={inputStyle} />
           </div>
-          {fmvRates[form.labor_type] && form.hours && (
+          {currentRate && form.hours && (
             <div style={{ fontSize: '0.78rem', color: 'var(--status-ok)', marginBottom: '0.75rem' }}>
-              FMV estimate: {fmtUSD(parseFloat(form.hours) * fmvRates[form.labor_type])} (${fmvRates[form.labor_type]}/hr × {form.hours} hrs)
+              FMV: {parseFloat(form.hours).toFixed(2)} hrs × {fmtUSD(currentRate.hourly_rate)}/hr = <strong>{fmtUSD(parseFloat(form.hours) * currentRate.hourly_rate)}</strong>
             </div>
           )}
           {submitError && <div style={{ color: 'var(--status-err)', fontSize: '0.8rem', marginBottom: '0.5rem' }}>{submitError}</div>}
@@ -380,12 +445,32 @@ function LaborTab({ data, reload }) {
         </form>
       )}
 
-      {/* Contribution list */}
+      {/* Entry list */}
       <div style={tableContainer}>
-        {filtered.length === 0
-          ? <div style={emptyStyle}>No contributions{dateFilter ? ` in ${dateFilter}` : ''} yet.</div>
-          : filtered.map(c => <ContribRow key={c.id} c={c} />)
-        }
+        {entriesLoading ? (
+          <div style={emptyStyle}>Loading…</div>
+        ) : filtered.length === 0 ? (
+          <div style={emptyStyle}>No entries{dateFilter ? ` in ${dateFilter}` : ''} yet.</div>
+        ) : (
+          <>
+            <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr 60px 95px 95px 80px', gap: '0.5rem', padding: '0.6rem 1rem', borderBottom: '1px solid #1a1a2e', fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text-nav)', fontWeight: 700 }}>
+              <span>Date</span><span>Craft</span><span style={{textAlign:'right'}}>Hrs</span><span style={{textAlign:'right'}}>Rate</span><span style={{textAlign:'right'}}>Total FMV</span><span style={{textAlign:'right'}}>Status</span>
+            </div>
+            {filtered.map(entry => (
+              <div key={entry.id} style={{ display: 'grid', gridTemplateColumns: '100px 1fr 60px 95px 95px 80px', gap: '0.5rem', padding: '0.8rem 1rem', borderBottom: '1px solid #111120', fontSize: '0.85rem', alignItems: 'center' }}>
+                <span style={{ color: 'var(--text-nav)', fontSize: '0.78rem' }}>{fmtDate(entry.date)}</span>
+                <span>
+                  <div>{entry.labor_type}</div>
+                  {entry.notes && <div style={{ fontSize: '0.72rem', color: 'var(--text-nav)', marginTop: '1px' }}>{entry.notes}</div>}
+                </span>
+                <span style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{parseFloat(entry.hours).toFixed(2)}</span>
+                <span style={{ textAlign: 'right', color: 'var(--text-nav)', fontSize: '0.78rem', fontVariantNumeric: 'tabular-nums' }}>{fmtUSD(entry.hourly_rate)}/hr</span>
+                <span style={{ textAlign: 'right', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{fmtUSD(entry.total_fmv_usd)}</span>
+                <span style={{ textAlign: 'right' }}><StatusBadge status={entry.status} /></span>
+              </div>
+            ))}
+          </>
+        )}
       </div>
     </div>
   )
@@ -513,7 +598,7 @@ export default function AccountGroup({ initialTab = 'overview' }) {
     >
       {tab === 'overview'  && <OverviewTab data={data} />}
       {tab === 'capital'   && <CapitalTab  data={data} />}
-      {tab === 'labor'     && <LaborTab    data={data} reload={reloadData} />}
+      {tab === 'labor'     && <LaborTab />}
       {tab === 'patronage' && <PatronageTab data={data} />}
     </TabShell>
   )
