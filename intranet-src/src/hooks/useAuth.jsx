@@ -34,7 +34,7 @@ export function AuthProvider({ children }) {
     // First: try direct auth_user_id link
     const { data, error } = await supabase
       .from('participants')
-      .select('id, name, email, participant_type, account_type, auth_user_id, onboarding_completed, role, bio, location')
+      .select('id, name, first_name, last_name, display_name, email, participant_type, account_type, auth_user_id, onboarding_completed, role, bio, location')
       .eq('auth_user_id', authUserId)
       .maybeSingle()
 
@@ -58,7 +58,7 @@ export function AuthProvider({ children }) {
 
     const { data: p2, error: e2 } = await supabase
       .from('participants')
-      .select('id, name, email, participant_type, account_type, auth_user_id, onboarding_completed, role, bio, location')
+      .select('id, name, first_name, last_name, display_name, email, participant_type, account_type, auth_user_id, onboarding_completed, role, bio, location')
       .eq('id', alias.participant_id)
       .maybeSingle()
 
@@ -67,6 +67,21 @@ export function AuthProvider({ children }) {
     } else {
       setParticipant(null)
     }
+  }
+
+  async function updateProfile(fields) {
+    if (!participant?.id) return { error: 'No participant' }
+    // Derive display_name from first/last if not explicitly provided
+    const updates = { ...fields }
+    if ((updates.first_name !== undefined || updates.last_name !== undefined) && updates.display_name === undefined) {
+      const first = updates.first_name ?? participant.first_name ?? ''
+      const last  = updates.last_name  ?? participant.last_name  ?? ''
+      updates.display_name = [first, last].filter(Boolean).join(' ') || participant.display_name
+      updates.name = updates.display_name // keep legacy name column in sync
+    }
+    const { error } = await supabase.from('participants').update(updates).eq('id', participant.id)
+    if (!error) setParticipant(p => p ? { ...p, ...updates } : p)
+    return { error }
   }
 
   async function markOnboardingComplete() {
@@ -117,11 +132,14 @@ export function AuthProvider({ children }) {
     loading: session === undefined || (session !== null && participant === undefined),
     signInWithEmail,
     signOut,
+    updateProfile,
     markOnboardingComplete,
     isAuthenticated: !!session,
     isSteward: participant?.participant_type === 'steward',
     isMember: participant?.participant_type === 'member',
     needsOnboarding: !!participant && participant.onboarding_completed === false,
+    // Preferred display name: display_name → full name → email prefix
+    displayName: participant?.display_name || participant?.name || participant?.email?.split('@')[0] || '',
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

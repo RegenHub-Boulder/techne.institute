@@ -134,7 +134,7 @@ function getStoredTheme() {
 }
 
 export function HUDLayout({ children }) {
-  const { participant, signOut, isSteward } = useAuth()
+  const { participant, displayName, signOut, isSteward } = useAuth()
   const isMobile = useIsMobile(768)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [theme, setTheme] = useState(getStoredTheme)
@@ -208,16 +208,16 @@ export function HUDLayout({ children }) {
           )}
         </div>
         <div style={s.statusRight}>
-          {participant?.name && (
+          {displayName && (
             <a
               href="/intranet/profile/"
-              onClick={e => { e.preventDefault(); window.history.pushState(null, '', '/intranet/profile/'); window.dispatchEvent(new PopStateEvent('popstate')) }}
+              onClick={e => { e.preventDefault(); navigate('profile') }}
               style={s.statusUser}
               title="My Profile"
               onMouseEnter={e => e.currentTarget.style.color = 'var(--gold)'}
               onMouseLeave={e => e.currentTarget.style.color = 'var(--text-nav)'}
             >
-              {participant.name.split(' ')[0]}
+              {displayName}
               {isSteward && <span style={s.stewardPip}>steward</span>}
             </a>
           )}
