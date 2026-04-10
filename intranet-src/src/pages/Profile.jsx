@@ -16,6 +16,9 @@ const MEMBERSHIP_LABELS = {
   4: 'Class 4',
 }
 
+const CRAFT_OPTIONS = ['', 'Code', 'Word', 'Water', 'Earth', 'Fire', 'Air']
+const BIO_MAX = 500
+
 // Convert array value (from DB) to a comma-separated display string
 function arrToStr(val) {
   if (!val) return ''
@@ -40,6 +43,7 @@ export default function Profile({ onRerunOnboarding }) {
     first_name:      participant?.first_name      || '',
     last_name:       participant?.last_name       || '',
     display_name:    participant?.display_name    || '',
+    email:           participant?.email           || '',
     bio:             participant?.bio             || '',
     location:        participant?.location        || '',
     affiliation:     participant?.affiliation     || '',
@@ -48,6 +52,7 @@ export default function Profile({ onRerunOnboarding }) {
     skills:          arrToStr(participant?.skills),
     interests:       arrToStr(participant?.interests),
   })
+  const [emailError, setEmailError] = useState(null)
 
   if (!participant) return null
 
@@ -68,6 +73,12 @@ export default function Profile({ onRerunOnboarding }) {
   }
 
   async function handleSave() {
+    // Validate email
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)
+    if (!emailOk) { setEmailError('Enter a valid email address'); return }
+    setEmailError(null)
+    // Validate bio length
+    if (fields.bio.length > BIO_MAX) { setSaveError(`Bio must be ${BIO_MAX} characters or fewer`); return }
     setSaving(true)
     setSaveError(null)
     const updates = {
@@ -86,6 +97,7 @@ export default function Profile({ onRerunOnboarding }) {
       first_name:      participant.first_name      || '',
       last_name:       participant.last_name       || '',
       display_name:    participant.display_name    || '',
+      email:           participant.email           || '',
       bio:             participant.bio             || '',
       location:        participant.location        || '',
       affiliation:     participant.affiliation     || '',
@@ -94,6 +106,7 @@ export default function Profile({ onRerunOnboarding }) {
       skills:          arrToStr(participant.skills),
       interests:       arrToStr(participant.interests),
     })
+    setEmailError(null)
     setSaveError(null)
     setEditing(false)
   }
@@ -124,7 +137,6 @@ export default function Profile({ onRerunOnboarding }) {
                 <LockedRow label="Type"       value={typeLabel} />
                 <LockedRow label="Account"    value={participant.account_type || '—'} />
                 <LockedRow label="Membership" value={membershipLabel} />
-                <LockedRow label="Email"      value={participant.email || '—'} />
               </div>
             </div>
 
@@ -140,12 +152,28 @@ export default function Profile({ onRerunOnboarding }) {
               <span style={s.fieldNote}>Auto-derived from First + Last</span>
             </FieldRow>
 
+            {/* Email */}
+            <FieldRow label="Email">
+              <input
+                style={{ ...s.input, ...(emailError ? s.inputError : {}) }}
+                value={fields.email}
+                onChange={e => { handleField('email', e.target.value); setEmailError(null) }}
+                placeholder="email@example.com"
+                type="email"
+              />
+              {emailError && <span style={s.fieldError}>{emailError}</span>}
+            </FieldRow>
+
             {/* Craft */}
             <FieldRow label="Craft (primary)">
-              <input style={s.input} value={fields.craft_primary} onChange={e => handleField('craft_primary', e.target.value)} placeholder="e.g. Engineering, Design, Writing" />
+              <select style={s.select} value={fields.craft_primary} onChange={e => handleField('craft_primary', e.target.value)}>
+                {CRAFT_OPTIONS.map(o => <option key={o} value={o}>{o || '— select —'}</option>)}
+              </select>
             </FieldRow>
             <FieldRow label="Craft (secondary)">
-              <input style={s.input} value={fields.craft_secondary} onChange={e => handleField('craft_secondary', e.target.value)} placeholder="Secondary craft or discipline" />
+              <select style={s.select} value={fields.craft_secondary} onChange={e => handleField('craft_secondary', e.target.value)}>
+                {CRAFT_OPTIONS.map(o => <option key={o} value={o}>{o || '— none —'}</option>)}
+              </select>
             </FieldRow>
 
             {/* Context */}
@@ -156,7 +184,16 @@ export default function Profile({ onRerunOnboarding }) {
               <input style={s.input} value={fields.affiliation} onChange={e => handleField('affiliation', e.target.value)} placeholder="Organization or studio" />
             </FieldRow>
             <FieldRow label="Bio">
-              <textarea style={s.textarea} value={fields.bio} onChange={e => handleField('bio', e.target.value)} placeholder="Brief bio" rows={3} />
+              <textarea
+                style={{ ...s.textarea, ...(fields.bio.length > BIO_MAX ? s.textareaOver : {}) }}
+                value={fields.bio}
+                onChange={e => handleField('bio', e.target.value)}
+                placeholder="Brief bio"
+                rows={3}
+              />
+              <span style={{ ...s.fieldNote, color: fields.bio.length > BIO_MAX ? '#f87171' : 'var(--text-dim, #555)' }}>
+                {fields.bio.length}/{BIO_MAX}
+              </span>
             </FieldRow>
 
             {/* Arrays */}
@@ -380,6 +417,15 @@ const s = {
     fontSize: '0.875rem', padding: '0.4rem 0.6rem', width: '100%',
     outline: 'none', resize: 'vertical', fontFamily: 'inherit', boxSizing: 'border-box',
   },
+  select: {
+    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+    borderRadius: '5px', color: 'var(--text-primary, #e8e0d4)',
+    fontSize: '0.875rem', padding: '0.4rem 0.6rem', width: '100%',
+    outline: 'none', boxSizing: 'border-box', cursor: 'pointer',
+  },
+  inputError: { borderColor: 'rgba(248,113,113,0.5)' },
+  textareaOver: { borderColor: 'rgba(248,113,113,0.5)' },
+  fieldError: { fontSize: '0.7rem', color: '#f87171' },
   fieldNote: { fontSize: '0.7rem', color: 'var(--text-dim, #555)' },
   error: { color: '#f87171', fontSize: '0.8rem', marginTop: '0.25rem' },
   formActions: { display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '0.75rem' },
