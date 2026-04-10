@@ -6,6 +6,27 @@ const TYPE_LABELS = {
   member:   'Member',
   investor: 'Investor',
   ally:     'Ally',
+  guest:    'Guest',
+}
+
+const MEMBERSHIP_LABELS = {
+  1: 'Class 1',
+  2: 'Class 2',
+  3: 'Class 3',
+  4: 'Class 4',
+}
+
+// Convert array value (from DB) to a comma-separated display string
+function arrToStr(val) {
+  if (!val) return ''
+  if (Array.isArray(val)) return val.join(', ')
+  return String(val)
+}
+
+// Convert comma-separated string back to array for DB update
+function strToArr(str) {
+  if (!str || !str.trim()) return []
+  return str.split(',').map(s => s.trim()).filter(Boolean)
 }
 
 export default function Profile({ onRerunOnboarding }) {
@@ -16,17 +37,22 @@ export default function Profile({ onRerunOnboarding }) {
   const [showRerunConfirm, setShowRerunConfirm] = useState(false)
 
   const [fields, setFields] = useState({
-    first_name:   participant?.first_name   || '',
-    last_name:    participant?.last_name    || '',
-    display_name: participant?.display_name || '',
-    role:         participant?.role         || '',
-    bio:          participant?.bio          || '',
-    location:     participant?.location     || '',
+    first_name:      participant?.first_name      || '',
+    last_name:       participant?.last_name       || '',
+    display_name:    participant?.display_name    || '',
+    bio:             participant?.bio             || '',
+    location:        participant?.location        || '',
+    affiliation:     participant?.affiliation     || '',
+    craft_primary:   participant?.craft_primary   || '',
+    craft_secondary: participant?.craft_secondary || '',
+    skills:          arrToStr(participant?.skills),
+    interests:       arrToStr(participant?.interests),
   })
 
   if (!participant) return null
 
-  const typeLabel = TYPE_LABELS[participant.participant_type] || participant.participant_type || 'Participant'
+  const typeLabel       = TYPE_LABELS[participant.participant_type]       || participant.participant_type       || 'Participant'
+  const membershipLabel = MEMBERSHIP_LABELS[participant.membership_class] || (participant.membership_class ? `Class ${participant.membership_class}` : '—')
   const initials = displayName
     ? displayName.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase()
     : '?'
@@ -34,7 +60,6 @@ export default function Profile({ onRerunOnboarding }) {
   function handleField(key, val) {
     setFields(f => {
       const next = { ...f, [key]: val }
-      // Auto-derive display_name from first+last unless manually overridden
       if (key === 'first_name' || key === 'last_name') {
         next.display_name = [next.first_name, next.last_name].filter(Boolean).join(' ')
       }
@@ -45,7 +70,12 @@ export default function Profile({ onRerunOnboarding }) {
   async function handleSave() {
     setSaving(true)
     setSaveError(null)
-    const { error } = await updateProfile(fields)
+    const updates = {
+      ...fields,
+      skills:    strToArr(fields.skills),
+      interests: strToArr(fields.interests),
+    }
+    const { error } = await updateProfile(updates)
     setSaving(false)
     if (error) { setSaveError('Save failed. Try again.'); return }
     setEditing(false)
@@ -53,12 +83,16 @@ export default function Profile({ onRerunOnboarding }) {
 
   function handleCancel() {
     setFields({
-      first_name:   participant.first_name   || '',
-      last_name:    participant.last_name    || '',
-      display_name: participant.display_name || '',
-      role:         participant.role         || '',
-      bio:          participant.bio          || '',
-      location:     participant.location     || '',
+      first_name:      participant.first_name      || '',
+      last_name:       participant.last_name       || '',
+      display_name:    participant.display_name    || '',
+      bio:             participant.bio             || '',
+      location:        participant.location        || '',
+      affiliation:     participant.affiliation     || '',
+      craft_primary:   participant.craft_primary   || '',
+      craft_secondary: participant.craft_secondary || '',
+      skills:          arrToStr(participant.skills),
+      interests:       arrToStr(participant.interests),
     })
     setSaveError(null)
     setEditing(false)
@@ -67,6 +101,7 @@ export default function Profile({ onRerunOnboarding }) {
   return (
     <div style={s.page}>
       <div style={s.card}>
+
         {/* Avatar + name header */}
         <div style={s.avatarRow}>
           <div style={s.avatar}>{initials}</div>
@@ -79,9 +114,21 @@ export default function Profile({ onRerunOnboarding }) {
           )}
         </div>
 
-        {/* Fields */}
+        {/* Fields — view or edit */}
         {editing ? (
           <div style={s.editForm}>
+            {/* Locked identity block */}
+            <div style={s.lockedBlock}>
+              <div style={s.lockedLabel}>Account — read only</div>
+              <div style={s.lockedGrid}>
+                <LockedRow label="Type"       value={typeLabel} />
+                <LockedRow label="Account"    value={participant.account_type || '—'} />
+                <LockedRow label="Membership" value={membershipLabel} />
+                <LockedRow label="Email"      value={participant.email || '—'} />
+              </div>
+            </div>
+
+            {/* Editable name */}
             <FieldRow label="First Name">
               <input style={s.input} value={fields.first_name} onChange={e => handleField('first_name', e.target.value)} placeholder="First name" />
             </FieldRow>
@@ -90,20 +137,38 @@ export default function Profile({ onRerunOnboarding }) {
             </FieldRow>
             <FieldRow label="Display Name">
               <input style={s.input} value={fields.display_name} onChange={e => handleField('display_name', e.target.value)} placeholder="How your name appears" />
-              <span style={s.fieldNote}>Defaults to First + Last</span>
+              <span style={s.fieldNote}>Auto-derived from First + Last</span>
             </FieldRow>
-            <FieldRow label="Email">
-              <span style={{ ...s.value, opacity: 0.5 }}>{participant.email || '—'}</span>
+
+            {/* Craft */}
+            <FieldRow label="Craft (primary)">
+              <input style={s.input} value={fields.craft_primary} onChange={e => handleField('craft_primary', e.target.value)} placeholder="e.g. Engineering, Design, Writing" />
             </FieldRow>
-            <FieldRow label="Role">
-              <input style={s.input} value={fields.role} onChange={e => handleField('role', e.target.value)} placeholder="Your role" />
+            <FieldRow label="Craft (secondary)">
+              <input style={s.input} value={fields.craft_secondary} onChange={e => handleField('craft_secondary', e.target.value)} placeholder="Secondary craft or discipline" />
             </FieldRow>
+
+            {/* Context */}
             <FieldRow label="Location">
               <input style={s.input} value={fields.location} onChange={e => handleField('location', e.target.value)} placeholder="City, region" />
+            </FieldRow>
+            <FieldRow label="Affiliation">
+              <input style={s.input} value={fields.affiliation} onChange={e => handleField('affiliation', e.target.value)} placeholder="Organization or studio" />
             </FieldRow>
             <FieldRow label="Bio">
               <textarea style={s.textarea} value={fields.bio} onChange={e => handleField('bio', e.target.value)} placeholder="Brief bio" rows={3} />
             </FieldRow>
+
+            {/* Arrays */}
+            <FieldRow label="Skills">
+              <input style={s.input} value={fields.skills} onChange={e => handleField('skills', e.target.value)} placeholder="Comma-separated list" />
+              <span style={s.fieldNote}>e.g. React, SQL, facilitation</span>
+            </FieldRow>
+            <FieldRow label="Interests">
+              <input style={s.input} value={fields.interests} onChange={e => handleField('interests', e.target.value)} placeholder="Comma-separated list" />
+              <span style={s.fieldNote}>e.g. governance, regenerative finance, ceramics</span>
+            </FieldRow>
+
             {saveError && <div style={s.error}>{saveError}</div>}
             <div style={s.formActions}>
               <button style={s.cancelBtn} onClick={handleCancel} disabled={saving}>Cancel</button>
@@ -114,17 +179,48 @@ export default function Profile({ onRerunOnboarding }) {
           </div>
         ) : (
           <div style={s.detailGrid}>
-            <ProfileRow label="First Name"    value={participant.first_name   || '—'} />
-            <ProfileRow label="Last Name"     value={participant.last_name    || '—'} />
-            <ProfileRow label="Display Name"  value={participant.display_name || '—'} />
-            <ProfileRow label="Email"         value={participant.email        || '—'} />
-            <ProfileRow label="Role"          value={participant.role         || '—'} />
-            <ProfileRow label="Location"      value={participant.location     || '—'} />
-            {participant.bio && (
-              <div style={s.bioRow}>
-                <span style={s.label}>Bio</span>
-                <span style={s.bioValue}>{participant.bio}</span>
-              </div>
+            {/* Identity — non-editable */}
+            <ProfileSection label="Account">
+              <ProfileRow label="Type"         value={typeLabel} />
+              <ProfileRow label="Account"      value={participant.account_type || '—'} />
+              <ProfileRow label="Membership"   value={membershipLabel} />
+              <ProfileRow label="Email"        value={participant.email || '—'} />
+            </ProfileSection>
+
+            {/* Name */}
+            <ProfileSection label="Name">
+              <ProfileRow label="First"        value={participant.first_name   || '—'} />
+              <ProfileRow label="Last"         value={participant.last_name    || '—'} />
+              <ProfileRow label="Display"      value={participant.display_name || '—'} />
+            </ProfileSection>
+
+            {/* Craft + context */}
+            <ProfileSection label="Craft">
+              <ProfileRow label="Primary"      value={participant.craft_primary   || '—'} />
+              <ProfileRow label="Secondary"    value={participant.craft_secondary || '—'} />
+            </ProfileSection>
+
+            <ProfileSection label="Context">
+              <ProfileRow label="Location"     value={participant.location    || '—'} />
+              <ProfileRow label="Affiliation"  value={participant.affiliation || '—'} />
+              {participant.bio && (
+                <div style={s.wideRow}>
+                  <span style={s.label}>Bio</span>
+                  <span style={s.bioValue}>{participant.bio}</span>
+                </div>
+              )}
+            </ProfileSection>
+
+            {/* Arrays */}
+            {(participant.skills?.length > 0 || participant.interests?.length > 0) && (
+              <ProfileSection label="Background">
+                {participant.skills?.length > 0 && (
+                  <ProfileRow label="Skills"     value={arrToStr(participant.skills)} />
+                )}
+                {participant.interests?.length > 0 && (
+                  <ProfileRow label="Interests"  value={arrToStr(participant.interests)} />
+                )}
+              </ProfileSection>
             )}
           </div>
         )}
@@ -134,9 +230,7 @@ export default function Profile({ onRerunOnboarding }) {
         {/* Orientation */}
         <div style={s.section}>
           <div style={s.sectionTitle}>Orientation</div>
-          <p style={s.sectionDesc}>
-            Re-run the intranet orientation to revisit the cooperative structure and navigation guide.
-          </p>
+          <p style={s.sectionDesc}>Re-run the intranet orientation to revisit the cooperative structure and navigation guide.</p>
           {showRerunConfirm ? (
             <div style={s.confirmRow}>
               <span style={s.confirmText}>Re-run orientation?</span>
@@ -153,6 +247,17 @@ export default function Profile({ onRerunOnboarding }) {
           <button style={s.signOutBtn} onClick={signOut}>Sign out</button>
         </div>
       </div>
+    </div>
+  )
+}
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function ProfileSection({ label, children }) {
+  return (
+    <div style={s.sectionBlock}>
+      <div style={s.sectionHeader}>{label}</div>
+      {children}
     </div>
   )
 }
@@ -174,6 +279,17 @@ function FieldRow({ label, children }) {
     </div>
   )
 }
+
+function LockedRow({ label, value }) {
+  return (
+    <div style={s.lockedRow}>
+      <span style={s.lockedRowLabel}>{label}</span>
+      <span style={s.lockedRowValue}>{value}</span>
+    </div>
+  )
+}
+
+// ─── Styles ───────────────────────────────────────────────────────────────────
 
 const s = {
   page: { padding: '2rem', maxWidth: '560px' },
@@ -205,14 +321,21 @@ const s = {
     color: 'var(--text-secondary, #aaa)', fontSize: '0.8rem',
     padding: '0.35rem 0.85rem', borderRadius: '5px', cursor: 'pointer', flexShrink: 0,
   },
-  detailGrid: { display: 'flex', flexDirection: 'column', gap: '0.4rem' },
-  row: {
-    display: 'grid', gridTemplateColumns: '110px 1fr', gap: '1rem', alignItems: 'baseline',
-    padding: '0.35rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
+
+  // View mode
+  detailGrid: { display: 'flex', flexDirection: 'column', gap: '1.25rem' },
+  sectionBlock: { display: 'flex', flexDirection: 'column', gap: '0' },
+  sectionHeader: {
+    fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase',
+    color: 'var(--text-dim, #555)', marginBottom: '0.35rem',
   },
-  bioRow: {
-    display: 'grid', gridTemplateColumns: '110px 1fr', gap: '1rem',
-    padding: '0.35rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
+  row: {
+    display: 'grid', gridTemplateColumns: '100px 1fr', gap: '1rem', alignItems: 'baseline',
+    padding: '0.3rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
+  },
+  wideRow: {
+    display: 'grid', gridTemplateColumns: '100px 1fr', gap: '1rem',
+    padding: '0.3rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
   },
   label: {
     fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-dim, #666)',
@@ -220,7 +343,26 @@ const s = {
   },
   value: { fontSize: '0.875rem', color: 'var(--text-secondary, #aaa)' },
   bioValue: { fontSize: '0.875rem', color: 'var(--text-secondary, #aaa)', lineHeight: 1.55 },
+
+  // Edit mode
   editForm: { display: 'flex', flexDirection: 'column', gap: '0.5rem' },
+  lockedBlock: {
+    background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+    borderRadius: '6px', padding: '0.75rem', marginBottom: '0.5rem',
+  },
+  lockedLabel: {
+    fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase',
+    color: 'var(--text-dim, #555)', marginBottom: '0.5rem',
+  },
+  lockedGrid: { display: 'flex', flexDirection: 'column', gap: '0.15rem' },
+  lockedRow: {
+    display: 'grid', gridTemplateColumns: '90px 1fr', gap: '0.75rem',
+  },
+  lockedRowLabel: {
+    fontSize: '0.7rem', color: 'var(--text-dim, #555)', fontWeight: 600,
+    textTransform: 'uppercase', letterSpacing: '0.04em',
+  },
+  lockedRowValue: { fontSize: '0.8rem', color: 'rgba(200,192,182,0.5)' },
   fieldRow: {
     display: 'grid', gridTemplateColumns: '110px 1fr', gap: '1rem', alignItems: 'start',
     padding: '0.3rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
@@ -252,6 +394,8 @@ const s = {
     borderRadius: '6px', cursor: 'pointer',
   },
   saveBtnDisabled: { opacity: 0.6, cursor: 'default' },
+
+  // Bottom sections
   divider: { height: '1px', background: 'rgba(255,255,255,0.06)', margin: '1.25rem 0' },
   section: { display: 'flex', flexDirection: 'column', gap: '0.6rem' },
   sectionTitle: {
