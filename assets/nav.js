@@ -54,8 +54,6 @@ class TechneNav extends HTMLElement {
 
   _publicLinks() {
     return [
-      { key: 'introduction', label: 'Introduction', href: '/introduction/' },
-      { key: 'formation',    label: 'Formation',    href: '/formation/' },
       { key: 'membership',   label: 'Membership',   href: '/membership/' },
       { key: 'about',        label: 'About',        href: '/about/' },
     ];
