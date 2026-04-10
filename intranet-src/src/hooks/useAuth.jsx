@@ -34,7 +34,7 @@ export function AuthProvider({ children }) {
     // First: try direct auth_user_id link
     const { data, error } = await supabase
       .from('participants')
-      .select('id, name, email, participant_type, account_type, auth_user_id')
+      .select('id, name, email, participant_type, account_type, auth_user_id, onboarding_completed, role, bio, location')
       .eq('auth_user_id', authUserId)
       .maybeSingle()
 
@@ -58,7 +58,7 @@ export function AuthProvider({ children }) {
 
     const { data: p2, error: e2 } = await supabase
       .from('participants')
-      .select('id, name, email, participant_type, account_type, auth_user_id')
+      .select('id, name, email, participant_type, account_type, auth_user_id, onboarding_completed, role, bio, location')
       .eq('id', alias.participant_id)
       .maybeSingle()
 
@@ -66,6 +66,17 @@ export function AuthProvider({ children }) {
       setParticipant(p2)
     } else {
       setParticipant(null)
+    }
+  }
+
+  async function markOnboardingComplete() {
+    if (!participant?.id) return
+    const { error } = await supabase
+      .from('participants')
+      .update({ onboarding_completed: true })
+      .eq('id', participant.id)
+    if (!error) {
+      setParticipant(p => p ? { ...p, onboarding_completed: true } : p)
     }
   }
 
@@ -106,9 +117,11 @@ export function AuthProvider({ children }) {
     loading: session === undefined || (session !== null && participant === undefined),
     signInWithEmail,
     signOut,
+    markOnboardingComplete,
     isAuthenticated: !!session,
     isSteward: participant?.participant_type === 'steward',
     isMember: participant?.participant_type === 'member',
+    needsOnboarding: !!participant && participant.onboarding_completed === false,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

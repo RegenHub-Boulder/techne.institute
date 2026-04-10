@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { AuthProvider, useAuth } from './hooks/useAuth.jsx'
 import { HUDLayout } from './components/HUDLayout.jsx'
+import OnboardingWizard from './components/OnboardingWizard.jsx'
 import Login from './pages/Login'
 import Home from './pages/Home'
 import Cloud from './pages/Cloud'
@@ -8,6 +9,7 @@ import Admin from './pages/Admin'
 import FAQ from './pages/FAQ'
 import NotLinked from './pages/NotLinked'
 import Ventures from './pages/Ventures'
+import Profile from './pages/Profile'
 import AccountGroup from './pages/AccountGroup'
 import CooperativeGroup from './pages/CooperativeGroup'
 import FinanceGroup from './pages/FinanceGroup'
@@ -27,8 +29,12 @@ function resolveInitialPath() {
 }
 
 function Router() {
-  const { loading, isAuthenticated, participant } = useAuth()
+  const { loading, isAuthenticated, participant, needsOnboarding, markOnboardingComplete } = useAuth()
   const [path, setPath] = useState(resolveInitialPath)
+  // showOnboarding: true when needsOnboarding first resolves, or when user requests rerun
+  const [showOnboarding, setShowOnboarding] = useState(false)
+  // Track whether we've synced initial onboarding state after auth loads
+  const [onboardingChecked, setOnboardingChecked] = useState(false)
 
   // Listen for popstate (browser back/forward)
   useEffect(() => {
@@ -38,6 +44,16 @@ function Router() {
     window.addEventListener('popstate', handler)
     return () => window.removeEventListener('popstate', handler)
   }, [])
+
+  // Once auth finishes loading and we have a participant, check if onboarding is needed
+  useEffect(() => {
+    if (!loading && participant && !onboardingChecked) {
+      setOnboardingChecked(true)
+      if (needsOnboarding) {
+        setShowOnboarding(true)
+      }
+    }
+  }, [loading, participant, needsOnboarding, onboardingChecked])
 
   // Loading spinner
   if (loading) {
@@ -56,6 +72,15 @@ function Router() {
 
   // Authenticated but no participant record linked
   if (!participant) return <NotLinked />
+
+  // Show onboarding wizard (first-login or re-run)
+  if (showOnboarding) {
+    return (
+      <OnboardingWizard
+        onComplete={() => setShowOnboarding(false)}
+      />
+    )
+  }
 
   // Resolve page component — grouped views
   let PageComponent
@@ -81,6 +106,7 @@ function Router() {
   else if (path === 'cloud')      PageComponent = <Cloud />
   else if (path === 'admin')      PageComponent = <Admin />
   else if (path === 'ventures')   PageComponent = <Ventures />
+  else if (path === 'profile')    PageComponent = <Profile onRerunOnboarding={() => setShowOnboarding(true)} />
   else                            PageComponent = <Home />
 
   // Wrap all authenticated pages in HUD shell

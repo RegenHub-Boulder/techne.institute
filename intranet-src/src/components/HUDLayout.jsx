@@ -203,10 +203,17 @@ export function HUDLayout({ children }) {
         </div>
         <div style={s.statusRight}>
           {participant?.name && (
-            <span style={s.statusUser}>
+            <a
+              href="/intranet/profile/"
+              onClick={e => { e.preventDefault(); window.history.pushState(null, '', '/intranet/profile/'); window.dispatchEvent(new PopStateEvent('popstate')) }}
+              style={s.statusUser}
+              title="My Profile"
+              onMouseEnter={e => e.currentTarget.style.color = 'var(--gold)'}
+              onMouseLeave={e => e.currentTarget.style.color = 'var(--text-nav)'}
+            >
               {participant.name.split(' ')[0]}
               {isSteward && <span style={s.stewardPip}>steward</span>}
-            </span>
+            </a>
           )}
           <button
             onClick={toggleTheme}
@@ -387,10 +394,13 @@ const s = {
   },
   statusUser: {
     fontSize: '0.75rem',
-    color: 'var(--text-accent)',
+    color: 'var(--text-nav)',
     display: 'flex',
     alignItems: 'center',
     gap: '0.35rem',
+    textDecoration: 'none',
+    cursor: 'pointer',
+    transition: 'color 0.12s',
   },
   stewardPip: {
     background: 'var(--gold-15)',
