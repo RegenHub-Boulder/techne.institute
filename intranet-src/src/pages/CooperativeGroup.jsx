@@ -141,7 +141,7 @@ function MembersTab() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    supabase.from('participants').select('id, name, email, participant_type, account_type, membership_class, craft').order('name')
+    supabase.from('participants').select('id, name, email, participant_type, account_type, membership_class, craft_primary').order('name')
     .then(({ data, error }) => {
       if (error) setError(error.message)
       else setMembers(data || [])
@@ -151,7 +151,7 @@ function MembersTab() {
 
   const filtered = members.filter(m => {
     const q = search.toLowerCase()
-    return !q || m.name?.toLowerCase().includes(q) || m.craft?.toLowerCase().includes(q) || m.participant_type?.toLowerCase().includes(q)
+    return !q || m.name?.toLowerCase().includes(q) || m.craft_primary?.toLowerCase().includes(q) || m.participant_type?.toLowerCase().includes(q)
   })
 
   return (
@@ -171,7 +171,7 @@ function MembersTab() {
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-primary)', marginBottom: '0.2rem' }}>{m.name || '—'}</div>
-              {m.craft && <div style={{ fontSize: '0.78rem', color: 'var(--text-accent)', marginBottom: '0.4rem' }}>{m.craft}</div>}
+              {m.craft_primary && <div style={{ fontSize: '0.78rem', color: 'var(--text-accent)', marginBottom: '0.4rem' }}>{m.craft_primary}</div>}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
                 {m.participant_type && <Badge label={m.participant_type} />}
                 {m.membership_class && <Badge label={MEMBER_CLASS[m.membership_class] || `Class ${m.membership_class}`} color="var(--gold)" />}
