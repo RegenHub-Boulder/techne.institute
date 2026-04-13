@@ -107,10 +107,37 @@ function GuideTab() {
     setLoading(false)
   }
 
-  // Minimal markdown → HTML
+  // Markdown → HTML
+  // Handles: HTML comments (strip), %%GOLD%%/%%HIGHLIGHT%% blockquotes, plain blockquotes,
+  // headings, bold/italic, links [text](url), lists, hr, paragraphs.
   function renderMarkdown(md) {
     if (!md) return ''
-    let html = md
+
+    // 1. Strip HTML comments (<!-- PROPOSED: ... -->, <!-- DECIDE: ... -->, etc.)
+    let text = md.replace(/<!--[\s\S]*?-->/g, '')
+
+    // 2. Capture blockquote groups before > gets HTML-escaped.
+    //    U+E000 (private-use) used as a safe delimiter — won't appear in markdown content.
+    const BQ = '\uE000'
+    const bqStore = []
+    text = text.replace(/(?:^>[ \t]?[^\n]*(?:\n|$))+/gm, match => {
+      const lines = match.replace(/\n$/, '').split('\n').map(l => l.replace(/^>[ \t]?/, ''))
+      const first = lines[0] || ''
+      let type = 'plain', contentLines = lines
+      if (first.startsWith('%%GOLD%%')) {
+        type = 'gold'
+        contentLines = [first.replace(/^%%GOLD%%\s*/, ''), ...lines.slice(1)]
+      } else if (first.startsWith('%%HIGHLIGHT%%')) {
+        type = 'highlight'
+        contentLines = [first.replace(/^%%HIGHLIGHT%%\s*/, ''), ...lines.slice(1)]
+      }
+      const i = bqStore.length
+      bqStore.push({ type, content: contentLines.join('\n') })
+      return `${BQ}${i}${BQ}\n`
+    })
+
+    // 3. HTML escape + block/inline transforms
+    let html = text
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
       .replace(/^### (.+)$/gm,  '<h3>$1</h3>')
@@ -119,6 +146,7 @@ function GuideTab() {
       .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
       .replace(/\*\*(.+?)\*\*/g,     '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g,         '<em>$1</em>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:var(--gold)">$1</a>')
       .replace(/^- (.+)$/gm, '<li>$1</li>')
       .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
       .replace(/^---+$/gm, '<hr>')
@@ -126,10 +154,38 @@ function GuideTab() {
 
     html = html.replace(/(<li>.*?<\/li>(\n<li>.*?<\/li>)*)/gs, '<ul>$1</ul>')
 
-    return `<p>${html}</p>`
+    html = `<p>${html}</p>`
       .replace(/<p><h/g, '<h').replace(/<\/h([1-4])><\/p>/g, '</h$1>')
       .replace(/<p><hr><\/p>/g, '<hr>')
       .replace(/<p><ul>/g, '<ul>').replace(/<\/ul><\/p>/g, '</ul>')
+
+    if (!bqStore.length) return html
+
+    // 4. Inline markdown for blockquote content (re-runs bold/italic/links on inner text)
+    function inlineMd(raw) {
+      return raw
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">$1</a>')
+        .replace(/\n/g, '<br>')
+    }
+
+    // Unwrap placeholders from <p> tags, then render each blockquote
+    html = html.replace(new RegExp('<p>\\s*' + BQ + '(\\d+)' + BQ + '\\s*</p>', 'g'), BQ + '$1' + BQ)
+
+    return html.replace(new RegExp(BQ + '(\\d+)' + BQ, 'g'), (_, i) => {
+      const { type, content } = bqStore[+i]
+      const inner = inlineMd(content)
+      if (type === 'gold') {
+        return `<div style="margin:1.5rem 0;padding:1.1rem 1.4rem;background:rgba(196,149,106,0.08);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;font-size:0.95rem;color:var(--text-warm);line-height:1.75">${inner}</div>`
+      }
+      if (type === 'highlight') {
+        return `<div style="margin:0.85rem 0;padding:0.85rem 1.1rem;background:rgba(255,255,255,0.04);border-left:2px solid rgba(255,255,255,0.15);border-radius:0 4px 4px 0;font-size:0.9rem;color:var(--text-soft);line-height:1.65">${inner}</div>`
+      }
+      return `<blockquote style="margin:1rem 0;padding:0.6rem 0.6rem 0.6rem 1rem;border-left:2px solid rgba(255,255,255,0.12);color:var(--text-muted);font-size:0.9rem;line-height:1.6">${inner}</blockquote>`
+    })
   }
 
   function getHeadings(md) {
