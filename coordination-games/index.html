@@ -57,6 +57,13 @@
     text-decoration: none; flex-shrink: 0;
   }
   .nav-brand:hover { color: var(--gold); text-decoration: none; }
+  .nav-techne-back {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; opacity: 0.7;
+    transition: opacity 0.15s;
+  }
+  .nav-techne-back:hover { opacity: 1; color: var(--gold); }
   .nav-links {
     display: flex; align-items: stretch; list-style: none; gap: 0; height: 100%; flex: 1;
   }
@@ -543,7 +550,8 @@
 <!-- Nav -->
 <nav class="site-nav">
   <div class="site-nav-inner">
-    <a href="#" class="nav-brand">Coordination Games</a>
+    <a href="/" class="nav-techne-back">← Techne</a>
+    <a href="coordination-games/" class="nav-brand">Coordination Games</a>
     <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
     <ul class="nav-links" id="nav-links">
       <li><a href="#what-it-is">About</a></li>
