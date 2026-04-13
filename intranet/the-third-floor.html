@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Third Floor / A Techne Scenario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface-2: #222222;
+    --border: #333333;
+    --accent: #c4956a;
+    --accent-soft: rgba(196, 149, 106, 0.12);
+    --moss: #7a9478;
+    --moss-soft: rgba(122, 148, 120, 0.08);
+    --text: #e8e4dc;
+    --text-soft: #c8c3b8;
+    --muted: #999999;
+    --serif: 'Libre Baskerville', Georgia, serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 64px 32px 112px;
+  }
+
+  /* Masthead */
+  .masthead {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0 12px;
+    margin-bottom: 72px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .masthead .left { text-align: left; }
+  .masthead .center { text-align: center; color: var(--accent); font-weight: 500; }
+  .masthead .right { text-align: right; }
+
+  /* Hero */
+  .hero { margin-bottom: 88px; }
+
+  .hero .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .hero .kicker::before {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(50px, 8vw, 100px);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin-bottom: 32px;
+  }
+  h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
+
+  .hero .subtitle {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--accent);
+    line-height: 1.4;
+    margin-bottom: 36px;
+    max-width: 640px;
+  }
+
+  .hero .standfirst {
+    max-width: 680px;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--text-soft);
+  }
+  .hero .standfirst strong { color: var(--text); font-weight: 700; }
+
+  .hero-meta {
+    margin-top: 44px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 22px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .hero-meta div .label { color: var(--muted); display: block; margin-bottom: 5px; }
+  .hero-meta div .value { color: var(--text); font-weight: 500; font-size: 12px; letter-spacing: 0.04em; }
+
+  /* Prologue */
+  .prologue {
+    margin-bottom: 88px;
+    padding: 44px 36px;
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    position: relative;
+  }
+  .prologue::before {
+    content: "PROLOGUE";
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.26em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .prologue p {
+    font-size: 17px;
+    line-height: 1.75;
+    margin-bottom: 16px;
+    max-width: 680px;
+    color: var(--text-soft);
+  }
+  .prologue p:last-child { margin-bottom: 0; }
+
+  /* Sections */
+  section {
+    margin-bottom: 96px;
+    scroll-margin-top: 40px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 22px;
+    margin-bottom: 14px;
+  }
+  .section-head .num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 500;
+    flex: 0 0 auto;
+    padding-top: 12px;
+  }
+  .section-head .act {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--moss);
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(32px, 4.8vw, 48px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    max-width: 720px;
+  }
+  h2 em { font-style: italic; font-weight: 400; color: var(--accent); }
+
+  h3 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-style: italic;
+    font-size: 21px;
+    color: var(--text);
+    margin: 40px 0 14px;
+  }
+
+  p {
+    margin-bottom: 22px;
+    max-width: 680px;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-soft);
+  }
+
+  p.first::first-letter {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 0.85;
+    float: left;
+    margin: 8px 10px 0 0;
+    color: var(--accent);
+  }
+
+  em { font-style: italic; }
+  strong { font-weight: 700; color: var(--text); }
+
+  /* Pullquote */
+  .pullquote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 26px;
+    line-height: 1.3;
+    color: var(--text);
+    padding: 40px 0 40px 34px;
+    margin: 52px 0;
+    max-width: 760px;
+    border-left: 2px solid var(--accent);
+  }
+
+  /* Transcripts */
+  .transcript {
+    margin: 36px 0 40px;
+    max-width: 720px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 30px 30px 24px;
+    position: relative;
+  }
+  .transcript::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -10px;
+    left: 22px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .transcript::after {
+    content: attr(data-time);
+    position: absolute;
+    top: -9px;
+    right: 22px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+
+  .turn {
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .turn:last-child { border-bottom: none; }
+
+  .turn .speaker {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .turn.member .speaker { color: var(--accent); }
+  .turn.system .speaker { color: var(--moss); }
+
+  .turn.member .utterance {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--text);
+    padding-left: 14px;
+    border-left: 2px solid var(--accent);
+  }
+  .turn.system .utterance {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--text-soft);
+    padding-left: 14px;
+    border-left: 2px solid var(--moss);
+  }
+  .turn.system .utterance .accent {
+    color: var(--moss);
+    font-weight: 500;
+  }
+
+  /* Under the hood blocks */
+  .underneath {
+    max-width: 720px;
+    margin: 26px 0 32px;
+    padding: 22px 24px;
+    background: var(--moss-soft);
+    border-left: 3px solid var(--moss);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+  .underneath::before {
+    content: "TECHNE \00B7 UNDER THE HOOD";
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: var(--moss);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .underneath ul {
+    list-style: none;
+    margin: 0;
+  }
+  .underneath li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+    color: var(--text-soft);
+  }
+  .underneath li::before {
+    content: "\00B7";
+    position: absolute;
+    left: 0;
+    color: var(--moss);
+    font-weight: 700;
+  }
+  .underneath .tag {
+    display: inline-block;
+    background: var(--moss);
+    color: var(--bg);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 1px 7px;
+    border-radius: 2px;
+    margin-right: 6px;
+    font-weight: 600;
+    vertical-align: middle;
+  }
+
+  /* Doc refs */
+  .doc-ref {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin: 2px 4px 2px 0;
+    font-weight: 500;
+  }
+  .doc-refs {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    padding: 14px 0 0;
+    margin-top: 24px;
+    border-top: 1px dashed var(--border);
+    max-width: 720px;
+  }
+  .doc-refs .label {
+    color: var(--accent);
+    font-weight: 600;
+    margin-right: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+
+  /* Figures */
+  figure {
+    margin: 52px 0;
+    padding: 44px 26px 26px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  figure::before {
+    content: attr(data-fig);
+    position: absolute;
+    top: -9px;
+    left: 22px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  figcaption {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+    text-align: center;
+  }
+  svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+
+  /* Closing */
+  .closing {
+    margin-top: 104px;
+    padding: 56px 44px;
+    background: var(--surface);
+    color: var(--text);
+    position: relative;
+    border: 1px solid var(--border);
+  }
+  .closing::before,
+  .closing::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+  }
+  .closing::before {
+    top: -1px; left: -1px;
+    border-top: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+  }
+  .closing::after {
+    bottom: -1px; right: -1px;
+    border-bottom: 2px solid var(--accent);
+    border-right: 2px solid var(--accent);
+  }
+  .closing .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 22px;
+  }
+  .closing h2 { color: var(--text); margin-bottom: 22px; }
+  .closing p { color: var(--text-soft); font-size: 17px; max-width: 680px; }
+  .closing .sig {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 32px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 64px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer .living { color: var(--accent); }
+  footer .living::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.25); }
+  }
+
+  @media (max-width: 680px) {
+    .wrap { padding: 48px 22px 80px; }
+    body { font-size: 16px; }
+    p { font-size: 16px; }
+    figure { padding: 34px 14px 22px; }
+    .transcript { padding: 26px 18px 20px; }
+    .prologue { padding: 36px 22px; }
+    .closing { padding: 40px 24px; }
+    .pullquote { font-size: 20px; padding: 28px 0 28px 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="left">Techne / RegenHub PB LCA</div>
+    <div class="center">End-to-End Scenario &middot; Case Study</div>
+    <div class="right">TCH-CSE-001</div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="kicker">One situation, traced through the whole stack.</div>
+    <h1>The<br><em>Third Floor</em>.</h1>
+    <p class="subtitle">
+      How a real opportunity at 1515 Walnut Street enters Techne, moves through
+      the foundations and lenses, and leaves behind a navigable history the
+      cooperative can learn from.
+    </p>
+    <p class="standfirst">
+      This is a case study, not a specification. It walks one scenario, the
+      third-floor lease opportunity RegenHub faced in April 2026, through the
+      full design science cycle and every part of the Techne stack, so that
+      the four companion documents stop being four separate artifacts and
+      start being one coherent system. <strong>If the corpus holds together,
+      it should hold together here.</strong>
+    </p>
+    <div class="hero-meta">
+      <div><span class="label">Scenario</span><span class="value">Third-Floor Lease</span></div>
+      <div><span class="label">Duration</span><span class="value">Six Weeks</span></div>
+      <div><span class="label">Stack coverage</span><span class="value">All tiers</span></div>
+      <div><span class="label">Status</span><span class="value">v0.2 / Illustrative</span></div>
+    </div>
+  </section>
+
+  <!-- PROLOGUE -->
+  <div class="prologue">
+    <p>
+      It is early April 2026. RegenHub has been leasing the second floor at
+      1515 Walnut Street in Boulder for fifteen months. Lynn, the building
+      owner, has approached Todd with an offer: the third floor is coming
+      vacant in June, and she is offering it to RegenHub first before listing
+      it publicly.
+    </p>
+    <p>
+      This is an opportunity and a constraint at once. Expanding the footprint
+      would let the cooperative grow membership, host larger events, and
+      generate new revenue streams, directly relevant to the monthly recurring
+      revenue target Kevin Owocki has set for June 2027. Not expanding would
+      mean missing a rare chance at contiguous space in a prime location. The
+      working members hear about it at a Thursday stand-up. Within an hour,
+      the question is already shaping itself into something the cooperative
+      has to decide on.
+    </p>
+    <p>
+      What follows is the story of how that question enters Techne, moves
+      through the stack, meets resistance, produces a resolution, and leaves
+      learning behind. Every beat is labeled with the document it exercises.
+      The point is not to show that Techne can handle a lease negotiation.
+      The point is to show that when it does, the trace it leaves is itself
+      the most valuable thing produced.
+    </p>
+  </div>
+
+  <!-- ACT I: NOTICE -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;1</span>
+      <div>
+        <span class="act">Act One &middot; Notice</span>
+        <h2>A concern, <em>named out loud</em>.</h2>
+      </div>
+    </div>
+
+    <p class="first">
+      That evening, walking home from the coworking space, Todd opens Techne
+      on his phone and speaks into it. He does not draft an email to the
+      operations working group. He does not open a wiki page. He does not fill
+      out a form called "new concern." He describes what happened, in roughly
+      the way he would describe it to a colleague over coffee.
+    </p>
+
+    <div class="transcript" data-label="TRANSCRIPT &middot; ACT I" data-time="Thu Apr 3 &middot; 18:22 MST">
+      <div class="turn member">
+        <div class="speaker">Todd &middot; spoken</div>
+        <div class="utterance">Lynn is offering us the third floor of 1515 Walnut. I need to flag this as something we have to decide on soon. Route it to the operations working group and say we should have a preliminary recommendation in about two weeks.</div>
+      </div>
+      <div class="turn system">
+        <div class="speaker">Techne &middot; response</div>
+        <div class="utterance">I'll log an open question under operations: <span class="accent">"Third-floor lease opportunity, decision required."</span> I'll mark it time-sensitive and notify the operations stewards. I'll also draft a commitment that the working group will produce a preliminary recommendation by <span class="accent">April 17</span>. That draft will stay pending until at least two working group members confirm it. Sound right?</div>
+      </div>
+      <div class="turn member">
+        <div class="speaker">Todd &middot; spoken</div>
+        <div class="utterance">Yes. Go ahead.</div>
+      </div>
+    </div>
+
+    <p>
+      Nothing financial has happened yet. No money has moved. No lease has been
+      signed. But in Techne's terms, the scenario is now real. It has a name,
+      a deadline, a routing, and a draft commitment waiting for counterparty
+      affirmation. This is the first movement of the design science cycle,
+      noticing a real constraint and putting it in language the whole
+      membership can recognize.
+    </p>
+
+    <div class="underneath">
+      <ul>
+        <li><span class="tag">EVENT</span>concern_raised: "third-floor lease opportunity" &middot; routed: operations WG &middot; time-sensitive: true</li>
+        <li><span class="tag">COMMITMENT</span>draft: "operations WG produces preliminary recommendation by 2026-04-17" &middot; status: pending_affirmation</li>
+        <li><span class="tag">AGENTS</span>provider: Todd (member) &middot; receiver: operations_working_group</li>
+        <li><span class="tag">LAYER</span>commitment layer &middot; not yet operational &middot; no treasury impact</li>
+      </ul>
+    </div>
+
+    <div class="doc-refs">
+      <span class="label">Exercised:</span>
+      <span class="doc-ref">Gateway &sect;3 &middot; Notice</span>
+      <span class="doc-ref">Speak &sect;2 &middot; Voice Loop</span>
+      <span class="doc-ref">Toolbox &middot; Agreements (foundation)</span>
+    </div>
+  </section>
+
+  <!-- ACT II: DESIGN -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;2</span>
+      <div>
+        <span class="act">Act Two &middot; Design</span>
+        <h2>The working group <em>takes shape</em>.</h2>
+      </div>
+    </div>
+
+    <p class="first">
+      Over the next four days, three working group members, Savannah, Cameron,
+      and Aaron, each receive the draft commitment in their Techne feed. Each
+      of them affirms it by voice, and the commitment moves from pending to
+      active. They split up the research during a short call. Savannah will
+      investigate comparable Boulder coworking leases. Cameron will model
+      financial scenarios against the MRR target. Aaron will reach out to Lynn
+      for detailed terms. Each of these sub-commitments is voiced into Techne
+      as they agree to them. None of them fills out a form.
+    </p>
+
+    <p>
+      The following Tuesday, the four of them meet in person on the second
+      floor. The meeting runs ninety minutes. Afterward, Aaron uploads the
+      transcript from the meeting recording into Techne, and the agent goes
+      to work on it.
+    </p>
+
+    <div class="underneath">
+      <ul>
+        <li><span class="tag">SOURCE</span>meeting_transcript_2026-04-08.txt &middot; 92 min &middot; 4 participants</li>
+        <li><span class="tag">EXTRACTED</span>3 labor-hour events &middot; 4 new commitments &middot; 1 proposed decision &middot; 2 learning artifacts</li>
+        <li><span class="tag">REVIEW</span>candidates queued for steward confirmation &middot; nothing committed yet</li>
+      </ul>
+    </div>
+
+    <p>
+      When the stewards review the extraction the next morning, most of it is
+      confirmed on the spot. One commitment is adjusted (the LLM misinterpreted
+      "end of next week" as April 17 when the group actually meant April 24).
+      One of the learning artifacts is flagged for further review because it
+      references a market comparable that nobody can verify from the transcript
+      alone. The proposed decision, that the working group will formally
+      recommend pursuing the lease, is queued for governance voting.
+    </p>
+
+    <div class="pullquote">
+      The transcript did not replace the working group's judgment.
+      It replaced the tedious editorial pass that used to stand between
+      having a meeting and having a record of it.
+    </div>
+
+    <p>
+      The governance proposal goes out to the full membership the following day:
+      <em>"Should RegenHub enter into lease negotiations for the third floor
+      of 1515 Walnut Street, with authority delegated to the operations working
+      group for terms within a defined scope?"</em> Voting opens for seventy-two
+      hours. Votes are weighted by membership class as defined in the bylaws.
+      The proposal passes with seventy-eight percent support. The decision is
+      recorded as an event that references the proposal, every vote cast, and
+      the policy under which the vote occurred.
+    </p>
+
+    <div class="underneath">
+      <ul>
+        <li><span class="tag">EVENT</span>decision: "pursue third-floor lease negotiations" &middot; outcome: approved</li>
+        <li><span class="tag">POLICY REF</span>delegation_authority_v2 &middot; scope: lease_negotiation_terms</li>
+        <li><span class="tag">COMMITMENT</span>working group authorized as negotiating agent &middot; scope-bounded</li>
+        <li><span class="tag">LAYER</span>governance event linked to every vote-event from membership</li>
+      </ul>
+    </div>
+
+    <div class="doc-refs">
+      <span class="label">Exercised:</span>
+      <span class="doc-ref">Gateway &sect;3 &middot; Design</span>
+      <span class="doc-ref">REA Spec &sect;4 &middot; Three Layers</span>
+      <span class="doc-ref">Speak &sect;4 &middot; Transcript Ingestion</span>
+      <span class="doc-ref">Toolbox &middot; Governance (lens)</span>
+    </div>
+  </section>
+
+  <!-- ACT III: BUILD & TEST -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;3</span>
+      <div>
+        <span class="act">Act Three &middot; Build &amp; Test</span>
+        <h2>Reality <em>pushes back</em>.</h2>
+      </div>
+    </div>
+
+    <p class="first">
+      Todd begins formal negotiations with Lynn. Over three weeks, there are
+      six meetings. Each produces a transcript. Each transcript gets uploaded
+      and processed. The event log accumulates: labor-hours spent on negotiation,
+      draft clauses proposed and revised, communications logged. A lease draft
+      emerges, version by version, each one linked to the commitments that
+      shaped it.
+    </p>
+
+    <p>
+      Halfway through, a snag arises. Jon, a member who has not been directly
+      involved in the working group but who reviews major decisions, flags a
+      concern in Techne. He speaks it on a Monday morning.
+    </p>
+
+    <div class="transcript" data-label="TRANSCRIPT &middot; ACT III" data-time="Mon Apr 21 &middot; 09:14 MST">
+      <div class="turn member">
+        <div class="speaker">Jon &middot; spoken</div>
+        <div class="utterance">I don't think the working group has authority to accept this rent escalation clause. That wasn't in the scope of the original proposal. I want to flag a dispute on the version of the draft lease from last Thursday.</div>
+      </div>
+      <div class="turn system">
+        <div class="speaker">Techne &middot; response</div>
+        <div class="utterance">I'll record a <span class="accent">dispute-event</span> referencing the <span class="accent">draft lease version 4</span>, specifically the rent escalation clause. Your concern is that it exceeds the scope delegated by the April 13 governance decision. I'll route this to a <span class="accent">restorative circle</span> with you, Todd, and one neutral steward. The working group's negotiation activities will not be paused automatically. You can request that separately if you want. Should I?</div>
+      </div>
+      <div class="turn member">
+        <div class="speaker">Jon &middot; spoken</div>
+        <div class="utterance">Yes. Pause negotiations until the circle meets.</div>
+      </div>
+    </div>
+
+    <p>
+      This is where the REA substrate earns its keep. Jon's flag does not
+      delete or edit any prior record. It is a new event that references the
+      disputed version of the draft and the policy it allegedly exceeds. The
+      working group's prior activity remains fully intact in the ledger. The
+      restorative circle is scheduled. Negotiations pause. Everyone involved
+      can see exactly what is being disputed and why. This is also exactly
+      what Subchapter K compliance demands of the book capital account side
+      of the ledger: no silent rewrites, no hidden corrections, every
+      adjustment traceable to a specific event.
+    </p>
+
+    <div class="underneath">
+      <ul>
+        <li><span class="tag">DISPUTE</span>raised by: Jon &middot; references: draft_lease_v4 &middot; scope_violation_claim</li>
+        <li><span class="tag">EVENT</span>negotiation_pause &middot; provider: dispute process &middot; scope: lease_negotiation</li>
+        <li><span class="tag">ROUTING</span>restorative_circle &middot; participants: Jon, Todd, neutral_steward</li>
+        <li><span class="tag">PRESERVED</span>draft_lease_v4 unchanged &middot; prior commitments unchanged &middot; full history navigable</li>
+      </ul>
+    </div>
+
+    <p>
+      The circle happens on Tuesday morning. It runs forty minutes. The steward
+      facilitates. Jon names his concern. Todd acknowledges that the working
+      group had been operating on an implicit assumption about scope that the
+      original proposal did not cover. Jon's concern is legitimate. The
+      resolution: a supplementary governance proposal will be submitted to the
+      full membership to explicitly authorize the broader scope, and lease
+      negotiations will remain paused until that proposal resolves. Jon's flag
+      is recorded as having caught a real gap, not as an obstruction.
+    </p>
+
+    <p>
+      The supplementary proposal is voiced into Techne, goes out to members,
+      and passes three days later with eighty-three percent support, higher
+      than the original proposal, because Jon's flag had surfaced something
+      the membership wanted to weigh in on. Negotiations resume with adjusted
+      authority. A final lease is drafted. Lynn signs the paper version.
+      Treasury records the security deposit as a real event, with Lynn named
+      as counterparty and the payment projected into the Xero chart of accounts
+      for the accountant's review. The working group members each voice-confirm
+      that the commitment has been fulfilled. The original draft commitment,
+      now six weeks old, moves from active to complete.
+    </p>
+
+    <div class="underneath">
+      <ul>
+        <li><span class="tag">RESOLUTION</span>restorative_circle outcome: supplementary proposal &middot; scope clarified</li>
+        <li><span class="tag">GOVERNANCE</span>proposal_v2 &middot; approved 83% &middot; new scope policy in effect</li>
+        <li><span class="tag">EVENT</span>security_deposit paid &middot; resource: USD &middot; counterparty: Lynn &middot; posted to Xero</li>
+        <li><span class="tag">FULFILLED</span>original commitment chain &middot; complete &middot; linked to 47 downstream events</li>
+      </ul>
+    </div>
+
+    <div class="doc-refs">
+      <span class="label">Exercised:</span>
+      <span class="doc-ref">REA Spec &sect;3 &middot; Duality</span>
+      <span class="doc-ref">REA Spec &sect;2 &middot; Immutability</span>
+      <span class="doc-ref">Toolbox &middot; Reconciliation (lens)</span>
+      <span class="doc-ref">Toolbox &middot; Treasury (foundation)</span>
+    </div>
+  </section>
+
+  <!-- ACT IV: LEARN -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;4</span>
+      <div>
+        <span class="act">Act Four &middot; Learn</span>
+        <h2>What the cycle <em>gives back</em>.</h2>
+      </div>
+    </div>
+
+    <p class="first">
+      Two weeks after signing, the working group holds a retrospective. It
+      runs about an hour. Savannah uploads the transcript. Techne extracts the
+      usual events and commitments, labor-hours contributed, task-closures,
+      follow-up items. But the richer output is a learning artifact the group
+      deliberately produces: a document titled <em>Lessons from Commercial
+      Real Estate Negotiation as a Colorado PB LCA</em>, linked to every
+      event, every commitment, every dispute, and every decision that led
+      to it.
+    </p>
+
+    <p>
+      The artifact covers four things. What they learned about
+      cooperative-friendly lease structures, including specific clauses that
+      worked and specific ones that required negotiation. The pattern of Jon's
+      intervention, generalized as "scope drift in delegated working groups,
+      and how to catch it early." How the restorative circle worked in
+      practice, and whether it would scale to higher-stakes disputes. And
+      what they would do differently the next time.
+    </p>
+
+    <div class="pullquote">
+      The learning did not evaporate when the meeting ended. It is now
+      a navigable artifact linked to everything that produced it.
+    </div>
+
+    <p>
+      A steward tags the artifact for export into the Techne pattern library.
+      Anonymized, with identifying details removed, it becomes available to
+      other organizations running Techne. A cooperative in Oregon, six months
+      later, starts its own lease negotiation and finds RegenHub's hard-won
+      lessons already loaded as relevant precedent. The cooperative in Oregon
+      does not know RegenHub. RegenHub does not know about the cooperative
+      in Oregon. But the learning crossed the gap anyway, which is what the
+      commons contribution framing of RegenHub's public benefit statement
+      actually means in practice.
+    </p>
+
+    <div class="underneath">
+      <ul>
+        <li><span class="tag">ARTIFACT</span>learning_doc &middot; "Lessons from CRE Negotiation as a PB LCA"</li>
+        <li><span class="tag">LINKAGES</span>47 events &middot; 12 commitments &middot; 3 decisions &middot; 1 dispute &middot; 1 resolution</li>
+        <li><span class="tag">PATTERN</span>"scope drift in delegated WG" &middot; tagged for library export</li>
+        <li><span class="tag">EXPORTED</span>anonymized &middot; visible to other Techne deployments as precedent</li>
+      </ul>
+    </div>
+
+    <div class="doc-refs">
+      <span class="label">Exercised:</span>
+      <span class="doc-ref">Gateway &sect;3 &middot; Learn</span>
+      <span class="doc-ref">Toolbox &middot; Learning (lens)</span>
+      <span class="doc-ref">Gateway &middot; Public Benefit</span>
+    </div>
+  </section>
+
+  <!-- §5 AFTERMATH -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;5</span>
+      <div>
+        <span class="act">Aftermath</span>
+        <h2>What Techne <em>now holds</em>.</h2>
+      </div>
+    </div>
+
+    <p>
+      Six weeks after Todd's first voice utterance on that April evening, the
+      scenario has left a particular shape in the ledger. Everything below is
+      queryable, navigable, and linked. A new member reading the record in a
+      year will be able to reconstruct the entire story from any entry point,
+      following the dispute back to the proposal, the proposal forward to
+      the policy change, the policy change to the resolved lease, and the
+      lease to the learning artifact that made sense of the whole thing.
+    </p>
+
+    <figure data-fig="FIG. 01">
+      <svg viewBox="0 0 820 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig1title">
+        <title id="fig1title">The cluster of records left behind by the third-floor lease scenario</title>
+
+        <!-- Legend -->
+        <g transform="translate(40, 18)">
+          <rect x="0" y="0" width="12" height="10" fill="#1a1a1a" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="20" y="9" font-family="IBM Plex Mono, monospace" font-size="9" fill="#999999" letter-spacing="0.8">foundation record</text>
+          <rect x="140" y="0" width="12" height="10" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="160" y="9" font-family="IBM Plex Mono, monospace" font-size="9" fill="#999999" letter-spacing="0.8">lens record</text>
+        </g>
+
+        <!-- Central artifact (Learning lens centerpiece) -->
+        <g>
+          <circle cx="410" cy="250" r="74" fill="#0f0f0f" stroke="#c4956a" stroke-width="2.5"/>
+          <circle cx="410" cy="250" r="84" fill="none" stroke="#c4956a" stroke-width="0.8" stroke-dasharray="2 5"/>
+          <text x="410" y="236" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5" font-weight="600">LEARNING LENS</text>
+          <text x="410" y="258" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-style="italic" font-size="14" fill="#e8e4dc">CRE Lessons</text>
+          <text x="410" y="276" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#c8c3b8">for a PB LCA</text>
+        </g>
+
+        <!-- Concern (top-left) - Agreements foundation -->
+        <g>
+          <rect x="40" y="50" width="160" height="60" fill="#1a1a1a" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="120" y="70" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.2">CONCERN</text>
+          <text x="120" y="88" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="12" fill="#e8e4dc">Lease opportunity</text>
+          <text x="120" y="104" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">raised by Todd</text>
+        </g>
+        <line x1="200" y1="80" x2="340" y2="220" stroke="#7a9478" stroke-width="1" stroke-dasharray="2 3"/>
+
+        <!-- Decision v1 (top) - Governance lens -->
+        <g>
+          <rect x="320" y="50" width="180" height="60" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="410" y="70" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#7a9478" letter-spacing="1.2">DECISION &middot; V1</text>
+          <text x="410" y="88" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="12" fill="#e8e4dc">Pursue negotiations</text>
+          <text x="410" y="104" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">78% approval</text>
+        </g>
+        <line x1="410" y1="110" x2="410" y2="178" stroke="#7a9478" stroke-width="1" stroke-dasharray="2 3"/>
+
+        <!-- Commitments (top-right) - Agreements foundation -->
+        <g>
+          <rect x="620" y="50" width="160" height="60" fill="#1a1a1a" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="700" y="70" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.2">COMMITMENTS</text>
+          <text x="700" y="88" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="12" fill="#e8e4dc">12 recorded</text>
+          <text x="700" y="104" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">all fulfilled</text>
+        </g>
+        <line x1="620" y1="80" x2="480" y2="220" stroke="#7a9478" stroke-width="1" stroke-dasharray="2 3"/>
+
+        <!-- Events (right) - Treasury foundation -->
+        <g>
+          <rect x="640" y="220" width="160" height="60" fill="#1a1a1a" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="720" y="240" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.2">EVENTS</text>
+          <text x="720" y="258" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="12" fill="#e8e4dc">47 recorded</text>
+          <text x="720" y="274" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">labor &middot; funds &middot; comms</text>
+        </g>
+        <line x1="640" y1="250" x2="484" y2="250" stroke="#7a9478" stroke-width="1" stroke-dasharray="2 3"/>
+
+        <!-- Dispute (bottom-right) - cross-cutting, accent outline -->
+        <g>
+          <rect x="540" y="400" width="180" height="60" fill="#0f0f0f" stroke="#c4956a" stroke-width="2"/>
+          <text x="630" y="420" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.2">DISPUTE &middot; RESOLVED</text>
+          <text x="630" y="438" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="12" fill="#e8e4dc">Scope violation</text>
+          <text x="630" y="454" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">raised by Jon</text>
+        </g>
+        <line x1="540" y1="430" x2="476" y2="290" stroke="#7a9478" stroke-width="1" stroke-dasharray="2 3"/>
+
+        <!-- Decision v2 (bottom) - Governance lens -->
+        <g>
+          <rect x="320" y="400" width="180" height="60" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="410" y="420" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#7a9478" letter-spacing="1.2">DECISION &middot; V2</text>
+          <text x="410" y="438" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="12" fill="#e8e4dc">Expanded scope</text>
+          <text x="410" y="454" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">83% approval</text>
+        </g>
+        <line x1="410" y1="400" x2="410" y2="324" stroke="#7a9478" stroke-width="1" stroke-dasharray="2 3"/>
+
+        <!-- Treasury event (bottom-left) - Treasury foundation -->
+        <g>
+          <rect x="100" y="400" width="180" height="60" fill="#1a1a1a" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="190" y="420" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.2">TREASURY EVENT</text>
+          <text x="190" y="438" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="12" fill="#e8e4dc">Deposit paid</text>
+          <text x="190" y="454" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">to Lynn &middot; posted to Xero</text>
+        </g>
+        <line x1="280" y1="430" x2="344" y2="290" stroke="#7a9478" stroke-width="1" stroke-dasharray="2 3"/>
+
+        <!-- Contract (left) - Agreements foundation -->
+        <g>
+          <rect x="20" y="220" width="160" height="60" fill="#1a1a1a" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="100" y="240" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.2">CONTRACT</text>
+          <text x="100" y="258" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="12" fill="#e8e4dc">Lease agreement</text>
+          <text x="100" y="274" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">executed</text>
+        </g>
+        <line x1="180" y1="250" x2="336" y2="250" stroke="#7a9478" stroke-width="1" stroke-dasharray="2 3"/>
+      </svg>
+      <figcaption>Fig. 01 &nbsp;&middot;&nbsp; The cluster left behind: every record linked to every other through the shared substrate</figcaption>
+    </figure>
+
+    <p>
+      The cluster is the answer to a question every cooperative eventually asks
+      itself: <em>how do we know what we actually did?</em> In most organizations
+      the answer is scattered across email threads, wikis, shared drives,
+      meeting notes, and the memories of whichever members happened to be in
+      the room. In Techne, the answer is a navigable graph of events,
+      commitments, decisions, disputes, and learnings, all linked through the
+      REA substrate. You can enter it anywhere and find your way to anywhere
+      else.
+    </p>
+  </section>
+
+  <!-- §6 REFLECTION -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;6</span>
+      <div>
+        <span class="act">Reflection</span>
+        <h2>What this scenario <em>teaches us</em>.</h2>
+      </div>
+    </div>
+
+    <p>
+      Running one real scenario through the whole system surfaces things that
+      no amount of specification-writing can. Four observations from the trace
+      above are worth naming, because each one is a candidate for its own
+      future artifact.
+    </p>
+
+    <h3>Observation one &middot; The voice-first interface is load-bearing</h3>
+    <p>
+      At no point did any member in the story open a form, pick from a dropdown,
+      or fill in a structured field. Every interaction with Techne started as
+      speech: Todd's concern, Jon's dispute, the transcript uploads, the assent
+      confirmations. If the primary surface had been CRUD, the scenario would
+      either not have been recorded or would have been recorded only by the
+      members with the patience to fill out forms. The participation gradient
+      this corpus was written to avoid would have asserted itself immediately.
+    </p>
+
+    <h3>Observation two &middot; Immutability is what makes disputes safe</h3>
+    <p>
+      Jon's flag worked because nothing he disputed could be silently erased.
+      The original draft lease was preserved. The prior commitments remained
+      intact. The resolution was recorded as new events referencing the disputed
+      ones, not as rewrites. In a conventional system, a member raising a
+      concern often fears that the record will be "corrected" in ways that
+      make their original objection vanish. REA's immutability guarantee means
+      the flag is permanent and the correction is additive. This is not a
+      small property. It is what lets members raise concerns at all, and it
+      is also what makes the book side of the 704(b) capital account ledger
+      defensible to an auditor who will ask exactly this question: show me
+      every adjustment, and show me that no prior record was silently rewritten.
+    </p>
+
+    <h3>Observation three &middot; Learning is most valuable when it is linked</h3>
+    <p>
+      The learning artifact the working group produced is useful in isolation,
+      but it becomes substantially more useful because it points back to the
+      specific events, commitments, and disputes that produced it. A future
+      reader can verify the claims against the record. A future organization
+      facing a similar decision can trace the pattern to concrete examples.
+      This is the difference between institutional memory and institutional
+      wisdom.
+    </p>
+
+    <h3>Observation four &middot; Foundations and lenses compounded, not interfered</h3>
+    <p>
+      All three foundations (Treasury, People, Agreements) and all four lenses
+      (Patronage, Reconciliation, Governance, Learning) participated in the
+      same scenario without any integration work. None of them needed to be
+      "configured to talk to" any other. They were all just reading and writing
+      to the same REA event log. The Governance lens handled voting by
+      activating People and Agreements together. The Reconciliation lens closed
+      the loop between Treasury events and the commitments that authorized
+      them. The Learning lens drew on all three foundations to produce the
+      navigable pattern artifact. This is the compositional claim from the
+      Toolbox document, demonstrated rather than asserted.
+    </p>
+
+    <div class="pullquote">
+      The test of a system is not whether it handles its showcase workflow.
+      It is whether it leaves a trace you can trust when something
+      genuinely goes wrong.
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <div class="kicker">One scenario, five documents, one system.</div>
+    <h2>The corpus <em>holds</em>.</h2>
+    <p>
+      Each of the companion documents described a different facet of Techne
+      in its own vocabulary. This case study was the test of whether those
+      facets fit together into something coherent when a real situation runs
+      through them. The answer, for this scenario, is yes. The Gateway's
+      design science cycle, the REA specification's substrate, the Toolbox's
+      two-tier foundations-and-lenses structure, and the voice-first
+      interaction model all showed up when they were needed and did not
+      contradict each other when they overlapped. That is not proof of
+      correctness. It is evidence that the framework is at least internally
+      consistent. The next test is whether it holds for scenarios we have
+      not yet imagined.
+    </p>
+    <div class="sig">
+      RegenHub &middot; Public Benefit Limited Cooperative Association &middot; Boulder, Colorado
+    </div>
+  </div>
+
+  <footer>
+    <div>TCH-CSE-001 &middot; v0.2</div>
+    <div class="living">Living &middot; Open for amendment</div>
+    <div>RegenHub PB LCA</div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Design Science Gateway / Techne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface-2: #222222;
+    --border: #333333;
+    --accent: #c4956a;
+    --text: #e8e4dc;
+    --text-soft: #c8c3b8;
+    --muted: #999999;
+    --serif: 'Libre Baskerville', Georgia, serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 72px 32px 112px;
+  }
+
+  /* ============ MASTHEAD ============ */
+  header.masthead {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0 16px;
+    margin-bottom: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .masthead .brand,
+  .masthead .meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .masthead .brand strong {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* ============ HERO ============ */
+  .hero { margin-bottom: 96px; }
+
+  .hero .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .hero .eyebrow::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.35;
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(40px, 6.5vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 36px;
+    color: var(--text);
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .hero .standfirst {
+    font-size: 19px;
+    line-height: 1.65;
+    max-width: 620px;
+    color: var(--text-soft);
+    font-style: italic;
+    border-left: 2px solid var(--accent);
+    padding-left: 22px;
+    margin-top: 36px;
+  }
+
+  /* ============ SECTIONS ============ */
+  section { margin-bottom: 80px; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label .num { color: var(--accent); font-weight: 500; }
+
+  h2 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(28px, 3.8vw, 40px);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin-bottom: 28px;
+    max-width: 680px;
+    color: var(--text);
+  }
+  h2 em { font-style: italic; font-weight: 400; color: var(--accent); }
+
+  h3 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 19px;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  p {
+    margin-bottom: 20px;
+    max-width: 660px;
+    color: var(--text-soft);
+  }
+  p.lead { font-size: 19px; line-height: 1.65; color: var(--text); }
+
+  /* Pull quote */
+  .pullquote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--text);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 0;
+    margin: 48px 0;
+    max-width: 700px;
+  }
+  .pullquote::before {
+    content: "";
+    display: block;
+    width: 36px;
+    height: 2px;
+    background: var(--accent);
+    margin-bottom: 18px;
+  }
+
+  /* ============ FIGURES ============ */
+  figure {
+    margin: 48px 0;
+    padding: 40px 28px 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  figure::before {
+    content: "FIG.";
+    position: absolute;
+    top: -9px;
+    left: 22px;
+    background: var(--bg);
+    padding: 0 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  figcaption {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 22px;
+    text-align: center;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+  }
+  svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+
+  /* Principles list */
+  ol.principles { list-style: none; margin: 28px 0; }
+  ol.principles { counter-reset: item; }
+  ol.principles li {
+    counter-increment: item;
+    padding: 22px 0 22px 56px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    max-width: 700px;
+  }
+  ol.principles li::before {
+    content: counter(item, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 24px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+  ol.principles li p { margin-bottom: 0; }
+
+  /* Invitation */
+  .invitation {
+    margin-top: 80px;
+    padding: 48px 36px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    position: relative;
+  }
+  .invitation::before,
+  .invitation::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--accent);
+  }
+  .invitation::before { top: -8px; left: -8px; border-right: none; border-bottom: none; }
+  .invitation::after { bottom: -8px; right: -8px; border-left: none; border-top: none; }
+  .invitation h2 { margin-bottom: 18px; }
+  .invitation .sig {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 88px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer .living { color: var(--accent); }
+  footer .living::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.25); }
+  }
+
+  @media (max-width: 600px) {
+    .wrap { padding: 48px 22px 80px; }
+    figure { padding: 32px 14px 24px; }
+    .invitation { padding: 36px 22px; }
+    .pullquote { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="brand"><strong>Techne</strong> &nbsp;/&nbsp; RegenHub PB LCA</div>
+    <div class="meta">Gateway &nbsp;·&nbsp; v0.2 &nbsp;·&nbsp; Living</div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="eyebrow">After the Articles and Bylaws</div>
+    <h1>The Design<br>Science <em>Gateway</em></h1>
+    <p class="standfirst">
+      You have read what RegenHub <em>is</em>. This document introduces <em>how we think</em>:
+      the shared discipline that turns our articles, bylaws, and member agreement into lived
+      cooperative practice inside Techne.
+    </p>
+  </section>
+
+  <!-- ============ 01 ORIENTATION ============ -->
+  <section>
+    <div class="section-label"><span class="num">01</span> <span>Orientation</span></div>
+    <h2>What is <em>design science</em>, and why does it belong here?</h2>
+    <p class="lead">
+      Design science is the disciplined practice of making things that work. Where the
+      natural sciences describe the world as it is, design science addresses the world as
+      it ought to be: problems, interventions, and the patient iteration between them.
+    </p>
+    <p>
+      Its lineage runs through Herbert Simon's <em>Sciences of the Artificial</em>,
+      Christopher Alexander's pattern languages, Douglas Engelbart's augmentation research,
+      and the information systems traditions that followed. What unites them is a
+      conviction: building something, watching it behave in the world, and learning
+      from it is a legitimate way of knowing. Often it is the only way, when the
+      questions are about human systems.
+    </p>
+    <p>
+      For a cooperative, this matters. We are not inheriting a fixed organization and
+      administering it. We are <em>designing</em> one, continuously, together. Design
+      science gives us shared language for doing that deliberately rather than by
+      accident. It also connects our practice to a much older inheritance, one that
+      stretches from tally sticks through Lovelace, Bush, Wiener, Licklider, and
+      Engelbart: the long project of augmenting human collective intelligence with
+      tools we build and refine in common.
+    </p>
+
+    <div class="pullquote">
+      The artifact is itself a way of knowing. We learn what our cooperative is
+      by building it, testing it, and refining what we built.
+    </div>
+  </section>
+
+  <!-- ============ 02 PATH ============ -->
+  <section>
+    <div class="section-label"><span class="num">02</span> <span>Your Path Into the Studio</span></div>
+    <h2>From governance documents to <em>lived practice</em>.</h2>
+    <p>
+      This document sits between what you have just read and what comes next. The
+      articles, bylaws, and member agreement oriented you to our legal form, our
+      commitments, and our public benefit. The Techne studio is where those commitments
+      become daily work. Design science is the bridge.
+    </p>
+
+    <figure>
+      <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig1title">
+        <title id="fig1title">Path from governance documents through the gateway into the Techne studio</title>
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#c4956a"/>
+          </marker>
+        </defs>
+
+        <!-- Stage 1 -->
+        <g transform="translate(30, 70)">
+          <rect x="0" y="0" width="180" height="120" fill="none" stroke="#333333" stroke-width="1.5"/>
+          <text x="90" y="-10" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">STAGE I</text>
+          <text x="90" y="50" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="16" fill="#e8e4dc">Governance</text>
+          <text x="90" y="72" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="16" fill="#e8e4dc">Documents</text>
+          <line x1="30" y1="88" x2="150" y2="88" stroke="#c4956a" stroke-width="0.8"/>
+          <text x="90" y="105" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">what we are</text>
+        </g>
+
+        <line x1="218" y1="130" x2="278" y2="130" stroke="#c4956a" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+        <!-- Stage 2 -->
+        <g transform="translate(290, 60)">
+          <rect x="0" y="0" width="180" height="140" fill="#1a1a1a" stroke="#c4956a" stroke-width="2.5"/>
+          <text x="90" y="-10" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">STAGE II · YOU ARE HERE</text>
+          <text x="90" y="52" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="17" fill="#e8e4dc">Design</text>
+          <text x="90" y="76" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="17" fill="#e8e4dc">Science</text>
+          <text x="90" y="100" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="17" font-style="italic" fill="#c4956a">Gateway</text>
+          <line x1="30" y1="114" x2="150" y2="114" stroke="#c4956a" stroke-width="0.8"/>
+          <text x="90" y="131" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">how we think</text>
+        </g>
+
+        <line x1="478" y1="130" x2="538" y2="130" stroke="#c4956a" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+        <!-- Stage 3 -->
+        <g transform="translate(550, 70)">
+          <rect x="0" y="0" width="180" height="120" fill="none" stroke="#333333" stroke-width="1.5"/>
+          <text x="90" y="-10" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">STAGE III</text>
+          <text x="90" y="50" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="16" fill="#e8e4dc">Techne</text>
+          <text x="90" y="72" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="16" fill="#e8e4dc">Studio</text>
+          <line x1="30" y1="88" x2="150" y2="88" stroke="#c4956a" stroke-width="0.8"/>
+          <text x="90" y="105" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">how we work</text>
+        </g>
+      </svg>
+      <figcaption>Fig. 1 &nbsp;·&nbsp; Three stages of member entry into RegenHub</figcaption>
+    </figure>
+  </section>
+
+  <!-- ============ 03 CYCLE ============ -->
+  <section>
+    <div class="section-label"><span class="num">03</span> <span>The Practice</span></div>
+    <h2>A cycle we walk <em>together</em>.</h2>
+    <p>
+      Design science is not a procedure to follow mechanically. It is a disciplined
+      rhythm that any RegenHub initiative can participate in, whether that is a working
+      group, a tool build, a programming experiment, or a governance revision. The four
+      movements below are the minimum grammar.
+    </p>
+
+    <figure>
+      <svg viewBox="0 0 700 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig2title">
+        <title id="fig2title">The four-phase design science cycle as practiced at Techne</title>
+
+        <circle cx="350" cy="230" r="52" fill="none" stroke="#c4956a" stroke-width="1" stroke-dasharray="3 4"/>
+        <text x="350" y="222" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">THE</text>
+        <text x="350" y="242" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="15" font-style="italic" fill="#e8e4dc">cycle</text>
+
+        <!-- 01 Notice -->
+        <g>
+          <circle cx="350" cy="80" r="48" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+          <text x="350" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#c4956a" letter-spacing="1.5">01</text>
+          <text x="350" y="92" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="16" fill="#e8e4dc">Notice</text>
+          <text x="350" y="38" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">a real constraint</text>
+        </g>
+
+        <!-- 02 Design -->
+        <g>
+          <circle cx="580" cy="230" r="48" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+          <text x="580" y="222" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#c4956a" letter-spacing="1.5">02</text>
+          <text x="580" y="242" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="16" fill="#e8e4dc">Design</text>
+          <text x="642" y="234" text-anchor="start" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">an intervention</text>
+        </g>
+
+        <!-- 03 Build & Test -->
+        <g>
+          <circle cx="350" cy="380" r="48" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+          <text x="350" y="372" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#c4956a" letter-spacing="1.5">03</text>
+          <text x="350" y="392" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="14" fill="#e8e4dc">Build &amp; Test</text>
+          <text x="350" y="442" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">with real stakeholders</text>
+        </g>
+
+        <!-- 04 Learn -->
+        <g>
+          <circle cx="120" cy="230" r="48" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+          <text x="120" y="222" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#c4956a" letter-spacing="1.5">04</text>
+          <text x="120" y="242" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="16" fill="#e8e4dc">Learn</text>
+          <text x="58" y="234" text-anchor="start" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">then share</text>
+        </g>
+
+        <defs>
+          <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#c4956a"/>
+          </marker>
+        </defs>
+
+        <path d="M 395 97 Q 530 120 548 192" fill="none" stroke="#c4956a" stroke-width="1.2" marker-end="url(#arrow2)"/>
+        <path d="M 548 268 Q 530 340 395 363" fill="none" stroke="#c4956a" stroke-width="1.2" marker-end="url(#arrow2)"/>
+        <path d="M 305 363 Q 170 340 152 268" fill="none" stroke="#c4956a" stroke-width="1.2" marker-end="url(#arrow2)"/>
+        <path d="M 152 192 Q 170 120 305 97" fill="none" stroke="#c4956a" stroke-width="1.2" marker-end="url(#arrow2)"/>
+      </svg>
+      <figcaption>Fig. 2 &nbsp;·&nbsp; The Techne design science cycle: continuous, participatory, accountable</figcaption>
+    </figure>
+
+    <ol class="principles">
+      <li>
+        <h3>Notice a real constraint</h3>
+        <p>Begin with something that actually pinches. A friction, a gap, a commitment we are failing to keep. Name it in language the whole membership can recognize.</p>
+      </li>
+      <li>
+        <h3>Design an intervention</h3>
+        <p>Draw on theory, precedent, and member wisdom. Make your design rationale explicit: what we chose, what we rejected, what we are assuming. Rationale is an artifact too.</p>
+      </li>
+      <li>
+        <h3>Build and test with real stakeholders</h3>
+        <p>An untested design is a hypothesis, not a solution. Ship small. Invite the people affected into the test. Measure against our public benefit commitments, not just function.</p>
+      </li>
+      <li>
+        <h3>Learn, and share what you learned</h3>
+        <p>Capture what worked, what broke, and why. Feed it back into the studio so the next member, or the next cooperative, does not start from zero. Learning withheld is commons enclosed.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 04 TOOL LAYERS ============ -->
+  <section>
+    <div class="section-label"><span class="num">04</span> <span>What You Will Meet Next</span></div>
+    <h2>The Techne stack: an <em>operating grammar</em> for cooperation.</h2>
+    <p class="lead">
+      Inside the studio, our tools are organized as three layers drawn from the REA
+      accounting ontology: <em>Resources, Events, Agents</em>. In plainer language, we
+      call these Treasury, Agreements, and People. Each layer answers a distinct
+      cooperative question, and together they compose the operational grammar of
+      RegenHub.
+    </p>
+    <p>
+      Treasury is how we give, save, and invest together. Agreements is how we name
+      what we promise one another and record what actually happens. People is how we
+      hold membership, contribution, and care. The layers are designed to be
+      interoperable with each other, and eventually to travel: what we refine internally
+      is intended to be offered outward as a modular civic operating system that other
+      cooperatives can adopt in whole or in part.
+    </p>
+
+    <figure>
+      <svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig3title">
+        <title id="fig3title">The Techne stack organized around Treasury, Agreements, and People</title>
+
+        <!-- Central hub -->
+        <g transform="translate(380, 170)">
+          <circle r="72" fill="#1a1a1a" stroke="#c4956a" stroke-width="2"/>
+          <circle r="84" fill="none" stroke="#c4956a" stroke-width="0.8" stroke-dasharray="2 5"/>
+          <text y="-14" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">TECHNE</text>
+          <text y="8" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="16" font-style="italic" fill="#e8e4dc">the studio</text>
+          <text y="30" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" fill="#999999">scenius as soil</text>
+        </g>
+
+        <!-- Treasury (top) -->
+        <g transform="translate(380, 30)">
+          <rect x="-90" y="0" width="180" height="54" fill="#1a1a1a" stroke="#333333" stroke-width="1.2"/>
+          <text x="0" y="18" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">RESOURCES</text>
+          <text x="0" y="40" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="17" fill="#e8e4dc">Treasury</text>
+        </g>
+        <line x1="380" y1="84" x2="380" y2="98" stroke="#c4956a" stroke-width="1"/>
+
+        <!-- Agreements (bottom right) -->
+        <g transform="translate(600, 240)">
+          <rect x="-90" y="0" width="180" height="54" fill="#1a1a1a" stroke="#333333" stroke-width="1.2"/>
+          <text x="0" y="18" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">EVENTS</text>
+          <text x="0" y="40" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="17" fill="#e8e4dc">Agreements</text>
+        </g>
+        <line x1="510" y1="248" x2="438" y2="210" stroke="#c4956a" stroke-width="1"/>
+
+        <!-- People (bottom left) -->
+        <g transform="translate(160, 240)">
+          <rect x="-90" y="0" width="180" height="54" fill="#1a1a1a" stroke="#333333" stroke-width="1.2"/>
+          <text x="0" y="18" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">AGENTS</text>
+          <text x="0" y="40" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="17" fill="#e8e4dc">People</text>
+        </g>
+        <line x1="250" y1="248" x2="322" y2="210" stroke="#c4956a" stroke-width="1"/>
+      </svg>
+      <figcaption>Fig. 3 &nbsp;·&nbsp; Three layers grounded in the REA ontology, held inside Techne</figcaption>
+    </figure>
+
+    <p>
+      A phrase we keep returning to: <em>Techne is not an enterprise, it is soil</em>.
+      The stack exists to make the soil more fertile, not to harvest it. Its first job
+      is to keep the collective intelligence of this place, the scenius, legible to every
+      member and transparent to the capital that flows through the system.
+    </p>
+  </section>
+
+  <!-- ============ 05 PARTICIPATORY ============ -->
+  <section>
+    <div class="section-label"><span class="num">05</span> <span>A Participatory Discipline</span></div>
+    <h2>Rigor is not the opposite of <em>belonging</em>.</h2>
+    <p>
+      It would be easy to imagine design science as the province of a few technical
+      members with methodology training. That is not how we practice it here. The cycle
+      above works because it is walked together, because the people affected by a design
+      are the same people who help notice the problem, sketch the intervention, test it,
+      and decide whether it earned its keep.
+    </p>
+    <p>
+      This is what distinguishes our approach from most organizational design literature.
+      We are not running experiments <em>on</em> our members. We are conducting inquiry
+      <em>with</em> them. The rigor we pursue is the rigor of a community that takes
+      its own learning seriously, documents what it finds, and shares it outward as part
+      of our public benefit commitment. Augmentation, not automation, is the orienting
+      word. Tools are here to make us more capable together, not to replace the thinking
+      we owe each other.
+    </p>
+  </section>
+
+  <!-- ============ INVITATION ============ -->
+  <aside class="invitation">
+    <div class="section-label"><span class="num">&rarr;</span> <span>Invitation</span></div>
+    <h2>Welcome to the <em>workshop</em>.</h2>
+    <p>
+      You have crossed the gateway. What waits on the other side is not a finished system
+      but a workshop that is always under construction, and your hands are part of how it
+      gets built. Bring a problem you have noticed. Bring a hypothesis. Bring a repair.
+      Every member is a designer here.
+    </p>
+    <p>
+      Start by reading an existing layer of the stack and asking what you would change.
+      Propose an experiment. Attend a design review. The cycle begins wherever you choose
+      to enter it.
+    </p>
+    <div class="sig">
+      RegenHub &middot; Public Benefit Limited Cooperative Association &middot; Boulder, Colorado
+    </div>
+  </aside>
+
+  <footer>
+    <div>Gateway &middot; v0.2</div>
+    <div class="living">Living &middot; Last cycle: today</div>
+    <div>RegenHub PB LCA</div>
+  </footer>
+
+</div>
+</body>
+</html>

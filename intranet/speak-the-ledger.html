@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speak the Ledger / Techne Voice-First HCI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface-2: #222222;
+    --border: #333333;
+    --accent: #c4956a;
+    --accent-soft: rgba(196, 149, 106, 0.12);
+    --moss: #7a9478;
+    --moss-soft: rgba(122, 148, 120, 0.08);
+    --text: #e8e4dc;
+    --text-soft: #c8c3b8;
+    --muted: #999999;
+    --serif: 'Libre Baskerville', Georgia, serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 64px 32px 112px;
+  }
+
+  /* Masthead */
+  .masthead {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0 12px;
+    margin-bottom: 88px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .masthead .left { text-align: left; }
+  .masthead .center { text-align: center; color: var(--accent); font-weight: 500; }
+  .masthead .right { text-align: right; }
+
+  /* Hero */
+  .hero { margin-bottom: 104px; }
+  .hero .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .hero .kicker::before {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(50px, 8vw, 100px);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin-bottom: 36px;
+  }
+  h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
+
+  .hero .subtitle {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1.4;
+    margin-top: 4px;
+    margin-bottom: 36px;
+    max-width: 640px;
+  }
+
+  .hero .standfirst {
+    max-width: 680px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text-soft);
+  }
+  .hero .standfirst strong { color: var(--text); font-weight: 700; }
+
+  .hero-meta {
+    margin-top: 44px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 22px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .hero-meta div .label { color: var(--muted); display: block; margin-bottom: 5px; }
+  .hero-meta div .value { color: var(--text); font-weight: 500; font-size: 12px; letter-spacing: 0.04em; }
+
+  /* Sections */
+  section { margin-bottom: 88px; scroll-margin-top: 40px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .section-head .num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    font-weight: 500;
+    flex: 0 0 auto;
+    padding-top: 6px;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(28px, 4.2vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    max-width: 720px;
+  }
+  h2 em { font-style: italic; font-weight: 400; color: var(--accent); }
+
+  h3 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--text);
+    margin: 36px 0 12px;
+  }
+
+  p {
+    margin-bottom: 20px;
+    max-width: 680px;
+    color: var(--text-soft);
+  }
+  p.lead {
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--text);
+    max-width: 720px;
+  }
+  p.lead strong { color: var(--text); font-weight: 700; }
+
+  em { font-style: italic; }
+  strong { font-weight: 700; color: var(--text); }
+
+  /* Pullquote */
+  .pullquote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 26px;
+    line-height: 1.3;
+    color: var(--text);
+    padding: 36px 0 36px 32px;
+    margin: 52px 0;
+    max-width: 760px;
+    border-left: 2px solid var(--accent);
+  }
+
+  /* Transcript blocks */
+  .transcript {
+    margin: 36px 0 42px;
+    max-width: 740px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 34px 32px 26px;
+    position: relative;
+  }
+  .transcript::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .transcript::after {
+    content: attr(data-time);
+    position: absolute;
+    top: -9px;
+    right: 24px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+
+  .turn {
+    padding: 14px 0 14px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .turn:last-child { border-bottom: none; }
+
+  .turn .speaker {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .turn.member .speaker { color: var(--accent); }
+  .turn.system .speaker { color: var(--moss); }
+
+  .turn.member .utterance {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--text);
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+  }
+  .turn.system .utterance {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--text-soft);
+    padding-left: 16px;
+    border-left: 2px solid var(--moss);
+  }
+  .turn.system .utterance .accent {
+    color: var(--moss);
+    font-weight: 500;
+  }
+
+  /* Figures */
+  figure {
+    margin: 48px 0;
+    padding: 44px 26px 26px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  figure::before {
+    content: attr(data-fig);
+    position: absolute;
+    top: -9px;
+    left: 22px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  figcaption {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+    text-align: center;
+  }
+  svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+
+  /* Tech notes */
+  .tech-note {
+    max-width: 720px;
+    margin: 22px 0 28px;
+    padding: 20px 22px 20px 26px;
+    border-left: 3px solid var(--moss);
+    background: var(--moss-soft);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--text-soft);
+  }
+  .tech-note::before {
+    content: "FOR BUILDERS";
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--moss);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .tech-note strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .tech-note code {
+    background: rgba(122, 148, 120, 0.18);
+    color: var(--text);
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-size: 11.5px;
+  }
+
+  /* Vocab list */
+  .vocab {
+    max-width: 760px;
+    margin: 30px 0;
+  }
+  .vocab .row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 22px;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .vocab .row:last-child { border-bottom: none; }
+  .vocab .said {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .vocab .arrow {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: 14px;
+  }
+  .vocab .parsed {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--moss);
+    line-height: 1.55;
+  }
+
+  /* Requirements */
+  .req-block {
+    max-width: 760px;
+    margin: 30px 0;
+  }
+  .req-block .req-header {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--accent);
+    margin-bottom: 12px;
+  }
+  .req-block ul { list-style: none; }
+  .req-block ul li {
+    padding: 15px 0 15px 72px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--text-soft);
+  }
+  .req-block ul li:last-child { border-bottom: none; }
+  .req-block ul li::before {
+    content: attr(data-req);
+    position: absolute;
+    left: 0;
+    top: 17px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* Closing */
+  .closing {
+    margin-top: 100px;
+    padding: 52px 40px;
+    background: var(--surface);
+    color: var(--text);
+    position: relative;
+    border: 1px solid var(--border);
+  }
+  .closing::before,
+  .closing::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+  }
+  .closing::before {
+    top: -1px; left: -1px;
+    border-top: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+  }
+  .closing::after {
+    bottom: -1px; right: -1px;
+    border-bottom: 2px solid var(--accent);
+    border-right: 2px solid var(--accent);
+  }
+  .closing h2 { color: var(--text); margin-bottom: 22px; }
+  .closing p { color: var(--text-soft); font-size: 17px; max-width: 680px; }
+  .closing .sig {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 32px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 64px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer .living { color: var(--accent); }
+  footer .living::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.25); }
+  }
+
+  @media (max-width: 680px) {
+    .wrap { padding: 48px 22px 80px; }
+    figure { padding: 34px 14px 22px; }
+    .transcript { padding: 28px 20px 20px; }
+    .vocab .row { grid-template-columns: 1fr; gap: 8px; }
+    .vocab .arrow { display: none; }
+    .closing { padding: 40px 24px; }
+    .pullquote { font-size: 20px; padding: 28px 0 28px 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="left">Techne / RegenHub PB LCA</div>
+    <div class="center">Voice-First HCI &middot; Treasury Deep-Dive</div>
+    <div class="right">TCH-VCE-001</div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="kicker">The interface is a conversation.</div>
+    <h1>Speak<br>the <em>Ledger</em>.</h1>
+    <p class="subtitle">
+      How Techne is actually used, and why Treasury needs a microphone
+      before it needs a form.
+    </p>
+    <p class="standfirst">
+      This document specifies the primary human-computer interaction model for
+      every foundation and lens in the Techne stack, using Treasury as the worked
+      example. <strong>Members use Techne by speaking to it</strong>, either in
+      real time or by uploading a transcript, and a language model translates
+      what they said into the formal REA operations that live underneath. A
+      conventional interface still exists for power users, edge cases, and
+      audit. It is not the front door.
+    </p>
+    <div class="hero-meta">
+      <div><span class="label">Primary surface</span><span class="value">Natural language</span></div>
+      <div><span class="label">Secondary surface</span><span class="value">CRUD / Forms</span></div>
+      <div><span class="label">Substrate</span><span class="value">REA</span></div>
+      <div><span class="label">Status</span><span class="value">v0.2 / Living</span></div>
+    </div>
+  </section>
+
+  <!-- §1 -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;1</span>
+      <h2>The interface is the <em>gatekeeper</em>.</h2>
+    </div>
+
+    <p class="lead">
+      Every cooperative we know of has the same hidden problem. The technically
+      confident members do most of the recording. The others do not. It is not
+      because the others do not want to. It is because the interface asks them to
+      learn a data model, memorize a vocabulary, and press a button that commits
+      a permanent record. That is a lot to ask of someone who just wants to note
+      that they contributed four hours this morning.
+    </p>
+
+    <p>
+      The result is a participation gradient baked into the tooling itself. The
+      people who can speak the system's language shape what the system remembers.
+      Everyone else becomes invisible to it. For an organization whose legitimacy
+      rests on member participation and patronage accounting, especially one
+      running under Subchapter K where 704(b) allocations depend on a clean
+      record of who contributed what, that is a structural problem, not a
+      usability complaint.
+    </p>
+
+    <p>
+      Traditional enterprise software solved this by hiring more analysts and
+      running more training sessions. Cooperatives cannot afford that and should
+      not want to. What we can do, now, in a way we could not do three years ago,
+      is remove the translation burden from the member and place it on a language
+      model. <strong>Members describe what happened in the way they would
+      describe it to another member. The system figures out the rest, proposes
+      a record, and asks for confirmation.</strong> No form to learn. No
+      vocabulary to memorize. No button whose consequences are unclear.
+    </p>
+
+    <div class="pullquote">
+      Every member already knows how to use Techne.
+      They already know how to talk.
+    </div>
+  </section>
+
+  <!-- §2 -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;2</span>
+      <h2>The voice-first <em>interaction loop</em>.</h2>
+    </div>
+
+    <p>
+      The interaction model is a round trip with four movements: the member
+      speaks (or uploads a recording), the agent interprets, the system proposes
+      a formal record, and the member confirms or corrects. Every part of this
+      loop is designed so that trust accumulates rather than being demanded up
+      front.
+    </p>
+
+    <figure data-fig="FIG. 01">
+      <svg viewBox="0 0 780 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig1title">
+        <title id="fig1title">The voice-first interaction loop</title>
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#c4956a"/>
+          </marker>
+        </defs>
+
+        <g>
+          <rect x="40" y="80" width="160" height="110" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+          <text x="120" y="60" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">01 &middot; MEMBER</text>
+          <text x="120" y="125" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="17" fill="#e8e4dc">speaks</text>
+          <text x="120" y="148" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">in their own words,</text>
+          <text x="120" y="164" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">to their own phone</text>
+        </g>
+
+        <line x1="200" y1="135" x2="250" y2="135" stroke="#c4956a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <g>
+          <rect x="258" y="80" width="160" height="110" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+          <text x="338" y="60" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">02 &middot; AGENT</text>
+          <text x="338" y="125" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="17" fill="#e8e4dc">interprets</text>
+          <text x="338" y="148" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">LLM maps utterance</text>
+          <text x="338" y="164" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">to REA operation</text>
+        </g>
+
+        <line x1="418" y1="135" x2="468" y2="135" stroke="#c4956a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <g>
+          <rect x="476" y="80" width="160" height="110" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+          <text x="556" y="60" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">03 &middot; SYSTEM</text>
+          <text x="556" y="125" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="17" fill="#e8e4dc">proposes</text>
+          <text x="556" y="148" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">structured record,</text>
+          <text x="556" y="164" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">read back in plain words</text>
+        </g>
+
+        <path d="M 556 190 Q 556 250 400 250 Q 120 250 120 190" fill="none" stroke="#c4956a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <g>
+          <rect x="320" y="232" width="160" height="40" fill="#1a1a1a" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="400" y="250" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">04 &middot; MEMBER</text>
+          <text x="400" y="264" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="13" fill="#e8e4dc">confirms or corrects</text>
+        </g>
+
+        <text x="390" y="320" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="12" font-style="italic" fill="#c8c3b8">
+          A record is never written without the member confirming the system heard them correctly.
+        </text>
+      </svg>
+      <figcaption>Fig. 01 &nbsp;&middot;&nbsp; The four-movement round trip from utterance to confirmed record</figcaption>
+    </figure>
+
+    <p>
+      Two properties of this loop matter more than the rest. First, the system's
+      proposal back to the member is in <strong>the member's own register</strong>,
+      not in the formal vocabulary of the REA substrate. The member said "four
+      hours on grants." The system replies "four labor-hours to the grant working
+      group." Recognizable, but with enough precision that the member can catch
+      a misinterpretation. Second, <strong>no event is written to the ledger
+      until the member confirms</strong>. The agent can be wrong. The member is
+      the ground truth. This is the opposite of a traditional form interface,
+      where hitting "save" is a commitment to whatever you typed, correct or not.
+    </p>
+
+    <div class="tech-note">
+      <strong>Architecture.</strong> Client captures audio, sends to a transcription
+      service (Whisper or equivalent), the transcription plus conversation context
+      is sent to an LLM with a system prompt containing the Techne tool schema,
+      the LLM returns a proposed tool call (<code>treasury.record_event</code>,
+      <code>treasury.query_balance</code>, <code>agreements.propose_commitment</code>,
+      etc.), the proposed call is serialized into a natural-language confirmation,
+      and the confirmation is spoken or displayed back to the member. Only on
+      explicit affirmation does the tool call execute against the REA substrate.
+    </div>
+  </section>
+
+  <!-- §3 -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;3</span>
+      <h2>A worked session: <em>Treasury through voice</em>.</h2>
+    </div>
+
+    <p class="lead">
+      Here is what Treasury actually looks like in use. Savannah is walking home
+      from the RegenHub coworking space on a Thursday evening, talking into her
+      phone. She is not using a form. She is not looking at a dashboard. She is
+      telling Techne what happened.
+    </p>
+
+    <h3>Scene one &middot; Recording a contribution</h3>
+
+    <div class="transcript" data-label="TRANSCRIPT &middot; SESSION 01" data-time="18:42 MST">
+      <div class="turn member">
+        <div class="speaker">Savannah &middot; spoken</div>
+        <div class="utterance">I spent about four hours this afternoon working on the Climate Arts grant with Cameron. Maybe four and a half if you count the call at the end.</div>
+      </div>
+      <div class="turn system">
+        <div class="speaker">Techne &middot; response</div>
+        <div class="utterance">I'll record <span class="accent">four and a half labor-hours</span> from you to the <span class="accent">Climate Arts grant working group</span>, on Thursday April 12th. Cameron is named as a co-participant. Does that sound right, or would you like to adjust the hours or the attribution?</div>
+      </div>
+      <div class="turn member">
+        <div class="speaker">Savannah &middot; spoken</div>
+        <div class="utterance">Yes, that's right. Go ahead.</div>
+      </div>
+      <div class="turn system">
+        <div class="speaker">Techne &middot; response</div>
+        <div class="utterance">Recorded. Your patronage balance with Climate Arts is now <span class="accent">twelve and a half hours</span> this cycle. Anything else?</div>
+      </div>
+    </div>
+
+    <p>
+      Notice what did not happen. Savannah did not open a form. She did not pick
+      a project from a dropdown. She did not fill in a duration in minutes. She
+      did not look up Cameron in a member directory. The system did all of that
+      for her, proposed the structured record in language she could verify, and
+      only wrote it when she said yes. The whole exchange took under thirty
+      seconds.
+    </p>
+
+    <h3>Scene two &middot; Checking a balance</h3>
+
+    <div class="transcript" data-label="TRANSCRIPT &middot; SESSION 02" data-time="18:44 MST">
+      <div class="turn member">
+        <div class="speaker">Savannah &middot; spoken</div>
+        <div class="utterance">How much have I contributed total this quarter?</div>
+      </div>
+      <div class="turn system">
+        <div class="speaker">Techne &middot; response</div>
+        <div class="utterance">Across all working groups this quarter, you've contributed <span class="accent">forty-seven labor-hours</span>, split mostly between Climate Arts (twelve and a half), the third-floor lease negotiation (eighteen), and commons stewardship (sixteen). Want me to break any of those down, or show how they translate into patronage credits?</div>
+      </div>
+      <div class="turn member">
+        <div class="speaker">Savannah &middot; spoken</div>
+        <div class="utterance">No, that's good. Thanks.</div>
+      </div>
+    </div>
+
+    <p>
+      The read-back is shaped by what the system knows about Savannah and her
+      typical patterns, not a generic balance printout but something closer to
+      what a colleague would tell her if she asked the same question in the
+      hallway. The underlying query is still a formal aggregation over the REA
+      event log. The member just never sees it.
+    </p>
+
+    <h3>Scene three &middot; Generating a report for the accountant</h3>
+
+    <div class="transcript" data-label="TRANSCRIPT &middot; SESSION 03" data-time="19:01 MST">
+      <div class="turn member">
+        <div class="speaker">Savannah &middot; spoken</div>
+        <div class="utterance">Can you pull together the quarterly financials for the accountant? She needs the conventional view, with cash accounts only.</div>
+      </div>
+      <div class="turn system">
+        <div class="speaker">Techne &middot; response</div>
+        <div class="utterance">I'll generate a <span class="accent">Q1 2026 financial statement</span> covering January through March, projected from the REA event log into the Xero chart of accounts and filtered to monetary resource types only. That will exclude labor-hours, patronage credits, and in-kind contributions, which is what an accountant usually wants. I'll include the 704(b) book capital account summary separately for the Subchapter K allocation work. Ready in about thirty seconds. Where should I send it?</div>
+      </div>
+    </div>
+
+    <p>
+      This is where the voice-first model meets the coexistence framing from the
+      REA specification. Savannah's request is in plain language. The system
+      translates it into a projection over the same event log that holds
+      everything else. The accountant gets a conventional financial statement
+      plus the 704(b) view she actually needs. Savannah never had to know what
+      "filtered to monetary resource types only" means, even though that is
+      exactly what the system did.
+    </p>
+  </section>
+
+  <!-- §4 -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;4</span>
+      <h2>The async path: <em>transcript ingestion</em>.</h2>
+    </div>
+
+    <p class="lead">
+      Voice in real time is one path into Techne. The other is asynchronous.
+      A working group meets, produces a transcript (automatically generated by
+      the meeting tool, or recorded and transcribed later), and uploads it.
+      The agent reads the transcript, extracts proposed events, commitments,
+      decisions, and learnings, and surfaces them for a steward to review
+      before anything is committed.
+    </p>
+
+    <figure data-fig="FIG. 02">
+      <svg viewBox="0 0 780 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig2title">
+        <title id="fig2title">Transcript ingestion pipeline routing into foundations and lenses</title>
+        <defs>
+          <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#c4956a"/>
+          </marker>
+        </defs>
+
+        <g>
+          <rect x="60" y="30" width="220" height="60" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+          <text x="170" y="52" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">SOURCE</text>
+          <text x="170" y="74" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="15" fill="#e8e4dc">Meeting transcript</text>
+        </g>
+
+        <line x1="170" y1="90" x2="170" y2="125" stroke="#c4956a" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <g>
+          <rect x="60" y="133" width="660" height="80" fill="#222222" stroke="#333333" stroke-width="1.5"/>
+          <text x="80" y="155" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5">LLM EXTRACTION PASS</text>
+          <text x="80" y="177" font-family="Libre Baskerville, serif" font-weight="700" font-size="15" fill="#e8e4dc">Identify candidate events, commitments, decisions, and learnings</text>
+          <text x="80" y="197" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">each with timestamp, participants, references to prior context, and a confidence score</text>
+        </g>
+
+        <line x1="400" y1="213" x2="400" y2="248" stroke="#c4956a" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <text x="400" y="244" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#999999" letter-spacing="1">HUMAN REVIEW GATE</text>
+
+        <!-- Four destinations -->
+        <g>
+          <rect x="60" y="256" width="150" height="64" fill="#1a1a1a" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="135" y="274" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#c4956a" letter-spacing="1.2">FOUNDATION</text>
+          <text x="135" y="294" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Treasury</text>
+          <text x="135" y="312" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">events</text>
+        </g>
+
+        <g>
+          <rect x="226" y="256" width="150" height="64" fill="#1a1a1a" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="301" y="274" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#c4956a" letter-spacing="1.2">FOUNDATION</text>
+          <text x="301" y="294" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Agreements</text>
+          <text x="301" y="312" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">commitments</text>
+        </g>
+
+        <g>
+          <rect x="392" y="256" width="150" height="64" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="467" y="274" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478" letter-spacing="1.2">LENS</text>
+          <text x="467" y="294" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Governance</text>
+          <text x="467" y="312" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">decisions</text>
+        </g>
+
+        <g>
+          <rect x="558" y="256" width="150" height="64" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="633" y="274" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478" letter-spacing="1.2">LENS</text>
+          <text x="633" y="294" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Learning</text>
+          <text x="633" y="312" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">reflection</text>
+        </g>
+
+        <line x1="400" y1="248" x2="135" y2="256" stroke="#c4956a" stroke-width="0.8" stroke-dasharray="2 3"/>
+        <line x1="400" y1="248" x2="301" y2="256" stroke="#c4956a" stroke-width="0.8" stroke-dasharray="2 3"/>
+        <line x1="400" y1="248" x2="467" y2="256" stroke="#c4956a" stroke-width="0.8" stroke-dasharray="2 3"/>
+        <line x1="400" y1="248" x2="633" y2="256" stroke="#c4956a" stroke-width="0.8" stroke-dasharray="2 3"/>
+
+        <text x="400" y="360" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#c8c3b8">
+          Extracted candidates are reviewed by a steward before any record is committed.
+        </text>
+      </svg>
+      <figcaption>Fig. 02 &nbsp;&middot;&nbsp; One transcript, routed across foundations and lenses, with a human review gate before any commit</figcaption>
+    </figure>
+
+    <p>
+      This path matters especially for RegenHub because we already live this
+      workflow. Transcripts from meetings with Kevin, Aaron, Cameron, Yev, and
+      others have been edited and synthesized by hand for months. What Techne
+      does is turn a labor-intensive, error-prone editorial pass into a
+      structured extraction that still ends in human review, but that no longer
+      depends on someone having the time and patience to do it manually. The
+      transcript remains the source of truth. Stewards still decide what to
+      commit. The system just does the tedious extraction in between.
+    </p>
+
+    <p>
+      The same path handles transcripts a member uploads directly: a recording
+      from a partner call, a voice memo describing what happened at a community
+      event, notes from a one-on-one. Any linear transcript of speech becomes a
+      source that can seed records across both tiers of the toolbox.
+    </p>
+  </section>
+
+  <!-- §5 -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;5</span>
+      <h2>Vocabulary resolution, <em>not glossary memorization</em>.</h2>
+    </div>
+
+    <p class="lead">
+      The companion documents introduce serious vocabulary: agent, resource,
+      event, commitment, duality, patronage, stockflow, substrate, foundation,
+      lens. A living glossary is useful for members who want to go deep. But
+      the voice-first model makes most of that vocabulary <em>optional for
+      daily use</em>, because the system translates between the member's
+      everyday language and the formal model.
+    </p>
+
+    <p>
+      What follows is a sample of how that translation happens in practice. The
+      left column is what a member might actually say. The right column is what
+      the system parses it into. Members are never required to speak in the
+      right column's register, but they can, and power users will.
+    </p>
+
+    <div class="vocab">
+      <div class="row">
+        <div class="said">"I spent four hours on grants this morning."</div>
+        <div class="arrow">&rarr;</div>
+        <div class="parsed">event.type: contribution<br>resource: labor-hours (4.0)<br>project: grants working group</div>
+      </div>
+      <div class="row">
+        <div class="said">"The coop paid Jess for her legal review."</div>
+        <div class="arrow">&rarr;</div>
+        <div class="parsed">event.type: payment<br>resource: USD<br>provider: coop &middot; receiver: Jess</div>
+      </div>
+      <div class="row">
+        <div class="said">"I'll pick up the third-floor walkthrough next week."</div>
+        <div class="arrow">&rarr;</div>
+        <div class="parsed">commitment.type: task<br>due: next week<br>promising_agent: self</div>
+      </div>
+      <div class="row">
+        <div class="said">"We decided to move the treasury to Mercury."</div>
+        <div class="arrow">&rarr;</div>
+        <div class="parsed">decision-event<br>subject: treasury provider<br>outcome: Mercury selected</div>
+      </div>
+      <div class="row">
+        <div class="said">"How much have I put in this quarter?"</div>
+        <div class="arrow">&rarr;</div>
+        <div class="parsed">query: patronage<br>agent: self<br>window: current quarter</div>
+      </div>
+      <div class="row">
+        <div class="said">"I don't think Cameron ever got credited for the permit work."</div>
+        <div class="arrow">&rarr;</div>
+        <div class="parsed">flag: missing event<br>subject: Cameron + permit project<br>route: steward review</div>
+      </div>
+    </div>
+
+    <p>
+      The translation layer doubles as a living glossary in reverse. Instead of
+      asking members to learn what "stockflow" means, Techne learns what the
+      members in <em>this</em> organization actually say when they mean it. Over
+      time the translation table becomes a record of the cooperative's
+      vernacular, which is itself a valuable artifact, because it captures how
+      the membership actually talks about its own work.
+    </p>
+
+    <div class="tech-note">
+      <strong>Vocabulary resolution.</strong> A per-organization synonym map
+      maintained alongside the type registry. When the LLM parses an utterance
+      and encounters an unfamiliar term, it flags the term as a
+      <code>synonym_candidate</code> and routes it through a steward for
+      confirmation. Confirmed synonyms are added to the map and surfaced in
+      future prompts, so the system gets better at each cooperative's dialect
+      over time without anyone having to curate a glossary by hand.
+    </div>
+  </section>
+
+  <!-- §6 -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;6</span>
+      <h2>Confirmation, correction, and <em>earned trust</em>.</h2>
+    </div>
+
+    <p class="lead">
+      A voice-first system that wrote records without confirmation would be
+      worse than useless. It would quietly corrupt the ledger and erode trust
+      in the whole substrate. Trust in Techne is earned through three disciplines
+      that apply to every voice interaction.
+    </p>
+
+    <h3>Discipline one &middot; Read-back before commit</h3>
+    <p>
+      Every proposed record is read back in plain language before it is
+      written. The member has to confirm. If they do not confirm, nothing
+      happens. This is the simplest form of consent in the interaction model,
+      and it is non-negotiable.
+    </p>
+
+    <h3>Discipline two &middot; Corrections are events, not edits</h3>
+    <p>
+      When a member says "actually, it was three hours, not four," the system
+      does not rewrite the original event. It records a correction event that
+      references the original, and derived balances update accordingly. The
+      audit trail is preserved. The original utterance is preserved. The
+      correction is preserved. Nothing is silently overwritten, which is one
+      of the core commitments of the REA substrate and a requirement for
+      maintaining clean 704(b) book capital accounts.
+    </p>
+
+    <h3>Discipline three &middot; Confidence scoring and graceful uncertainty</h3>
+    <p>
+      The LLM returns a confidence score with every proposed interpretation.
+      Below a threshold, the system does not guess. It asks. "I heard you
+      mention a working group, but I'm not sure which one. Was it Climate Arts
+      or the third-floor lease?" This is better behavior than a form can offer,
+      because a form cannot tell you it is not sure.
+    </p>
+
+    <div class="pullquote">
+      Trust is not assumed. It is earned one confirmation at a time,
+      and it survives because corrections never rewrite history.
+    </div>
+  </section>
+
+  <!-- §7 -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;7</span>
+      <h2>The conventional interface is <em>the escape hatch</em>.</h2>
+    </div>
+
+    <p>
+      A CRUD interface still exists, and it is important. Some tasks are not
+      well served by voice: bulk reconciliation, audit reviews, policy drafting
+      sessions, anything involving dense tabular data or comparison across many
+      records. Some members will simply prefer typing. Some situations require
+      a visual overview that voice cannot provide. And some things (the annual
+      report, the external audit, the K-1 package, the tax filing) must be
+      reviewed in a traditional format before they leave the building.
+    </p>
+
+    <figure data-fig="FIG. 03">
+      <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig3title">
+        <title id="fig3title">The dual-surface model: voice primary, GUI secondary</title>
+
+        <g>
+          <rect x="60" y="40" width="640" height="80" fill="#c4956a" stroke="#333333" stroke-width="1.5"/>
+          <text x="80" y="62" font-family="IBM Plex Mono, monospace" font-size="9" fill="#0f0f0f" letter-spacing="1.5" font-weight="600">PRIMARY SURFACE &middot; MOST DAILY USE</text>
+          <text x="80" y="88" font-family="Libre Baskerville, serif" font-weight="700" font-size="20" fill="#0f0f0f">Voice and transcript interaction</text>
+          <text x="80" y="108" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#1a1a1a">record, query, propose, confirm, in natural language, from anywhere</text>
+        </g>
+
+        <g>
+          <rect x="60" y="140" width="640" height="64" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+          <text x="80" y="162" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5" font-weight="600">SECONDARY SURFACE &middot; POWER USE AND AUDIT</text>
+          <text x="80" y="184" font-family="Libre Baskerville, serif" font-weight="700" font-size="17" fill="#e8e4dc">Conventional GUI (CRUD forms, tables, dashboards)</text>
+          <text x="80" y="200" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">for bulk operations, audit review, and members who prefer typing</text>
+        </g>
+
+        <g>
+          <rect x="60" y="224" width="640" height="60" fill="#222222" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="80" y="246" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5" font-weight="600">SHARED SUBSTRATE</text>
+          <text x="80" y="270" font-family="Libre Baskerville, serif" font-weight="700" font-size="17" fill="#e8e4dc">REA &middot; one event log, one truth</text>
+        </g>
+      </svg>
+      <figcaption>Fig. 03 &nbsp;&middot;&nbsp; Two surfaces, one substrate, voice primary, GUI as the escape hatch</figcaption>
+    </figure>
+
+    <p>
+      Both surfaces read from and write to the same REA event log. A record
+      created by voice shows up in the GUI immediately. A correction made in
+      the GUI is visible to the next voice query. There is no sync, no
+      reconciliation, no drift, because there is only ever one source of truth
+      underneath, and both surfaces are just different ways of speaking to it.
+    </p>
+  </section>
+
+  <!-- §8 -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;8</span>
+      <h2>Implementation <em>notes for builders</em>.</h2>
+    </div>
+
+    <p>
+      What follows is the minimum technical picture needed to start building
+      this. Full technical architecture will land in a companion document.
+      This section is the shape of the thing.
+    </p>
+
+    <div class="tech-note">
+      <strong>Transcription.</strong> Whisper (or equivalent) running either
+      client-side for privacy-sensitive contexts or via API. Output: text plus
+      word-level timestamps plus confidence per segment.
+    </div>
+
+    <div class="tech-note">
+      <strong>Intent parsing.</strong> LLM call (Claude is the reference
+      implementation; others supported behind a swappable interface) with a
+      system prompt containing (a) the REA type catalog for this organization,
+      (b) the per-organization synonym map, (c) the member's recent conversation
+      context, and (d) the tool schema for every foundation and lens the
+      organization has adopted. Output: a structured tool call, a confidence
+      score, and a natural-language confirmation string.
+    </div>
+
+    <div class="tech-note">
+      <strong>Tool schema.</strong> Each foundation and lens exposes a small
+      set of parameterized operations under its own namespace:
+      <code>treasury.record_event</code>, <code>treasury.query_balance</code>,
+      <code>people.register_agent</code>, <code>agreements.propose_commitment</code>,
+      <code>governance.submit_proposal</code>, <code>patronage.query_balance</code>,
+      <code>learning.capture_artifact</code>. The LLM is told which operations
+      exist and what arguments they take. New foundations or lenses plug in by
+      registering their schema with the intent parser.
+    </div>
+
+    <div class="tech-note">
+      <strong>Stack alignment.</strong> The reference stack is Glide as
+      member-facing surface, Supabase for the REA substrate, Make.com for
+      automation, Claude API for intent parsing. Hosted clients run this stack;
+      self-hosted clients substitute components that implement the same
+      interfaces.
+    </div>
+
+    <div class="tech-note">
+      <strong>Confirmation gate.</strong> No tool call executes until the
+      member affirms. Affirmation can be spoken ("yes," "go ahead," "record
+      it") or tapped. A negative response routes back to a clarification
+      prompt rather than discarding context.
+    </div>
+
+    <div class="tech-note">
+      <strong>Audit trail.</strong> Every voice interaction is logged as its
+      own meta-event: the original utterance, the transcription, the parsed
+      intent, the proposed tool call, the confirmation or correction, and the
+      final committed operation. This log is inspectable by the member and by
+      stewards, and is itself subject to REA immutability.
+    </div>
+  </section>
+
+  <!-- §9 -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;9</span>
+      <h2>User stories, <em>voice-first</em>.</h2>
+    </div>
+
+    <div class="req-block">
+      <div class="req-header">Treasury &middot; voice-first requirements</div>
+      <ul>
+        <li data-req="VT-01">As a member walking home from a working session, I want to record my contribution by speaking into my phone, so that the friction of logging is low enough that I actually do it.</li>
+        <li data-req="VT-02">As a member, I want the system to read back what it thinks I said before it records anything, so I can catch misinterpretations before they become permanent.</li>
+        <li data-req="VT-03">As a member, I want to correct a record by speaking the correction, without having to navigate to the original entry and edit it.</li>
+        <li data-req="VT-04">As a member, I want to ask about my contribution or balance in plain language, and receive an answer that is also in plain language.</li>
+        <li data-req="VT-05">As a steward, I want to upload a meeting transcript and receive a set of candidate events, commitments, decisions, and learnings I can review before any of them are committed.</li>
+        <li data-req="VT-06">As a member who prefers typing, I want the same capabilities available through a text input as through voice, with identical behavior.</li>
+        <li data-req="VT-07">As a member auditing a record, I want to see the full history of the voice interaction that produced it: the utterance, the interpretation, the confirmation.</li>
+        <li data-req="VT-08">As a steward, I want to review and confirm new vocabulary that the system has encountered, so the per-organization synonym map grows deliberately rather than by guess.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- §10 -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;10</span>
+      <h2>What this <em>costs</em>.</h2>
+    </div>
+
+    <p>
+      Voice-first is the right bet, and it has real costs that deserve to be
+      named rather than hidden in marketing language.
+    </p>
+
+    <p>
+      <strong>Dependence on language models.</strong> This design assumes an LLM
+      good enough to parse intent reliably. That was not possible three years
+      ago and may not be equally available forever. The mitigation is that the
+      REA substrate is independent of the interface layer. If the LLM becomes
+      unavailable or unaffordable, the GUI escape hatch still works, and no
+      data is lost.
+    </p>
+
+    <p>
+      <strong>Privacy.</strong> Voice data is more sensitive than form data.
+      Members must have clear choices about whether transcription happens
+      locally or via API, whether recordings are retained, and who can access
+      the interaction log. These are governance questions as much as technical
+      ones and belong in the Governance lens, not hard-coded here.
+    </p>
+
+    <p>
+      <strong>Misinterpretation risk.</strong> LLMs can be wrong in confident
+      ways. The read-back discipline catches most errors, but not all. The
+      audit trail means corrections are always possible, but a member who
+      stops paying attention to confirmations can still let bad records slip
+      through. We will need to watch this empirically.
+    </p>
+
+    <p>
+      <strong>Accessibility asymmetry.</strong> Voice works well for some
+      members and poorly for others. Members who are non-native speakers of
+      the system's language, members with speech differences, members in
+      noisy environments, and members who simply prefer text all need
+      first-class support. The answer is that the text input path must be
+      exactly as capable as the voice path, and that is a design requirement,
+      not a fallback.
+    </p>
+
+    <div class="pullquote">
+      The goal is not voice for its own sake. The goal is removing the
+      translation burden from members. Whatever achieves that is the interface.
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <h2>The ledger should <em>listen</em>.</h2>
+    <p>
+      For a century, cooperative software has asked its members to learn the
+      software before they could be counted in the record. Voice-first inverts
+      that. The member speaks in their own language, to their own device, and
+      the system does the translation. The ledger learns to hear them, rather
+      than the other way around. That is what every foundation and lens in
+      Techne is built for, and Treasury is only the first place we are proving it.
+    </p>
+    <div class="sig">
+      RegenHub &middot; Public Benefit Limited Cooperative Association &middot; Boulder, Colorado
+    </div>
+  </div>
+
+  <footer>
+    <div>TCH-VCE-001 &middot; v0.2</div>
+    <div class="living">Living &middot; Open for amendment</div>
+    <div>RegenHub PB LCA</div>
+  </footer>
+
+</div>
+</body>
+</html>
