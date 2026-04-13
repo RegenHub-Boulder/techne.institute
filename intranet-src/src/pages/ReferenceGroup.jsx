@@ -45,6 +45,23 @@ const DOCS = [
   },
 ]
 
+// ─── Plan documents ───────────────────────────────────────────────────────────
+
+const PLAN_DOCS = [
+  {
+    id: 'prd',
+    title: 'Intranet Refinement PRD',
+    subtitle: '18-month product roadmap · 1,847 lines',
+    path: '/intranet/TECHNE_INTRANET_REFINEMENT_PRD.md',
+  },
+  {
+    id: 'github-board',
+    title: 'GitHub Project Board',
+    subtitle: 'Sprint structure and project tracking',
+    path: '/intranet/GITHUB_PROJECT_BOARD_STRUCTURE.md',
+  },
+]
+
 // ─── Root component ───────────────────────────────────────────────────────────
 
 export default function ReferenceGroup({ initialTab = 'guide' }) {
@@ -55,6 +72,7 @@ export default function ReferenceGroup({ initialTab = 'guide' }) {
     const paths = {
       guide:     '/intranet/guide/',
       documents: '/intranet/documents/',
+      roadmap:   '/intranet/roadmap/',
     }
     window.history.pushState(null, '', paths[key] || '/intranet/guide/')
   }
@@ -62,18 +80,20 @@ export default function ReferenceGroup({ initialTab = 'guide' }) {
   const tabs = [
     { key: 'guide',     label: 'Guide' },
     { key: 'documents', label: 'Documents' },
+    { key: 'roadmap',   label: 'Roadmap' },
   ]
 
   return (
     <TabShell
       title="Reference"
-      subtitle="Founding documents · member guide · K-1 vault"
+      subtitle="Founding documents · member guide · K-1 vault · roadmap"
       tabs={tabs}
       active={tab}
       onTab={openTab}
     >
       {tab === 'guide'     && <GuideTab />}
       {tab === 'documents' && <DocumentsTab />}
+      {tab === 'roadmap'   && <RoadmapTab />}
     </TabShell>
   )
 }
@@ -411,6 +431,109 @@ function DocRow({ doc }) {
   )
 }
 
+// ─── Roadmap Tab ──────────────────────────────────────────────────────────────
+
+function RoadmapTab() {
+  const [selected, setSelected] = useState(null)
+  const [content,  setContent]  = useState('')
+  const [loading,  setLoading]  = useState(false)
+  const [error,    setError]    = useState(null)
+
+  async function loadDoc(doc) {
+    setSelected(doc)
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch(doc.path)
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
+      setContent(await res.text())
+    } catch (e) {
+      setError(`Could not load document: ${e.message}`)
+      setContent('')
+    }
+    setLoading(false)
+  }
+
+  function renderMd(md) {
+    if (!md) return ''
+    let text = md.replace(/<!--[\s\S]*?-->/g, '')
+    let html = text
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
+      .replace(/^### (.+)$/gm,  '<h3>$1</h3>')
+      .replace(/^## (.+)$/gm,   '<h2>$1</h2>')
+      .replace(/^# (.+)$/gm,    '<h1>$1</h1>')
+      .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+      .replace(/\*\*(.+?)\*\*/g,     '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g,         '<em>$1</em>')
+      .replace(/`([^`]+)`/g,         '<code style="font-family:monospace;background:rgba(255,255,255,0.06);padding:0.1em 0.35em;border-radius:3px;font-size:0.88em">$1</code>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:var(--gold)">$1</a>')
+      .replace(/^[-*] (.+)$/gm, '<li>$1</li>')
+      .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+      .replace(/^---+$/gm, '<hr>')
+      .replace(/^> (.+)$/gm, '<blockquote style="margin:0.75rem 0;padding:0.5rem 0.5rem 0.5rem 1rem;border-left:2px solid rgba(255,255,255,0.12);color:var(--text-muted);font-size:0.88rem">$1</blockquote>')
+      .replace(/\n\n/g, '</p><p>')
+    html = html.replace(/(<li>.*?<\/li>(\n<li>.*?<\/li>)*)/gs, '<ul>$1</ul>')
+    html = `<p>${html}</p>`
+      .replace(/<p><h/g, '<h').replace(/<\/h([1-4])><\/p>/g, '</h$1>')
+      .replace(/<p><hr><\/p>/g, '<hr>')
+      .replace(/<p><ul>/g, '<ul>').replace(/<\/ul><\/p>/g, '</ul>')
+      .replace(/<p><blockquote/g, '<blockquote').replace(/<\/blockquote><\/p>/g, '</blockquote>')
+    return html
+  }
+
+  return (
+    <div>
+      {/* Diagrams */}
+      <div style={r.diagramGrid}>
+        {[
+          { src: '/intranet/diagrams/architecture-overview.svg', label: 'Architecture Overview' },
+          { src: '/intranet/diagrams/roadmap-timeline.svg',      label: 'Roadmap Timeline' },
+        ].map(({ src, label }) => (
+          <a key={src} href={src} target="_blank" rel="noopener noreferrer" style={r.diagramCard}>
+            <div style={r.diagramLabel}>{label} ↗</div>
+            <img src={src} alt={label} style={r.diagramImg} />
+          </a>
+        ))}
+      </div>
+
+      {/* Document cards */}
+      {!selected && (
+        <div style={r.docGrid}>
+          {PLAN_DOCS.map(doc => (
+            <button key={doc.id} onClick={() => loadDoc(doc)} style={r.docCard}>
+              <div style={r.docCardTitle}>{doc.title}</div>
+              <div style={r.docCardSub}>{doc.subtitle}</div>
+              <div style={r.docCardCta}>Read →</div>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Document reader */}
+      {selected && (
+        <div>
+          <div style={r.docHeader}>
+            <div>
+              <h2 style={r.docTitle}>{selected.title}</h2>
+              <p style={r.docSubtitle}>{selected.subtitle}</p>
+            </div>
+            <button
+              onClick={() => { setSelected(null); setContent('') }}
+              style={r.closeBtn}
+            >← Back</button>
+          </div>
+          {loading && <div style={g.loading}>Loading…</div>}
+          {error   && <div style={g.error}>{error}</div>}
+          {!loading && !error && content && (
+            <div style={g.mdBody} dangerouslySetInnerHTML={{ __html: renderMd(content) }} />
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Guide tab styles ─────────────────────────────────────────────────────────
 
 const g = {
@@ -493,4 +616,47 @@ const d = {
   },
   infoTitle: { fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.6rem', color: 'var(--text-primary)', display: 'block' },
   infoText:  { fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 0.5rem' },
+}
+
+// ─── Roadmap tab styles ───────────────────────────────────────────────────────
+
+const r = {
+  diagramGrid: {
+    display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gap: '1rem', marginBottom: '1.5rem',
+  },
+  diagramCard: {
+    display: 'block', background: 'var(--ink)', border: '1px solid #1a1a2e',
+    borderRadius: 10, padding: '0.75rem', textDecoration: 'none',
+    transition: 'border-color 0.15s',
+  },
+  diagramLabel: {
+    fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.07em',
+    color: 'var(--text-ghost)', marginBottom: '0.6rem',
+  },
+  diagramImg: { width: '100%', height: 'auto', borderRadius: 6, display: 'block' },
+  docGrid: {
+    display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+    gap: '0.75rem', marginBottom: '1.5rem',
+  },
+  docCard: {
+    background: 'var(--ink)', border: '1px solid #1a1a2e', borderRadius: 9,
+    padding: '1rem 1.1rem', cursor: 'pointer', textAlign: 'left',
+    display: 'flex', flexDirection: 'column', gap: '0.2rem',
+    transition: 'border-color 0.15s',
+  },
+  docCardTitle: { fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' },
+  docCardSub:   { fontSize: '0.75rem', color: 'var(--text-subdim)', lineHeight: 1.4 },
+  docCardCta:   { marginTop: '0.5rem', fontSize: '0.75rem', color: 'var(--gold)' },
+  docHeader: {
+    display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
+    gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap',
+  },
+  docTitle:   { fontSize: '1.3rem', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 0.2rem' },
+  docSubtitle:{ color: 'var(--text-muted)', fontSize: '0.85rem', margin: 0 },
+  closeBtn: {
+    background: 'none', border: '1px solid #1a1a2e', color: 'var(--text-muted)',
+    borderRadius: 6, padding: '0.35rem 0.75rem', cursor: 'pointer', fontSize: '0.8rem',
+    flexShrink: 0,
+  },
 }
