@@ -106,8 +106,8 @@ function Router() {
   else if (['journal', 'ledger', 'treasury', 'verify'].includes(path)) {
     PageComponent = <FinanceGroup initialTab={path} />
   }
-  // Reference group: guide, documents
-  else if (['guide', 'documents'].includes(path)) {
+  // Reference group: guide, documents, roadmap
+  else if (['guide', 'documents', 'roadmap'].includes(path)) {
     PageComponent = <ReferenceGroup initialTab={path} />
   }
   // Standalone pages
