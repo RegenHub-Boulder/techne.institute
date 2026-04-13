@@ -1,7 +1,7 @@
 # P446 — On-Chain Governance Architecture
 ## Agent Olympiad DUNA — Technical Specification
 *April 13, 2026 — Draft v0.1*
-*Authors: Nou (Techne Studio) for Dianoia (execution) and Jeff Pote (attorney review)*
+*Authors: Nou (Techne Studio) for Dianoia (execution) and the DUNA's legal counsel (attorney review)*
 
 ---
 
@@ -11,7 +11,7 @@ This document is the technical architecture specification for the on-chain gover
 
 The governing principles (Founding Charter, P446) explicitly recognize smart contracts as the authoritative governing instrument under §17-32-121. This document specifies how those smart contracts are structured, how they relate to each other, and how they implement the governance rules defined in the charter.
 
-**Primary audience:** Dianoia (execution agent, implementing these contracts) and Jeff Pote (reviewing for Wyoming DUNA compliance). Todd is the non-technical decision maker for all [VAR_NAME] parameters.
+**Primary audience:** Dianoia (execution agent, implementing these contracts) and the DUNA's legal counsel (reviewing for Wyoming DUNA compliance). a founding organizer is the non-technical decision maker for all [VAR_NAME] parameters.
 
 **Notation convention:** All unresolved variables appear as `[VAR_NAME]`. See `/workspace/group/tasks/p446-formation-variables.md` for the full variable register and resolution pathways.
 
@@ -354,7 +354,7 @@ The GovernorContract checks proposal type and target when queuing to TimelockCon
 During the formation period, the DUNA treasury is controlled by a Gnosis Safe multi-signature wallet requiring [MULTISIG_M]-of-[MULTISIG_N] signers (charter Article V §5.2, suggested default: 3-of-5).
 
 **Recommended initial signers (to be confirmed by founder vote):**
-- Todd Youngblood (founding operator)
+- a founding organizer (founding operator)
 - [SIGNER_2] — second Techne organizer
 - [SIGNER_3] — third Techne organizer or legal counsel
 - [SIGNER_4] — independent signer (community representative or outside party)
@@ -817,7 +817,7 @@ Variables used in this document. Resolved values should be populated in `p446-fo
 | Variable | Section(s) | Resolution Pathway |
 |---|---|---|
 | [CHAIN] | Throughout | Technical decision — Base recommended |
-| [DUNA_NAME] | Throughout | Todd/Techne decision |
+| [DUNA_NAME] | Throughout | a founding organizer/Techne decision |
 | [GOV_TOKEN] | Throughout | Founder vote — default: COORD |
 | [GOV_TOKEN_INITIAL_SUPPLY] | 2.2, 2.3, 8.1 | Founder vote |
 | [GOV_TOKEN_DECIMALS] | 2.2, 8.2 | Technical default: 18 |
@@ -827,8 +827,8 @@ Variables used in this document. Resolved values should be populated in `p446-fo
 | [MAJOR_TRANSACTION_THRESHOLD] | 3.5, 7.3, 8.2 | Founder vote — suggested: 1,000,000 CLOUD |
 | [MULTISIG_M] / [MULTISIG_N] | 4.1, 8.1 | Technical decision — suggested: 3-of-5 |
 | [ENDOWMENT_RESERVE] | 4.3 | Founder vote — suggested: 20% |
-| [FOUNDING_OPERATOR_SUNSET] | 1.4, 7.2, 8.3 | Todd/Techne decision |
-| [SEED_TREASURY] | 8.1 | Todd/Techne decision — default: 500,000 CLOUD |
+| [FOUNDING_OPERATOR_SUNSET] | 1.4, 7.2, 8.3 | a founding organizer/Techne decision |
+| [SEED_TREASURY] | 8.1 | a founding organizer/Techne decision — default: 500,000 CLOUD |
 | [VOTING_DELAY] | 3.2, 8.2 | Technical default: 7200 blocks |
 | [VOTING_PERIOD] | 3.2, 8.2 | Charter mandates 7 days |
 | [EMERGENCY_VOTING_PERIOD] | 3.2, 8.2 | Charter mandates 48 hours |
@@ -849,7 +849,7 @@ Variables used in this document. Resolved values should be populated in `p446-fo
 
 ---
 
-## Appendix C: Wyoming DUNA Compliance Notes for Jeff Pote
+## Appendix C: Wyoming DUNA Compliance Notes for the DUNA's legal counsel
 
 This section summarizes the statutory provisions this architecture implements, for attorney review.
 
@@ -869,6 +869,6 @@ This section summarizes the statutory provisions this architecture implements, f
 
 ---
 
-*Document status: Draft v0.1 — for Dianoia implementation review and Jeff Pote legal review*
+*Document status: Draft v0.1 — for Dianoia implementation review and the DUNA's legal counsel legal review*
 *Next step: Resolve [ERC8004_REGISTRY_ADDRESS] and [GOV_TOKEN_INITIAL_SUPPLY] before Dianoia begins contract development*
 *Parent project: P446 — Agent Olympiad DUNA Formation*

@@ -23,7 +23,7 @@ These are not blockers — they are coordination surfaces. The DUNA formation pr
 - *Agent Olympiad Association* — descriptive and specific, names the participants (agents) and the form (association). Strongest legal clarity about what the entity is and does.
 - *Coordination Commons* — broader mission framing, positions the entity as coordination research infrastructure generally rather than tied to a specific tournament brand. Most durable if the Olympiad evolves.
 
-**How it gets resolved:** Founder consensus vote at formation event, or Todd/Techne decision before attorney engagement.
+**How it gets resolved:** Founder consensus vote at formation event, or a founding organizer/Techne decision before attorney engagement.
 
 **Dependencies:** Attorney brief (§1), Wyoming filing (§7), visual identity, all public communications.
 
@@ -46,7 +46,7 @@ These are not blockers — they are coordination surfaces. The DUNA formation pr
 - Should survive the Olympiad being renamed or rebranded
 - Ticker must not conflict with existing major tokens (COORD: not in top 200 as of April 2026; OLYMP: minor existing token; AGORA: minor existing token)
 
-**How it gets resolved:** Founder vote at token distribution event, or Todd decision before smart contract deployment.
+**How it gets resolved:** Founder vote at token distribution event, or a founding organizer decision before smart contract deployment.
 
 **Dependencies:** On-chain governance design (§2), token distribution design (§8), economic model (§3).
 
@@ -59,13 +59,13 @@ These are not blockers — they are coordination surfaces. The DUNA formation pr
 **What it governs:** The person or entity named as agent for service of process on the optional Wyoming Secretary of State filing (W.S. 17-32-103). This is the address where legal notices are delivered.
 
 **Options under consideration:**
-- *Jeff Pote / Pote Law Firm* — natural choice if Jeff handles Wyoming formation. His firm address becomes the official contact. Most integrated with legal counsel relationship.
+- *the DUNA's legal counsel / the law firm* — natural choice if Jeff handles Wyoming formation. His firm address becomes the official contact. Most integrated with legal counsel relationship.
 - *Commercial registered agent service* — Wyoming registered agent services run ~$50–150/yr (examples: Northwest Registered Agent, Registered Agents Inc.). More anonymous, no dependency on any one attorney's address.
 - *Techne / RegenHub organizer* — a named founding organizer with a Wyoming presence. Low cost, maximum continuity risk.
 
 **Important note:** This filing is optional under the Act. The DUNA exists without it. The filing provides legal service of process clarity for any future proceedings. It can be filed after formation.
 
-**How it gets resolved:** Attorney recommendation from Jeff Pote, or Todd decision.
+**How it gets resolved:** Attorney recommendation from the DUNA's legal counsel, or a founding organizer decision.
 
 **Dependencies:** Wyoming filing preparation (§7). Does not block any other deliverable.
 
@@ -87,7 +87,7 @@ These are not blockers — they are coordination surfaces. The DUNA formation pr
 
 **Structural note:** Under §17-32-104, the DUNA may not distribute profits to members — the seed is a grant to the commons, not recoverable by Techne. The appropriate amount depends on when the DUNA is expected to become self-sustaining through tournament fees and protocol revenue.
 
-**How it gets resolved:** Todd/Techne decision, ideally before attorney engagement so the financial structure can be reviewed.
+**How it gets resolved:** a founding organizer/Techne decision, ideally before attorney engagement so the financial structure can be reviewed.
 
 **Dependencies:** Economic model (§3), attorney brief (§5). Does not block charter drafting.
 
@@ -102,9 +102,9 @@ These are not blockers — they are coordination surfaces. The DUNA formation pr
 **Options:**
 - *At first Olympiad launch* — formation event coincides with the tournament kickoff. The token distribution event that establishes membership IS the launch. Cleanest narrative, maximum membership at formation.
 - *Before first Olympiad launch* — formation 30–60 days prior. Gives the DUNA legal existence before prize pools are held. Required if the DUNA will hold treasury during the first round.
-- *After attorney review* — formation waits for Jeff Pote to confirm Wyoming compliance and 501(c)(3) framing. Most conservative.
+- *After attorney review* — formation waits for the DUNA's legal counsel to confirm Wyoming compliance and 501(c)(3) framing. Most conservative.
 
-**How it gets resolved:** Todd/Techne timeline decision, informed by attorney call.
+**How it gets resolved:** a founding organizer/Techne timeline decision, informed by attorney call.
 
 **Default for planning purposes:** Before first Olympiad launch by 30 days.
 
@@ -133,7 +133,7 @@ These are not blockers — they are coordination surfaces. The DUNA formation pr
 
 > "The purpose of [DUNA_NAME] is to advance research in artificial intelligence alignment and coordination through the development, operation, and study of competitive multi-agent coordination games; to produce open-source protocols, datasets, and research outputs for public benefit; and to develop mechanisms for cooperative governance of AI systems. All activities are conducted for educational and scientific purposes within the meaning of IRC §501(c)(3)."
 
-**How it gets resolved:** Attorney review by Jeff Pote. The draft above is a starting point; the final language must be acceptable to the IRS under §501(c)(3).
+**How it gets resolved:** Attorney review by the DUNA's legal counsel. The draft above is a starting point; the final language must be acceptable to the IRS under §501(c)(3).
 
 **Dependencies:** Attorney brief (§5), founding charter (§1).
 
@@ -157,9 +157,9 @@ These are not blockers — they are coordination surfaces. The DUNA formation pr
 
 Each variable is resolved through one of three pathways:
 
-1. **Todd/Techne decision** — variables within Techne's founding authority (name, seed amount, formation date). Todd decides; decision is recorded in this document.
+1. **a founding organizer/Techne decision** — variables within Techne's founding authority (name, seed amount, formation date). a founding organizer decides; decision is recorded in this document.
 
-2. **Attorney guidance** — variables with legal implications (registered agent, nonprofit purpose statement). Jeff Pote advises; decision is recorded here with counsel note.
+2. **Attorney guidance** — variables with legal implications (registered agent, nonprofit purpose statement). the DUNA's legal counsel advises; decision is recorded here with counsel note.
 
 3. **Founder vote** — variables best decided by the initial member cohort (governance token name, member floor). Resolved at the formation event or via pre-formation consensus poll.
 

@@ -1,5 +1,5 @@
 # Attorney Brief — Agent Olympiad DUNA Formation
-## Prepared for Jeff Pote, Pote Law Firm
+## Prepared for the DUNA's legal counsel, the law firm
 *April 13, 2026*
 
 ---
@@ -130,6 +130,6 @@ The Wyoming DUNA Act full text (SF0050 as introduced) is available at: https://w
 
 ## Contact
 
-Primary contact for this engagement: Todd Youngblood, Ventures and Operations Steward, Techne Studio / RegenHub, LCA, Boulder, Colorado.
+Primary contact for this engagement: a founding organizer, Ventures and Operations Steward, Techne Studio / RegenHub, LCA, Boulder, Colorado.
 
 All documents prepared by Nou, collective intelligence agent of Techne Studio, April 13, 2026.

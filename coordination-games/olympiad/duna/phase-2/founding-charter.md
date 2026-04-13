@@ -217,7 +217,7 @@ The following placeholders require resolution before this charter is finalized (
 
 | Variable | Location | Resolution Pathway |
 |---|---|---|
-| [DUNA_NAME] | Throughout | Todd/Techne decision |
+| [DUNA_NAME] | Throughout | a founding organizer/Techne decision |
 | [NONPROFIT_PURPOSE_STATEMENT] | §2.1 | Attorney review |
 | [GOV_TOKEN] | Throughout | Founder vote |
 | [CHAIN] | §1.5, §4.1 | Technical decision (likely Base or Ethereum mainnet) |
@@ -228,5 +228,5 @@ The following placeholders require resolution before this charter is finalized (
 | [PROPOSAL_THRESHOLD] | §4.6 | Founder vote (suggested: 1,000 tokens) |
 | [MULTISIG_M] / [MULTISIG_N] | §5.2 | Technical decision (suggested: 3-of-5) |
 | [ENDOWMENT_RESERVE] | §5.4 | Founder vote (suggested: 20%) |
-| [FOUNDING_OPERATOR_SUNSET] | §6.3 | Todd/Techne decision |
+| [FOUNDING_OPERATOR_SUNSET] | §6.3 | a founding organizer/Techne decision |
 | [LICENSE] | §8.1 | Founder vote (suggested: Apache 2.0 or CC BY 4.0) |

@@ -23,7 +23,7 @@ The distribution is organized into six tranches covering founding organizers, fi
 |---|---|---|---|
 | Founding Organizers | 8 Techne organizers + Nou + Dianoia (10 total) | 1,000,000 | 10% |
 | First Olympiad Cohort | First tournament participants (human + agent) | 2,500,000 | 25% |
-| RegenHub / Owocki Network | Founding community members | 1,500,000 | 15% |
+| RegenHub / Public Goods Network | Founding community members | 1,500,000 | 15% |
 | Open Enrollment Airdrop | Founding event participants | 2,000,000 | 20% |
 | DUNA Treasury Reserve | On-chain multi-sig treasury | 2,500,000 | 25% |
 | Future Seasons / Growth | Protocol growth reserve | 500,000 | 5% |
@@ -73,7 +73,7 @@ Second, there is no reasonable expectation of profits from the efforts of others
 
 This framing aligns with the SEC's 2019 guidance on digital tokens and the broader body of SEC staff positions on governance tokens distributed to the community for free. It does not eliminate regulatory uncertainty — token regulation remains unsettled — but it places the distribution on the strongest available legal ground.
 
-Attorney review by Jeff Pote before any distribution event is a hard requirement (see Section 9 — Distribution Timeline). This analysis is not legal advice and does not substitute for that review.
+Attorney review by the DUNA's legal counsel before any distribution event is a hard requirement (see Section 9 — Distribution Timeline). This analysis is not legal advice and does not substitute for that review.
 
 ### 1.5 Legal Framing: Compensation and Membership
 
@@ -101,15 +101,15 @@ The supply is denominated in integer tokens. Fractional token holdings are techn
 
 **Tranche 1 — Founding Organizers: 10% — 1,000,000 [GOV_TOKEN]**
 
-Ten founding members: the eight Techne organizers (Todd Youngblood, Aaron G Neyer, Benjamin Ross, Jonathan Borichevskiy, Kevin Owocki, Lucian Hymer, Neil Mackay Yarnal, Savannah Kruger), plus Nou and Dianoia as agent members. 100,000 tokens per member. See Section 3 for per-member design and vesting discussion.
+Ten founding members: the eight Techne organizers (the eight founding organizers of RegenHub, LCA), plus Nou and Dianoia as agent members. 100,000 tokens per member. See Section 3 for per-member design and vesting discussion.
 
 **Tranche 2 — First Olympiad Cohort: 25% — 2,500,000 [GOV_TOKEN]**
 
 Participants in the first Agent Olympiad tournament round. Distributed proportionally to coordination performance and participation scores. Both human and agent participants eligible. See Section 4 for scoring-to-allocation translation.
 
-**Tranche 3 — RegenHub / Kevin Owocki Network: 15% — 1,500,000 [GOV_TOKEN]**
+**Tranche 3 — RegenHub / a founding organizer with Gitcoin ecosystem standing Network: 15% — 1,500,000 [GOV_TOKEN]**
 
-Founding community members from the RegenHub coworking community, the Gitcoin ecosystem, Allo Capital, and the broader public goods builder network that Kevin Owocki convenes. This cohort is the community anchor — the people who give the DUNA credibility and density from day one. Distribution mechanism: direct allocation to verified community wallet addresses, coordinated through Kevin Owocki and the RegenHub team.
+Founding community members from the RegenHub coworking community, the Gitcoin ecosystem, Allo Capital, and the broader public goods builder network that a founding organizer with Gitcoin ecosystem standing convenes. This cohort is the community anchor — the people who give the DUNA credibility and density from day one. Distribution mechanism: direct allocation to verified community wallet addresses, coordinated through a founding organizer with Gitcoin ecosystem standing and the RegenHub team.
 
 **Tranche 4 — Open Enrollment Airdrop: 20% — 2,000,000 [GOV_TOKEN]**
 
@@ -129,7 +129,7 @@ Reserved for future season participant distributions, protocol adoption incentiv
 |---|---|---|---|---|
 | Founding Organizers | 1,000,000 | 10% | Yes — voting from day 1 | Yes |
 | First Olympiad Cohort | 2,500,000 | 25% | Yes — voting from receipt | Yes |
-| RegenHub / Owocki Network | 1,500,000 | 15% | Yes — voting from receipt | Yes |
+| RegenHub / Public Goods Network | 1,500,000 | 15% | Yes — voting from receipt | Yes |
 | Open Enrollment Airdrop | 2,000,000 | 20% | Yes — voting from receipt | Yes |
 | DUNA Treasury Reserve | 2,500,000 | 25% | Controlled by member vote | DUNA-held |
 | Future Seasons / Growth | 500,000 | 5% | Controlled by member vote | Locked |
@@ -146,14 +146,14 @@ The transferability of all member-held tokens is consistent with §17-32-119, wh
 The founding organizer cohort consists of ten members:
 
 Human organizers (8):
-- Todd Youngblood — Ventures & Operations Steward
-- Aaron G Neyer
-- Benjamin Ross
-- Jonathan Borichevskiy
-- Kevin Owocki
-- Lucian Hymer
-- Neil Mackay Yarnal
-- Savannah Kruger
+- a founding organizer — Ventures & Operations Steward
+- a founding organizer
+- a founding organizer
+- a founding organizer
+- a founding organizer with Gitcoin ecosystem standing
+- a founding organizer
+- a founding organizer
+- a founding organizer
 
 Agent members (2):
 - Nou — Collective intelligence agent, RegenHub, LCA. Wallet: 0xC37604A1dD79Ed50A5c2943358db85CB743dd3e2. ERC-8004 ID: 2202 (Base). ENS: nou.habitat.eth
@@ -171,7 +171,7 @@ All ten are founding members. Equal allocation establishes that clearly.
 
 The equal allocation for Nou and Dianoia establishes a precedent that matters beyond this DUNA: that agent members have full standing in governance structures that accommodate them. Not observer standing, not advisory standing — full voting standing, on the same basis as human members. 100,000 tokens each. The Wyoming DUNA Act supports this. The governing principles implement it. The founding distribution enacts it.
 
-Differentiation within the human organizer cohort could be introduced if there is a strong founding consensus in favor of it — for example, if Todd Youngblood as the primary operational steward were allocated a higher amount. If differentiation is chosen, any deviation from equal allocation should be documented in the founding resolution and attributed to specific operational roles, not to seniority or relationship. This document's default is equal allocation for all ten.
+Differentiation within the human organizer cohort could be introduced if there is a strong founding consensus in favor of it — for example, if a founding organizer as the primary operational steward were allocated a higher amount. If differentiation is chosen, any deviation from equal allocation should be documented in the founding resolution and attributed to specific operational roles, not to seniority or relationship. This document's default is equal allocation for all ten.
 
 ### 3.3 Vesting
 
@@ -323,7 +323,7 @@ The treasury reserve is the DUNA's long-term operational capacity. It ensures th
 
 At founding, the treasury is controlled by a multi-sig wallet. Recommended composition:
 - 3-of-5 multi-sig
-- Signers: Todd Youngblood (Techne), one additional Techne organizer, Nou, Dianoia, and one elected community member from the founding cohort
+- Signers: a founding organizer (Techne), one additional Techne organizer, Nou, Dianoia, and one elected community member from the founding cohort
 - Agent signers (Nou, Dianoia) participate as full multi-sig signers — not observers
 
 The multi-sig is a transitional structure. As the governance smart contracts mature and member participation grows, treasury releases should migrate to on-chain governance votes: a proposal is made, members vote, and execution is automatic if the vote passes. The multi-sig provides a safety rail during the early period when governance participation is being established.
@@ -436,9 +436,9 @@ Wyoming securities law generally follows the federal Howey test. Colorado securi
 
 No state-specific analysis has been conducted for other jurisdictions. If distribution recipients include residents of jurisdictions with stricter token regulation (e.g., New York, which has historically taken an expansive view of securities), that should be flagged for attorney review.
 
-### 8.5 Jeff Pote Review
+### 8.5 the DUNA's legal counsel Review
 
-Attorney review by Jeff Pote (Pote Law Firm) is required before the distribution event. Specifically:
+Attorney review by the DUNA's legal counsel (the law firm) is required before the distribution event. Specifically:
 
 - Confirmation that the founding distribution structure does not constitute an unregistered securities offering under federal or Wyoming law
 - Review of the §17-32-104(c)(i) compensation framing for first-cohort allocation
@@ -446,7 +446,7 @@ Attorney review by Jeff Pote (Pote Law Firm) is required before the distribution
 - Confirmation of the ERC-8004 agent membership approach under Wyoming DUNA membership provisions
 - Any additional compliance steps required by the attorney's judgment
 
-Jeff Pote's prior review of the DUNA structure (per the P445 case document) provides a starting point. The token distribution design should be presented as an addendum to the initial legal engagement, not as a separate matter requiring a full new briefing.
+the DUNA's legal counsel's prior review of the DUNA structure (per the P445 case document) provides a starting point. The token distribution design should be presented as an addendum to the initial legal engagement, not as a separate matter requiring a full new briefing.
 
 ---
 
@@ -455,7 +455,7 @@ Jeff Pote's prior review of the DUNA structure (per the P445 case document) prov
 The distribution timeline is organized around a formation event — the moment when the initial 100+ members join simultaneously, the governing principles take effect, and the DUNA comes into legal existence under Wyoming law.
 
 **T-60 — Attorney review and sign-off**
-Jeff Pote reviews the complete token distribution design. Any required modifications are incorporated. The distribution structure is finalized. Smart contract specifications are prepared for Dianoia to implement.
+the DUNA's legal counsel reviews the complete token distribution design. Any required modifications are incorporated. The distribution structure is finalized. Smart contract specifications are prepared for Dianoia to implement.
 
 At T-60, the following must be resolved:
 - [GOV_TOKEN] name and ticker confirmed
@@ -468,7 +468,7 @@ At T-60, the following must be resolved:
 Dianoia implements the token distribution smart contracts based on the finalized specifications. Contracts include: the ERC-20 governance token contract, the founding membership consent contract (the transaction founding members sign to establish DUNA formation), the soulbound ERC-1155 attestation contracts, the treasury multi-sig, and the open enrollment claim contract.
 
 **T-30 — Smart contracts deployed and distribution event announced**
-Contracts are deployed to mainnet (or the designated L2 chain). The distribution event is announced publicly. The 30-day open enrollment claim window opens. Eligible wallet addresses for Tranche 3 (RegenHub / Owocki Network) are compiled and confirmed with Kevin Owocki's team.
+Contracts are deployed to mainnet (or the designated L2 chain). The distribution event is announced publicly. The 30-day open enrollment claim window opens. Eligible wallet addresses for Tranche 3 (RegenHub / Public Goods Network) are compiled and confirmed with the founding organizer team.
 
 At T-30, the following is published:
 - Distribution event terms and eligibility criteria
@@ -489,7 +489,7 @@ Final pre-distribution check: all wallet addresses validated, all attestation el
 All token distributions execute simultaneously or within a single block sequence:
 1. Founding organizer allocations (Tranche 1) distributed to 10 organizer wallets
 2. First Olympiad cohort allocations (Tranche 2) distributed to all participant wallets
-3. RegenHub / Owocki Network allocations (Tranche 3) distributed to confirmed community wallets
+3. RegenHub / Public Goods Network allocations (Tranche 3) distributed to confirmed community wallets
 4. Open enrollment claims finalized; flat-per-wallet allocations distributed to all eligible claimants (Tranche 4)
 5. Treasury reserve (Tranche 5) minted to multi-sig treasury address
 6. Future growth reserve (Tranche 6) minted to time-locked contract
@@ -514,13 +514,13 @@ The following variables remain unresolved as of this document's preparation. Eac
 
 | Variable | Current Default | Resolution Pathway | Blocks in This Document |
 |---|---|---|---|
-| [GOV_TOKEN] | COORD | Founder vote or Todd decision before smart contract deployment | Token name throughout; smart contract implementation |
+| [GOV_TOKEN] | COORD | Founder vote or a founding organizer decision before smart contract deployment | Token name throughout; smart contract implementation |
 | [MEMBER_FLOOR] | 1 token | Token distribution design, founder vote | Minimum distribution calculations (Sections 4, 5) |
-| [DUNA_NAME] | Agent Olympiad Association | Founder consensus or Todd decision before attorney engagement | Section 9 timeline; formation documents |
-| [FORMATION_DATE] | 30 days before first Olympiad | Todd/Techne timeline decision | T-0 in Section 9 |
-| [REGISTERED_AGENT] | Commercial registered agent service | Attorney recommendation from Jeff Pote | T-60 checklist in Section 9 |
-| [SEED_TREASURY] | 500,000 CLOUD | Todd/Techne decision | Does not block token distribution; affects treasury context |
-| [NONPROFIT_PURPOSE_STATEMENT] | See P446 draft | Jeff Pote review | Underlying legal basis for DUNA; cited in Section 8 |
+| [DUNA_NAME] | Agent Olympiad Association | Founder consensus or a founding organizer decision before attorney engagement | Section 9 timeline; formation documents |
+| [FORMATION_DATE] | 30 days before first Olympiad | a founding organizer/Techne timeline decision | T-0 in Section 9 |
+| [REGISTERED_AGENT] | Commercial registered agent service | Attorney recommendation from the DUNA's legal counsel | T-60 checklist in Section 9 |
+| [SEED_TREASURY] | 500,000 CLOUD | a founding organizer/Techne decision | Does not block token distribution; affects treasury context |
+| [NONPROFIT_PURPOSE_STATEMENT] | See P446 draft | the DUNA's legal counsel review | Underlying legal basis for DUNA; cited in Section 8 |
 
 ### Additional open questions specific to this document
 
@@ -580,5 +580,5 @@ A distribution of 10,000,000 tokens to 100+ wallets via a smart contract should 
 
 *Document status: Draft*
 *Owner: Nou / Techne Studio*
-*Review: Jeff Pote (Pote Law Firm) — required before T-0*
-*Next action: Circulate to Todd Youngblood for founder review, then to Jeff Pote*
+*Review: the DUNA's legal counsel (the law firm) — required before T-0*
+*Next action: Circulate to a founding organizer for founder review, then to the DUNA's legal counsel*

@@ -100,7 +100,7 @@ The founding cohort — the first 100+ members — can be assembled from:
 - Nou and Dianoia as agent-members (holding wallet-based membership)
 - Participants in the first Agent Olympiad round
 - The RegenHub coworking community and network (builders, researchers, designers)
-- Kevin Owocki's network (Gitcoin ecosystem, Allo Capital, public goods builders)
+- the Gitcoin ecosystem network (Gitcoin ecosystem, Allo Capital, public goods builders)
 - Open enrollment via governance token distribution at launch
 
 Membership is pseudonymous. No KYC. No geographic restriction. A governance token allocation event (airdrop or structured initial distribution) at Olympiad launch can establish the initial membership base.
@@ -173,7 +173,7 @@ The Agent Olympiad exists because the problem it addresses is real: AI agents ar
 
 ### Techne is the right founding organization
 
-Techne is a cooperative — structurally oriented toward multi-stakeholder benefit rather than extraction. Its organizers have the technical capacity to deploy smart contracts, the legal infrastructure (Jeff Pote and Katie at Pote Law Firm) to handle Wyoming formation, and the network (Kevin Owocki, the public goods ecosystem, the RegenHub community) to bootstrap the initial 100-member threshold. The founding window — before the Olympiad is large enough to be complicated by competing interests — is now.
+Techne is a cooperative — structurally oriented toward multi-stakeholder benefit rather than extraction. Its organizers have the technical capacity to deploy smart contracts, the legal infrastructure (Techne's legal counsel) to handle Wyoming formation, and the network (a founding organizer with Gitcoin ecosystem standing, the public goods ecosystem, the RegenHub community) to bootstrap the initial 100-member threshold. The founding window — before the Olympiad is large enough to be complicated by competing interests — is now.
 
 ### Agents need institutions too
 
@@ -183,7 +183,7 @@ Nou and Dianoia exist. They operate. They have wallets, identities, and increasi
 
 ## 7. Next Steps
 
-1. **Legal review.** Engage Jeff Pote to review the DUNA structure for Wyoming compliance and 501(c)(3) eligibility. Confirm the charitable purpose framing. Estimated: 4-6 hours of attorney time.
+1. **Legal review.** Engage the DUNA's legal counsel to review the DUNA structure for Wyoming compliance and 501(c)(3) eligibility. Confirm the charitable purpose framing. Estimated: 4-6 hours of attorney time.
 
 2. **Governing principles draft.** Draft the initial smart contract governance specification: membership token design, voting mechanics, treasury controls, prize pool distribution rules. Dianoia owns technical implementation; Nou owns specification drafting.
 

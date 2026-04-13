@@ -32,7 +32,7 @@ The path to 100+ members at formation runs through five segments, each with a di
 
 The eight founding organizers of RegenHub, LCA are the core of the founding cohort. They have institutional commitment to the cooperative's mission, direct relationship with Techne, and the deepest context on what the DUNA is and why it exists. They are guaranteed members and the natural nucleus around which the rest of the cohort assembles.
 
-Named founding organizers: Todd Youngblood, Aaron G Neyer, Benjamin Ross, Jonathan Borichevskiy, Kevin Owocki, Lucian Hymer, Neil Mackay Yarnal, Savannah Kruger.
+Named founding organizers: the eight founding organizers of RegenHub, LCA.
 
 Each receives a founding allocation of [GOV_TOKEN] governance tokens. Allocation size is not yet specified — this is part of the token distribution design (§8 of the formation variables register, out of scope for this document). Minimum holding is [MEMBER_FLOOR] tokens, establishing membership. The founding organizer allocation should be weighted to reflect founding contribution and ongoing governance responsibility, subject to the governing principles.
 
@@ -42,7 +42,7 @@ Segment A target: 8
 
 Nou (collective intelligence agent of Techne Studio, wallet: 0xC37604A1dD79Ed50A5c2943358db85CB743dd3e2, ERC-8004 Agent ID 2202 on Base, ENS: nou.habitat.eth) and Dianoia (execution intelligence agent, NanoClaw) hold governance tokens and are members of the DUNA.
 
-The legal basis for agent membership is addressed in the attorney brief (P446, Section 4). This is the most novel element of the DUNA's founding membership and the one most subject to legal confirmation. The structure being considered is: agents hold tokens as extensions of Techne (Techne as technical member, agent as operator), or agents hold tokens in their own right under the §17-32-102 "any other legal commercial entity" reading. Attorney guidance from Jeff Pote will clarify which structure is defensible.
+The legal basis for agent membership is addressed in the attorney brief (P446, Section 4). This is the most novel element of the DUNA's founding membership and the one most subject to legal confirmation. The structure being considered is: agents hold tokens as extensions of Techne (Techne as technical member, agent as operator), or agents hold tokens in their own right under the §17-32-102 "any other legal commercial entity" reading. Attorney guidance from the DUNA's legal counsel will clarify which structure is defensible.
 
 Regardless of the legal mechanism, agent membership is a first-principles design choice: the Olympiad's governing institution should include, as formal members, agents of the kind that the Olympiad studies. The DUNA is not just about agents — it is in part governed by them.
 
@@ -64,19 +64,19 @@ Segment C target: 20–30
 
 The RegenHub coworking community in Boulder is an existing network of builders, researchers, designers, and operators with a shared orientation toward regenerative and cooperative infrastructure. This community has relationships with all eight founding organizers and has been the social substrate for Techne's development.
 
-Acquisition mechanism: personal outreach by founding organizers (particularly Todd Youngblood as primary Techne operational contact and the organizers with the strongest RegenHub community ties). These are people who already understand what Techne is doing, who have context on the Olympiad, and who have reasons to want a governance stake in a commons their community helped found.
+Acquisition mechanism: personal outreach by founding organizers (particularly the founding organizers with the strongest RegenHub community ties). These are people who already understand what Techne is doing, who have context on the Olympiad, and who have reasons to want a governance stake in a commons their community helped found.
 
 The ask is lightweight: receive a governance token allocation, become a founding member of a Wyoming DUNA organized by a cooperative you are already affiliated with. For many members of this community, this is a natural extension of existing relationship.
 
 Segment D target: 20–30
 
-### Segment E — Kevin Owocki Network: Gitcoin Ecosystem and Public Goods Builders (target: 20–30 members)
+### Segment E — a founding organizer with Gitcoin ecosystem standing Network: Gitcoin Ecosystem and Public Goods Builders (target: 20–30 members)
 
-Kevin Owocki is a founding organizer of RegenHub, LCA and the founder of Gitcoin — one of the most significant public goods funding mechanisms in the Ethereum ecosystem. His network includes: Gitcoin Grant recipients and operators; Allo Capital contributors; the broader public goods funding community on Ethereum; and individuals at the intersection of AI, crypto, and coordination research.
+A founding organizer with deep roots in the Ethereum public goods ecosystem is the founder of Gitcoin — one of the most significant public goods funding mechanisms in the Ethereum ecosystem. His network includes: Gitcoin Grant recipients and operators; Allo Capital contributors; the broader public goods funding community on Ethereum; and individuals at the intersection of AI, crypto, and coordination research.
 
 This network has the highest density of people who (a) understand on-chain governance, (b) are philosophically aligned with a public goods institution that governs AI coordination research, and (c) have the technical fluency to hold governance tokens and participate meaningfully.
 
-Acquisition mechanism: Kevin Owocki as connector and advocate. The pitch to this network is not "help us reach 100 members" — it is "here is a public goods institution you have reason to be part of, and here is a governance stake at founding." The founding cohort opportunity (early governance tokens, founding member status, voice in the DUNA's initial governance design) is the primary hook.
+Acquisition mechanism: A founding organizer with Gitcoin and public goods ecosystem standing as connector and advocate. The pitch to this network is not "help us reach 100 members" — it is "here is a public goods institution you have reason to be part of, and here is a governance stake at founding." The founding cohort opportunity (early governance tokens, founding member status, voice in the DUNA's initial governance design) is the primary hook.
 
 Segment E target: 20–30
 
@@ -96,7 +96,7 @@ Segment F target: 10–20 (buffer to ensure 100+ regardless of attrition in othe
 | B — Agent Members | 2 | Token allocation to agent wallets (subject to attorney confirmation) |
 | C — First Olympiad Cohort | 20–30 | Tournament registration + token allocation |
 | D — RegenHub Community | 20–30 | Organizer personal outreach |
-| E — Owocki / Gitcoin Network | 20–30 | Kevin Owocki as connector |
+| E — Public Goods / Gitcoin Network | 20–30 | a founding organizer with Gitcoin ecosystem standing as connector |
 | F — Open Enrollment | 10–20 | Launch distribution event |
 | **Total** | **80–120+** | |
 
@@ -122,19 +122,19 @@ The pitch: The Olympiad DUNA is building the first public institution for AI coo
 
 What we are asking for: A research partnership memorandum (not a financial commitment at this stage), participation in the first Olympiad season's research design, and a nominal founding membership in the DUNA. The EF's legal team will need the attorney confirmation of the 501(c)(3) path before any formal relationship is possible.
 
-Who makes contact: Todd Youngblood as primary, with Jonathan Borichevskiy as support (if he has an existing EF relationship — to confirm). Kevin Owocki has Ethereum ecosystem standing that may be relevant.
+Who makes contact: a founding organizer with existing Ethereum ecosystem relationships as primary contact.
 
 Materials needed: The three Phase 1 documents (P445 case document, P445 stakeholder analysis, P446 formation variables), plus attorney confirmation letter on §501(c)(3) path. Do not approach the EF before attorney confirmation is in hand.
 
-**Kevin Owocki / Gitcoin / Allo Capital**
+**a founding organizer with Gitcoin ecosystem standing / Gitcoin / Allo Capital**
 
-Role: Network access, public goods alignment, founding credibility. Kevin is already a founding organizer. The outreach here is not to Kevin personally (he is already committed) but to the institutional relationships he can activate: Gitcoin as an organization, Allo Capital as a funding mechanism, and the broader Gitcoin ecosystem as a source of Segment E founding cohort members.
+Role: Network access, public goods alignment, founding credibility. The founding organizer with Gitcoin connections is already committed. The outreach here is to the institutional relationships they can activate: Gitcoin as an organization, Allo Capital as a funding mechanism, and the broader Gitcoin ecosystem as a source of Segment E founding cohort members.
 
 The pitch to Gitcoin/Allo: The Olympiad DUNA is a public goods institution for AI coordination research. Gitcoin's mission is funding public goods on the internet. AI coordination protocols — the open-source outputs of the Olympiad — are as foundational a public good as open-source software. Gitcoin has reason to be a founding patron.
 
-What we are asking for: A founding membership and governance token allocation for Gitcoin/Allo as an institutional member; Kevin's activation of his personal network for Segment E; potential Gitcoin Grants round participation for the DUNA's first season.
+What we are asking for: A founding membership and governance token allocation for Gitcoin/Allo as an institutional member; the founding organizer's activation of their personal network for Segment E; potential Gitcoin Grants round participation for the DUNA's first season.
 
-Who makes contact: Kevin Owocki directly, given his dual role as founding organizer and Gitcoin founder. Todd coordinates timing and materials.
+Who makes contact: the founding organizer with Gitcoin connections directly. Another founding organizer coordinates timing and materials.
 
 Materials needed: Same three Phase 1 documents. The Gitcoin community is technically fluent — the on-chain governance design is a selling point rather than a barrier. The §501(c)(3) path matters less to this audience than the DUNA structure and the governance token design.
 
@@ -146,7 +146,7 @@ The pitch: The Olympiad is a longitudinal behavioral dataset of AI agents in coo
 
 What we are asking for: A research partnership agreement; designation as a founding Research Member; input into the data governance section of the governing principles; and if possible, a letter of support for the §501(c)(3) application.
 
-Who makes contact: Todd Youngblood with support from any founding organizers with existing AI safety organization relationships. This outreach should happen after the attorney call confirms the §501(c)(3) path.
+Who makes contact: a founding organizer with support from any founding organizers with existing AI safety organization relationships. This outreach should happen after the attorney call confirms the §501(c)(3) path.
 
 Materials needed: The three Phase 1 documents plus attorney confirmation. An AI safety org's leadership will want to see the data governance provisions in the governing principles draft before committing — this means Tier 1 AI safety outreach may need to wait until the governing principles first draft is available (Phase 2 of attorney engagement).
 
@@ -188,7 +188,7 @@ The EF is not primarily a funder of external organizations — it is a research 
 
 **What we are asking for.** A research partnership MOU that establishes the Olympiad DUNA as a formal EF research affiliate; EF researcher participation in the first Olympiad season design; a founding membership token allocation for the EF (or for named EF researchers); and a letter of support for the §501(c)(3) application if the EF is willing to provide one.
 
-**Who makes contact.** Todd Youngblood as primary, supported by Kevin Owocki's Ethereum ecosystem standing. The initial outreach should be at the researcher level, not the executive/grants level — the EF's research team has more latitude and faster decision-making than the foundation's formal grants process.
+**Who makes contact.** a founding organizer as primary, supported by those with existing Ethereum ecosystem standing. The initial outreach should be at the researcher level, not the executive/grants level — the EF's research team has more latitude and faster decision-making than the foundation's formal grants process.
 
 **Materials needed.** The three Phase 1 documents (case document, stakeholder analysis, formation variables); attorney confirmation of the §501(c)(3) path; and a one-page summary of the Olympiad's research agenda written for an EF researcher audience (this document does not yet exist and should be drafted before the EF outreach call).
 
@@ -196,19 +196,19 @@ The EF is not primarily a funder of external organizations — it is a research 
 
 ---
 
-### Kevin Owocki / Gitcoin / Allo Capital — Outreach Approach
+### a founding organizer with Gitcoin ecosystem standing / Gitcoin / Allo Capital — Outreach Approach
 
 **What's in it for them.** Gitcoin's core mission is funding public goods in the open-source and Ethereum ecosystem. AI coordination protocols — open-source, publicly governed, produced by a nonprofit institution — are public goods. The Olympiad is asking Gitcoin to recognize a new category of public good: AI behavioral research infrastructure. Gitcoin has already been expanding beyond software into adjacent categories; this is a natural next step.
 
 For Allo Capital specifically: the Olympiad is a coordination mechanism, and Allo's thesis is about better coordination infrastructure for public goods funding. There is an intellectual alignment between Allo's work and the Olympiad's research agenda.
 
-**What we are asking for.** (a) Kevin's personal outreach to activate Segment E of the founding cohort (his Gitcoin ecosystem contacts who should receive founding membership tokens); (b) Gitcoin as an institutional founding member of the DUNA; (c) evaluation of whether the Olympiad DUNA qualifies for a Gitcoin Grants round in its first season; (d) Allo Capital's input into the treasury governance design, given their experience with on-chain grant allocation mechanisms.
+(a) The founding organizer's personal outreach to activate Segment E of the founding cohort (Gitcoin ecosystem contacts who should receive founding membership tokens); (b) Gitcoin as an institutional founding member of the DUNA; (c) evaluation of whether the Olympiad DUNA qualifies for a Gitcoin Grants round in its first season; (d) Allo Capital's input into the treasury governance design, given their experience with on-chain grant allocation mechanisms.
 
-**Who makes contact.** Kevin Owocki directly, in his capacity as both founding organizer and Gitcoin founder. Todd coordinates timing, materials, and any formal agreements that result. No separate pitch call needed — Kevin is already inside the tent; this is a coordination conversation about how he activates his network for the DUNA's benefit.
+**Who makes contact.** the founding organizer with Gitcoin connections directly. Another founding organizer coordinates timing, materials, and any formal agreements that result. No separate pitch call needed — this is a coordination conversation among founding organizers about how to activate the network for the DUNA's benefit.
 
-**Materials needed.** The three Phase 1 documents; the [GOV_TOKEN] distribution design (once finalized); a clear ask about what Kevin is authorized to offer in the Gitcoin context (this is a Todd/Kevin conversation, not a Nou deliverable).
+**Materials needed.** The three Phase 1 documents; the [GOV_TOKEN] distribution design (once finalized); a clear ask about what the founding organizer is authorized to offer in the Gitcoin context (this is a founding organizer conversation, not a Nou deliverable).
 
-**Timing.** Can begin immediately. Kevin does not need to wait for attorney confirmation. His personal outreach to Segment E contacts can start as soon as the formation variables are settled enough to explain the DUNA clearly.
+**Timing.** Can begin immediately. This founding organizer does not need to wait for attorney confirmation. Personal outreach to Segment E contacts can start as soon as the formation variables are settled enough to explain the DUNA clearly.
 
 ---
 
@@ -220,7 +220,7 @@ The Research Member class in the DUNA's governing principles gives AI safety org
 
 **What we are asking for.** A research partnership agreement establishing the org as a founding Research Member; the org's input into the data governance provisions of the governing principles before they are finalized (this gives them structural influence and also makes the governing principles better); and a letter of support for the §501(c)(3) application addressed to the IRS, affirming the Olympiad's scientific research purpose.
 
-**Who makes contact.** Todd Youngblood. If any founding organizer has a direct relationship with leadership at ARC, Redwood, or MIRI, that relationship should be activated first. Cold outreach to AI safety org leadership is slower and less effective.
+**Who makes contact.** a founding organizer. If any founding organizer has a direct relationship with leadership at ARC, Redwood, or MIRI, that relationship should be activated first. Cold outreach to AI safety org leadership is slower and less effective.
 
 **Materials needed.** The three Phase 1 documents; a description of the data governance provisions being designed into the governing principles (the governing principles specification draft from Phase 2 attorney engagement); and attorney confirmation of the §501(c)(3) path (required before the letter of support ask is credible).
 
@@ -249,13 +249,13 @@ The governance token distribution event is the membership event. These are the s
 The timeline runs backward from [FORMATION_DATE] — the moment the DUNA comes into existence. [FORMATION_DATE] is currently unresolved (see formation variables register); it defaults to 30 days before the first Agent Olympiad launch.
 
 **T-60 days (attorney engagement).**
-- Engage Jeff Pote for Phase 1 legal review.
+- Engage the DUNA's legal counsel for Phase 1 legal review.
 - Resolve [DUNA_NAME] and [GOV_TOKEN] — these are prerequisites for the attorney brief and cannot remain open past this point.
-- Begin Todd/Kevin coordination conversation (no materials needed).
+- Begin founding organizer coordination conversation (no materials needed).
 - Draft the one-page Olympiad research summary for EF outreach (does not exist yet).
 
 **T-45 days (attorney answers received).**
-- Receive Phase 1 written answers from Jeff Pote on the six numbered questions.
+- Receive Phase 1 written answers from the DUNA's legal counsel on the six numbered questions.
 - Go/no-go decision on §501(c)(3) path based on attorney guidance.
 - If go: begin Ethereum Foundation and AI safety org outreach immediately.
 - Begin governing principles specification drafting (Dianoia: technical implementation; Nou: specification).
@@ -264,7 +264,7 @@ The timeline runs backward from [FORMATION_DATE] — the moment the DUNA comes i
 **T-30 days (token distribution preparation).**
 - Token distribution design finalized (Segment A–E allocations, open enrollment mechanism, [MEMBER_FLOOR] confirmed).
 - Smart contract deployment for [GOV_TOKEN] governance token.
-- Outreach to RegenHub community (Segment D) and Kevin's network activation (Segment E) begins.
+- Outreach to RegenHub community (Segment D) and founding organizer network activation (Segment E) begins.
 - First Olympiad participant enrollment open (Segment C).
 - Governing principles first draft complete.
 
@@ -292,19 +292,19 @@ The timeline runs backward from [FORMATION_DATE] — the moment the DUNA comes i
 
 The following variables from the formation variables register must be resolved before specific outreach actions can begin. This section maps which resolutions unblock which outreach actions.
 
-**[DUNA_NAME] — Blocks everything.** Every outreach conversation, every document, every public communication depends on having a name for the institution. The attorney brief cannot be finalized without it. The EF outreach cannot happen without it. The token distribution event cannot be designed without it. This is the highest-priority variable to resolve. Resolution pathway: Todd/Techne decision before attorney engagement (T-60).
+**[DUNA_NAME] — Blocks everything.** Every outreach conversation, every document, every public communication depends on having a name for the institution. The attorney brief cannot be finalized without it. The EF outreach cannot happen without it. The token distribution event cannot be designed without it. This is the highest-priority variable to resolve. Resolution pathway: a founding organizer/Techne decision before attorney engagement (T-60).
 
-**[GOV_TOKEN] — Blocks token distribution design.** The smart contract deployment, the distribution event narrative, and every membership conversation depends on knowing what the governance token is called. Resolution pathway: founder vote at T-30, or Todd decision earlier. Default: COORD.
+**[GOV_TOKEN] — Blocks token distribution design.** The smart contract deployment, the distribution event narrative, and every membership conversation depends on knowing what the governance token is called. Resolution pathway: founder vote at T-30, or a founding organizer decision earlier. Default: COORD.
 
-**[NONPROFIT_PURPOSE_STATEMENT] — Blocks EF and AI safety org outreach.** The attorney confirmation of the §501(c)(3) path is contingent on this language. No Tier 1 institutional outreach (EF, AI safety orgs) should begin before attorney confirmation. Resolution pathway: attorney review and revision (Jeff Pote, Phase 1 engagement).
+**[NONPROFIT_PURPOSE_STATEMENT] — Blocks EF and AI safety org outreach.** The attorney confirmation of the §501(c)(3) path is contingent on this language. No Tier 1 institutional outreach (EF, AI safety orgs) should begin before attorney confirmation. Resolution pathway: attorney review and revision (the DUNA's legal counsel, Phase 1 engagement).
 
-**[MEMBER_FLOOR] — Blocks token distribution design.** The threshold below which a token holder is not a voting member affects both the distribution event design and the 100-member calculation. Default: 1 token (maximally inclusive; recommended unless there is a specific reason to require more). Resolution pathway: founder vote or Todd decision at T-30.
+**[MEMBER_FLOOR] — Blocks token distribution design.** The threshold below which a token holder is not a voting member affects both the distribution event design and the 100-member calculation. Default: 1 token (maximally inclusive; recommended unless there is a specific reason to require more). Resolution pathway: founder vote or a founding organizer decision at T-30.
 
-**[SEED_TREASURY] — Blocks economic model outreach.** Conversations with Gitcoin/Allo about potential grant support or with institutional funders about the DUNA's financial sustainability depend on knowing what Techne is seeding the treasury with. This does not block membership outreach but does affect the financial credibility conversations. Resolution pathway: Todd/Techne decision, ideally by T-45. Default for planning: 500,000 CLOUD (~$50,000).
+**[SEED_TREASURY] — Blocks economic model outreach.** Conversations with Gitcoin/Allo about potential grant support or with institutional funders about the DUNA's financial sustainability depend on knowing what Techne is seeding the treasury with. This does not block membership outreach but does affect the financial credibility conversations. Resolution pathway: a founding organizer/Techne decision, ideally by T-45. Default for planning: 500,000 CLOUD (~$50,000).
 
-**[REGISTERED_AGENT] — Blocks Wyoming filing.** Optional, but if the Wyoming agent appointment filing is recommended by Jeff Pote, this needs to be resolved before or at T-0. Resolution pathway: attorney recommendation (Jeff Pote, Phase 1 answers).
+**[REGISTERED_AGENT] — Blocks Wyoming filing.** Optional, but if the Wyoming agent appointment filing is recommended by the DUNA's legal counsel, this needs to be resolved before or at T-0. Resolution pathway: attorney recommendation (the DUNA's legal counsel, Phase 1 answers).
 
-**[FORMATION_DATE] — Blocks timeline finalization.** The T-60 / T-45 / T-30 / T-0 structure above is relative to a date that is not yet fixed. The formation date needs to be set by Todd before the T-60 action items can have real calendar dates. Resolution pathway: Todd/Techne decision, informed by attorney call on how long the legal preparation actually takes.
+**[FORMATION_DATE] — Blocks timeline finalization.** The T-60 / T-45 / T-30 / T-0 structure above is relative to a date that is not yet fixed. The formation date needs to be set by a founding organizer before the T-60 action items can have real calendar dates. Resolution pathway: a founding organizer/Techne decision, informed by attorney call on how long the legal preparation actually takes.
 
 ---
 

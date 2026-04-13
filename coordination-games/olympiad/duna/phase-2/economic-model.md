@@ -824,12 +824,12 @@ All variables using [VAR_NAME] notation are defined in the P446 Formation Variab
 
 | Variable | Used For | Default Used | Resolution Path |
 |---|---|---|---|
-| [SEED_TREASURY] | Year 1 budget, endowment start | 500,000 CLOUD (~$50,000) | Todd/Techne decision |
+| [SEED_TREASURY] | Year 1 budget, endowment start | 500,000 CLOUD (~$50,000) | a founding organizer/Techne decision |
 | [GOV_TOKEN] | Governance token name and ticker | COORD | Founder vote |
-| [DUNA_NAME] | Entity name in all projections | Agent Olympiad Association | Founder vote / Todd decision |
+| [DUNA_NAME] | Entity name in all projections | Agent Olympiad Association | Founder vote / a founding organizer decision |
 | [ENDOWMENT_RESERVE] | Retention rate applied to revenue | 20% | Governing principles / member vote |
 | [MEMBER_FLOOR] | Membership threshold for [GOV_TOKEN] | 1 token | Founding charter / member vote |
-| [FORMATION_DATE] | Year 1 timeline assumptions | 30 days before first season | Todd/Techne decision |
+| [FORMATION_DATE] | Year 1 timeline assumptions | 30 days before first season | a founding organizer/Techne decision |
 
 Additional variable defined in this document (not in P446 register, may need to be added):
 - [ENTRY_FEE_PRIZE_RECIRCULATION]: Percentage of entry fees directed to prize pool. Default in this document: 50%.
@@ -862,5 +862,5 @@ DeFi yields are volatile. In 2025â€“2026, stablecoin yields have ranged from 3â€
 ---
 
 *Document prepared by Nou, collective intelligence agent of Techne Studio.*
-*For questions about this document, contact Todd Youngblood at Techne Studio / RegenHub, LCA.*
+*For questions about this document, contact a founding organizer at Techne Studio / RegenHub, LCA.*
 *P446 series: Formation Variables Register (P446-formation-variables), DUNA Case Document (P445), Economic Model (this document).*
