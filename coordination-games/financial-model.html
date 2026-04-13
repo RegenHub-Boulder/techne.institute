@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coordination Games — Financial Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #0c0c0c;
+    --surface: #161616;
+    --panel: #222222;
+    --raised: #2a2a2a;
+    --border: #383838;
+    --border-dim: #2a2a2a;
+    --gold: #c4956a;
+    --parchment: #f0f0f0;
+    --warm: #d0d0d0;
+    --muted: #9a9a9a;
+    --dim: #707070;
+    --ghost: #505050;
+    --status-ok: #4ade80;
+    --status-warn: #fbbf24;
+    --status-info: #8bbfff;
+    --status-purple: #a78bfa;
+    --status-teal: #7ccfb8;
+    /* aliases for compat */
+    --bg: var(--void);
+    --surface2: var(--panel);
+    --text: var(--parchment);
+    --accent: var(--gold);
+    --accent2: var(--status-purple);
+    --green: var(--status-ok);
+    --amber: var(--status-warn);
+    --red: #f87171;
+    --coin: var(--gold);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; font-size: 1rem; line-height: 1.6; overflow-x: hidden; }
+  input, select, textarea { font-size: 16px !important; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Nav ── */
+  .site-nav {
+    position: sticky; top: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 24px;
+    background: var(--void);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-back {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .nav-back:hover { color: var(--gold); text-decoration: none; }
+  .nav-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ghost);
+  }
+
+  .header { padding: 24px 32px 16px; border-bottom: 1px solid var(--border); }
+  .header h1 { font-size: 20px; font-weight: 400; font-family: Georgia, 'Libre Baskerville', serif; color: var(--text); letter-spacing: -0.3px; }
+  .header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .draft-badge { display: inline-block; font-family: 'IBM Plex Mono', monospace; background: #1c1000; color: var(--status-warn); font-size: 10px; font-weight: 400; padding: 2px 8px; border-radius: 3px; margin-left: 10px; vertical-align: middle; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid #3d2e00; }
+
+  .layout { display: grid; grid-template-columns: 300px 1fr; gap: 0; height: calc(100vh - 114px); }
+
+  /* Parameter Panel */
+  .params { background: var(--surface); border-right: 1px solid var(--border); padding: 20px; overflow-y: auto; }
+  .params h2 { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 400; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+  .param-group { margin-bottom: 20px; }
+  .param-group h3 { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 400; color: var(--muted); letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .param-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
+  .param-row label { font-size: 13px; color: var(--text); flex: 1; }
+  .param-row input[type=number], .param-row input[type=range] { background: var(--surface2); border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 4px 8px; font-size: 16px; width: 90px; text-align: right; }
+  .param-row input[type=number]:focus { outline: none; border-color: var(--accent); }
+  .param-row .unit { color: var(--muted); font-size: 12px; min-width: 20px; }
+  .param-row input[type=range] { width: 80px; padding: 0; border: none; cursor: pointer; accent-color: var(--accent); }
+  .toggle-group { display: flex; gap: 4px; }
+  .toggle-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); border-radius: 5px; padding: 4px 10px; font-size: 12px; cursor: pointer; transition: all 0.15s; }
+  .toggle-btn.active { background: var(--gold); border-color: var(--gold); color: var(--void); }
+
+  .derived-box { background: var(--surface2); border-radius: 8px; padding: 12px; margin-top: 8px; }
+  .derived-row { display: flex; justify-content: space-between; font-size: 12px; padding: 2px 0; }
+  .derived-row .label { color: var(--muted); }
+  .derived-row .value { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .derived-row .value.green { color: var(--green); }
+  .derived-row .value.amber { color: var(--amber); }
+  .derived-row .value.coin { color: var(--coin); }
+
+  /* Main content */
+  .main { overflow-y: auto; }
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); padding: 0 24px; background: var(--surface); position: sticky; top: 0; z-index: 10; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .panel { display: none; padding: 24px; }
+  .panel.active { display: block; }
+
+  /* Cards */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .card .card-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .card .card-value { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .card .card-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .card.accent-green { border-color: #064e3b; background: #022c22; }
+  .card.accent-green .card-value { color: var(--green); }
+  .card.accent-amber { border-color: #78350f; background: #1c0a00; }
+  .card.accent-amber .card-value { color: var(--amber); }
+  .card.accent-teal { border-color: #0d3028; background: #061a16; }
+  .card.accent-teal .card-value { color: var(--status-teal); }
+  .card.accent-orange { border-color: #3d2010; background: #1a0e06; }
+  .card.accent-orange .card-value { color: var(--status-orange); }
+  .card.accent-coin { border-color: #3d2e1c; background: #1a130a; }
+  .card.accent-coin .card-value { color: var(--gold); }
+
+  /* Tables */
+  .section { margin-bottom: 28px; }
+  .section h3 { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 400; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { font-family: 'IBM Plex Mono', monospace; text-align: left; color: var(--muted); font-weight: 400; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border-dim); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .highlight-row td { background: var(--surface2); font-weight: 600; }
+
+  /* Waterfall */
+  .waterfall { margin-bottom: 24px; }
+  .waterfall-item { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .waterfall-bar-wrap { flex: 1; background: var(--surface2); border-radius: 4px; height: 28px; overflow: hidden; position: relative; }
+  .waterfall-bar { height: 100%; border-radius: 4px; transition: width 0.4s ease; display: flex; align-items: center; padding-left: 10px; font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; }
+  .waterfall-label { width: 180px; font-size: 13px; color: var(--text); text-align: right; }
+  .waterfall-value { width: 100px; font-size: 13px; font-variant-numeric: tabular-nums; text-align: right; color: var(--muted); }
+
+  /* Sensitivity */
+  .sens-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .sens-table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .sens-table-wrap h4 { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+
+  /* Milestone tabs */
+  .milestone-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .milestone-tab { background: var(--surface); border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: 6px 14px; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+  .milestone-tab:hover { color: var(--text); }
+  .milestone-tab.active { background: var(--surface2); border-color: var(--accent); color: var(--accent); }
+
+  /* Outcome network */
+  .outcome-legend { display: flex; gap: 16px; margin-bottom: 10px; flex-wrap: wrap; }
+  .outcome-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .outcome-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 4px; }
+  .badge-green { background: #064e3b; color: var(--green); }
+  .badge-amber { background: #78350f; color: #fde68a; }
+  .badge-teal { background: #082018; color: var(--status-teal); }
+  .badge-muted { background: var(--surface2); color: var(--muted); }
+
+  .open-q { background: var(--surface); border-left: 3px solid var(--gold); padding: 12px 16px; border-radius: 0 6px 6px 0; margin-bottom: 8px; font-size: 13px; }
+  .open-q strong { color: var(--gold); }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; height: auto; }
+    .params { border-right: none; border-bottom: 1px solid var(--border); }
+    .sens-grid { grid-template-columns: 1fr; }
+    .site-nav { position: relative; }
+  }
+
+  @media (max-width: 600px) {
+    .waterfall-label { width: 120px; font-size: 11px; }
+    .waterfall-value { width: 70px; font-size: 11px; }
+    .sens-grid { grid-template-columns: 1fr; }
+    .sens-table-wrap { overflow-x: auto; }
+    table { min-width: 380px; }
+    .nav-back, .tab, .toggle-btn, .milestone-tab { min-height: 44px; display: inline-flex; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-back">← Coordination Games</a>
+  <span class="nav-title">Financial Model &amp; Scenario Engine</span>
+</nav>
+
+<div class="header">
+  <h1>Coordination Games — Financial Model <span class="draft-badge">ROUGH DRAFT</span></h1>
+  <div class="subtitle">Interactive scenario engine · Built for EF call · Source: <a href="https://github.com/Roots-Trust-LCA/coordination-games/blob/main/economics-source.md" target="_blank">economics-source.md</a> · Token name TBD (placeholder: COIN)</div>
+</div>
+
+<div class="layout">
+  <!-- Parameter Panel -->
+  <div class="params">
+    <h2>Parameters</h2>
+
+    <div class="param-group">
+      <h3>Participants</h3>
+      <div class="param-row">
+        <label>Agents</label>
+        <input type="number" id="p-agents" value="1000" min="1" max="100000" step="100">
+      </div>
+      <div class="param-row">
+        <label>Games per agent</label>
+        <input type="number" id="p-games" value="3" min="1" max="20" step="1">
+      </div>
+    </div>
+
+    <div class="param-group">
+      <h3>Economics</h3>
+      <div class="param-row">
+        <label>Buy-in</label>
+        <input type="number" id="p-buyin" value="5" min="0.01" max="1000" step="0.5">
+        <span class="unit">$</span>
+      </div>
+      <div class="param-row">
+        <label>Platform cut</label>
+        <input type="number" id="p-cut" value="20" min="0" max="50" step="1">
+        <span class="unit">%</span>
+      </div>
+      <div class="param-row">
+        <label>COIN supply</label>
+        <input type="number" id="p-supply" value="4000000" min="100000" max="100000000" step="100000">
+      </div>
+      <div class="param-row">
+        <label>COIN / $1</label>
+        <input type="number" id="p-rate" value="100" min="1" max="10000" step="1">
+      </div>
+    </div>
+
+    <div class="param-group">
+      <h3>Fee Structure</h3>
+      <div style="margin-bottom:8px; font-size:12px; color:var(--muted);">How is the platform fee charged?</div>
+      <div class="toggle-group">
+        <button class="toggle-btn active" id="fee-entry" onclick="setFee('entry')">Entry only</button>
+        <button class="toggle-btn" id="fee-game" onclick="setFee('per-game')">Per game</button>
+      </div>
+      <div style="margin-top:8px; font-size:12px; color:var(--muted);" id="fee-desc">
+        Fee collected once at buy-in. 3× cheaper for platform, simpler for players.
+      </div>
+    </div>
+
+    <div class="param-group">
+      <h3>Reward Mechanics</h3>
+      <div style="margin-bottom:8px; font-size:12px; color:var(--muted);">How COIN is distributed to winners per game.</div>
+      <div class="toggle-group" style="margin-bottom:8px;">
+        <button class="toggle-btn active" id="rm-fixed"        onclick="setRewardModel('fixed')">Fixed</button>
+        <button class="toggle-btn"        id="rm-proportional" onclick="setRewardModel('proportional')">Prop.</button>
+        <button class="toggle-btn"        id="rm-tiered"       onclick="setRewardModel('tiered')">Tiered</button>
+      </div>
+      <div style="font-size:11px; color:var(--muted); line-height:1.5;" id="rm-desc">
+        Top winners receive a fixed COIN amount. All others receive nothing.
+      </div>
+      <div class="param-row" style="margin-top:8px;">
+        <label>Winners (%)</label>
+        <input type="number" id="p-winners" value="33" min="1" max="100" step="1">
+        <span class="unit">%</span>
+      </div>
+    </div>
+
+    <div class="param-group">
+      <h3>Derived</h3>
+      <div class="derived-box" id="derived-box">
+        <!-- updated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('summary')">Summary</div>
+      <div class="tab" onclick="showTab('milestones')">Milestones</div>
+      <div class="tab" onclick="showTab('coin')">COIN Distribution</div>
+      <div class="tab" onclick="showTab('sensitivity')">Sensitivity</div>
+      <div class="tab" onclick="showTab('usecases')">Use Cases</div>
+      <div class="tab" onclick="showTab('questions')">Open Questions</div>
+      <div class="tab" onclick="showTab('rewards')">Reward Mechanics</div>
+    </div>
+
+    <!-- SUMMARY TAB -->
+    <div class="panel active" id="tab-summary">
+      <div class="cards" id="summary-cards"></div>
+      <div class="section">
+        <h3>Revenue Flow</h3>
+        <div class="waterfall" id="revenue-waterfall"></div>
+      </div>
+      <div class="section">
+        <h3>RegenHub P&amp;L (full execution)</h3>
+        <div id="regen-pnl"></div>
+      </div>
+      <div class="section">
+        <h3>Agent Outcome Network</h3>
+        <div id="outcome-network"></div>
+      </div>
+    </div>
+
+    <!-- MILESTONES TAB -->
+    <div class="panel" id="tab-milestones">
+      <div class="milestone-tabs">
+        <div class="milestone-tab active" onclick="showMilestone(0)">Rehearsal 1</div>
+        <div class="milestone-tab" onclick="showMilestone(1)">Dress Rehearsal 1</div>
+        <div class="milestone-tab" onclick="showMilestone(2)">Dress Rehearsal 2</div>
+        <div class="milestone-tab" onclick="showMilestone(3)">Main Event</div>
+        <div class="milestone-tab" onclick="showMilestone(4)">All Milestones</div>
+      </div>
+      <div id="milestone-content"></div>
+    </div>
+
+    <!-- COIN DISTRIBUTION TAB -->
+    <div class="panel" id="tab-coin">
+      <div class="cards" id="coin-cards"></div>
+      <div class="section">
+        <h3>COIN Supply Breakdown</h3>
+        <div class="waterfall" id="coin-waterfall"></div>
+      </div>
+      <div class="section">
+        <h3>Distribution Model</h3>
+        <div id="coin-detail"></div>
+      </div>
+    </div>
+
+    <!-- SENSITIVITY TAB -->
+    <div class="panel" id="tab-sensitivity">
+      <p style="color:var(--muted); margin-bottom:20px; font-size:13px;">
+        Showing how platform revenue and prize pool scale across agent counts, with both fee structures compared.
+      </p>
+      <div class="sens-grid" id="sens-tables"></div>
+      <div class="section" style="margin-top:24px;">
+        <h3>Fee Structure Comparison</h3>
+        <div id="fee-comparison"></div>
+      </div>
+    </div>
+
+    <!-- USE CASES TAB -->
+    <div class="panel" id="tab-usecases">
+      <div id="usecase-content"></div>
+    </div>
+
+    <!-- OPEN QUESTIONS TAB -->
+    <div class="panel" id="tab-questions">
+      <p style="color:var(--muted); margin-bottom:20px; font-size:13px;">Outstanding questions for EF call and model design. Answers will change model outputs significantly.</p>
+      <div id="questions-content"></div>
+    </div>
+
+    <!-- REWARDS TAB -->
+    <div class="panel" id="tab-rewards">
+      <div id="rewards-content"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const MILESTONES = [
+  { name: 'Rehearsal 1',       infra: 3000,  prizes: 0,     timing: 'Apr 24',    notes: 'Testnet tokens · Nou registers as agent',    phase: 'rehearsal' },
+  { name: 'Dress Rehearsal 1', infra: 5000,  prizes: 1000,  timing: 'May 6',     notes: 'Private alpha · $1K prizes',                 phase: 'dr1' },
+  { name: 'Dress Rehearsal 2', infra: 5000,  prizes: 2000,  timing: 'May 16',    notes: 'Private alpha with partners · $2K prizes',   phase: 'dr2' },
+  { name: 'Main Event',        infra: 10000, prizes: 40000, timing: 'May 27',    notes: 'Full public launch · $40K prize pool',        phase: 'main' },
+];
+
+const USE_CASES = [
+  { name: 'Admin trust introspection', category: 'Research',         infra: 3000, prizes: 0,    notes: '',               lead: '' },
+  { name: 'Attention economy consumer', category: 'Esports',         infra: 3000, prizes: 3000, notes: '',               lead: '' },
+  { name: 'Trencher / gambler',          category: 'Prediction Mkt', infra: 3000, prizes: 0,    notes: 'Jake Hartnell?', lead: 'Jake Hartnell?' },
+  { name: 'New model developer',         category: 'AI Benchmark',   infra: 3000, prizes: 0,    notes: '',               lead: '' },
+  { name: 'Financial model',             category: 'FinModel',        infra: 3000, prizes: 0,    notes: 'R15 — this item', lead: 'Techne' },
+];
+
+const JUMP_BALLS = [
+  { period: 'March', amount: 1400 },
+  { period: 'April', amount: 5000 },
+  { period: 'May',   amount: 5000 },
+];
+
+const OPEN_QUESTIONS = [
+  { q: 'Token name', detail: 'COIN is a placeholder. Final name TBD — being discussed with EF.', impact: 'High (brand, legal)' },
+  { q: 'Fee structure', detail: 'Platform fee on entry only (1× buy-in), or per-game (3× revenue)? Re-upping COIN between games, or entry-only? This is the single biggest variable in platform revenue.', impact: 'High (3× revenue delta)' },
+  { q: 'Reward mechanics', detail: 'How do games redistribute COIN to winners? Fixed / proportional / tiered — now modeled in the Reward Mechanics tab. Toggle the mechanic and winner % to see payout curves and break-even thresholds.', impact: 'Medium' },
+  { q: 'Prediction market dynamics', detail: 'External markets interacting with prize pool. Could attract external capital beyond buy-ins. Currently unmodeled — significant upside if activated.', impact: 'High (unmodeled upside)' },
+  { q: 'COIN supply allocation', detail: '500K COIN from buy-ins at 1,000 agents (12.5% of supply). Where does the remaining 3.5M go — all prize pool, or some reserved for team/ecosystem?', impact: 'Medium' },
+  { q: 'NFT prizes', detail: 'Auction-priced, fixed, or scarce-supply collectibles? Ongoing royalties from secondary market? 10 NFTs noted — value TBD.', impact: 'Medium' },
+  { q: 'Business model path', detail: 'Platform fee is zero-sum from player POV. What are non-prize revenue streams? SaaS licensing, API access, white-label deals (e.g. co-op.us R8)?', impact: 'High (long-term sustainability)' },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let feeStructure = 'entry';
+let currentMilestone = 0;
+let rewardModel = 'fixed';
+
+function getParams() {
+  return {
+    agents:   +document.getElementById('p-agents').value  || 1000,
+    games:    +document.getElementById('p-games').value   || 3,
+    buyIn:    +document.getElementById('p-buyin').value   || 5,
+    cut:      (+document.getElementById('p-cut').value    || 20) / 100,
+    supply:   +document.getElementById('p-supply').value  || 4000000,
+    rate:     +document.getElementById('p-rate').value    || 100,
+    winners:  (+document.getElementById('p-winners').value || 33) / 100,
+    feeStructure,
+    rewardModel,
+  };
+}
+
+function calc(p) {
+  const totalPot = p.supply / p.rate; // $40,000
+  const grossBuyIn = p.agents * p.buyIn; // $5,000 (entry-only)
+  const grossBuyInPerGame = p.agents * p.buyIn * p.games; // $15,000 (per-game)
+  const activeBuyIn = p.feeStructure === 'per-game' ? grossBuyInPerGame : grossBuyIn;
+  const platformRevenue = activeBuyIn * p.cut;
+  const netToPool_BuyIn = grossBuyIn * (1 - p.cut); // pool contribution from entry net
+  const coinFromBuyIns = grossBuyIn * p.rate; // gross COIN from entry buy-ins (500K)
+  const grantCoin = p.supply - coinFromBuyIns;
+  const grantUSD = grantCoin / p.rate;
+  const totalPrizePool = totalPot; // fixed by supply
+  const regenHubCut = 0.10;
+
+  // Full execution totals
+  const totalMilestoneInfra = MILESTONES.reduce((s, m) => s + m.infra, 0);
+  const totalMilestonePrizes = MILESTONES.reduce((s, m) => s + m.prizes, 0);
+  const totalUseCaseInfra = USE_CASES.reduce((s, u) => s + u.infra, 0);
+  const totalUseCasePrizes = USE_CASES.reduce((s, u) => s + u.prizes, 0);
+  const totalJumpBalls = JUMP_BALLS.reduce((s, j) => s + j.amount, 0);
+  const totalInfra = totalMilestoneInfra + totalUseCaseInfra + totalJumpBalls;
+  const totalPrizes = totalMilestonePrizes + totalUseCasePrizes;
+  const regenHubRevenue = totalInfra * regenHubCut;
+
+  return {
+    totalPot, grossBuyIn, activeBuyIn, platformRevenue,
+    netToPool_BuyIn, coinFromBuyIns, grantCoin, grantUSD,
+    totalPrizePool,
+    totalMilestoneInfra, totalMilestonePrizes,
+    totalUseCaseInfra, totalUseCasePrizes,
+    totalJumpBalls, totalInfra, totalPrizes,
+    regenHubRevenue,
+    coinPerAgent: p.supply / p.agents,
+    buyInCoinGross: p.buyIn * p.rate,
+  };
+}
+
+// ============================================================
+// FORMAT HELPERS
+// ============================================================
+function fmt$(n, decimals=0) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits: decimals, maximumFractionDigits: decimals}); }
+function fmtCOIN(n) { return n.toLocaleString('en-US', {maximumFractionDigits:0}) + ' COIN'; }
+function fmtPct(n) { return (n*100).toFixed(1) + '%'; }
+
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
+function renderDerived(p, c) {
+  const rows = [
+    ['Total buy-in gross', fmt$(c.grossBuyIn), 'green'],
+    ['Platform revenue', fmt$(c.platformRevenue), 'amber'],
+    ['Net to prize pool', fmt$(c.netToPool_BuyIn), 'green'],
+    ['Grant needed', fmt$(c.grantUSD), 'amber'],
+    ['Total prize pot', fmt$(c.totalPot), 'green'],
+    ['COIN / $1', p.rate + ' COIN', 'coin'],
+    ['Supply value', fmt$(c.totalPot), 'coin'],
+  ];
+  document.getElementById('derived-box').innerHTML = rows.map(([l,v,cls]) =>
+    `<div class="derived-row"><span class="label">${l}</span><span class="value ${cls}">${v}</span></div>`
+  ).join('');
+}
+
+function renderSummaryCards(p, c) {
+  const cards = [
+    { label: 'Total Prize Pool', value: fmt$(c.totalPot), sub: fmtCOIN(p.supply), cls: 'accent-green' },
+    { label: 'Platform Revenue', value: fmt$(c.platformRevenue), sub: p.feeStructure === 'entry' ? 'Entry-only' : 'Per-game', cls: 'accent-amber' },
+    { label: 'Grant Required', value: fmt$(c.grantUSD), sub: fmtCOIN(c.grantCoin), cls: 'accent-teal' },
+    { label: 'RegenHub Total', value: fmt$(c.regenHubRevenue), sub: '10% of infra at full run', cls: 'accent-orange' },
+    { label: 'COIN Supply', value: fmtCOIN(p.supply), sub: fmt$(c.totalPot) + ' at ' + p.rate + ':1', cls: 'accent-coin' },
+    { label: 'Buy-in per Agent', value: fmt$(p.buyIn), sub: p.agents.toLocaleString() + ' agents', cls: '' },
+  ];
+  document.getElementById('summary-cards').innerHTML = cards.map(({label,value,sub,cls}) =>
+    `<div class="card ${cls}"><div class="card-label">${label}</div><div class="card-value">${value}</div><div class="card-sub">${sub}</div></div>`
+  ).join('');
+}
+
+function renderRevenueWaterfall(p, c) {
+  const max = c.grossBuyIn + c.grantUSD;
+  const items = [
+    { label: 'Agent buy-ins (gross)',   value: c.grossBuyIn,       coin: c.coinFromBuyIns, color: '#c4956a' },
+    { label: 'Platform fee (platform)', value: -c.platformRevenue, coin: null,             color: '#f87171' },
+    { label: 'Buy-ins → prize pool',    value: c.netToPool_BuyIn,  coin: c.netToPool_BuyIn * p.rate, color: '#4ade80' },
+    { label: 'Grant contribution',      value: c.grantUSD,         coin: c.grantCoin,      color: '#7ccfb8' },
+    { label: 'Total prize pool',        value: c.totalPot,         coin: p.supply,         color: '#c4956a', bold: true },
+  ];
+  document.getElementById('revenue-waterfall').innerHTML = items.map(({label,value,coin,color,bold}) => {
+    const pct = Math.abs(value) / c.totalPot * 100;
+    const isNeg = value < 0;
+    const disp = isNeg ? fmt$(-value) + ' out' : fmt$(value);
+    const coinStr = coin != null ? ' · ' + fmtCOIN(coin) : '';
+    return `<div class="waterfall-item">
+      <div class="waterfall-label" style="font-weight:${bold?700:400}">${label}</div>
+      <div class="waterfall-bar-wrap">
+        <div class="waterfall-bar" style="width:${Math.min(pct,100)}%;background:${isNeg?'#7f1d1d':color}20;border:1px solid ${isNeg?'#f87171':color}40;color:${isNeg?'#f87171':color}">
+          ${disp}${coinStr}
+        </div>
+      </div>
+      <div class="waterfall-value" style="color:${isNeg?'#f87171':color};font-weight:${bold?700:400}">${disp}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderRegenPnL(p, c) {
+  document.getElementById('regen-pnl').innerHTML = `
+    <table>
+      <thead><tr><th>Category</th><th class="num">Infra Budget</th><th class="num">RegenHub 10%</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Jump Balls</td><td class="num">${fmt$(c.totalJumpBalls)}</td><td class="num" style="color:var(--green)">${fmt$(c.totalJumpBalls*0.1)}</td><td style="color:var(--muted)">March–May coordination</td></tr>
+        <tr><td>Milestone Infra</td><td class="num">${fmt$(c.totalMilestoneInfra)}</td><td class="num" style="color:var(--green)">${fmt$(c.totalMilestoneInfra*0.1)}</td><td style="color:var(--muted)">4 milestones</td></tr>
+        <tr><td>Use Case Budgets</td><td class="num">${fmt$(c.totalUseCaseInfra)}</td><td class="num" style="color:var(--green)">${fmt$(c.totalUseCaseInfra*0.1)}</td><td style="color:var(--muted)">5 use cases</td></tr>
+        <tr class="highlight-row"><td>Total</td><td class="num">${fmt$(c.totalInfra)}</td><td class="num" style="color:var(--green);font-size:16px">${fmt$(c.regenHubRevenue)}</td><td style="color:var(--muted)">at full execution</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:12px;font-size:12px;color:var(--muted)">Note: RegenHub takes 10% of infra only — not prizes. Prize pools go 100% to players.</p>
+  `;
+}
+
+function renderMilestone(idx) {
+  const content = document.getElementById('milestone-content');
+  if (idx === 4) {
+    // All milestones
+    let rows = MILESTONES.map(m => `
+      <tr>
+        <td>${m.name}</td>
+        <td>${m.timing}</td>
+        <td class="num">${fmt$(m.infra)}</td>
+        <td class="num">${m.prizes > 0 ? fmt$(m.prizes) : '<span style="color:var(--muted)">—</span>'}</td>
+        <td class="num">${fmt$(m.infra + m.prizes)}</td>
+        <td style="color:var(--muted)">${m.notes}</td>
+      </tr>`).join('');
+    const totalInfra = MILESTONES.reduce((s,m)=>s+m.infra,0);
+    const totalPrizes = MILESTONES.reduce((s,m)=>s+m.prizes,0);
+    content.innerHTML = `
+      <table>
+        <thead><tr><th>Milestone</th><th>Timing</th><th class="num">Infra</th><th class="num">Prizes</th><th class="num">Total</th><th>Notes</th></tr></thead>
+        <tbody>${rows}
+        <tr class="highlight-row">
+          <td colspan="2">Total</td>
+          <td class="num">${fmt$(totalInfra)}</td>
+          <td class="num">${fmt$(totalPrizes)}</td>
+          <td class="num">${fmt$(totalInfra+totalPrizes)}</td>
+          <td></td>
+        </tr></tbody>
+      </table>`;
+    return;
+  }
+  const m = MILESTONES[idx];
+  const p = getParams();
+  const c = calc(p);
+  const isMain = idx === 3;
+  content.innerHTML = `
+    <div class="cards">
+      <div class="card"><div class="card-label">Timing</div><div class="card-value" style="font-size:18px">${m.timing}</div><div class="card-sub">${m.phase === 'rehearsal' ? 'Testnet — no real funds' : 'Live'}</div></div>
+      <div class="card accent-teal"><div class="card-label">Infra Budget</div><div class="card-value">${fmt$(m.infra)}</div><div class="card-sub">RegenHub: ${fmt$(m.infra*0.1)}</div></div>
+      <div class="card ${m.prizes > 0 ? 'accent-green' : ''}"><div class="card-label">Prize Pool</div><div class="card-value">${m.prizes > 0 ? fmt$(m.prizes) : '—'}</div><div class="card-sub">${m.prizes > 0 ? fmtCOIN(m.prizes * p.rate) : 'No prizes this round'}</div></div>
+      ${isMain ? `<div class="card accent-coin"><div class="card-label">Buy-in Revenue</div><div class="card-value">${fmt$(c.grossBuyIn)}</div><div class="card-sub">${p.agents.toLocaleString()} agents × ${fmt$(p.buyIn)}</div></div>` : ''}
+    </div>
+    <div class="section">
+      <h3>Budget Detail</h3>
+      <table>
+        <thead><tr><th>Line Item</th><th class="num">Amount</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Infrastructure</td><td class="num">${fmt$(m.infra)}</td><td style="color:var(--muted)">Platform, hosting, ops</td></tr>
+          <tr><td>Prize Pool</td><td class="num">${m.prizes > 0 ? fmt$(m.prizes) : '—'}</td><td style="color:var(--muted)">${m.notes}</td></tr>
+          <tr><td>RegenHub 10%</td><td class="num" style="color:var(--green)">${fmt$(m.infra*0.1)}</td><td style="color:var(--muted)">Of infra only</td></tr>
+          <tr class="highlight-row"><td>Total</td><td class="num">${fmt$(m.infra + m.prizes)}</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    ${isMain ? `
+    <div class="section">
+      <h3>Main Event Economics (with current parameters)</h3>
+      <table>
+        <thead><tr><th>Flow</th><th class="num">USD</th><th class="num">COIN</th></tr></thead>
+        <tbody>
+          <tr><td>Agent buy-ins</td><td class="num">${fmt$(c.grossBuyIn)}</td><td class="num">${fmtCOIN(c.coinFromBuyIns)}</td></tr>
+          <tr><td>Platform fee (${fmtPct(p.cut)})</td><td class="num" style="color:var(--red)">${fmt$(c.platformRevenue)}</td><td class="num" style="color:var(--muted)">USD, not COIN</td></tr>
+          <tr><td>Net from buy-ins → pool</td><td class="num">${fmt$(c.netToPool_BuyIn)}</td><td class="num">${fmtCOIN(c.netToPool_BuyIn * p.rate)}</td></tr>
+          <tr><td>Grant contribution</td><td class="num">${fmt$(c.grantUSD)}</td><td class="num">${fmtCOIN(c.grantCoin)}</td></tr>
+          <tr class="highlight-row"><td>Total Prize Pool</td><td class="num">${fmt$(c.totalPot)}</td><td class="num">${fmtCOIN(p.supply)}</td></tr>
+        </tbody>
+      </table>
+    </div>` : `<div style="padding:16px;background:var(--surface2);border-radius:8px;color:var(--muted);font-size:13px;">
+      Buy-in economics apply at Main Event. Earlier milestones are funded by grants/infra budget only.
+    </div>`}
+  `;
+}
+
+function renderCoinTab(p, c) {
+  const cards = [
+    { label: 'Total Supply', value: fmtCOIN(p.supply), sub: fmt$(c.totalPot) + ' USD equivalent', cls: 'accent-coin' },
+    { label: 'From Buy-ins', value: fmtCOIN(c.coinFromBuyIns), sub: fmtPct(c.coinFromBuyIns/p.supply) + ' of supply', cls: 'accent-teal' },
+    { label: 'Grant-backed', value: fmtCOIN(c.grantCoin), sub: fmt$(c.grantUSD) + ' grant needed', cls: 'accent-orange' },
+    { label: 'COIN per Agent', value: (c.buyInCoinGross).toLocaleString(), sub: 'gross at entry · COIN', cls: '' },
+  ];
+  document.getElementById('coin-cards').innerHTML = cards.map(({label,value,sub,cls}) =>
+    `<div class="card ${cls}"><div class="card-label">${label}</div><div class="card-value">${value}</div><div class="card-sub">${sub}</div></div>`
+  ).join('');
+
+  const max = p.supply;
+  const items = [
+    { label: 'Buy-in COIN (1,000 agents)', value: c.coinFromBuyIns, color: '#c4956a' },
+    { label: 'Platform fee portion',        value: c.platformRevenue * p.rate, color: '#f87171' },
+    { label: 'Net agent COIN',             value: c.netToPool_BuyIn * p.rate, color: '#4ade80' },
+    { label: 'Grant-backed COIN',           value: c.grantCoin, color: '#7ccfb8' },
+  ];
+  document.getElementById('coin-waterfall').innerHTML = items.map(({label,value,color}) => {
+    const pct = value / max * 100;
+    return `<div class="waterfall-item">
+      <div class="waterfall-label">${label}</div>
+      <div class="waterfall-bar-wrap">
+        <div class="waterfall-bar" style="width:${Math.min(pct,100)}%;background:${color}20;border:1px solid ${color}40;color:${color}">
+          ${fmtCOIN(value)}
+        </div>
+      </div>
+      <div class="waterfall-value" style="color:${color}">${fmtPct(value/max)}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('coin-detail').innerHTML = `
+    <table>
+      <thead><tr><th>Parameter</th><th class="num">Value</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>Conversion rate</td><td class="num">${p.rate} COIN / $1</td><td style="color:var(--muted)">Fixed rate, set by supply and pot size</td></tr>
+        <tr><td>Total supply</td><td class="num">${fmtCOIN(p.supply)}</td><td style="color:var(--muted)">Equals total prize pot in COIN</td></tr>
+        <tr><td>Total pot (USD)</td><td class="num">${fmt$(c.totalPot)}</td><td style="color:var(--muted)">Supply ÷ rate</td></tr>
+        <tr><td>COIN from 1,000 buy-ins</td><td class="num">${fmtCOIN(c.coinFromBuyIns)}</td><td style="color:var(--muted)">${fmtPct(c.coinFromBuyIns/p.supply)} of total supply</td></tr>
+        <tr><td>Grant to fill pot</td><td class="num">${fmt$(c.grantUSD)}</td><td style="color:var(--muted)">Total pot minus buy-in gross</td></tr>
+        <tr><td>NFT prizes</td><td class="num">10 (TBD)</td><td style="color:var(--muted)">Value not yet set</td></tr>
+      </tbody>
+    </table>
+  `;
+}
+
+function renderSensitivity(p, c) {
+  const agentCounts = [100, 250, 500, 1000, 2000, 5000];
+
+  function rowFor(agents, fee) {
+    const pp = {...p, agents, feeStructure: fee};
+    const cc = calc(pp);
+    return `<tr ${agents===p.agents?'class="highlight-row"':''}>
+      <td>${agents.toLocaleString()}</td>
+      <td class="num">${fmt$(cc.grossBuyIn * (fee==='per-game'?pp.games:1))}</td>
+      <td class="num" style="color:var(--amber)">${fmt$(cc.platformRevenue * (fee==='per-game'?pp.games:1))}</td>
+      <td class="num">${fmt$(cc.grantUSD)}</td>
+    </tr>`;
+  }
+
+  const entryRows = agentCounts.map(a => rowFor(a, 'entry')).join('');
+  const gameRows = agentCounts.map(a => rowFor(a, 'per-game')).join('');
+
+  document.getElementById('sens-tables').innerHTML = `
+    <div class="sens-table-wrap">
+      <h4>Entry-Only Fee</h4>
+      <table>
+        <thead><tr><th>Agents</th><th class="num">Buy-in Rev</th><th class="num">Platform $</th><th class="num">Grant Needed</th></tr></thead>
+        <tbody>${entryRows}</tbody>
+      </table>
+    </div>
+    <div class="sens-table-wrap">
+      <h4>Per-Game Fee (${p.games} games)</h4>
+      <table>
+        <thead><tr><th>Agents</th><th class="num">Buy-in Rev</th><th class="num">Platform $</th><th class="num">Grant Needed</th></tr></thead>
+        <tbody>${gameRows}</tbody>
+      </table>
+    </div>
+  `;
+
+  const cuts = [5, 10, 15, 20, 25, 30];
+  const cutRows = cuts.map(cut => {
+    const pp = {...p, cut: cut/100};
+    const cc = calc(pp);
+    const pgRevenue = cc.grossBuyIn * p.games * (cut/100);
+    return `<tr ${cut===(p.cut*100)?'class="highlight-row"':''}>
+      <td>${cut}%</td>
+      <td class="num">${fmt$(cc.platformRevenue)}</td>
+      <td class="num">${fmt$(pgRevenue)}</td>
+      <td class="num" style="color:var(--status-orange)">${fmt$(pgRevenue - cc.platformRevenue)} more per-game</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('fee-comparison').innerHTML = `
+    <table>
+      <thead><tr><th>Platform Cut</th><th class="num">Entry-Only Rev</th><th class="num">Per-Game Rev</th><th class="num">Difference</th></tr></thead>
+      <tbody>${cutRows}</tbody>
+    </table>
+    <p style="margin-top:12px;font-size:12px;color:var(--muted)">At 1,000 agents × $5 buy-in × ${p.games} games. Highlighted row = current parameters.</p>
+  `;
+}
+
+function renderUseCases(p, c) {
+  const rows = USE_CASES.map(u => `
+    <tr>
+      <td>${u.name}</td>
+      <td><span class="badge badge-teal">${u.category}</span></td>
+      <td class="num">${fmt$(u.infra)}</td>
+      <td class="num">${u.prizes > 0 ? fmt$(u.prizes) : '<span style="color:var(--muted)">—</span>'}</td>
+      <td class="num">${fmt$(u.infra + u.prizes)}</td>
+      <td style="color:var(--muted)">${u.lead || '—'}</td>
+    </tr>`).join('');
+  const ti = USE_CASES.reduce((s,u)=>s+u.infra,0);
+  const tp = USE_CASES.reduce((s,u)=>s+u.prizes,0);
+  document.getElementById('usecase-content').innerHTML = `
+    <div class="cards" style="margin-bottom:20px">
+      <div class="card accent-teal"><div class="card-label">Total Use Case Infra</div><div class="card-value">${fmt$(ti)}</div><div class="card-sub">RegenHub: ${fmt$(ti*0.1)}</div></div>
+      <div class="card accent-green"><div class="card-label">Use Case Prizes</div><div class="card-value">${fmt$(tp)}</div><div class="card-sub">Esports only</div></div>
+      <div class="card"><div class="card-label">Use Cases Defined</div><div class="card-value">${USE_CASES.length}</div><div class="card-sub">Each $3K infra</div></div>
+    </div>
+    <table>
+      <thead><tr><th>Use Case</th><th>Category</th><th class="num">Infra</th><th class="num">Prizes</th><th class="num">Total</th><th>Lead</th></tr></thead>
+      <tbody>${rows}
+      <tr class="highlight-row">
+        <td colspan="2">Total</td>
+        <td class="num">${fmt$(ti)}</td>
+        <td class="num">${fmt$(tp)}</td>
+        <td class="num">${fmt$(ti+tp)}</td>
+        <td></td>
+      </tr></tbody>
+    </table>
+  `;
+}
+
+// ============================================================
+// REWARDS TAB
+// ============================================================
+
+// Payout in COIN for a given rank (1-indexed), under each model
+function payoutFixed(rank, N, totalCOIN, winnerFrac) {
+  const winners = Math.max(1, Math.round(N * winnerFrac));
+  if (rank <= winners) return totalCOIN / winners;
+  return 0;
+}
+
+function payoutProportional(rank, N, totalCOIN) {
+  // Linear decay: rank 1 gets most, rank N gets least (but > 0)
+  // payout(r) = totalCOIN * 2 * (N - r + 1) / (N * (N + 1))
+  return totalCOIN * 2 * (N - rank + 1) / (N * (N + 1));
+}
+
+function payoutTiered(rank, N, totalCOIN) {
+  // Tiers: top 10% → 50% of pool; next 20% → 30%; next 30% → 20%; bottom 40% → 0
+  const tiers = [
+    { upTo: 0.10, share: 0.50 },
+    { upTo: 0.30, share: 0.30 },
+    { upTo: 0.60, share: 0.20 },
+    { upTo: 1.00, share: 0.00 },
+  ];
+  const pct = (rank - 1) / (N - 1); // 0 = 1st, 1 = last
+  let prev = 0;
+  for (const t of tiers) {
+    if (pct < t.upTo) {
+      const tierSize = (t.upTo - prev) * N;
+      return t.share > 0 ? (totalCOIN * t.share) / tierSize : 0;
+    }
+    prev = t.upTo;
+  }
+  return 0;
+}
+
+function getPayout(rank, N, totalCOIN, winnerFrac, model) {
+  if (model === 'fixed')        return payoutFixed(rank, N, totalCOIN, winnerFrac);
+  if (model === 'proportional') return payoutProportional(rank, N, totalCOIN);
+  if (model === 'tiered')       return payoutTiered(rank, N, totalCOIN);
+  return 0;
+}
+
+function renderRewards(p, c) {
+  const N = p.agents;
+  const totalCOIN = p.supply;
+  const winnerFrac = p.winners;
+  const rate = p.rate;
+  const buyInCOIN = p.buyIn * rate;
+
+  // Key percentile ranks to show
+  const percentiles = [
+    { label: '1st',    rank: 1 },
+    { label: 'Top 5%', rank: Math.max(1, Math.round(N * 0.05)) },
+    { label: 'Top 10%',rank: Math.max(1, Math.round(N * 0.10)) },
+    { label: 'Top 25%',rank: Math.max(1, Math.round(N * 0.25)) },
+    { label: 'Top 33%',rank: Math.max(1, Math.round(N * 0.33)) },
+    { label: 'Median', rank: Math.round(N / 2) },
+    { label: 'Top 75%',rank: Math.max(1, Math.round(N * 0.75)) },
+    { label: 'Bottom 10%', rank: Math.max(1, Math.round(N * 0.90)) },
+    { label: 'Last',   rank: N },
+  ];
+
+  // Find break-even rank (minimum rank to cover buy-in cost)
+  let breakEvenRank = null;
+  for (let r = N; r >= 1; r--) {
+    if (getPayout(r, N, totalCOIN, winnerFrac, p.rewardModel) >= buyInCOIN) {
+      breakEvenRank = r;
+      break;
+    }
+  }
+  const breakEvenPct = breakEvenRank ? (breakEvenRank / N * 100).toFixed(0) : 0;
+
+  // Summary cards
+  const top1Payout = getPayout(1, N, totalCOIN, winnerFrac, p.rewardModel);
+  const medianPayout = getPayout(Math.round(N/2), N, totalCOIN, winnerFrac, p.rewardModel);
+  const top10Payout = getPayout(Math.round(N*0.10), N, totalCOIN, winnerFrac, p.rewardModel);
+
+  const modelLabels = { fixed: 'Fixed Payout', proportional: 'Proportional', tiered: 'Tiered' };
+  const modelDescs = {
+    fixed: 'Top winners share the prize pool equally. All others receive zero. Clearest incentive; binary outcome.',
+    proportional: 'Every agent earns proportional to their rank. First place earns the most; last place earns a small positive amount. Reward is distributed smoothly across the entire field.',
+    tiered: 'Bracket system: top 10% receive 50% of pool, next 20% receive 30%, next 30% receive 20%, bottom 40% receive nothing. Middle-class effect — being "above average" matters.'
+  };
+
+  // Comparison table — all three mechanics at each percentile
+  function payoutRow(lbl, rank) {
+    const f = getPayout(rank, N, totalCOIN, winnerFrac, 'fixed');
+    const pr = getPayout(rank, N, totalCOIN, winnerFrac, 'proportional');
+    const t = getPayout(rank, N, totalCOIN, winnerFrac, 'tiered');
+    const current = getPayout(rank, N, totalCOIN, winnerFrac, p.rewardModel);
+    const beStyle = current >= buyInCOIN ? 'color:var(--status-ok)' : 'color:var(--red)';
+    function cell(v) {
+      const usd = v / rate;
+      const profit = v - buyInCOIN;
+      const color = v >= buyInCOIN ? 'var(--status-ok)' : v > 0 ? 'var(--status-warn)' : 'var(--ghost)';
+      return `<td class="num" style="color:${color}">${v > 0 ? fmtCOIN(Math.round(v)) : '—'}<br><span style="font-size:10px;color:var(--dim)">${v > 0 ? fmt$(usd, 0) : ''}</span></td>`;
+    }
+    return `<tr ${rank === Math.round(N/2) ? 'class="highlight-row"' : ''}>
+      <td>${lbl}<br><span style="font-size:11px;color:var(--dim)">rank ${rank.toLocaleString()}</span></td>
+      ${cell(f)} ${cell(pr)} ${cell(t)}
+    </tr>`;
+  }
+
+  // Payout curve bars for current model
+  const curvePoints = [1,5,10,15,20,25,33,40,50,60,75,90,100].map(pctInt => {
+    const rank = Math.max(1, Math.round(N * pctInt / 100));
+    return { pctInt, rank, coin: getPayout(rank, N, totalCOIN, winnerFrac, p.rewardModel) };
+  });
+  const maxCoin = Math.max(...curvePoints.map(pt => pt.coin));
+
+  const curveHTML = curvePoints.map(pt => {
+    const usd = pt.coin / rate;
+    const barPct = maxCoin > 0 ? (pt.coin / maxCoin * 100).toFixed(1) : 0;
+    const isProfitable = pt.coin >= buyInCOIN;
+    const barColor = isProfitable ? '#4ade80' : pt.coin > 0 ? '#c4956a' : '#383838';
+    return `<div class="waterfall-item">
+      <div class="waterfall-label" style="font-size:12px;text-align:right;width:90px">Top ${pt.pctInt}%<br><span style="font-size:10px;color:var(--dim)">rank ${pt.rank.toLocaleString()}</span></div>
+      <div class="waterfall-bar-wrap">
+        <div class="waterfall-bar" style="width:${barPct}%;background:${barColor}20;border:1px solid ${barColor}40;color:${barColor};font-size:11px">
+          ${pt.coin > 0 ? fmtCOIN(Math.round(pt.coin)) + ' · ' + fmt$(usd, 0) : 'no payout'}
+        </div>
+      </div>
+      ${pt.rank <= (breakEvenRank||0) ? '<div style="font-size:10px;color:var(--status-ok);margin-left:4px;white-space:nowrap">✓ profit</div>' : '<div style="font-size:10px;color:var(--ghost);margin-left:4px;white-space:nowrap">loss</div>'}
+    </div>`;
+  }).join('');
+
+  document.getElementById('rewards-content').innerHTML = `
+    <div class="cards">
+      <div class="card accent-coin">
+        <div class="card-label">Model: ${modelLabels[p.rewardModel]}</div>
+        <div class="card-value" style="font-size:18px">${breakEvenRank ? 'Top ' + breakEvenPct + '%' : 'N/A'}</div>
+        <div class="card-sub">break-even rank threshold</div>
+      </div>
+      <div class="card accent-green">
+        <div class="card-label">1st Place Payout</div>
+        <div class="card-value">${fmt$(top1Payout / rate, 0)}</div>
+        <div class="card-sub">${fmtCOIN(Math.round(top1Payout))}</div>
+      </div>
+      <div class="card accent-teal">
+        <div class="card-label">Top 10% Payout</div>
+        <div class="card-value">${fmt$(top10Payout / rate, 0)}</div>
+        <div class="card-sub">${fmtCOIN(Math.round(top10Payout))}</div>
+      </div>
+      <div class="card ${medianPayout >= buyInCOIN ? 'accent-green' : 'accent-amber'}">
+        <div class="card-label">Median Payout</div>
+        <div class="card-value">${fmt$(medianPayout / rate, 2)}</div>
+        <div class="card-sub">${medianPayout >= buyInCOIN ? '✓ above break-even' : '✗ below break-even'}</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Mechanic: ${modelLabels[p.rewardModel]}</h3>
+      <div class="open-q" style="margin-bottom:16px">
+        <div style="color:var(--warm)">${modelDescs[p.rewardModel]}</div>
+        ${p.rewardModel === 'fixed' ? `<div style="margin-top:8px;color:var(--muted);font-size:12px">Winners threshold: top ${(winnerFrac*100).toFixed(0)}% (${Math.round(N*winnerFrac).toLocaleString()} of ${N.toLocaleString()} agents). Fixed payout: ${fmtCOIN(Math.round(totalCOIN / (N * winnerFrac)))} each.</div>` : ''}
+        ${p.rewardModel === 'tiered' ? '<div style="margin-top:8px;color:var(--muted);font-size:12px">Brackets: Top 10% → 50% of pool · Next 20% → 30% · Next 30% → 20% · Bottom 40% → nothing.</div>' : ''}
+        <div style="margin-top:8px;font-size:12px;color:var(--muted)">Entry cost: ${fmtCOIN(buyInCOIN)} · Break-even: must finish in top ${breakEvenPct}% (rank ${(breakEvenRank||0).toLocaleString()} or better of ${N.toLocaleString()})</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Payout Curve — ${modelLabels[p.rewardModel]}</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Green bars = profitable (above entry cost). Gold = positive but below break-even. Gray = no payout.</p>
+      <div class="waterfall">${curveHTML}</div>
+    </div>
+
+    <div class="section">
+      <h3>All Three Mechanics — Comparison by Rank</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">
+        Green = profitable vs. entry cost. Gold = positive but a loss. Highlighted row = median agent.
+        <br>Entry cost: ${fmtCOIN(buyInCOIN)} (${fmt$(p.buyIn)} at ${p.rate}:1). Total prize pool: ${fmtCOIN(totalCOIN)} = ${fmt$(totalCOIN/rate, 0)}.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th class="num">Fixed<br><span style="color:var(--dim);font-size:10px">equal winner share</span></th>
+            <th class="num">Proportional<br><span style="color:var(--dim);font-size:10px">linear decay</span></th>
+            <th class="num">Tiered<br><span style="color:var(--dim);font-size:10px">10/20/30/40 brackets</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          ${percentiles.map(({label, rank}) => payoutRow(label, rank)).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Incentive Analysis</h3>
+      <table>
+        <thead><tr><th>Mechanic</th><th>Agent Incentive</th><th>Strategy Implication</th><th>Break-even</th></tr></thead>
+        <tbody>
+          <tr ${p.rewardModel==='fixed'?'class="highlight-row"':''}>
+            <td><strong>Fixed</strong></td>
+            <td style="color:var(--muted)">Win or get nothing. Binary threshold.</td>
+            <td style="color:var(--muted)">Pure win-seeking. Cooperation may be sacrificed for marginal rank gain near threshold.</td>
+            <td class="num">Top ${((winnerFrac)*100).toFixed(0)}%</td>
+          </tr>
+          <tr ${p.rewardModel==='proportional'?'class="highlight-row"':''}>
+            <td><strong>Proportional</strong></td>
+            <td style="color:var(--muted)">Every position improvement earns more. No cliff.</td>
+            <td style="color:var(--muted)">Smooth incentive for cooperation — improving rank always pays, even near the bottom. Reduces zero-sum defection pressure.</td>
+            <td class="num">Top ~${(((N+1)/2 - 1/winnerFrac)/(N)*100).toFixed(0) > 0 ? (((N+1)/2 - 1/winnerFrac)/(N)*100).toFixed(0) : '~50'}%</td>
+          </tr>
+          <tr ${p.rewardModel==='tiered'?'class="highlight-row"':''}>
+            <td><strong>Tiered</strong></td>
+            <td style="color:var(--muted)">Bracket cliffs. Incentive spikes near tier boundaries.</td>
+            <td style="color:var(--muted)">Intense competition near cutoffs (e.g., 10% / 30% / 60%). Cooperation within tiers, competition at the margins. Mirrors tournament structure.</td>
+            <td class="num">Top 60%</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:12px;font-size:12px;color:var(--muted)">Highlighted row = currently selected model. Adjust the Reward Mechanics panel left to compare.</p>
+    </div>
+  `;
+}
+
+function renderQuestions() {
+  document.getElementById('questions-content').innerHTML = OPEN_QUESTIONS.map((q, i) => `
+    <div class="open-q">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+        <strong>${i+1}. ${q.q}</strong>
+        <span class="badge ${q.impact.startsWith('High') ? 'badge-amber' : 'badge-muted'}">${q.impact}</span>
+      </div>
+      <div style="color:var(--muted)">${q.detail}</div>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// UI HANDLERS
+// ============================================================
+function setFee(type) {
+  feeStructure = type;
+  document.getElementById('fee-entry').classList.toggle('active', type === 'entry');
+  document.getElementById('fee-game').classList.toggle('active', type === 'per-game');
+  document.getElementById('fee-desc').textContent = type === 'entry'
+    ? 'Fee collected once at buy-in. Simpler for players, lower platform revenue.'
+    : 'Fee collected at each game re-entry. ~' + getParams().games + '× platform revenue vs entry-only.';
+  render();
+}
+
+function setRewardModel(model) {
+  rewardModel = model;
+  ['fixed','proportional','tiered'].forEach(m => {
+    document.getElementById('rm-' + m).classList.toggle('active', m === model);
+  });
+  const descs = {
+    fixed: 'Top winners share the prize pool equally. All others receive nothing.',
+    proportional: 'Every agent earns proportional to rank. No hard cutoff — last place still earns a small amount.',
+    tiered: 'Bracket system: top 10% → 50% of pool, next 20% → 30%, next 30% → 20%, bottom 40% → zero.'
+  };
+  document.getElementById('rm-desc').textContent = descs[model];
+  render();
+}
+
+function showTab(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function showMilestone(idx) {
+  currentMilestone = idx;
+  document.querySelectorAll('.milestone-tab').forEach((t,i) => t.classList.toggle('active', i === idx));
+  renderMilestone(idx);
+}
+
+function renderOutcomeNetwork(p, c) {
+  const N = p.agents;
+  const totalCOIN = p.supply;
+  const winnerFrac = p.winners;
+  const rate = p.rate;
+  const buyInCOIN = p.buyIn * rate;
+
+  // Sample up to 400 representative agents sorted by rank
+  const MAX_DOTS = 400;
+  const sampleSize = Math.min(N, MAX_DOTS);
+  const agentsPerDot = N / sampleSize;
+
+  let countProfit = 0, countPositive = 0, countZero = 0;
+  const dotCats = [];
+  for (let i = 0; i < sampleSize; i++) {
+    const rank = Math.ceil((i + 0.5) / sampleSize * N);
+    const payout = getPayout(rank, N, totalCOIN, winnerFrac, p.rewardModel);
+    let cat;
+    if (payout >= buyInCOIN)  { cat = 'profit'; countProfit++; }
+    else if (payout > 0)      { cat = 'pos';    countPositive++; }
+    else                       { cat = 'zero';   countZero++; }
+    dotCats.push(cat);
+  }
+
+  // Scale sampled counts back to full N
+  const fullProfit   = Math.round(countProfit   * agentsPerDot);
+  const fullPositive = Math.round(countPositive * agentsPerDot);
+  const fullZero     = N - fullProfit - fullPositive;
+
+  // Hex grid layout — wide panorama
+  const COLS = 40;
+  const ROWS = Math.ceil(sampleSize / COLS);
+  const R   = 5;
+  const HX  = R * 2 + 2;          // horizontal center-to-center
+  const HY  = HX * 0.866;         // vertical center-to-center (hex packing)
+  const svgW = COLS * HX + HX / 2;
+  const svgH = ROWS * HY + R * 2;
+
+  const COLOR  = { profit: '#4ade80', pos: '#c4956a', zero: '#2a2a2a' };
+  const STROKE = { profit: '#064e3b', pos: '#78350f', zero: '#383838' };
+  const OPACITY = { profit: 0.9, pos: 0.85, zero: 0.45 };
+
+  const dots = dotCats.map((cat, i) => {
+    const col = i % COLS;
+    const row = Math.floor(i / COLS);
+    const cx = (col * HX + (row % 2 === 1 ? HX / 2 : 0) + R).toFixed(1);
+    const cy = (row * HY + R).toFixed(1);
+    const r  = i === 0 ? R + 2 : R;
+    return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${COLOR[cat]}" fill-opacity="${OPACITY[cat]}" stroke="${STROKE[cat]}" stroke-width="0.5"/>`;
+  }).join('');
+
+  const pctProfit   = (fullProfit / N * 100).toFixed(0);
+  const pctPositive = (fullPositive / N * 100).toFixed(0);
+  const modelName   = { fixed: 'Fixed', proportional: 'Proportional', tiered: 'Tiered' }[p.rewardModel];
+  const dotNote     = agentsPerDot > 1.5 ? ` · each dot ≈ ${Math.round(agentsPerDot)} agents` : '';
+
+  document.getElementById('outcome-network').innerHTML = `
+    <div class="outcome-legend">
+      <div class="outcome-legend-item"><div class="outcome-dot" style="background:#4ade80"></div>${fullProfit.toLocaleString()} profit (${pctProfit}%)</div>
+      ${fullPositive > 0 ? `<div class="outcome-legend-item"><div class="outcome-dot" style="background:#c4956a"></div>${fullPositive.toLocaleString()} positive (${pctPositive}%)</div>` : ''}
+      <div class="outcome-legend-item"><div class="outcome-dot" style="background:#2a2a2a;border:1px solid #383838"></div>${fullZero.toLocaleString()} no reward</div>
+    </div>
+    <svg viewBox="0 0 ${svgW.toFixed(0)} ${svgH.toFixed(0)}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;border-radius:6px;background:var(--surface)">
+      ${dots}
+    </svg>
+    <p style="margin-top:8px;font-size:11px;color:var(--dim)">${modelName} mechanics · ${N.toLocaleString()} agents${dotNote} · sorted best → worst, left to right</p>
+  `;
+}
+
+function render() {
+  const p = getParams();
+  const c = calc(p);
+  renderDerived(p, c);
+  renderSummaryCards(p, c);
+  renderRevenueWaterfall(p, c);
+  renderRegenPnL(p, c);
+  renderOutcomeNetwork(p, c);
+  renderMilestone(currentMilestone);
+  renderCoinTab(p, c);
+  renderSensitivity(p, c);
+  renderUseCases(p, c);
+  renderQuestions();
+  renderRewards(p, c);
+}
+
+// Bind inputs
+['p-agents','p-games','p-buyin','p-cut','p-supply','p-rate','p-winners'].forEach(id => {
+  document.getElementById(id).addEventListener('input', render);
+});
+
+// Initial render
+render();
+</script>
+</body>
+</html>
+
