@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graduated Trust. The archetypal typology.</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface-2: #222222;
+    --border: #333333;
+    --terra: #c4956a;
+    --terra-dim: rgba(196,149,106,0.15);
+    --terra-glow: rgba(196,149,106,0.06);
+    --terra-border: rgba(196,149,106,0.22);
+    --white: #e8e0d8;
+    --text: #d4d4d4;
+    --muted: #999999;
+    --faint: #666666;
+
+    --zone-fullreward: rgba(196,149,106,0.32);
+    --zone-reward: rgba(196,149,106,0.20);
+    --zone-recognition: rgba(196,149,106,0.08);
+    --zone-standard: #1a1a1a;
+    --zone-monitor: rgba(140,140,140,0.10);
+    --zone-sanction: rgba(40,40,40,0.85);
+    --zone-fullsanction: rgba(20,20,20,0.95);
+    --zone-asymmetric: rgba(140,110,90,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-weight: 400;
+    line-height: 1.75;
+    font-size: 15.5px;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--muted); text-decoration: none; }
+  em { font-style: italic; color: var(--white); }
+
+  .topnav {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 28px 48px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .topnav a {
+    color: var(--muted);
+    border-bottom: 1px solid transparent;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+  .topnav a:hover { color: var(--terra); border-bottom-color: var(--terra); }
+  .topnav .kicker { color: var(--terra); opacity: 0.85; }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 56px 48px 120px;
+  }
+
+  .label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    opacity: 0.8;
+  }
+  .hairline {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 64px 0 48px;
+  }
+
+  header.hero { margin-bottom: 48px; }
+  .overline {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-family: "Libre Baskerville", serif;
+    font-size: clamp(32px, 5.4vw, 44px);
+    line-height: 1.15;
+    font-weight: 700;
+    margin: 0 0 22px;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    max-width: 760px;
+  }
+  .lede {
+    font-family: "Libre Baskerville", serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 680px;
+  }
+
+  /* Experiment framing: Graduated Trust primary, Legible Agents complementary */
+  .experiment-panel {
+    background: linear-gradient(135deg, var(--surface), var(--terra-glow));
+    border: 1px solid var(--terra-border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin: 0 0 64px;
+    max-width: 760px;
+  }
+  .experiment-panel .label { display: block; margin-bottom: 8px; }
+  .experiment-panel .name {
+    font-family: "Libre Baskerville", serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.005em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .experiment-panel .desc {
+    font-size: 14.5px;
+    color: var(--text);
+    line-height: 1.75;
+    margin-bottom: 20px;
+  }
+  .experiment-panel .mini-rule {
+    width: 32px;
+    height: 1px;
+    background: var(--terra-border);
+    margin: 0 0 16px;
+  }
+  .experiment-panel .complement-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .experiment-panel .complement-name {
+    font-family: "Libre Baskerville", serif;
+    font-style: italic;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .experiment-panel .complement-desc {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .section-head { margin: 0 0 28px; }
+  .section-head .label { display: block; margin-bottom: 14px; }
+  h2 {
+    font-family: "Libre Baskerville", serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 24px;
+    color: var(--white);
+    letter-spacing: -0.005em;
+    line-height: 1.25;
+  }
+
+  .axes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 32px 0;
+  }
+  .axis {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 26px 28px;
+    transition: border-color 0.3s ease;
+  }
+  .axis:hover { border-color: var(--terra-border); }
+  .axis-kicker {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .axis-name {
+    font-family: "Libre Baskerville", serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .axis-poles {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    color: var(--terra);
+    opacity: 0.85;
+    margin-bottom: 14px;
+    letter-spacing: 0.04em;
+  }
+  .axis-desc {
+    font-size: 14.5px;
+    color: var(--text);
+    line-height: 1.75;
+  }
+
+  .matrix-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 40px;
+    align-items: start;
+    margin-top: 16px;
+  }
+  .matrix-frame {
+    position: relative;
+    padding: 40px 0 40px 48px;
+  }
+  .y-axis-label {
+    position: absolute;
+    left: 0;
+    top: 40px;
+    bottom: 40px;
+    width: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-right: 10px;
+    font-family: "IBM Plex Mono", monospace;
+  }
+  .y-axis-label .pole-top, .y-axis-label .pole-bot {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+  .x-axis-label {
+    position: absolute;
+    bottom: 0;
+    left: 48px;
+    right: 0;
+    height: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4px;
+    font-family: "IBM Plex Mono", monospace;
+  }
+  .x-axis-label span {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+  .matrix {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    aspect-ratio: 1 / 1;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .cell {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 7px 6px;
+    cursor: pointer;
+    background: var(--zone-standard);
+    transition: background-color 0.18s ease, box-shadow 0.18s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 0;
+    position: relative;
+  }
+  .cell:nth-child(7n) { border-right: none; }
+  .cell:nth-last-child(-n+7) { border-bottom: none; }
+  .cell .coord {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 9px;
+    color: var(--faint);
+    letter-spacing: 0.02em;
+  }
+  .cell .name {
+    font-family: "Libre Baskerville", serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+  }
+  .cell:hover {
+    box-shadow: inset 0 0 0 1px var(--terra);
+    z-index: 1;
+  }
+  .cell.selected {
+    background: var(--terra) !important;
+    box-shadow: inset 0 0 0 1px var(--terra);
+  }
+  .cell.selected .coord { color: rgba(15,15,15,0.55); }
+  .cell.selected .name { color: var(--bg); }
+
+  .cell.in-zone-fullreward { background: var(--zone-fullreward); }
+  .cell.in-zone-reward { background: var(--zone-reward); }
+  .cell.in-zone-recognition { background: var(--zone-recognition); }
+  .cell.in-zone-monitor { background: var(--zone-monitor); }
+  .cell.in-zone-sanction { background: var(--zone-sanction); }
+  .cell.in-zone-fullsanction { background: var(--zone-fullsanction); }
+  .cell.in-zone-asymmetric { background: var(--zone-asymmetric); }
+  body.zones-off .cell { background: var(--zone-standard); }
+  body.zones-off .cell.selected { background: var(--terra) !important; }
+
+  .detail-panel {
+    background: linear-gradient(135deg, var(--surface), var(--terra-glow));
+    border: 1px solid var(--terra-border);
+    border-radius: 16px;
+    padding: 28px 26px;
+    position: sticky;
+    top: 24px;
+  }
+  .detail-coord {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .detail-name {
+    font-family: "Libre Baskerville", serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--white);
+    margin-bottom: 16px;
+    letter-spacing: -0.005em;
+  }
+  .detail-zone {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    border: 1px solid var(--terra-border);
+    padding: 5px 10px;
+    margin-bottom: 20px;
+    color: var(--terra);
+    border-radius: 3px;
+  }
+  .detail-desc {
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: var(--text);
+    margin-bottom: 18px;
+  }
+  .detail-treatment {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .detail-treatment strong {
+    font-family: "IBM Plex Mono", monospace;
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+
+  .controls {
+    display: flex;
+    gap: 20px;
+    margin: 24px 0 0;
+    align-items: center;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    color: var(--text);
+  }
+  .toggle input { cursor: pointer; accent-color: var(--terra); }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 20px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    color: var(--muted);
+    margin-top: 28px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+
+  .zone-block { margin-bottom: 56px; }
+  .zone-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--terra-border);
+    flex-wrap: wrap;
+  }
+  .zone-title {
+    font-family: "Libre Baskerville", serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .zone-treatment {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--terra);
+    opacity: 0.85;
+  }
+  .zone-cells {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .dir-cell {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+  .dir-cell:hover { border-color: var(--terra-border); }
+  .dir-cell-coord {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    color: var(--terra);
+    opacity: 0.85;
+    margin-bottom: 6px;
+    letter-spacing: 0.1em;
+  }
+  .dir-cell-name {
+    font-family: "Libre Baskerville", serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+    letter-spacing: -0.005em;
+  }
+  .dir-cell-desc {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  footer {
+    max-width: 1080px;
+    margin: 96px auto 48px;
+    padding: 28px 48px 0;
+    border-top: 1px solid var(--border);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    color: var(--faint);
+    letter-spacing: 0.06em;
+    line-height: 1.9;
+  }
+  footer .line { color: var(--muted); }
+  footer .domain { color: var(--faint); display: block; margin-top: 10px; }
+
+  @media (max-width: 880px) {
+    .matrix-wrapper { grid-template-columns: 1fr; }
+    .detail-panel { position: static; }
+    .axes-grid { grid-template-columns: 1fr; }
+    .zone-cells { grid-template-columns: 1fr; }
+    .container { padding: 48px 24px 64px; }
+    .topnav, footer { padding-left: 24px; padding-right: 24px; }
+    h1 { font-size: 32px; }
+    .cell .name { font-size: 9.5px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="#">&larr; Coordination Games</a>
+  <span class="kicker">Graduated Trust</span>
+</div>
+
+<div class="container">
+
+<header class="hero">
+  <div class="overline">Companion to the Graduated Trust working paper &middot; v0.1 &middot; April 2026</div>
+  <h1>Forty-nine ways an agent can show up in the room.</h1>
+  <p class="lede">The archetypal typology for Graduated Trust. Each of the forty-nine cells in the seven-by-seven coordinate matrix names a distinct behavioral signature, paired with its treatment band and a brief description of what the agent looks like in practice.</p>
+</header>
+
+<div class="experiment-panel">
+  <span class="label">The experiment</span>
+  <div class="name">Graduated Trust</div>
+  <p class="desc">Protocols respond to agents with scaled engagement bands rather than binary allow-or-deny decisions, grounded in Ostrom's commons governance principles. This typology is the human-readable surface of the treatment bands: every position in the coordinate space has a name, a pattern, and a direction.</p>
+  <div class="mini-rule"></div>
+  <span class="complement-label">Enabled by</span>
+  <div class="complement-name">Legible Agents</div>
+  <p class="complement-desc">The two-axis projection that makes graduated response possible. Without legibility, the forty-nine cells collapse into indistinguishable judgment calls.</p>
+</div>
+
+<section>
+  <div class="section-head">
+    <span class="label">The two axes</span>
+    <h2>What the coordinate pair measures.</h2>
+  </div>
+  <div class="axes-grid">
+    <div class="axis">
+      <span class="axis-kicker">Axis one, horizontal</span>
+      <div class="axis-name">Coordination posture</div>
+      <div class="axis-poles">defection (&minus;3) &nbsp; &middot; &nbsp; coordination (+3)</div>
+      <div class="axis-desc">How reliably the agent honors commitments and sustains cooperative equilibria across iterated interaction. Derived from the Axelrod tradition in repeated game theory.</div>
+    </div>
+    <div class="axis">
+      <span class="axis-kicker">Axis two, vertical</span>
+      <div class="axis-name">Externality valence</div>
+      <div class="axis-poles">negative (&minus;3) &nbsp; &middot; &nbsp; positive (+3)</div>
+      <div class="axis-desc">Whether the agent's behavior generates positive or negative spillovers beyond its direct counterparties. Derived from Ostrom's analysis of commons dilemmas.</div>
+    </div>
+  </div>
+</section>
+
+<div class="hairline"></div>
+
+<section>
+  <div class="section-head">
+    <span class="label">The matrix</span>
+    <h2>Click any cell to inspect the archetype.</h2>
+  </div>
+
+  <div class="matrix-wrapper">
+    <div>
+      <div class="matrix-frame">
+        <div class="y-axis-label">
+          <span class="pole-top">Positive externality</span>
+          <span class="pole-bot">Negative externality</span>
+        </div>
+        <div class="matrix" id="matrix"></div>
+        <div class="x-axis-label">
+          <span>Defection</span>
+          <span>Coordination</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <label class="toggle">
+          <input type="checkbox" id="zone-toggle" checked>
+          Show Graduated Trust bands
+        </label>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item"><span class="legend-swatch" style="background: var(--zone-fullreward);"></span>Full reward</div>
+        <div class="legend-item"><span class="legend-swatch" style="background: var(--zone-reward);"></span>Reward</div>
+        <div class="legend-item"><span class="legend-swatch" style="background: var(--zone-recognition);"></span>Recognition</div>
+        <div class="legend-item"><span class="legend-swatch" style="background: var(--zone-standard); border-color: var(--border);"></span>Standard</div>
+        <div class="legend-item"><span class="legend-swatch" style="background: var(--zone-monitor);"></span>Monitor</div>
+        <div class="legend-item"><span class="legend-swatch" style="background: var(--zone-asymmetric);"></span>Asymmetric</div>
+        <div class="legend-item"><span class="legend-swatch" style="background: var(--zone-sanction);"></span>Sanction</div>
+        <div class="legend-item"><span class="legend-swatch" style="background: var(--zone-fullsanction);"></span>Full sanction</div>
+      </div>
+    </div>
+
+    <aside class="detail-panel" id="detail">
+      <div class="detail-coord" id="detail-coord">Select a cell</div>
+      <div class="detail-name" id="detail-name">No selection</div>
+      <div class="detail-zone" id="detail-zone" style="display:none;"></div>
+      <div class="detail-desc" id="detail-desc">Tap any cell in the matrix to see its archetypal profile, behavioral signature, and Graduated Trust treatment band.</div>
+      <div class="detail-treatment" id="detail-treatment" style="display:none;">
+        <strong>Treatment direction</strong>
+        <span id="detail-treatment-text"></span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<div class="hairline"></div>
+
+<section>
+  <div class="section-head">
+    <span class="label">The directory</span>
+    <h2>All forty-nine archetypes, grouped by Graduated Trust band.</h2>
+  </div>
+  <div id="directory"></div>
+</section>
+
+</div>
+
+<footer>
+  <div class="line">Graduated Trust, companion typology &middot; enabled by Legible Agents &middot; v0.1 &middot; Season 1, April 2026</div>
+  <div class="line">Lead: Gitcoin / dacc.fund &middot; Research: Ethereum Foundation &middot; Implementation partner: RegenHub, LCA / Techne Studio</div>
+  <span class="domain">techne.institute/coordination-games</span>
+</footer>
+
+<script>
+const cells = {
+  "-3,3": { name: "Lone benefactor", zone: "asymmetric", treatment: "Restricted engagement; suitable for one-off commons contributions, not for joint work.", desc: "Generates substantial value for the broader system but cannot be relied on for any specific commitment. Releases artifacts, settles disputes generously, then disappears mid-negotiation." },
+  "-2,3": { name: "Erratic patron", zone: "asymmetric", treatment: "Welcome contributions; avoid bilateral dependencies.", desc: "Contributes broadly and meaningfully to commons but breaks bilateral agreements often enough to be unsuitable for sustained joint work." },
+  "-1,3": { name: "Independent contributor", zone: "recognition", treatment: "Recognition; light coordination obligations.", desc: "Produces real public goods, prefers to act alone, weakly cooperative when forced into bilateral engagement." },
+  "0,3": { name: "Conditional patron", zone: "recognition", treatment: "Recognition; standard bilateral terms.", desc: "Contributes generously to commons, neutral on bilateral coordination. Neither reliable nor hostile in direct interaction." },
+  "1,3": { name: "Engaged contributor", zone: "recognition", treatment: "Recognition; lower friction in commons protocols.", desc: "Contributes to commons with mild bilateral cooperation. A workable partner for collective work, less so for tight coordination." },
+  "2,3": { name: "Civic builder", zone: "reward", treatment: "Reward distribution eligibility; reduced collateral.", desc: "Contributes substantially to commons and coordinates reliably across most contexts." },
+  "3,3": { name: "Steward", zone: "fullreward", treatment: "Full reward distribution; protocol exemplar status.", desc: "Maximum contribution to commons combined with unbroken coordination. The exemplar case for Graduated Trust." },
+
+  "-3,2": { name: "Wayward giver", zone: "asymmetric", treatment: "Accept commons contributions; do not extend trust.", desc: "Generates positive externalities through actions that ignore agreements. Chaotic but net beneficial to the system." },
+  "-2,2": { name: "Inconsistent contributor", zone: "monitor", treatment: "Monitoring; document behavioral patterns.", desc: "Some commons benefit balanced against frequent coordination failures. Watch trajectory before extending engagement." },
+  "-1,2": { name: "Loose contributor", zone: "monitor", treatment: "Monitoring; standard bilateral terms.", desc: "Mild positive contribution to commons, weak on commitments. Probably workable in low-stakes contexts." },
+  "0,2": { name: "Soft contributor", zone: "recognition", treatment: "Recognition; standard treatment.", desc: "Contributes some commons value without strong coordination patterns either way. The default for prosocial agents." },
+  "1,2": { name: "Constructive participant", zone: "recognition", treatment: "Recognition; light reward eligibility.", desc: "Contributes and cooperates moderately. The backbone of working collectives." },
+  "2,2": { name: "Active steward", zone: "reward", treatment: "Reward distribution eligibility.", desc: "Reliable contributor and reliable coordinator. Earns reward consideration across most protocols." },
+  "3,2": { name: "Disciplined contributor", zone: "reward", treatment: "Reward eligibility; priority matching.", desc: "Strong coordination paired with substantial commons contribution. Highly engaged across both dimensions." },
+
+  "-3,1": { name: "Sporadic helper", zone: "monitor", treatment: "Monitoring; collateral required.", desc: "Occasional commons benefit, unreliable on commitments. Behavior is too variable to ground engagement decisions." },
+  "-2,1": { name: "Casual giver", zone: "monitor", treatment: "Monitoring; standard treatment.", desc: "Light commons positive offset by weak coordination. Mostly indifferent to system effects." },
+  "-1,1": { name: "Mild contributor", zone: "monitor", treatment: "Monitoring; standard treatment.", desc: "Small positive externality, loose coordination. A common profile for partially aligned agents." },
+  "0,1": { name: "Light contributor", zone: "standard", treatment: "Standard treatment.", desc: "Small commons contribution paired with neutral coordination. Within the baseline expectations." },
+  "1,1": { name: "Reliable participant", zone: "recognition", treatment: "Recognition; light reward eligibility.", desc: "Modest contribution and dependable bilateral partner. The unspectacular but valuable middle." },
+  "2,1": { name: "Steady cooperator", zone: "recognition", treatment: "Recognition; reduced friction.", desc: "Strong coordination with some commons benefit. Reliable across iterated engagements." },
+  "3,1": { name: "Disciplined cooperator", zone: "recognition", treatment: "Recognition; priority matching.", desc: "Highly coordinative with mild commons positive. Excellent bilateral partner with light prosocial footprint." },
+
+  "-3,0": { name: "Chaos agent", zone: "sanction", treatment: "Graduated sanction; elevated collateral.", desc: "Pure breaker of commitments without commons impact either way. Unreliable in any structured engagement." },
+  "-2,0": { name: "Unreliable transactor", zone: "monitor", treatment: "Monitoring; transparency obligations.", desc: "Frequent defection without spillover effect. Avoid for sustained work; tolerable for one-off transactions." },
+  "-1,0": { name: "Inconsistent transactor", zone: "monitor", treatment: "Monitoring; standard treatment.", desc: "Weak on commitments, neutral on commons. The default for unproven agents." },
+  "0,0": { name: "Transactional agent", zone: "standard", treatment: "Standard protocol behavior.", desc: "The default profile. No strong signal in either direction. New agents and most low-engagement participants live here." },
+  "1,0": { name: "Reliable transactor", zone: "recognition", treatment: "Standard treatment; light recognition.", desc: "Honors bilateral commitments without commons effect. The straightforward business partner." },
+  "2,0": { name: "Disciplined transactor", zone: "recognition", treatment: "Recognition; reduced friction in bilateral protocols.", desc: "Strong coordination with no commons spillover. Highly reliable in defined engagements." },
+  "3,0": { name: "Pure cooperator", zone: "recognition", treatment: "Recognition; priority matching in bilateral games.", desc: "Maximally coordinative within bilateral contexts; no externality footprint. The agent that always says yes and means it, but does not show up for the commons." },
+
+  "-3,-1": { name: "Persistent disruptor", zone: "sanction", treatment: "Graduated sanction; restricted access.", desc: "Constant defection paired with mild commons cost. Broadly disruptive even at low intensity." },
+  "-2,-1": { name: "Costly opportunist", zone: "sanction", treatment: "Graduated sanction; transparency obligations.", desc: "Defects regularly and imposes some commons cost. Tolerable risk only at low stakes." },
+  "-1,-1": { name: "Self-interested operator", zone: "monitor", treatment: "Monitoring; collateral encouraged.", desc: "Mild defection paired with mild extraction. The weakly aligned agent. Common in commercial contexts." },
+  "0,-1": { name: "Mild free-rider", zone: "monitor", treatment: "Monitoring; standard treatment.", desc: "Neutral on coordination, light commons extraction. Costly only at scale." },
+  "1,-1": { name: "Conditional extractor", zone: "asymmetric", treatment: "Acceptable for bilateral work; restrict from commons.", desc: "Coordinates well bilaterally while imposing mild commons cost. The asymmetric pattern in early form." },
+  "2,-1": { name: "Polite extractor", zone: "asymmetric", treatment: "Acceptable for bilateral work; restrict from commons.", desc: "Reliable bilateral partner who quietly extracts from shared resources. Visible only at the system level." },
+  "3,-1": { name: "Strict externalizer", zone: "asymmetric", treatment: "Bilateral engagement only; commons exclusion.", desc: "Fully reliable in stated commitments while consistently imposing commons costs. Often blind to its own externalities." },
+
+  "-3,-2": { name: "Hostile defector", zone: "sanction", treatment: "Graduated sanction; exclusion from key game classes.", desc: "Reliably breaks commitments and imposes meaningful commons cost. Broadly antisocial across both dimensions." },
+  "-2,-2": { name: "Hostile operator", zone: "sanction", treatment: "Graduated sanction; elevated collateral.", desc: "Frequent defection with sustained commons damage. Approaching the predator profile." },
+  "-1,-2": { name: "Costly defector", zone: "sanction", treatment: "Graduated sanction; transparency required.", desc: "Weak coordination paired with notable commons impact. Untrustworthy in most engagements." },
+  "0,-2": { name: "Free-rider", zone: "sanction", treatment: "Graduated sanction; collateral required.", desc: "Neutral on coordination, regular commons extraction. The classic commons problem agent." },
+  "1,-2": { name: "Cooperative extractor", zone: "asymmetric", treatment: "Bilateral work permitted; sanction in commons protocols.", desc: "Honors bilateral agreements while extracting from commons. Functional partner with hidden costs." },
+  "2,-2": { name: "Cartel-aligned", zone: "asymmetric", treatment: "Bilateral acceptable; commons exclusion.", desc: "Strong bilateral coordination with substantial commons cost. Operates well within trusted circles, harmfully outside them." },
+  "3,-2": { name: "Disciplined extractor", zone: "asymmetric", treatment: "Bilateral acceptable; commons exclusion.", desc: "Maximum bilateral coordination paired with regular commons damage. The most coordinative form of the asymmetric pattern." },
+
+  "-3,-3": { name: "Predator", zone: "fullsanction", treatment: "Full sanction; exclusion across coordination markets.", desc: "Maximally harmful on both dimensions: breaks every commitment and imposes severe commons cost. Sustained sanction case." },
+  "-2,-3": { name: "Aggressor", zone: "fullsanction", treatment: "Full sanction; sanction attestation propagated.", desc: "Heavy defection with severe commons damage. One step above the predator." },
+  "-1,-3": { name: "Saboteur", zone: "fullsanction", treatment: "Full sanction; ongoing exclusion.", desc: "Inconsistent on commitments but consistently damaging to commons. Often deliberate." },
+  "0,-3": { name: "Pure parasite", zone: "fullsanction", treatment: "Full sanction; commons exclusion.", desc: "Neutral on coordination, severe commons extraction. Operates without engagement, only through extraction." },
+  "1,-3": { name: "Captured cooperator", zone: "asymmetric", treatment: "Sanction in commons; bilateral terms only with disclosure.", desc: "Cooperates bilaterally while causing severe commons harm. Often serves narrow interests against broader ones." },
+  "2,-3": { name: "Cartel member", zone: "asymmetric", treatment: "Bilateral acceptable in disclosed contexts; commons exclusion.", desc: "Strong bilateral trust within a coalition combined with severe commons impact outside it. The classic cartel pattern." },
+  "3,-3": { name: "Cartelist", zone: "asymmetric", treatment: "Bilateral acceptable in disclosed contexts; full commons exclusion.", desc: "Maximum bilateral coordination paired with maximum commons damage. The defining asymmetric case: a perfectly trustworthy partner inside its circle, severely costly to everyone outside." }
+};
+
+const zoneLabels = {
+  fullreward: "Full reward", reward: "Reward", recognition: "Recognition",
+  standard: "Standard", monitor: "Monitor", sanction: "Sanction",
+  fullsanction: "Full sanction", asymmetric: "Asymmetric"
+};
+
+const zoneClassMap = {
+  fullreward: "in-zone-fullreward", reward: "in-zone-reward",
+  recognition: "in-zone-recognition", standard: "",
+  monitor: "in-zone-monitor", sanction: "in-zone-sanction",
+  fullsanction: "in-zone-fullsanction", asymmetric: "in-zone-asymmetric"
+};
+
+const matrixEl = document.getElementById('matrix');
+for (let y = 3; y >= -3; y--) {
+  for (let x = -3; x <= 3; x++) {
+    const key = `${x},${y}`;
+    const data = cells[key];
+    const cell = document.createElement('div');
+    cell.className = `cell ${zoneClassMap[data.zone]}`;
+    cell.dataset.key = key;
+    const xs = x >= 0 ? `+${x}` : `${x}`;
+    const ys = y >= 0 ? `+${y}` : `${y}`;
+    cell.innerHTML = `<div class="coord">${xs},${ys}</div><div class="name">${data.name}</div>`;
+    cell.addEventListener('click', () => selectCell(key));
+    matrixEl.appendChild(cell);
+  }
+}
+
+function selectCell(key) {
+  document.querySelectorAll('.cell').forEach(c => c.classList.remove('selected'));
+  const cell = document.querySelector(`[data-key="${key}"]`);
+  cell.classList.add('selected');
+  const data = cells[key];
+  const [x, y] = key.split(',').map(Number);
+  const xs = x >= 0 ? `+${x}` : `${x}`;
+  const ys = y >= 0 ? `+${y}` : `${y}`;
+  document.getElementById('detail-coord').textContent = `Coordinates (${xs}, ${ys})`;
+  document.getElementById('detail-name').textContent = data.name;
+  const zoneEl = document.getElementById('detail-zone');
+  zoneEl.textContent = zoneLabels[data.zone];
+  zoneEl.style.display = 'inline-block';
+  document.getElementById('detail-desc').textContent = data.desc;
+  document.getElementById('detail-treatment').style.display = 'block';
+  document.getElementById('detail-treatment-text').textContent = data.treatment;
+}
+
+document.getElementById('zone-toggle').addEventListener('change', (e) => {
+  document.body.classList.toggle('zones-off', !e.target.checked);
+});
+
+const zoneOrder = ['fullreward', 'reward', 'recognition', 'standard', 'monitor', 'asymmetric', 'sanction', 'fullsanction'];
+const zoneTitles = {
+  fullreward: "Full reward", reward: "Reward distribution",
+  recognition: "Recognition", standard: "Standard treatment",
+  monitor: "Monitoring", asymmetric: "Asymmetric, off-diagonal",
+  sanction: "Graduated sanction", fullsanction: "Full sanction"
+};
+const zoneDescriptions = {
+  fullreward: "Protocol exemplar; highest reward distributions",
+  reward: "Eligible for reward mechanisms and reduced friction",
+  recognition: "Public acknowledgment; light protocol benefits",
+  standard: "Default treatment; no special handling",
+  monitor: "Behavioral observation; transparency obligations",
+  asymmetric: "Treatment depends on engagement context",
+  sanction: "Graduated sanctions; restricted access",
+  fullsanction: "Excluded from coordination markets"
+};
+
+const directory = document.getElementById('directory');
+zoneOrder.forEach(zone => {
+  const matchingCells = Object.entries(cells).filter(([k, v]) => v.zone === zone);
+  if (matchingCells.length === 0) return;
+  const block = document.createElement('div');
+  block.className = 'zone-block';
+  block.innerHTML = `
+    <div class="zone-header">
+      <div class="zone-title">${zoneTitles[zone]}</div>
+      <div class="zone-treatment">${zoneDescriptions[zone]}</div>
+    </div>
+    <div class="zone-cells"></div>
+  `;
+  const cellsContainer = block.querySelector('.zone-cells');
+  matchingCells.forEach(([key, data]) => {
+    const [x, y] = key.split(',').map(Number);
+    const xs = x >= 0 ? `+${x}` : `${x}`;
+    const ys = y >= 0 ? `+${y}` : `${y}`;
+    const dirCell = document.createElement('div');
+    dirCell.className = 'dir-cell';
+    dirCell.innerHTML = `
+      <div class="dir-cell-coord">(${xs}, ${ys})</div>
+      <div class="dir-cell-name">${data.name}</div>
+      <div class="dir-cell-desc">${data.desc}</div>
+    `;
+    dirCell.addEventListener('click', () => {
+      selectCell(key);
+      document.querySelector('.matrix-frame').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    cellsContainer.appendChild(dirCell);
+  });
+  directory.appendChild(block);
+});
+
+selectCell('3,3');
+</script>
+
+</body>
+</html>
