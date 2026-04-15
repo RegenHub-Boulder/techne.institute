@@ -1036,9 +1036,7 @@
     a.className = 'page-card'
     a.href = (page.authLevel === 'members' || page.authLevel === 'steward')
       ? 'https://techne.institute' + page.path : page.path
-    if (page.authLevel === 'members' || page.authLevel === 'steward') {
-      a.target = '_blank'; a.rel = 'noopener'
-    }
+    a.target = '_blank'; a.rel = 'noopener'
     a.setAttribute('data-zone', page.zone)
     a.setAttribute('aria-label', `${page.title} — ${page.authLevel} page at ${page.path}`)
     a.innerHTML = `
@@ -1153,9 +1151,7 @@
         a.setAttribute('data-zone', zone)
         a.setAttribute('role', 'listitem')
         a.setAttribute('aria-label', `${page.title} — ${page.authLevel}`)
-        if (page.authLevel === 'members' || page.authLevel === 'steward') {
-          a.target = '_blank'; a.rel = 'noopener'
-        }
+        a.target = '_blank'; a.rel = 'noopener'
         a.innerHTML = `
           <span class="hud-row-title">${page.title}</span>
           <span class="hud-row-path">${page.path}</span>
@@ -1346,7 +1342,7 @@
   // ══════════════════════════════════════════════
   // MODE SWITCHING
   // ══════════════════════════════════════════════
-  let currentMode = 'list'
+  let currentMode = 'hud'
   const HERO = document.getElementById('page-hero')
   const LEGEND_EL = document.getElementById('page-legend')
 
@@ -1408,6 +1404,7 @@
   // ══════════════════════════════════════════════
   renderGrid()
   updateHudThemeIcon()
+  switchMode('hud')
   </script>
 </body>
 </html>
