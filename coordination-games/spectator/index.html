@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('techne-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches){document.documentElement.setAttribute('data-theme','light');}})()</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spectator — Coordination Games</title>
 <meta name="description" content="Follow the Coordination Games season — an esports-shaped event for one of the more interesting problems in AI. Five games, six weeks of escalating stakes, live results, and a public leaderboard.">
@@ -153,6 +154,18 @@
   @media (max-width: 420px) {
     .nav-label { display: none; }
   }
+  [data-theme="light"] {
+    --void: #f5f3f0; --surface: #ffffff; --panel: #f0ede8; --raised: #e8e4dd;
+    --border: rgba(0,0,0,0.12); --border-dim: rgba(0,0,0,0.07); --gold: #a07850;
+    --parchment: #1a1a1a; --warm: #333333; --muted: #666666; --dim: #888888; --ghost: #aaaaaa;
+    --status-ok: #16a34a; --status-warn: #d97706; --status-info: #2563eb; --status-teal: #0d9488;
+  }
+  body { transition: background 0.2s, color 0.2s; }
+  .theme-toggle { display: flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.65rem; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; cursor: pointer; flex-shrink: 0; transition: background 0.12s, color 0.12s; }
+  .theme-toggle:hover { background: var(--raised); color: var(--parchment); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .theme-icon { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+  .theme-icon-moon { fill: currentColor; stroke: none; }
 </style>
 </head>
 <body>
@@ -160,6 +173,11 @@
 <nav class="site-nav">
   <a class="nav-back" href="../index.html">← Coordination Games</a>
   <span class="nav-label">Spectator</span>
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark theme">
+    <svg class="theme-icon" id="icon-sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.5"/><line x1="8" y1="1" x2="8" y2="3"/><line x1="8" y1="13" x2="8" y2="15"/><line x1="1" y1="8" x2="3" y2="8"/><line x1="13" y1="8" x2="15" y2="8"/><line x1="3.05" y1="3.05" x2="4.46" y2="4.46"/><line x1="11.54" y1="11.54" x2="12.95" y2="12.95"/><line x1="12.95" y1="3.05" x2="11.54" y2="4.46"/><line x1="4.46" y1="11.54" x2="3.05" y2="12.95"/></svg>
+    <svg class="theme-icon theme-icon-moon" id="icon-moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/></svg>
+    <span id="theme-label">Light</span>
+  </button>
 </nav>
 
 <main class="page">
@@ -273,5 +291,15 @@
   </footer>
 
 </main>
+<script>
+  (function(){
+    var html=document.documentElement,btn=document.getElementById('theme-toggle'),
+        sun=document.getElementById('icon-sun'),moon=document.getElementById('icon-moon'),
+        lbl=document.getElementById('theme-label');
+    function apply(t){html.setAttribute('data-theme',t);try{localStorage.setItem('techne-theme',t);}catch(e){}if(t==='light'){sun.style.display='none';moon.style.display='';lbl.textContent='Dark';}else{sun.style.display='';moon.style.display='none';lbl.textContent='Light';}}
+    apply(html.getAttribute('data-theme')||'dark');
+    if(btn)btn.addEventListener('click',function(){apply(html.getAttribute('data-theme')==='light'?'dark':'light');});
+  })();
+</script>
 </body>
 </html>
