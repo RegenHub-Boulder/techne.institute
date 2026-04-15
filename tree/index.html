@@ -58,64 +58,63 @@
        SHARED DESIGN TOKENS (tree page)
     ═══════════════════════════════════════════ */
     :root {
-      --z0: #c4956a;
-      --z1: #22c55e;
-      --z2: #f59e0b;
-      --z3: #3b82f6;
-      --z4: #c4956a;
+      /* Zone accent colors — mapped to Techne design system tokens */
+      --z0: var(--ember);        /* home:    ember gold  */
+      --z1: var(--green);        /* public:  eco green   */
+      --z2: var(--ember);        /* curated: ember warm  */
+      --z3: var(--blue);         /* members: blue        */
+      --z4: var(--ember-dim);    /* steward: ember dim   */
 
-      --z0-bg: rgba(196,149,106,0.08);
-      --z1-bg: rgba(34,197,94,0.07);
-      --z2-bg: rgba(245,158,11,0.07);
-      --z3-bg: rgba(59,130,246,0.07);
-      --z4-bg: rgba(196,149,106,0.07);
+      --z0-bg: var(--ember-glow);
+      --z1-bg: var(--green-glow);
+      --z2-bg: var(--ember-glow);
+      --z3-bg: rgba(106,138,196,0.12);
+      --z4-bg: rgba(138,106,74,0.08);
 
       --z0-border: rgba(196,149,106,0.3);
-      --z1-border: rgba(34,197,94,0.3);
-      --z2-border: rgba(245,158,11,0.3);
-      --z3-border: rgba(59,130,246,0.3);
-      --z4-border: rgba(196,149,106,0.3);
+      --z1-border: rgba(106,154,106,0.3);
+      --z2-border: rgba(196,149,106,0.3);
+      --z3-border: rgba(106,138,196,0.3);
+      --z4-border: rgba(138,106,74,0.3);
 
-      --focus-ring: 3px solid #3b82f6;
+      --focus-ring: 3px solid var(--blue);
       --detail-w: 320px;
       --card-bg: var(--bg-card, rgba(235,231,223,0.6));
-      --card-border: var(--rule, #d8d3c8);
+      --card-border: var(--rule, var(--bone));
       --grid-max: 1200px;
 
-      /* HUD design-system tokens — light */
-      --hud-void:    #f5f3f0;
+      /* HUD tokens — light (anchored to tokens.css values) */
+      --hud-void:    var(--parchment);
       --hud-ink:     #fffdf9;
       --hud-surface: #ffffff;
-      --hud-panel:   #f0ede8;
-      --hud-raised:  #e8e4dd;
+      --hud-panel:   var(--cream);
+      --hud-raised:  var(--bone);
       --hud-border:  rgba(0,0,0,0.1);
       --hud-border2: rgba(0,0,0,0.06);
       --hud-text:    #1a1a1a;
-      --hud-muted:   #666666;
+      --hud-muted:   var(--stone);
       --hud-dim:     #999999;
-      --hud-gold:    #c4956a;
+      --hud-gold:    var(--ember);
     }
 
     [data-theme="dark"] {
-      --z1-bg: rgba(34,197,94,0.1);
-      --z2-bg: rgba(245,158,11,0.1);
-      --z3-bg: rgba(59,130,246,0.1);
-      --z4-bg: rgba(196,149,106,0.1);
+      --z1-bg: var(--green-glow);
+      --z3-bg: rgba(106,138,196,0.15);
       --card-bg: rgba(42,42,48,0.85);
       --card-border: rgba(60,60,68,0.8);
 
-      /* HUD design-system tokens — dark */
-      --hud-void:    #0c0c0c;
+      /* HUD tokens — dark (anchored to tokens.css values) */
+      --hud-void:    var(--ink);
       --hud-ink:     #111111;
-      --hud-surface: #161616;
+      --hud-surface: var(--charcoal);
       --hud-panel:   #1e1e1e;
-      --hud-raised:  #2a2a2a;
+      --hud-raised:  var(--graphite);
       --hud-border:  rgba(255,255,255,0.1);
       --hud-border2: rgba(255,255,255,0.05);
-      --hud-text:    #f0f0f0;
-      --hud-muted:   #9a9a9a;
+      --hud-text:    var(--charcoal);
+      --hud-muted:   var(--stone);
       --hud-dim:     #606060;
-      --hud-gold:    #c4956a;
+      --hud-gold:    var(--ember);
     }
 
     /* ═══════════════════════════════════════════
@@ -320,11 +319,11 @@
       letter-spacing: 0.03em;
       border: 1px solid transparent;
     }
-    .auth-badge.home    { background: rgba(196,149,106,0.15); color: var(--z0); border-color: var(--z0-border); }
-    .auth-badge.public  { background: rgba(34,197,94,0.12);  color: #16a34a;   border-color: rgba(34,197,94,0.3); }
-    .auth-badge.curated { background: rgba(245,158,11,0.12); color: #d97706;   border-color: rgba(245,158,11,0.3); }
-    .auth-badge.members { background: rgba(59,130,246,0.12); color: #2563eb;   border-color: rgba(59,130,246,0.3); }
-    .auth-badge.steward { background: rgba(196,149,106,0.15); color: #9a6a3a;  border-color: rgba(196,149,106,0.3); }
+    .auth-badge.home    { background: var(--ember-glow);  color: var(--ember);     border-color: var(--z0-border); }
+    .auth-badge.public  { background: var(--green-glow);  color: var(--green-dim); border-color: var(--z1-border); }
+    .auth-badge.curated { background: var(--ember-glow);  color: var(--ember-dim); border-color: var(--z2-border); }
+    .auth-badge.members { background: rgba(106,138,196,0.12); color: var(--blue);  border-color: var(--z3-border); }
+    .auth-badge.steward { background: var(--ember-glow);  color: var(--ember-dim); border-color: var(--z4-border); }
     .card-path {
       font-size: 0.73rem;
       color: var(--fg-tertiary, var(--fg-secondary));
@@ -352,7 +351,7 @@
     .net-node { cursor: pointer; }
     .net-node circle { transition: r 0.15s, opacity 0.15s; }
     .net-node:hover circle { opacity: 0.85; }
-    .net-node:focus-visible circle { stroke: #3b82f6; stroke-width: 3px; }
+    .net-node:focus-visible circle { stroke: var(--blue); stroke-width: 3px; }
     .net-node text {
       font-size: 11px;
       fill: var(--fg-secondary, #666);
