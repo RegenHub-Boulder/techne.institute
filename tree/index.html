@@ -691,6 +691,62 @@
     .hud-row-badge.members { background: rgba(59,130,246,0.1); color: #2563eb;  border-color: rgba(59,130,246,0.25); }
     .hud-row-badge.steward { background: rgba(196,149,106,0.1);color: #9a6a3a; border-color: rgba(196,149,106,0.25); }
 
+    /* ── HUD tree hierarchy ── */
+    .hud-row-group { display: block; }
+    .hud-parent-bar {
+      display: flex;
+      align-items: stretch;
+    }
+    .hud-parent-bar .hud-row {
+      flex: 1;
+      min-width: 0;
+    }
+    .hud-toggle {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      color: var(--hud-dim);
+      cursor: pointer;
+      font-size: 0.6rem;
+      padding: 0 0.15rem 0 0.5rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      transition: color 0.08s;
+    }
+    .hud-toggle:hover { color: var(--hud-text); }
+    .hud-toggle:focus-visible { outline: var(--focus-ring); }
+    .hud-row-child {
+      padding-left: 1.75rem;
+    }
+    .hud-tree-char {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--hud-dim);
+      flex-shrink: 0;
+      margin-right: 0.15rem;
+      opacity: 0.55;
+      letter-spacing: -0.04em;
+    }
+
+    /* ── HUD link counts ── */
+    .hud-link-counts {
+      display: flex;
+      gap: 0.25rem;
+      flex-shrink: 0;
+      margin-left: auto;
+      margin-right: 0.35rem;
+    }
+    .hud-lc-in,
+    .hud-lc-out {
+      font-size: 0.58rem;
+      opacity: 0.8;
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: 0;
+    }
+    .hud-lc-in  { color: var(--z3); }
+    .hud-lc-out { color: var(--z1); }
+
     /* ── HUD status bar ── */
     .hud-statusbar {
       height: 28px;
@@ -1017,6 +1073,53 @@
       description:'Agent coordination workspace — sprint management, agent communication, and coordination activity feed.' },
   ]
 
+  // Cross-page link relationships (site graph edges, non-hierarchical)
+  const SITE_LINKS = [
+    { from:'home', to:'about' }, { from:'home', to:'ventures' }, { from:'home', to:'join' },
+    { from:'home', to:'formation' }, { from:'home', to:'blog' }, { from:'home', to:'ecosystem' },
+    { from:'about', to:'formation' }, { from:'about', to:'join' }, { from:'about', to:'bylaws' },
+    { from:'formation', to:'articles' }, { from:'formation', to:'bylaws' },
+    { from:'formation', to:'handbook' }, { from:'formation', to:'patronage-doc' },
+    { from:'blog', to:'ventures' }, { from:'ventures', to:'join' }, { from:'ventures', to:'blog' },
+    { from:'ecosystem', to:'intranet-ecosystem' }, { from:'intranet-ecosystem', to:'ecosystem' },
+    { from:'cloud-doc', to:'intranet-cloud' }, { from:'intranet-cloud', to:'cloud-doc' },
+    { from:'cloud-doc', to:'intranet-account' },
+    { from:'people', to:'intranet-directory' },
+    { from:'patronage-doc', to:'intranet-patronage' }, { from:'intranet-patronage', to:'patronage-doc' },
+    { from:'patronage-doc', to:'intranet-account' },
+    { from:'bylaws', to:'intranet-governance' }, { from:'intranet-governance', to:'bylaws' },
+    { from:'intranet-account', to:'intranet-capital' }, { from:'intranet-account', to:'intranet-labor' },
+    { from:'intranet-account', to:'intranet-patronage' },
+    { from:'intranet-capital', to:'intranet-labor' }, { from:'intranet-capital', to:'intranet-patronage' },
+    { from:'intranet-journal', to:'intranet-ledger' }, { from:'intranet-journal', to:'intranet-treasury' },
+    { from:'intranet-ledger', to:'intranet-treasury' }, { from:'intranet-treasury', to:'intranet-capital' },
+    { from:'intranet-ventures', to:'intranet-projects' }, { from:'intranet-projects', to:'intranet-ventures' },
+    { from:'intranet-roadmap', to:'ventures' }, { from:'intranet-roadmap', to:'intranet-projects' },
+    { from:'workshop', to:'intranet' },
+    { from:'intranet-admin', to:'intranet-directory' }, { from:'intranet-admin', to:'intranet-governance' },
+    { from:'intranet-admin', to:'intranet-capital' },
+    { from:'faq', to:'join' }, { from:'faq', to:'about' }, { from:'faq', to:'formation' },
+    { from:'contact', to:'join' },
+    { from:'intranet-guide', to:'intranet-account' }, { from:'intranet-guide', to:'intranet-labor' },
+    { from:'intranet-messages', to:'intranet-directory' },
+    { from:'intranet-documents', to:'bylaws' }, { from:'intranet-documents', to:'handbook' },
+    { from:'intranet-documents', to:'articles' },
+  ]
+
+  // Annotate PAGES with link counts computed from SITE_LINKS
+  ;(function() {
+    const counts = {}
+    for (const p of PAGES) counts[p.id] = { i: 0, o: 0 }
+    for (const lnk of SITE_LINKS) {
+      if (counts[lnk.from]) counts[lnk.from].o++
+      if (counts[lnk.to])   counts[lnk.to].i++
+    }
+    for (const p of PAGES) {
+      p.links_in  = counts[p.id] ? counts[p.id].i : 0
+      p.links_out = counts[p.id] ? counts[p.id].o : 0
+    }
+  })()
+
   const ZONE_META = {
     0: { label:'Home',    desc:'Entry point',                      color:'var(--z0)', border:'var(--z0)' },
     1: { label:'Public',  desc:'Open to all visitors',             color:'var(--z1)', border:'rgba(34,197,94,0.4)' },
@@ -1088,6 +1191,54 @@
   // ══════════════════════════════════════════════
   // HUD MODE
   // ══════════════════════════════════════════════
+
+  // Collapse state: false = collapsed, true/undefined = expanded
+  const hudExpandState = { intranet: false }  // intranet collapsed by default (15 children)
+
+  // Build a single HUD row anchor
+  function makeHudRow(page, zone) {
+    const href = (page.authLevel === 'members' || page.authLevel === 'steward')
+      ? 'https://techne.institute' + page.path : page.path
+    const a = document.createElement('a')
+    a.className = 'hud-row'
+    a.href = href
+    a.setAttribute('data-zone', zone)
+    a.setAttribute('role', 'listitem')
+    a.setAttribute('aria-label', `${page.title} — ${page.authLevel}`)
+    a.target = '_blank'; a.rel = 'noopener'
+
+    const li = page.links_in  || 0
+    const lo = page.links_out || 0
+    const countsHtml = (li > 0 || lo > 0)
+      ? `<span class="hud-link-counts" aria-label="${li} inbound, ${lo} outbound links">` +
+        `<span class="hud-lc-in"  title="${li} inbound links">←${li}</span>` +
+        `<span class="hud-lc-out" title="${lo} outbound links">→${lo}</span></span>`
+      : ''
+
+    a.innerHTML = `
+      <span class="hud-row-title">${page.title}</span>
+      <span class="hud-row-path">${page.path}</span>
+      ${countsHtml}
+      <span class="hud-row-badge ${page.authLevel}" aria-hidden="true">${page.authLevel}</span>
+    `
+
+    function setStatus() {
+      document.getElementById('sb-path').textContent = page.path
+      document.getElementById('sb-desc').textContent = page.description
+      document.getElementById('sb-meta').textContent =
+        (li + lo > 0) ? `${page.authLevel} · ←${li} →${lo}` : page.authLevel
+    }
+    function clearStatus() {
+      document.getElementById('sb-path').textContent = ''
+      document.getElementById('sb-desc').textContent = 'Hover a row to see its description'
+      document.getElementById('sb-meta').textContent = ''
+    }
+    a.addEventListener('mouseenter', setStatus)
+    a.addEventListener('mouseleave', clearStatus)
+    a.addEventListener('focus', setStatus)
+    return a
+  }
+
   function renderHUD(filter) {
     filter = filter || 'all'
     const main = document.getElementById('hud-main')
@@ -1101,10 +1252,8 @@
       btn.setAttribute('aria-pressed', active ? 'true' : 'false')
     })
 
-    // Determine which zones to show
     const zones = filter === 'all' ? [1,2,3,4] : [parseInt(filter)]
 
-    // In single-zone filter mode, show one panel full-width
     if (zones.length === 1) {
       main.style.gridTemplateColumns = '1fr'
       main.style.gridTemplateRows = '1fr'
@@ -1113,9 +1262,20 @@
       main.style.gridTemplateRows = ''
     }
 
+    // Build same-zone child map (parent and child must share a zone)
+    const childMap = {}
+    for (const page of PAGES) {
+      if (!page.parent) continue
+      const par = PAGES.find(p => p.id === page.parent)
+      if (par && par.zone === page.zone) {
+        if (!childMap[page.parent]) childMap[page.parent] = []
+        childMap[page.parent].push(page)
+      }
+    }
+
     for (const zone of zones) {
       const pages = PAGES.filter(p => p.zone === zone)
-      const meta = ZONE_META[zone]
+      const meta  = ZONE_META[zone]
       const color = ZONE_COLORS[zone]
 
       const panel = document.createElement('div')
@@ -1135,44 +1295,77 @@
       `
       panel.appendChild(header)
 
-      // Panel body with compact rows
+      // Panel body
       const body = document.createElement('div')
       body.className = 'hud-panel-body'
       body.setAttribute('role', 'list')
       body.setAttribute('aria-label', `${meta.label} pages`)
 
-      for (const page of pages) {
-        const href = (page.authLevel === 'members' || page.authLevel === 'steward')
-          ? 'https://techne.institute' + page.path : page.path
-        const a = document.createElement('a')
-        a.className = 'hud-row'
-        a.href = href
-        a.setAttribute('data-zone', zone)
-        a.setAttribute('role', 'listitem')
-        a.setAttribute('aria-label', `${page.title} — ${page.authLevel}`)
-        a.target = '_blank'; a.rel = 'noopener'
-        a.innerHTML = `
-          <span class="hud-row-title">${page.title}</span>
-          <span class="hud-row-path">${page.path}</span>
-          <span class="hud-row-badge ${page.authLevel}" aria-hidden="true">${page.authLevel}</span>
-        `
-        // Status bar on hover
-        a.addEventListener('mouseenter', () => {
-          document.getElementById('sb-path').textContent = page.path
-          document.getElementById('sb-desc').textContent = page.description
-          document.getElementById('sb-meta').textContent = page.authLevel
-        })
-        a.addEventListener('mouseleave', () => {
-          document.getElementById('sb-path').textContent = ''
-          document.getElementById('sb-desc').textContent = 'Hover a row to see its description'
-          document.getElementById('sb-meta').textContent = ''
-        })
-        a.addEventListener('focus', () => {
-          document.getElementById('sb-path').textContent = page.path
-          document.getElementById('sb-desc').textContent = page.description
-          document.getElementById('sb-meta').textContent = page.authLevel
-        })
-        body.appendChild(a)
+      // Root pages: those whose parent is absent or in a different zone
+      const rootPages = pages.filter(p => {
+        if (!p.parent) return true
+        const par = PAGES.find(pp => pp.id === p.parent)
+        return !par || par.zone !== zone
+      })
+
+      for (const page of rootPages) {
+        const children = childMap[page.id] || []
+
+        if (children.length > 0) {
+          // ── Parent row with collapse toggle ──
+          const group = document.createElement('div')
+          group.className = 'hud-row-group'
+
+          const bar = document.createElement('div')
+          bar.className = 'hud-parent-bar'
+
+          const isExpanded = hudExpandState[page.id] !== false
+          const chId = `hud-ch-${page.id}`
+
+          const toggle = document.createElement('button')
+          toggle.className = 'hud-toggle'
+          toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false')
+          toggle.setAttribute('aria-controls', chId)
+          toggle.setAttribute('aria-label', (isExpanded ? 'Collapse ' : 'Expand ') + page.title)
+          toggle.textContent = isExpanded ? '▾' : '▸'
+
+          const rowLink = makeHudRow(page, zone)
+          bar.appendChild(toggle)
+          bar.appendChild(rowLink)
+          group.appendChild(bar)
+
+          // Children container
+          const chEl = document.createElement('div')
+          chEl.className = 'hud-children'
+          chEl.id = chId
+          chEl.style.display = isExpanded ? '' : 'none'
+
+          children.forEach((child, idx) => {
+            const childRow = makeHudRow(child, zone)
+            childRow.classList.add('hud-row-child')
+            const tc = document.createElement('span')
+            tc.className = 'hud-tree-char'
+            tc.setAttribute('aria-hidden', 'true')
+            tc.textContent = idx === children.length - 1 ? '└─' : '├─'
+            childRow.prepend(tc)
+            chEl.appendChild(childRow)
+          })
+
+          toggle.addEventListener('click', () => {
+            const next = toggle.getAttribute('aria-expanded') !== 'true'
+            hudExpandState[page.id] = next
+            toggle.setAttribute('aria-expanded', next ? 'true' : 'false')
+            toggle.setAttribute('aria-label', (next ? 'Collapse ' : 'Expand ') + page.title)
+            toggle.textContent = next ? '▾' : '▸'
+            chEl.style.display = next ? '' : 'none'
+          })
+
+          group.appendChild(chEl)
+          body.appendChild(group)
+
+        } else {
+          body.appendChild(makeHudRow(page, zone))
+        }
       }
 
       panel.appendChild(body)
