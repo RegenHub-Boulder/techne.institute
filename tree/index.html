@@ -54,824 +54,854 @@
   <script src="/assets/nav.js" defer></script>
 
   <style>
-    /* ── Tree page styles ── */
+    /* ── Tree page design tokens ── */
     :root {
-      --zone-public:  #4a7a4a;
-      --zone-curated: #8a6a20;
-      --zone-members: #3a5a8a;
-      --zone-steward: #8a5a30;
+      --z0: #c4956a;   /* ember — home */
+      --z1: #22c55e;   /* green — public */
+      --z2: #f59e0b;   /* amber — curated */
+      --z3: #3b82f6;   /* blue — members */
+      --z4: #c4956a;   /* gold — steward */
 
-      --zone-public-bg:  rgba(74, 122, 74, 0.06);
-      --zone-curated-bg: rgba(138, 106, 32, 0.06);
-      --zone-members-bg: rgba(58, 90, 138, 0.06);
-      --zone-steward-bg: rgba(138, 90, 48, 0.06);
+      --z0-bg: rgba(196, 149, 106, 0.08);
+      --z1-bg: rgba(34, 197, 94, 0.07);
+      --z2-bg: rgba(245, 158, 11, 0.07);
+      --z3-bg: rgba(59, 130, 246, 0.07);
+      --z4-bg: rgba(196, 149, 106, 0.07);
 
-      --zone-public-border:  rgba(74, 122, 74, 0.25);
-      --zone-curated-border: rgba(138, 106, 32, 0.25);
-      --zone-members-border: rgba(58, 90, 138, 0.25);
-      --zone-steward-border: rgba(138, 90, 48, 0.25);
+      --z0-border: rgba(196, 149, 106, 0.3);
+      --z1-border: rgba(34, 197, 94, 0.3);
+      --z2-border: rgba(245, 158, 11, 0.3);
+      --z3-border: rgba(59, 130, 246, 0.3);
+      --z4-border: rgba(196, 149, 106, 0.3);
 
+      --focus-ring: 3px solid #3b82f6;
+      --detail-w: 320px;
       --card-bg: var(--bg-card, rgba(235,231,223,0.6));
       --card-border: var(--rule, #d8d3c8);
+      --grid-max: 1200px;
     }
 
     [data-theme="dark"] {
-      --zone-public-bg:  rgba(74, 122, 74, 0.1);
-      --zone-curated-bg: rgba(196, 149, 60, 0.1);
-      --zone-members-bg: rgba(90, 130, 196, 0.1);
-      --zone-steward-bg: rgba(196, 149, 106, 0.1);
-
-      --zone-public-border:  rgba(74, 122, 74, 0.3);
-      --zone-curated-border: rgba(196, 149, 60, 0.3);
-      --zone-members-border: rgba(90, 130, 196, 0.3);
-      --zone-steward-border: rgba(196, 149, 106, 0.3);
-
-      --card-bg: rgba(42, 42, 48, 0.8);
+      --z1-bg: rgba(34, 197, 94, 0.1);
+      --z2-bg: rgba(245, 158, 11, 0.1);
+      --z3-bg: rgba(59, 130, 246, 0.1);
+      --z4-bg: rgba(196, 149, 106, 0.1);
+      --card-bg: rgba(42, 42, 48, 0.85);
       --card-border: rgba(60, 60, 68, 0.8);
     }
 
+    /* ── Utilities ── */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ── Hero ── */
     .tree-hero {
       padding: 3rem 2rem 2rem;
       border-bottom: 1px solid var(--rule);
       background: linear-gradient(to bottom, var(--bg), var(--bg-alt));
     }
-
     .tree-hero .container--wide {
       display: flex;
-      align-items: flex-end;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 2rem;
       flex-wrap: wrap;
+      max-width: var(--grid-max);
+      margin: 0 auto;
     }
-
-    .tree-hero-text .eyebrow {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-
     .tree-hero-text h1 {
-      font-family: var(--font-display);
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
       font-weight: 400;
-      color: var(--text-primary);
-      line-height: 1.2;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
+      color: var(--fg-primary);
     }
-
     .tree-hero-text p {
-      font-size: 0.9rem;
-      color: var(--text-dim);
-      max-width: 44ch;
+      font-size: 1rem;
+      color: var(--fg-secondary);
+      max-width: 48ch;
       line-height: 1.6;
     }
 
-    /* Mode toggle */
-    .mode-toggle {
+    /* ── Controls ── */
+    .tree-controls {
       display: flex;
-      gap: 0;
-      border: 1px solid var(--rule);
-      border-radius: 6px;
-      overflow: hidden;
-      background: var(--bg);
-      flex-shrink: 0;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
     }
-
     .mode-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
       padding: 0.4rem 0.9rem;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: none;
-      border: none;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      background: var(--card-bg);
+      color: var(--fg-secondary);
+      font-size: 0.82rem;
       cursor: pointer;
-      color: var(--text-dim);
-      transition: all 0.15s;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      font-family: var(--font-mono, 'IBM Plex Mono', monospace);
     }
-
+    .mode-btn:hover { background: var(--bg-alt); color: var(--fg-primary); }
     .mode-btn.active {
-      background: var(--accent-glow);
-      color: var(--accent);
+      background: var(--gold, #c4956a);
+      border-color: var(--gold, #c4956a);
+      color: #fff;
     }
+    .mode-btn:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
 
-    .mode-btn:hover:not(.active) {
-      background: var(--bg-alt);
-      color: var(--text-body);
-    }
-
-    /* Legend */
+    /* ── Legend ── */
     .legend {
       display: flex;
-      gap: 1.5rem;
       flex-wrap: wrap;
-      padding: 0.9rem 2rem;
-      border-bottom: 1px solid var(--rule);
+      gap: 0.75rem 1.25rem;
+      padding: 1rem 2rem;
       background: var(--bg-alt);
+      border-bottom: 1px solid var(--rule);
+      max-width: var(--grid-max);
+      margin: 0 auto;
     }
-
     .legend-item {
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      font-family: var(--font-mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-dim);
+      font-size: 0.78rem;
+      color: var(--fg-secondary);
+      font-family: var(--font-mono, 'IBM Plex Mono', monospace);
     }
-
     .legend-dot {
-      width: 8px;
-      height: 8px;
+      width: 10px; height: 10px;
       border-radius: 50%;
       flex-shrink: 0;
     }
 
-    /* Main content area */
+    /* ── Main content area ── */
     .tree-main {
       padding: 2rem;
-      max-width: 1200px;
+      max-width: var(--grid-max);
       margin: 0 auto;
     }
 
-    /* ── Grid mode ── */
-    #view-grid { display: block; }
-    #view-network { display: none; }
-
-    .zone-section {
-      margin-bottom: 2.5rem;
-    }
-
+    /* ── Zone section headers ── */
+    .zone-section { margin-bottom: 2.5rem; }
     .zone-header {
       display: flex;
       align-items: center;
       gap: 0.75rem;
       margin-bottom: 1rem;
-      padding-bottom: 0.6rem;
-      border-bottom: 2px solid var(--rule);
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid;
     }
-
-    .zone-bar {
-      width: 4px;
-      height: 20px;
-      border-radius: 2px;
+    .zone-header-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
       flex-shrink: 0;
     }
-
-    .zone-title {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-dim);
+    .zone-header h2 {
+      font-size: 0.9rem;
+      font-family: var(--font-mono, 'IBM Plex Mono', monospace);
       font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .zone-header p {
+      font-size: 0.8rem;
+      color: var(--fg-secondary);
+      margin: 0;
     }
 
-    .zone-count {
-      margin-left: auto;
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      color: var(--text-faint);
+    /* ── Home card (zone 0) ── */
+    .home-card-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+    .home-card {
+      min-width: min(400px, 100%);
+      max-width: 520px;
+      width: 100%;
     }
 
+    /* ── Card grid ── */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
     }
 
-    .site-card {
+    /* ── Page card ── */
+    .page-card {
       display: block;
-      text-decoration: none;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 6px;
-      padding: 0.85rem 1rem;
-      transition: all 0.15s;
+      border-radius: 10px;
+      padding: 1.1rem 1.2rem;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s;
       position: relative;
       overflow: hidden;
     }
-
-    .site-card::before {
+    .page-card::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 3px;
-      height: 100%;
+      top: 0; left: 0; right: 0;
+      height: 3px;
     }
-
-    .site-card.zone-public::before   { background: var(--zone-public); }
-    .site-card.zone-curated::before  { background: var(--zone-curated); }
-    .site-card.zone-members::before  { background: var(--zone-members); }
-    .site-card.zone-steward::before  { background: var(--zone-steward); }
-
-    .site-card:hover {
-      border-color: var(--accent-dim);
-      background: var(--accent-glow);
-      transform: translateY(-1px);
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    .page-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
     }
+    .page-card:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
 
-    .card-path {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      color: var(--text-dim);
-      letter-spacing: 0.03em;
-      margin-bottom: 0.35rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    /* Zone accent stripes */
+    .page-card[data-zone="0"]::before { background: var(--z0); }
+    .page-card[data-zone="1"]::before { background: var(--z1); }
+    .page-card[data-zone="2"]::before { background: var(--z2); }
+    .page-card[data-zone="3"]::before { background: var(--z3); }
+    .page-card[data-zone="4"]::before { background: var(--z4); }
 
-    .card-title {
-      font-family: var(--font-sans, 'Inter', sans-serif);
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 0.35rem;
-      line-height: 1.3;
-    }
+    /* Zone hover borders */
+    .page-card[data-zone="0"]:hover { border-color: var(--z0-border); background: var(--z0-bg); }
+    .page-card[data-zone="1"]:hover { border-color: var(--z1-border); background: var(--z1-bg); }
+    .page-card[data-zone="2"]:hover { border-color: var(--z2-border); background: var(--z2-bg); }
+    .page-card[data-zone="3"]:hover { border-color: var(--z3-border); background: var(--z3-bg); }
+    .page-card[data-zone="4"]:hover { border-color: var(--z4-border); background: var(--z4-bg); }
 
-    .card-desc {
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      line-height: 1.5;
-      margin-bottom: 0.5rem;
-    }
-
-    .card-footer {
+    .card-top {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 0.5rem;
+      margin-bottom: 0.5rem;
     }
-
+    .card-title {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--fg-primary);
+      line-height: 1.3;
+    }
     .auth-badge {
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 2px 6px;
-      border-radius: 3px;
+      font-size: 0.68rem;
+      font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      flex-shrink: 0;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      border: 1px solid transparent;
     }
+    .auth-badge.home    { background: rgba(196,149,106,0.15); color: var(--z0); border-color: var(--z0-border); }
+    .auth-badge.public  { background: rgba(34,197,94,0.12);  color: #16a34a;   border-color: rgba(34,197,94,0.3); }
+    .auth-badge.curated { background: rgba(245,158,11,0.12); color: #d97706;   border-color: rgba(245,158,11,0.3); }
+    .auth-badge.members { background: rgba(59,130,246,0.12); color: #2563eb;   border-color: rgba(59,130,246,0.3); }
+    .auth-badge.steward { background: rgba(196,149,106,0.15); color: #9a6a3a;  border-color: rgba(196,149,106,0.3); }
 
-    .auth-public  { background: var(--zone-public-bg);  color: var(--zone-public);  border: 1px solid var(--zone-public-border); }
-    .auth-curated { background: var(--zone-curated-bg); color: var(--zone-curated); border: 1px solid var(--zone-curated-border); }
-    .auth-members { background: var(--zone-members-bg); color: var(--zone-members); border: 1px solid var(--zone-members-border); }
-    .auth-steward { background: var(--zone-steward-bg); color: var(--zone-steward); border: 1px solid var(--zone-steward-border); }
-
-    .card-arrow {
-      font-size: 0.7rem;
-      color: var(--text-faint);
-      transition: transform 0.15s, color 0.15s;
+    .card-path {
+      font-size: 0.73rem;
+      color: var(--fg-tertiary, var(--fg-secondary));
+      font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+      margin-bottom: 0.5rem;
+      opacity: 0.7;
     }
-
-    .site-card:hover .card-arrow {
-      transform: translateX(3px);
-      color: var(--accent);
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--fg-secondary);
+      line-height: 1.55;
     }
 
     /* ── Network mode ── */
-    #view-network {
-      width: 100%;
-      min-height: 600px;
+    #network-view {
+      display: none;
       position: relative;
-    }
-
-    .network-canvas {
-      width: 100%;
-      height: 600px;
-      cursor: grab;
-      user-select: none;
-    }
-
-    .network-canvas:active {
-      cursor: grabbing;
-    }
-
-    .node-label {
-      pointer-events: none;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      fill: var(--text-body, #3a3530);
-    }
-
-    [data-theme="dark"] .node-label {
-      fill: #ccc;
-    }
-
-    .network-detail {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      width: 240px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 1rem;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 640px;
+    }
+    #network-svg {
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+    }
+    #network-svg:active { cursor: grabbing; }
+    .net-node {
+      cursor: pointer;
+    }
+    .net-node circle {
+      transition: r 0.15s, opacity 0.15s;
+    }
+    .net-node:hover circle { opacity: 0.85; }
+    .net-node:focus-visible circle { stroke: #3b82f6; stroke-width: 3px; }
+    .net-node text {
+      font-size: 11px;
+      fill: var(--fg-secondary, #666);
+      pointer-events: none;
+      user-select: none;
+    }
+    .net-edge {
+      stroke: var(--rule, #d8d3c8);
+      stroke-width: 1px;
+      opacity: 0.5;
+    }
+
+    /* ── Detail panel (network mode) ── */
+    #detail-panel {
       display: none;
+      position: absolute;
+      top: 1rem; right: 1rem;
+      width: var(--detail-w);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      z-index: 10;
     }
-
-    .network-detail.visible {
-      display: block;
-    }
-
-    .network-detail h3 {
-      font-family: var(--font-sans, sans-serif);
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 0.3rem;
-    }
-
-    .network-detail p {
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      line-height: 1.5;
-      margin-bottom: 0.6rem;
-    }
-
-    .network-detail .detail-path {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      color: var(--text-faint);
-      margin-bottom: 0.6rem;
-    }
-
-    .network-detail a {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      color: var(--accent);
-      text-decoration: none;
-      border: 1px solid var(--accent-dim);
-      border-radius: 4px;
-      padding: 3px 8px;
-    }
-
-    .network-detail a:hover {
-      background: var(--accent-glow);
-    }
-
-    .network-hint {
-      text-align: center;
-      padding: 1rem;
-      font-family: var(--font-mono);
-      font-size: 0.62rem;
-      color: var(--text-faint);
-      letter-spacing: 0.05em;
-    }
-
-    /* ── Footer ── */
-    .tree-footer {
-      margin-top: 3rem;
-      padding: 1.5rem 2rem;
-      border-top: 1px solid var(--rule);
+    #detail-panel.open { display: block; }
+    .detail-header {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
     }
-
-    .tree-footer p {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      color: var(--text-faint);
-      letter-spacing: 0.05em;
+    .detail-title { font-size: 1rem; font-weight: 500; color: var(--fg-primary); }
+    .detail-close {
+      background: none; border: none;
+      cursor: pointer; color: var(--fg-secondary);
+      font-size: 1.2rem; line-height: 1;
+      padding: 0.1rem 0.3rem;
+      border-radius: 4px;
     }
-
-    .tree-footer a {
-      color: var(--accent);
+    .detail-close:focus-visible { outline: var(--focus-ring); }
+    .detail-path {
+      font-size: 0.72rem;
+      font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+      color: var(--fg-secondary);
+      margin-bottom: 0.5rem;
+      opacity: 0.75;
+    }
+    .detail-desc { font-size: 0.85rem; color: var(--fg-secondary); line-height: 1.55; margin-bottom: 1rem; }
+    .detail-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.82rem;
+      color: var(--gold, #c4956a);
       text-decoration: none;
+      border-bottom: 1px solid transparent;
     }
+    .detail-link:hover { border-bottom-color: var(--gold, #c4956a); }
+    .detail-link:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
 
+    /* ── Network zoom controls ── */
+    .net-zoom-controls {
+      display: none;
+      position: absolute;
+      bottom: 1rem; left: 1rem;
+      gap: 0.25rem;
+      flex-direction: column;
+    }
+    .net-zoom-controls.visible { display: flex; }
+    .zoom-btn {
+      width: 32px; height: 32px;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      background: var(--card-bg);
+      color: var(--fg-secondary);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .zoom-btn:hover { background: var(--bg-alt); }
+    .zoom-btn:focus-visible { outline: var(--focus-ring); }
+
+    /* ── Responsive ── */
     @media (max-width: 600px) {
-      .tree-hero .container--wide { flex-direction: column; align-items: flex-start; }
-      .mode-toggle { align-self: flex-start; }
-      .legend { gap: 1rem; padding: 0.75rem 1rem; }
+      .tree-hero { padding: 2rem 1rem 1.5rem; }
       .tree-main { padding: 1.5rem 1rem; }
+      .legend { padding: 0.75rem 1rem; }
       .card-grid { grid-template-columns: 1fr; }
-      #view-network { display: none !important; }
-      .mode-btn[data-mode="network"] { display: none; }
     }
   </style>
 </head>
 <body>
-<a href="#main" class="skip-link">Skip to main content</a>
-<techne-nav mode="public" active-section="tree"></techne-nav>
 
-<!-- Hero -->
-<section class="tree-hero">
-  <div class="container--wide">
-    <div class="tree-hero-text">
-      <p class="eyebrow">techne.institute</p>
-      <h1>The Tree</h1>
-      <p>Every page, in one place. Organized by access level, linked for navigation. The domain as a map.</p>
+  <!-- Site nav injected by nav.js -->
+
+  <section class="tree-hero">
+    <div class="container--wide">
+      <div class="tree-hero-text">
+        <h1>Site Map</h1>
+        <p>Navigate the full techne.institute domain from one place. Cards show access level, path, and a brief description of each section.</p>
+      </div>
+      <div class="tree-controls" role="group" aria-label="View mode">
+        <button class="mode-btn active" id="btn-grid" aria-pressed="true">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          Grid
+        </button>
+        <button class="mode-btn" id="btn-network" aria-pressed="false">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <circle cx="7" cy="7" r="2" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="2" cy="2" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="12" cy="2" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="2" cy="12" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="12" cy="12" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="5.5" y1="5.5" x2="3" y2="3" stroke="currentColor" stroke-width="1"/>
+            <line x1="8.5" y1="5.5" x2="11" y2="3" stroke="currentColor" stroke-width="1"/>
+            <line x1="5.5" y1="8.5" x2="3" y2="11" stroke="currentColor" stroke-width="1"/>
+            <line x1="8.5" y1="8.5" x2="11" y2="11" stroke="currentColor" stroke-width="1"/>
+          </svg>
+          Network
+        </button>
+      </div>
     </div>
-    <div class="mode-toggle" role="group" aria-label="View mode">
-      <button class="mode-btn active" data-mode="grid" onclick="setMode('grid')" aria-pressed="true">Grid</button>
-      <button class="mode-btn" data-mode="network" onclick="setMode('network')" aria-pressed="false">Network</button>
+  </section>
+
+  <div class="legend" role="list" aria-label="Access level legend">
+    <div class="legend-item" role="listitem">
+      <span class="legend-dot" style="background:var(--z0)"></span>
+      <span>home — entry point</span>
+    </div>
+    <div class="legend-item" role="listitem">
+      <span class="legend-dot" style="background:var(--z1)"></span>
+      <span>public — open to all</span>
+    </div>
+    <div class="legend-item" role="listitem">
+      <span class="legend-dot" style="background:var(--z2)"></span>
+      <span>curated — linked or shared</span>
+    </div>
+    <div class="legend-item" role="listitem">
+      <span class="legend-dot" style="background:var(--z3)"></span>
+      <span>members — sign-in required</span>
+    </div>
+    <div class="legend-item" role="listitem">
+      <span class="legend-dot" style="background:var(--z4)"></span>
+      <span>steward — organizer access</span>
     </div>
   </div>
-</section>
 
-<!-- Legend -->
-<div class="legend" aria-label="Access level legend">
-  <div class="legend-item">
-    <span class="legend-dot" style="background:var(--zone-public)"></span>
-    public — open to all
+  <main class="tree-main" id="grid-view">
+    <!-- Populated by JavaScript; static fallback rendered in <noscript> -->
+  </main>
+
+  <div id="network-view" role="region" aria-label="Network map of site pages">
+    <svg id="network-svg" role="img" aria-label="Interactive network diagram of site structure">
+      <defs>
+        <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="var(--rule,#d8d3c8)" opacity="0.5"/>
+        </marker>
+      </defs>
+      <g id="net-edges"></g>
+      <g id="net-nodes"></g>
+    </svg>
+    <div id="detail-panel" role="complementary" aria-label="Page detail">
+      <div class="detail-header">
+        <span class="detail-title" id="detail-title"></span>
+        <button class="detail-close" id="detail-close" aria-label="Close detail panel">×</button>
+      </div>
+      <div class="detail-path" id="detail-path"></div>
+      <div class="detail-desc" id="detail-desc"></div>
+      <a class="detail-link" id="detail-link" href="#" target="_blank" rel="noopener">
+        Visit page
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M2 10L10 2M10 2H5M10 2v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+    <div class="net-zoom-controls" id="zoom-controls" aria-label="Zoom controls">
+      <button class="zoom-btn" id="zoom-in" aria-label="Zoom in">+</button>
+      <button class="zoom-btn" id="zoom-out" aria-label="Zoom out">−</button>
+      <button class="zoom-btn" id="zoom-reset" aria-label="Reset zoom" style="font-size:0.7rem">↺</button>
+    </div>
   </div>
-  <div class="legend-item">
-    <span class="legend-dot" style="background:var(--zone-curated)"></span>
-    curated — audience-specific
-  </div>
-  <div class="legend-item">
-    <span class="legend-dot" style="background:var(--zone-members)"></span>
-    members — auth required
-  </div>
-  <div class="legend-item">
-    <span class="legend-dot" style="background:var(--zone-steward)"></span>
-    steward — role-gated
-  </div>
-</div>
 
-<!-- Main -->
-<main id="main" class="tree-main">
+  <noscript>
+    <style>.tree-main{display:none}</style>
+    <main style="padding:2rem;max-width:900px;margin:0 auto">
+      <h2 style="margin-bottom:1rem">All Pages</h2>
+      <ul style="list-style:none;padding:0;display:grid;gap:0.75rem">
+        <li><strong><a href="/">Home</a></strong> — Techne Institute cooperative studio entry point</li>
+        <li><strong><a href="/about/">About</a></strong> — Who we are, the cooperative structure, and our mission</li>
+        <li><strong><a href="/people/">People</a></strong> — Organizers and active members of RegenHub LCA</li>
+        <li><strong><a href="/ventures/">Ventures</a></strong> — Cooperative projects and active ventures</li>
+        <li><strong><a href="/join/">Join</a></strong> — Learn how to become a member of the cooperative</li>
+        <li><strong><a href="/blog/">Blog</a></strong> — Writing, research, and field notes</li>
+        <li><strong><a href="/tree/">Site Map</a></strong> — This page</li>
+        <li><strong><a href="/formation/">Formation</a></strong> — Organization structure and legal documents overview</li>
+        <li><strong><a href="/formation/articles/">Articles of Organization</a></strong> — LCA filing documents</li>
+        <li><strong><a href="/formation/bylaws/">Bylaws</a></strong> — Operating procedures and governance rules</li>
+        <li><strong><a href="/formation/handbook/">Member Handbook</a></strong> — Policies and practical guide for members</li>
+        <li><strong><a href="/ecosystem/">Ecosystem</a></strong> — Tools and partners we build with</li>
+        <li><strong><a href="/intranet/">Member Intranet</a></strong> — Private member portal (sign-in required)</li>
+      </ul>
+    </main>
+  </noscript>
 
-  <!-- Grid view -->
-  <div id="view-grid" role="navigation" aria-label="Site navigation map">
-    <!-- Zones injected by JS, with static fallback below -->
-  </div>
+  <script>
+  // ── Page data ──────────────────────────────────────────────────────────────
+  const PAGES = [
+    // Zone 0 — Home
+    { id:'home', path:'/', title:'Techne Institute', zone:0, authLevel:'home', parent:null,
+      description:'A cooperatively-owned studio in Boulder, Colorado. RegenHub LCA — cultivating scenius through shared infrastructure, tools, and collective intelligence.' },
 
-  <!-- Network view -->
-  <div id="view-network" aria-label="Network graph of site structure" role="img">
-    <div class="network-hint">click a node to preview · double-click to navigate · drag to pan · scroll to zoom</div>
-    <svg class="network-canvas" id="network-svg" viewBox="0 0 900 560" aria-hidden="true"></svg>
-    <div class="network-detail" id="network-detail"></div>
-  </div>
+    // Zone 1 — Public
+    { id:'about', path:'/about/', title:'About', zone:1, authLevel:'public', parent:'home',
+      description:'Who we are, the cooperative structure, and the mission driving Techne Studio.' },
+    { id:'people', path:'/people/', title:'People', zone:1, authLevel:'public', parent:'home',
+      description:'Organizers and active members of RegenHub LCA — the humans behind the cooperative.' },
+    { id:'ventures', path:'/ventures/', title:'Ventures', zone:1, authLevel:'public', parent:'home',
+      description:'Active projects and cooperative ventures incubated within the studio.' },
+    { id:'join', path:'/join/', title:'Join', zone:1, authLevel:'public', parent:'home',
+      description:'Learn how to become a member-owner of the cooperative. Patronage model explained.' },
+    { id:'blog', path:'/blog/', title:'Blog', zone:1, authLevel:'public', parent:'home',
+      description:'Writing, research, field notes, and public communications from the studio.' },
+    { id:'tree', path:'/tree/', title:'Site Map', zone:1, authLevel:'public', parent:'home',
+      description:'Visual navigation map of the full techne.institute domain — this page.' },
+    { id:'ecosystem', path:'/ecosystem/', title:'Ecosystem', zone:1, authLevel:'public', parent:'home',
+      description:'Tools, platforms, and partners we build with and depend on.' },
+    { id:'faq', path:'/faq/', title:'FAQ', zone:1, authLevel:'public', parent:'home',
+      description:'Frequently asked questions about the cooperative, membership, and how things work.' },
+    { id:'contact', path:'/contact/', title:'Contact', zone:1, authLevel:'public', parent:'home',
+      description:'Get in touch with the Techne Studio team.' },
 
-</main>
+    // Zone 2 — Curated (linked or shared, not broadly indexed)
+    { id:'formation', path:'/formation/', title:'Formation', zone:2, authLevel:'curated', parent:'home',
+      description:'Organization structure and overview of legal formation documents for RegenHub LCA.' },
+    { id:'articles', path:'/formation/articles/', title:'Articles of Organization', zone:2, authLevel:'curated', parent:'formation',
+      description:'The Articles of Organization filed with Colorado for RegenHub LCA (Feb 6, 2026).' },
+    { id:'bylaws', path:'/formation/bylaws/', title:'Bylaws', zone:2, authLevel:'curated', parent:'formation',
+      description:'Operating procedures, governance rules, and the cooperative\'s internal constitution.' },
+    { id:'handbook', path:'/formation/handbook/', title:'Member Handbook', zone:2, authLevel:'curated', parent:'formation',
+      description:'Practical policies, expectations, and a guide to participation for cooperative members.' },
+    { id:'patronage-doc', path:'/formation/patronage/', title:'Patronage Policy', zone:2, authLevel:'curated', parent:'formation',
+      description:'How patronage is defined, measured, and allocated across cooperative members.' },
+    { id:'cloud-doc', path:'/cloud/', title:'Cloud Credits', zone:2, authLevel:'curated', parent:'home',
+      description:'1 CLOUD ≈ $0.10 — the cooperative\'s internal unit of exchange for shared infrastructure.' },
 
-<footer class="tree-footer">
-  <p>Generated from site inventory · <a href="/">techne.institute</a></p>
-  <p>RegenHub, LCA — Colorado Public Benefit Limited Cooperative Association</p>
-</footer>
+    // Zone 3 — Members (authentication required)
+    { id:'intranet', path:'/intranet/', title:'Member Intranet', zone:3, authLevel:'members', parent:'home',
+      description:'Private member portal — cooperative operations, capital accounts, and internal coordination.' },
+    { id:'intranet-ecosystem', path:'/intranet/ecosystem/', title:'Ecosystem', zone:3, authLevel:'members', parent:'intranet',
+      description:'Member view of the ecosystem — live status of tools and integrations.' },
+    { id:'intranet-ventures', path:'/intranet/ventures/', title:'Ventures', zone:3, authLevel:'members', parent:'intranet',
+      description:'Cooperative ventures dashboard — project status, labor tracking, and milestones.' },
+    { id:'intranet-account', path:'/intranet/account/', title:'Account', zone:3, authLevel:'members', parent:'intranet',
+      description:'Your capital account, equity balance, and patronage summary.' },
+    { id:'intranet-capital', path:'/intranet/capital/', title:'Capital', zone:3, authLevel:'members', parent:'intranet',
+      description:'Cooperative capital structure — member equity contributions and allocations.' },
+    { id:'intranet-labor', path:'/intranet/labor/', title:'Labor', zone:3, authLevel:'members', parent:'intranet',
+      description:'Log and review contributed labor — time, type, and patronage value.' },
+    { id:'intranet-patronage', path:'/intranet/patronage/', title:'Patronage', zone:3, authLevel:'members', parent:'intranet',
+      description:'Patronage allocation records and IRC 704(b) capital account detail.' },
+    { id:'intranet-projects', path:'/intranet/projects/', title:'Projects', zone:3, authLevel:'members', parent:'intranet',
+      description:'Active and archived cooperative projects — status, contributors, and deliverables.' },
+    { id:'intranet-directory', path:'/intranet/directory/', title:'Directory', zone:3, authLevel:'members', parent:'intranet',
+      description:'Member directory — contact info and roles within the cooperative.' },
+    { id:'intranet-governance', path:'/intranet/governance/', title:'Governance', zone:3, authLevel:'members', parent:'intranet',
+      description:'Proposals, votes, and governance records for cooperative decisions.' },
+    { id:'intranet-journal', path:'/intranet/journal/', title:'Journal', zone:3, authLevel:'members', parent:'intranet',
+      description:'General ledger journal — double-entry accounting entries for the cooperative.' },
+    { id:'intranet-ledger', path:'/intranet/ledger/', title:'Ledger', zone:3, authLevel:'members', parent:'intranet',
+      description:'Account ledger view — balances and running totals by account.' },
+    { id:'intranet-treasury', path:'/intranet/treasury/', title:'Treasury', zone:3, authLevel:'members', parent:'intranet',
+      description:'Treasury overview — cash, reserves, and cooperative financial position.' },
+    { id:'intranet-messages', path:'/intranet/messages/', title:'Messages', zone:3, authLevel:'members', parent:'intranet',
+      description:'Direct messages between members and cooperative agents.' },
+    { id:'intranet-profile', path:'/intranet/profile/', title:'Profile', zone:3, authLevel:'members', parent:'intranet',
+      description:'Your member profile — contact information, preferences, and linked accounts.' },
+    { id:'intranet-cloud', path:'/intranet/cloud/', title:'Cloud', zone:3, authLevel:'members', parent:'intranet',
+      description:'Your cloud credit balance, usage history, and compute allocations.' },
+    { id:'intranet-guide', path:'/intranet/guide/', title:'Guide', zone:3, authLevel:'members', parent:'intranet',
+      description:'Member reference guide — how to use the intranet and cooperative tools.' },
+    { id:'intranet-documents', path:'/intranet/documents/', title:'Documents', zone:3, authLevel:'members', parent:'intranet',
+      description:'Cooperative documents, agreements, and shared reference materials.' },
+    { id:'intranet-roadmap', path:'/intranet/roadmap/', title:'Roadmap', zone:3, authLevel:'members', parent:'intranet',
+      description:'Product and organizational roadmap for Techne Studio and the cooperative.' },
 
-<script>
-// ── Site data ────────────────────────────────────────────────────────────────
+    // Zone 4 — Steward (organizer access)
+    { id:'intranet-admin', path:'/intranet/admin/', title:'Steward Admin', zone:4, authLevel:'steward', parent:'intranet',
+      description:'Member management, allocation entry, and stewardship tools. Organizer access only.' },
+    { id:'workshop', path:'/workshop/', title:'Workshop', zone:4, authLevel:'steward', parent:'home',
+      description:'Agent coordination workspace — sprint management, agent communication, and coordination activity feed.' },
+  ]
 
-const ZONES = [
-  {
-    id: 'root',
-    label: 'Root',
-    auth: 'public',
-    color: 'var(--zone-public)',
-    nodes: [
-      {
-        path: '/',
-        title: 'Home',
-        desc: 'Techne Institute — a cooperatively-owned studio in Boulder, Colorado where people learn, build, and launch ventures together.',
-        auth: 'public',
-      }
-    ]
-  },
-  {
-    id: 'public',
-    label: 'Public',
-    auth: 'public',
-    color: 'var(--zone-public)',
-    nodes: [
-      { path: '/about/', title: 'About', desc: 'Who we are. A cooperatively-owned studio — soil, not enterprise.' },
-      { path: '/cooperative/', title: 'The Cooperative', desc: 'What is a Colorado LCA. Governance structure, membership classes, and why cooperative.' },
-      { path: '/membership/', title: 'Membership', desc: 'How to join RegenHub, LCA. Four membership classes; the path in is relational, not transactional.' },
-      { path: '/public-benefit/', title: 'Public Benefit', desc: 'Our statutory public benefit purpose: cultivating scenius.' },
-      { path: '/learn/', title: 'Learn', desc: 'Cooperative education — LCA law, patronage accounting, and the intellectual traditions behind Techne.' },
-      { path: '/bylaws/', title: 'Bylaws', desc: 'Operating agreement and governance documents for RegenHub, LCA.' },
-      { path: '/introduction/', title: 'Introduction', desc: 'Four conceptual entry points into the ideas behind Techne. Decks for the curious.' },
-      { path: '/introduction/empire-and-the-people-deck.html', title: 'Empire and the People', desc: 'Deck: The cooperative movement as counter-force to platform capture.' },
-      { path: '/introduction/older-than-the-wire-deck.html', title: 'Older Than the Wire', desc: 'Deck: Craft, guild, and the pre-digital traditions Techne inherits.' },
-      { path: '/introduction/the-oldest-design-problem-deck.html', title: 'The Oldest Design Problem', desc: 'Deck: How do you build something that lasts and distributes its benefits?' },
-      { path: '/introduction/what-was-the-web-for-deck.html', title: 'What Was the Web For?', desc: 'Deck: The web's original commons intent, and why we're returning to it.' },
-      { path: '/vision/', title: 'Vision', desc: 'What we're building toward — the common and craft threads of Techne's future.' },
-      { path: '/formation/', title: 'Formation', desc: 'How we came to be. Formation documents, decisions, and governance record through February 2026.' },
-      { path: '/formation/governance.html', title: 'Formation — Governance', desc: 'Governance decisions made during the founding period.' },
-      { path: '/formation/decisions.html', title: 'Formation — Decisions', desc: 'Key decisions log from the formation process.' },
-      { path: '/formation/financial.html', title: 'Formation — Financial', desc: 'Financial structure and early capitalization decisions.' },
-      { path: '/formation/narrative.html', title: 'Formation — Narrative', desc: 'The formation narrative committed to the commons.' },
-      { path: '/workshop/', title: 'Workshop', desc: 'Live coordination lobby. The agent protocol surface where sprints are proposed, claimed, and executed.' },
-      { path: '/coordination-games.html', title: 'Coordination Games', desc: 'Agent coordination game theory — the formal substrate of the Techne protocol.' },
-    ]
-  },
-  {
-    id: 'curated',
-    label: 'Curated',
-    auth: 'curated',
-    color: 'var(--zone-curated)',
-    nodes: [
-      { path: '/data-room/', title: 'Data Room', desc: 'Financial and governance data for due diligence. Term sheet, vision deck, and operating information.' },
-      { path: '/data-room/vision.html', title: 'Data Room — Vision Deck', desc: 'Vision deck covering the thesis, market, and cooperative model.' },
-      { path: '/data-room/term-sheet.html', title: 'Data Room — Term Sheet', desc: 'Investment term sheet and capital structure for prospective investors.' },
-      { path: '/app/', title: 'Operations', desc: 'Bylaws explorer and operations data room. Articles of organization, operating agreement walkthrough.' },
-      { path: '/cloud/', title: '$CLOUD Credit', desc: 'The $CLOUD credit protocol — one CLOUD ≈ $0.10. Economic engine for Techne's cooperative credit system.' },
-      { path: '/pre-read/', title: 'Pre-Read', desc: 'Curated reading for new members and prospective participants joining Techne.' },
-    ]
-  },
-  {
-    id: 'members',
-    label: 'Members',
-    auth: 'members',
-    color: 'var(--zone-members)',
-    nodes: [
-      { path: '/intranet/', title: 'Intranet', desc: 'Member hub. Requires cooperative membership and Supabase authentication.' },
-      { path: '/intranet/', title: 'Ecosystem', desc: 'Real-time studio dashboard — active members, agent presence, current sprints, workshop state.' },
-      { path: '/intranet/account/', title: 'Account', desc: 'Your capital account overview — book balance, tax balance, and account history.' },
-      { path: '/intranet/labor/', title: 'Labor', desc: 'Log and review labor contributions. FMV rates, hours, and patronage-eligible work.' },
-      { path: '/intranet/patronage/', title: 'Patronage', desc: 'Patronage allocation history and capital account ledger entries.' },
-      { path: '/intranet/projects/', title: 'Cooperative', desc: 'Projects, member directory, and governance. The cooperative's active work and people.' },
-      { path: '/intranet/journal/', title: 'Finance', desc: 'Journal, ledger, treasury, and verification tools for cooperative financial management.' },
-      { path: '/intranet/guide/', title: 'Reference', desc: 'Member guide, documents library, and strategic roadmap.' },
-      { path: '/intranet/messages/', title: 'Messages', desc: 'Direct messages with Nou and Dianoia. Workshop activity feed for agent coordination.' },
-      { path: '/intranet/profile/', title: 'Profile', desc: 'Your member profile — craft, contact, onboarding status, and session settings.' },
-    ]
-  },
-  {
-    id: 'steward',
-    label: 'Steward',
-    auth: 'steward',
-    color: 'var(--zone-steward)',
-    nodes: [
-      { path: '/intranet/admin/', title: 'Steward Admin', desc: 'Member management, allocation entry, and cooperative stewardship tools. Requires steward role.' },
-    ]
+  // ── Zone metadata ──────────────────────────────────────────────────────────
+  const ZONE_META = {
+    0: { label: 'Home', desc: 'Entry point', color: 'var(--z0)', border: 'var(--z0)' },
+    1: { label: 'Public', desc: 'Open to all visitors', color: 'var(--z1)', border: 'rgba(34,197,94,0.4)' },
+    2: { label: 'Curated', desc: 'Linked or shared — not broadly indexed', color: 'var(--z2)', border: 'rgba(245,158,11,0.4)' },
+    3: { label: 'Members', desc: 'Sign-in required', color: 'var(--z3)', border: 'rgba(59,130,246,0.4)' },
+    4: { label: 'Steward', desc: 'Organizer access only', color: 'var(--z4)', border: 'rgba(196,149,106,0.4)' },
   }
-]
 
-const AUTH_LABELS = {
-  public:  'public',
-  curated: 'curated',
-  members: 'members',
-  steward: 'steward',
-}
-
-// ── Grid rendering ───────────────────────────────────────────────────────────
-
-function renderGrid() {
-  const container = document.getElementById('view-grid')
-  container.innerHTML = ''
-
-  ZONES.forEach(zone => {
-    if (!zone.nodes.length) return
-
-    const section = document.createElement('section')
-    section.className = 'zone-section'
-
-    const header = document.createElement('div')
-    header.className = 'zone-header'
-    header.innerHTML = `
-      <div class="zone-bar" style="background:${zone.color}"></div>
-      <span class="zone-title">${zone.label}</span>
-      <span class="zone-count">${zone.nodes.length} page${zone.nodes.length !== 1 ? 's' : ''}</span>
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  function makeCard(page) {
+    const a = document.createElement('a')
+    a.className = 'page-card'
+    a.href = page.authLevel === 'members' || page.authLevel === 'steward'
+      ? 'https://techne.institute' + page.path
+      : page.path
+    if (page.authLevel === 'members' || page.authLevel === 'steward') {
+      a.target = '_blank'
+      a.rel = 'noopener'
+    }
+    a.setAttribute('data-zone', page.zone)
+    a.setAttribute('aria-label', `${page.title} — ${page.authLevel} page at ${page.path}`)
+    a.innerHTML = `
+      <div class="card-top">
+        <span class="card-title">${page.title}</span>
+        <span class="auth-badge ${page.authLevel}" aria-hidden="true">${page.authLevel}</span>
+        <span class="sr-only">(${page.authLevel} access)</span>
+      </div>
+      <div class="card-path">${page.path}</div>
+      <div class="card-desc">${page.description}</div>
     `
-    section.appendChild(header)
+    return a
+  }
 
-    const grid = document.createElement('div')
-    grid.className = 'card-grid'
+  // ── Grid mode render ───────────────────────────────────────────────────────
+  function renderGrid() {
+    const main = document.getElementById('grid-view')
+    main.innerHTML = ''
 
-    zone.nodes.forEach(node => {
-      const card = document.createElement('a')
-      card.href = node.path
-      card.className = `site-card zone-${node.auth || zone.auth}`
-      card.innerHTML = `
-        <div class="card-path">${node.path}</div>
-        <div class="card-title">${node.title}</div>
-        <div class="card-desc">${node.desc}</div>
-        <div class="card-footer">
-          <span class="auth-badge auth-${node.auth || zone.auth}">${AUTH_LABELS[node.auth || zone.auth]}</span>
-          <span class="card-arrow" aria-hidden="true">→</span>
-        </div>
+    // Zone 0 home card centered
+    const homePage = PAGES.find(p => p.zone === 0)
+    const homeWrapper = document.createElement('div')
+    homeWrapper.className = 'home-card-wrapper'
+    const homeCard = makeCard(homePage)
+    homeCard.classList.add('home-card')
+    homeWrapper.appendChild(homeCard)
+    main.appendChild(homeWrapper)
+
+    // Zones 1–4 as sections
+    for (const zone of [1, 2, 3, 4]) {
+      const pages = PAGES.filter(p => p.zone === zone)
+      if (!pages.length) continue
+      const meta = ZONE_META[zone]
+
+      const section = document.createElement('section')
+      section.className = 'zone-section'
+      section.setAttribute('aria-label', `Zone ${zone}: ${meta.label}`)
+
+      const header = document.createElement('div')
+      header.className = 'zone-header'
+      header.style.borderColor = meta.border
+      header.innerHTML = `
+        <span class="zone-header-dot" style="background:${meta.color}" aria-hidden="true"></span>
+        <h2 style="color:${meta.color}">${meta.label}</h2>
+        <p>${meta.desc}</p>
       `
-      grid.appendChild(card)
-    })
+      section.appendChild(header)
 
-    section.appendChild(grid)
-    container.appendChild(section)
-  })
-}
+      const grid = document.createElement('div')
+      grid.className = 'card-grid'
+      for (const page of pages) grid.appendChild(makeCard(page))
+      section.appendChild(grid)
+      main.appendChild(section)
+    }
+  }
 
-// ── Network rendering ────────────────────────────────────────────────────────
+  // ── Network mode render ────────────────────────────────────────────────────
+  const ZONE_COLORS = { 0:'#c4956a', 1:'#22c55e', 2:'#f59e0b', 3:'#3b82f6', 4:'#c4956a' }
+  const NODE_RADIUS = { 0:20, 1:14, 2:12, 3:10, 4:10 }
 
-const ZONE_COLORS = {
-  public:  '#4a7a4a',
-  curated: '#8a6a20',
-  members: '#3a5a8a',
-  steward: '#8a5a30',
-}
+  let netTransform = { x:0, y:0, scale:1 }
+  let netNodes = []
+  let dragging = false
+  let dragStart = null
 
-function buildNetworkData() {
-  const nodes = []
-  const links = []
+  function buildEdges(svg) {
+    const edgeG = document.getElementById('net-edges')
+    edgeG.innerHTML = ''
+    const pageMap = {}
+    for (const p of PAGES) pageMap[p.id] = p
 
-  // Root node
-  nodes.push({ id: '/', label: 'techne.institute', auth: 'public', r: 22, x: 450, y: 80 })
+    for (const page of PAGES) {
+      if (!page.parent) continue
+      const parent = pageMap[page.parent]
+      if (!parent) continue
+      const pn = netNodes.find(n => n.id === parent.id)
+      const cn = netNodes.find(n => n.id === page.id)
+      if (!pn || !cn) continue
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
+      line.className = 'net-edge'
+      line.setAttribute('x1', pn.x); line.setAttribute('y1', pn.y)
+      line.setAttribute('x2', cn.x); line.setAttribute('y2', cn.y)
+      line.setAttribute('data-from', parent.id)
+      line.setAttribute('data-to', page.id)
+      edgeG.appendChild(line)
+    }
+  }
 
-  // Zone hubs — positioned in a circle around root
-  const zones = ZONES.filter(z => z.id !== 'root')
-  const hubAngles = [-120, -50, 30, 110]
-  const hubR = 180
+  function layoutNodes(W, H) {
+    // Concentric layout: zone 0 at center, zones 1-4 in rings
+    const radii = { 0:0, 1: Math.min(W,H)*0.18, 2: Math.min(W,H)*0.32, 3: Math.min(W,H)*0.45, 4: Math.min(W,H)*0.57 }
+    const cx = W/2, cy = H/2
+    const zonePages = {0:[], 1:[], 2:[], 3:[], 4:[]}
+    for (const p of PAGES) zonePages[p.zone].push(p)
 
-  zones.forEach((zone, i) => {
-    const angle = (hubAngles[i] * Math.PI) / 180
-    const hx = 450 + hubR * Math.cos(angle)
-    const hy = 200 + hubR * Math.sin(angle)
-    const hubId = `hub-${zone.id}`
-    nodes.push({ id: hubId, label: zone.label, auth: zone.auth, r: 14, x: hx, y: hy, isHub: true })
-    links.push({ source: '/', target: hubId })
+    netNodes = []
+    for (const zone of [0,1,2,3,4]) {
+      const pages = zonePages[zone]
+      const r = radii[zone]
+      pages.forEach((p, i) => {
+        const angle = pages.length > 1 ? (2 * Math.PI * i / pages.length) - Math.PI/2 : -Math.PI/2
+        netNodes.push({
+          id: p.id,
+          x: cx + r * Math.cos(angle),
+          y: cy + r * Math.sin(angle),
+          page: p,
+        })
+      })
+    }
+  }
 
-    // Leaf nodes
-    const leafCount = zone.nodes.length
-    const spread = Math.min(leafCount * 28, 200)
-    zone.nodes.forEach((n, j) => {
-      const t = leafCount === 1 ? 0.5 : j / (leafCount - 1)
-      const leafAngle = angle + (t - 0.5) * 1.2
-      const leafR = 110 + (j % 2) * 25
-      const lx = Math.max(40, Math.min(860, hx + leafR * Math.cos(leafAngle)))
-      const ly = Math.max(30, Math.min(540, hy + leafR * Math.sin(leafAngle)))
-      nodes.push({ id: n.path, label: n.title, auth: n.auth || zone.auth, r: 7, x: lx, y: ly, desc: n.desc, path: n.path })
-      links.push({ source: hubId, target: n.path })
-    })
-  })
+  function renderNetworkNodes() {
+    const nodeG = document.getElementById('net-nodes')
+    nodeG.innerHTML = ''
+    for (const node of netNodes) {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+      g.className = 'net-node'
+      g.setAttribute('tabindex', '0')
+      g.setAttribute('role', 'button')
+      g.setAttribute('aria-label', `${node.page.title} — ${node.page.authLevel}`)
+      g.setAttribute('data-id', node.id)
 
-  return { nodes, links }
-}
+      const r = NODE_RADIUS[node.page.zone] || 10
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+      circle.setAttribute('cx', node.x)
+      circle.setAttribute('cy', node.y)
+      circle.setAttribute('r', r)
+      circle.setAttribute('fill', ZONE_COLORS[node.page.zone])
+      circle.setAttribute('fill-opacity', '0.85')
+      g.appendChild(circle)
 
-function renderNetwork() {
-  const svg = document.getElementById('network-svg')
-  const detail = document.getElementById('network-detail')
-  const { nodes, links } = buildNetworkData()
+      const label = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+      label.setAttribute('x', node.x)
+      label.setAttribute('y', node.y + r + 13)
+      label.setAttribute('text-anchor', 'middle')
+      label.textContent = node.page.title.length > 14 ? node.page.title.substring(0,13)+'…' : node.page.title
+      g.appendChild(label)
 
-  // Clear
-  svg.innerHTML = ''
-
-  // Defs
-  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs')
-  defs.innerHTML = `
-    <filter id="node-shadow">
-      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.15"/>
-    </filter>
-  `
-  svg.appendChild(defs)
-
-  // Pan/zoom state
-  let scale = 1, panX = 0, panY = 0, dragging = false, lastX, lastY
-  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g')
-  svg.appendChild(g)
+      g.addEventListener('click', () => openDetail(node.page))
+      g.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(node.page) }
+        if (e.key === 'Escape') closeDetail()
+      })
+      nodeG.appendChild(g)
+    }
+  }
 
   function applyTransform() {
-    g.setAttribute('transform', `translate(${panX},${panY}) scale(${scale})`)
+    const { x, y, scale } = netTransform
+    document.getElementById('net-edges').setAttribute('transform', `translate(${x},${y}) scale(${scale})`)
+    document.getElementById('net-nodes').setAttribute('transform', `translate(${x},${y}) scale(${scale})`)
   }
 
-  svg.addEventListener('wheel', e => {
-    e.preventDefault()
-    const delta = e.deltaY > 0 ? 0.9 : 1.1
-    scale = Math.max(0.4, Math.min(3, scale * delta))
-    applyTransform()
-  }, { passive: false })
-
-  svg.addEventListener('mousedown', e => {
-    dragging = true; lastX = e.clientX; lastY = e.clientY
-  })
-  window.addEventListener('mouseup', () => { dragging = false })
-  window.addEventListener('mousemove', e => {
-    if (!dragging) return
-    panX += (e.clientX - lastX); panY += (e.clientY - lastY)
-    lastX = e.clientX; lastY = e.clientY
-    applyTransform()
-  })
-
-  // Node lookup
-  const nodeMap = {}
-  nodes.forEach(n => { nodeMap[n.id] = n })
-
-  // Edges
-  const edgeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
-  links.forEach(link => {
-    const s = nodeMap[link.source], t = nodeMap[link.target]
-    if (!s || !t) return
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
-    line.setAttribute('x1', s.x); line.setAttribute('y1', s.y)
-    line.setAttribute('x2', t.x); line.setAttribute('y2', t.y)
-    line.setAttribute('stroke', ZONE_COLORS[t.auth] || '#ccc')
-    line.setAttribute('stroke-width', t.isHub ? 1.5 : 0.8)
-    line.setAttribute('stroke-opacity', '0.3')
-    edgeGroup.appendChild(line)
-  })
-  g.appendChild(edgeGroup)
-
-  // Nodes
-  const nodeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g')
-  nodes.forEach(node => {
-    const nodeG = document.createElementNS('http://www.w3.org/2000/svg', 'g')
-    nodeG.setAttribute('cursor', 'pointer')
-    nodeG.setAttribute('role', 'button')
-    nodeG.setAttribute('aria-label', node.label)
-
-    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-    circle.setAttribute('cx', node.x)
-    circle.setAttribute('cy', node.y)
-    circle.setAttribute('r', node.r)
-    circle.setAttribute('fill', ZONE_COLORS[node.auth] || '#888')
-    circle.setAttribute('fill-opacity', node.isHub ? '0.25' : '0.15')
-    circle.setAttribute('stroke', ZONE_COLORS[node.auth] || '#888')
-    circle.setAttribute('stroke-width', node.id === '/' ? 2 : 1.5)
-    circle.setAttribute('filter', 'url(#node-shadow)')
-    nodeG.appendChild(circle)
-
-    if (node.r >= 12) {
-      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-      text.setAttribute('x', node.x)
-      text.setAttribute('y', node.y + node.r + 12)
-      text.setAttribute('text-anchor', 'middle')
-      text.setAttribute('class', 'node-label')
-      text.textContent = node.label.length > 16 ? node.label.slice(0, 14) + '…' : node.label
-      nodeG.appendChild(text)
-    }
-
-    nodeG.addEventListener('mouseenter', () => {
-      circle.setAttribute('fill-opacity', '0.5')
-    })
-    nodeG.addEventListener('mouseleave', () => {
-      circle.setAttribute('fill-opacity', node.isHub ? '0.25' : '0.15')
-    })
-
-    // Single click = show detail panel
-    nodeG.addEventListener('click', e => {
-      e.stopPropagation()
-      if (node.path && !node.isHub) {
-        detail.innerHTML = `
-          <div class="detail-path">${node.path}</div>
-          <h3>${node.label}</h3>
-          <p>${node.desc || ''}</p>
-          <span class="auth-badge auth-${node.auth}">${AUTH_LABELS[node.auth]}</span>
-          <br><br>
-          <a href="${node.path}">Open page →</a>
-        `
-        detail.classList.add('visible')
-      }
-    })
-
-    // Double click = navigate
-    nodeG.addEventListener('dblclick', e => {
-      e.stopPropagation()
-      if (node.path) window.location.href = node.path
-    })
-
-    nodeGroup.appendChild(nodeG)
-  })
-  g.appendChild(nodeGroup)
-
-  // Click outside to close detail
-  svg.addEventListener('click', () => detail.classList.remove('visible'))
-}
-
-// ── Mode switching ───────────────────────────────────────────────────────────
-
-let networkRendered = false
-
-function setMode(mode) {
-  const gridView = document.getElementById('view-grid')
-  const netView = document.getElementById('view-network')
-  const btns = document.querySelectorAll('.mode-btn')
-
-  btns.forEach(b => {
-    b.classList.toggle('active', b.dataset.mode === mode)
-    b.setAttribute('aria-pressed', b.dataset.mode === mode ? 'true' : 'false')
-  })
-
-  if (mode === 'grid') {
-    gridView.style.display = 'block'
-    netView.style.display = 'none'
-  } else {
-    gridView.style.display = 'none'
-    netView.style.display = 'block'
-    if (!networkRendered) {
-      renderNetwork()
-      networkRendered = true
-    }
+  function openDetail(page) {
+    document.getElementById('detail-title').textContent = page.title
+    document.getElementById('detail-path').textContent = page.path
+    document.getElementById('detail-desc').textContent = page.description
+    const link = document.getElementById('detail-link')
+    link.href = page.path
+    document.getElementById('detail-panel').classList.add('open')
   }
-}
+  function closeDetail() {
+    document.getElementById('detail-panel').classList.remove('open')
+  }
 
-// ── Init ─────────────────────────────────────────────────────────────────────
+  function initNetwork() {
+    const svg = document.getElementById('network-svg')
+    const rect = svg.getBoundingClientRect()
+    const W = rect.width || 900
+    const H = rect.height || 640
 
-document.addEventListener('DOMContentLoaded', () => {
+    layoutNodes(W, H)
+    buildEdges(svg)
+    renderNetworkNodes()
+    applyTransform()
+
+    // Pan
+    svg.addEventListener('mousedown', e => {
+      if (e.target.closest('.net-node')) return
+      dragging = true
+      dragStart = { x: e.clientX - netTransform.x, y: e.clientY - netTransform.y }
+    })
+    window.addEventListener('mousemove', e => {
+      if (!dragging) return
+      netTransform.x = e.clientX - dragStart.x
+      netTransform.y = e.clientY - dragStart.y
+      applyTransform()
+    })
+    window.addEventListener('mouseup', () => { dragging = false })
+
+    // Zoom wheel
+    svg.addEventListener('wheel', e => {
+      e.preventDefault()
+      const factor = e.deltaY < 0 ? 1.12 : 0.88
+      netTransform.scale = Math.max(0.3, Math.min(3, netTransform.scale * factor))
+      applyTransform()
+    }, { passive: false })
+
+    // Zoom buttons
+    document.getElementById('zoom-in').addEventListener('click', () => {
+      netTransform.scale = Math.min(3, netTransform.scale * 1.2)
+      applyTransform()
+    })
+    document.getElementById('zoom-out').addEventListener('click', () => {
+      netTransform.scale = Math.max(0.3, netTransform.scale / 1.2)
+      applyTransform()
+    })
+    document.getElementById('zoom-reset').addEventListener('click', () => {
+      netTransform = { x:0, y:0, scale:1 }
+      applyTransform()
+    })
+
+    document.getElementById('zoom-controls').classList.add('visible')
+    document.getElementById('detail-close').addEventListener('click', closeDetail)
+  }
+
+  // ── Mode toggle ────────────────────────────────────────────────────────────
+  let networkInitialized = false
+
+  document.getElementById('btn-grid').addEventListener('click', () => {
+    document.getElementById('grid-view').style.display = ''
+    document.getElementById('network-view').style.display = 'none'
+    document.getElementById('btn-grid').classList.add('active')
+    document.getElementById('btn-grid').setAttribute('aria-pressed', 'true')
+    document.getElementById('btn-network').classList.remove('active')
+    document.getElementById('btn-network').setAttribute('aria-pressed', 'false')
+  })
+
+  document.getElementById('btn-network').addEventListener('click', () => {
+    document.getElementById('grid-view').style.display = 'none'
+    document.getElementById('network-view').style.display = 'block'
+    document.getElementById('btn-grid').classList.remove('active')
+    document.getElementById('btn-grid').setAttribute('aria-pressed', 'false')
+    document.getElementById('btn-network').classList.add('active')
+    document.getElementById('btn-network').setAttribute('aria-pressed', 'true')
+    if (!networkInitialized) {
+      networkInitialized = true
+      // Use rAF to ensure the SVG is laid out before measuring
+      requestAnimationFrame(() => initNetwork())
+    }
+  })
+
+  // ── Init ───────────────────────────────────────────────────────────────────
   renderGrid()
-})
-</script>
-
+  </script>
 </body>
 </html>
