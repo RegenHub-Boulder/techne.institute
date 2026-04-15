@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Amplification Thesis — Techne</title>
+<meta name="description" content="AI doesn't have to replace human work. It can amplify it. The difference is institutional, not technical. A framework for navigating the transition from fear to agency.">
+<meta property="og:title" content="The Amplification Thesis">
+<meta property="og:description" content="AI doesn't have to replace human work. It can amplify it. The difference is institutional, not technical.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://techne.institute/amplification/">
+<meta property="og:site_name" content="Techne Institute">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Amplification Thesis">
+<meta name="twitter:description" content="AI doesn't have to replace human work. It can amplify it. The difference is institutional, not technical.">
+<link rel="canonical" href="https://techne.institute/amplification/">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --bg-section: #111111;
+    --bg-card: #1a1a1a;
+    --bg-accent: #151515;
+    --bg-diagram: #0e0e0e;
+    --text: #e8e4df;
+    --text-dim: #9a9590;
+    --text-faint: #5a5550;
+    --accent: #c4956a;
+    --accent-dim: #8a6a4a;
+    --accent-bright: #d4a57a;
+    --rule: #2a2520;
+    --green: #6a9a6a;
+    --green-dim: #3a5a3a;
+    --blue: #6a8a9a;
+    --blue-dim: #3a5a6a;
+    --red: #9a6a6a;
+    --red-dim: #5a3a3a;
+    --serif: 'EB Garamond', 'Georgia', serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 18px; background: var(--bg); scroll-behavior: smooth; }
+  body { font-family: var(--serif); color: var(--text); background: var(--bg); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  /* --- NAVIGATION --- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10, 10, 10, 0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.6rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--sans); font-size: 0.7rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  nav .brand { color: var(--accent); font-weight: 500; text-decoration: none; }
+  nav .brand:hover { color: var(--accent-bright); }
+  nav .nav-links { display: flex; gap: 1.5rem; }
+  nav .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 400; transition: color 0.2s; }
+  nav .nav-links a:hover { color: var(--text); }
+
+  /* --- HERO --- */
+  .hero {
+    min-height: 90vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 6rem 2rem 4rem; text-align: center; position: relative;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: 0; left: 10%; right: 10%;
+    height: 1px; background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+  }
+  .hero .greek {
+    font-size: 3rem; font-style: italic; color: var(--accent);
+    font-family: var(--serif); margin-bottom: 0.5rem; letter-spacing: 0.05em;
+  }
+  .hero .greek-sub {
+    font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-faint); margin-bottom: 2rem;
+  }
+  .hero h1 {
+    font-family: var(--serif); font-size: 2.4rem; font-weight: 400;
+    color: var(--text); margin-bottom: 1.5rem; letter-spacing: -0.01em;
+    max-width: 16em;
+  }
+  .hero .premise {
+    font-size: 1.15rem; font-style: italic; color: var(--text-dim);
+    max-width: 32em; line-height: 1.6; margin-bottom: 2.5rem;
+  }
+  .hero .org {
+    font-family: var(--sans); font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-faint);
+  }
+
+  /* --- PROSE SECTIONS --- */
+  .prose {
+    max-width: 40rem; margin: 0 auto; padding: 4rem 2rem;
+  }
+  .prose h2 {
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 400;
+    color: var(--text); margin-bottom: 1.5rem; letter-spacing: -0.01em;
+  }
+  .prose h3 {
+    font-family: var(--sans); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+  }
+  .prose p {
+    font-size: 1.05rem; color: var(--text-dim); margin-bottom: 1.4rem; line-height: 1.8;
+  }
+  .prose p.lead {
+    font-size: 1.15rem; color: var(--text); font-style: italic;
+  }
+  .prose .section-rule {
+    width: 3rem; height: 1px; background: var(--accent-dim);
+    margin: 3rem 0; border: none;
+  }
+
+  /* --- PULL QUOTES --- */
+  .pull-quote {
+    max-width: 42rem; margin: 0 auto; padding: 3rem 2rem;
+    text-align: center;
+  }
+  .pull-quote blockquote {
+    font-family: var(--serif); font-size: 1.5rem; font-style: italic;
+    color: var(--accent); line-height: 1.5; max-width: 28em; margin: 0 auto 1rem;
+  }
+  .pull-quote .attribution {
+    font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-faint);
+  }
+
+  /* --- THE SPLIT DIAGRAM --- */
+  .diagram-section {
+    background: var(--bg-diagram); padding: 4rem 2rem; margin: 2rem 0;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .diagram-section .diagram-title {
+    text-align: center; margin-bottom: 3rem;
+  }
+  .diagram-section .diagram-title h2 {
+    font-family: var(--serif); font-size: 1.4rem; font-weight: 400; color: var(--text);
+  }
+  .diagram-section .diagram-title p {
+    font-family: var(--sans); font-size: 0.75rem; color: var(--text-faint);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.3rem;
+  }
+
+  .split-diagram {
+    max-width: 52rem; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 0;
+    align-items: stretch;
+  }
+  .split-path {
+    padding: 2rem; border: 1px solid var(--rule); border-radius: 2px;
+  }
+  .split-path.extraction { background: rgba(154, 106, 106, 0.05); }
+  .split-path.amplification { background: rgba(106, 154, 106, 0.05); }
+  .split-path h3 {
+    font-family: var(--sans); font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .split-path.extraction h3 { color: var(--red); }
+  .split-path.amplification h3 { color: var(--green); }
+  .split-path .step {
+    margin-bottom: 1.2rem; padding-left: 1rem;
+    border-left: 2px solid var(--rule);
+  }
+  .split-path.extraction .step { border-left-color: var(--red-dim); }
+  .split-path.amplification .step { border-left-color: var(--green-dim); }
+  .split-path .step .label {
+    font-family: var(--sans); font-size: 0.65rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.2rem;
+  }
+  .split-path.extraction .step .label { color: var(--red); }
+  .split-path.amplification .step .label { color: var(--green); }
+  .split-path .step p {
+    font-family: var(--serif); font-size: 0.95rem; color: var(--text-dim); line-height: 1.5;
+  }
+
+  .split-divider {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 2rem 1.5rem; position: relative;
+  }
+  .split-divider::before {
+    content: ''; position: absolute; top: 0; bottom: 0; left: 50%;
+    width: 1px; background: var(--rule);
+  }
+  .split-divider .or {
+    font-family: var(--sans); font-size: 0.65rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent);
+    background: var(--bg-diagram); padding: 0.5rem; position: relative; z-index: 1;
+  }
+
+  /* --- TIMELINE --- */
+  .timeline-section {
+    background: var(--bg-section); padding: 4rem 2rem;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .timeline-section .section-header {
+    text-align: center; margin-bottom: 3rem;
+  }
+  .timeline-section .section-header h2 {
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 400; color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .timeline-section .section-header p {
+    font-size: 1rem; color: var(--text-dim); font-style: italic;
+  }
+
+  .timeline {
+    max-width: 44rem; margin: 0 auto; position: relative;
+    padding-left: 2rem;
+  }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2px; background: linear-gradient(var(--accent-dim), var(--green-dim), var(--blue-dim));
+  }
+  .timeline-entry {
+    margin-bottom: 3rem; position: relative;
+  }
+  .timeline-entry::before {
+    content: ''; position: absolute; left: -2rem; top: 0.5rem;
+    width: 10px; height: 10px; border-radius: 50%;
+    border: 2px solid var(--accent); background: var(--bg-section);
+    transform: translateX(-4px);
+  }
+  .timeline-entry .era {
+    font-family: var(--sans); font-size: 0.65rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.3rem;
+  }
+  .timeline-entry h3 {
+    font-family: var(--serif); font-size: 1.15rem; font-weight: 500;
+    color: var(--text); margin-bottom: 0.5rem;
+  }
+  .timeline-entry p {
+    font-size: 0.95rem; color: var(--text-dim); line-height: 1.7;
+  }
+  .timeline-entry .lesson {
+    margin-top: 0.6rem; padding: 0.8rem 1rem;
+    background: rgba(196, 149, 106, 0.06); border-left: 2px solid var(--accent-dim);
+    font-family: var(--sans); font-size: 0.78rem; color: var(--text-dim);
+  }
+
+  /* --- FRAMEWORK CARDS --- */
+  .framework-section {
+    padding: 4rem 2rem;
+  }
+  .framework-section .section-header {
+    text-align: center; margin-bottom: 3rem;
+  }
+  .framework-section .section-header h2 {
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 400; color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .framework-section .section-header p {
+    font-size: 1rem; color: var(--text-dim); font-style: italic; max-width: 32em; margin: 0 auto;
+  }
+
+  .framework-grid {
+    max-width: 52rem; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+  }
+  .framework-card {
+    background: var(--bg-card); border: 1px solid var(--rule);
+    border-radius: 2px; padding: 2rem;
+    transition: border-color 0.2s;
+  }
+  .framework-card:hover { border-color: var(--accent-dim); }
+  .framework-card .number {
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.8rem;
+  }
+  .framework-card h3 {
+    font-family: var(--serif); font-size: 1.15rem; font-weight: 500;
+    color: var(--text); margin-bottom: 0.8rem;
+  }
+  .framework-card p {
+    font-size: 0.9rem; color: var(--text-dim); line-height: 1.6;
+  }
+
+  /* --- STAGE MAP --- */
+  .stage-section {
+    background: var(--bg-section); padding: 4rem 2rem;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .stage-section .section-header {
+    text-align: center; margin-bottom: 3rem;
+  }
+  .stage-section .section-header h2 {
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 400;
+    color: var(--text); margin-bottom: 0.5rem;
+  }
+  .stage-section .section-header p {
+    font-size: 1rem; color: var(--text-dim); font-style: italic;
+    max-width: 34em; margin: 0 auto;
+  }
+
+  .stages {
+    max-width: 52rem; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+  .stage-card {
+    background: var(--bg-card); border: 1px solid var(--rule);
+    border-radius: 2px; padding: 2rem; position: relative; overflow: hidden;
+  }
+  .stage-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .stage-card.ark::before { background: var(--accent); }
+  .stage-card.sail::before { background: var(--blue); }
+  .stage-card.island::before { background: var(--green); }
+  .stage-card .stage-label {
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .stage-card.ark .stage-label { color: var(--accent); }
+  .stage-card.sail .stage-label { color: var(--blue); }
+  .stage-card.island .stage-label { color: var(--green); }
+  .stage-card h3 {
+    font-family: var(--serif); font-size: 1.15rem; font-weight: 500;
+    color: var(--text); margin-bottom: 0.8rem;
+  }
+  .stage-card p {
+    font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 0.8rem;
+  }
+  .stage-card .activities {
+    list-style: none; padding: 0;
+  }
+  .stage-card .activities li {
+    font-family: var(--sans); font-size: 0.75rem; color: var(--text-dim);
+    padding: 0.3rem 0; border-bottom: 1px solid rgba(42, 37, 32, 0.5);
+  }
+  .stage-card .activities li:last-child { border-bottom: none; }
+
+  /* --- TRACK D CARD --- */
+  .track-d {
+    max-width: 44rem; margin: 2rem auto 0; padding: 2.5rem;
+    background: rgba(106, 154, 106, 0.05);
+    border: 1px solid var(--green-dim); border-radius: 2px;
+  }
+  .track-d h3 {
+    font-family: var(--sans); font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 1rem;
+  }
+  .track-d h4 {
+    font-family: var(--serif); font-size: 1.15rem; font-weight: 500;
+    color: var(--text); margin-bottom: 0.8rem;
+  }
+  .track-d p {
+    font-size: 0.95rem; color: var(--text-dim); line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+  .track-d .track-row {
+    display: grid; grid-template-columns: 6rem 1fr; gap: 0.5rem;
+    margin-bottom: 0.4rem; font-size: 0.82rem;
+  }
+  .track-d .track-row .phase {
+    font-family: var(--sans); font-size: 0.65rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--green);
+    padding-top: 0.15rem;
+  }
+  .track-d .track-row .desc { color: var(--text-dim); }
+
+  /* --- QUESTIONS --- */
+  .questions-section { padding: 4rem 2rem; }
+  .questions-section .section-header {
+    text-align: center; margin-bottom: 3rem;
+  }
+  .questions-section .section-header h2 {
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 400; color: var(--text);
+  }
+  .questions-grid {
+    max-width: 44rem; margin: 0 auto;
+  }
+  .question-item {
+    padding: 1.5rem 0; border-bottom: 1px solid var(--rule);
+  }
+  .question-item:first-child { border-top: 1px solid var(--rule); }
+  .question-item h3 {
+    font-family: var(--serif); font-size: 1.1rem; font-weight: 500;
+    color: var(--text); margin-bottom: 0.5rem;
+  }
+  .question-item p {
+    font-size: 0.9rem; color: var(--text-dim); line-height: 1.6;
+  }
+
+  /* --- FOOTER --- */
+  .closing {
+    max-width: 40rem; margin: 0 auto; padding: 4rem 2rem 2rem;
+    text-align: center;
+  }
+  .closing p {
+    font-size: 1rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 1rem;
+  }
+  .closing .cta {
+    display: inline-block; margin-top: 1.5rem; padding: 0.8rem 2rem;
+    font-family: var(--sans); font-size: 0.75rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent); text-decoration: none;
+    border: 1px solid var(--accent-dim); border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .closing .cta:hover {
+    background: var(--accent); color: var(--bg);
+  }
+
+  footer {
+    text-align: center; padding: 3rem 2rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--sans); font-size: 0.65rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint);
+  }
+  footer a { color: var(--accent-dim); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 1.6rem; }
+    .hero .greek { font-size: 2rem; }
+    .split-diagram { grid-template-columns: 1fr; }
+    .split-divider { padding: 1rem; flex-direction: row; }
+    .split-divider::before { top: 50%; bottom: auto; left: 0; right: 0; width: auto; height: 1px; }
+    .framework-grid { grid-template-columns: 1fr; }
+    .stages { grid-template-columns: 1fr; }
+    .track-d .track-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="/">Techne</a>
+  <div class="nav-links">
+    <a href="/introduction/">Essays</a>
+    <a href="/formation/">Formation</a>
+    <a href="/coordination-games.html">Coordination</a>
+  </div>
+</nav>
+
+<!-- ======================== HERO ======================== -->
+<section class="hero">
+  <div class="greek">αὔξησις</div>
+  <div class="greek-sub">auxēsis — to cause to grow</div>
+  <h1>The Amplification Thesis</h1>
+  <p class="premise">
+    AI doesn't have to replace human work. It can amplify it.<br>
+    The difference is not technical. It is institutional.
+  </p>
+  <div class="org">Techne Institute — Boulder, Colorado — April 2026</div>
+</section>
+
+<!-- ======================== THE FEAR ======================== -->
+<section class="prose">
+  <h3>The question</h3>
+  <h2>What happens to people when machines learn to do what people do?</h2>
+  <hr class="section-rule">
+  <p class="lead">
+    This is the question beneath the anxiety. It is not new. It is one of the oldest questions
+    civilization has asked about itself.
+  </p>
+  <p>
+    In 2026, artificial intelligence systems can write legal briefs, generate marketing campaigns,
+    produce code, analyze medical images, compose music, and manage logistics. The capability curve
+    is steep and accelerating. Reasonable people looking at this trajectory feel something between
+    unease and dread.
+  </p>
+  <p>
+    The Greek word for this feeling is <em>déos</em> (δέος) — not the panic of immediate threat,
+    but the reverential dread you feel standing at the edge of something vast. It asks you not
+    to run, but to pay attention.
+  </p>
+  <p>
+    What you see, when you pay attention, is that the technology is not the variable that matters.
+    The variable that matters is the <strong>institution</strong> surrounding it.
+  </p>
+</section>
+
+<!-- ======================== PULL QUOTE ======================== -->
+<section class="pull-quote">
+  <blockquote>
+    "The power loom did not have to destroy weaving communities.
+    It destroyed them because the institution surrounding it
+    was designed to extract labor value, not to distribute
+    the gains of productivity."
+  </blockquote>
+</section>
+
+<!-- ======================== THE PATTERN ======================== -->
+<section class="prose">
+  <h3>The pattern</h3>
+  <h2>This Has Happened Before</h2>
+  <hr class="section-rule">
+  <p>
+    Every significant leap in productive capability in human history has posed the same question:
+    who benefits? The answer has never been determined by the technology. It has always been
+    determined by the institutions — the governance structures, the ownership models, the legal
+    frameworks — that surround it.
+  </p>
+  <p>
+    The history is not a story of inevitable extraction. It is a story of <em>institutional design</em>
+    under permanent tension. Some institutions amplified human capability. Others replaced it.
+    The difference was never the tool.
+  </p>
+</section>
+
+<!-- ======================== TIMELINE ======================== -->
+<section class="timeline-section">
+  <div class="section-header">
+    <h2>A Brief History of the Tension</h2>
+    <p>Every era faced the same question. Each built different containers.</p>
+  </div>
+  <div class="timeline">
+
+    <div class="timeline-entry">
+      <div class="era">c. 700 BCE</div>
+      <h3>Hesiod's <em>Works and Days</em></h3>
+      <p>The earliest extended argument for appropriate technology: good work requires attunement to natural rhythm. The farmer who shortcuts this relationship through cleverness will be punished by the land itself.</p>
+      <div class="lesson">Lesson: Tools work when they fit the scale of the community using them.</div>
+    </div>
+
+    <div class="timeline-entry">
+      <div class="era">c. 370 BCE</div>
+      <h3>Socrates on Writing</h3>
+      <p>In the <em>Phaedrus</em>, Socrates warns that writing will produce "hearers of many things who have learned nothing" — the appearance of wisdom without its substance. That we know this only because Plato wrote it down is not irony. It is the point.</p>
+      <div class="lesson">Lesson: Even those who see the danger clearly cannot stop the transition. They can only shape the institution around it.</div>
+    </div>
+
+    <div class="timeline-entry">
+      <div class="era">13th–18th Century</div>
+      <h3>The Guilds</h3>
+      <p>Centuries-long institutional experiments in scaling skilled production without degrading it. Apprentice → journeyman → master. Quality, pricing, and access governed collectively. When guilds collapsed, the split reappeared: commodity on one side, luxury on the other.</p>
+      <div class="lesson">Lesson: When the institutional container breaks, craft polarizes into mass production and unaffordable artisanship.</div>
+    </div>
+
+    <div class="timeline-entry">
+      <div class="era">1811–1816</div>
+      <h3>The Luddites</h3>
+      <p>Textile workers who understood precisely what was happening: the power loom captured the value of weaving for the mill owner. They were not confused about technology. They were correct about the mechanism of extraction.</p>
+      <div class="lesson">Lesson: Resistance alone could not hold. The institutional form was the variable.</div>
+    </div>
+
+    <div class="timeline-entry">
+      <div class="era">1844</div>
+      <h3>The Rochdale Pioneers</h3>
+      <p>Twenty-eight weavers — people directly displaced by industrial machinery — pooled resources and opened a cooperative. The principles they established now serve over 3 million cooperatives worldwide, employing more people than all multinational corporations combined.</p>
+      <div class="lesson">Lesson: A different ownership structure changes who benefits from productivity gains. This model has persisted for 182 years.</div>
+    </div>
+
+    <div class="timeline-entry">
+      <div class="era">1962</div>
+      <h3>Engelbart's Augmentation</h3>
+      <p>Douglas Engelbart at the Stanford Research Institute chose the word "augmentation," never "automation." His framework — Human using Language, Artifacts, Methodology, in which the human is Trained — defined intelligence as a relationship between person and tool, not a property of either alone.</p>
+      <div class="lesson">Lesson: The unit of design is not the tool. It is the entire system of tool + person + method + training considered together.</div>
+    </div>
+
+    <div class="timeline-entry">
+      <div class="era">1973</div>
+      <h3>Illich's Convivial Tools</h3>
+      <p>Ivan Illich drew the line: a <em>convivial</em> tool extends human capability. An <em>industrial</em> tool creates dependency. A bicycle is convivial. A highway system is not — it restructures the entire environment around itself and makes alternatives unviable.</p>
+      <div class="lesson">Lesson: The test is whether you can walk away. If the tool requires you, it is convivial. If you require the tool, it is industrial.</div>
+    </div>
+
+    <div class="timeline-entry">
+      <div class="era">2026</div>
+      <h3>The Present Moment</h3>
+      <p>Large language models generate text, code, images, and analysis at a scale no individual can match. The question Thamus posed to Theuth has never been more concrete. The answer depends on the institution, not the tool.</p>
+      <div class="lesson">The same AI capability, embedded in an extractive corporation, replaces. Embedded in a cooperative, it amplifies. The technology is identical. The institution is not.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ======================== THE SPLIT ======================== -->
+<section class="diagram-section">
+  <div class="diagram-title">
+    <h2>The Same Tool, Two Paths</h2>
+    <p>The technology is identical. The institution determines the outcome.</p>
+  </div>
+  <div class="split-diagram">
+    <div class="split-path extraction">
+      <h3>Path A — Extraction</h3>
+      <div class="step">
+        <div class="label">Mechanism</div>
+        <p>AI capability owned by shareholders. Returns optimized through headcount reduction.</p>
+      </div>
+      <div class="step">
+        <div class="label">Incentive</div>
+        <p>"How many people can we eliminate?"</p>
+      </div>
+      <div class="step">
+        <div class="label">Outcome</div>
+        <p>Productivity gains flow to capital. Workers displaced. The tool replaces the person.</p>
+      </div>
+      <div class="step">
+        <div class="label">Precedent</div>
+        <p>The power loom. The assembly line. Platform gig work. The pattern repeats.</p>
+      </div>
+    </div>
+    <div class="split-divider">
+      <span class="or">or</span>
+    </div>
+    <div class="split-path amplification">
+      <h3>Path B — Amplification</h3>
+      <div class="step">
+        <div class="label">Mechanism</div>
+        <p>AI capability owned by the people who use it. Surplus distributed by contribution.</p>
+      </div>
+      <div class="step">
+        <div class="label">Incentive</div>
+        <p>"How much more can our people accomplish?"</p>
+      </div>
+      <div class="step">
+        <div class="label">Outcome</div>
+        <p>Productivity gains flow to members. Humans do more meaningful work. The tool extends the person.</p>
+      </div>
+      <div class="step">
+        <div class="label">Precedent</div>
+        <p>The cooperative. The augmentation lab. The commons. Also persistent, also proven.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== THE FOUR CONDITIONS ======================== -->
+<section class="framework-section">
+  <div class="section-header">
+    <h2>Four Conditions for Amplification</h2>
+    <p>Amplification doesn't happen by default. It requires institutional design.</p>
+  </div>
+  <div class="framework-grid">
+    <div class="framework-card">
+      <div class="number">Condition 01</div>
+      <h3>Shared Ownership</h3>
+      <p>The AI capability must be owned — legally and economically — by the people whose work it affects. In a cooperative, surplus is distributed to members in proportion to their contribution. There is no external shareholder whose returns depend on replacing workers.</p>
+    </div>
+    <div class="framework-card">
+      <div class="number">Condition 02</div>
+      <h3>Democratic Governance</h3>
+      <p>Decisions about how AI is deployed must be made by the people affected. Not by a board optimizing for quarterly returns, but by the members whose working lives are shaped by the technology. One member, one vote — not one share, one vote.</p>
+    </div>
+    <div class="framework-card">
+      <div class="number">Condition 03</div>
+      <h3>Transparent Accounting</h3>
+      <p>The flows of value must be legible. When AI increases productivity, where does the surplus go? A patronage formula — the mechanism by which a cooperative distributes gains — makes this visible, auditable, and governable. No hidden extraction.</p>
+    </div>
+    <div class="framework-card">
+      <div class="number">Condition 04</div>
+      <h3>Co-Evolution of Tool and Person</h3>
+      <p>Following Engelbart: improve the tool <em>and</em> the method <em>and</em> the training together. AI literacy is not learning to use a chatbot. It is learning to compose with AI as a medium — understanding what it does well, what it does poorly, and how to maintain judgment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== PULL QUOTE 2 ======================== -->
+<section class="pull-quote">
+  <blockquote>
+    "Retraining people for jobs AI will eat in twelve months is malpractice.
+    The response is not to train people for the tool.
+    It is to redesign the system of tool and person together."
+  </blockquote>
+</section>
+
+<!-- ======================== THE STAGES ======================== -->
+<section class="stage-section">
+  <div class="section-header">
+    <h2>Three Stages of the Transition</h2>
+    <p>The flood metaphor is apt. The question is not whether water rises, but what vessel you're in.</p>
+  </div>
+  <div class="stages">
+    <div class="stage-card ark">
+      <div class="stage-label">Stage 1 — Ark (2026)</div>
+      <h3>Make the Crisis Legible</h3>
+      <p>Before people can act, they need to see. The displacement is real, accelerating, and not limited to blue-collar work. Knowledge workers, creatives, analysts, junior professionals — the water is already rising.</p>
+      <ul class="activities">
+        <li>Name the mechanism: extraction, not technology, is the threat</li>
+        <li>Map the resources: who is building alternatives, where</li>
+        <li>Build the coalition: labor, cooperatives, commons advocates, technologists</li>
+        <li>Tell the story: the counter-pattern exists and it has a 182-year track record</li>
+      </ul>
+    </div>
+    <div class="stage-card sail">
+      <div class="stage-label">Stage 2 — Sail (2027–2028)</div>
+      <h3>Build Institutional Infrastructure</h3>
+      <p>Awareness without action is content marketing. Stage 2 moves from narrative to structure — legal vehicles, governance frameworks, economic mechanisms that make the amplification path concretely available.</p>
+      <ul class="activities">
+        <li>Cooperative formation tools: make it easy to start worker-owned AI ventures</li>
+        <li>Policy advocacy: tax incentives for cooperatives, right-to-organize for AI-affected workers</li>
+        <li>AI literacy programs: co-evolution, not just chatbot training</li>
+        <li>Local resilience hubs: physical spaces where communities organize</li>
+      </ul>
+    </div>
+    <div class="stage-card island">
+      <div class="stage-label">Stage 3 — Island (2029+)</div>
+      <h3>A Functioning Alternative Economy</h3>
+      <p>The destination the ark was built for. Not a utopia, but a working demonstration that human labor + AI capability + cooperative ownership produces better outcomes than extraction — measurably, reproducibly, at scale.</p>
+      <ul class="activities">
+        <li>Bioregional prototypes: cooperative economies grounded in place</li>
+        <li>Commons ownership of AI infrastructure: compute, data, models</li>
+        <li>Patronage-based distribution: productivity gains flow to contributors</li>
+        <li>Post-wage livelihoods for real communities, not whitepapers</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- TRACK D -->
+  <div class="track-d">
+    <h3>The Missing Track — Institutional Design</h3>
+    <h4>Alongside resistance, resilience, and acceleration: build the structures that change who benefits.</h4>
+    <p>
+      Most responses to AI displacement focus on defense (slow it down), survival (help people cope),
+      or investment (fund protective technology). What's missing is the institutional work: creating
+      legal and economic structures where AI capability is owned cooperatively, governed democratically,
+      and distributed equitably.
+    </p>
+    <div class="track-row">
+      <div class="phase">Stage 1</div>
+      <div class="desc">Publish cooperative AI formation guides. Document working prototypes. Build the legal templates.</div>
+    </div>
+    <div class="track-row">
+      <div class="phase">Stage 2</div>
+      <div class="desc">Launch cooperative AI ventures in three sectors. Policy campaign for cooperative tax incentives. Union-cooperative coalition.</div>
+    </div>
+    <div class="track-row">
+      <div class="phase">Stage 3</div>
+      <div class="desc">Federated network of cooperative AI enterprises. Commons-owned compute and model infrastructure. Patronage economics at scale.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== OPEN QUESTIONS ======================== -->
+<section class="questions-section">
+  <div class="section-header">
+    <h2>Open Questions</h2>
+  </div>
+  <div class="questions-grid">
+
+    <div class="question-item">
+      <h3>Resist, prepare, or both?</h3>
+      <p>Is AI displacement inevitable (build arks), or can the trajectory be altered (build guardrails)? The strongest position may be: organize as if we can change the outcome, while building resilience in case we can't. Lead with agency, not inevitability.</p>
+    </div>
+
+    <div class="question-item">
+      <h3>Who has to change behavior?</h3>
+      <p>A movement without a named adversary is content marketing. The adversary is not AI, not technology companies as such — it is the extractive institutional form that makes replacement the rational economic choice. The intervention: make a cooperative alternative available and demonstrably competitive.</p>
+    </div>
+
+    <div class="question-item">
+      <h3>Can cooperatives compete?</h3>
+      <p>Three million cooperatives exist worldwide, but mostly in sectors where the model is well-understood. Whether the cooperative form can compete in AI-reshaped industries — software, media, professional services — is genuinely uncertain and worth testing.</p>
+    </div>
+
+    <div class="question-item">
+      <h3>What's the positive hook?</h3>
+      <p>Pure "push-away-from" without "pull-toward" rarely sustains a movement past the outrage phase. The amplification thesis offers the positive frame: AI deployed inside structures you co-own makes your work more meaningful, not less. The wound is the hook. The liberation is the destination.</p>
+    </div>
+
+    <div class="question-item">
+      <h3>How do we unite different tribes?</h3>
+      <p>Labor economists, commons advocates, crypto-native DAOs, and policy reformers are very different coalitions. Shared infrastructure — composable governance tools, patronage mechanisms, cooperative legal templates — may unite them where shared ideology cannot.</p>
+    </div>
+
+    <div class="question-item">
+      <h3>What does success look like?</h3>
+      <p>At least one functioning bioregional prototype where AI amplifies rather than replaces, with measurable outcomes: members doing more meaningful work, surplus growing and distributed equitably, humans developing new capabilities alongside the tools.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ======================== CLOSING ======================== -->
+<section class="prose">
+  <h3>An invitation</h3>
+  <h2>Hope Is Not Optimism</h2>
+  <hr class="section-rule">
+  <p>
+    Optimism says things will work out. Hope says the work is worth doing regardless.
+  </p>
+  <p>
+    The fear of being replaced is, at its root, a fear of losing the capacity for meaningful
+    contribution. Not unemployment in the narrow sense — but <em>mattering less</em>. Watching
+    the things you can do become things a machine can do, and wondering what is left.
+  </p>
+  <p>
+    What is left is the thing the machine cannot do: decide what matters. A language model can
+    generate a patronage formula. It cannot decide that patronage — the equitable distribution
+    of collectively generated value — is a principle worth organizing around. A language model
+    can draft a lease analysis. It cannot walk a building, feel the light, and know that
+    this is the place where a community should gather.
+  </p>
+  <p>
+    The ground has shifted before. The response that endures is not flight. It is the patient,
+    unglamorous, deeply human work of building institutions that hold the relationship between
+    tool and maker, productivity and dignity, capability and care.
+  </p>
+  <p>
+    This is not a manifesto. It is an invitation to take the question seriously — and to test,
+    in practice, whether the amplification path holds.
+  </p>
+</section>
+
+<section class="closing">
+  <p>
+    Techne is a venture studio operating as RegenHub, a Colorado Public Benefit Limited
+    Cooperative Association. We are testing the amplification thesis in practice — with
+    real revenue, real governance, and real accountability to our members.
+  </p>
+  <a class="cta" href="https://github.com/nou-techne/nou-techne/blob/main/letters/on-the-fear-of-being-replaced.md">Read the Full Letter</a>
+</section>
+
+<footer>
+  <a href="/">Techne Institute</a> · Boulder, Colorado · 2026<br>
+  <span style="margin-top: 0.5rem; display: inline-block;">
+    <a href="/introduction/">Introduction</a> · <a href="/formation/">Formation</a> ·
+    <a href="https://github.com/nou-techne/nou-techne">Source</a>
+  </span>
+</footer>
+
+</body>
+</html>
