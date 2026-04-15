@@ -141,7 +141,8 @@ function MembersTab() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    supabase.from('participants').select('id, name, email, participant_type, account_type, membership_class, craft_primary').order('name')
+    supabase.from('participants').select('id, name, email, participant_type, account_type, membership_class, craft_primary')
+    .in('membership_class', [1, 2, 3, 4]).order('name')
     .then(({ data, error }) => {
       if (error) setError(error.message)
       else setMembers(data || [])

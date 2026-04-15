@@ -27,7 +27,7 @@ export default function Projects() {
         id, name, description, type, status, created_at,
         project_participants(
           role,
-          participants(id, name)
+          participants(id, name, membership_class)
         ),
         project_milestones(id, title, status, due_date)
       `)
@@ -117,8 +117,10 @@ export default function Projects() {
   )
 }
 
+const isMember = (pp) => pp.participants?.membership_class >= 1 && pp.participants?.membership_class <= 4
+
 function ProjectRow({ project, onClick }) {
-  const contributors = project.project_participants || []
+  const contributors = (project.project_participants || []).filter(isMember)
   const activeMilestones = (project.project_milestones || []).filter(m => m.status !== 'completed' && m.status !== 'cancelled')
 
   return (
@@ -153,7 +155,7 @@ function ProjectRow({ project, onClick }) {
 }
 
 function ProjectDetail({ project, isSteward, onBack }) {
-  const contributors = project.project_participants || []
+  const contributors = (project.project_participants || []).filter(isMember)
   const milestones = project.project_milestones || []
 
   return (
