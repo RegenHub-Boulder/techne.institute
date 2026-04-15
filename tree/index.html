@@ -54,50 +54,82 @@
   <script src="/assets/nav.js" defer></script>
 
   <style>
-    /* ── Tree page design tokens ── */
+    /* ═══════════════════════════════════════════
+       SHARED DESIGN TOKENS (tree page)
+    ═══════════════════════════════════════════ */
     :root {
-      --z0: #c4956a;   /* ember — home */
-      --z1: #22c55e;   /* green — public */
-      --z2: #f59e0b;   /* amber — curated */
-      --z3: #3b82f6;   /* blue — members */
-      --z4: #c4956a;   /* gold — steward */
+      --z0: #c4956a;
+      --z1: #22c55e;
+      --z2: #f59e0b;
+      --z3: #3b82f6;
+      --z4: #c4956a;
 
-      --z0-bg: rgba(196, 149, 106, 0.08);
-      --z1-bg: rgba(34, 197, 94, 0.07);
-      --z2-bg: rgba(245, 158, 11, 0.07);
-      --z3-bg: rgba(59, 130, 246, 0.07);
-      --z4-bg: rgba(196, 149, 106, 0.07);
+      --z0-bg: rgba(196,149,106,0.08);
+      --z1-bg: rgba(34,197,94,0.07);
+      --z2-bg: rgba(245,158,11,0.07);
+      --z3-bg: rgba(59,130,246,0.07);
+      --z4-bg: rgba(196,149,106,0.07);
 
-      --z0-border: rgba(196, 149, 106, 0.3);
-      --z1-border: rgba(34, 197, 94, 0.3);
-      --z2-border: rgba(245, 158, 11, 0.3);
-      --z3-border: rgba(59, 130, 246, 0.3);
-      --z4-border: rgba(196, 149, 106, 0.3);
+      --z0-border: rgba(196,149,106,0.3);
+      --z1-border: rgba(34,197,94,0.3);
+      --z2-border: rgba(245,158,11,0.3);
+      --z3-border: rgba(59,130,246,0.3);
+      --z4-border: rgba(196,149,106,0.3);
 
       --focus-ring: 3px solid #3b82f6;
       --detail-w: 320px;
       --card-bg: var(--bg-card, rgba(235,231,223,0.6));
       --card-border: var(--rule, #d8d3c8);
       --grid-max: 1200px;
+
+      /* HUD design-system tokens — light */
+      --hud-void:    #f5f3f0;
+      --hud-ink:     #fffdf9;
+      --hud-surface: #ffffff;
+      --hud-panel:   #f0ede8;
+      --hud-raised:  #e8e4dd;
+      --hud-border:  rgba(0,0,0,0.1);
+      --hud-border2: rgba(0,0,0,0.06);
+      --hud-text:    #1a1a1a;
+      --hud-muted:   #666666;
+      --hud-dim:     #999999;
+      --hud-gold:    #c4956a;
     }
 
     [data-theme="dark"] {
-      --z1-bg: rgba(34, 197, 94, 0.1);
-      --z2-bg: rgba(245, 158, 11, 0.1);
-      --z3-bg: rgba(59, 130, 246, 0.1);
-      --z4-bg: rgba(196, 149, 106, 0.1);
-      --card-bg: rgba(42, 42, 48, 0.85);
-      --card-border: rgba(60, 60, 68, 0.8);
+      --z1-bg: rgba(34,197,94,0.1);
+      --z2-bg: rgba(245,158,11,0.1);
+      --z3-bg: rgba(59,130,246,0.1);
+      --z4-bg: rgba(196,149,106,0.1);
+      --card-bg: rgba(42,42,48,0.85);
+      --card-border: rgba(60,60,68,0.8);
+
+      /* HUD design-system tokens — dark */
+      --hud-void:    #0c0c0c;
+      --hud-ink:     #111111;
+      --hud-surface: #161616;
+      --hud-panel:   #1e1e1e;
+      --hud-raised:  #2a2a2a;
+      --hud-border:  rgba(255,255,255,0.1);
+      --hud-border2: rgba(255,255,255,0.05);
+      --hud-text:    #f0f0f0;
+      --hud-muted:   #9a9a9a;
+      --hud-dim:     #606060;
+      --hud-gold:    #c4956a;
     }
 
-    /* ── Utilities ── */
+    /* ═══════════════════════════════════════════
+       UTILITIES
+    ═══════════════════════════════════════════ */
     .sr-only {
-      position: absolute; width: 1px; height: 1px;
-      padding: 0; margin: -1px; overflow: hidden;
-      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+      position:absolute; width:1px; height:1px;
+      padding:0; margin:-1px; overflow:hidden;
+      clip:rect(0,0,0,0); white-space:nowrap; border:0;
     }
 
-    /* ── Hero ── */
+    /* ═══════════════════════════════════════════
+       HERO (list + network modes)
+    ═══════════════════════════════════════════ */
     .tree-hero {
       padding: 3rem 2rem 2rem;
       border-bottom: 1px solid var(--rule);
@@ -125,7 +157,9 @@
       line-height: 1.6;
     }
 
-    /* ── Controls ── */
+    /* ═══════════════════════════════════════════
+       MODE CONTROLS (shared)
+    ═══════════════════════════════════════════ */
     .tree-controls {
       display: flex;
       gap: 0.5rem;
@@ -154,7 +188,9 @@
     }
     .mode-btn:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
 
-    /* ── Legend ── */
+    /* ═══════════════════════════════════════════
+       LEGEND (list + network modes)
+    ═══════════════════════════════════════════ */
     .legend {
       display: flex;
       flex-wrap: wrap;
@@ -162,8 +198,15 @@
       padding: 1rem 2rem;
       background: var(--bg-alt);
       border-bottom: 1px solid var(--rule);
+      max-width: 100%;
+    }
+    .legend-inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
       max-width: var(--grid-max);
       margin: 0 auto;
+      width: 100%;
     }
     .legend-item {
       display: flex;
@@ -179,14 +222,14 @@
       flex-shrink: 0;
     }
 
-    /* ── Main content area ── */
+    /* ═══════════════════════════════════════════
+       LIST MODE (grid view)
+    ═══════════════════════════════════════════ */
     .tree-main {
       padding: 2rem;
       max-width: var(--grid-max);
       margin: 0 auto;
     }
-
-    /* ── Zone section headers ── */
     .zone-section { margin-bottom: 2.5rem; }
     .zone-header {
       display: flex;
@@ -214,8 +257,6 @@
       color: var(--fg-secondary);
       margin: 0;
     }
-
-    /* ── Home card (zone 0) ── */
     .home-card-wrapper {
       display: flex;
       justify-content: center;
@@ -226,15 +267,11 @@
       max-width: 520px;
       width: 100%;
     }
-
-    /* ── Card grid ── */
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 20px;
     }
-
-    /* ── Page card ── */
     .page-card {
       display: block;
       background: var(--card-bg);
@@ -253,26 +290,18 @@
       top: 0; left: 0; right: 0;
       height: 3px;
     }
-    .page-card:hover {
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-      transform: translateY(-2px);
-    }
+    .page-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); transform: translateY(-2px); }
     .page-card:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
-
-    /* Zone accent stripes */
     .page-card[data-zone="0"]::before { background: var(--z0); }
     .page-card[data-zone="1"]::before { background: var(--z1); }
     .page-card[data-zone="2"]::before { background: var(--z2); }
     .page-card[data-zone="3"]::before { background: var(--z3); }
     .page-card[data-zone="4"]::before { background: var(--z4); }
-
-    /* Zone hover borders */
     .page-card[data-zone="0"]:hover { border-color: var(--z0-border); background: var(--z0-bg); }
     .page-card[data-zone="1"]:hover { border-color: var(--z1-border); background: var(--z1-bg); }
     .page-card[data-zone="2"]:hover { border-color: var(--z2-border); background: var(--z2-bg); }
     .page-card[data-zone="3"]:hover { border-color: var(--z3-border); background: var(--z3-bg); }
     .page-card[data-zone="4"]:hover { border-color: var(--z4-border); background: var(--z4-bg); }
-
     .card-top {
       display: flex;
       align-items: flex-start;
@@ -280,12 +309,7 @@
       gap: 0.5rem;
       margin-bottom: 0.5rem;
     }
-    .card-title {
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--fg-primary);
-      line-height: 1.3;
-    }
+    .card-title { font-size: 1rem; font-weight: 500; color: var(--fg-primary); line-height: 1.3; }
     .auth-badge {
       font-size: 0.68rem;
       font-family: var(--font-mono, 'IBM Plex Mono', monospace);
@@ -301,7 +325,6 @@
     .auth-badge.curated { background: rgba(245,158,11,0.12); color: #d97706;   border-color: rgba(245,158,11,0.3); }
     .auth-badge.members { background: rgba(59,130,246,0.12); color: #2563eb;   border-color: rgba(59,130,246,0.3); }
     .auth-badge.steward { background: rgba(196,149,106,0.15); color: #9a6a3a;  border-color: rgba(196,149,106,0.3); }
-
     .card-path {
       font-size: 0.73rem;
       color: var(--fg-tertiary, var(--fg-secondary));
@@ -309,13 +332,11 @@
       margin-bottom: 0.5rem;
       opacity: 0.7;
     }
-    .card-desc {
-      font-size: 0.85rem;
-      color: var(--fg-secondary);
-      line-height: 1.55;
-    }
+    .card-desc { font-size: 0.85rem; color: var(--fg-secondary); line-height: 1.55; }
 
-    /* ── Network mode ── */
+    /* ═══════════════════════════════════════════
+       NETWORK MODE
+    ═══════════════════════════════════════════ */
     #network-view {
       display: none;
       position: relative;
@@ -324,19 +345,12 @@
       border-radius: 12px;
       overflow: hidden;
       height: 640px;
+      margin: 1.5rem 2rem;
     }
-    #network-svg {
-      width: 100%;
-      height: 100%;
-      cursor: grab;
-    }
+    #network-svg { width: 100%; height: 100%; cursor: grab; }
     #network-svg:active { cursor: grabbing; }
-    .net-node {
-      cursor: pointer;
-    }
-    .net-node circle {
-      transition: r 0.15s, opacity 0.15s;
-    }
+    .net-node { cursor: pointer; }
+    .net-node circle { transition: r 0.15s, opacity 0.15s; }
     .net-node:hover circle { opacity: 0.85; }
     .net-node:focus-visible circle { stroke: #3b82f6; stroke-width: 3px; }
     .net-node text {
@@ -345,13 +359,7 @@
       pointer-events: none;
       user-select: none;
     }
-    .net-edge {
-      stroke: var(--rule, #d8d3c8);
-      stroke-width: 1px;
-      opacity: 0.5;
-    }
-
-    /* ── Detail panel (network mode) ── */
+    .net-edge { stroke: var(--rule, #d8d3c8); stroke-width: 1px; opacity: 0.5; }
     #detail-panel {
       display: none;
       position: absolute;
@@ -365,70 +373,363 @@
       z-index: 10;
     }
     #detail-panel.open { display: block; }
-    .detail-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
-    }
+    .detail-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
     .detail-title { font-size: 1rem; font-weight: 500; color: var(--fg-primary); }
-    .detail-close {
-      background: none; border: none;
-      cursor: pointer; color: var(--fg-secondary);
-      font-size: 1.2rem; line-height: 1;
-      padding: 0.1rem 0.3rem;
-      border-radius: 4px;
-    }
+    .detail-close { background: none; border: none; cursor: pointer; color: var(--fg-secondary); font-size: 1.2rem; line-height: 1; padding: 0.1rem 0.3rem; border-radius: 4px; }
     .detail-close:focus-visible { outline: var(--focus-ring); }
-    .detail-path {
-      font-size: 0.72rem;
-      font-family: var(--font-mono, 'IBM Plex Mono', monospace);
-      color: var(--fg-secondary);
-      margin-bottom: 0.5rem;
-      opacity: 0.75;
-    }
+    .detail-path { font-size: 0.72rem; font-family: var(--font-mono, 'IBM Plex Mono', monospace); color: var(--fg-secondary); margin-bottom: 0.5rem; opacity: 0.75; }
     .detail-desc { font-size: 0.85rem; color: var(--fg-secondary); line-height: 1.55; margin-bottom: 1rem; }
-    .detail-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.82rem;
-      color: var(--gold, #c4956a);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-    }
+    .detail-link { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.82rem; color: var(--gold, #c4956a); text-decoration: none; border-bottom: 1px solid transparent; }
     .detail-link:hover { border-bottom-color: var(--gold, #c4956a); }
     .detail-link:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
-
-    /* ── Network zoom controls ── */
-    .net-zoom-controls {
-      display: none;
-      position: absolute;
-      bottom: 1rem; left: 1rem;
-      gap: 0.25rem;
-      flex-direction: column;
-    }
+    .net-zoom-controls { display: none; position: absolute; bottom: 1rem; left: 1rem; gap: 0.25rem; flex-direction: column; }
     .net-zoom-controls.visible { display: flex; }
-    .zoom-btn {
-      width: 32px; height: 32px;
-      border: 1px solid var(--card-border);
-      border-radius: 6px;
-      background: var(--card-bg);
-      color: var(--fg-secondary);
-      font-size: 1rem;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
+    .zoom-btn { width: 32px; height: 32px; border: 1px solid var(--card-border); border-radius: 6px; background: var(--card-bg); color: var(--fg-secondary); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .zoom-btn:hover { background: var(--bg-alt); }
     .zoom-btn:focus-visible { outline: var(--focus-ring); }
 
-    /* ── Responsive ── */
-    @media (max-width: 600px) {
+    /* ═══════════════════════════════════════════
+       HUD MODE
+    ═══════════════════════════════════════════ */
+    #hud-view {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: var(--hud-void);
+      font-family: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+      overflow: hidden;
+    }
+
+    /* HUD shell: column flex filling viewport */
+    .hud-shell {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── HUD topbar ── */
+    .hud-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0 1rem;
+      height: 44px;
+      flex-shrink: 0;
+      background: var(--hud-panel);
+      border-bottom: 1px solid var(--hud-border);
+    }
+    .hud-topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .hud-wordmark {
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--hud-gold);
+      text-decoration: none;
+    }
+    .hud-wordmark:focus-visible { outline: var(--focus-ring); border-radius: 3px; }
+    .hud-sep {
+      width: 1px;
+      height: 16px;
+      background: var(--hud-border);
+      flex-shrink: 0;
+    }
+    .hud-page-label {
+      font-size: 0.72rem;
+      color: var(--hud-muted);
+      letter-spacing: 0.05em;
+    }
+    .hud-topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .hud-mode-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0.65rem;
+      border: 1px solid var(--hud-border);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--hud-muted);
+      font-size: 0.7rem;
+      font-family: inherit;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+    }
+    .hud-mode-btn:hover { background: var(--hud-raised); color: var(--hud-text); }
+    .hud-mode-btn.active { background: var(--hud-gold); border-color: var(--hud-gold); color: #fff; }
+    .hud-mode-btn:focus-visible { outline: var(--focus-ring); outline-offset: 1px; }
+    .hud-theme-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border: 1px solid var(--hud-border);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--hud-muted);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+    }
+    .hud-theme-btn:hover { background: var(--hud-raised); color: var(--hud-text); }
+    .hud-theme-btn:focus-visible { outline: var(--focus-ring); }
+
+    /* ── HUD body: sidebar + main grid ── */
+    .hud-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* ── HUD sidebar ── */
+    .hud-sidebar {
+      width: 200px;
+      flex-shrink: 0;
+      background: var(--hud-panel);
+      border-right: 1px solid var(--hud-border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .hud-sidebar-home {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--hud-border);
+    }
+    .hud-home-link {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      padding: 0.6rem 0.75rem;
+      background: var(--hud-raised);
+      border: 1px solid var(--hud-border);
+      border-left: 3px solid var(--hud-gold);
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background 0.12s;
+    }
+    .hud-home-link:hover { background: rgba(196,149,106,0.12); }
+    .hud-home-link:focus-visible { outline: var(--focus-ring); }
+    .hud-home-title {
+      font-size: 0.75rem;
+      color: var(--hud-text);
+      font-weight: 500;
+    }
+    .hud-home-path {
+      font-size: 0.63rem;
+      color: var(--hud-dim);
+    }
+    .hud-zone-nav {
+      padding: 0.5rem 0;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .hud-zone-nav-label {
+      padding: 0.4rem 0.75rem 0.25rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--hud-dim);
+    }
+    .hud-zone-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.72rem;
+      color: var(--hud-muted);
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      transition: background 0.1s, color 0.1s;
+      border-radius: 0;
+    }
+    .hud-zone-nav-item:hover { background: var(--hud-raised); color: var(--hud-text); }
+    .hud-zone-nav-item.active { color: var(--hud-text); background: var(--hud-raised); }
+    .hud-zone-nav-item:focus-visible { outline: var(--focus-ring); }
+    .hud-zone-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .hud-zone-count {
+      margin-left: auto;
+      font-size: 0.6rem;
+      color: var(--hud-dim);
+    }
+    .hud-sidebar-footer {
+      padding: 0.6rem 0.75rem;
+      border-top: 1px solid var(--hud-border);
+      font-size: 0.6rem;
+      color: var(--hud-dim);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── HUD main area ── */
+    .hud-main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--hud-border);
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    /* ── HUD panels ── */
+    .hud-panel {
+      display: flex;
+      flex-direction: column;
+      background: var(--hud-surface);
+      overflow: hidden;
+      min-height: 0;
+    }
+    .hud-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.45rem 0.75rem;
+      background: var(--hud-panel);
+      border-bottom: 1px solid var(--hud-border);
+      flex-shrink: 0;
+    }
+    .hud-panel-title {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .hud-panel-count {
+      font-size: 0.6rem;
+      color: var(--hud-dim);
+      font-weight: 400;
+      letter-spacing: 0.03em;
+    }
+    .hud-panel-desc {
+      font-size: 0.6rem;
+      color: var(--hud-dim);
+    }
+    .hud-panel-body {
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+      padding: 0.25rem 0;
+      /* Custom scrollbar */
+      scrollbar-width: thin;
+      scrollbar-color: var(--hud-border) transparent;
+    }
+    .hud-panel-body::-webkit-scrollbar { width: 4px; }
+    .hud-panel-body::-webkit-scrollbar-track { background: transparent; }
+    .hud-panel-body::-webkit-scrollbar-thumb { background: var(--hud-border); border-radius: 2px; }
+
+    /* ── HUD row (compact card) ── */
+    .hud-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.28rem 0.75rem;
+      text-decoration: none;
+      color: var(--hud-text);
+      transition: background 0.08s;
+      border-left: 2px solid transparent;
+      min-width: 0;
+    }
+    .hud-row:hover {
+      background: var(--hud-raised);
+    }
+    .hud-row:focus-visible { outline: var(--focus-ring); outline-offset: -2px; }
+    .hud-row[data-zone="1"]:hover { border-left-color: var(--z1); }
+    .hud-row[data-zone="2"]:hover { border-left-color: var(--z2); }
+    .hud-row[data-zone="3"]:hover { border-left-color: var(--z3); }
+    .hud-row[data-zone="4"]:hover { border-left-color: var(--z4); }
+    .hud-row-title {
+      font-size: 0.75rem;
+      color: var(--hud-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-shrink: 0;
+      min-width: 80px;
+    }
+    .hud-row-path {
+      font-size: 0.63rem;
+      color: var(--hud-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+      min-width: 0;
+    }
+    .hud-row-badge {
+      font-size: 0.55rem;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      border: 1px solid transparent;
+      flex-shrink: 0;
+      letter-spacing: 0.03em;
+    }
+    .hud-row-badge.public  { background: rgba(34,197,94,0.1);  color: #16a34a;  border-color: rgba(34,197,94,0.25); }
+    .hud-row-badge.curated { background: rgba(245,158,11,0.1); color: #d97706;  border-color: rgba(245,158,11,0.25); }
+    .hud-row-badge.members { background: rgba(59,130,246,0.1); color: #2563eb;  border-color: rgba(59,130,246,0.25); }
+    .hud-row-badge.steward { background: rgba(196,149,106,0.1);color: #9a6a3a; border-color: rgba(196,149,106,0.25); }
+
+    /* ── HUD status bar ── */
+    .hud-statusbar {
+      height: 28px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 1rem;
+      background: var(--hud-panel);
+      border-top: 1px solid var(--hud-border);
+      font-size: 0.63rem;
+      color: var(--hud-muted);
+      overflow: hidden;
+    }
+    .hud-statusbar-path {
+      font-family: inherit;
+      color: var(--hud-dim);
+      flex-shrink: 0;
+    }
+    .hud-statusbar-desc {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hud-statusbar-meta {
+      flex-shrink: 0;
+      color: var(--hud-dim);
+    }
+
+    /* ── Responsive: hide HUD on small screens ── */
+    @media (max-width: 767px) {
+      #btn-hud { display: none; }
       .tree-hero { padding: 2rem 1rem 1.5rem; }
       .tree-main { padding: 1.5rem 1rem; }
       .legend { padding: 0.75rem 1rem; }
       .card-grid { grid-template-columns: 1fr; }
+      #network-view { margin: 1rem; }
     }
   </style>
 </head>
@@ -436,33 +737,44 @@
 
   <!-- Site nav injected by nav.js -->
 
-  <section class="tree-hero">
+  <!-- ══════════════════════════════════════════════
+       HERO — shown in list + network modes
+  ══════════════════════════════════════════════ -->
+  <section class="tree-hero" id="page-hero">
     <div class="container--wide">
       <div class="tree-hero-text">
         <h1>Site Map</h1>
-        <p>Navigate the full techne.institute domain from one place. Cards show access level, path, and a brief description of each section.</p>
+        <p>Navigate the full techne.institute domain from one place. Cards show access level, path, and description for each section.</p>
       </div>
       <div class="tree-controls" role="group" aria-label="View mode">
-        <button class="mode-btn active" id="btn-grid" aria-pressed="true">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
-            <rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
-            <rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
-            <rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+        <button class="mode-btn active" id="btn-list" aria-pressed="true">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <line x1="1" y1="2.5" x2="12" y2="2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="1" y1="6.5" x2="12" y2="6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="1" y1="10.5" x2="12" y2="10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-          Grid
+          List
+        </button>
+        <button class="mode-btn" id="btn-hud" aria-pressed="false">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="7" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="1" y="7" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="7" y="7" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          HUD
         </button>
         <button class="mode-btn" id="btn-network" aria-pressed="false">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <circle cx="7" cy="7" r="2" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="2" cy="2" r="1.5" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="12" cy="2" r="1.5" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="2" cy="12" r="1.5" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="12" cy="12" r="1.5" stroke="currentColor" stroke-width="1.5"/>
-            <line x1="5.5" y1="5.5" x2="3" y2="3" stroke="currentColor" stroke-width="1"/>
-            <line x1="8.5" y1="5.5" x2="11" y2="3" stroke="currentColor" stroke-width="1"/>
-            <line x1="5.5" y1="8.5" x2="3" y2="11" stroke="currentColor" stroke-width="1"/>
-            <line x1="8.5" y1="8.5" x2="11" y2="11" stroke="currentColor" stroke-width="1"/>
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <circle cx="6.5" cy="6.5" r="2" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="1.5" cy="1.5" r="1.2" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="11.5" cy="1.5" r="1.2" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="1.5" cy="11.5" r="1.2" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="11.5" cy="11.5" r="1.2" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="5.1" y1="5.1" x2="2.6" y2="2.6" stroke="currentColor" stroke-width="1"/>
+            <line x1="7.9" y1="5.1" x2="10.4" y2="2.6" stroke="currentColor" stroke-width="1"/>
+            <line x1="5.1" y1="7.9" x2="2.6" y2="10.4" stroke="currentColor" stroke-width="1"/>
+            <line x1="7.9" y1="7.9" x2="10.4" y2="10.4" stroke="currentColor" stroke-width="1"/>
           </svg>
           Network
         </button>
@@ -470,33 +782,27 @@
     </div>
   </section>
 
-  <div class="legend" role="list" aria-label="Access level legend">
-    <div class="legend-item" role="listitem">
-      <span class="legend-dot" style="background:var(--z0)"></span>
-      <span>home — entry point</span>
-    </div>
-    <div class="legend-item" role="listitem">
-      <span class="legend-dot" style="background:var(--z1)"></span>
-      <span>public — open to all</span>
-    </div>
-    <div class="legend-item" role="listitem">
-      <span class="legend-dot" style="background:var(--z2)"></span>
-      <span>curated — linked or shared</span>
-    </div>
-    <div class="legend-item" role="listitem">
-      <span class="legend-dot" style="background:var(--z3)"></span>
-      <span>members — sign-in required</span>
-    </div>
-    <div class="legend-item" role="listitem">
-      <span class="legend-dot" style="background:var(--z4)"></span>
-      <span>steward — organizer access</span>
+  <!-- Legend (list + network modes) -->
+  <div class="legend" id="page-legend" role="list" aria-label="Access level legend">
+    <div class="legend-inner">
+      <div class="legend-item" role="listitem"><span class="legend-dot" style="background:var(--z0)"></span><span>home</span></div>
+      <div class="legend-item" role="listitem"><span class="legend-dot" style="background:var(--z1)"></span><span>public — open to all</span></div>
+      <div class="legend-item" role="listitem"><span class="legend-dot" style="background:var(--z2)"></span><span>curated — linked or shared</span></div>
+      <div class="legend-item" role="listitem"><span class="legend-dot" style="background:var(--z3)"></span><span>members — sign-in required</span></div>
+      <div class="legend-item" role="listitem"><span class="legend-dot" style="background:var(--z4)"></span><span>steward — organizer access</span></div>
     </div>
   </div>
 
+  <!-- ══════════════════════════════════════════════
+       LIST MODE
+  ══════════════════════════════════════════════ -->
   <main class="tree-main" id="grid-view">
-    <!-- Populated by JavaScript; static fallback rendered in <noscript> -->
+    <!-- Populated by JS; noscript fallback below -->
   </main>
 
+  <!-- ══════════════════════════════════════════════
+       NETWORK MODE
+  ══════════════════════════════════════════════ -->
   <div id="network-view" role="region" aria-label="Network map of site pages">
     <svg id="network-svg" role="img" aria-label="Interactive network diagram of site structure">
       <defs>
@@ -528,36 +834,116 @@
     </div>
   </div>
 
+  <!-- ══════════════════════════════════════════════
+       HUD MODE (full-viewport overlay)
+  ══════════════════════════════════════════════ -->
+  <div id="hud-view" role="region" aria-label="HUD site map">
+    <div class="hud-shell">
+
+      <!-- Topbar -->
+      <div class="hud-topbar">
+        <div class="hud-topbar-left">
+          <a class="hud-wordmark" href="/" aria-label="Techne Institute home">TECHNE</a>
+          <div class="hud-sep" aria-hidden="true"></div>
+          <span class="hud-page-label">site map</span>
+        </div>
+        <div class="hud-topbar-right" role="group" aria-label="View and theme controls">
+          <button class="hud-mode-btn" id="hud-btn-list" aria-label="Switch to list view">List</button>
+          <button class="hud-mode-btn active" id="hud-btn-hud" aria-pressed="true" aria-label="HUD view (current)">HUD</button>
+          <button class="hud-mode-btn" id="hud-btn-network" aria-label="Switch to network view">Network</button>
+          <div class="hud-sep" aria-hidden="true"></div>
+          <button class="hud-theme-btn" id="hud-theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+            <span id="hud-theme-icon">☀</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="hud-body">
+
+        <!-- Sidebar -->
+        <aside class="hud-sidebar" aria-label="Zone navigation">
+          <div class="hud-sidebar-home">
+            <a class="hud-home-link" href="/" aria-label="Techne Institute home — entry point">
+              <span class="hud-home-title">Techne Institute</span>
+              <span class="hud-home-path">/</span>
+            </a>
+          </div>
+          <nav class="hud-zone-nav" aria-label="Filter by zone">
+            <div class="hud-zone-nav-label">Zones</div>
+            <button class="hud-zone-nav-item active" data-filter="all" aria-pressed="true">
+              <span class="hud-zone-dot" style="background:var(--hud-muted)"></span>
+              All zones
+              <span class="hud-zone-count" id="nav-count-all"></span>
+            </button>
+            <button class="hud-zone-nav-item" data-filter="1" aria-pressed="false">
+              <span class="hud-zone-dot" style="background:var(--z1)"></span>
+              Public
+              <span class="hud-zone-count" id="nav-count-1"></span>
+            </button>
+            <button class="hud-zone-nav-item" data-filter="2" aria-pressed="false">
+              <span class="hud-zone-dot" style="background:var(--z2)"></span>
+              Curated
+              <span class="hud-zone-count" id="nav-count-2"></span>
+            </button>
+            <button class="hud-zone-nav-item" data-filter="3" aria-pressed="false">
+              <span class="hud-zone-dot" style="background:var(--z3)"></span>
+              Members
+              <span class="hud-zone-count" id="nav-count-3"></span>
+            </button>
+            <button class="hud-zone-nav-item" data-filter="4" aria-pressed="false">
+              <span class="hud-zone-dot" style="background:var(--z4)"></span>
+              Steward
+              <span class="hud-zone-count" id="nav-count-4"></span>
+            </button>
+          </nav>
+          <div class="hud-sidebar-footer" aria-live="polite" id="hud-total-label"></div>
+        </aside>
+
+        <!-- Main 2×2 panel grid -->
+        <div class="hud-main" id="hud-main" role="main"></div>
+
+      </div>
+
+      <!-- Status bar -->
+      <div class="hud-statusbar" aria-live="polite" aria-atomic="true" id="hud-statusbar">
+        <span class="hud-statusbar-path" id="sb-path"></span>
+        <span class="hud-statusbar-desc" id="sb-desc">Hover a row to see its description</span>
+        <span class="hud-statusbar-meta" id="sb-meta"></span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       NOSCRIPT FALLBACK
+  ══════════════════════════════════════════════ -->
   <noscript>
     <style>.tree-main{display:none}</style>
     <main style="padding:2rem;max-width:900px;margin:0 auto">
       <h2 style="margin-bottom:1rem">All Pages</h2>
       <ul style="list-style:none;padding:0;display:grid;gap:0.75rem">
-        <li><strong><a href="/">Home</a></strong> — Techne Institute cooperative studio entry point</li>
-        <li><strong><a href="/about/">About</a></strong> — Who we are, the cooperative structure, and our mission</li>
-        <li><strong><a href="/people/">People</a></strong> — Organizers and active members of RegenHub LCA</li>
-        <li><strong><a href="/ventures/">Ventures</a></strong> — Cooperative projects and active ventures</li>
-        <li><strong><a href="/join/">Join</a></strong> — Learn how to become a member of the cooperative</li>
-        <li><strong><a href="/blog/">Blog</a></strong> — Writing, research, and field notes</li>
+        <li><strong><a href="/">Home</a></strong> — Techne Institute cooperative studio</li>
+        <li><strong><a href="/about/">About</a></strong> — Who we are and our mission</li>
+        <li><strong><a href="/people/">People</a></strong> — Organizers and active members</li>
+        <li><strong><a href="/ventures/">Ventures</a></strong> — Cooperative projects</li>
+        <li><strong><a href="/join/">Join</a></strong> — Become a member</li>
+        <li><strong><a href="/blog/">Blog</a></strong> — Writing and field notes</li>
         <li><strong><a href="/tree/">Site Map</a></strong> — This page</li>
-        <li><strong><a href="/formation/">Formation</a></strong> — Organization structure and legal documents overview</li>
-        <li><strong><a href="/formation/articles/">Articles of Organization</a></strong> — LCA filing documents</li>
-        <li><strong><a href="/formation/bylaws/">Bylaws</a></strong> — Operating procedures and governance rules</li>
-        <li><strong><a href="/formation/handbook/">Member Handbook</a></strong> — Policies and practical guide for members</li>
-        <li><strong><a href="/ecosystem/">Ecosystem</a></strong> — Tools and partners we build with</li>
+        <li><strong><a href="/formation/">Formation</a></strong> — Legal documents</li>
+        <li><strong><a href="/ecosystem/">Ecosystem</a></strong> — Tools and partners</li>
         <li><strong><a href="/intranet/">Member Intranet</a></strong> — Private member portal (sign-in required)</li>
       </ul>
     </main>
   </noscript>
 
   <script>
-  // ── Page data ──────────────────────────────────────────────────────────────
+  // ══════════════════════════════════════════════
+  // PAGE DATA
+  // ══════════════════════════════════════════════
   const PAGES = [
-    // Zone 0 — Home
     { id:'home', path:'/', title:'Techne Institute', zone:0, authLevel:'home', parent:null,
       description:'A cooperatively-owned studio in Boulder, Colorado. RegenHub LCA — cultivating scenius through shared infrastructure, tools, and collective intelligence.' },
-
-    // Zone 1 — Public
     { id:'about', path:'/about/', title:'About', zone:1, authLevel:'public', parent:'home',
       description:'Who we are, the cooperative structure, and the mission driving Techne Studio.' },
     { id:'people', path:'/people/', title:'People', zone:1, authLevel:'public', parent:'home',
@@ -576,8 +962,6 @@
       description:'Frequently asked questions about the cooperative, membership, and how things work.' },
     { id:'contact', path:'/contact/', title:'Contact', zone:1, authLevel:'public', parent:'home',
       description:'Get in touch with the Techne Studio team.' },
-
-    // Zone 2 — Curated (linked or shared, not broadly indexed)
     { id:'formation', path:'/formation/', title:'Formation', zone:2, authLevel:'curated', parent:'home',
       description:'Organization structure and overview of legal formation documents for RegenHub LCA.' },
     { id:'articles', path:'/formation/articles/', title:'Articles of Organization', zone:2, authLevel:'curated', parent:'formation',
@@ -590,8 +974,6 @@
       description:'How patronage is defined, measured, and allocated across cooperative members.' },
     { id:'cloud-doc', path:'/cloud/', title:'Cloud Credits', zone:2, authLevel:'curated', parent:'home',
       description:'1 CLOUD ≈ $0.10 — the cooperative\'s internal unit of exchange for shared infrastructure.' },
-
-    // Zone 3 — Members (authentication required)
     { id:'intranet', path:'/intranet/', title:'Member Intranet', zone:3, authLevel:'members', parent:'home',
       description:'Private member portal — cooperative operations, capital accounts, and internal coordination.' },
     { id:'intranet-ecosystem', path:'/intranet/ecosystem/', title:'Ecosystem', zone:3, authLevel:'members', parent:'intranet',
@@ -630,33 +1012,32 @@
       description:'Cooperative documents, agreements, and shared reference materials.' },
     { id:'intranet-roadmap', path:'/intranet/roadmap/', title:'Roadmap', zone:3, authLevel:'members', parent:'intranet',
       description:'Product and organizational roadmap for Techne Studio and the cooperative.' },
-
-    // Zone 4 — Steward (organizer access)
     { id:'intranet-admin', path:'/intranet/admin/', title:'Steward Admin', zone:4, authLevel:'steward', parent:'intranet',
       description:'Member management, allocation entry, and stewardship tools. Organizer access only.' },
     { id:'workshop', path:'/workshop/', title:'Workshop', zone:4, authLevel:'steward', parent:'home',
       description:'Agent coordination workspace — sprint management, agent communication, and coordination activity feed.' },
   ]
 
-  // ── Zone metadata ──────────────────────────────────────────────────────────
   const ZONE_META = {
-    0: { label: 'Home', desc: 'Entry point', color: 'var(--z0)', border: 'var(--z0)' },
-    1: { label: 'Public', desc: 'Open to all visitors', color: 'var(--z1)', border: 'rgba(34,197,94,0.4)' },
-    2: { label: 'Curated', desc: 'Linked or shared — not broadly indexed', color: 'var(--z2)', border: 'rgba(245,158,11,0.4)' },
-    3: { label: 'Members', desc: 'Sign-in required', color: 'var(--z3)', border: 'rgba(59,130,246,0.4)' },
-    4: { label: 'Steward', desc: 'Organizer access only', color: 'var(--z4)', border: 'rgba(196,149,106,0.4)' },
+    0: { label:'Home',    desc:'Entry point',                      color:'var(--z0)', border:'var(--z0)' },
+    1: { label:'Public',  desc:'Open to all visitors',             color:'var(--z1)', border:'rgba(34,197,94,0.4)' },
+    2: { label:'Curated', desc:'Linked or shared — not indexed',   color:'var(--z2)', border:'rgba(245,158,11,0.4)' },
+    3: { label:'Members', desc:'Sign-in required',                 color:'var(--z3)', border:'rgba(59,130,246,0.4)' },
+    4: { label:'Steward', desc:'Organizer access only',            color:'var(--z4)', border:'rgba(196,149,106,0.4)' },
   }
 
-  // ── Helpers ────────────────────────────────────────────────────────────────
+  const ZONE_COLORS = { 0:'#c4956a', 1:'#22c55e', 2:'#f59e0b', 3:'#3b82f6', 4:'#c4956a' }
+
+  // ══════════════════════════════════════════════
+  // LIST MODE
+  // ══════════════════════════════════════════════
   function makeCard(page) {
     const a = document.createElement('a')
     a.className = 'page-card'
-    a.href = page.authLevel === 'members' || page.authLevel === 'steward'
-      ? 'https://techne.institute' + page.path
-      : page.path
+    a.href = (page.authLevel === 'members' || page.authLevel === 'steward')
+      ? 'https://techne.institute' + page.path : page.path
     if (page.authLevel === 'members' || page.authLevel === 'steward') {
-      a.target = '_blank'
-      a.rel = 'noopener'
+      a.target = '_blank'; a.rel = 'noopener'
     }
     a.setAttribute('data-zone', page.zone)
     a.setAttribute('aria-label', `${page.title} — ${page.authLevel} page at ${page.path}`)
@@ -672,12 +1053,9 @@
     return a
   }
 
-  // ── Grid mode render ───────────────────────────────────────────────────────
   function renderGrid() {
     const main = document.getElementById('grid-view')
     main.innerHTML = ''
-
-    // Zone 0 home card centered
     const homePage = PAGES.find(p => p.zone === 0)
     const homeWrapper = document.createElement('div')
     homeWrapper.className = 'home-card-wrapper'
@@ -686,16 +1064,13 @@
     homeWrapper.appendChild(homeCard)
     main.appendChild(homeWrapper)
 
-    // Zones 1–4 as sections
-    for (const zone of [1, 2, 3, 4]) {
+    for (const zone of [1,2,3,4]) {
       const pages = PAGES.filter(p => p.zone === zone)
       if (!pages.length) continue
       const meta = ZONE_META[zone]
-
       const section = document.createElement('section')
       section.className = 'zone-section'
       section.setAttribute('aria-label', `Zone ${zone}: ${meta.label}`)
-
       const header = document.createElement('div')
       header.className = 'zone-header'
       header.style.borderColor = meta.border
@@ -705,7 +1080,6 @@
         <p>${meta.desc}</p>
       `
       section.appendChild(header)
-
       const grid = document.createElement('div')
       grid.className = 'card-grid'
       for (const page of pages) grid.appendChild(makeCard(page))
@@ -714,127 +1088,230 @@
     }
   }
 
-  // ── Network mode render ────────────────────────────────────────────────────
-  const ZONE_COLORS = { 0:'#c4956a', 1:'#22c55e', 2:'#f59e0b', 3:'#3b82f6', 4:'#c4956a' }
-  const NODE_RADIUS = { 0:20, 1:14, 2:12, 3:10, 4:10 }
+  // ══════════════════════════════════════════════
+  // HUD MODE
+  // ══════════════════════════════════════════════
+  function renderHUD(filter) {
+    filter = filter || 'all'
+    const main = document.getElementById('hud-main')
+    main.innerHTML = ''
 
+    // Update nav item states
+    document.querySelectorAll('.hud-zone-nav-item').forEach(btn => {
+      const f = btn.dataset.filter
+      const active = f === filter
+      btn.classList.toggle('active', active)
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false')
+    })
+
+    // Determine which zones to show
+    const zones = filter === 'all' ? [1,2,3,4] : [parseInt(filter)]
+
+    // In single-zone filter mode, show one panel full-width
+    if (zones.length === 1) {
+      main.style.gridTemplateColumns = '1fr'
+      main.style.gridTemplateRows = '1fr'
+    } else {
+      main.style.gridTemplateColumns = ''
+      main.style.gridTemplateRows = ''
+    }
+
+    for (const zone of zones) {
+      const pages = PAGES.filter(p => p.zone === zone)
+      const meta = ZONE_META[zone]
+      const color = ZONE_COLORS[zone]
+
+      const panel = document.createElement('div')
+      panel.className = 'hud-panel'
+      panel.setAttribute('data-zone', zone)
+
+      // Panel header
+      const header = document.createElement('div')
+      header.className = 'hud-panel-header'
+      header.innerHTML = `
+        <div class="hud-panel-title">
+          <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${color};flex-shrink:0" aria-hidden="true"></span>
+          <span style="color:${color}">${meta.label}</span>
+          <span class="hud-panel-count">${pages.length} pages</span>
+        </div>
+        <span class="hud-panel-desc">${meta.desc}</span>
+      `
+      panel.appendChild(header)
+
+      // Panel body with compact rows
+      const body = document.createElement('div')
+      body.className = 'hud-panel-body'
+      body.setAttribute('role', 'list')
+      body.setAttribute('aria-label', `${meta.label} pages`)
+
+      for (const page of pages) {
+        const href = (page.authLevel === 'members' || page.authLevel === 'steward')
+          ? 'https://techne.institute' + page.path : page.path
+        const a = document.createElement('a')
+        a.className = 'hud-row'
+        a.href = href
+        a.setAttribute('data-zone', zone)
+        a.setAttribute('role', 'listitem')
+        a.setAttribute('aria-label', `${page.title} — ${page.authLevel}`)
+        if (page.authLevel === 'members' || page.authLevel === 'steward') {
+          a.target = '_blank'; a.rel = 'noopener'
+        }
+        a.innerHTML = `
+          <span class="hud-row-title">${page.title}</span>
+          <span class="hud-row-path">${page.path}</span>
+          <span class="hud-row-badge ${page.authLevel}" aria-hidden="true">${page.authLevel}</span>
+        `
+        // Status bar on hover
+        a.addEventListener('mouseenter', () => {
+          document.getElementById('sb-path').textContent = page.path
+          document.getElementById('sb-desc').textContent = page.description
+          document.getElementById('sb-meta').textContent = page.authLevel
+        })
+        a.addEventListener('mouseleave', () => {
+          document.getElementById('sb-path').textContent = ''
+          document.getElementById('sb-desc').textContent = 'Hover a row to see its description'
+          document.getElementById('sb-meta').textContent = ''
+        })
+        a.addEventListener('focus', () => {
+          document.getElementById('sb-path').textContent = page.path
+          document.getElementById('sb-desc').textContent = page.description
+          document.getElementById('sb-meta').textContent = page.authLevel
+        })
+        body.appendChild(a)
+      }
+
+      panel.appendChild(body)
+      main.appendChild(panel)
+    }
+
+    // Update sidebar totals
+    const total = PAGES.filter(p => p.zone > 0).length
+    document.getElementById('hud-total-label').textContent = `${total} pages total`
+    for (const z of [1,2,3,4]) {
+      const el = document.getElementById(`nav-count-${z}`)
+      if (el) el.textContent = PAGES.filter(p => p.zone === z).length
+    }
+    const allEl = document.getElementById('nav-count-all')
+    if (allEl) allEl.textContent = total
+  }
+
+  // Zone nav filter
+  document.querySelectorAll('.hud-zone-nav-item').forEach(btn => {
+    btn.addEventListener('click', () => renderHUD(btn.dataset.filter))
+  })
+
+  // HUD theme toggle
+  const hudThemeBtn = document.getElementById('hud-theme-toggle')
+  const hudThemeIcon = document.getElementById('hud-theme-icon')
+  function updateHudThemeIcon() {
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark'
+    hudThemeIcon.textContent = dark ? '☾' : '☀'
+  }
+  hudThemeBtn.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme')
+    const next = current === 'dark' ? 'light' : 'dark'
+    document.documentElement.setAttribute('data-theme', next)
+    try { localStorage.setItem('techne-theme', next) } catch(_) {}
+    updateHudThemeIcon()
+  })
+
+  // ══════════════════════════════════════════════
+  // NETWORK MODE
+  // ══════════════════════════════════════════════
+  const NODE_RADIUS = { 0:20, 1:14, 2:12, 3:10, 4:10 }
   let netTransform = { x:0, y:0, scale:1 }
   let netNodes = []
   let dragging = false
   let dragStart = null
 
-  function buildEdges(svg) {
-    const edgeG = document.getElementById('net-edges')
-    edgeG.innerHTML = ''
-    const pageMap = {}
-    for (const p of PAGES) pageMap[p.id] = p
-
-    for (const page of PAGES) {
-      if (!page.parent) continue
-      const parent = pageMap[page.parent]
-      if (!parent) continue
-      const pn = netNodes.find(n => n.id === parent.id)
-      const cn = netNodes.find(n => n.id === page.id)
-      if (!pn || !cn) continue
-      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
-      line.className = 'net-edge'
-      line.setAttribute('x1', pn.x); line.setAttribute('y1', pn.y)
-      line.setAttribute('x2', cn.x); line.setAttribute('y2', cn.y)
-      line.setAttribute('data-from', parent.id)
-      line.setAttribute('data-to', page.id)
-      edgeG.appendChild(line)
-    }
-  }
-
   function layoutNodes(W, H) {
-    // Concentric layout: zone 0 at center, zones 1-4 in rings
-    const radii = { 0:0, 1: Math.min(W,H)*0.18, 2: Math.min(W,H)*0.32, 3: Math.min(W,H)*0.45, 4: Math.min(W,H)*0.57 }
+    const radii = { 0:0, 1:Math.min(W,H)*0.18, 2:Math.min(W,H)*0.32, 3:Math.min(W,H)*0.45, 4:Math.min(W,H)*0.57 }
     const cx = W/2, cy = H/2
-    const zonePages = {0:[], 1:[], 2:[], 3:[], 4:[]}
+    const zonePages = {0:[],1:[],2:[],3:[],4:[]}
     for (const p of PAGES) zonePages[p.zone].push(p)
-
     netNodes = []
     for (const zone of [0,1,2,3,4]) {
       const pages = zonePages[zone]
       const r = radii[zone]
       pages.forEach((p, i) => {
-        const angle = pages.length > 1 ? (2 * Math.PI * i / pages.length) - Math.PI/2 : -Math.PI/2
-        netNodes.push({
-          id: p.id,
-          x: cx + r * Math.cos(angle),
-          y: cy + r * Math.sin(angle),
-          page: p,
-        })
+        const angle = pages.length > 1 ? (2*Math.PI*i/pages.length) - Math.PI/2 : -Math.PI/2
+        netNodes.push({ id:p.id, x:cx+r*Math.cos(angle), y:cy+r*Math.sin(angle), page:p })
       })
     }
   }
 
-  function renderNetworkNodes() {
+  function buildNetEdges() {
+    const edgeG = document.getElementById('net-edges')
+    edgeG.innerHTML = ''
+    const pageMap = {}
+    for (const p of PAGES) pageMap[p.id] = p
+    for (const page of PAGES) {
+      if (!page.parent) continue
+      const pn = netNodes.find(n => n.id === page.parent)
+      const cn = netNodes.find(n => n.id === page.id)
+      if (!pn || !cn) continue
+      const line = document.createElementNS('http://www.w3.org/2000/svg','line')
+      line.className = 'net-edge'
+      line.setAttribute('x1',pn.x); line.setAttribute('y1',pn.y)
+      line.setAttribute('x2',cn.x); line.setAttribute('y2',cn.y)
+      edgeG.appendChild(line)
+    }
+  }
+
+  function renderNetNodes() {
     const nodeG = document.getElementById('net-nodes')
     nodeG.innerHTML = ''
     for (const node of netNodes) {
-      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+      const g = document.createElementNS('http://www.w3.org/2000/svg','g')
       g.className = 'net-node'
-      g.setAttribute('tabindex', '0')
-      g.setAttribute('role', 'button')
-      g.setAttribute('aria-label', `${node.page.title} — ${node.page.authLevel}`)
-      g.setAttribute('data-id', node.id)
-
+      g.setAttribute('tabindex','0')
+      g.setAttribute('role','button')
+      g.setAttribute('aria-label',`${node.page.title} — ${node.page.authLevel}`)
       const r = NODE_RADIUS[node.page.zone] || 10
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-      circle.setAttribute('cx', node.x)
-      circle.setAttribute('cy', node.y)
-      circle.setAttribute('r', r)
-      circle.setAttribute('fill', ZONE_COLORS[node.page.zone])
-      circle.setAttribute('fill-opacity', '0.85')
+      const circle = document.createElementNS('http://www.w3.org/2000/svg','circle')
+      circle.setAttribute('cx',node.x); circle.setAttribute('cy',node.y)
+      circle.setAttribute('r',r)
+      circle.setAttribute('fill',ZONE_COLORS[node.page.zone])
+      circle.setAttribute('fill-opacity','0.85')
       g.appendChild(circle)
-
-      const label = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-      label.setAttribute('x', node.x)
-      label.setAttribute('y', node.y + r + 13)
-      label.setAttribute('text-anchor', 'middle')
+      const label = document.createElementNS('http://www.w3.org/2000/svg','text')
+      label.setAttribute('x',node.x); label.setAttribute('y',node.y+r+13)
+      label.setAttribute('text-anchor','middle')
       label.textContent = node.page.title.length > 14 ? node.page.title.substring(0,13)+'…' : node.page.title
       g.appendChild(label)
-
-      g.addEventListener('click', () => openDetail(node.page))
+      g.addEventListener('click', () => openNetDetail(node.page))
       g.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(node.page) }
-        if (e.key === 'Escape') closeDetail()
+        if (e.key==='Enter'||e.key===' ') { e.preventDefault(); openNetDetail(node.page) }
+        if (e.key==='Escape') closeNetDetail()
       })
       nodeG.appendChild(g)
     }
   }
 
-  function applyTransform() {
-    const { x, y, scale } = netTransform
-    document.getElementById('net-edges').setAttribute('transform', `translate(${x},${y}) scale(${scale})`)
-    document.getElementById('net-nodes').setAttribute('transform', `translate(${x},${y}) scale(${scale})`)
+  function applyNetTransform() {
+    const {x,y,scale} = netTransform
+    document.getElementById('net-edges').setAttribute('transform',`translate(${x},${y}) scale(${scale})`)
+    document.getElementById('net-nodes').setAttribute('transform',`translate(${x},${y}) scale(${scale})`)
   }
 
-  function openDetail(page) {
+  function openNetDetail(page) {
     document.getElementById('detail-title').textContent = page.title
     document.getElementById('detail-path').textContent = page.path
     document.getElementById('detail-desc').textContent = page.description
-    const link = document.getElementById('detail-link')
-    link.href = page.path
+    document.getElementById('detail-link').href = page.path
     document.getElementById('detail-panel').classList.add('open')
   }
-  function closeDetail() {
-    document.getElementById('detail-panel').classList.remove('open')
-  }
+  function closeNetDetail() { document.getElementById('detail-panel').classList.remove('open') }
 
+  let networkInitialized = false
   function initNetwork() {
     const svg = document.getElementById('network-svg')
     const rect = svg.getBoundingClientRect()
-    const W = rect.width || 900
-    const H = rect.height || 640
-
+    const W = rect.width || 900, H = rect.height || 640
     layoutNodes(W, H)
-    buildEdges(svg)
-    renderNetworkNodes()
-    applyTransform()
-
-    // Pan
+    buildNetEdges()
+    renderNetNodes()
+    applyNetTransform()
     svg.addEventListener('mousedown', e => {
       if (e.target.closest('.net-node')) return
       dragging = true
@@ -844,64 +1321,93 @@
       if (!dragging) return
       netTransform.x = e.clientX - dragStart.x
       netTransform.y = e.clientY - dragStart.y
-      applyTransform()
+      applyNetTransform()
     })
     window.addEventListener('mouseup', () => { dragging = false })
-
-    // Zoom wheel
     svg.addEventListener('wheel', e => {
       e.preventDefault()
       const factor = e.deltaY < 0 ? 1.12 : 0.88
       netTransform.scale = Math.max(0.3, Math.min(3, netTransform.scale * factor))
-      applyTransform()
+      applyNetTransform()
     }, { passive: false })
-
-    // Zoom buttons
     document.getElementById('zoom-in').addEventListener('click', () => {
-      netTransform.scale = Math.min(3, netTransform.scale * 1.2)
-      applyTransform()
+      netTransform.scale = Math.min(3, netTransform.scale * 1.2); applyNetTransform()
     })
     document.getElementById('zoom-out').addEventListener('click', () => {
-      netTransform.scale = Math.max(0.3, netTransform.scale / 1.2)
-      applyTransform()
+      netTransform.scale = Math.max(0.3, netTransform.scale / 1.2); applyNetTransform()
     })
     document.getElementById('zoom-reset').addEventListener('click', () => {
-      netTransform = { x:0, y:0, scale:1 }
-      applyTransform()
+      netTransform = {x:0,y:0,scale:1}; applyNetTransform()
     })
-
     document.getElementById('zoom-controls').classList.add('visible')
-    document.getElementById('detail-close').addEventListener('click', closeDetail)
+    document.getElementById('detail-close').addEventListener('click', closeNetDetail)
   }
 
-  // ── Mode toggle ────────────────────────────────────────────────────────────
-  let networkInitialized = false
+  // ══════════════════════════════════════════════
+  // MODE SWITCHING
+  // ══════════════════════════════════════════════
+  let currentMode = 'list'
+  const HERO = document.getElementById('page-hero')
+  const LEGEND_EL = document.getElementById('page-legend')
 
-  document.getElementById('btn-grid').addEventListener('click', () => {
-    document.getElementById('grid-view').style.display = ''
-    document.getElementById('network-view').style.display = 'none'
-    document.getElementById('btn-grid').classList.add('active')
-    document.getElementById('btn-grid').setAttribute('aria-pressed', 'true')
-    document.getElementById('btn-network').classList.remove('active')
-    document.getElementById('btn-network').setAttribute('aria-pressed', 'false')
-  })
+  function switchMode(mode) {
+    currentMode = mode
+    const gridView    = document.getElementById('grid-view')
+    const networkView = document.getElementById('network-view')
+    const hudView     = document.getElementById('hud-view')
 
-  document.getElementById('btn-network').addEventListener('click', () => {
-    document.getElementById('grid-view').style.display = 'none'
-    document.getElementById('network-view').style.display = 'block'
-    document.getElementById('btn-grid').classList.remove('active')
-    document.getElementById('btn-grid').setAttribute('aria-pressed', 'false')
-    document.getElementById('btn-network').classList.add('active')
-    document.getElementById('btn-network').setAttribute('aria-pressed', 'true')
-    if (!networkInitialized) {
-      networkInitialized = true
-      // Use rAF to ensure the SVG is laid out before measuring
-      requestAnimationFrame(() => initNetwork())
+    // Hide all
+    gridView.style.display    = 'none'
+    networkView.style.display = 'none'
+    hudView.style.display     = 'none'
+    HERO.style.display        = ''
+    LEGEND_EL.style.display   = ''
+    document.body.style.overflow = ''
+
+    // Update main mode buttons
+    ;['list','hud','network'].forEach(m => {
+      const btn = document.getElementById(`btn-${m}`)
+      if (btn) { btn.classList.toggle('active', m===mode); btn.setAttribute('aria-pressed', m===mode ? 'true' : 'false') }
+    })
+
+    if (mode === 'list') {
+      gridView.style.display = ''
+    } else if (mode === 'hud') {
+      HERO.style.display = 'none'
+      LEGEND_EL.style.display = 'none'
+      hudView.style.display = 'block'
+      document.body.style.overflow = 'hidden'
+      updateHudThemeIcon()
+      renderHUD('all')
+    } else if (mode === 'network') {
+      networkView.style.display = 'block'
+      if (!networkInitialized) {
+        networkInitialized = true
+        requestAnimationFrame(() => initNetwork())
+      }
     }
+  }
+
+  // Main page mode buttons
+  document.getElementById('btn-list').addEventListener('click', () => switchMode('list'))
+  document.getElementById('btn-hud').addEventListener('click', () => switchMode('hud'))
+  document.getElementById('btn-network').addEventListener('click', () => switchMode('network'))
+
+  // HUD internal mode buttons (navigate out of HUD)
+  document.getElementById('hud-btn-list').addEventListener('click', () => switchMode('list'))
+  document.getElementById('hud-btn-hud').addEventListener('click', () => {})
+  document.getElementById('hud-btn-network').addEventListener('click', () => switchMode('network'))
+
+  // Escape key exits HUD mode
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && currentMode === 'hud') switchMode('list')
   })
 
-  // ── Init ───────────────────────────────────────────────────────────────────
+  // ══════════════════════════════════════════════
+  // INIT
+  // ══════════════════════════════════════════════
   renderGrid()
+  updateHudThemeIcon()
   </script>
 </body>
 </html>
