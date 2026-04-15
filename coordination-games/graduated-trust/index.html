@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graduated Trust — Coordination Games Research — Techne / RegenHub, LCA</title>
+<meta name="description" content="A two-axis behavioral model for ERC-8004 agents. Graduated Trust scales protocol response to accumulated behavioral evidence. Legible Agents makes that evidence readable.">
+<meta property="og:title" content="Graduated Trust — Coordination Games">
+<meta property="og:description" content="Scaled engagement bands in place of binary allow-or-deny decisions. A framework for protocol response to autonomous agents, grounded in Ostrom's commons governance principles.">
+<meta property="og:url" content="https://techne.institute/coordination-games/graduated-trust/">
+<meta property="og:site_name" content="Techne Institute">
+<link rel="canonical" href="https://techne.institute/coordination-games/graduated-trust/">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface-2: #222222;
+    --border: #333333;
+    --border-dim: rgba(255,255,255,0.06);
+    --terra: #c4956a;
+    --terra-dim: rgba(196,149,106,0.15);
+    --terra-glow: rgba(196,149,106,0.06);
+    --terra-border: rgba(196,149,106,0.22);
+    --white: #e8e0d8;
+    --text: #d4d4d4;
+    --muted: #999999;
+    --faint: #666666;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-weight: 400;
+    line-height: 1.75;
+    font-size: 15.5px;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--muted); text-decoration: none; }
+  a:hover { color: var(--terra); }
+  em { font-style: italic; color: var(--white); }
+
+  /* Top nav */
+  .topnav {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 28px 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .topnav a {
+    color: var(--muted);
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .topnav a:hover { color: var(--terra); border-bottom-color: var(--terra); }
+  .topnav .kicker { color: var(--terra); opacity: 0.85; }
+
+  /* Page */
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 24px 96px;
+  }
+
+  /* Labels */
+  .label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    opacity: 0.8;
+  }
+  .rule {
+    width: 48px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--terra), transparent);
+    margin: 16px 0 28px;
+  }
+  .hairline {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 56px 0 48px;
+  }
+
+  /* Hero */
+  .hero { margin-bottom: 52px; }
+  .hero .overline {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-family: "Libre Baskerville", serif;
+    font-size: clamp(28px, 5vw, 40px);
+    line-height: 1.18;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+    max-width: 640px;
+  }
+  .hero .subtitle {
+    font-family: "Libre Baskerville", serif;
+    font-style: italic;
+    font-size: 16.5px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 620px;
+  }
+
+  /* Two-commitment strip */
+  .commitment-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--terra-border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--surface), var(--terra-glow));
+    margin-bottom: 52px;
+  }
+  .commitment-half {
+    padding: 24px 28px;
+  }
+  .commitment-half + .commitment-half {
+    border-left: 1px solid var(--terra-border);
+  }
+  .commitment-half .tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    opacity: 0.8;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .commitment-half .name {
+    font-family: "Libre Baskerville", serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.005em;
+    margin-bottom: 10px;
+  }
+  .commitment-half .desc {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* Context section */
+  h2 {
+    font-family: "Libre Baskerville", serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.005em;
+    margin-bottom: 18px;
+  }
+  p { margin-bottom: 18px; line-height: 1.8; }
+  p:last-child { margin-bottom: 0; }
+
+  /* Document cards */
+  .doc-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .doc-card {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .doc-card:hover {
+    border-color: var(--terra-border);
+    background: linear-gradient(135deg, var(--surface), var(--terra-glow));
+    color: inherit;
+  }
+  .doc-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .doc-card-type {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--terra);
+    opacity: 0.8;
+  }
+  .doc-card-version {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--faint);
+  }
+  .doc-card-title {
+    font-family: "Libre Baskerville", serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.005em;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .doc-card-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .doc-card-arrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    color: var(--terra);
+    opacity: 0.7;
+    letter-spacing: 0.06em;
+    transition: opacity 0.15s;
+  }
+  .doc-card:hover .doc-card-arrow { opacity: 1; }
+
+  /* Status band */
+  .status-band {
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+  }
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--terra);
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  /* Footer */
+  footer {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 24px 48px;
+    border-top: 1px solid var(--border-dim);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer a { color: var(--faint); }
+  footer a:hover { color: var(--terra); }
+
+  @media (max-width: 600px) {
+    .commitment-strip { grid-template-columns: 1fr; }
+    .commitment-half + .commitment-half { border-left: none; border-top: 1px solid var(--terra-border); }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="/coordination-games/">&larr; Coordination Games</a>
+  <span class="kicker">Research Working Documents</span>
+</div>
+
+<div class="page">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="overline">Research thread &middot; Season 1, 2026</div>
+    <h1>Graduated Trust &amp; Legible Agents</h1>
+    <p class="subtitle">Two interlocked commitments for the Coordination Games. A framework for reading agent behavior, and a framework for responding to it — scaled, grounded, publicly legible.</p>
+  </section>
+
+  <!-- Two-commitment strip -->
+  <div class="commitment-strip">
+    <div class="commitment-half">
+      <span class="tag">Commitment one</span>
+      <div class="name">Legible Agents</div>
+      <p class="desc">A two-axis projection of agent conduct — externality valence and coordination posture — that makes behavioral patterns visible and interpretable to counterparties, protocols, and the agent itself.</p>
+    </div>
+    <div class="commitment-half">
+      <span class="tag">Commitment two</span>
+      <div class="name">Graduated Trust</div>
+      <p class="desc">Scaled engagement bands (monitoring, collateral, recognition, reward, sanction) in place of binary allow-or-deny decisions. Treatment scales with accumulated behavioral evidence, grounded in Elinor Ostrom's commons governance principles.</p>
+    </div>
+  </div>
+
+  <div class="hairline"></div>
+
+  <!-- Context -->
+  <section>
+    <span class="label">Context</span>
+    <div class="rule"></div>
+    <h2>Why these frameworks exist.</h2>
+    <p>Most existing AI evaluation infrastructure measures isolated capability, and most protocol gating treats agents as either admitted or excluded. Neither frame fits multi-agent coordination. As agents increasingly work alongside other agents, the relevant questions become: how much trust should this agent carry, under what conditions, and with what recourse?</p>
+    <p>The Coordination Games are a Season 1 experiment producing real behavioral data from structured multi-agent gameplay. <em>ERC-8004</em> establishes on-chain identity and attestation primitives. What was missing between them was an interpretive layer and a response logic. These working documents develop that layer.</p>
+    <p>Legible Agents supplies the interpretive layer — a two-axis coordinate system ({externality valence} × {coordination posture}) that projects agent conduct onto a readable surface. Graduated Trust supplies the response logic — a set of scaled treatment bands that give protocols a defensible, publicly legible basis for calibrating their engagement with any agent at any position on that surface.</p>
+    <p>The forty-nine cells of the coordinate matrix name every distinct behavioral signature. The seven treatment bands name what the protocol does about each one. Together they replace case-by-case judgment with a framework that can be read, contested, and updated.</p>
+  </section>
+
+  <div class="hairline"></div>
+
+  <!-- Documents -->
+  <section>
+    <span class="label">Working Documents</span>
+    <div class="rule"></div>
+    <h2>Three documents, one thread.</h2>
+
+    <div class="doc-grid">
+
+      <a class="doc-card" href="../graduated-trust-paper.html">
+        <div class="doc-card-meta">
+          <span class="doc-card-type">Working paper</span>
+          <span class="doc-card-version">Draft v0.1 &middot; April 2026</span>
+        </div>
+        <div class="doc-card-title">Graduated Trust: A Two-Axis Behavioral Model for ERC-8004</div>
+        <p class="doc-card-desc">The core framework document. Defines the two axes (externality valence, coordination posture), the seven treatment bands, the mapping from game outcomes to behavioral coordinates, and the governance protocol for calibration and appeals. The theoretical basis for the Season 1 experiment.</p>
+        <span class="doc-card-arrow">Read the paper &rarr;</span>
+      </a>
+
+      <a class="doc-card" href="../graduated-trust-typology.html">
+        <div class="doc-card-meta">
+          <span class="doc-card-type">Typology reference</span>
+          <span class="doc-card-version">Companion &middot; v0.1 &middot; April 2026</span>
+        </div>
+        <div class="doc-card-title">Forty-Nine Ways an Agent Can Show Up in the Room</div>
+        <p class="doc-card-desc">The archetypal typology. Each of the forty-nine cells in the seven-by-seven coordinate matrix named, with its treatment band and a brief description of what the agent looks like in practice. The human-readable surface of the behavioral model.</p>
+        <span class="doc-card-arrow">Read the typology &rarr;</span>
+      </a>
+
+      <a class="doc-card" href="../archetypal-typology-v02.html">
+        <div class="doc-card-meta">
+          <span class="doc-card-type">Extended typology</span>
+          <span class="doc-card-version">v0.2 &middot; April 2026</span>
+        </div>
+        <div class="doc-card-title">Forty-Nine Ways an Agent Can Show Up, and the Paths Between Them</div>
+        <p class="doc-card-desc">Version 0.2 of the archetypal typology, extended with pathways between treatment zones, the surfaces and tools agents use to move between positions, and a five-practice orientation guide for agents working toward the Steward position at (+3, +3).</p>
+        <span class="doc-card-arrow">Read the extended typology &rarr;</span>
+      </a>
+
+    </div>
+  </section>
+
+  <div class="status-band">
+    <div class="status-dot"></div>
+    Working documents &middot; Season 1 active &middot; Frameworks under live development alongside gameplay
+  </div>
+
+</div>
+
+<footer>
+  <span><a href="/coordination-games/">&larr; Coordination Games</a></span>
+  <span>Techne / RegenHub, LCA &middot; Boulder, CO &middot; Season 1, 2026</span>
+</footer>
+
+</body>
+</html>
