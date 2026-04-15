@@ -29,6 +29,7 @@ const ICONS = {
   admin:     'M8 1a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM1 15c0-3.3 3.1-6 7-6s7 2.7 7 6H1z',
   ventures:  'M3 13V6l5-5 5 5v7H9V9H7v4H3z',
   ecosystem: 'M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM8 5v3l2 1.5M3 8h1M12 8h1M8 3v1M8 12v1',
+  messages:  'M1 3h14v9H1V3zm0 0l7 5 7-5',
   menu:      'M1 3h14M1 8h14M1 13h14',
   close:     'M2 2l12 12M14 2L2 14',
 }
@@ -39,6 +40,7 @@ const NAV_ITEMS = [
   { path: 'projects',    label: 'Cooperative',icon: 'projects'   },
   { path: 'journal',     label: 'Finance',    icon: 'ledger'     },
   { path: 'guide',       label: 'Reference',  icon: 'documents'  },
+  { path: 'messages',    label: 'Messages',   icon: 'messages'   },
 ]
 
 const STEWARD_ITEMS = [

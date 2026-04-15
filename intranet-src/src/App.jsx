@@ -15,6 +15,7 @@ import CooperativeGroup from './pages/CooperativeGroup'
 import FinanceGroup from './pages/FinanceGroup'
 import ReferenceGroup from './pages/ReferenceGroup'
 import Ecosystem from './pages/Ecosystem'
+import Messages from './pages/Messages'
 
 // GitHub Pages SPA routing shim
 // On 404, GH Pages redirects to 404.html which encodes the path as ?p=/path
@@ -114,6 +115,7 @@ function Router() {
   else if (path === 'cloud')      PageComponent = <Cloud />
   else if (path === 'admin')      PageComponent = <Admin />
   else if (path === 'ventures')   PageComponent = <Ventures />
+  else if (path === 'messages')   PageComponent = <Messages />
   else if (path === 'profile')    PageComponent = <Profile onRerunOnboarding={() => {
     try { localStorage.removeItem(ONBOARDING_DISMISSED_KEY) } catch (_) {}
     setShowOnboarding(true)
