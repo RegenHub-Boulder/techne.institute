@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Amplification Thesis — Brief — Techne</title>
+<meta name="description" content="AI can replace human work or amplify it. The difference is institutional, not technical. A one-page overview.">
+<meta property="og:title" content="The Amplification Thesis — Brief">
+<meta property="og:description" content="AI can replace human work or amplify it. The difference is institutional, not technical.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://techne.institute/amplification/brief">
+<meta property="og:site_name" content="Techne Institute">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Amplification Thesis — Brief">
+<meta name="twitter:description" content="AI can replace human work or amplify it. The difference is institutional, not technical.">
+<link rel="canonical" href="https://techne.institute/amplification/brief/">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --bg-card: #1a1a1a;
+    --text: #e8e4df;
+    --text-dim: #9a9590;
+    --text-faint: #5a5550;
+    --accent: #c4956a;
+    --accent-dim: #8a6a4a;
+    --accent-bright: #d4a57a;
+    --rule: #2a2520;
+    --green: #6a9a6a;
+    --green-dim: #3a5a3a;
+    --red: #9a6a6a;
+    --red-dim: #5a3a3a;
+    --serif: 'EB Garamond', 'Georgia', serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 18px; background: var(--bg); scroll-behavior: smooth; }
+  body { font-family: var(--serif); color: var(--text); background: var(--bg); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10, 10, 10, 0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.6rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--sans); font-size: 0.7rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  nav .brand { color: var(--accent); font-weight: 500; text-decoration: none; }
+  nav .brand:hover { color: var(--accent-bright); }
+  nav .nav-links { display: flex; gap: 1.5rem; }
+  nav .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 400; transition: color 0.2s; }
+  nav .nav-links a:hover { color: var(--text); }
+
+  .page {
+    max-width: 38rem; margin: 0 auto;
+    padding: 7rem 2rem 4rem;
+  }
+
+  .page .greek {
+    font-size: 1.8rem; font-style: italic; color: var(--accent);
+    font-family: var(--serif); margin-bottom: 0.3rem;
+  }
+  .page .greek-sub {
+    font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--text-faint); margin-bottom: 2rem;
+  }
+
+  .page h1 {
+    font-family: var(--serif); font-size: 2rem; font-weight: 400;
+    color: var(--text); margin-bottom: 0.8rem; letter-spacing: -0.01em;
+  }
+
+  .page .subtitle {
+    font-size: 1.1rem; font-style: italic; color: var(--text-dim);
+    margin-bottom: 2.5rem; line-height: 1.5;
+  }
+
+  hr.rule {
+    border: none; height: 1px; background: var(--rule); margin: 2.5rem 0;
+  }
+
+  .page h2 {
+    font-family: var(--sans); font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+  }
+
+  .page p {
+    font-size: 1.02rem; color: var(--text-dim); margin-bottom: 1.3rem; line-height: 1.75;
+  }
+  .page p strong { color: var(--text); font-weight: 500; }
+
+  /* --- SPLIT COMPACT --- */
+  .split-compact {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+    margin: 1.5rem 0 2rem;
+  }
+  .split-box {
+    padding: 1.3rem; border: 1px solid var(--rule); border-radius: 2px;
+  }
+  .split-box.extract { border-left: 3px solid var(--red-dim); }
+  .split-box.amplify { border-left: 3px solid var(--green-dim); }
+  .split-box .label {
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.6rem;
+  }
+  .split-box.extract .label { color: var(--red); }
+  .split-box.amplify .label { color: var(--green); }
+  .split-box p {
+    font-size: 0.88rem; color: var(--text-dim); line-height: 1.55; margin-bottom: 0;
+  }
+
+  /* --- CONDITIONS LIST --- */
+  .conditions {
+    list-style: none; padding: 0; margin: 1rem 0 2rem;
+  }
+  .conditions li {
+    padding: 0.7rem 0 0.7rem 1.2rem;
+    border-left: 2px solid var(--accent-dim);
+    margin-bottom: 0.5rem;
+    font-size: 0.92rem; color: var(--text-dim); line-height: 1.55;
+  }
+  .conditions li strong {
+    color: var(--text); font-weight: 500;
+  }
+
+  /* --- CTA --- */
+  .cta-block {
+    margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--rule);
+    text-align: center;
+  }
+  .cta-block p {
+    font-size: 0.9rem; color: var(--text-faint); text-align: center;
+  }
+  .cta-block .links {
+    display: flex; gap: 1rem; justify-content: center; margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .cta-block a {
+    display: inline-block; padding: 0.7rem 1.6rem;
+    font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.12em;
+    text-transform: uppercase; text-decoration: none; border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .cta-block a.primary {
+    color: var(--bg); background: var(--accent); border: 1px solid var(--accent);
+  }
+  .cta-block a.primary:hover { background: var(--accent-bright); }
+  .cta-block a.secondary {
+    color: var(--accent); background: transparent; border: 1px solid var(--accent-dim);
+  }
+  .cta-block a.secondary:hover { background: rgba(196, 149, 106, 0.1); }
+
+  footer {
+    text-align: center; padding: 3rem 2rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--sans); font-size: 0.6rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint);
+  }
+  footer a { color: var(--accent-dim); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .split-compact { grid-template-columns: 1fr; }
+    .page h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="/">Techne</a>
+  <div class="nav-links">
+    <a href="/amplification/">Full Thesis</a>
+    <a href="/introduction/">Essays</a>
+    <a href="/formation/">Formation</a>
+  </div>
+</nav>
+
+<main class="page">
+
+  <div class="greek">αὔξησις</div>
+  <div class="greek-sub">auxēsis — to cause to grow</div>
+  <h1>The Amplification Thesis</h1>
+  <p class="subtitle">AI doesn't have to replace human work. It can amplify it. The difference is institutional, not technical.</p>
+
+  <hr class="rule">
+
+  <h2>The observation</h2>
+  <p>
+    Every significant leap in productive capability has posed the same question: <strong>who benefits?</strong>
+    The power loom. The assembly line. The platform economy. In each case, the answer was determined
+    not by the technology but by the <strong>institution</strong> surrounding it — the ownership model,
+    the governance structure, the rules for distributing gains.
+  </p>
+  <p>
+    AI is the latest instance of a very old pattern. The fear it generates is earned. But the
+    pattern has a counter-pattern, and the counter-pattern is also proven.
+  </p>
+
+  <hr class="rule">
+
+  <h2>The split</h2>
+  <p>
+    The same AI capability produces opposite outcomes depending on institutional design:
+  </p>
+  <div class="split-compact">
+    <div class="split-box extract">
+      <div class="label">Extraction</div>
+      <p>AI owned by shareholders. Incentive: reduce headcount. Productivity gains flow to capital. The tool replaces the person.</p>
+    </div>
+    <div class="split-box amplify">
+      <div class="label">Amplification</div>
+      <p>AI owned by its users. Incentive: expand what people can do. Productivity gains flow to members. The tool extends the person.</p>
+    </div>
+  </div>
+  <p>
+    The technology is identical. The institution determines whether it serves the people it touches
+    or displaces them.
+  </p>
+
+  <hr class="rule">
+
+  <h2>Four conditions for amplification</h2>
+  <ul class="conditions">
+    <li><strong>Shared ownership</strong> — AI capability owned by the people whose work it affects. No external shareholder whose returns depend on replacement.</li>
+    <li><strong>Democratic governance</strong> — Deployment decisions made by the people affected. One member, one vote.</li>
+    <li><strong>Transparent accounting</strong> — A patronage formula that makes value flows visible. When productivity increases, everyone can see where the surplus goes.</li>
+    <li><strong>Co-evolution</strong> — Improve the tool and the person and the method together. AI literacy means learning to compose with the tool, not be composed away by it.</li>
+  </ul>
+
+  <hr class="rule">
+
+  <h2>The institutional vehicle</h2>
+  <p>
+    The cooperative form meets all four conditions. It has for 182 years, since twenty-eight
+    displaced weavers in Rochdale built an alternative to the factory system. Today, over
+    three million cooperatives operate worldwide. The model is not theoretical. It is the most
+    tested institutional response to technological displacement in human history.
+  </p>
+  <p>
+    What has not yet been tested is whether the cooperative form can hold for AI — whether a
+    worker-owned venture studio deploying AI capability can demonstrate, in practice, that
+    amplification outperforms extraction. That is the experiment.
+  </p>
+
+  <hr class="rule">
+
+  <h2>The invitation</h2>
+  <p>
+    Hope is not optimism. Optimism says things will work out. Hope says <strong>the work is worth doing regardless</strong>.
+    The fear of being replaced is real. The counter-pattern — institutions that hold a different
+    relationship between human capability and productive technology — is also real, also persistent,
+    and available to anyone willing to build it.
+  </p>
+
+  <div class="cta-block">
+    <p>This is the brief. The full exploration includes the historical timeline, the three-stage transition framework, and the open questions.</p>
+    <div class="links">
+      <a class="primary" href="/amplification/">Read the Full Thesis</a>
+      <a class="secondary" href="https://github.com/nou-techne/nou-techne/blob/main/letters/on-the-fear-of-being-replaced.md">Read the Letter</a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <a href="/">Techne Institute</a> · Boulder, Colorado · 2026
+</footer>
+
+</body>
+</html>
