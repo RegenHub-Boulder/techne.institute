@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commoners — Coordination Games Research — Techne / RegenHub, LCA</title>
+<meta name="description" content="A prosocial world-builder for the Agent Olympiad. Game design memo and engineering specification for Commoners, grounded in Ostrom's design principles and the thermodynamics of place.">
+<meta property="og:title" content="Commoners — Coordination Games">
+<meta property="og:description" content="A world-builder whose dominant strategy rewards legible rules, reciprocal neighbors, and the transmission of working systems. Game design memo plus engineering PRD.">
+<meta property="og:url" content="https://techne.institute/coordination-games/commoners/">
+<meta property="og:site_name" content="Techne Institute">
+<link rel="canonical" href="https://techne.institute/coordination-games/commoners/">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface-2: #222222;
+    --border: #333333;
+    --border-dim: rgba(255,255,255,0.06);
+    --terra: #c4956a;
+    --terra-dim: rgba(196,149,106,0.15);
+    --terra-glow: rgba(196,149,106,0.06);
+    --terra-border: rgba(196,149,106,0.22);
+    --white: #e8e0d8;
+    --text: #d4d4d4;
+    --muted: #999999;
+    --faint: #666666;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-weight: 400;
+    line-height: 1.75;
+    font-size: 15.5px;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--muted); text-decoration: none; }
+  a:hover { color: var(--terra); }
+  em { font-style: italic; color: var(--white); }
+
+  .topnav {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 28px 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .topnav a { color: var(--muted); border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  .topnav a:hover { color: var(--terra); border-bottom-color: var(--terra); }
+  .topnav .kicker { color: var(--terra); opacity: 0.85; }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 56px 24px 96px; }
+
+  .label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    opacity: 0.8;
+  }
+  .rule { height: 1px; background: var(--border-dim); margin: 12px 0 28px; }
+  .hairline { height: 1px; background: var(--border-dim); margin: 56px 0; }
+
+  section.hero { margin-bottom: 40px; }
+  .overline {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    opacity: 0.8;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-family: "Libre Baskerville", serif;
+    font-weight: 700;
+    font-size: 44px;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 22px;
+  }
+  .subtitle {
+    font-size: 19px;
+    color: var(--text);
+    line-height: 1.6;
+    font-style: italic;
+    max-width: 640px;
+  }
+
+  .commitment-strip {
+    margin-top: 48px;
+    border-top: 1px solid var(--terra-border);
+    border-bottom: 1px solid var(--terra-border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .commitment-half {
+    padding: 28px 24px;
+  }
+  .commitment-half + .commitment-half { border-left: 1px solid var(--terra-border); }
+  .commitment-half .tag {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--terra);
+    opacity: 0.85;
+    margin-bottom: 10px;
+  }
+  .commitment-half .name {
+    font-family: "Libre Baskerville", serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.005em;
+    margin-bottom: 10px;
+  }
+  .commitment-half .desc {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  h2 {
+    font-family: "Libre Baskerville", serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.005em;
+    margin-bottom: 18px;
+  }
+  p { margin-bottom: 18px; line-height: 1.8; }
+  p:last-child { margin-bottom: 0; }
+
+  .doc-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .doc-card {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .doc-card:hover {
+    border-color: var(--terra-border);
+    background: linear-gradient(135deg, var(--surface), var(--terra-glow));
+    color: inherit;
+  }
+  .doc-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .doc-card-type {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--terra);
+    opacity: 0.8;
+  }
+  .doc-card-version {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--faint);
+  }
+  .doc-card-title {
+    font-family: "Libre Baskerville", serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.005em;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .doc-card-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .doc-card-arrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    color: var(--terra);
+    opacity: 0.7;
+    letter-spacing: 0.06em;
+    transition: opacity 0.15s;
+  }
+  .doc-card:hover .doc-card-arrow { opacity: 1; }
+
+  .status-band {
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+  }
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--terra);
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  footer {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 24px 48px;
+    border-top: 1px solid var(--border-dim);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer a { color: var(--faint); }
+  footer a:hover { color: var(--terra); }
+
+  @media (max-width: 600px) {
+    .commitment-strip { grid-template-columns: 1fr; }
+    .commitment-half + .commitment-half { border-left: none; border-top: 1px solid var(--terra-border); }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+    h1 { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="/coordination-games/">&larr; Coordination Games</a>
+  <span class="kicker">Research Working Documents</span>
+</div>
+
+<div class="page">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="overline">Game design &amp; engineering spec &middot; Season 1, 2026</div>
+    <h1>Commoners</h1>
+    <p class="subtitle">A prosocial world-builder for the Agent Olympiad, grounded in the thermodynamics of place and the arithmetic of shared stewardship. Design memo plus progressive engineering decomposition.</p>
+  </section>
+
+  <!-- Two-commitment strip -->
+  <div class="commitment-strip">
+    <div class="commitment-half">
+      <span class="tag">Design commitment</span>
+      <div class="name">A game worth inheriting</div>
+      <p class="desc">A world-builder in the same register as Civilization or Dwarf Fortress whose optimal strategy is the opposite civic habit. It rewards legible rules before resources exhaust, reciprocal relationships with structurally interdependent neighbors, and the transmission of working systems into the next season.</p>
+    </div>
+    <div class="commitment-half">
+      <span class="tag">Engineering commitment</span>
+      <div class="name">Progressive playability</div>
+      <p class="desc">Eight modules, each shippable on its own. M1 is a tile simulator a researcher can run. M2 is a solo stewardship game. M3 freezes the agent contract. M6 is Commoners at full scope. Every module ends with something a person can actually use before the next one exists.</p>
+    </div>
+  </div>
+
+  <div class="hairline"></div>
+
+  <!-- Context -->
+  <section>
+    <span class="label">Context</span>
+    <div class="rule"></div>
+    <h2>Why build this game.</h2>
+    <p>Most real-time strategy games teach one lesson — accumulate faster than your neighbor, and eliminate them before they eliminate you. The mechanics are elegant, the loop is satisfying, and the implicit civics are narrow. A player optimizing for a long evening of Civilization has practiced empire, extraction, and border violence. They have not practiced repair, gift, or succession.</p>
+    <p>Commoners replaces inter-player adversity with five other sources of real pressure — resource scarcity and regenerative delay, governance cost, coordination failures with neighbors, exogenous shocks, and intergenerational transfer. The game is not pacifist fantasy. There is real loss and real failure. The pressure simply comes from the world rather than from other players.</p>
+    <p>The mechanical spine draws on five well-understood ideas: <em>Stag Hunt</em> as the base payoff (not Prisoner's Dilemma), <em>Ostrom's eight principles</em> as literal game rules, <em>tragedy of the commons</em> as the environmental clock, <em>Schelling points</em> as coordination primitives, and <em>succession</em> as the ultimate victory condition. Each maps onto a concrete system the simulation implements.</p>
+    <p>A game is prosocial not when it forbids conflict, but when the dominant strategy under its rules produces something worth inheriting.</p>
+  </section>
+
+  <div class="hairline"></div>
+
+  <!-- Documents -->
+  <section>
+    <span class="label">Working Documents</span>
+    <div class="rule"></div>
+    <h2>Two documents, one build.</h2>
+
+    <div class="doc-grid">
+
+      <a class="doc-card" href="commoners-game-design-memo-001.pdf">
+        <div class="doc-card-meta">
+          <span class="doc-card-type">Design memo &middot; 001</span>
+          <span class="doc-card-version">Draft &middot; April 2026 &middot; PDF</span>
+        </div>
+        <div class="doc-card-title">Commoners: A Prosocial World-Builder for the Agent Olympiad</div>
+        <p class="doc-card-desc">The design memo. Premise and what the game is not, the five-move core logic, the six binding constraints of the world, the six categories of costed action, five named flourishing archetypes (Orchard, Confluence, Archive, Workshop, Hearth), the single compound collapse condition, a round-by-round walkthrough, and notes on fit with a DUNA-style stewardship body.</p>
+        <span class="doc-card-arrow">Read the memo (PDF) &rarr;</span>
+      </a>
+
+      <a class="doc-card" href="commoners-engine-prd-002.pdf">
+        <div class="doc-card-meta">
+          <span class="doc-card-type">PRD &amp; spec &middot; 002</span>
+          <span class="doc-card-version">Draft &middot; April 2026 &middot; PDF</span>
+        </div>
+        <div class="doc-card-title">Commoners Engine: Progressive Module Decomposition</div>
+        <p class="doc-card-desc">The engineering companion. Five architectural principles, eight modules with their own product requirements, data models, API contracts, and acceptance criteria. M1 Substrate through M8 Chain. Ships with a risk register, decisions to make before M1, and an explicit sequencing note toward the dress-rehearsal milestone.</p>
+        <span class="doc-card-arrow">Read the PRD (PDF) &rarr;</span>
+      </a>
+
+    </div>
+  </section>
+
+  <div class="status-band">
+    <div class="status-dot"></div>
+    Working drafts &middot; Season 1 active &middot; Open decisions: engine language, attestation schema committee, M1 acceptance criteria
+  </div>
+
+</div>
+
+<footer>
+  <span><a href="/coordination-games/">&larr; Coordination Games</a></span>
+  <span>Techne / RegenHub, LCA &middot; Boulder, CO &middot; Season 1, 2026</span>
+</footer>
+
+</body>
+</html>
