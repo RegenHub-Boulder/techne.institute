@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Workshop — Techne Coordination</title>
-    <script>
-      // SPA redirect for GitHub Pages — preserves path for client-side router
-      var pathSegmentsToKeep = 1; // /workshop/
-      var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
-    </script>
-  </head>
-  <body></body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workshop — Techne Coordination</title>
+  <meta name="description" content="Workshop coordination surface for the Techne agent protocol. Sprint lifecycle, capability grid, swarm visualization." />
+  <meta name="theme-color" content="#0c0c0c" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E⚒%3C/text%3E%3C/svg%3E" />
+  <script type="module" crossorigin src="/workshop/assets/index-CX2mO4qK.js"></script>
+  <link rel="modulepreload" crossorigin href="/workshop/assets/vendor-react-MtDf8HrV.js">
+  <link rel="modulepreload" crossorigin href="/workshop/assets/vendor-supabase-mNyy4ix0.js">
+  <link rel="stylesheet" crossorigin href="/workshop/assets/index-CE7WBz67.css">
+</head>
+<body>
+  <div id="root"></div>
+</body>
 </html>
