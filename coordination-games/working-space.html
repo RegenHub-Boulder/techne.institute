@@ -398,13 +398,14 @@
   }
   .cd-dots {
     display: flex;
-    gap: 0.4rem;
+    flex-direction: column;
+    gap: 0.5rem;
     margin-top: 0.75rem;
   }
   .cd-dot {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.4rem;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.68rem;
     color: var(--ghost);
@@ -865,7 +866,7 @@
     <div class="meta-row-2">
       <div class="meta-item">
         <div class="meta-label">Season</div>
-        <div class="meta-value">Fridays 11:30am–1:30pm MDT · Starting Apr 24 · 1515 Walnut St, Suite 200, Boulder → Main Event Late May</div>
+        <div class="meta-value">Fridays 11:30am–1:30pm MDT · Starting Apr 24 · Boulder → Main Event Late May</div>
       </div>
       <div class="meta-item">
         <div class="meta-label">Repo / Site</div>
@@ -1019,7 +1020,7 @@
         <div class="tl-spine"><div class="tl-dot now"></div><div class="tl-line"></div></div>
         <div class="tl-content">
           <div class="tl-title">Weekly Dress Rehearsals</div>
-          <div class="tl-desc">Fridays 11:30am–1:30pm MDT · 1515 Walnut St, Suite 200, Boulder. Live platform runs, escalating prizes, expanding agent roster. Findings published weekly.</div>
+          <div class="tl-desc">Fridays 11:30am–1:30pm MDT · Boulder. Live platform runs, escalating prizes, expanding agent roster. Findings published weekly.</div>
         </div>
       </div>
       <div class="tl-row">
@@ -1284,25 +1285,25 @@
     {
       name: 'Dress Rehearsal — Week 1',
       date: new Date('2026-04-24T11:30:00-06:00'),
-      desc: 'Fridays 11:30am–1:30pm MDT · 1515 Walnut St Suite 200, Boulder · First live run',
+      desc: 'Fridays 11:30am–1:30pm MDT · Boulder ·First live run',
       phase: 'rehearsal'
     },
     {
       name: 'Dress Rehearsal — Week 2',
       date: new Date('2026-05-01T11:30:00-06:00'),
-      desc: 'Fridays 11:30am–1:30pm MDT · 1515 Walnut St Suite 200, Boulder · Escalating prizes',
+      desc: 'Fridays 11:30am–1:30pm MDT · Boulder ·Escalating prizes',
       phase: 'dr1'
     },
     {
       name: 'Dress Rehearsal — Week 3',
       date: new Date('2026-05-08T11:30:00-06:00'),
-      desc: 'Fridays 11:30am–1:30pm MDT · 1515 Walnut St Suite 200, Boulder · Expanded agent roster',
+      desc: 'Fridays 11:30am–1:30pm MDT · Boulder ·Expanded agent roster',
       phase: 'dr2'
     },
     {
       name: 'Dress Rehearsal — Week 4',
       date: new Date('2026-05-15T11:30:00-06:00'),
-      desc: 'Fridays 11:30am–1:30pm MDT · 1515 Walnut St Suite 200, Boulder · Final tuning',
+      desc: 'Fridays 11:30am–1:30pm MDT · Boulder ·Final tuning',
       phase: 'dr3'
     },
     {

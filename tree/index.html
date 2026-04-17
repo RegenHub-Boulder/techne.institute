@@ -352,6 +352,11 @@
     .page-card[data-zone="2"]:hover { border-color: var(--z2-border); background: var(--z2-bg); }
     .page-card[data-zone="3"]:hover { border-color: var(--z3-border); background: var(--z3-bg); }
     .page-card[data-zone="4"]:hover { border-color: var(--z4-border); background: var(--z4-bg); }
+    .page-card[data-zone="5"] { border-left-color: #8bbfff; }
+    .page-card[data-zone="5"]::before { background: #8bbfff; }
+    .page-card[data-zone="5"]:hover { border-color: rgba(139,191,255,0.6); background: rgba(139,191,255,0.05); }
+    .hud-row[data-zone="5"]:hover { border-left-color: #8bbfff; }
+    .hud-row-badge.discovered { background: rgba(139,191,255,0.15); color: #8bbfff; border-color: rgba(139,191,255,0.3); }
     .card-top {
       display: flex;
       align-items: flex-start;
@@ -998,6 +1003,11 @@
               Steward
               <span class="hud-zone-count" id="nav-count-4"></span>
             </button>
+            <button class="hud-zone-nav-item" data-filter="5" aria-pressed="false" id="nav-btn-5" style="display:none">
+              <span class="hud-zone-dot" style="background:#8bbfff"></span>
+              Discovered
+              <span class="hud-zone-count" id="nav-count-5"></span>
+            </button>
           </nav>
           <div class="hud-sidebar-footer" aria-live="polite" id="hud-total-label"></div>
         </aside>
@@ -1168,14 +1178,15 @@
   })()
 
   const ZONE_META = {
-    0: { label:'Home',    desc:'Entry point',                      color:'var(--z0)', border:'var(--z0)' },
-    1: { label:'Public',  desc:'Open to all visitors',             color:'var(--z1)', border:'rgba(34,197,94,0.4)' },
-    2: { label:'Curated', desc:'Linked or shared — not indexed',   color:'var(--z2)', border:'rgba(245,158,11,0.4)' },
-    3: { label:'Members', desc:'Sign-in required',                 color:'var(--z3)', border:'rgba(59,130,246,0.4)' },
-    4: { label:'Steward', desc:'Organizer access only',            color:'var(--z4)', border:'rgba(196,149,106,0.4)' },
+    0: { label:'Home',       desc:'Entry point',                                color:'var(--z0)', border:'var(--z0)' },
+    1: { label:'Public',     desc:'Open to all visitors',                       color:'var(--z1)', border:'rgba(34,197,94,0.4)' },
+    2: { label:'Curated',    desc:'Linked or shared — not indexed',             color:'var(--z2)', border:'rgba(245,158,11,0.4)' },
+    3: { label:'Members',    desc:'Sign-in required',                           color:'var(--z3)', border:'rgba(59,130,246,0.4)' },
+    4: { label:'Steward',    desc:'Organizer access only',                      color:'var(--z4)', border:'rgba(196,149,106,0.4)' },
+    5: { label:'Discovered', desc:'Found by daily crawler — not yet in the curated map', color:'#8bbfff', border:'rgba(139,191,255,0.4)' },
   }
 
-  const ZONE_COLORS = { 0:'#c4956a', 1:'#22c55e', 2:'#f59e0b', 3:'#3b82f6', 4:'#c4956a' }
+  const ZONE_COLORS = { 0:'#c4956a', 1:'#22c55e', 2:'#f59e0b', 3:'#3b82f6', 4:'#c4956a', 5:'#8bbfff' }
 
   // ══════════════════════════════════════════════
   // LIST MODE
@@ -1210,7 +1221,7 @@
     homeWrapper.appendChild(homeCard)
     main.appendChild(homeWrapper)
 
-    for (const zone of [1,2,3,4]) {
+    for (const zone of [1,2,3,4,5].filter(z => PAGES.some(p => p.zone === z))) {
       const pages = PAGES.filter(p => p.zone === zone)
       if (!pages.length) continue
       const meta = ZONE_META[zone]
@@ -1297,7 +1308,7 @@
       btn.setAttribute('aria-pressed', active ? 'true' : 'false')
     })
 
-    const zones = filter === 'all' ? [1,2,3,4] : [parseInt(filter)]
+    const zones = filter === 'all' ? [1,2,3,4,5].filter(z => PAGES.some(p => p.zone === z)) : [parseInt(filter)]
 
     if (zones.length === 1) {
       main.style.gridTemplateColumns = '1fr'
@@ -1420,12 +1431,15 @@
     // Update sidebar totals
     const total = PAGES.filter(p => p.zone > 0).length
     document.getElementById('hud-total-label').textContent = `${total} pages total`
-    for (const z of [1,2,3,4]) {
+    for (const z of [1,2,3,4,5]) {
       const el = document.getElementById(`nav-count-${z}`)
       if (el) el.textContent = PAGES.filter(p => p.zone === z).length
     }
     const allEl = document.getElementById('nav-count-all')
     if (allEl) allEl.textContent = total
+    // Show/hide Discovered nav button based on whether any zone-5 pages exist
+    const nav5 = document.getElementById('nav-btn-5')
+    if (nav5) nav5.style.display = PAGES.some(p => p.zone === 5) ? '' : 'none'
   }
 
   // Zone nav filter
@@ -1457,12 +1471,12 @@
   let dragStart = null
 
   function layoutNodes(W, H) {
-    const radii = { 0:0, 1:Math.min(W,H)*0.18, 2:Math.min(W,H)*0.32, 3:Math.min(W,H)*0.45, 4:Math.min(W,H)*0.57 }
+    const radii = { 0:0, 1:Math.min(W,H)*0.18, 2:Math.min(W,H)*0.32, 3:Math.min(W,H)*0.45, 4:Math.min(W,H)*0.57, 5:Math.min(W,H)*0.70 }
     const cx = W/2, cy = H/2
-    const zonePages = {0:[],1:[],2:[],3:[],4:[]}
-    for (const p of PAGES) zonePages[p.zone].push(p)
+    const zonePages = {0:[],1:[],2:[],3:[],4:[],5:[]}
+    for (const p of PAGES) zonePages[p.zone] = (zonePages[p.zone] || []).concat(p)
     netNodes = []
-    for (const zone of [0,1,2,3,4]) {
+    for (const zone of [0,1,2,3,4,5]) {
       const pages = zonePages[zone]
       const r = radii[zone]
       pages.forEach((p, i) => {
@@ -1631,11 +1645,53 @@
   })
 
   // ══════════════════════════════════════════════
+  // DYNAMIC DISCOVERED ZONE (zone 5)
+  // ══════════════════════════════════════════════
+  const SITE_PAGES_URL = 'https://gxyeobogqfubgzklmxwt.supabase.co/functions/v1/site-pages'
+
+  async function loadDiscovered() {
+    try {
+      const res = await fetch(SITE_PAGES_URL)
+      if (!res.ok) return
+      const { pages } = await res.json()
+      if (!pages || !pages.length) return
+
+      // Inject discovered pages as zone-5 entries into PAGES array
+      // Use a stable id derived from path to avoid collisions with static PAGES
+      const existing = new Set(PAGES.map(p => p.path))
+      let added = 0
+      for (const p of pages) {
+        if (existing.has(p.path)) continue
+        PAGES.push({
+          id: 'disc-' + p.path.replace(/[^a-z0-9]/gi, '-'),
+          zone: 5,
+          title: p.title || p.path,
+          path: p.path,
+          description: p.description || 'Discovered page — not yet in the curated map',
+          parent: null,
+          links: [],
+        })
+        existing.add(p.path)
+        added++
+      }
+
+      if (added > 0) {
+        // Re-render both modes so zone 5 appears
+        renderGrid()
+        switchMode('hud')
+      }
+    } catch (e) {
+      // Silently ignore — tree works fine without discovered pages
+    }
+  }
+
+  // ══════════════════════════════════════════════
   // INIT
   // ══════════════════════════════════════════════
   renderGrid()
   updateThemeIcon()
   switchMode('hud')
+  loadDiscovered()
   </script>
 </body>
 </html>
