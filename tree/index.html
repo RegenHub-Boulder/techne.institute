@@ -414,6 +414,18 @@
       pointer-events: none;
       user-select: none;
     }
+    /* Hierarchy edges — solid, warm */
+    .net-edge-hierarchy { stroke: var(--rule, #d8d3c8); stroke-width: 1.5px; opacity: 0.55; }
+    /* SITE_LINKS cross-page edges — dashed, blue accent */
+    .net-edge-link {
+      stroke: #6a8ac4;
+      stroke-width: 1px;
+      stroke-dasharray: 4 4;
+      opacity: 0.28;
+      transition: opacity 0.15s, stroke-width 0.15s;
+    }
+    .net-edge-link:hover { opacity: 0.7; stroke-width: 2px; }
+    /* Backward compat for any remaining plain .net-edge refs */
     .net-edge { stroke: var(--rule, #d8d3c8); stroke-width: 1px; opacity: 0.5; }
     #detail-panel {
       display: none;
@@ -945,12 +957,27 @@
       </div>
       <div class="detail-path" id="detail-path"></div>
       <div class="detail-desc" id="detail-desc"></div>
+      <div class="detail-links" id="detail-links" style="display:none;margin-top:0.5rem;font-size:0.72rem;color:var(--fg-secondary,#9a9a9a);font-family:var(--mono,'IBM Plex Mono',monospace);letter-spacing:0.04em;"></div>
       <a class="detail-link" id="detail-link" href="#" target="_blank" rel="noopener">
         Visit page
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
           <path d="M2 10L10 2M10 2H5M10 2v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </a>
+    </div>
+    <div class="net-legend" aria-label="Legend" style="position:absolute;bottom:3rem;left:1rem;display:flex;gap:1.25rem;align-items:center;pointer-events:none;font-family:var(--mono,'IBM Plex Mono',monospace);font-size:0.65rem;letter-spacing:0.05em;color:var(--fg-secondary,#9a9a9a);">
+      <span style="display:inline-flex;align-items:center;gap:0.35rem;">
+        <svg width="28" height="10" aria-hidden="true"><line x1="0" y1="5" x2="28" y2="5" stroke="var(--rule,#d8d3c8)" stroke-width="1.5" opacity="0.6"/></svg>
+        hierarchy
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:0.35rem;">
+        <svg width="28" height="10" aria-hidden="true"><line x1="0" y1="5" x2="28" y2="5" stroke="#6a8ac4" stroke-width="1" stroke-dasharray="4 4" opacity="0.6"/></svg>
+        cross-link
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:0.35rem;">
+        <svg width="10" height="10" aria-hidden="true"><circle cx="5" cy="5" r="5" fill="#c4956a" fill-opacity="0.85"/></svg>
+        hub
+      </span>
     </div>
     <div class="net-zoom-controls" id="zoom-controls" aria-label="Zoom controls">
       <button class="zoom-btn" id="zoom-in" aria-label="Zoom in">+</button>
@@ -1465,6 +1492,12 @@
   // NETWORK MODE
   // ══════════════════════════════════════════════
   const NODE_RADIUS = { 0:20, 1:14, 2:12, 3:10, 4:10 }
+  const DEGREE_SCALE = 1.4
+  function getNodeRadius(page) {
+    const base = NODE_RADIUS[page.zone] || 10
+    const degree = (page.links_in || 0) + (page.links_out || 0)
+    return Math.min(base + degree * DEGREE_SCALE, base * 2.4)
+  }
   let netTransform = { x:0, y:0, scale:1 }
   let netNodes = []
   let dragging = false
@@ -1489,15 +1522,27 @@
   function buildNetEdges() {
     const edgeG = document.getElementById('net-edges')
     edgeG.innerHTML = ''
-    const pageMap = {}
-    for (const p of PAGES) pageMap[p.id] = p
+
+    // 1. SITE_LINKS edges rendered first (behind hierarchy)
+    for (const link of SITE_LINKS) {
+      const fn = netNodes.find(n => n.id === link.from)
+      const tn = netNodes.find(n => n.id === link.to)
+      if (!fn || !tn) continue
+      const line = document.createElementNS('http://www.w3.org/2000/svg','line')
+      line.className = 'net-edge-link'
+      line.setAttribute('x1',fn.x); line.setAttribute('y1',fn.y)
+      line.setAttribute('x2',tn.x); line.setAttribute('y2',tn.y)
+      edgeG.appendChild(line)
+    }
+
+    // 2. Hierarchy edges rendered on top (solid, prominent)
     for (const page of PAGES) {
       if (!page.parent) continue
       const pn = netNodes.find(n => n.id === page.parent)
       const cn = netNodes.find(n => n.id === page.id)
       if (!pn || !cn) continue
       const line = document.createElementNS('http://www.w3.org/2000/svg','line')
-      line.className = 'net-edge'
+      line.className = 'net-edge-hierarchy'
       line.setAttribute('x1',pn.x); line.setAttribute('y1',pn.y)
       line.setAttribute('x2',cn.x); line.setAttribute('y2',cn.y)
       edgeG.appendChild(line)
@@ -1513,7 +1558,7 @@
       g.setAttribute('tabindex','0')
       g.setAttribute('role','button')
       g.setAttribute('aria-label',`${node.page.title} — ${node.page.authLevel}`)
-      const r = NODE_RADIUS[node.page.zone] || 10
+      const r = getNodeRadius(node.page)
       const circle = document.createElementNS('http://www.w3.org/2000/svg','circle')
       circle.setAttribute('cx',node.x); circle.setAttribute('cy',node.y)
       circle.setAttribute('r',r)
@@ -1545,6 +1590,18 @@
     document.getElementById('detail-path').textContent = page.path
     document.getElementById('detail-desc').textContent = page.description
     document.getElementById('detail-link').href = page.path
+    const li = page.links_in || 0
+    const lo = page.links_out || 0
+    const linksEl = document.getElementById('detail-links')
+    if (li > 0 || lo > 0) {
+      const parts = []
+      if (li > 0) parts.push(`←\u202f${li} in`)
+      if (lo > 0) parts.push(`→\u202f${lo} out`)
+      linksEl.textContent = parts.join('  ·  ')
+      linksEl.style.display = 'block'
+    } else {
+      linksEl.style.display = 'none'
+    }
     document.getElementById('detail-panel').classList.add('open')
   }
   function closeNetDetail() { document.getElementById('detail-panel').classList.remove('open') }
