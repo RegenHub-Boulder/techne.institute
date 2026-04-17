@@ -5,6 +5,10 @@ const CHANNEL_ID = import.meta.env.VITE_TENANT_CHANNEL_ID || '882613fe-a43f-4468
 const LOBBY_URL = `https://hvbdpgkdcdskhpbdeeim.supabase.co/functions/v1/lobby-data?channel_id=${CHANNEL_ID}`
 const POLL_INTERVAL = 15000 // 15 seconds
 
+// Scope this view to sprints/roadmap related to the techne.institute repo.
+// Set VITE_REPO_FILTER at build time to change; empty string = show all.
+export const REPO_FILTER = import.meta.env.VITE_REPO_FILTER ?? 'techne.institute'
+
 // Phase → CSS accent color
 const PHASE_COLORS = {
   gathering: '#d97706',     // amber
@@ -69,5 +73,5 @@ export default function App() {
     </div>
   )
 
-  return <EcosystemView data={data} lastFetch={lastFetch} onRefresh={fetchData} />
+  return <EcosystemView data={data} lastFetch={lastFetch} onRefresh={fetchData} repoFilter={REPO_FILTER} />
 }

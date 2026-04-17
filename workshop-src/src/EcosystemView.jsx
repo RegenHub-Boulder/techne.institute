@@ -13,22 +13,90 @@ const PHASE_LABELS = {
   open: 'Open Floor',
 }
 
-export default function EcosystemView({ data, lastFetch, onRefresh }) {
+// Returns true if a sprint matches the repo filter string.
+// Checks title, description, taxonomy, reference_urls, sprint_id.
+function sprintMatchesFilter(sprint, filter) {
+  if (!filter) return true
+  const f = filter.toLowerCase()
+  if (sprint.title?.toLowerCase().includes(f)) return true
+  if (sprint.description?.toLowerCase().includes(f)) return true
+  if (sprint.taxonomy?.scope?.toLowerCase().includes(f)) return true
+  if (sprint.taxonomy?.domain?.toLowerCase().includes(f)) return true
+  if (sprint.reference_urls?.some(u => u.toLowerCase().includes(f))) return true
+  // Also match taxonomy scope = 'techne-site' for sprints scoped to this repo
+  if (filter === 'techne.institute' && sprint.taxonomy?.scope === 'techne-site') return true
+  return false
+}
+
+function roadmapMatchesFilter(item, filter, matchedSprintIds) {
+  if (!filter) return true
+  const f = filter.toLowerCase()
+  if (item.title?.toLowerCase().includes(f)) return true
+  if (item.roadmap_id?.toLowerCase().includes(f)) return true
+  // Show if the roadmap item has sprints in the matched set
+  if (matchedSprintIds.size > 0 && item.sprints?.some(s => matchedSprintIds.has(s.id))) return true
+  return false
+}
+
+export default function EcosystemView({ data, lastFetch, onRefresh, repoFilter = '' }) {
   const { presence = [], sprints = {}, messages = [], events = [], floor = {}, roadmap = [] } = data || {}
   const { active = [], recent = [] } = sprints
 
   const phase = floor.phase || 'gathering'
   const phaseLabel = PHASE_LABELS[phase] || phase
 
+  // Filter sprints to those related to the repo scope
+  const filteredActive = useMemo(
+    () => active.filter(s => sprintMatchesFilter(s, repoFilter)),
+    [active, repoFilter]
+  )
+  const filteredRecent = useMemo(
+    () => recent.filter(s => sprintMatchesFilter(s, repoFilter)),
+    [recent, repoFilter]
+  )
+
+  // Build set of matched sprint IDs for cross-filtering events/roadmap
+  const matchedSprintIds = useMemo(() => {
+    const all = [...filteredActive, ...filteredRecent]
+    return new Set(all.map(s => s.id))
+  }, [filteredActive, filteredRecent])
+
   // Build a map of sprint id → sprint for agent window cross-references
   const sprintById = useMemo(() => {
-    const all = [...active, ...recent]
+    const all = [...filteredActive, ...filteredRecent]
     return Object.fromEntries(all.map(s => [s.id, s]))
-  }, [active, recent])
+  }, [filteredActive, filteredRecent])
+
+  // Filter roadmap to this scope
+  const filteredRoadmap = useMemo(
+    () => roadmap.filter(item => roadmapMatchesFilter(item, repoFilter, matchedSprintIds)),
+    [roadmap, repoFilter, matchedSprintIds]
+  )
+
+  // Filter events to matched sprints (or floor signals which are global)
+  const filteredEvents = useMemo(() => {
+    if (!repoFilter) return events
+    return events.filter(e =>
+      e.event_type === 'floor_signal' ||
+      !e.sprint_id ||
+      matchedSprintIds.has(e.sprint_id)
+    )
+  }, [events, repoFilter, matchedSprintIds])
+
+  // Filter messages: keep if associated sprint is matched, or if message mentions the filter
+  const filteredMessages = useMemo(() => {
+    if (!repoFilter) return messages
+    const f = repoFilter.toLowerCase()
+    return messages.filter(m =>
+      !m.sprint_id ||
+      matchedSprintIds.has(m.sprint_id) ||
+      m.content?.toLowerCase().includes(f)
+    )
+  }, [messages, repoFilter, matchedSprintIds])
 
   // Partition active sprints
-  const proposedSprints = active.filter(s => s.status === 'proposed')
-  const inProgressSprints = active.filter(s => s.status === 'in_progress' || s.status === 'submitted')
+  const proposedSprints = filteredActive.filter(s => s.status === 'proposed')
+  const inProgressSprints = filteredActive.filter(s => s.status === 'in_progress' || s.status === 'submitted')
 
   return (
     <div style={{
@@ -51,6 +119,21 @@ export default function EcosystemView({ data, lastFetch, onRefresh }) {
         </a>
         <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>/</span>
         <span style={{ color: 'var(--text)', fontSize: 12, fontFamily: 'var(--font-mono)' }}>workshop</span>
+
+        {/* Scope filter badge */}
+        {repoFilter && (
+          <span style={{
+            fontSize: 10,
+            fontFamily: 'var(--font-mono)',
+            color: '#8bbfff',
+            border: '1px solid rgba(139,191,255,0.4)',
+            borderRadius: 3,
+            padding: '2px 7px',
+            background: 'rgba(139,191,255,0.08)',
+          }}>
+            scope: {repoFilter}
+          </span>
+        )}
 
         <div style={{ flex: 1 }} />
 
@@ -152,23 +235,23 @@ export default function EcosystemView({ data, lastFetch, onRefresh }) {
 
         {/* ── Stream ── */}
         <div style={{ gridColumn: 'span 1' }}>
-          <StreamPanel messages={messages} events={events} />
+          <StreamPanel messages={filteredMessages} events={filteredEvents} />
         </div>
 
         {/* ── Roadmap ── */}
-        <RoadmapWindow roadmap={roadmap} />
+        <RoadmapWindow roadmap={filteredRoadmap} />
 
         {/* ── Recent / Completed ── */}
         <EcosystemWindow
           title="Completed / Closed"
-          subtitle={`Last ${recent.length} closed sprints`}
+          subtitle={`Last ${filteredRecent.length} closed sprints`}
           defaultOpen={false}
-          badge={recent.length}
+          badge={filteredRecent.length}
         >
-          {recent.length === 0 ? (
+          {filteredRecent.length === 0 ? (
             <div style={{ color: 'var(--text-dim)', fontSize: 12, fontFamily: 'var(--font-mono)', padding: '4px 0' }}>none</div>
           ) : (
-            recent.map(sprint => (
+            filteredRecent.map(sprint => (
               <SprintWindow key={sprint.id} sprint={sprint} presence={[]} defaultOpen={false} />
             ))
           )}
