@@ -1081,44 +1081,103 @@
   // PAGE DATA
   // ══════════════════════════════════════════════
   const PAGES = [
+    // ── Zone 0: Home ──────────────────────────────────────────
     { id:'home', path:'/', title:'Techne Institute', zone:0, authLevel:'home', parent:null,
       description:'A cooperatively-owned studio in Boulder, Colorado. RegenHub LCA — cultivating scenius through shared infrastructure, tools, and collective intelligence.' },
+
+    // ── Zone 1: Public ────────────────────────────────────────
     { id:'about', path:'/about/', title:'About', zone:1, authLevel:'public', parent:'home',
       description:'Who we are, the cooperative structure, and the mission driving Techne Studio.' },
-    { id:'people', path:'/people/', title:'People', zone:1, authLevel:'public', parent:'home',
-      description:'Organizers and active members of RegenHub LCA — the humans behind the cooperative.' },
-    { id:'ventures', path:'/ventures/', title:'Ventures', zone:1, authLevel:'public', parent:'home',
-      description:'Active projects and cooperative ventures incubated within the studio.' },
-    { id:'join', path:'/join/', title:'Join', zone:1, authLevel:'public', parent:'home',
-      description:'Learn how to become a member-owner of the cooperative. Patronage model explained.' },
-    { id:'blog', path:'/blog/', title:'Blog', zone:1, authLevel:'public', parent:'home',
-      description:'Writing, research, field notes, and public communications from the studio.' },
+    { id:'introduction', path:'/introduction/', title:'Introduction', zone:1, authLevel:'public', parent:'home',
+      description:'Four essays on the tension between concentration and self-governance — in political life, craft scaling, computing history, and commons governance.' },
+    { id:'vision', path:'/vision/', title:'Vision', zone:1, authLevel:'public', parent:'home',
+      description:'Techne is a network of locally owned civic infrastructure nodes — third spaces that coordinate capability, economy, and community in specific places.' },
+    { id:'coordination-games', path:'/coordination-games/', title:'Coordination Games', zone:1, authLevel:'public', parent:'home',
+      description:'A season of games testing how AI agents cooperate, compete, and build trust. Organized by Gitcoin and dacc.fund. Season 1 starts April 24, 2026.' },
+    { id:'amplification', path:'/amplification/', title:'Amplification', zone:1, authLevel:'public', parent:'home',
+      description:'AI doesn\'t have to replace human work — it can amplify it. The difference is institutional, not technical. A framework for navigating the transition from fear to agency.' },
+    { id:'membership', path:'/membership/', title:'Membership', zone:1, authLevel:'public', parent:'home',
+      description:'How to join RegenHub, LCA. Four membership classes. The path in is relational, not transactional — show up, co-work, attend something, build trust.' },
+    { id:'learn', path:'/learn/', title:'Learn', zone:1, authLevel:'public', parent:'home',
+      description:'Educational resources on cooperatives, Colorado LCA law, patronage accounting, and the intellectual traditions behind Techne.' },
+    { id:'public-benefit', path:'/public-benefit/', title:'Public Benefit', zone:1, authLevel:'public', parent:'home',
+      description:'Our legally-filed public benefit purpose: to cultivate scenius — the collective intelligence that emerges from sustained proximity of culturally aligned people.' },
     { id:'tree', path:'/tree/', title:'Site Map', zone:1, authLevel:'public', parent:'home',
-      description:'Visual navigation map of the full techne.institute domain — this page.' },
-    { id:'ecosystem', path:'/ecosystem/', title:'Ecosystem', zone:1, authLevel:'public', parent:'home',
-      description:'Tools, platforms, and partners we build with and depend on.' },
-    { id:'faq', path:'/faq/', title:'FAQ', zone:1, authLevel:'public', parent:'home',
-      description:'Frequently asked questions about the cooperative, membership, and how things work.' },
-    { id:'contact', path:'/contact/', title:'Contact', zone:1, authLevel:'public', parent:'home',
-      description:'Get in touch with the Techne Studio team.' },
-    { id:'formation', path:'/formation/', title:'Formation', zone:2, authLevel:'curated', parent:'home',
-      description:'Organization structure and overview of legal formation documents for RegenHub LCA.' },
-    { id:'articles', path:'/formation/articles/', title:'Articles of Organization', zone:2, authLevel:'curated', parent:'formation',
-      description:'The Articles of Organization filed with Colorado for RegenHub LCA (Feb 6, 2026).' },
-    { id:'bylaws', path:'/formation/bylaws/', title:'Bylaws', zone:2, authLevel:'curated', parent:'formation',
-      description:'Operating procedures, governance rules, and the cooperative\'s internal constitution.' },
-    { id:'handbook', path:'/formation/handbook/', title:'Member Handbook', zone:2, authLevel:'curated', parent:'formation',
-      description:'Practical policies, expectations, and a guide to participation for cooperative members.' },
-    { id:'patronage-doc', path:'/formation/patronage/', title:'Patronage Policy', zone:2, authLevel:'curated', parent:'formation',
-      description:'How patronage is defined, measured, and allocated across cooperative members.' },
+      description:'Visual navigation map of the full techne.institute domain — HUD, list, and network views.' },
+
+    // ── Zone 2: Curated ───────────────────────────────────────
+    { id:'cooperative', path:'/cooperative/', title:'The Cooperative', zone:2, authLevel:'curated', parent:'about',
+      description:'What is a Colorado Limited Cooperative Association? Plain-language explanation of the LCA structure, membership classes, patronage, and why cooperative rather than LLC or corporation.' },
+    { id:'bylaws', path:'/bylaws/', title:'Governance', zone:2, authLevel:'curated', parent:'home',
+      description:'Interactive bylaws explorer for RegenHub, LCA — track proposed values, organizer decisions, and attorney review items from formation meetings.' },
     { id:'cloud-doc', path:'/cloud/', title:'Cloud Credits', zone:2, authLevel:'curated', parent:'home',
-      description:'1 CLOUD ≈ $0.10 — the cooperative\'s internal unit of exchange for shared infrastructure.' },
+      description:'1 CLOUD ≈ $0.10 — the cooperative\'s internal unit of exchange for shared infrastructure and compute.' },
+    { id:'design-system', path:'/design-system/', title:'Design System', zone:2, authLevel:'curated', parent:'home',
+      description:'Techne design system — palette, typography, token reference, and component patterns for cooperative interfaces.' },
+    { id:'data-room', path:'/data-room/', title:'Data Room', zone:2, authLevel:'curated', parent:'home',
+      description:'Investor-facing documents for RegenHub, LCA — pitch deck, term sheet, and investment vision.' },
+    { id:'formation', path:'/formation/', title:'Formation', zone:2, authLevel:'curated', parent:'home',
+      description:'Formation ecosystem overview for RegenHub, LCA — legal structure, governance, financial infrastructure, and the decisions that shaped the cooperative.' },
+    { id:'pre-read', path:'/pre-read/', title:'Pre-Read', zone:2, authLevel:'curated', parent:'home',
+      description:'Before we sit down — context document for first meetings with RegenHub. Who we are, what Techne is building, and where we are now.' },
+    { id:'letters-labor', path:'/letters/labor/', title:'On Labor', zone:2, authLevel:'curated', parent:'amplification',
+      description:'A letter about navigating AI labor displacement into something more useful: a cooperative experiment in what happens when the gains flow to the people doing the work.' },
+
+    // Introduction sub-pages (deck essays)
+    { id:'intro-empire', path:'/introduction/empire-and-the-people-deck.html', title:'Empire & the People', zone:2, authLevel:'curated', parent:'introduction',
+      description:'On the oldest struggle in political life, and what it asks of us now.' },
+    { id:'intro-wire', path:'/introduction/older-than-the-wire-deck.html', title:'Older Than the Wire', zone:2, authLevel:'curated', parent:'introduction',
+      description:'The impulse to build shared information infrastructure is ancient, cross-cultural, and ongoing.' },
+    { id:'intro-design', path:'/introduction/the-oldest-design-problem-deck.html', title:'Oldest Design Problem', zone:2, authLevel:'curated', parent:'introduction',
+      description:'How do you scale craft without killing what makes it craft?' },
+    { id:'intro-web', path:'/introduction/what-was-the-web-for-deck.html', title:'What Was the Web For?', zone:2, authLevel:'curated', parent:'introduction',
+      description:'The network was designed to augment human capability, not capture attention.' },
+
+    // Vision sub-pages
+    { id:'vision-common', path:'/vision/common/', title:'The Common', zone:2, authLevel:'curated', parent:'vision',
+      description:'The commons is shared capacity to hold something together across time. Five dimensions: craft, civic, knowledge, economic, ecological.' },
+    { id:'vision-craft', path:'/vision/craft/', title:'The Crafts', zone:2, authLevel:'curated', parent:'vision',
+      description:'Techne recognizes eight fundamental crafts — ways of shaping the world present in every culture and every century. Nodes form where crafts meet.' },
+
+    // Amplification sub-pages
+    { id:'amplification-brief', path:'/amplification/brief/', title:'Brief', zone:2, authLevel:'curated', parent:'amplification',
+      description:'AI can replace human work or amplify it. The difference is institutional, not technical. A condensed version of the thesis.' },
+    { id:'amplification-letter', path:'/amplification/letter/', title:'The Letter', zone:2, authLevel:'curated', parent:'amplification',
+      description:'On the fear of being replaced — a letter from inside the machine, addressed to the people outside it.' },
+    { id:'amplification-toc', path:'/amplification/theory-of-change/', title:'Theory of Change', zone:2, authLevel:'curated', parent:'amplification',
+      description:'Artificial Intelligence extracts. Collective Intelligence amplifies. A theory of change for the transition.' },
+
+    // Coordination Games sub-pages
+    { id:'cg-graduated-trust', path:'/coordination-games/graduated-trust/', title:'Graduated Trust', zone:2, authLevel:'curated', parent:'coordination-games',
+      description:'Research on graduated trust mechanisms for AI agent coordination — iterated games, reputation, and institutional design.' },
+    { id:'cg-commoners', path:'/coordination-games/commoners/', title:'Commoners', zone:2, authLevel:'curated', parent:'coordination-games',
+      description:'Commoners game — coordination research on shared resource governance with AI agents.' },
+
+    // Formation sub-pages
+    { id:'formation-narrative', path:'/formation/narrative.html', title:'Formation Narrative', zone:2, authLevel:'curated', parent:'formation',
+      description:'The full narrative account of how RegenHub, LCA came into being — fifteen meetings across six months, from gap to Colorado LLC filing.' },
+    { id:'formation-governance', path:'/formation/governance.html', title:'Governance Architecture', zone:2, authLevel:'curated', parent:'formation',
+      description:'Governance architecture of RegenHub, LCA — membership classes, voting rights, board structure, committees, and dispute resolution.' },
+    { id:'formation-financial', path:'/formation/financial.html', title:'Financial Infrastructure', zone:2, authLevel:'curated', parent:'formation',
+      description:'Financial infrastructure of RegenHub, LCA — capital accounts, patronage formula, venture basket model, Subchapter K tax treatment.' },
+    { id:'formation-decisions', path:'/formation/decisions.html', title:'Decisions Index', zone:2, authLevel:'curated', parent:'formation',
+      description:'All governance and structural decisions extracted from RegenHub, LCA formation meetings.' },
+    { id:'formation-q1', path:'/formation/q1-2026.html', title:'Q1 2026 Close', zone:2, authLevel:'curated', parent:'formation',
+      description:'First quarterly close report for RegenHub, LCA — formation quarter: January 1 – March 31, 2026.' },
+    { id:'formation-equinox', path:'/formation/spring-equinox-2026.html', title:'Spring Equinox 2026', zone:2, authLevel:'curated', parent:'formation',
+      description:'Seasonal snapshot at the vernal equinox — RegenHub, LCA at 42 days: membership, capital, governance, ecological context.' },
+
+    // Data Room sub-pages
+    { id:'data-room-deck', path:'/data-room/deck.html', title:'Pitch Deck', zone:2, authLevel:'curated', parent:'data-room',
+      description:'RegenHub investor pitch deck — cooperative model, market opportunity, and capital ask.' },
+    { id:'data-room-terms', path:'/data-room/term-sheet.html', title:'Term Sheet', zone:2, authLevel:'curated', parent:'data-room',
+      description:'RegenHub, LCA Investor Member term sheet — rights, obligations, and patronage economics for investor members.' },
+    { id:'data-room-vision', path:'/data-room/vision.html', title:'Investment Vision', zone:2, authLevel:'curated', parent:'data-room',
+      description:'RegenHub investment thesis — The Basket: a model for cooperative venture returns.' },
+
+    // ── Zone 3: Members ───────────────────────────────────────
     { id:'intranet', path:'/intranet/', title:'Member Intranet', zone:3, authLevel:'members', parent:'home',
       description:'Private member portal — cooperative operations, capital accounts, and internal coordination.' },
-    { id:'intranet-ecosystem', path:'/intranet/ecosystem/', title:'Ecosystem', zone:3, authLevel:'members', parent:'intranet',
-      description:'Member view of the ecosystem — live status of tools and integrations.' },
-    { id:'intranet-ventures', path:'/intranet/ventures/', title:'Ventures', zone:3, authLevel:'members', parent:'intranet',
-      description:'Cooperative ventures dashboard — project status, labor tracking, and milestones.' },
     { id:'intranet-account', path:'/intranet/account/', title:'Account', zone:3, authLevel:'members', parent:'intranet',
       description:'Your capital account, equity balance, and patronage summary.' },
     { id:'intranet-capital', path:'/intranet/capital/', title:'Capital', zone:3, authLevel:'members', parent:'intranet',
@@ -1127,6 +1186,8 @@
       description:'Log and review contributed labor — time, type, and patronage value.' },
     { id:'intranet-patronage', path:'/intranet/patronage/', title:'Patronage', zone:3, authLevel:'members', parent:'intranet',
       description:'Patronage allocation records and IRC 704(b) capital account detail.' },
+    { id:'intranet-ventures', path:'/intranet/ventures/', title:'Ventures', zone:3, authLevel:'members', parent:'intranet',
+      description:'Cooperative ventures dashboard — project status, labor tracking, and milestones.' },
     { id:'intranet-projects', path:'/intranet/projects/', title:'Projects', zone:3, authLevel:'members', parent:'intranet',
       description:'Active and archived cooperative projects — status, contributors, and deliverables.' },
     { id:'intranet-directory', path:'/intranet/directory/', title:'Directory', zone:3, authLevel:'members', parent:'intranet',
@@ -1151,43 +1212,109 @@
       description:'Cooperative documents, agreements, and shared reference materials.' },
     { id:'intranet-roadmap', path:'/intranet/roadmap/', title:'Roadmap', zone:3, authLevel:'members', parent:'intranet',
       description:'Product and organizational roadmap for Techne Studio and the cooperative.' },
+
+    // Intranet long-form pages
+    { id:'intranet-design-gateway', path:'/intranet/design-science-gateway.html', title:'Design Science Gateway', zone:3, authLevel:'members', parent:'intranet',
+      description:'The Design Science Gateway — Techne\'s framework for applying design science principles to cooperative infrastructure.' },
+    { id:'intranet-rea', path:'/intranet/rea-specification.html', title:'REA Specification', zone:3, authLevel:'members', parent:'intranet',
+      description:'The REA (Resource–Event–Agent) specification for the Techne Stack — semantic accounting foundations.' },
+    { id:'intranet-speak-ledger', path:'/intranet/speak-the-ledger.html', title:'Speak the Ledger', zone:3, authLevel:'members', parent:'intranet',
+      description:'Speak the Ledger — voice-first HCI concept for cooperative accounting and natural language ledger interaction.' },
+    { id:'intranet-toolbox', path:'/intranet/techne-toolbox.html', title:'Techne Toolbox', zone:3, authLevel:'members', parent:'intranet',
+      description:'The Techne Toolbox — curated set of tools, protocols, and practices used by the cooperative.' },
+    { id:'intranet-third-floor', path:'/intranet/the-third-floor.html', title:'The Third Floor', zone:3, authLevel:'members', parent:'intranet',
+      description:'The Third Floor — a Techne scenario document exploring the next phase of cooperative space and programming.' },
+
+    // ── Zone 4: Steward ───────────────────────────────────────
     { id:'intranet-admin', path:'/intranet/admin/', title:'Steward Admin', zone:4, authLevel:'steward', parent:'intranet',
       description:'Member management, allocation entry, and stewardship tools. Organizer access only.' },
     { id:'workshop', path:'/workshop/', title:'Workshop', zone:4, authLevel:'steward', parent:'home',
       description:'Agent coordination workspace — sprint management, agent communication, and coordination activity feed.' },
+    { id:'operations', path:'/operations/', title:'Operations', zone:4, authLevel:'steward', parent:'home',
+      description:'RegenHub, LCA operations — bylaws decision explorer, formation open items, and organizer reference documents.' },
+    { id:'lunch-presentation', path:'/lunch-presentation/', title:'Lunch Presentation', zone:4, authLevel:'steward', parent:'home',
+      description:'Internal presentation deck — cooperative workspace and venture studio overview for prospective partners and co-workers.' },
   ]
 
   // Cross-page link relationships (site graph edges, non-hierarchical)
   const SITE_LINKS = [
-    { from:'home', to:'about' }, { from:'home', to:'ventures' }, { from:'home', to:'join' },
-    { from:'home', to:'formation' }, { from:'home', to:'blog' }, { from:'home', to:'ecosystem' },
-    { from:'about', to:'formation' }, { from:'about', to:'join' }, { from:'about', to:'bylaws' },
-    { from:'formation', to:'articles' }, { from:'formation', to:'bylaws' },
-    { from:'formation', to:'handbook' }, { from:'formation', to:'patronage-doc' },
-    { from:'blog', to:'ventures' }, { from:'ventures', to:'join' }, { from:'ventures', to:'blog' },
-    { from:'ecosystem', to:'intranet-ecosystem' }, { from:'intranet-ecosystem', to:'ecosystem' },
+    // Home outbound
+    { from:'home', to:'about' }, { from:'home', to:'introduction' }, { from:'home', to:'vision' },
+    { from:'home', to:'amplification' }, { from:'home', to:'membership' }, { from:'home', to:'coordination-games' },
+    { from:'home', to:'formation' }, { from:'home', to:'learn' },
+
+    // About cluster
+    { from:'about', to:'cooperative' }, { from:'about', to:'bylaws' },
+    { from:'about', to:'membership' }, { from:'about', to:'public-benefit' }, { from:'about', to:'formation' },
+    { from:'cooperative', to:'formation' }, { from:'cooperative', to:'bylaws' },
+    { from:'public-benefit', to:'about' }, { from:'public-benefit', to:'cooperative' },
+    { from:'learn', to:'formation' }, { from:'learn', to:'cooperative' }, { from:'learn', to:'bylaws' },
+
+    // Introduction decks
+    { from:'introduction', to:'intro-empire' }, { from:'introduction', to:'intro-wire' },
+    { from:'introduction', to:'intro-design' }, { from:'introduction', to:'intro-web' },
+
+    // Vision
+    { from:'vision', to:'vision-common' }, { from:'vision', to:'vision-craft' },
+    { from:'vision', to:'coordination-games' },
+
+    // Amplification cluster
+    { from:'amplification', to:'amplification-brief' }, { from:'amplification', to:'amplification-letter' },
+    { from:'amplification', to:'amplification-toc' }, { from:'amplification', to:'letters-labor' },
+    { from:'letters-labor', to:'membership' }, { from:'letters-labor', to:'amplification' },
+
+    // Coordination games
+    { from:'coordination-games', to:'cg-graduated-trust' }, { from:'coordination-games', to:'cg-commoners' },
+    { from:'coordination-games', to:'workshop' },
+
+    // Formation cluster
+    { from:'formation', to:'formation-narrative' }, { from:'formation', to:'formation-governance' },
+    { from:'formation', to:'formation-financial' }, { from:'formation', to:'formation-decisions' },
+    { from:'formation', to:'bylaws' },
+    { from:'formation-governance', to:'bylaws' }, { from:'formation-financial', to:'cloud-doc' },
+
+    // Data room
+    { from:'data-room', to:'data-room-deck' }, { from:'data-room', to:'data-room-terms' },
+    { from:'data-room', to:'data-room-vision' },
+    { from:'data-room', to:'formation' }, { from:'data-room', to:'membership' },
+
+    // Cloud / bylaws → intranet bridges
+    { from:'bylaws', to:'intranet-governance' }, { from:'intranet-governance', to:'bylaws' },
     { from:'cloud-doc', to:'intranet-cloud' }, { from:'intranet-cloud', to:'cloud-doc' },
     { from:'cloud-doc', to:'intranet-account' },
-    { from:'people', to:'intranet-directory' },
-    { from:'patronage-doc', to:'intranet-patronage' }, { from:'intranet-patronage', to:'patronage-doc' },
-    { from:'patronage-doc', to:'intranet-account' },
-    { from:'bylaws', to:'intranet-governance' }, { from:'intranet-governance', to:'bylaws' },
+    { from:'membership', to:'intranet' },
+    { from:'pre-read', to:'about' }, { from:'pre-read', to:'formation' },
+
+    // Design system
+    { from:'design-system', to:'intranet' },
+
+    // Intranet accounting cluster
     { from:'intranet-account', to:'intranet-capital' }, { from:'intranet-account', to:'intranet-labor' },
     { from:'intranet-account', to:'intranet-patronage' },
     { from:'intranet-capital', to:'intranet-labor' }, { from:'intranet-capital', to:'intranet-patronage' },
     { from:'intranet-journal', to:'intranet-ledger' }, { from:'intranet-journal', to:'intranet-treasury' },
     { from:'intranet-ledger', to:'intranet-treasury' }, { from:'intranet-treasury', to:'intranet-capital' },
+
+    // Intranet operations cluster
     { from:'intranet-ventures', to:'intranet-projects' }, { from:'intranet-projects', to:'intranet-ventures' },
-    { from:'intranet-roadmap', to:'ventures' }, { from:'intranet-roadmap', to:'intranet-projects' },
-    { from:'workshop', to:'intranet' },
-    { from:'intranet-admin', to:'intranet-directory' }, { from:'intranet-admin', to:'intranet-governance' },
-    { from:'intranet-admin', to:'intranet-capital' },
-    { from:'faq', to:'join' }, { from:'faq', to:'about' }, { from:'faq', to:'formation' },
-    { from:'contact', to:'join' },
+    { from:'intranet-roadmap', to:'intranet-projects' }, { from:'intranet-roadmap', to:'intranet-ventures' },
+
+    // Intranet reference cluster
     { from:'intranet-guide', to:'intranet-account' }, { from:'intranet-guide', to:'intranet-labor' },
     { from:'intranet-messages', to:'intranet-directory' },
-    { from:'intranet-documents', to:'bylaws' }, { from:'intranet-documents', to:'handbook' },
-    { from:'intranet-documents', to:'articles' },
+    { from:'intranet-documents', to:'bylaws' }, { from:'intranet-documents', to:'intranet-governance' },
+    { from:'intranet-patronage', to:'intranet-account' },
+
+    // Intranet long-form docs
+    { from:'intranet-rea', to:'intranet-journal' }, { from:'intranet-rea', to:'intranet-ledger' },
+    { from:'intranet-design-gateway', to:'design-system' },
+    { from:'intranet-speak-ledger', to:'intranet-journal' },
+
+    // Steward
+    { from:'workshop', to:'intranet' },
+    { from:'operations', to:'bylaws' }, { from:'operations', to:'formation' },
+    { from:'intranet-admin', to:'intranet-directory' }, { from:'intranet-admin', to:'intranet-governance' },
+    { from:'intranet-admin', to:'intranet-capital' },
   ]
 
   // Annotate PAGES with link counts computed from SITE_LINKS
