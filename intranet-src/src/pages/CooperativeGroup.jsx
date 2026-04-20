@@ -324,26 +324,227 @@ function GovernanceTab() {
   )
 }
 
+// ─── Bulletin tab ─────────────────────────────────────────────────────────────
+
+const TYPE_META = {
+  announcement: { label: 'Announcement', color: 'var(--gold)' },
+  decision:     { label: 'Decision',     color: 'var(--status-info)' },
+  document:     { label: 'Document',     color: '#a78bfa' },
+  event:        { label: 'Event',        color: 'var(--status-ok)' },
+}
+
+const fmtRelative = (d) => {
+  if (!d) return '—'
+  const diff = Date.now() - new Date(d).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 60) return `${mins}m ago`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24) return `${hrs}h ago`
+  const days = Math.floor(hrs / 24)
+  if (days < 7) return `${days}d ago`
+  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
+
+function BulletinPost({ post, onDelete, isSteward, onTogglePin }) {
+  const meta = TYPE_META[post.post_type] || TYPE_META.announcement
+  return (
+    <div style={{
+      background: post.is_pinned ? 'rgba(196,149,106,0.04)' : 'rgba(255,255,255,0.018)',
+      border: `1px solid ${post.is_pinned ? 'rgba(196,149,106,0.18)' : '#1a1a2e'}`,
+      borderRadius: '8px',
+      padding: '1.1rem 1.25rem',
+      position: 'relative',
+    }}>
+      {post.is_pinned && (
+        <span style={{ position: 'absolute', top: '0.75rem', right: '0.85rem', fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--gold)', opacity: 0.7 }}>pinned</span>
+      )}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+        <Badge label={meta.label} color={meta.color} />
+      </div>
+      <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-ccc)', marginBottom: post.body ? '0.4rem' : 0 }}>{post.title}</div>
+      {post.body && <div style={{ fontSize: '0.83rem', color: 'var(--text-accent)', lineHeight: 1.6, marginBottom: '0.5rem' }}>{post.body}</div>}
+      {post.url && (
+        <a href={post.url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', color: 'var(--gold)', textDecoration: 'none', marginBottom: '0.5rem' }}
+          onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
+          onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
+        >
+          Open document →
+        </a>
+      )}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.6rem' }}>
+        <div style={{ fontSize: '0.7rem', color: 'var(--text-3a5a)' }}>
+          {post.participants?.name && <span>{post.participants.name} · </span>}
+          <span>{fmtRelative(post.created_at)}</span>
+        </div>
+        {isSteward && (
+          <div style={{ display: 'flex', gap: '0.4rem' }}>
+            <button onClick={() => onTogglePin(post)} style={{ padding: '0.2rem 0.55rem', background: 'none', border: '1px solid var(--hud-border)', color: post.is_pinned ? 'var(--gold)' : 'var(--text-3a5a)', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+              {post.is_pinned ? 'Unpin' : 'Pin'}
+            </button>
+            <button onClick={() => onDelete(post.id)} style={{ padding: '0.2rem 0.55rem', background: 'none', border: '1px solid var(--hud-border)', color: 'var(--status-err)', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+              Delete
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function BulletinTab() {
+  const { participant, isSteward } = useAuth()
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [showCompose, setShowCompose] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [form, setForm] = useState({ title: '', body: '', url: '', post_type: 'announcement' })
+
+  async function load() {
+    setLoading(true)
+    const { data, error: err } = await supabase
+      .from('bulletin_posts')
+      .select('*, participants(name)')
+      .order('is_pinned', { ascending: false })
+      .order('created_at', { ascending: false })
+    if (err) setError(err.message)
+    else setPosts(data || [])
+    setLoading(false)
+  }
+
+  useEffect(() => { load() }, [])
+
+  async function submitPost(e) {
+    e.preventDefault()
+    if (!form.title.trim()) return
+    setSubmitting(true)
+    const { error: err } = await supabase.from('bulletin_posts').insert({
+      title: form.title.trim(),
+      body: form.body.trim() || null,
+      url: form.url.trim() || null,
+      post_type: form.post_type,
+      author_id: participant?.id,
+      is_pinned: false,
+    })
+    if (err) setError(err.message)
+    else {
+      setForm({ title: '', body: '', url: '', post_type: 'announcement' })
+      setShowCompose(false)
+      load()
+    }
+    setSubmitting(false)
+  }
+
+  async function deletePost(id) {
+    await supabase.from('bulletin_posts').delete().eq('id', id)
+    load()
+  }
+
+  async function togglePin(post) {
+    await supabase.from('bulletin_posts').update({ is_pinned: !post.is_pinned }).eq('id', post.id)
+    load()
+  }
+
+  const pinned = posts.filter(p => p.is_pinned)
+  const feed   = posts.filter(p => !p.is_pinned)
+
+  return (
+    <div>
+      {/* Steward compose controls */}
+      {isSteward && (
+        <div style={{ marginBottom: '1.5rem' }}>
+          <button onClick={() => setShowCompose(!showCompose)} style={{ padding: '0.4rem 0.85rem', background: 'var(--gold-12)', border: '1px solid rgba(196,149,106,0.25)', color: 'var(--gold)', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+            {showCompose ? 'Cancel' : '+ Post'}
+          </button>
+        </div>
+      )}
+
+      {/* Compose form */}
+      {showCompose && isSteward && (
+        <form onSubmit={submitPost} style={{ background: 'rgba(196,149,106,0.04)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: '8px', padding: '1.25rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.3rem' }}>Title</label>
+              <input required value={form.title} onChange={e => setForm(f => ({...f, title: e.target.value}))} placeholder="Post title" style={inputStyle} />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.3rem' }}>Type</label>
+              <select value={form.post_type} onChange={e => setForm(f => ({...f, post_type: e.target.value}))} style={{ ...inputStyle, cursor: 'pointer' }}>
+                <option value="announcement">Announcement</option>
+                <option value="decision">Decision</option>
+                <option value="document">Document</option>
+                <option value="event">Event</option>
+              </select>
+            </div>
+          </div>
+          <div style={{ marginBottom: '0.75rem' }}>
+            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.3rem' }}>Body (optional)</label>
+            <textarea value={form.body} onChange={e => setForm(f => ({...f, body: e.target.value}))} rows={3} placeholder="Details, context, or summary…" style={{ ...inputStyle, resize: 'vertical', minHeight: '72px' }} />
+          </div>
+          <div style={{ marginBottom: '1rem' }}>
+            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.3rem' }}>Link (optional)</label>
+            <input type="url" value={form.url} onChange={e => setForm(f => ({...f, url: e.target.value}))} placeholder="https://docs.google.com/…" style={inputStyle} />
+          </div>
+          <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.1rem', background: 'var(--gold)', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
+            {submitting ? 'Posting…' : 'Post'}
+          </button>
+        </form>
+      )}
+
+      {error && <div style={{ color: 'var(--status-err)', fontSize: '0.85rem', marginBottom: '1rem' }}>{error}</div>}
+
+      {loading && <div style={emptyStyle}>Loading…</div>}
+
+      {/* Pinned zone */}
+      {pinned.length > 0 && (
+        <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-nav)', marginBottom: '0.6rem' }}>Pinned</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+            {pinned.map(p => <BulletinPost key={p.id} post={p} isSteward={isSteward} onDelete={deletePost} onTogglePin={togglePin} />)}
+          </div>
+        </div>
+      )}
+
+      {/* Feed */}
+      {!loading && (
+        <div>
+          {feed.length === 0 && pinned.length === 0 && <div style={{ ...emptyStyle, background: 'rgba(255,255,255,0.015)', border: '1px solid #1a1a2e', borderRadius: '8px' }}>No posts yet.</div>}
+          {feed.length > 0 && (
+            <div>
+              {pinned.length > 0 && <div style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-nav)', marginBottom: '0.6rem' }}>Recent</div>}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                {feed.map(p => <BulletinPost key={p.id} post={p} isSteward={isSteward} onDelete={deletePost} onTogglePin={togglePin} />)}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 const TABS = [
   { key: 'projects',    label: 'Projects'    },
   { key: 'members',     label: 'Members'     },
   { key: 'governance',  label: 'Governance'  },
+  { key: 'bulletin',    label: 'Bulletin'    },
 ]
 
 export default function CooperativeGroup({ initialTab = 'projects' }) {
   const [tab, setTab] = useState(initialTab)
   const openTab = (key) => {
     setTab(key)
-    const paths = { projects: '/intranet/projects/', members: '/intranet/directory/', governance: '/intranet/governance/' }
+    const paths = { projects: '/intranet/projects/', members: '/intranet/directory/', governance: '/intranet/governance/', bulletin: '/intranet/bulletin/' }
     window.history.pushState(null, '', paths[key] || '/intranet/projects/')
   }
   return (
-    <TabShell title="Cooperative" subtitle="Projects · Members · Governance" tabs={TABS} active={tab} onTab={openTab}>
+    <TabShell title="Cooperative" subtitle="Projects · Members · Governance · Bulletin" tabs={TABS} active={tab} onTab={openTab}>
       {tab === 'projects'   && <ProjectsTab />}
       {tab === 'members'    && <MembersTab />}
       {tab === 'governance' && <GovernanceTab />}
+      {tab === 'bulletin'   && <BulletinTab />}
     </TabShell>
   )
 }

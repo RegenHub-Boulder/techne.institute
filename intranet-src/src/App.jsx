@@ -98,8 +98,8 @@ function Router() {
     const tab = path === 'labor' ? 'labor' : path === 'patronage' ? 'patronage' : 'overview'
     PageComponent = <AccountGroup initialTab={tab} />
   }
-  // Cooperative group: projects, directory, governance
-  else if (['projects', 'directory', 'governance'].includes(path)) {
+  // Cooperative group: projects, directory, governance, bulletin
+  else if (['projects', 'directory', 'governance', 'bulletin'].includes(path)) {
     const tab = path === 'directory' ? 'members' : path
     PageComponent = <CooperativeGroup initialTab={tab} />
   }

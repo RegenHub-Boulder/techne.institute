@@ -28,6 +28,7 @@ const ICONS = {
   treasury:  'M2 5h12v8H2V5zm5 0V3h2v2M1 5h14v2H1z',
   admin:     'M8 1a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM1 15c0-3.3 3.1-6 7-6s7 2.7 7 6H1z',
   ventures:  'M3 13V6l5-5 5 5v7H9V9H7v4H3z',
+  bulletin:  'M1 2h14v11H1V2zm3 3h8M4 8h6M4 11h3M11 11l2 2',
   ecosystem: 'M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM8 5v3l2 1.5M3 8h1M12 8h1M8 3v1M8 12v1',
   messages:  'M1 3h14v9H1V3zm0 0l7 5 7-5',
   menu:      'M1 3h14M1 8h14M1 13h14',
