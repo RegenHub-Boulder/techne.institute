@@ -309,9 +309,9 @@ export default function Home() {
             />
           </MetricCard>
 
-          {/* Ecosystem */}
+          {/* Overview */}
           <MetricCard
-            title="Ecosystem Health"
+            title="Overview"
             icon="○"
             href="/intranet/ecosystem/"
             color="var(--status-ok)"

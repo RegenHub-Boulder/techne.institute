@@ -36,7 +36,7 @@ const ICONS = {
 }
 
 const NAV_ITEMS = [
-  { path: '',            label: 'Ecosystem',  icon: 'ecosystem'  },
+  { path: '',            label: 'Overview',   icon: 'ecosystem'  },
   { path: 'account',     label: 'Account',    icon: 'account'    },
   { path: 'projects',    label: 'Cooperative',icon: 'projects'   },
   { path: 'journal',     label: 'Finance',    icon: 'ledger'     },

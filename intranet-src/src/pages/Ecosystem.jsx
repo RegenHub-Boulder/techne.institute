@@ -335,7 +335,7 @@ export default function Ecosystem() {
 
       {/* Header */}
       <div style={s.header}>
-        <div style={s.headerTitle}>Ecosystem Health</div>
+        <div style={s.headerTitle}>Overview</div>
         <div style={s.headerSub}>RegenHub, LCA · Boulder, Colorado · Live metrics</div>
       </div>
 
