@@ -345,8 +345,56 @@ const fmtRelative = (d) => {
   return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
+function AttachmentLink({ att }) {
+  const [url, setUrl] = useState(null)
+  useEffect(() => {
+    supabase.storage.from('bulletin-attachments').createSignedUrl(att.storage_path, 3600)
+      .then(({ data }) => { if (data?.signedUrl) setUrl(data.signedUrl) })
+  }, [att.storage_path])
+  const ext = att.file_name.split('.').pop().toUpperCase()
+  return (
+    <a
+      href={url || '#'}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={!url ? e => e.preventDefault() : undefined}
+      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.75rem', color: url ? 'var(--gold)' : 'var(--text-dim)', textDecoration: 'none', padding: '0.25rem 0.55rem', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '4px' }}
+    >
+      <span style={{ fontSize: '0.62rem', fontWeight: 700, background: 'rgba(255,255,255,0.08)', padding: '1px 4px', borderRadius: '2px' }}>{ext}</span>
+      {att.file_name}
+    </a>
+  )
+}
+
 function BulletinPost({ post, onDelete, isSteward, onTogglePin }) {
+  const { participant } = useAuth()
   const meta = TYPE_META[post.post_type] || TYPE_META.announcement
+  const [showComments, setShowComments] = useState(false)
+  const [comments, setComments] = useState(post.bulletin_comments || [])
+  const [commentText, setCommentText] = useState('')
+  const [submittingComment, setSubmittingComment] = useState(false)
+
+  async function submitComment(e) {
+    e.preventDefault()
+    if (!commentText.trim()) return
+    setSubmittingComment(true)
+    const { data, error } = await supabase
+      .from('bulletin_comments')
+      .insert({ post_id: post.id, author_id: participant?.id, body: commentText.trim() })
+      .select('*, participants(name)')
+      .single()
+    if (!error && data) setComments(c => [...c, data])
+    setCommentText('')
+    setSubmittingComment(false)
+  }
+
+  async function deleteComment(id) {
+    await supabase.from('bulletin_comments').delete().eq('id', id)
+    setComments(c => c.filter(x => x.id !== id))
+  }
+
+  const attachments = post.bulletin_attachments || []
+
   return (
     <div style={{
       background: post.is_pinned ? 'rgba(196,149,106,0.04)' : 'rgba(255,255,255,0.018)',
@@ -367,14 +415,28 @@ function BulletinPost({ post, onDelete, isSteward, onTogglePin }) {
         <a href={post.url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', color: 'var(--gold)', textDecoration: 'none', marginBottom: '0.5rem' }}
           onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
           onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
-        >
-          Open document →
-        </a>
+        >Open document →</a>
       )}
+
+      {/* Attachments */}
+      {attachments.length > 0 && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '0.65rem' }}>
+          {attachments.map(att => <AttachmentLink key={att.id} att={att} />)}
+        </div>
+      )}
+
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.6rem' }}>
-        <div style={{ fontSize: '0.7rem', color: 'var(--text-3a5a)' }}>
-          {post.participants?.name && <span>{post.participants.name} · </span>}
-          <span>{fmtRelative(post.created_at)}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ fontSize: '0.7rem', color: 'var(--text-3a5a)' }}>
+            {post.participants?.name && <span>{post.participants.name} · </span>}
+            <span>{fmtRelative(post.created_at)}</span>
+          </div>
+          <button
+            onClick={() => setShowComments(v => !v)}
+            style={{ background: 'none', border: 'none', color: showComments ? 'var(--gold)' : 'var(--text-3a5a)', fontSize: '0.72rem', cursor: 'pointer', fontFamily: 'inherit', padding: 0 }}
+          >
+            {comments.length > 0 ? `${comments.length} comment${comments.length !== 1 ? 's' : ''}` : 'Comment'}
+          </button>
         </div>
         {isSteward && (
           <div style={{ display: 'flex', gap: '0.4rem' }}>
@@ -387,6 +449,37 @@ function BulletinPost({ post, onDelete, isSteward, onTogglePin }) {
           </div>
         )}
       </div>
+
+      {/* Comments thread */}
+      {showComments && (
+        <div style={{ marginTop: '1rem', paddingTop: '0.85rem', borderTop: '1px solid #1a1a2e' }}>
+          {comments.length === 0 && <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginBottom: '0.75rem' }}>No comments yet.</div>}
+          {comments.map(c => (
+            <div key={c.id} style={{ display: 'flex', gap: '0.65rem', marginBottom: '0.65rem' }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-nav)', marginBottom: '0.2rem' }}>
+                  {c.participants?.name || 'Member'} · {fmtRelative(c.created_at)}
+                </div>
+                <div style={{ fontSize: '0.82rem', color: 'var(--text-accent)', lineHeight: 1.55 }}>{c.body}</div>
+              </div>
+              {(isSteward || c.author_id === participant?.id) && (
+                <button onClick={() => deleteComment(c.id)} style={{ alignSelf: 'flex-start', background: 'none', border: 'none', color: 'var(--text-dim)', fontSize: '0.7rem', cursor: 'pointer', fontFamily: 'inherit', padding: '0 0.2rem', flexShrink: 0 }}>×</button>
+              )}
+            </div>
+          ))}
+          <form onSubmit={submitComment} style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+            <input
+              value={commentText}
+              onChange={e => setCommentText(e.target.value)}
+              placeholder="Add a comment…"
+              style={{ ...inputStyle, fontSize: '0.78rem', flex: 1 }}
+            />
+            <button type="submit" disabled={submittingComment || !commentText.trim()} style={{ padding: '0.4rem 0.85rem', background: 'var(--gold)', border: 'none', color: '#000', borderRadius: '5px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0 }}>
+              {submittingComment ? '…' : 'Post'}
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   )
 }
@@ -398,13 +491,14 @@ function BulletinTab() {
   const [error, setError] = useState(null)
   const [showCompose, setShowCompose] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [files, setFiles] = useState([])
   const [form, setForm] = useState({ title: '', body: '', url: '', post_type: 'announcement' })
 
   async function load() {
     setLoading(true)
     const { data, error: err } = await supabase
       .from('bulletin_posts')
-      .select('*, participants(name)')
+      .select('*, participants(name), bulletin_comments(id, author_id, body, created_at, participants(name)), bulletin_attachments(id, file_name, storage_path, file_type, file_size)')
       .order('is_pinned', { ascending: false })
       .order('created_at', { ascending: false })
     if (err) setError(err.message)
@@ -418,21 +512,38 @@ function BulletinTab() {
     e.preventDefault()
     if (!form.title.trim()) return
     setSubmitting(true)
-    const { error: err } = await supabase.from('bulletin_posts').insert({
+    setError(null)
+    const { data: post, error: postErr } = await supabase.from('bulletin_posts').insert({
       title: form.title.trim(),
       body: form.body.trim() || null,
       url: form.url.trim() || null,
       post_type: form.post_type,
       author_id: participant?.id,
       is_pinned: false,
-    })
-    if (err) setError(err.message)
-    else {
-      setForm({ title: '', body: '', url: '', post_type: 'announcement' })
-      setShowCompose(false)
-      load()
+    }).select('id').single()
+    if (postErr) { setError(postErr.message); setSubmitting(false); return }
+
+    // Upload attachments
+    for (const file of files) {
+      const path = `${post.id}/${Date.now()}-${file.name}`
+      const { error: upErr } = await supabase.storage.from('bulletin-attachments').upload(path, file)
+      if (!upErr) {
+        await supabase.from('bulletin_attachments').insert({
+          post_id: post.id,
+          uploader_id: participant?.id,
+          file_name: file.name,
+          storage_path: path,
+          file_type: file.type,
+          file_size: file.size,
+        })
+      }
     }
+
+    setForm({ title: '', body: '', url: '', post_type: 'announcement' })
+    setFiles([])
+    setShowCompose(false)
     setSubmitting(false)
+    load()
   }
 
   async function deletePost(id) {
@@ -450,14 +561,14 @@ function BulletinTab() {
 
   return (
     <div>
-      {/* Compose controls — all members */}
+      {/* Compose controls */}
       <div style={{ marginBottom: '1.5rem' }}>
         <button onClick={() => setShowCompose(!showCompose)} style={{ padding: '0.4rem 0.85rem', background: 'var(--gold-12)', border: '1px solid rgba(196,149,106,0.25)', color: 'var(--gold)', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
           {showCompose ? 'Cancel' : '+ Post'}
         </button>
       </div>
 
-      {/* Compose form — all members */}
+      {/* Compose form */}
       {showCompose && (
         <form onSubmit={submitPost} style={{ background: 'rgba(196,149,106,0.04)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: '8px', padding: '1.25rem', marginBottom: '1.5rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
@@ -479,9 +590,26 @@ function BulletinTab() {
             <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.3rem' }}>Body (optional)</label>
             <textarea value={form.body} onChange={e => setForm(f => ({...f, body: e.target.value}))} rows={3} placeholder="Details, context, or summary…" style={{ ...inputStyle, resize: 'vertical', minHeight: '72px' }} />
           </div>
-          <div style={{ marginBottom: '1rem' }}>
+          <div style={{ marginBottom: '0.75rem' }}>
             <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.3rem' }}>Link (optional)</label>
             <input type="url" value={form.url} onChange={e => setForm(f => ({...f, url: e.target.value}))} placeholder="https://docs.google.com/…" style={inputStyle} />
+          </div>
+          <div style={{ marginBottom: '1rem' }}>
+            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.3rem' }}>Attachments (optional)</label>
+            <input
+              type="file"
+              multiple
+              accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,.doc,.docx,.txt"
+              onChange={e => setFiles(Array.from(e.target.files))}
+              style={{ ...inputStyle, cursor: 'pointer', padding: '0.35rem 0.5rem' }}
+            />
+            {files.length > 0 && (
+              <div style={{ marginTop: '0.4rem', display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
+                {files.map((f, i) => (
+                  <span key={i} style={{ fontSize: '0.72rem', color: 'var(--text-accent)', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '3px', padding: '2px 6px' }}>{f.name}</span>
+                ))}
+              </div>
+            )}
           </div>
           <button type="submit" disabled={submitting} style={{ padding: '0.5rem 1.1rem', background: 'var(--gold)', border: 'none', color: '#000', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>
             {submitting ? 'Posting…' : 'Post'}
@@ -490,7 +618,6 @@ function BulletinTab() {
       )}
 
       {error && <div style={{ color: 'var(--status-err)', fontSize: '0.85rem', marginBottom: '1rem' }}>{error}</div>}
-
       {loading && <div style={emptyStyle}>Loading…</div>}
 
       {/* Pinned zone */}

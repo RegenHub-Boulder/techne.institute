@@ -215,7 +215,7 @@ function BulletinCard() {
   async function load() {
     const { data } = await supabase
       .from('bulletin_posts')
-      .select('id, title, body, url, post_type, is_pinned, created_at, participants(name)')
+      .select('id, title, body, url, post_type, is_pinned, created_at, participants(name), bulletin_comments(id)')
       .order('is_pinned', { ascending: false })
       .order('created_at', { ascending: false })
       .limit(4)
@@ -302,9 +302,14 @@ function BulletinCard() {
                 onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
               >Open document →</a>
             )}
-            <div style={{ fontSize: '0.68rem', color: 'var(--text-dim)' }}>
-              {p.participants?.name && <span>{p.participants.name} · </span>}
-              {fmtRel(p.created_at)}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.68rem', color: 'var(--text-dim)' }}>
+              <span>
+                {p.participants?.name && <span>{p.participants.name} · </span>}
+                {fmtRel(p.created_at)}
+              </span>
+              {p.bulletin_comments?.length > 0 && (
+                <span style={{ color: 'var(--text-3a5a)' }}>{p.bulletin_comments.length} comment{p.bulletin_comments.length !== 1 ? 's' : ''}</span>
+              )}
             </div>
           </div>
         ))}
