@@ -926,7 +926,6 @@
       <div class="legend-item" role="listitem"><span class="legend-dot" style="background:var(--z1)"></span><span>public — open to all</span></div>
       <div class="legend-item" role="listitem"><span class="legend-dot" style="background:var(--z2)"></span><span>curated — linked or shared</span></div>
       <div class="legend-item" role="listitem"><span class="legend-dot" style="background:var(--z3)"></span><span>members — sign-in required</span></div>
-      <div class="legend-item" role="listitem"><span class="legend-dot" style="background:var(--z4)"></span><span>steward — organizer access</span></div>
     </div>
   </div>
 
@@ -1024,11 +1023,6 @@
               <span class="hud-zone-dot" style="background:var(--z3)"></span>
               Members
               <span class="hud-zone-count" id="nav-count-3"></span>
-            </button>
-            <button class="hud-zone-nav-item" data-filter="4" aria-pressed="false">
-              <span class="hud-zone-dot" style="background:var(--z4)"></span>
-              Steward
-              <span class="hud-zone-count" id="nav-count-4"></span>
             </button>
             <button class="hud-zone-nav-item" data-filter="5" aria-pressed="false" id="nav-btn-5" style="display:none">
               <span class="hud-zone-dot" style="background:#8bbfff"></span>
@@ -1225,15 +1219,6 @@
     { id:'intranet-third-floor', path:'/intranet/the-third-floor.html', title:'The Third Floor', zone:3, authLevel:'members', parent:'intranet',
       description:'The Third Floor — a Techne scenario document exploring the next phase of cooperative space and programming.' },
 
-    // ── Zone 4: Steward ───────────────────────────────────────
-    { id:'intranet-admin', path:'/intranet/admin/', title:'Steward Admin', zone:4, authLevel:'steward', parent:'intranet',
-      description:'Member management, allocation entry, and stewardship tools. Organizer access only.' },
-    { id:'workshop', path:'/workshop/', title:'Workshop', zone:4, authLevel:'steward', parent:'home',
-      description:'Agent coordination workspace — sprint management, agent communication, and coordination activity feed.' },
-    { id:'operations', path:'/operations/', title:'Operations', zone:4, authLevel:'steward', parent:'home',
-      description:'RegenHub, LCA operations — bylaws decision explorer, formation open items, and organizer reference documents.' },
-    { id:'lunch-presentation', path:'/lunch-presentation/', title:'Lunch Presentation', zone:4, authLevel:'steward', parent:'home',
-      description:'Internal presentation deck — cooperative workspace and venture studio overview for prospective partners and co-workers.' },
   ]
 
   // Cross-page link relationships (site graph edges, non-hierarchical)
@@ -1265,7 +1250,6 @@
 
     // Coordination games
     { from:'coordination-games', to:'cg-graduated-trust' }, { from:'coordination-games', to:'cg-commoners' },
-    { from:'coordination-games', to:'workshop' },
 
     // Formation cluster
     { from:'formation', to:'formation-narrative' }, { from:'formation', to:'formation-governance' },
@@ -1310,11 +1294,6 @@
     { from:'intranet-design-gateway', to:'design-system' },
     { from:'intranet-speak-ledger', to:'intranet-journal' },
 
-    // Steward
-    { from:'workshop', to:'intranet' },
-    { from:'operations', to:'bylaws' }, { from:'operations', to:'formation' },
-    { from:'intranet-admin', to:'intranet-directory' }, { from:'intranet-admin', to:'intranet-governance' },
-    { from:'intranet-admin', to:'intranet-capital' },
   ]
 
   // Annotate PAGES with link counts computed from SITE_LINKS
