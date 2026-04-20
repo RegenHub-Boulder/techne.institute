@@ -524,13 +524,13 @@ function BulletinTab() {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 const TABS = [
+  { key: 'bulletin',    label: 'Bulletin'    },
   { key: 'projects',    label: 'Projects'    },
   { key: 'members',     label: 'Members'     },
   { key: 'governance',  label: 'Governance'  },
-  { key: 'bulletin',    label: 'Bulletin'    },
 ]
 
-export default function CooperativeGroup({ initialTab = 'projects' }) {
+export default function CooperativeGroup({ initialTab = 'bulletin' }) {
   const [tab, setTab] = useState(initialTab)
   const openTab = (key) => {
     setTab(key)
@@ -538,7 +538,7 @@ export default function CooperativeGroup({ initialTab = 'projects' }) {
     window.history.pushState(null, '', paths[key] || '/intranet/projects/')
   }
   return (
-    <TabShell title="Cooperative" subtitle="Projects · Members · Governance · Bulletin" tabs={TABS} active={tab} onTab={openTab}>
+    <TabShell title="Cooperative" subtitle="Bulletin · Projects · Members · Governance" tabs={TABS} active={tab} onTab={openTab}>
       {tab === 'projects'   && <ProjectsTab />}
       {tab === 'members'    && <MembersTab />}
       {tab === 'governance' && <GovernanceTab />}
