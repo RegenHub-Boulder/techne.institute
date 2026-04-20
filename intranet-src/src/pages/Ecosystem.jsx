@@ -215,7 +215,7 @@ function BulletinCard() {
   async function load() {
     const { data } = await supabase
       .from('bulletin_posts')
-      .select('id, title, body, url, post_type, is_pinned, created_at, participants(name), bulletin_comments(id)')
+      .select('id, title, body, url, post_type, is_pinned, created_at, updated_at, participants(name), bulletin_comments(id)')
       .order('is_pinned', { ascending: false })
       .order('created_at', { ascending: false })
       .limit(4)
@@ -293,6 +293,7 @@ function BulletinCard() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
               <span style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: TYPE_COLOR[p.post_type] || 'var(--gold)', background: `${TYPE_COLOR[p.post_type] || 'var(--gold)'}18`, padding: '1px 5px', borderRadius: '3px' }}>{p.post_type}</span>
               {p.is_pinned && <span style={{ fontSize: '0.6rem', color: 'var(--gold, #c4956a)', opacity: 0.7 }}>pinned</span>}
+              {p.updated_at && new Date(p.updated_at) - new Date(p.created_at) > 5000 && <span style={{ fontSize: '0.6rem', color: 'var(--text-dim)', fontStyle: 'italic' }}>edited</span>}
             </div>
             <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>{p.title}</div>
             {p.body && <div style={{ fontSize: '0.75rem', color: 'var(--text-accent)', lineHeight: 1.5 }}>{p.body}</div>}

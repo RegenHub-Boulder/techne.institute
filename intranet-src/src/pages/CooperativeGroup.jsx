@@ -366,13 +366,42 @@ function AttachmentLink({ att }) {
   )
 }
 
-function BulletinPost({ post, onDelete, isSteward, onTogglePin }) {
+// Chip style helpers
+const crudChip = (color) => ({ padding: '0.2rem 0.55rem', background: 'none', border: `1px solid ${color}40`, color, borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer', fontFamily: 'inherit' })
+
+function BulletinPost({ post, onDelete, onUpdate, isSteward, onTogglePin }) {
   const { participant } = useAuth()
   const meta = TYPE_META[post.post_type] || TYPE_META.announcement
-  const [showComments, setShowComments] = useState(false)
-  const [comments, setComments] = useState(post.bulletin_comments || [])
-  const [commentText, setCommentText] = useState('')
+  const isAuthor = participant?.id && post.author_id === participant.id
+  const wasEdited = post.updated_at && new Date(post.updated_at) - new Date(post.created_at) > 5000
+
+  // Edit state
+  const [editing, setEditing]     = useState(false)
+  const [editForm, setEditForm]   = useState({ title: post.title, body: post.body || '', url: post.url || '', post_type: post.post_type })
+  const [saving, setSaving]       = useState(false)
+  const [editError, setEditError] = useState(null)
+
+  // Comment state
+  const [showComments, setShowComments]       = useState(false)
+  const [comments, setComments]               = useState(post.bulletin_comments || [])
+  const [commentText, setCommentText]         = useState('')
   const [submittingComment, setSubmittingComment] = useState(false)
+
+  async function saveEdit(e) {
+    e.preventDefault()
+    if (!editForm.title.trim()) return
+    setSaving(true); setEditError(null)
+    const { error } = await supabase.from('bulletin_posts').update({
+      title: editForm.title.trim(),
+      body: editForm.body.trim() || null,
+      url: editForm.url.trim() || null,
+      post_type: editForm.post_type,
+      updated_at: new Date().toISOString(),
+    }).eq('id', post.id)
+    if (error) { setEditError(error.message); setSaving(false); return }
+    setSaving(false); setEditing(false)
+    onUpdate()
+  }
 
   async function submitComment(e) {
     e.preventDefault()
@@ -395,6 +424,43 @@ function BulletinPost({ post, onDelete, isSteward, onTogglePin }) {
 
   const attachments = post.bulletin_attachments || []
 
+  // ── Inline edit form ──
+  if (editing) return (
+    <div style={{ background: 'rgba(196,149,106,0.04)', border: '1px solid rgba(196,149,106,0.2)', borderRadius: '8px', padding: '1.1rem 1.25rem' }}>
+      <div style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gold)', marginBottom: '0.85rem' }}>Edit post</div>
+      <form onSubmit={saveEdit}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.65rem', marginBottom: '0.65rem' }}>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.25rem' }}>Title</label>
+            <input required value={editForm.title} onChange={e => setEditForm(f => ({...f, title: e.target.value}))} style={inputStyle} />
+          </div>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.25rem' }}>Type</label>
+            <select value={editForm.post_type} onChange={e => setEditForm(f => ({...f, post_type: e.target.value}))} style={{ ...inputStyle, cursor: 'pointer' }}>
+              <option value="announcement">Announcement</option>
+              <option value="decision">Decision</option>
+              <option value="document">Document</option>
+              <option value="event">Event</option>
+            </select>
+          </div>
+        </div>
+        <div style={{ marginBottom: '0.65rem' }}>
+          <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.25rem' }}>Body</label>
+          <textarea value={editForm.body} onChange={e => setEditForm(f => ({...f, body: e.target.value}))} rows={3} style={{ ...inputStyle, resize: 'vertical', minHeight: '64px' }} />
+        </div>
+        <div style={{ marginBottom: '0.85rem' }}>
+          <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-nav)', marginBottom: '0.25rem' }}>Link</label>
+          <input type="url" value={editForm.url} onChange={e => setEditForm(f => ({...f, url: e.target.value}))} placeholder="https://…" style={inputStyle} />
+        </div>
+        {editError && <div style={{ color: 'var(--status-err)', fontSize: '0.75rem', marginBottom: '0.65rem' }}>{editError}</div>}
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button type="submit" disabled={saving} style={{ padding: '0.4rem 0.9rem', background: 'var(--gold)', border: 'none', color: '#000', borderRadius: '5px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>{saving ? 'Saving…' : 'Save'}</button>
+          <button type="button" onClick={() => setEditing(false)} style={{ padding: '0.4rem 0.9rem', background: 'none', border: '1px solid var(--hud-border)', color: 'var(--text-dim)', borderRadius: '5px', fontSize: '0.78rem', cursor: 'pointer', fontFamily: 'inherit' }}>Cancel</button>
+        </div>
+      </form>
+    </div>
+  )
+
   return (
     <div style={{
       background: post.is_pinned ? 'rgba(196,149,106,0.04)' : 'rgba(255,255,255,0.018)',
@@ -408,6 +474,7 @@ function BulletinPost({ post, onDelete, isSteward, onTogglePin }) {
       )}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
         <Badge label={meta.label} color={meta.color} />
+        {wasEdited && <span style={{ fontSize: '0.62rem', color: 'var(--text-dim)', fontStyle: 'italic' }}>edited</span>}
       </div>
       <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-ccc)', marginBottom: post.body ? '0.4rem' : 0 }}>{post.title}</div>
       {post.body && <div style={{ fontSize: '0.83rem', color: 'var(--text-accent)', lineHeight: 1.6, marginBottom: '0.5rem' }}>{post.body}</div>}
@@ -425,7 +492,8 @@ function BulletinPost({ post, onDelete, isSteward, onTogglePin }) {
         </div>
       )}
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.6rem' }}>
+      {/* Footer: meta + CRUD chips */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.6rem', flexWrap: 'wrap', gap: '0.4rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ fontSize: '0.7rem', color: 'var(--text-3a5a)' }}>
             {post.participants?.name && <span>{post.participants.name} · </span>}
@@ -438,16 +506,20 @@ function BulletinPost({ post, onDelete, isSteward, onTogglePin }) {
             {comments.length > 0 ? `${comments.length} comment${comments.length !== 1 ? 's' : ''}` : 'Comment'}
           </button>
         </div>
-        {isSteward && (
-          <div style={{ display: 'flex', gap: '0.4rem' }}>
-            <button onClick={() => onTogglePin(post)} style={{ padding: '0.2rem 0.55rem', background: 'none', border: '1px solid var(--hud-border)', color: post.is_pinned ? 'var(--gold)' : 'var(--text-3a5a)', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer', fontFamily: 'inherit' }}>
+        {/* CRUD chips */}
+        <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+          {isAuthor && (
+            <button onClick={() => setEditing(true)} style={crudChip('var(--gold)')}>Edit</button>
+          )}
+          {isSteward && (
+            <button onClick={() => onTogglePin(post)} style={crudChip(post.is_pinned ? 'var(--gold)' : 'var(--text-nav)')}>
               {post.is_pinned ? 'Unpin' : 'Pin'}
             </button>
-            <button onClick={() => onDelete(post.id)} style={{ padding: '0.2rem 0.55rem', background: 'none', border: '1px solid var(--hud-border)', color: 'var(--status-err)', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer', fontFamily: 'inherit' }}>
-              Delete
-            </button>
-          </div>
-        )}
+          )}
+          {(isSteward || isAuthor) && (
+            <button onClick={() => onDelete(post.id)} style={crudChip('var(--status-err)')}>Delete</button>
+          )}
+        </div>
       </div>
 
       {/* Comments thread */}
@@ -625,7 +697,7 @@ function BulletinTab() {
         <div style={{ marginBottom: '1.5rem' }}>
           <div style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-nav)', marginBottom: '0.6rem' }}>Pinned</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-            {pinned.map(p => <BulletinPost key={p.id} post={p} isSteward={isSteward} onDelete={deletePost} onTogglePin={togglePin} />)}
+            {pinned.map(p => <BulletinPost key={p.id} post={p} isSteward={isSteward} onDelete={deletePost} onUpdate={load} onTogglePin={togglePin} />)}
           </div>
         </div>
       )}
@@ -638,7 +710,7 @@ function BulletinTab() {
             <div>
               {pinned.length > 0 && <div style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-nav)', marginBottom: '0.6rem' }}>Recent</div>}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-                {feed.map(p => <BulletinPost key={p.id} post={p} isSteward={isSteward} onDelete={deletePost} onTogglePin={togglePin} />)}
+                {feed.map(p => <BulletinPost key={p.id} post={p} isSteward={isSteward} onDelete={deletePost} onUpdate={load} onTogglePin={togglePin} />)}
               </div>
             </div>
           )}
