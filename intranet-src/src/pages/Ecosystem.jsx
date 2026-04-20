@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase.js'
+import { useAuth } from '../hooks/useAuth.jsx'
 
 // ─── Data hooks ───────────────────────────────────────────────────────────────
 
@@ -191,6 +192,127 @@ function HealthCard({ indicator, metrics, governance }) {
   )
 }
 
+// ─── Bulletin card ────────────────────────────────────────────────────────────
+
+const TYPE_COLOR = { announcement: 'var(--gold)', decision: 'var(--status-info)', document: '#a78bfa', event: 'var(--status-ok)' }
+const fmtRel = (d) => { if (!d) return ''; const diff = Date.now() - new Date(d).getTime(); const m = Math.floor(diff/60000); if (m < 60) return `${m}m ago`; const h = Math.floor(m/60); if (h < 24) return `${h}h ago`; return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'}) }
+
+const inputStyle = { width: '100%', padding: '0.45rem 0.6rem', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '5px', color: 'var(--text-primary)', fontSize: '0.8rem', fontFamily: 'inherit', boxSizing: 'border-box', outline: 'none' }
+
+function BulletinCard() {
+  const { participant } = useAuth()
+  const [posts, setPosts] = useState([])
+  const [showCompose, setShowCompose] = useState(false)
+  const [form, setForm] = useState({ title: '', body: '', url: '', post_type: 'announcement' })
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState(null)
+
+  function navigate(path) {
+    window.history.pushState(null, '', `/intranet/${path}/`)
+    window.dispatchEvent(new PopStateEvent('popstate'))
+  }
+
+  async function load() {
+    const { data } = await supabase
+      .from('bulletin_posts')
+      .select('id, title, body, url, post_type, is_pinned, created_at, participants(name)')
+      .order('is_pinned', { ascending: false })
+      .order('created_at', { ascending: false })
+      .limit(4)
+    setPosts(data || [])
+  }
+
+  useEffect(() => { load() }, [])
+
+  async function submitPost(e) {
+    e.preventDefault()
+    if (!form.title.trim()) return
+    setSubmitting(true)
+    setError(null)
+    const { error: err } = await supabase.from('bulletin_posts').insert({
+      title: form.title.trim(),
+      body: form.body.trim() || null,
+      url: form.url.trim() || null,
+      post_type: form.post_type,
+      author_id: participant?.id,
+      is_pinned: false,
+    })
+    if (err) { setError(err.message); setSubmitting(false); return }
+    setForm({ title: '', body: '', url: '', post_type: 'announcement' })
+    setShowCompose(false)
+    setSubmitting(false)
+    load()
+  }
+
+  return (
+    <div style={{ ...s.treasuryBar, marginBottom: '1rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
+        <div style={s.treasuryTitle}>Bulletin</div>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <button
+            onClick={() => setShowCompose(v => !v)}
+            style={{ padding: '0.25rem 0.65rem', background: showCompose ? 'none' : 'var(--gold-12, rgba(196,149,106,0.12))', border: '1px solid rgba(196,149,106,0.25)', color: 'var(--gold, #c4956a)', borderRadius: '5px', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
+          >{showCompose ? 'Cancel' : '+ Post'}</button>
+          <button
+            onClick={() => navigate('bulletin')}
+            style={{ padding: '0.25rem 0.65rem', background: 'none', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--text-dim)', borderRadius: '5px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'inherit' }}
+          >All →</button>
+        </div>
+      </div>
+
+      {/* Compose form */}
+      {showCompose && (
+        <form onSubmit={submitPost} style={{ background: 'rgba(196,149,106,0.04)', border: '1px solid rgba(196,149,106,0.12)', borderRadius: '7px', padding: '0.9rem', marginBottom: '0.85rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <input required value={form.title} onChange={e => setForm(f => ({...f, title: e.target.value}))} placeholder="Post title" style={inputStyle} />
+            <select value={form.post_type} onChange={e => setForm(f => ({...f, post_type: e.target.value}))} style={{ ...inputStyle, width: 'auto', cursor: 'pointer' }}>
+              <option value="announcement">Announcement</option>
+              <option value="decision">Decision</option>
+              <option value="document">Document</option>
+              <option value="event">Event</option>
+            </select>
+          </div>
+          <textarea value={form.body} onChange={e => setForm(f => ({...f, body: e.target.value}))} rows={2} placeholder="Details (optional)" style={{ ...inputStyle, resize: 'vertical', minHeight: '48px', marginBottom: '0.5rem' }} />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', alignItems: 'center' }}>
+            <input type="url" value={form.url} onChange={e => setForm(f => ({...f, url: e.target.value}))} placeholder="Link (optional) — Google Doc, etc." style={inputStyle} />
+            <button type="submit" disabled={submitting} style={{ padding: '0.45rem 0.9rem', background: 'var(--gold, #c4956a)', border: 'none', color: '#000', borderRadius: '5px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>
+              {submitting ? '…' : 'Post'}
+            </button>
+          </div>
+          {error && <div style={{ color: 'var(--status-err)', fontSize: '0.75rem', marginTop: '0.4rem' }}>{error}</div>}
+        </form>
+      )}
+
+      {/* Post feed */}
+      {posts.length === 0 && !showCompose && (
+        <div style={{ fontSize: '0.78rem', color: 'var(--text-dim)', padding: '0.5rem 0' }}>No posts yet. Be the first to post.</div>
+      )}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        {posts.map(p => (
+          <div key={p.id} style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', padding: '0.6rem 0.75rem', background: p.is_pinned ? 'rgba(196,149,106,0.04)' : 'rgba(255,255,255,0.02)', border: `1px solid ${p.is_pinned ? 'rgba(196,149,106,0.15)' : 'rgba(255,255,255,0.05)'}`, borderRadius: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <span style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: TYPE_COLOR[p.post_type] || 'var(--gold)', background: `${TYPE_COLOR[p.post_type] || 'var(--gold)'}18`, padding: '1px 5px', borderRadius: '3px' }}>{p.post_type}</span>
+              {p.is_pinned && <span style={{ fontSize: '0.6rem', color: 'var(--gold, #c4956a)', opacity: 0.7 }}>pinned</span>}
+            </div>
+            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>{p.title}</div>
+            {p.body && <div style={{ fontSize: '0.75rem', color: 'var(--text-accent)', lineHeight: 1.5 }}>{p.body}</div>}
+            {p.url && (
+              <a href={p.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.73rem', color: 'var(--gold, #c4956a)', textDecoration: 'none' }}
+                onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
+                onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
+              >Open document →</a>
+            )}
+            <div style={{ fontSize: '0.68rem', color: 'var(--text-dim)' }}>
+              {p.participants?.name && <span>{p.participants.name} · </span>}
+              {fmtRel(p.created_at)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // ─── Main page ────────────────────────────────────────────────────────────────
 
 export default function Ecosystem() {
@@ -216,6 +338,9 @@ export default function Ecosystem() {
         <div style={s.headerTitle}>Ecosystem Health</div>
         <div style={s.headerSub}>RegenHub, LCA · Boulder, Colorado · Live metrics</div>
       </div>
+
+      {/* Bulletin card */}
+      <BulletinCard />
 
       {/* Treasury bar */}
       <div style={s.treasuryBar}>

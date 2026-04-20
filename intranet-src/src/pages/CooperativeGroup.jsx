@@ -450,17 +450,15 @@ function BulletinTab() {
 
   return (
     <div>
-      {/* Steward compose controls */}
-      {isSteward && (
-        <div style={{ marginBottom: '1.5rem' }}>
-          <button onClick={() => setShowCompose(!showCompose)} style={{ padding: '0.4rem 0.85rem', background: 'var(--gold-12)', border: '1px solid rgba(196,149,106,0.25)', color: 'var(--gold)', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
-            {showCompose ? 'Cancel' : '+ Post'}
-          </button>
-        </div>
-      )}
+      {/* Compose controls — all members */}
+      <div style={{ marginBottom: '1.5rem' }}>
+        <button onClick={() => setShowCompose(!showCompose)} style={{ padding: '0.4rem 0.85rem', background: 'var(--gold-12)', border: '1px solid rgba(196,149,106,0.25)', color: 'var(--gold)', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+          {showCompose ? 'Cancel' : '+ Post'}
+        </button>
+      </div>
 
-      {/* Compose form */}
-      {showCompose && isSteward && (
+      {/* Compose form — all members */}
+      {showCompose && (
         <form onSubmit={submitPost} style={{ background: 'rgba(196,149,106,0.04)', border: '1px solid rgba(196,149,106,0.15)', borderRadius: '8px', padding: '1.25rem', marginBottom: '1.5rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
             <div>
