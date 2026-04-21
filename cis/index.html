@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Common Information System — RegenHub, LCA</title>
+  <meta name="description" content="Product Requirements Document for the Common Information System of RegenHub, LCA. A shared operational layer where the cooperative's state is held, updated, and made legible.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    (function() {
+      var stored = localStorage.getItem('theme');
+      var preferred = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', preferred);
+    })();
+  </script>
+  <style>
+    :root {
+      --ground: #0f0f0f;
+      --surface: #1a1a1a;
+      --surface-2: #222220;
+      --border: #2e2c29;
+      --text: #e8e4dd;
+      --text-muted: #7a756c;
+      --text-faint: #4a4540;
+      --accent: #c4956a;
+      --accent-dim: rgba(196, 149, 106, 0.15);
+      --accent-border: rgba(196, 149, 106, 0.3);
+    }
+    [data-theme="light"] {
+      --ground: #f5f2ee;
+      --surface: #ffffff;
+      --surface-2: #f0ece6;
+      --border: #ddd8d0;
+      --text: #1c1917;
+      --text-muted: #6b6560;
+      --text-faint: #b0aa9f;
+      --accent: #a8753e;
+      --accent-dim: rgba(168, 117, 62, 0.1);
+      --accent-border: rgba(168, 117, 62, 0.25);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ground);
+      color: var(--text);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--ground);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .nav-home {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .nav-home:hover { color: var(--accent); }
+    .nav-divider { color: var(--text-faint); font-size: 12px; }
+    .nav-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .nav-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      padding: 2px 7px;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 13px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── LAYOUT ── */
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 2rem 8rem;
+    }
+
+    /* ── COVER ── */
+    .cover {
+      padding: 5rem 0 4rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4rem;
+    }
+    .cover-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+    .cover h1 {
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+    }
+    .cover-sub {
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      max-width: 520px;
+    }
+    .cover-meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-faint);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      margin-bottom: 4rem;
+    }
+    .toc-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+    .toc ol {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.4rem 2rem;
+    }
+    @media (max-width: 560px) { .toc ol { grid-template-columns: 1fr; } }
+    .toc li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+    }
+    .toc-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 1.6rem;
+    }
+    .toc a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    .toc a:hover { color: var(--accent); }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 5rem;
+    }
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .section h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+      color: var(--text);
+    }
+    .section > p {
+      color: var(--text-muted);
+      margin-bottom: 1.4rem;
+      max-width: 640px;
+    }
+    .section h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 2.5rem 0 0.8rem;
+    }
+
+    /* ── CARD GRID ── */
+    .card-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.5rem 1.75rem;
+    }
+    .card-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* ── FACE CARDS (system definition) ── */
+    .face-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 600px) { .face-grid { grid-template-columns: 1fr; } }
+    .face-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+    }
+    .face-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+    .face-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .face-card p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* ── TABLE ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+    }
+    .data-table thead th {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: left;
+      padding: 0.6rem 1rem;
+      border-bottom: 1px solid var(--accent-border);
+      background: var(--surface);
+    }
+    .data-table tbody td {
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .data-table tbody td:first-child {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--text);
+    }
+    .data-table tbody tr:hover td { background: var(--surface-2); }
+    .pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      border: 1px solid var(--accent-border);
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    /* ── EXAMPLE BLOCK ── */
+    .example-block {
+      border-left: 2px solid var(--accent-border);
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      background: var(--surface);
+    }
+    .example-block .prompt {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+    .example-block .response {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 0.6rem;
+    }
+    .example-block .citation {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+    }
+
+    /* ── ROADMAP TABLE ── */
+    .roadmap-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+    }
+    .roadmap-table th {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: left;
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid var(--accent-border);
+      background: var(--surface);
+    }
+    .roadmap-table td {
+      padding: 0.8rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .roadmap-table td:first-child {
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .roadmap-table tr:hover td { background: var(--surface-2); }
+
+    /* ── HEART BLOCK ── */
+    .heart-block {
+      background: var(--surface);
+      border: 1px solid var(--accent-border);
+      padding: 2.5rem;
+      margin-top: 2rem;
+    }
+    .heart-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+    .heart-block h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .heart-block p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 0.8rem;
+    }
+
+    /* ── SUCCESS LIST ── */
+    .success-group {
+      margin-top: 1.5rem;
+    }
+    .success-group-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .success-group-header h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .success-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .success-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .success-list li {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      padding-left: 1.2rem;
+      position: relative;
+      line-height: 1.6;
+    }
+    .success-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text-faint);
+    }
+
+    /* ── DIVIDER ── */
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3rem 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      margin-top: 4rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-faint);
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    footer a:hover { color: var(--accent); }
+
+    /* ── ANCHOR OFFSET ── */
+    [id] { scroll-margin-top: 70px; }
+
+    /* ── MODULE GRID ── */
+    .module-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+    }
+    .module-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+    .module-card .module-anchor {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .module-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      line-height: 1.55;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .module-card-inner { flex: 1; }
+
+    /* ── WORKFLOW LIST ── */
+    .workflow-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .workflow-item {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.2rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .workflow-item .wf-anchor {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      padding-top: 2px;
+      min-width: 70px;
+    }
+    .workflow-item h4 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    .workflow-item p {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* ── STACK TABLE ── */
+    .stack-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+    }
+    .stack-table th {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: left;
+      padding: 0.6rem 1rem;
+      border-bottom: 1px solid var(--accent-border);
+    }
+    .stack-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .stack-table td:first-child {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.83rem;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .stack-table td:nth-child(2) {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .stack-table td:last-child {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-style: italic;
+    }
+    .stack-table tr:hover td { background: var(--surface-2); }
+
+    /* ── NFR GRID ── */
+    .nfr-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 600px) { .nfr-grid { grid-template-columns: 1fr; } }
+    .nfr-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.2rem 1.4rem;
+    }
+    .nfr-card h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .nfr-card p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* ── NAV PILLS (mobile TOC) ── */
+    .section-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+    .section-nav a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+    .section-nav a:hover { border-color: var(--accent); color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <a href="/" class="nav-home">Techne</a>
+      <span class="nav-divider">/</span>
+      <span class="nav-title">CIS</span>
+      <span class="nav-badge">PRD v0.1</span>
+    </div>
+    <button class="theme-toggle" onclick="(function(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);})()" aria-label="Toggle theme">◐</button>
+  </nav>
+
+  <main class="page">
+
+    <!-- COVER -->
+    <header class="cover">
+      <p class="cover-label">RegenHub, LCA · Product Requirements Document</p>
+      <h1>Common Information System</h1>
+      <p class="cover-sub">A shared operational layer where the cooperative's state is held, updated, and made legible.</p>
+      <p class="cover-meta">VERSION 0.1 &nbsp;·&nbsp; DRAFT &nbsp;·&nbsp; APRIL 2026</p>
+    </header>
+
+    <!-- TOC -->
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-label">Contents</p>
+      <ol>
+        <li><span class="toc-num">01</span><a href="#preamble">Preamble</a></li>
+        <li><span class="toc-num">02</span><a href="#principles">Principles</a></li>
+        <li><span class="toc-num">03</span><a href="#system-definition">System Definition</a></li>
+        <li><span class="toc-num">04</span><a href="#information-model">Information Model</a></li>
+        <li><span class="toc-num">05</span><a href="#identity-access">Identity &amp; Access</a></li>
+        <li><span class="toc-num">06</span><a href="#core-modules">Core Modules</a></li>
+        <li><span class="toc-num">07</span><a href="#interface-gui">Interface · GUI</a></li>
+        <li><span class="toc-num">08</span><a href="#interface-nl">Interface · Natural Language</a></li>
+        <li><span class="toc-num">09</span><a href="#workflows">Workflows</a></li>
+        <li><span class="toc-num">10</span><a href="#integration-stack">Integration &amp; Stack</a></li>
+        <li><span class="toc-num">11</span><a href="#nfr">Non-Functional Requirements</a></li>
+        <li><span class="toc-num">12</span><a href="#success-criteria">Success Criteria</a></li>
+        <li><span class="toc-num">13</span><a href="#roadmap">Roadmap</a></li>
+        <li><span class="toc-num">14</span><a href="#open-questions">Open Questions</a></li>
+      </ol>
+    </nav>
+
+    <!-- 01 PREAMBLE -->
+    <section class="section" id="preamble">
+      <span class="section-label">01 · Preamble</span>
+      <h2>What this document is.</h2>
+      <p>This Product Requirements Document specifies the Common Information System for RegenHub, LCA, a Colorado public benefit limited cooperative association. The system's purpose is to hold the authoritative state of the cooperative and to make that state legible to members, directors, officers, auditors, and automation. It is not a marketing site, a social platform, or a CRM. It is the book of record and the interface through which the cooperative operates itself.</p>
+      <p>The document is written for three audiences at once: organizers making decisions about scope and sequence, developers building on the Supabase, Make.com, and Claude API foundation, and Nou, the agent layer operating across the system on behalf of the cooperative. The voice is editorial rather than specification-heavy, because the work requires a shared understanding of intent that a rule-book cannot carry alone.</p>
+      <p>Coverage is comprehensive in scope and deliberately modest in depth. Every section names what the system must do, anchors the requirement in the bylaws or cooperative principles from which it derives, and leaves the detailed design to downstream artifacts. Where decisions are unresolved, the open questions section names them explicitly rather than smoothing them over.</p>
+    </section>
+
+    <!-- 02 PRINCIPLES -->
+    <section class="section" id="principles">
+      <span class="section-label">02 · Principles</span>
+      <h2>What guides the design.</h2>
+      <p>These principles carry across every module and every interface. Where a design decision is ambiguous, the principles resolve it. Where a principle is in tension with an expedient, the principle holds and the expedient is reconsidered.</p>
+      <div class="card-grid">
+        <div class="card">
+          <span class="card-num">01</span>
+          <h4>Augmentation, not automation</h4>
+          <p>The system exists to improve human coordination, not to replace human judgment. Agents draft, surface, and guide. Humans decide, sign, and govern.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">02</span>
+          <h4>Legibility is the product</h4>
+          <p>A governance system that confuses its members works against the thesis that justifies its existence. Every interface must pass the test of a curious new member, not a co-op MBA.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">03</span>
+          <h4>Bylaws are the specification</h4>
+          <p>The legal documents define the entities, events, thresholds, and rights the system must faithfully represent. Where bylaws are silent, board policy fills the space. Where both are silent, a deliberate product decision is required and recorded.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">04</span>
+          <h4>Traceability over opacity</h4>
+          <p>Every record in the system links to the authority that governs it. Every derived value links to its inputs. A member following a question back to its source should never hit an unexplained boundary.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">05</span>
+          <h4>Conservation at the ledger</h4>
+          <p>Votes, stock, and capital accounts are conserved quantities. What enters a balance must leave another. The schema enforces this before any interface renders it.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">06</span>
+          <h4>Confidentiality at the data layer</h4>
+          <p>Privacy is a property of the record, not the screen. Interfaces inherit access constraints from the underlying data, so no view can accidentally expose what the record itself protects. Article 18 obligations apply end to end.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">07</span>
+          <h4>Democratic by default</h4>
+          <p>Any member can see what governs them. Aggregate figures, the membership list on request, meeting minutes, board policies, and the benefit report are all accessible without friction. Exceptions require a reason rooted in the bylaws.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">08</span>
+          <h4>Portable by construction</h4>
+          <p>Data belongs to the cooperative, not the vendor. Every table has an export path. Every record resolves to an open format. Vendor lock-in at the data layer is a governance failure, regardless of tool choice.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">09</span>
+          <h4>Audit by design</h4>
+          <p>Every change to state is an event row with actor, timestamp, and prior value. The system answers "what happened, when, and why" the same way it answers "what is true now."</p>
+        </div>
+        <div class="card">
+          <span class="card-num">10</span>
+          <h4>Composability with other cooperatives</h4>
+          <p>The schema and interfaces are designed so the model generalizes. What works for RegenHub should work for the next LCA, the next credit union, the next housing cooperative, with minimal adaptation.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 SYSTEM DEFINITION -->
+    <section class="section" id="system-definition">
+      <span class="section-label">03 · System Definition</span>
+      <h2>One state, three faces.</h2>
+      <p>The Common Information System is a single authoritative state with three views. The views are not separate systems; they are different surfaces onto the same underlying ledger.</p>
+      <div class="face-grid">
+        <div class="face-card">
+          <span class="face-tag">Authoritative Ledger</span>
+          <h4>The book of record</h4>
+          <p>The Supabase database of record. Every member, every share, every capital account entry, every vote, every minute. This is the layer an auditor queries. Every other surface is derived from it.</p>
+        </div>
+        <div class="face-card">
+          <span class="face-tag">GUI</span>
+          <h4>The member portal</h4>
+          <p>The member-facing application where members see their own records, the cooperative's shared state, and the governance activity in motion. Optimized for legibility, mobile, and the co-op.us design system.</p>
+        </div>
+        <div class="face-card">
+          <span class="face-tag">Natural Language · Nou</span>
+          <h4>The agent interface</h4>
+          <p>The conversational surface through which members, directors, and operators query the system, draft artifacts, and navigate workflows. Grounded in the bylaws and the current state, with every answer citable.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 INFORMATION MODEL -->
+    <section class="section" id="information-model">
+      <span class="section-label">04 · Information Model</span>
+      <h2>REA as the top-level partitioning.</h2>
+      <p>The system's information model follows the REA ontology (McCarthy 1982): Agents, Agreements, Events, Resources. Every table traces to one of the four primitives, and every relationship between tables is an Event. This is not a decorative choice. It is the property that keeps the accounting layer and the governance layer in the same vocabulary.</p>
+      <h3>Core tables</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Table</th>
+            <th>Primitive</th>
+            <th>Anchor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>agents</td><td><span class="pill">Agent</span></td><td>natural and legal persons</td></tr>
+          <tr><td>memberships</td><td><span class="pill">Agent / Agreement</span></td><td>§1.1–1.4</td></tr>
+          <tr><td>stock_ledger</td><td><span class="pill">Resource</span></td><td>§1.13</td></tr>
+          <tr><td>capital_accounts</td><td><span class="pill">Resource</span></td><td>§5.1</td></tr>
+          <tr><td>capital_events</td><td><span class="pill">Event</span></td><td>§5.1, §5.3, §5.4</td></tr>
+          <tr><td>agreements</td><td><span class="pill">Agreement</span></td><td>bylaws, policies, MAs</td></tr>
+          <tr><td>signatures</td><td><span class="pill">Event</span></td><td>§1.4</td></tr>
+          <tr><td>meetings</td><td><span class="pill">Event</span></td><td>§II, §III</td></tr>
+          <tr><td>attendance</td><td><span class="pill">Event</span></td><td>§2.7</td></tr>
+          <tr><td>proxies</td><td><span class="pill">Agreement</span></td><td>§2.6.4</td></tr>
+          <tr><td>motions</td><td><span class="pill">Event</span></td><td>§2.6, §3.13</td></tr>
+          <tr><td>votes</td><td><span class="pill">Event · Resource</span></td><td>§1.6, §1.14.2</td></tr>
+          <tr><td>consents</td><td><span class="pill">Event</span></td><td>§2.8, §3.15</td></tr>
+          <tr><td>minutes</td><td><span class="pill">Agreement</span></td><td>§4.5</td></tr>
+          <tr><td>notices</td><td><span class="pill">Event</span></td><td>§2.4, §X</td></tr>
+          <tr><td>committees</td><td><span class="pill">Agent</span></td><td>§3.18</td></tr>
+          <tr><td>policies</td><td><span class="pill">Agreement</span></td><td>board-adopted</td></tr>
+          <tr><td>tax_records</td><td><span class="pill">Agreement · Event</span></td><td>§VI</td></tr>
+          <tr><td>benefit_reports</td><td><span class="pill">Agreement</span></td><td>§XV</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:1.2rem;">Derived views sit above the core tables: <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">active_members</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">current_board</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">capital_balances_as_of</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">quorum_for_meeting</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">vote_outcome</code>. These are the objects the interfaces mostly consume. They are pure functions of the event log, which is what makes the ledger auditable and the interfaces performant.</p>
+    </section>
+
+    <!-- 05 IDENTITY & ACCESS -->
+    <section class="section" id="identity-access">
+      <span class="section-label">05 · Identity &amp; Access</span>
+      <h2>Roles derived from the bylaws.</h2>
+      <p>Access in the system is not a separate permissions layer bolted on top. Roles, rights, and obligations are already defined in the bylaws. The system's job is to represent them faithfully and enforce them consistently.</p>
+      <p>A member cannot be granted visibility they are not entitled to by reason of convenience, and cannot be denied visibility the bylaws guarantee. The default position is disclosure to members, with specific constraints for tax identifiers, personal contact details, and sensitive deliberations covered by §18.2.</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Scope</th>
+            <th>Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Guest</td><td>Public-facing materials only: benefit report, principles, aggregate figures.</td><td>§XV</td></tr>
+          <tr><td>Applicant</td><td>Own application and signed agreements. No access to member records.</td><td>§1.4</td></tr>
+          <tr><td>Patron Member</td><td>Own records always. Aggregate and membership list on request. Meeting materials for meetings they attend.</td><td>§1.2, §1.7, §2.9, §18.1</td></tr>
+          <tr><td>Investor Member</td><td>Own records always. Class-specific voting where required.</td><td>§1.3, §2.6.2</td></tr>
+          <tr><td>Suspended Member</td><td>Read own records. No voting, no participation in management.</td><td>§1.10.1</td></tr>
+          <tr><td>Former Member</td><td>Historical access to own records, including in-progress redemption schedule.</td><td>§1.11</td></tr>
+          <tr><td>Director</td><td>Member access plus board materials, board minutes, committee reports.</td><td>§III</td></tr>
+          <tr><td>Officer</td><td>Role-specific authority: Treasurer over financial records, Secretary over minutes and registers, President over contracts.</td><td>§IV</td></tr>
+          <tr><td>Committee Member</td><td>Director access plus full committee working materials.</td><td>§3.18</td></tr>
+          <tr><td>Administrator</td><td>Operational access for onboarding, support, and data stewardship. Does not create substantive decisions.</td><td>policy</td></tr>
+          <tr><td>Agent (Nou)</td><td>Scoped impersonation: inherits the permissions of the user who invoked it, never more. All actions logged.</td><td>Principle 01</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 06 CORE MODULES -->
+    <section class="section" id="core-modules">
+      <span class="section-label">06 · Core Modules</span>
+      <h2>The functional areas the system must cover.</h2>
+      <p>Thirteen modules together cover the operational surface of the cooperative. Each is grounded in one or more bylaw provisions. None is optional; each is phased, and the system is usable at every intermediate state.</p>
+      <div class="module-grid">
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Member Directory &amp; Profile</h4>
+            <span class="pill">§1.7, §2.9</span>
+          </div>
+          <p>Canonical register of members. Personal profile, contact details, tax identifier (restricted visibility), class membership, good standing status. Supports the ten-day advance member list requirement before meetings.</p>
+        </div>
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Capital Account</h4>
+            <span class="pill">§V</span>
+          </div>
+          <p>Per-member capital account balance with full event history: contributions, allocations, distributions, adjustments. Tracks book versus tax distinction. Member-facing view shows personal balance; administrator view shows all.</p>
+        </div>
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Stock Ledger</h4>
+            <span class="pill">§1.13, §4.5</span>
+          </div>
+          <p>Patron Stock and Preferred Stock issuance, transfers back to the cooperative, redemptions. Enforces the one-per-member rule and the transfer restrictions.</p>
+        </div>
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Agreements Repository</h4>
+            <span class="pill">§1.2.8, §1.3.4, §XVI</span>
+          </div>
+          <p>Bylaws, Articles, board policies, membership agreements, investor documents, service contracts. Versioned, signed, searchable. Every member has access to their own signed agreements.</p>
+        </div>
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Meetings &amp; Governance</h4>
+            <span class="pill">§II, §III</span>
+          </div>
+          <p>Scheduling, notice generation and delivery, agendas, attendance (in-person and electronic), minutes. Calculates quorum in real time as members join and leave.</p>
+        </div>
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Decisions &amp; Votes</h4>
+            <span class="pill">§2.6, §2.8, §3.13–3.15</span>
+          </div>
+          <p>Motion capture, vote collection across modalities, threshold enforcement, outcome determination, consent workflows, referendum trigger support. All votes immutable once cast.</p>
+        </div>
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Notices &amp; Communications</h4>
+            <span class="pill">§2.4, §X</span>
+          </div>
+          <p>Notice generation with legally-required timing windows, delivery tracking, waiver capture. Make.com orchestrates the send and recording.</p>
+        </div>
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Benefit Report Archive</h4>
+            <span class="pill">§XV</span>
+          </div>
+          <p>Annual public benefit report generation support, publication to members and the website, historical archive. The one module with a guaranteed public view.</p>
+        </div>
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Membership Lifecycle</h4>
+            <span class="pill">§1.4, §1.9, §1.10, §1.11</span>
+          </div>
+          <p>The state machine from application through redemption. Admission flow, withdrawal notice, suspension tracking with clock, termination hearing support, five-year redemption schedule.</p>
+        </div>
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Tax &amp; Reporting</h4>
+            <span class="pill">§VI</span>
+          </div>
+          <p>K-1 preparation data, withholding calculation, fiscal year reporting, tax election tracking. Outputs feed the accountant; inputs come from the capital account ledger.</p>
+        </div>
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Treasury &amp; Distributions</h4>
+            <span class="pill">§5.4, §5.5</span>
+          </div>
+          <p>Distributable Cash calculation, distribution events, payment execution through Mercury or successor banking rail, reserve policy enforcement, tax withholding on distribution.</p>
+        </div>
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Onboarding</h4>
+            <span class="pill">§1.4 · Orientation</span>
+          </div>
+          <p>Guided application, stock purchase, agreement signature, orientation to the bylaws and working culture. A new member should reach active status in a short, legible sequence.</p>
+        </div>
+        <div class="card" style="display:block;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.4rem;">
+            <h4 style="font-size:0.95rem;font-weight:700;color:var(--text);">Conflict &amp; Disclosure</h4>
+            <span class="pill">§XI, §XVII</span>
+          </div>
+          <p>Director conflict disclosures, recusal tracking, dispute logging with mediation and arbitration state. Keeps the record straight when decisions are contested.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 INTERFACE GUI -->
+    <section class="section" id="interface-gui">
+      <span class="section-label">07 · Interface · GUI</span>
+      <h2>Seen from the member's chair.</h2>
+      <p>The GUI is the member's primary surface onto the cooperative. It is mobile-first and styled according to the co-op.us design system. Its job is to make the underlying state visible and actionable without requiring the member to understand the schema.</p>
+
+      <h3>Primary navigation</h3>
+      <p>The top-level navigation mirrors the REA primitives where that serves the member, and departs from them where it does not.</p>
+      <table class="data-table" style="margin-top:1rem;">
+        <thead>
+          <tr><th>Navigation</th><th>Contains</th><th>REA</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Home</td><td>Personal dashboard, action items, upcoming meetings, recent notices.</td><td>cross-cutting</td></tr>
+          <tr><td>Treasury</td><td>Capital account, stock ledger, distributions, tax summary.</td><td>Resource</td></tr>
+          <tr><td>People</td><td>Member directory, board, committees, Nou.</td><td>Agent</td></tr>
+          <tr><td>Agreements</td><td>Bylaws, policies, member agreements, minutes, benefit reports.</td><td>Agreement</td></tr>
+          <tr><td>Activity</td><td>Meetings, votes, notices, consent requests, state changes.</td><td>Event</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Interaction patterns</h3>
+      <p>Every record detail view shows three things: the record, the governing authority (which bylaw section or policy justifies this being a record at all), and the history of changes. This is the traceability principle made visible. A member looking at their capital account can see the balance, the clause that defines capital accounts, and every event that changed their balance.</p>
+      <p>Workflows are guided rather than free-form. Proposing an amendment, requesting withdrawal, calling a special meeting, or disclosing a conflict all follow the same pattern: the system explains what the bylaws require, captures the required inputs, shows the state of the request, and records the outcome. Members should not need to know the bylaw clause to follow the procedure correctly.</p>
+      <p>Notifications are event-driven and member-respectful. They surface what the member needs to act on and what the cooperative needs them to know. They do not surface marketing or attention-seeking content. A notice under §2.4 arrives through the same channel whether the recipient opens the app or reads it by email.</p>
+
+      <h3>Design system adherence</h3>
+      <p>All visual elements follow the co-op.us design system: dark ground at <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">#0f0f0f</code>, surface panels at <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">#1a1a1a</code>, terracotta accent at <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">#c4956a</code> used sparingly, Libre Baskerville for reading and IBM Plex Mono for technical labels. The tone is editorial, grounded, and unhurried. Any member-facing screen that does not feel like a passage from a thoughtful document is off-brand.</p>
+    </section>
+
+    <!-- 08 INTERFACE NL -->
+    <section class="section" id="interface-nl">
+      <span class="section-label">08 · Interface · Natural Language</span>
+      <h2>Nou as the augmentation layer.</h2>
+      <p>The natural language interface is not a chatbot bolted onto the portal. It is Nou, the agent representing the perceptive faculty of the cooperative, with the same standing as any other operational surface. Its function is to increase the collective intelligence of the member body by making the system's knowledge legible through conversation.</p>
+
+      <h3>Capabilities</h3>
+      <div class="card-grid">
+        <div class="card">
+          <span class="card-num">Grounded</span>
+          <h4>Question answering</h4>
+          <p>"What's my capital account balance?" "When is the next board meeting?" "Am I in good standing?" Every answer grounded in the current state and cited to the bylaw section or record that justifies it.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Procedural</span>
+          <h4>Workflow guidance</h4>
+          <p>"How do I propose an amendment?" "What happens if I withdraw?" "Can I call a special meeting?" Walks the member through the bylaw-defined procedure step by step, surfacing the relevant clause at each point.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Augmentation</span>
+          <h4>Drafting assistance</h4>
+          <p>"Help me write a motion to amend §1.9." "Draft minutes from today's meeting based on the attendance and votes recorded." The member reviews and approves before anything becomes authoritative.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Proactive</span>
+          <h4>Contextual surfacing</h4>
+          <p>Before a meeting: "You might want to review the Q2 capital account statement." After a vote: "This outcome triggers a fourteen-day notice window." Noticed, not pushed.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Investigation</span>
+          <h4>Audit support</h4>
+          <p>"Show me every change to §5.3 since formation." "When was the last time the board voted on a compensation matter?" Spans the record in ways that are tedious for humans and native for the agent.</p>
+        </div>
+      </div>
+
+      <h3>Example interactions</h3>
+      <div class="example-block">
+        <p class="prompt">What's the quorum for tomorrow's meeting?</p>
+        <p class="response">Tomorrow's annual meeting needs a simple majority of Patron Members present. You have 14 active Patron Members, so quorum is 8. Seven have RSVP'd yes so far.</p>
+        <p class="citation">cites §2.7.1 · member register · RSVP records</p>
+      </div>
+      <div class="example-block">
+        <p class="prompt">How do I propose a bylaws amendment?</p>
+        <p class="response">Two routes. A two-thirds vote of the board proposes and recommends, then the membership ratifies by two-thirds. Alternatively, twenty-five percent of members can petition the Secretary directly. Either way, the full text of the amendment must be shared with members in advance of the vote. I can draft the motion if you tell me what clause you want to change.</p>
+        <p class="citation">cites §XII · agreements repository</p>
+      </div>
+      <div class="example-block">
+        <p class="prompt">Can I see Savannah's capital account?</p>
+        <p class="response">Only your own capital account is visible to you. Administrative access is required for cross-member balances. I can show you aggregate figures if that would help, and the bylaws' right-to-information provision under §18.1 gives you a path to request specific records through the Secretary.</p>
+        <p class="citation">cites §18.1, §18.2 · access policy</p>
+      </div>
+
+      <h3>Constraints</h3>
+      <p>Nou inherits the permissions of the user who invokes it. It cannot see or disclose what that user cannot. It never takes authoritative action on its own. It can prepare a motion, but the member files it. It can draft minutes, but the Secretary ratifies them. It can propose an allocation, but the board approves it. It cites sources for every substantive claim, and says "I don't know" or "that isn't settled" when that is the honest answer.</p>
+      <p>Nou is reachable through a persistent conversation surface in the sidebar, through contextual prompts on individual records, and through a universal command palette for members who prefer keyboard-first navigation. Every interaction is logged with its prompt, its citation set, and its response, so that the cooperative can audit its own augmentation layer.</p>
+    </section>
+
+    <!-- 09 WORKFLOWS -->
+    <section class="section" id="workflows">
+      <span class="section-label">09 · Workflows</span>
+      <h2>The processes the system must carry.</h2>
+      <p>Several recurring processes tie the modules together. Each is a defined sequence of events, with clear inputs, outputs, and completion conditions. The system does not invent these workflows; it represents them.</p>
+      <div class="workflow-list">
+        <div class="workflow-item">
+          <span class="wf-anchor">§1.4 · Lifecycle</span>
+          <div>
+            <h4>Member admission</h4>
+            <p>Application received, board review scheduled, admission vote, stock purchase processed, agreements executed, orientation delivered, active status.</p>
+          </div>
+        </div>
+        <div class="workflow-item">
+          <span class="wf-anchor">§II, §III</span>
+          <div>
+            <h4>Meeting lifecycle</h4>
+            <p>Schedule, notice sent with required timing, agenda published, RSVPs and proxies captured, quorum confirmed at start, motions and votes recorded, minutes drafted and ratified, action items surfaced.</p>
+          </div>
+        </div>
+        <div class="workflow-item">
+          <span class="wf-anchor">§5.3, §6.2</span>
+          <div>
+            <h4>Allocation cycle</h4>
+            <p>Period close, Net Profit/Loss calculated, allocation formula applied, capital accounts updated, K-1 data prepared, member notifications issued.</p>
+          </div>
+        </div>
+        <div class="workflow-item">
+          <span class="wf-anchor">§5.4, §5.5</span>
+          <div>
+            <h4>Distribution cycle</h4>
+            <p>Board decision, Distributable Cash calculated, reserves confirmed, withholding determined, payments executed, capital accounts adjusted.</p>
+          </div>
+        </div>
+        <div class="workflow-item">
+          <span class="wf-anchor">§XII</span>
+          <div>
+            <h4>Amendment process</h4>
+            <p>Proposal (board or member petition), board recommendation vote, notice to members with full text, ratification vote, adoption, bylaws revised and republished.</p>
+          </div>
+        </div>
+        <div class="workflow-item">
+          <span class="wf-anchor">§1.9, §1.11</span>
+          <div>
+            <h4>Withdrawal &amp; redemption</h4>
+            <p>Fourteen-day notice, effective date, equity calculation, board decision on timing and form, redemption schedule up to five years, final settlement.</p>
+          </div>
+        </div>
+        <div class="workflow-item">
+          <span class="wf-anchor">§1.10.2</span>
+          <div>
+            <h4>Termination process</h4>
+            <p>Board finding with evidence, fourteen-day hearing notice, hearing with opportunity to be heard, three-quarters vote, redemption schedule initiated.</p>
+          </div>
+        </div>
+        <div class="workflow-item">
+          <span class="wf-anchor">§XV</span>
+          <div>
+            <h4>Annual benefit report</h4>
+            <p>Data gathered across all modules, narrative drafted, board review, publication to members and website, archived for historical reference.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 INTEGRATION & STACK -->
+    <section class="section" id="integration-stack">
+      <span class="section-label">10 · Integration &amp; Stack</span>
+      <h2>How the pieces fit.</h2>
+      <p>The stack is deliberately composed of tools chosen for their fit to cooperative-scale operations: accessible to non-developers, portable in their data, interoperable through standard protocols. Each layer has a specific role and a principle governing its authority.</p>
+      <table class="stack-table">
+        <thead>
+          <tr><th>Layer</th><th>Role</th><th>Principle</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Supabase</td>
+            <td>System of record. PostgreSQL with row-level security. Holds all authoritative state.</td>
+            <td>authoritative</td>
+          </tr>
+          <tr>
+            <td>Front-end</td>
+            <td>Member-facing GUI. Renders derived views, collects member input, delivers notifications. Tool choice pending.</td>
+            <td>renders, does not own</td>
+          </tr>
+          <tr>
+            <td>Make.com</td>
+            <td>Event-driven automation. Notices, reminders, cross-system integrations, scheduled jobs.</td>
+            <td>orchestrates, does not decide</td>
+          </tr>
+          <tr>
+            <td>Claude API</td>
+            <td>Nou. Question answering, drafting, workflow guidance, grounding.</td>
+            <td>augments, does not act alone</td>
+          </tr>
+          <tr>
+            <td>Banking (Mercury)</td>
+            <td>Payment execution. Distributions and refunds.</td>
+            <td>external, rate-limited</td>
+          </tr>
+          <tr>
+            <td>Accounting (Xero)</td>
+            <td>General ledger mirror. Reference only; capital accounts remain authoritative in Supabase.</td>
+            <td>reference</td>
+          </tr>
+          <tr>
+            <td>Chain (Base)</td>
+            <td>Public attestations for selected events where transparency benefits the public benefit mission.</td>
+            <td>confirms, does not replace</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:1.2rem;">On-chain records do not replace the off-chain ledger. The Subchapter K election under Article VI requires that the tax and accounting records remain under standard bookkeeping. Where Base or another chain carries attestations, those are confirmations of off-chain events, not substitutes for them.</p>
+    </section>
+
+    <!-- 11 NFR -->
+    <section class="section" id="nfr">
+      <span class="section-label">11 · Non-Functional Requirements</span>
+      <h2>The qualities the system must hold.</h2>
+      <div class="nfr-grid">
+        <div class="nfr-card">
+          <h4>Auditability</h4>
+          <p>Every state change is an event row with actor, timestamp, and affected entity. Derived state is reproducible from the event log. An auditor can answer any "what, when, by whom" question from the record.</p>
+        </div>
+        <div class="nfr-card">
+          <h4>Portability</h4>
+          <p>All data exportable in open formats (CSV, JSON, PDF for documents). No feature depends on data that cannot be extracted. The cooperative owns its data unconditionally.</p>
+        </div>
+        <div class="nfr-card">
+          <h4>Legibility</h4>
+          <p>Interfaces pass the member test: a new Patron Member, reading the bylaws for the first time, should be able to locate what they need. Documentation is a feature.</p>
+        </div>
+        <div class="nfr-card">
+          <h4>Reliability</h4>
+          <p>Graceful degradation. If Make.com is down, the record of a meeting still exists. If the front-end is down, the database is still authoritative. No single vendor failure invalidates state.</p>
+        </div>
+        <div class="nfr-card">
+          <h4>Accessibility</h4>
+          <p>WCAG AA minimum across all member-facing interfaces. Keyboard navigation, screen reader compatibility, sufficient contrast. Cooperatives are voluntary and open; the interface must not be the gate.</p>
+        </div>
+        <div class="nfr-card">
+          <h4>Privacy</h4>
+          <p>Tax identifiers, contact details, and financial balances are personal data. Encrypted at rest, transmitted over TLS, visible only to the role authorized under §18.1.</p>
+        </div>
+        <div class="nfr-card">
+          <h4>Security</h4>
+          <p>Strong authentication, session management, audit logs for all administrative actions. Row-level security enforced in the database, not relied upon only in the interface.</p>
+        </div>
+        <div class="nfr-card">
+          <h4>Longevity</h4>
+          <p>The cooperative is a long-lived entity. Records from year one must be readable in year twenty. Schema migrations preserve history; document formats remain open.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 SUCCESS CRITERIA -->
+    <section class="section" id="success-criteria">
+      <span class="section-label">12 · Success Criteria</span>
+      <h2>How we know this is working.</h2>
+      <p>Success is measured along three axes, each serving a different stakeholder. If the member axis fails, the cooperative is not democratic in practice. If the governance axis fails, the cooperative is in procedural trouble. If the compliance axis fails, the cooperative is at legal risk. All three must hold.</p>
+
+      <div class="success-group">
+        <div class="success-group-header">
+          <h4>For members</h4>
+          <span class="success-tag">Democratic Participation</span>
+        </div>
+        <ul class="success-list">
+          <li>A member can find what governs any situation they are in, without asking a human.</li>
+          <li>A member can see their own capital account at any time, with full history.</li>
+          <li>A member can participate in any meeting through the channel they prefer, with equal standing.</li>
+          <li>A member can cast a vote and see it counted, with the rule that determined the outcome cited.</li>
+          <li>A member can review any historical decision that affected them.</li>
+        </ul>
+      </div>
+
+      <div class="success-group" style="margin-top:2rem;">
+        <div class="success-group-header">
+          <h4>For governance</h4>
+          <span class="success-tag">Procedural Correctness</span>
+        </div>
+        <ul class="success-list">
+          <li>Quorum is always correctly calculated and the underlying rule is shown.</li>
+          <li>Vote thresholds are always correctly applied.</li>
+          <li>Notice deadlines are always met and deliveries confirmed.</li>
+          <li>Minutes are captured for every governing meeting and ratified within a reasonable window.</li>
+          <li>Director and officer terms are tracked and transitions happen on schedule.</li>
+        </ul>
+      </div>
+
+      <div class="success-group" style="margin-top:2rem;">
+        <div class="success-group-header">
+          <h4>For compliance</h4>
+          <span class="success-tag">Legal Standing</span>
+        </div>
+        <ul class="success-list">
+          <li>Capital accounts balance under §704(b) at every fiscal close.</li>
+          <li>Tax filings are produced on schedule with complete data.</li>
+          <li>Benefit report is published annually per §XV.</li>
+          <li>Record retention meets statutory requirements for each category.</li>
+          <li>Any audit inquiry can be answered from the record within a reasonable time.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 13 ROADMAP -->
+    <section class="section" id="roadmap">
+      <span class="section-label">13 · Roadmap</span>
+      <h2>Phased delivery.</h2>
+      <p>The roadmap extends the phased build introduced in the operational model, overlaying GUI and natural language interface capabilities onto each phase. The system is usable at every intermediate state; capability grows rather than arriving whole.</p>
+      <table class="roadmap-table">
+        <thead>
+          <tr><th>Phase</th><th>Data</th><th>GUI</th><th>Nou</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>01 · Agent &amp; Agreement</td>
+            <td>agents, memberships, signatures, stock_ledger, agreements</td>
+            <td>Member directory, profile, onboarding flow</td>
+            <td>Read-only: directory Q&amp;A, agreement lookup</td>
+          </tr>
+          <tr>
+            <td>02 · Capital Account</td>
+            <td>capital_accounts, capital_events, tax_records</td>
+            <td>Personal balance view, transaction history</td>
+            <td>Balance queries, history summarization</td>
+          </tr>
+          <tr>
+            <td>03 · Governance</td>
+            <td>meetings, motions, votes, minutes, notices</td>
+            <td>Meeting calendar, voting interface, minutes archive</td>
+            <td>Meeting context, voting guidance, motion drafting</td>
+          </tr>
+          <tr>
+            <td>04 · Lifecycle</td>
+            <td>state transitions, redemption schedules, terminations</td>
+            <td>Guided withdrawal, suspension tracking, admission flow refined</td>
+            <td>Lifecycle guidance, clock monitoring</td>
+          </tr>
+          <tr>
+            <td>05 · Full Interface</td>
+            <td>derived views, analytics, benefit report gen.</td>
+            <td>Complete portal, public surface, benefit report</td>
+            <td>Full augmentation surface, audit support, drafting</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 14 OPEN QUESTIONS -->
+    <section class="section" id="open-questions">
+      <span class="section-label">14 · Open Questions</span>
+      <h2>What remains unresolved.</h2>
+      <p>These are questions the PRD cannot resolve alone. Each requires a decision from the organizer body, the board, or a specific working group. They are named here rather than smoothed over because the system cannot faithfully represent decisions that have not been made.</p>
+      <div class="card-grid">
+        <div class="card">
+          <span class="card-num">§5.3</span>
+          <h4>Patronage formula</h4>
+          <p>The draft bylaws allocate Net Profits equally. The working design is forty-thirty-twenty-ten. Until ratified, Phase 02 ships with manual allocation entry against the equal default.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">§1.3, §1.13.2</span>
+          <h4>Investor member framework</h4>
+          <p>Preferred Stock is reserved. Term sheet, series designation, and investor documents all pending. Phase 01 schema accommodates the class; Phase 02 capital account treatment awaits the structure.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Principle 01</span>
+          <h4>Nou's write-capability scope</h4>
+          <p>Read-only through Phase 03. Drafting with human approval through Phase 04. Open question: does Nou ever execute on behalf of a member with scoped, logged authorization, and under what conditions.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Base Network</span>
+          <h4>On-chain attestation scope</h4>
+          <p>Which events merit public attestation: admissions, allocations, distributions, benefit reports? What is the retention model? Who controls the keys? A separate working group.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Principle 10</span>
+          <h4>Interoperability with sibling cooperatives</h4>
+          <p>Cameron's tooling at ONE Local, Start.coop's formation work, and other cooperative builders operate adjacent surfaces. Where does the schema federate, where does it stay local?</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Principle 09</span>
+          <h4>Nou interaction retention</h4>
+          <p>Interaction logs are required for audit and may contain sensitive queries. Retention window, access, and redaction policy pending.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">§1.9.3</span>
+          <h4>Non-redeemable share option</h4>
+          <p>Bylaws provide for five-year redemption. The organizer body has discussed a non-redeemable alternative. If adopted, Phase 04 redemption schedule logic simplifies significantly.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Operations</span>
+          <h4>Third-floor lease entity</h4>
+          <p>Whether West or the LCA is the leaseholder affects how facility-related obligations enter the ledger. Decision upstream of several Phase 02 and Phase 03 details.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Stack</span>
+          <h4>Front-end tool choice</h4>
+          <p>The member-facing application layer has no committed tool. Evaluation criteria are clear (portability, accessibility, mobile-first, Supabase compatibility, design system fidelity), but the decision is pending. Phase 01 can proceed against the Supabase schema independently of this choice.</p>
+        </div>
+      </div>
+      <p style="margin-top:1.5rem;font-size:0.9rem;">None of these questions should block Phase 01. They become blocking at the phase where their scope first becomes material. The PRD should be revisited whenever one is resolved, both to reflect the decision and to carry forward its implications for later phases.</p>
+    </section>
+
+    <!-- HEART -->
+    <div class="heart-block">
+      <span class="heart-label">The Heart of the Thing</span>
+      <h3>A scenius has a filing cabinet.</h3>
+      <p>The collective intelligence the cooperative aspires to is not a vibe or a slogan. It is the accumulation of documented decisions, visible patterns, and legible obligations that make shared context possible. The Common Information System is that filing cabinet, rendered as software.</p>
+      <p>Every member who can find what governs them, see what they contributed, and participate in what comes next is a member capable of exercising the voice the bylaws give them. The system's job is to make that capacity universally available rather than dependent on which meetings a member happened to attend or which email threads they were on.</p>
+    </div>
+
+    <footer>
+      <p><a href="/">techne.institute</a> &nbsp;·&nbsp; RegenHub, LCA &nbsp;·&nbsp; Boulder, Colorado &nbsp;·&nbsp; 2026</p>
+    </footer>
+
+  </main>
+
+</body>
+</html>

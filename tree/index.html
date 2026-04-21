@@ -1110,6 +1110,8 @@
       description:'Techne design system — palette, typography, token reference, and component patterns for cooperative interfaces.' },
     { id:'data-room', path:'/data-room/', title:'Data Room', zone:2, authLevel:'curated', parent:'home',
       description:'Investor-facing documents for RegenHub, LCA — pitch deck, term sheet, and investment vision.' },
+    { id:'cis', path:'/cis/', title:'Common Information System', zone:2, authLevel:'curated', parent:'home',
+      description:'Product Requirements Document for the Common Information System — the authoritative operational layer where the cooperative\'s state is held, updated, and made legible. REA ontology, 13 modules, 5-phase roadmap.' },
     { id:'formation', path:'/formation/', title:'Formation', zone:2, authLevel:'curated', parent:'home',
       description:'Formation ecosystem overview for RegenHub, LCA — legal structure, governance, financial infrastructure, and the decisions that shaped the cooperative.' },
     { id:'pre-read', path:'/pre-read/', title:'Pre-Read', zone:2, authLevel:'curated', parent:'home',
@@ -1261,6 +1263,10 @@
     { from:'data-room', to:'data-room-deck' }, { from:'data-room', to:'data-room-terms' },
     { from:'data-room', to:'data-room-vision' },
     { from:'data-room', to:'formation' }, { from:'data-room', to:'membership' },
+
+    // CIS
+    { from:'cis', to:'bylaws' }, { from:'cis', to:'formation' }, { from:'cis', to:'design-system' },
+    { from:'cooperative', to:'cis' }, { from:'learn', to:'cis' },
 
     // Cloud / bylaws → intranet bridges
     { from:'bylaws', to:'intranet-governance' }, { from:'intranet-governance', to:'bylaws' },
