@@ -160,7 +160,7 @@
     .toc {
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 2rem 2.5rem;
+      padding: 2rem 0;
       margin-bottom: 4rem;
     }
     .toc-label {
@@ -169,34 +169,63 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 1.2rem;
+      padding: 0 2rem 1.2rem;
+      display: block;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
     }
     .toc ol {
       list-style: none;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.4rem 2rem;
     }
-    @media (max-width: 560px) { .toc ol { grid-template-columns: 1fr; } }
     .toc li {
+      border-bottom: 1px solid var(--border);
+    }
+    .toc li:last-child { border-bottom: none; }
+    .toc a {
       display: flex;
       align-items: baseline;
-      gap: 0.6rem;
+      gap: 0;
+      padding: 0.65rem 2rem;
+      text-decoration: none;
+      transition: background 0.1s;
     }
+    .toc a:hover {
+      background: var(--surface-2);
+    }
+    .toc a:hover .toc-num { color: var(--accent); }
+    .toc a:hover .toc-title { color: var(--text); }
     .toc-num {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
+      font-size: 11px;
       color: var(--accent);
       flex-shrink: 0;
-      width: 1.6rem;
+      width: 2.8rem;
+      opacity: 0.7;
     }
-    .toc a {
+    .toc-title {
       color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.9rem;
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 0.95rem;
+      flex: 1;
       line-height: 1.4;
     }
-    .toc a:hover { color: var(--accent); }
+    .toc-leader {
+      flex: 1;
+      border-bottom: 1px dotted var(--text-faint);
+      margin: 0 0.8rem 0.2rem;
+      opacity: 0.4;
+      min-width: 1rem;
+    }
+    .toc-arrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--text-faint);
+      flex-shrink: 0;
+      transition: color 0.1s, transform 0.1s;
+    }
+    .toc a:hover .toc-arrow {
+      color: var(--accent);
+    }
 
     /* ── SECTION ── */
     .section {
@@ -682,22 +711,22 @@
 
     <!-- TOC -->
     <nav class="toc" aria-label="Contents">
-      <p class="toc-label">Contents</p>
+      <span class="toc-label">Contents</span>
       <ol>
-        <li><span class="toc-num">01</span><a href="#preamble">Preamble</a></li>
-        <li><span class="toc-num">02</span><a href="#principles">Principles</a></li>
-        <li><span class="toc-num">03</span><a href="#system-definition">System Definition</a></li>
-        <li><span class="toc-num">04</span><a href="#information-model">Information Model</a></li>
-        <li><span class="toc-num">05</span><a href="#identity-access">Identity &amp; Access</a></li>
-        <li><span class="toc-num">06</span><a href="#core-modules">Core Modules</a></li>
-        <li><span class="toc-num">07</span><a href="#interface-gui">Interface · GUI</a></li>
-        <li><span class="toc-num">08</span><a href="#interface-nl">Interface · Natural Language</a></li>
-        <li><span class="toc-num">09</span><a href="#workflows">Workflows</a></li>
-        <li><span class="toc-num">10</span><a href="#integration-stack">Integration &amp; Stack</a></li>
-        <li><span class="toc-num">11</span><a href="#nfr">Non-Functional Requirements</a></li>
-        <li><span class="toc-num">12</span><a href="#success-criteria">Success Criteria</a></li>
-        <li><span class="toc-num">13</span><a href="#roadmap">Roadmap</a></li>
-        <li><span class="toc-num">14</span><a href="#open-questions">Open Questions</a></li>
+        <li><a href="#preamble"><span class="toc-num">01</span><span class="toc-title">Preamble</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#principles"><span class="toc-num">02</span><span class="toc-title">Principles</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#system-definition"><span class="toc-num">03</span><span class="toc-title">System Definition</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#information-model"><span class="toc-num">04</span><span class="toc-title">Information Model</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#identity-access"><span class="toc-num">05</span><span class="toc-title">Identity &amp; Access</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#core-modules"><span class="toc-num">06</span><span class="toc-title">Core Modules</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#interface-gui"><span class="toc-num">07</span><span class="toc-title">Interface · GUI</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#interface-nl"><span class="toc-num">08</span><span class="toc-title">Interface · Natural Language</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#workflows"><span class="toc-num">09</span><span class="toc-title">Workflows</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#integration-stack"><span class="toc-num">10</span><span class="toc-title">Integration &amp; Stack</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#nfr"><span class="toc-num">11</span><span class="toc-title">Non-Functional Requirements</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#success-criteria"><span class="toc-num">12</span><span class="toc-title">Success Criteria</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#roadmap"><span class="toc-num">13</span><span class="toc-title">Roadmap</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#open-questions"><span class="toc-num">14</span><span class="toc-title">Open Questions</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
       </ol>
     </nav>
 
