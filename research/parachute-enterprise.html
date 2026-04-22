@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parachute Enterprise — Feature Patterns from Organizational Edges · Techne Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void:        #0c0c0c;
+    --ink:         #111111;
+    --surface:     #161616;
+    --panel:       #222222;
+    --raised:      #2a2a2a;
+    --border:      #383838;
+    --border-dim:  #2a2a2a;
+    --gold:        #c4956a;
+    --gold-20:     rgba(196,149,106,0.20);
+    --gold-12:     rgba(196,149,106,0.12);
+    --gold-06:     rgba(196,149,106,0.06);
+    --parchment:   #f0f0f0;
+    --warm:        #d0d0d0;
+    --muted:       #9a9a9a;
+    --dim:         #707070;
+    --ghost:       #505050;
+    --green:       #4ade80;
+    --amber:       #fbbf24;
+    --red:         #ef4444;
+    --blue:        #8bbfff;
+    --teal:        #7ccfb8;
+    --purple:      #a78bfa;
+    --orange:      #fb923c;
+    --mono:        'IBM Plex Mono', monospace;
+    --serif:       'Cormorant', Georgia, serif;
+    --sans:        'Inter', system-ui, sans-serif;
+  }
+  [data-theme="light"] {
+    --void:      #f5f3f0; --ink: #fffdf9; --surface: #faf8f4;
+    --panel:     #f0ede7; --raised: #e8e4dc; --border: #d4cfc6;
+    --border-dim:#e0dbd2; --parchment: #1a1814; --warm: #3a3630;
+    --muted:     #706a60; --dim: #9a9488; --ghost: #bcb6aa;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--void); color: var(--warm); font-family: var(--sans); font-size: 15px; line-height: 1.7; }
+
+  .theme-toggle {
+    position: fixed; top: 1.25rem; right: 1.25rem; z-index: 100;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.4rem 0.7rem; cursor: pointer; color: var(--muted);
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .theme-toggle:hover { color: var(--gold); border-color: var(--gold); }
+
+  /* Hero */
+  .hero {
+    background: var(--ink); border-bottom: 1px solid var(--border-dim);
+    padding: 4rem 2rem 3.5rem; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(196,149,106,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -40px; left: 30%;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(124,207,184,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 820px; margin: 0 auto; position: relative; }
+  .breadcrumb {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--dim); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .breadcrumb a { color: var(--gold); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .breadcrumb-sep { color: var(--ghost); }
+  .hero-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .hero-label::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--gold); }
+  h1 {
+    font-family: var(--serif); font-size: clamp(2rem, 5vw, 3rem); font-weight: 500;
+    color: var(--parchment); line-height: 1.15; margin-bottom: 0.8rem; letter-spacing: -0.01em;
+  }
+  h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 1rem; color: var(--muted); max-width: 600px; line-height: 1.65; margin-bottom: 1.8rem; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 1.5rem; font-family: var(--mono); font-size: 12px; color: var(--dim); }
+  .hero-meta a { color: var(--gold); text-decoration: none; }
+
+  /* Layout */
+  .main { max-width: 820px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+  /* Intro block */
+  .intro-frame {
+    background: var(--panel); border: 1px solid var(--border-dim);
+    border-radius: 6px; padding: 1.5rem 1.75rem; margin-bottom: 3rem;
+  }
+  .intro-frame p { color: var(--warm); margin-bottom: 0.7rem; }
+  .intro-frame p:last-child { margin-bottom: 0; }
+  .intro-frame strong { color: var(--parchment); }
+
+  /* Sections */
+  .section { margin-bottom: 4rem; }
+  h2 {
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 500;
+    color: var(--parchment); margin-bottom: 0.25rem; letter-spacing: 0.01em;
+    padding-bottom: 0.6rem; border-bottom: 1px solid var(--border-dim);
+  }
+  .section-sub {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem;
+    margin-top: 0.4rem;
+  }
+  h3 {
+    font-family: var(--sans); font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.09em; text-transform: uppercase; color: var(--gold);
+    margin: 1.8rem 0 0.7rem;
+  }
+  p { margin-bottom: 0.9rem; color: var(--warm); }
+  a { color: var(--gold); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--parchment); font-weight: 600; }
+  em { font-style: italic; }
+
+  /* Feature pattern card — the main unit */
+  .pattern {
+    border: 1px solid var(--border-dim); border-radius: 6px;
+    overflow: hidden; margin-bottom: 2.5rem;
+  }
+  .pattern-header {
+    background: var(--ink); padding: 1.1rem 1.4rem;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 1rem; border-bottom: 1px solid var(--border-dim);
+  }
+  .pattern-title {
+    font-family: var(--serif); font-size: 1.25rem; font-weight: 500;
+    color: var(--parchment); line-height: 1.25;
+  }
+  .pattern-num {
+    font-family: var(--mono); font-size: 11px; color: var(--ghost);
+    letter-spacing: 0.06em; white-space: nowrap; padding-top: 0.2rem;
+  }
+  .pattern-body { display: grid; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 600px) { .pattern-body { grid-template-columns: 1fr; } }
+  .pattern-col {
+    padding: 1.1rem 1.4rem;
+    border-right: 1px solid var(--border-dim);
+  }
+  .pattern-col:last-child { border-right: none; }
+  .pattern-col-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--dim); margin-bottom: 0.5rem;
+  }
+  .pattern-col p { font-size: 13.5px; color: var(--warm); margin-bottom: 0; line-height: 1.6; }
+  .pattern-footer {
+    background: var(--panel); border-top: 1px solid var(--border-dim);
+    padding: 1rem 1.4rem; display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+  }
+  @media (max-width: 600px) { .pattern-footer { grid-template-columns: 1fr; } }
+  .pattern-footer-cell {
+    padding: 0 1rem 0 0;
+  }
+  .pattern-footer-cell + .pattern-footer-cell {
+    padding: 0 1rem;
+    border-left: 1px solid var(--border-dim);
+  }
+  .pattern-footer-cell:last-child { padding: 0 0 0 1rem; }
+  .pf-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--dim); margin-bottom: 0.4rem;
+  }
+  .pf-value { font-size: 13px; color: var(--warm); line-height: 1.5; }
+  .pf-value strong { color: var(--parchment); font-weight: 500; }
+
+  /* Priority badge */
+  .priority {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 3px; white-space: nowrap;
+  }
+  .p-high   { background: rgba(74,222,128,0.12);  color: var(--green); }
+  .p-med    { background: rgba(251,191,36,0.12);  color: var(--amber); }
+  .p-low    { background: rgba(167,139,250,0.12); color: var(--purple); }
+  .p-found  { background: rgba(196,149,106,0.12); color: var(--gold); }
+
+  /* Callouts */
+  .callout {
+    background: var(--panel); border: 1px solid var(--border-dim);
+    border-left: 2px solid var(--gold); border-radius: 4px;
+    padding: 1rem 1.25rem; margin: 1.25rem 0; font-size: 14px;
+  }
+  .callout.green  { border-left-color: var(--green); }
+  .callout.amber  { border-left-color: var(--amber); }
+  .callout.teal   { border-left-color: var(--teal); }
+  .callout.blue   { border-left-color: var(--blue); }
+  .callout p { margin-bottom: 0; }
+  .callout p + p { margin-top: 0.5rem; }
+
+  /* Customer archetype pills */
+  .archetypes { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+  .arch-pill {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em;
+    padding: 2px 9px; border-radius: 20px;
+    border: 1px solid var(--border); color: var(--muted); background: var(--surface);
+  }
+
+  /* Summary table */
+  .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead th {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--muted); font-weight: 500;
+    padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--border);
+    text-align: left; background: var(--ink);
+  }
+  tbody td {
+    padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--border-dim);
+    vertical-align: top; color: var(--warm);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody td:first-child { font-family: var(--mono); font-size: 12.5px; color: var(--gold); }
+  .dim-cell { color: var(--muted); font-size: 13px; }
+
+  /* Lists */
+  ul { padding-left: 1.1rem; margin-bottom: 0.9rem; }
+  li { margin-bottom: 0.4rem; color: var(--warm); font-size: 14.5px; }
+  li strong { color: var(--parchment); }
+
+  hr.rule { border: none; border-top: 1px solid var(--border-dim); margin: 2.5rem 0; }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border-dim); padding-top: 1.5rem; margin-top: 3rem;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 0.5rem;
+  }
+  .footer-left { font-family: var(--mono); font-size: 11px; color: var(--dim); line-height: 1.7; }
+  .footer-right { font-family: var(--mono); font-size: 11px; color: var(--dim); text-align: right; }
+  .footer a { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="
+  const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('theme', t);
+  this.textContent = t === 'dark' ? '◑ light' : '◑ dark';
+">◑ light</button>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="breadcrumb">
+      <a href="parachute-computer.html">Parachute Research Brief</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Enterprise Feature Patterns</span>
+    </div>
+    <div class="hero-label">Techne Studio — Enterprise Product Research</div>
+    <h1>From Cooperative Edge<br>to <em>Enterprise Pattern</em></h1>
+    <p class="hero-sub">Seven gaps identified through the lens of a Colorado LCA — translated into generalized feature patterns for knowledge-intensive organizations that want AI-native memory without vendor lock-in.</p>
+    <div class="hero-meta">
+      <span>April 22, 2026</span>
+      <span>Todd Youngblood · Techne Studio / RegenHub, LCA</span>
+      <span>Companion to: <a href="parachute-computer.html">Parachute Research Brief</a></span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="intro-frame">
+    <p>A cooperative is a stress test for organizational software. It combines the governance complexity of a nonprofit (consensus decisions, member accountability, transparent records) with the operational demands of a business (agreements, financial flows, role-based access) and the technical ambition of a startup (AI agents, on-chain settlement, federated identity).</p>
+    <p>When Parachute's architecture hits limits at the cooperative scale, those limits reveal <strong>structural gaps</strong> in the product — gaps that exist for law firms, research labs, professional networks, DAOs, and any knowledge-intensive organization that wants to give AI genuine, persistent context about how they work.</p>
+    <p>This document takes each gap identified in the LCA analysis and asks: <em>what is the generalized enterprise feature this points toward, and who else needs it?</em></p>
+  </div>
+
+  <!-- Pattern 1: Multi-user vault -->
+  <div class="section">
+    <h2>Feature Patterns</h2>
+    <div class="section-sub">Seven gaps → seven generalized product opportunities</div>
+
+    <div class="pattern">
+      <div class="pattern-header">
+        <div>
+          <div class="pattern-title">Organizational Workspace — Multi-Member Vault with RBAC</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+          <span class="pattern-num">Pattern 01</span>
+          <span class="priority p-high">Priority: Foundational</span>
+        </div>
+      </div>
+      <div class="pattern-body">
+        <div class="pattern-col">
+          <div class="pattern-col-label">LCA origin</div>
+          <p>Vault is single-owner by design. One password, one primary user granting consent to AI clients. A cooperative needs members to have individual identities within a shared vault — steward, member, observer roles with distinct permissions.</p>
+        </div>
+        <div class="pattern-col">
+          <div class="pattern-col-label">Generalized pattern</div>
+          <p><strong>Organizational workspace</strong> — a vault owned by an entity (not a person) with role-based access control. Members authenticate individually; each role maps to a permission set. The org's AI agents have their own identity and scoped access, distinct from any individual member.</p>
+        </div>
+      </div>
+      <div class="pattern-footer">
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Customer archetypes</div>
+          <div class="archetypes">
+            <span class="arch-pill">Law firms</span>
+            <span class="arch-pill">Research labs</span>
+            <span class="arch-pill">DAOs</span>
+            <span class="arch-pill">Nonprofits</span>
+            <span class="arch-pill">Agencies</span>
+            <span class="arch-pill">Consulting teams</span>
+          </div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Competitive reference</div>
+          <div class="pf-value">Notion Teams, Confluence. But neither gives AI agents a first-class identity or scoped MCP access. The opportunity is RBAC designed for <strong>human + agent</strong> access, not just human.</div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Key design questions</div>
+          <div class="pf-value">How does the org vault relate to individual member vaults? Can a member read from org vault and write to personal vault from one MCP session? How are agent identities provisioned and rotated?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pattern 2: Team knowledge base -->
+    <div class="pattern">
+      <div class="pattern-header">
+        <div>
+          <div class="pattern-title">Collective Memory — Shared Knowledge Layer with Agent-Native Access</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+          <span class="pattern-num">Pattern 02</span>
+          <span class="priority p-high">Priority: Foundational</span>
+        </div>
+      </div>
+      <div class="pattern-body">
+        <div class="pattern-col">
+          <div class="pattern-col-label">LCA origin</div>
+          <p>Multi-vault on one server provides isolation but not collaboration. An LCA needs member notes, agreements, decisions, and patronage records all accessible to authorized members and agents — a living organizational memory, not separate silos.</p>
+        </div>
+        <div class="pattern-col">
+          <div class="pattern-col-label">Generalized pattern</div>
+          <p><strong>Collective memory layer</strong> — a shared vault namespace where contributions from multiple members accumulate into searchable, traversable organizational knowledge. AI agents read this layer to give contextually grounded responses; they write to it to capture decisions and artifacts. The vault becomes the org's second brain, not just a personal tool.</p>
+        </div>
+      </div>
+      <div class="pattern-footer">
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Customer archetypes</div>
+          <div class="archetypes">
+            <span class="arch-pill">Professional networks</span>
+            <span class="arch-pill">Investment funds</span>
+            <span class="arch-pill">Policy orgs</span>
+            <span class="arch-pill">Academic depts</span>
+            <span class="arch-pill">Open source orgs</span>
+          </div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Competitive reference</div>
+          <div class="pf-value">Obsidian Teams (nascent), Roam Research. Parachute's differentiator is MCP-native access — AI agents don't scrape the knowledge base, they are first-class readers and writers via a structured protocol.</div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Key design questions</div>
+          <div class="pf-value">Attribution model — who wrote what, when? Conflict resolution when agents write conflicting notes. Search and graph traversal across the shared + personal namespace in one MCP session.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pattern 3: SSO -->
+    <div class="pattern">
+      <div class="pattern-header">
+        <div>
+          <div class="pattern-title">Federated Identity — Bring Your Own Auth, Including Non-Traditional IdPs</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+          <span class="pattern-num">Pattern 03</span>
+          <span class="priority p-med">Priority: Growth</span>
+        </div>
+      </div>
+      <div class="pattern-body">
+        <div class="pattern-col">
+          <div class="pattern-col-label">LCA origin</div>
+          <p>Vault offers owner password + TOTP only. An LCA needs members to authenticate via email, wallet address, or Farcaster ID — identity systems the cooperative actually uses rather than a new credential to manage.</p>
+        </div>
+        <div class="pattern-col">
+          <div class="pattern-col-label">Generalized pattern</div>
+          <p><strong>Federated identity with non-traditional IdPs</strong> — support for SAML/OIDC (enterprise SSO), but also wallet-based auth (Sign in with Ethereum, Solana), social graph identity (Farcaster, Lens), and GitHub/GitLab OAuth. The organization chooses its identity source; Parachute validates and maps to vault roles. This is table-stakes for enterprise, but the wallet/social path is a meaningful differentiator for the emerging class of digitally-native orgs.</p>
+        </div>
+      </div>
+      <div class="pattern-footer">
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Customer archetypes</div>
+          <div class="archetypes">
+            <span class="arch-pill">Web3 orgs / DAOs</span>
+            <span class="arch-pill">Developer tools cos</span>
+            <span class="arch-pill">Open source foundations</span>
+            <span class="arch-pill">Media collectives</span>
+          </div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Competitive reference</div>
+          <div class="pf-value">Standard enterprise: Okta, Auth0. Parachute's opening is that enterprise SSO is a commodity, but wallet-native identity for digitally-native orgs (DAOs, protocol teams, token-gated communities) is underserved in knowledge tooling.</div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Key design questions</div>
+          <div class="pf-value">How does wallet identity map to consistent vault permissions across wallet rotations? Can the hub delegate to multiple IdPs simultaneously (SAML for employees + wallet for contractors)?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pattern 4: Note-level ACL -->
+    <div class="pattern">
+      <div class="pattern-header">
+        <div>
+          <div class="pattern-title">Content Permissions — Note-Level Access Control with Visibility Tiers</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+          <span class="pattern-num">Pattern 04</span>
+          <span class="priority p-high">Priority: Foundational</span>
+        </div>
+      </div>
+      <div class="pattern-body">
+        <div class="pattern-col">
+          <div class="pattern-col-label">LCA origin</div>
+          <p>Vault offers all-or-nothing within a vault. An LCA has three distinct permission tiers: private member notes (personal), collective agreements (member-only), and public-facing content (world-readable). No mechanism to enforce this at the note level today.</p>
+        </div>
+        <div class="pattern-col">
+          <div class="pattern-col-label">Generalized pattern</div>
+          <p><strong>Visibility tiers on knowledge objects</strong> — private (author only), team (role-scoped), org (all members), public (world-readable, no auth). Critically, this visibility tier is also visible to agents: an agent operating on behalf of a member can only read notes the member can read. This is the foundation of a trustworthy organizational AI — the AI respects the org's information architecture, it doesn't flatten it.</p>
+        </div>
+      </div>
+      <div class="pattern-footer">
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Customer archetypes</div>
+          <div class="archetypes">
+            <span class="arch-pill">Healthcare orgs</span>
+            <span class="arch-pill">Legal firms</span>
+            <span class="arch-pill">HR / People teams</span>
+            <span class="arch-pill">Government agencies</span>
+            <span class="arch-pill">Any regulated industry</span>
+          </div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Competitive reference</div>
+          <div class="pf-value">Google Drive's sharing model. The gap: no existing knowledge tool that offers fine-grained ACL is also AI-agent-native. Parachute can own the position of "AI memory that respects your org's information architecture" — something no current tool does.</div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Key design questions</div>
+          <div class="pf-value">Does ACL live in the note metadata or in a separate permission service? How are inherited permissions handled (a note in a team folder)? What happens when an agent tries to read a note above its clearance?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pattern 5: Structured schemas -->
+    <div class="pattern">
+      <div class="pattern-header">
+        <div>
+          <div class="pattern-title">Typed Knowledge Objects — Schema-Enforced Note Types for Structured Data</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+          <span class="pattern-num">Pattern 05</span>
+          <span class="priority p-med">Priority: Growth</span>
+        </div>
+      </div>
+      <div class="pattern-body">
+        <div class="pattern-col">
+          <div class="pattern-col-label">LCA origin</div>
+          <p>Vault notes are freeform text + tags + links. An LCA needs typed objects: member records (name, roles, equity stake), agreements (parties, terms, effective date), capital account entries (amount, type, period). Freeform notes cannot carry this reliably enough for AI to reason over.</p>
+        </div>
+        <div class="pattern-col">
+          <div class="pattern-col-label">Generalized pattern</div>
+          <p><strong>Schema-enforced note types</strong> — a layer above freeform notes where organizations define typed objects (Meeting, Decision, Agreement, Contact, Invoice, Project) with required and optional fields, field types, and validation rules. AI agents can query by type ("find all Decisions from Q1 tagged governance"), write structured objects ("create a Meeting record with these participants and action items"), and reason reliably over typed collections. This is Notion databases, but MCP-native and schema-portable.</p>
+        </div>
+      </div>
+      <div class="pattern-footer">
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Customer archetypes</div>
+          <div class="archetypes">
+            <span class="arch-pill">Operations teams</span>
+            <span class="arch-pill">Product orgs</span>
+            <span class="arch-pill">Legal / contracts</span>
+            <span class="arch-pill">Finance teams</span>
+            <span class="arch-pill">HR platforms</span>
+          </div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Competitive reference</div>
+          <div class="pf-value">Notion databases, Airtable. The distinction: Parachute schemas exist to make AI reasoning reliable, not just to make tables look good. An agent that can query typed objects with confidence is qualitatively more useful than one reading freeform prose.</div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Key design questions</div>
+          <div class="pf-value">Schema definition format (JSON Schema? custom DSL?). How do typed objects coexist with freeform notes in graph traversal? Can schemas be versioned and migrated? Industry-standard schema templates as a distribution mechanism?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pattern 6: Audit trail -->
+    <div class="pattern">
+      <div class="pattern-header">
+        <div>
+          <div class="pattern-title">Governance Ledger — Immutable Audit Trail for Organizational Records</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+          <span class="pattern-num">Pattern 06</span>
+          <span class="priority p-med">Priority: Growth</span>
+        </div>
+      </div>
+      <div class="pattern-body">
+        <div class="pattern-col">
+          <div class="pattern-col-label">LCA origin</div>
+          <p>Vault offers standard CRUD with backup retention for recovery, not audit. LCA governance requires a durable, verifiable record of decisions and capital account changes — who decided what, when, with what quorum. Standard database history is insufficient for cooperative fiduciary records.</p>
+        </div>
+        <div class="pattern-col">
+          <div class="pattern-col-label">Generalized pattern</div>
+          <p><strong>Immutable audit trail as a first-class feature</strong> — append-only event log for designated note types, with cryptographic integrity (content-addressed hashing, optional on-chain anchoring). Changes are versioned and attributable. Deletions are soft (tombstoned, not erased). The audit trail is queryable via MCP — an agent can reconstruct the history of any decision, agreement, or record. This addresses compliance needs across regulated industries and any org where fiduciary accountability matters.</p>
+        </div>
+      </div>
+      <div class="pattern-footer">
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Customer archetypes</div>
+          <div class="archetypes">
+            <span class="arch-pill">Legal entities</span>
+            <span class="arch-pill">Financial orgs</span>
+            <span class="arch-pill">Healthcare</span>
+            <span class="arch-pill">Government</span>
+            <span class="arch-pill">Foundations</span>
+            <span class="arch-pill">Boards / governance</span>
+          </div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Competitive reference</div>
+          <div class="pf-value">Docusign (agreements), Notion (history, but erasable), legal document management systems. The gap: no knowledge graph tool offers audit-grade immutability with AI-readable history. Compliance tooling and AI tooling exist in separate silos today.</div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Key design questions</div>
+          <div class="pf-value">What's the minimum viable audit model (append-only log vs. full Merkle tree vs. on-chain anchoring)? Should this be a vault-level setting or a per-note-type setting? How does the audit trail interact with ACL — can auditors read tombstoned private notes?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pattern 7: Webhooks / external systems -->
+    <div class="pattern">
+      <div class="pattern-header">
+        <div>
+          <div class="pattern-title">Integration Mesh — Org-Scoped Webhooks and Bidirectional System Sync</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+          <span class="pattern-num">Pattern 07</span>
+          <span class="priority p-med">Priority: Growth</span>
+        </div>
+      </div>
+      <div class="pattern-body">
+        <div class="pattern-col">
+          <div class="pattern-col-label">LCA origin</div>
+          <p>Vault's webhook system fires on Scribe/Narrate triggers. An LCA needs hooks into Supabase (member database), a Workshop coordination surface, and on-chain settlement. The pattern exists; it needs to be org-scoped, multi-destination, and bidirectional — external events should be able to write into the vault, not just vault events triggering external calls.</p>
+        </div>
+        <div class="pattern-col">
+          <div class="pattern-col-label">Generalized pattern</div>
+          <p><strong>Org-scoped integration mesh</strong> — declarative webhooks that fire on note create/update/tag events, with configurable filters, retry logic, and org-level authentication (not just user-level tokens). Paired with inbound webhooks that let external systems write structured notes into the vault. The vault becomes the central knowledge hub in an org's tool stack — not another silo to maintain. This is Zapier's value, but purpose-built for AI-native knowledge workflows.</p>
+        </div>
+      </div>
+      <div class="pattern-footer">
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Customer archetypes</div>
+          <div class="archetypes">
+            <span class="arch-pill">Ops-heavy teams</span>
+            <span class="arch-pill">Dev orgs</span>
+            <span class="arch-pill">Data teams</span>
+            <span class="arch-pill">Any org with existing SaaS stack</span>
+          </div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Competitive reference</div>
+          <div class="pf-value">Zapier, Make, n8n for workflow automation. Linear, GitHub, Notion for bidirectional sync. Parachute's position: the vault as the AI memory layer that sits between all these tools — the thing that knows what the org actually decided and why, regardless of which tool recorded it.</div>
+        </div>
+        <div class="pattern-footer-cell">
+          <div class="pf-label">Key design questions</div>
+          <div class="pf-value">What's the inbound webhook data model — how does arbitrary external JSON become a structured vault note? Should the module protocol support third-party integrations that register their own webhook endpoints? Rate limits and backpressure for high-volume integrations.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Synthesis -->
+  <hr class="rule">
+  <div class="section">
+    <h2>Synthesis</h2>
+    <div class="section-sub">What the patterns reveal as a product strategy</div>
+
+    <p>Taken together, these seven patterns define a coherent enterprise product: <strong>Parachute for Organizations</strong> — a shared AI memory layer with institutional-grade access control, typed knowledge objects, audit integrity, and an integration mesh that connects the vault to the rest of the org's tool stack.</p>
+
+    <div class="callout teal">
+      <p><strong>The core positioning opportunity:</strong> Every existing knowledge management tool (Notion, Confluence, Obsidian) was designed for human readers and writers. Parachute can own the position of "knowledge infrastructure designed for humans and AI agents equally" — where the access model, schema layer, audit trail, and integration mesh are all first-class citizens for both.</p>
+    </div>
+
+    <h3>Prioritization framework</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Pattern</th><th>Unlocks</th><th>Sequencing</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>01 — Org workspace / RBAC</td>
+            <td class="dim-cell">Everything else. Without multi-member identity, no enterprise sale is possible.</td>
+            <td><span class="priority p-found">Ship first</span></td>
+          </tr>
+          <tr>
+            <td>02 — Collective memory</td>
+            <td class="dim-cell">The core value prop. Without shared knowledge, the org vault is just a folder of individual vaults.</td>
+            <td><span class="priority p-found">Ship first</span></td>
+          </tr>
+          <tr>
+            <td>04 — Note-level ACL</td>
+            <td class="dim-cell">Required for any regulated industry and for trust in shared knowledge. Unlocks healthcare, legal, HR.</td>
+            <td><span class="priority p-found">Ship first</span></td>
+          </tr>
+          <tr>
+            <td>03 — Federated identity</td>
+            <td class="dim-cell">Table-stakes for enterprise (SAML/OIDC). Wallet/social differentiator for web3-native orgs.</td>
+            <td><span class="priority p-high">Phase 2</span></td>
+          </tr>
+          <tr>
+            <td>05 — Typed knowledge objects</td>
+            <td class="dim-cell">Makes AI reasoning reliable over org data. The "Notion database but MCP-native" wedge.</td>
+            <td><span class="priority p-high">Phase 2</span></td>
+          </tr>
+          <tr>
+            <td>07 — Integration mesh</td>
+            <td class="dim-cell">Expands vault's surface area into the full org tool stack. Distribution through integration.</td>
+            <td><span class="priority p-high">Phase 2</span></td>
+          </tr>
+          <tr>
+            <td>06 — Governance ledger</td>
+            <td class="dim-cell">Premium feature. Unlocks compliance-grade enterprise (healthcare, legal, government, foundations).</td>
+            <td><span class="priority p-med">Phase 3</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The cooperative as design partner</h3>
+    <p>The LCA is not a niche customer. It is a <strong>prototype</strong> — an organizational form that concentrates every enterprise requirement (governance, fiduciary records, multi-member identity, AI agents with distinct roles) into a small, legible, high-trust context. What works for a 10-member cooperative works for a 500-person law firm. What breaks at the cooperative scale breaks before it becomes visible at enterprise scale.</p>
+
+    <div class="callout">
+      <p><strong>Recommendation:</strong> Formalize RegenHub, LCA as a design partner for Parachute Enterprise. The LCA runs real governance, real capital accounts, real multi-agent coordination. Ship the org workspace, collective memory, and note-level ACL patterns against the LCA's actual workflows — not hypothetical enterprise requirements. The cooperative is a fast feedback loop with institutional-grade requirements.</p>
+    </div>
+
+    <h3>Market sizing note</h3>
+    <p>The seven customer archetypes across these patterns — law firms, DAOs, research labs, nonprofits, healthcare orgs, policy orgs, developer tool companies — share one structural characteristic: they are all <strong>knowledge-intensive organizations that have started deploying AI but lack persistent, structured, agent-accessible memory</strong> of their own institutional context. That is the enterprise Parachute market. It is large, underserved, and becoming more acute as AI agent adoption accelerates in 2026.</p>
+  </div>
+
+  <hr class="rule">
+
+  <div class="footer">
+    <div class="footer-left">
+      Todd Youngblood — Ventures &amp; Operations Steward, RegenHub, LCA<br>
+      Enterprise product research · April 22, 2026
+    </div>
+    <div class="footer-right">
+      <a href="parachute-computer.html">← Parachute Research Brief</a><br>
+      <a href="https://parachute.computer">parachute.computer</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '◑ light' : '◑ dark';
+  }
+</script>
+</body>
+</html>
