@@ -1,149 +1,148 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Parachute Computer — Venture Research · Techne Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --void:      #0c0c0c;
-    --ink:       #111111;
-    --surface:   #161616;
-    --panel:     #222222;
-    --raised:    #2a2a2a;
-    --border:    #383838;
-    --border-dim:#2a2a2a;
-    --gold:      #c4956a;
-    --gold-20:   rgba(196,149,106,0.20);
-    --gold-12:   rgba(196,149,106,0.12);
-    --parchment: #f0f0f0;
-    --warm:      #d0d0d0;
-    --muted:     #9a9a9a;
-    --dim:       #707070;
-    --ghost:     #505050;
-    --green:     #4ade80;
-    --amber:     #fbbf24;
-    --teal:      #7ccfb8;
-    --blue:      #8bbfff;
-    --purple:    #a78bfa;
-    --mono:      'IBM Plex Mono', monospace;
-    --serif:     'Cormorant', Georgia, serif;
-    --sans:      'Inter', system-ui, sans-serif;
-  }
-  [data-theme="light"] {
-    --void:#f5f3f0;--ink:#fffdf9;--surface:#faf8f4;--panel:#f0ede7;
-    --raised:#e8e4dc;--border:#d4cfc6;--border-dim:#e0dbd2;
-    --parchment:#1a1814;--warm:#3a3630;--muted:#706a60;--dim:#9a9488;--ghost:#bcb6aa;
-  }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
-  body{background:var(--void);color:var(--warm);font-family:var(--sans);font-size:15px;line-height:1.7;min-height:100vh;}
+:root {
+  --bg:#faf8f4; --bg-soft:#f3f0ea; --fg:#2c2a26; --fg-muted:#6b6860; --fg-dim:#9a9690;
+  --accent:#4a7c59; --accent-soft:rgba(74,124,89,.08); --accent-hover:#3d6849; --accent-light:#6a9b77;
+  --sky:#5b8fa8; --border:#e4e0d8; --card-bg:#ffffff;
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',Monaco,monospace;
+  --max-width:960px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--bg);color:var(--fg);line-height:1.65;font-size:16px;-webkit-font-smoothing:antialiased;}
+a{color:var(--accent);text-decoration:none;transition:color .2s;}
+a:hover{color:var(--accent-hover);}
 
-  .theme-toggle{position:fixed;top:1.25rem;right:1.25rem;z-index:100;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;cursor:pointer;color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.05em;transition:color .15s,border-color .15s;}
-  .theme-toggle:hover{color:var(--gold);border-color:var(--gold);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp .7s ease-out both;}
+.fade-up-1{animation-delay:.05s;}.fade-up-2{animation-delay:.15s;}.fade-up-3{animation-delay:.25s;}.fade-up-4{animation-delay:.35s;}
+@media(prefers-reduced-motion:reduce){.fade-up{animation:none;opacity:1;}}
 
-  /* Hero */
-  .hero{background:var(--ink);border-bottom:1px solid var(--border-dim);padding:5rem 2rem 4rem;position:relative;overflow:hidden;}
-  .hero::before{content:'';position:absolute;top:-100px;left:-100px;width:480px;height:480px;background:radial-gradient(circle,rgba(196,149,106,0.07) 0%,transparent 65%);pointer-events:none;}
-  .hero::after{content:'';position:absolute;bottom:-60px;right:10%;width:320px;height:320px;background:radial-gradient(circle,rgba(124,207,184,0.04) 0%,transparent 65%);pointer-events:none;}
-  .hero-inner{max-width:760px;margin:0 auto;position:relative;}
-  .venture-path{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem;}
-  .venture-path-sep{color:var(--ghost);}
-  .venture-label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:1.1rem;display:flex;align-items:center;gap:.6rem;}
-  .venture-label::before{content:'';display:inline-block;width:20px;height:1px;background:var(--gold);}
-  h1{font-family:var(--serif);font-size:clamp(2.4rem,5vw,3.6rem);font-weight:500;color:var(--parchment);line-height:1.1;margin-bottom:.5rem;letter-spacing:-.015em;}
-  .hero-tagline{font-family:var(--serif);font-size:clamp(1rem,2vw,1.2rem);font-weight:400;font-style:italic;color:var(--gold);margin-bottom:1.5rem;}
-  .hero-desc{font-size:1rem;color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:2.5rem;}
-  .hero-links{display:flex;flex-wrap:wrap;gap:.75rem;}
-  .hero-link{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.4rem;padding:.3rem .6rem;border:1px solid var(--border-dim);border-radius:4px;transition:color .15s,border-color .15s;}
-  .hero-link:hover{color:var(--gold);border-color:var(--gold);}
-  .hero-link svg{width:13px;height:13px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+/* Nav */
+header{border-bottom:1px solid var(--border);padding:1.25rem 2rem;background:rgba(250,248,244,.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
+nav{max-width:var(--max-width);margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+.logo{font-family:var(--serif);font-size:1.15rem;color:var(--fg);}
+.logo:hover{color:var(--accent);}
+.nav-links{display:flex;gap:1.5rem;}
+.nav-links a{color:var(--fg-muted);font-size:.875rem;position:relative;transition:color .2s;}
+.nav-links a:hover{color:var(--fg);}
+.nav-links a::after{content:"";position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s;}
+.nav-links a:hover::after{width:100%;}
 
-  /* Context strip */
-  .context-strip{background:var(--surface);border-bottom:1px solid var(--border-dim);padding:1.1rem 2rem;}
-  .context-inner{max-width:760px;margin:0 auto;display:flex;flex-wrap:wrap;gap:2rem;align-items:center;}
-  .context-item{display:flex;flex-direction:column;gap:.15rem;}
-  .context-label{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);}
-  .context-value{font-size:13px;color:var(--warm);}
-  .context-value a{color:var(--gold);text-decoration:none;}
-  .context-value a:hover{text-decoration:underline;}
-  .context-divider{width:1px;height:32px;background:var(--border-dim);flex-shrink:0;}
+/* Hero */
+.hero{border-bottom:1px solid var(--border);padding:5rem 2rem 4rem;}
+.hero-inner{max-width:760px;margin:0 auto;}
+.breadcrumb{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-dim);margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem;}
+.breadcrumb-sep{color:var(--border);}
+.venture-label{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:.6rem;}
+.venture-label::before{content:'';display:inline-block;width:20px;height:1px;background:var(--accent);}
+h1{font-family:var(--serif);font-size:clamp(2.4rem,5vw,3.5rem);font-weight:400;color:var(--fg);line-height:1.1;margin-bottom:.5rem;letter-spacing:-.02em;}
+.hero-tagline{font-family:var(--serif);font-style:italic;font-size:1.2rem;color:var(--accent);margin-bottom:1.25rem;}
+.hero-desc{font-size:1rem;color:var(--fg-muted);max-width:560px;line-height:1.7;margin-bottom:2rem;}
+.hero-links{display:flex;flex-wrap:wrap;gap:.6rem;}
+.hero-link{font-family:var(--mono);font-size:.75rem;color:var(--fg-dim);display:flex;align-items:center;gap:.4rem;padding:.3rem .65rem;border:1px solid var(--border);border-radius:4px;transition:color .15s,border-color .15s;}
+.hero-link:hover{color:var(--accent);border-color:var(--accent-light);}
+.hero-link svg{width:13px;height:13px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
 
-  /* Documents */
-  .main{max-width:760px;margin:0 auto;padding:3.5rem 2rem 5rem;}
-  .docs-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:1.25rem;}
+/* Context strip */
+.context-strip{background:var(--bg-soft);border-bottom:1px solid var(--border);padding:1rem 2rem;}
+.context-inner{max-width:760px;margin:0 auto;display:flex;flex-wrap:wrap;gap:2rem;align-items:center;}
+.context-item{display:flex;flex-direction:column;gap:.15rem;}
+.context-label{font-family:var(--mono);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-dim);}
+.context-value{font-size:.875rem;color:var(--fg-muted);}
+.context-value a{color:var(--accent);}
+.context-divider{width:1px;height:28px;background:var(--border);flex-shrink:0;}
 
-  .doc-card{display:grid;grid-template-columns:auto 1fr auto;gap:0;border:1px solid var(--border-dim);border-radius:8px;overflow:hidden;margin-bottom:1px;text-decoration:none;transition:border-color .15s;}
-  .doc-card:last-child{margin-bottom:0;}
-  .doc-card:hover{border-color:var(--gold);}
-  .doc-card:hover .doc-arrow{color:var(--gold);}
-  .doc-card:hover .doc-num{color:var(--gold);}
-  .doc-num{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ghost);background:var(--panel);padding:1.5rem 1.25rem;display:flex;align-items:flex-start;border-right:1px solid var(--border-dim);transition:color .15s;width:52px;justify-content:center;}
-  .doc-body{background:var(--panel);padding:1.4rem 1.5rem;}
-  .doc-type-tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;}
-  .doc-title{font-family:var(--serif);font-size:1.25rem;font-weight:500;color:var(--parchment);line-height:1.2;margin-bottom:.5rem;}
-  .doc-desc{font-size:13.5px;color:var(--muted);line-height:1.6;margin-bottom:.85rem;}
-  .doc-meta{display:flex;flex-wrap:wrap;gap:.4rem;}
-  .doc-tag{font-family:var(--mono);font-size:10.5px;color:var(--dim);background:var(--raised);border:1px solid var(--border-dim);border-radius:3px;padding:2px 8px;}
-  .doc-arrow{background:var(--panel);border-left:1px solid var(--border-dim);padding:1.5rem 1.25rem;display:flex;align-items:center;color:var(--ghost);transition:color .15s;}
-  .doc-arrow svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+/* Main */
+.main{max-width:760px;margin:0 auto;padding:3.5rem 2rem 5rem;}
+.docs-label{font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-dim);margin-bottom:1rem;}
 
-  /* Relationship diagram */
-  .rel-section{margin-top:3rem;}
-  .rel-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem;}
-  .rel-flow{display:flex;align-items:stretch;gap:0;border:1px solid var(--border-dim);border-radius:6px;overflow:hidden;}
-  @media(max-width:600px){.rel-flow{flex-direction:column;}}
-  .rel-node{flex:1;background:var(--panel);padding:1rem 1.1rem;text-align:center;}
-  .rel-node-name{font-family:var(--mono);font-size:12px;color:var(--parchment);margin-bottom:.25rem;}
-  .rel-node-desc{font-size:12px;color:var(--muted);line-height:1.45;}
-  .rel-arrow{display:flex;align-items:center;justify-content:center;background:var(--surface);padding:0 .75rem;border-left:1px solid var(--border-dim);border-right:1px solid var(--border-dim);color:var(--ghost);}
-  @media(max-width:600px){.rel-arrow{padding:.5rem;border:none;border-top:1px solid var(--border-dim);border-bottom:1px solid var(--border-dim);}}
-  .rel-arrow svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+/* Doc cards */
+.doc-cards{display:flex;flex-direction:column;gap:2px;margin-bottom:3.5rem;}
+.doc-card{display:grid;grid-template-columns:52px 1fr 40px;border:1px solid var(--border);border-radius:8px;overflow:hidden;text-decoration:none;background:var(--card-bg);transition:border-color .2s,box-shadow .2s;}
+.doc-card:hover{border-color:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.doc-num{font-family:var(--mono);font-size:.75rem;color:var(--fg-dim);background:var(--bg-soft);border-right:1px solid var(--border);display:flex;align-items:flex-start;justify-content:center;padding:1.35rem .75rem;transition:color .2s;}
+.doc-card:hover .doc-num{color:var(--accent);}
+.doc-body{padding:1.25rem 1.35rem;}
+.doc-type-tag{font-family:var(--mono);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-dim);margin-bottom:.4rem;}
+.doc-title{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--fg);line-height:1.25;margin-bottom:.4rem;}
+.doc-desc{font-size:.875rem;color:var(--fg-muted);line-height:1.6;margin-bottom:.75rem;}
+.doc-meta{display:flex;flex-wrap:wrap;gap:.3rem;}
+.doc-tag{font-family:var(--mono);font-size:.65rem;color:var(--fg-dim);background:var(--bg-soft);border:1px solid var(--border);border-radius:3px;padding:2px 7px;}
+.doc-arrow{border-left:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--fg-dim);background:var(--bg-soft);transition:color .2s;}
+.doc-card:hover .doc-arrow{color:var(--accent);}
+.doc-arrow svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
 
-  /* About section */
-  .about{margin-top:3.5rem;padding-top:2rem;border-top:1px solid var(--border-dim);}
-  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-  @media(max-width:560px){.about-grid{grid-template-columns:1fr;}}
-  .about-cell{background:var(--panel);border:1px solid var(--border-dim);border-radius:6px;padding:1rem 1.1rem;}
-  .about-cell-label{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:.4rem;}
-  .about-cell-value{font-size:13.5px;color:var(--warm);line-height:1.55;}
-  .about-cell-value a{color:var(--gold);text-decoration:none;}
-  .about-cell-value a:hover{text-decoration:underline;}
+/* Relationship flow */
+.rel-section{margin-bottom:3.5rem;}
+.rel-flow{display:flex;align-items:stretch;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+@media(max-width:600px){.rel-flow{flex-direction:column;}}
+.rel-node{flex:1;background:var(--card-bg);padding:1.1rem 1.25rem;text-align:center;}
+.rel-node-name{font-family:var(--serif);font-size:1rem;color:var(--fg);margin-bottom:.25rem;}
+.rel-node-desc{font-size:.8rem;color:var(--fg-muted);line-height:1.5;}
+.rel-arrow{display:flex;align-items:center;justify-content:center;background:var(--bg-soft);padding:0 .85rem;border-left:1px solid var(--border);border-right:1px solid var(--border);color:var(--fg-dim);}
+@media(max-width:600px){.rel-arrow{padding:.5rem;border:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}}
+.rel-arrow svg{width:13px;height:13px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
 
-  /* Footer */
-  .footer{border-top:1px solid var(--border-dim);padding-top:1.5rem;margin-top:3rem;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;}
-  .footer-left{font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.7;}
-  .footer-right{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:right;}
-  .footer a{color:var(--gold);text-decoration:none;}
-  .footer a:hover{text-decoration:underline;}
+/* About */
+.about{padding-top:2.5rem;border-top:1px solid var(--border);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;}
+@media(max-width:560px){.about-grid{grid-template-columns:1fr;}}
+.about-cell{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:1.1rem 1.25rem;}
+.about-cell-label{font-family:var(--mono);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-dim);margin-bottom:.4rem;}
+.about-cell-value{font-size:.875rem;color:var(--fg-muted);line-height:1.6;}
+.about-cell-value a{color:var(--accent);}
+
+/* Design system link */
+.ds-link{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--mono);font-size:.7rem;color:var(--fg-dim);border:1px solid var(--border);border-radius:4px;padding:.3rem .65rem;margin-bottom:2rem;transition:color .15s,border-color .15s;}
+.ds-link:hover{color:var(--accent);border-color:var(--accent-light);}
+.ds-link svg{width:12px;height:12px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+/* Footer */
+footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;color:var(--fg-dim);font-size:.85rem;}
+footer a{color:var(--fg-dim);}
+footer a:hover{color:var(--accent);}
+footer p{margin-bottom:.35rem;}
 </style>
 </head>
 <body>
 
-<button class="theme-toggle" onclick="
-  const t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',t);
-  localStorage.setItem('theme',t);
-  this.textContent=t==='dark'?'◑ light':'◑ dark';
-">◑ light</button>
+<header>
+  <nav>
+    <a href="https://techne.institute" class="logo">Techne Studio</a>
+    <div class="nav-links">
+      <a href="research.html">Research</a>
+      <a href="feature-patterns.html">Patterns</a>
+      <a href="prd.html">PRD</a>
+      <a href="design-system.html">Design System</a>
+    </div>
+  </nav>
+</header>
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="venture-path">
+    <div class="breadcrumb fade-up fade-up-1">
       <span>Techne Studio</span>
-      <span class="venture-path-sep">/</span>
+      <span class="breadcrumb-sep">›</span>
       <span>Ventures</span>
-      <span class="venture-path-sep">/</span>
+      <span class="breadcrumb-sep">›</span>
       <span>Parachute</span>
     </div>
-    <div class="venture-label">Venture Research</div>
-    <h1>Parachute Computer</h1>
-    <p class="hero-tagline">Open-source AI memory infrastructure for organizations.</p>
-    <p class="hero-desc">A structured research suite exploring Parachute's current architecture, the organizational gaps it doesn't yet address, and a full product requirements document for the enterprise platform that would close those gaps — authored from the perspective of RegenHub, LCA as design partner.</p>
-    <div class="hero-links">
+    <div class="venture-label fade-up fade-up-1">Venture Research</div>
+    <h1 class="fade-up fade-up-2">Parachute Computer</h1>
+    <p class="hero-tagline fade-up fade-up-2">Open-source AI memory infrastructure for organizations.</p>
+    <p class="hero-desc fade-up fade-up-3">A structured research suite exploring Parachute's current architecture, the organizational gaps it doesn't yet address, and a full product requirements document for the enterprise platform that would close those gaps — authored from the perspective of RegenHub, LCA as design partner.</p>
+    <div class="hero-links fade-up fade-up-4">
       <a class="hero-link" href="https://parachute.computer" target="_blank">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
         parachute.computer
@@ -188,61 +187,63 @@
 
   <div class="docs-label">Three documents · Read in sequence</div>
 
-  <a class="doc-card" href="research.html">
-    <div class="doc-num">01</div>
-    <div class="doc-body">
-      <div class="doc-type-tag">Research Brief</div>
-      <div class="doc-title">Parachute Computer — Current State</div>
-      <div class="doc-desc">An overview of Parachute's architecture as it stands today: 25 repositories, the vault knowledge graph, module protocol, OAuth hub, cloud offering, and agent framework — with a gap analysis of what an LCA instance would require.</div>
-      <div class="doc-meta">
-        <span class="doc-tag">Architecture</span>
-        <span class="doc-tag">25 repos</span>
-        <span class="doc-tag">Module protocol</span>
-        <span class="doc-tag">Gap analysis</span>
-        <span class="doc-tag">MCP</span>
+  <div class="doc-cards">
+    <a class="doc-card" href="research.html">
+      <div class="doc-num">01</div>
+      <div class="doc-body">
+        <div class="doc-type-tag">Research Brief</div>
+        <div class="doc-title">Parachute Computer — Current State</div>
+        <div class="doc-desc">An overview of Parachute's architecture as it stands today: 25 repositories, the vault knowledge graph, module protocol, OAuth hub, cloud offering, and agent framework — with a gap analysis of what an LCA instance would require.</div>
+        <div class="doc-meta">
+          <span class="doc-tag">Architecture</span>
+          <span class="doc-tag">25 repos</span>
+          <span class="doc-tag">Module protocol</span>
+          <span class="doc-tag">Gap analysis</span>
+          <span class="doc-tag">MCP</span>
+        </div>
       </div>
-    </div>
-    <div class="doc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-  </a>
+      <div class="doc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
 
-  <a class="doc-card" href="feature-patterns.html">
-    <div class="doc-num">02</div>
-    <div class="doc-body">
-      <div class="doc-type-tag">Enterprise Product Research</div>
-      <div class="doc-title">From Cooperative Edge to Enterprise Pattern</div>
-      <div class="doc-desc">Seven gaps identified through the LCA lens — translated into generalized feature patterns for knowledge-intensive organizations. Each pattern includes the cooperative origin, the generalized enterprise value, target customer archetypes, competitive reference, and key design questions.</div>
-      <div class="doc-meta">
-        <span class="doc-tag">7 feature patterns</span>
-        <span class="doc-tag">RBAC</span>
-        <span class="doc-tag">Federated identity</span>
-        <span class="doc-tag">Typed objects</span>
-        <span class="doc-tag">Audit trail</span>
+    <a class="doc-card" href="feature-patterns.html">
+      <div class="doc-num">02</div>
+      <div class="doc-body">
+        <div class="doc-type-tag">Enterprise Product Research</div>
+        <div class="doc-title">From Cooperative Edge to Enterprise Pattern</div>
+        <div class="doc-desc">Seven gaps identified through the LCA lens — translated into generalized feature patterns for knowledge-intensive organizations. Each pattern includes the cooperative origin, the generalized enterprise value, target customer archetypes, competitive reference, and key design questions.</div>
+        <div class="doc-meta">
+          <span class="doc-tag">7 feature patterns</span>
+          <span class="doc-tag">RBAC</span>
+          <span class="doc-tag">Federated identity</span>
+          <span class="doc-tag">Typed objects</span>
+          <span class="doc-tag">Audit trail</span>
+        </div>
       </div>
-    </div>
-    <div class="doc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-  </a>
+      <div class="doc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
 
-  <a class="doc-card" href="prd.html">
-    <div class="doc-num">03</div>
-    <div class="doc-body">
-      <div class="doc-type-tag">Product Requirements Document · v0.1 Draft</div>
-      <div class="doc-title">Parachute Enterprise PRD</div>
-      <div class="doc-desc">Full product requirements for the enterprise platform: four personas (including Org Agent as first-class), six design principles, seven requirement blocks with user stories and acceptance criteria, data model, API surface, a phased 12-month roadmap, and constraints.</div>
-      <div class="doc-meta">
-        <span class="doc-tag">User stories</span>
-        <span class="doc-tag">Acceptance criteria</span>
-        <span class="doc-tag">API surface</span>
-        <span class="doc-tag">Data model</span>
-        <span class="doc-tag">Roadmap</span>
-        <span class="doc-tag">Phase 1–3</span>
+    <a class="doc-card" href="prd.html">
+      <div class="doc-num">03</div>
+      <div class="doc-body">
+        <div class="doc-type-tag">Product Requirements Document · v0.1 Draft</div>
+        <div class="doc-title">Parachute Enterprise PRD</div>
+        <div class="doc-desc">Full product requirements for the enterprise platform: four personas (including Org Agent as first-class), six design principles, seven requirement blocks with user stories and acceptance criteria, data model, API surface, a phased 12-month roadmap, and constraints.</div>
+        <div class="doc-meta">
+          <span class="doc-tag">User stories</span>
+          <span class="doc-tag">Acceptance criteria</span>
+          <span class="doc-tag">API surface</span>
+          <span class="doc-tag">Data model</span>
+          <span class="doc-tag">Roadmap</span>
+          <span class="doc-tag">Phase 1–3</span>
+        </div>
       </div>
-    </div>
-    <div class="doc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-  </a>
+      <div class="doc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+  </div>
 
-  <!-- Document relationship -->
+  <!-- Relationship flow -->
   <div class="rel-section">
-    <div class="rel-label">How these documents relate</div>
+    <div class="docs-label">How these documents relate</div>
     <div class="rel-flow">
       <div class="rel-node">
         <div class="rel-node-name">Research Brief</div>
@@ -263,7 +264,7 @@
 
   <!-- About -->
   <div class="about">
-    <div class="rel-label">About this research</div>
+    <div class="docs-label">About this research</div>
     <div class="about-grid">
       <div class="about-cell">
         <div class="about-cell-label">Framing</div>
@@ -284,25 +285,13 @@
     </div>
   </div>
 
-  <div class="footer">
-    <div class="footer-left">
-      Techne Studio / RegenHub, LCA · Boulder, Colorado<br>
-      April 22, 2026
-    </div>
-    <div class="footer-right">
-      <a href="https://techne.institute">techne.institute</a><br>
-      <a href="https://parachute.computer">parachute.computer</a>
-    </div>
-  </div>
-
 </div>
 
-<script>
-  const saved = localStorage.getItem('theme');
-  if (saved) {
-    document.documentElement.setAttribute('data-theme', saved);
-    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '◑ light' : '◑ dark';
-  }
-</script>
+<footer>
+  <p>&copy; 2026 Techne Studio / RegenHub, LCA</p>
+  <p><a href="https://techne.institute">techne.institute</a> &middot; <a href="https://parachute.computer">parachute.computer</a></p>
+  <p style="margin-top:.75rem;"><a href="design-system.html">Design System</a> &middot; <a href="research.html">Research</a> &middot; <a href="feature-patterns.html">Patterns</a> &middot; <a href="prd.html">PRD</a></p>
+</footer>
+
 </body>
 </html>
