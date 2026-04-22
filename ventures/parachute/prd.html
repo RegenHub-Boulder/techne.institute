@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parachute Enterprise — Product Requirements Document · Techne Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void:      #0c0c0c;
+    --ink:       #111111;
+    --surface:   #161616;
+    --panel:     #222222;
+    --raised:    #2a2a2a;
+    --border:    #383838;
+    --border-dim:#2a2a2a;
+    --gold:      #c4956a;
+    --gold-20:   rgba(196,149,106,0.20);
+    --gold-12:   rgba(196,149,106,0.12);
+    --gold-06:   rgba(196,149,106,0.06);
+    --parchment: #f0f0f0;
+    --warm:      #d0d0d0;
+    --muted:     #9a9a9a;
+    --dim:       #707070;
+    --ghost:     #505050;
+    --green:     #4ade80;
+    --amber:     #fbbf24;
+    --red:       #ef4444;
+    --blue:      #8bbfff;
+    --teal:      #7ccfb8;
+    --purple:    #a78bfa;
+    --orange:    #fb923c;
+    --mono:      'IBM Plex Mono', monospace;
+    --serif:     'Cormorant', Georgia, serif;
+    --sans:      'Inter', system-ui, sans-serif;
+  }
+  [data-theme="light"] {
+    --void:#f5f3f0;--ink:#fffdf9;--surface:#faf8f4;--panel:#f0ede7;
+    --raised:#e8e4dc;--border:#d4cfc6;--border-dim:#e0dbd2;
+    --parchment:#1a1814;--warm:#3a3630;--muted:#706a60;--dim:#9a9488;--ghost:#bcb6aa;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--void);color:var(--warm);font-family:var(--sans);font-size:15px;line-height:1.7;min-height:100vh;}
+
+  .theme-toggle{position:fixed;top:1.25rem;right:1.25rem;z-index:200;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;cursor:pointer;color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.05em;transition:color .15s,border-color .15s;}
+  .theme-toggle:hover{color:var(--gold);border-color:var(--gold);}
+
+  /* Sidebar nav */
+  .layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+  @media(max-width:760px){.layout{grid-template-columns:1fr;}.sidenav{display:none;}}
+  .sidenav{background:var(--ink);border-right:1px solid var(--border-dim);position:sticky;top:0;height:100vh;overflow-y:auto;padding:2rem 0;}
+  .sidenav-logo{padding:.75rem 1.25rem 1.25rem;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border-dim);margin-bottom:1rem;}
+  .sidenav-logo span{color:var(--gold);}
+  .nav-section{padding:.5rem 1.25rem .25rem;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);}
+  .nav-item{display:block;padding:.35rem 1.25rem;font-size:13px;color:var(--muted);text-decoration:none;border-left:2px solid transparent;transition:color .15s,border-color .15s;}
+  .nav-item:hover{color:var(--parchment);border-left-color:var(--gold-20);}
+  .nav-item.active{color:var(--gold);border-left-color:var(--gold);}
+  .nav-sub{padding:.25rem 1.25rem .25rem 2rem;font-size:12px;color:var(--dim);text-decoration:none;display:block;transition:color .15s;}
+  .nav-sub:hover{color:var(--muted);}
+
+  /* Main content */
+  .content{overflow:auto;}
+  .hero{background:var(--ink);border-bottom:1px solid var(--border-dim);padding:3.5rem 3rem 3rem;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(196,149,106,.07) 0%,transparent 70%);pointer-events:none;}
+  .breadcrumb{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);margin-bottom:1.4rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+  .breadcrumb a{color:var(--gold);text-decoration:none;}
+  .breadcrumb a:hover{text-decoration:underline;}
+  .breadcrumb-sep{color:var(--ghost);}
+  .doc-type{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;}
+  .doc-type::before{content:'';display:inline-block;width:16px;height:1px;background:var(--gold);}
+  h1{font-family:var(--serif);font-size:clamp(2rem,4vw,2.8rem);font-weight:500;color:var(--parchment);line-height:1.15;margin-bottom:.7rem;letter-spacing:-.01em;}
+  h1 em{font-style:italic;color:var(--gold);}
+  .hero-sub{font-size:.95rem;color:var(--muted);max-width:560px;line-height:1.65;margin-bottom:2rem;}
+  .meta-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem;}
+  .meta-cell{background:var(--panel);border:1px solid var(--border-dim);border-radius:4px;padding:.5rem .75rem;}
+  .meta-label{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:.2rem;}
+  .meta-value{font-size:13px;color:var(--warm);}
+  .meta-value.gold{color:var(--gold);}
+
+  /* Article body */
+  .article{padding:2.5rem 3rem 5rem;max-width:820px;}
+  @media(max-width:760px){.hero,.article{padding-left:1.5rem;padding-right:1.5rem;}}
+
+  /* Sections */
+  .prd-section{margin-bottom:4rem;}
+  .section-anchor{position:relative;top:-80px;display:block;visibility:hidden;}
+  h2{font-family:var(--serif);font-size:1.75rem;font-weight:500;color:var(--parchment);margin-bottom:.25rem;padding-bottom:.6rem;border-bottom:1px solid var(--border-dim);letter-spacing:.01em;}
+  .section-id{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem;margin-top:.35rem;}
+  h3{font-family:var(--sans);font-size:.75rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin:2rem 0 .7rem;}
+  h4{font-family:var(--sans);font-size:.9rem;font-weight:600;color:var(--parchment);margin:1.25rem 0 .4rem;}
+  p{margin-bottom:.85rem;color:var(--warm);}
+  a{color:var(--gold);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  strong{color:var(--parchment);font-weight:600;}
+  em{font-style:italic;}
+  code{font-family:var(--mono);font-size:12.5px;background:var(--panel);border:1px solid var(--border-dim);border-radius:3px;padding:1px 5px;color:var(--teal);}
+
+  /* Callouts */
+  .callout{background:var(--panel);border:1px solid var(--border-dim);border-left:2px solid var(--gold);border-radius:4px;padding:1rem 1.25rem;margin:1.25rem 0;font-size:14px;}
+  .callout.green{border-left-color:var(--green);}
+  .callout.amber{border-left-color:var(--amber);}
+  .callout.teal{border-left-color:var(--teal);}
+  .callout.blue{border-left-color:var(--blue);}
+  .callout.red{border-left-color:var(--red);}
+  .callout p{margin-bottom:0;}
+  .callout p+p{margin-top:.5rem;}
+
+  /* Personas */
+  .persona-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:1px;border:1px solid var(--border-dim);border-radius:6px;overflow:hidden;margin:1rem 0 1.5rem;}
+  .persona{background:var(--panel);padding:1rem 1.1rem;border-right:1px solid var(--border-dim);}
+  .persona:last-child{border-right:none;}
+  .persona-icon{width:28px;height:28px;margin-bottom:.6rem;color:var(--gold);opacity:0.85;}
+  .persona-icon svg{width:28px;height:28px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* Product overview */
+  .overview{background:var(--ink);border-bottom:1px solid var(--border-dim);padding:3rem;}
+  @media(max-width:760px){.overview{padding:2rem 1.5rem;}}
+  .overview-inner{max-width:820px;}
+  .overview-lede{font-family:var(--serif);font-size:clamp(1.15rem,2.5vw,1.45rem);font-weight:400;color:var(--parchment);line-height:1.55;margin-bottom:1.75rem;letter-spacing:.01em;}
+  .overview-lede em{color:var(--gold);font-style:italic;}
+  .overview-problem{background:var(--panel);border:1px solid var(--border-dim);border-radius:6px;padding:1.25rem 1.5rem;margin-bottom:2rem;}
+  .overview-problem-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:.6rem;}
+  .overview-problem p{color:var(--warm);font-size:14.5px;margin-bottom:0;line-height:1.65;}
+  .pillars{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:1px;border:1px solid var(--border-dim);border-radius:6px;overflow:hidden;margin-bottom:2rem;}
+  .pillar{background:var(--panel);padding:1.25rem 1.1rem;}
+  .pillar-icon{width:22px;height:22px;color:var(--gold);margin-bottom:.7rem;}
+  .pillar-icon svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .pillar-title{font-size:.85rem;font-weight:600;color:var(--parchment);margin-bottom:.35rem;}
+  .pillar-desc{font-size:13px;color:var(--muted);line-height:1.55;}
+  .overview-for{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;}
+  .overview-for-label{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);}
+  .for-pill{font-family:var(--mono);font-size:11.5px;color:var(--warm);background:var(--raised);border:1px solid var(--border-dim);border-radius:4px;padding:3px 10px;}
+  .persona-name{font-family:var(--mono);font-size:12px;color:var(--parchment);margin-bottom:.3rem;font-weight:500;}
+  .persona-desc{font-size:12.5px;color:var(--muted);line-height:1.5;}
+
+  /* Requirements blocks */
+  .req-block{margin-bottom:2.5rem;}
+  .req-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:.8rem;flex-wrap:wrap;}
+  .req-title{font-family:var(--sans);font-size:1rem;font-weight:600;color:var(--parchment);}
+  .badges{display:flex;gap:.4rem;flex-wrap:wrap;}
+  .badge{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;white-space:nowrap;}
+  .badge-p1{background:rgba(196,149,106,.15);color:var(--gold);}
+  .badge-p2{background:rgba(74,222,128,.12);color:var(--green);}
+  .badge-p3{background:rgba(167,139,250,.12);color:var(--purple);}
+  .badge-must{background:rgba(239,68,68,.12);color:var(--red);}
+  .badge-should{background:rgba(251,191,36,.12);color:var(--amber);}
+  .badge-could{background:rgba(139,191,255,.12);color:var(--blue);}
+
+  /* User stories */
+  .stories{display:flex;flex-direction:column;gap:.5rem;margin:.75rem 0 1rem;}
+  .story{background:var(--surface);border:1px solid var(--border-dim);border-radius:4px;padding:.65rem 1rem;font-size:13.5px;color:var(--warm);line-height:1.55;}
+  .story-as{color:var(--muted);font-size:12px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.15rem;}
+
+  /* Acceptance criteria */
+  .criteria{margin:.5rem 0 1rem;}
+  .criteria li{font-size:13.5px;margin-bottom:.35rem;color:var(--warm);}
+  .criteria li::marker{color:var(--gold);}
+
+  /* Tables */
+  .table-wrap{overflow-x:auto;margin:1rem 0 1.5rem;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  thead th{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:.5rem .9rem;border-bottom:1px solid var(--border);text-align:left;background:var(--ink);}
+  tbody td{padding:.65rem .9rem;border-bottom:1px solid var(--border-dim);vertical-align:top;color:var(--warm);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody td:first-child{font-family:var(--mono);font-size:12.5px;color:var(--gold);}
+  .dim-cell{color:var(--muted);font-size:13px;}
+
+  /* Phase timeline */
+  .phases{display:flex;flex-direction:column;gap:1px;margin:1rem 0 1.5rem;}
+  .phase{display:grid;grid-template-columns:140px 1fr;border:1px solid var(--border-dim);border-radius:4px;overflow:hidden;}
+  .phase-label{background:var(--panel);padding:.75rem 1rem;border-right:1px solid var(--border-dim);}
+  .phase-name{font-family:var(--mono);font-size:12px;color:var(--parchment);margin-bottom:.2rem;}
+  .phase-time{font-family:var(--mono);font-size:11px;color:var(--dim);}
+  .phase-body{padding:.75rem 1rem;background:var(--surface);}
+  .phase-body p{font-size:13.5px;margin-bottom:0;color:var(--warm);}
+  .phase-items{margin-top:.4rem;display:flex;flex-wrap:wrap;gap:.4rem;}
+  .phase-item{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--panel);border:1px solid var(--border-dim);border-radius:3px;padding:2px 7px;}
+
+  /* API spec blocks */
+  .api-block{background:var(--ink);border:1px solid var(--border-dim);border-radius:6px;overflow:hidden;margin:1rem 0;}
+  .api-header{padding:.5rem 1rem;border-bottom:1px solid var(--border-dim);display:flex;align-items:center;gap:.75rem;}
+  .method{font-family:var(--mono);font-size:11px;font-weight:500;padding:2px 8px;border-radius:3px;}
+  .get{background:rgba(74,222,128,.15);color:var(--green);}
+  .post{background:rgba(139,191,255,.15);color:var(--blue);}
+  .patch{background:rgba(251,191,36,.15);color:var(--amber);}
+  .del{background:rgba(239,68,68,.15);color:var(--red);}
+  .api-path{font-family:var(--mono);font-size:12.5px;color:var(--muted);}
+  .api-body{padding:.75rem 1rem;font-family:var(--mono);font-size:12px;color:var(--warm);line-height:1.6;white-space:pre-wrap;}
+
+  /* Lists */
+  ul,ol{padding-left:1.2rem;margin-bottom:.85rem;}
+  li{margin-bottom:.35rem;color:var(--warm);font-size:14.5px;}
+  li strong{color:var(--parchment);}
+
+  hr.rule{border:none;border-top:1px solid var(--border-dim);margin:2.5rem 0;}
+
+  /* Footer */
+  .footer{border-top:1px solid var(--border-dim);padding-top:1.5rem;margin-top:3rem;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;}
+  .footer-left{font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.7;}
+  .footer-right{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:right;}
+  .footer a{color:var(--gold);}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="
+  const t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('theme',t);
+  this.textContent=t==='dark'?'◑ light':'◑ dark';
+">◑ light</button>
+
+<div class="layout">
+
+  <!-- Sidebar nav -->
+  <nav class="sidenav">
+    <div class="sidenav-logo">Parachute<br><span>Enterprise PRD</span></div>
+    <div class="nav-section">Overview</div>
+    <a class="nav-item" href="#overview">Product Overview</a>
+    <a class="nav-item" href="#vision">Vision</a>
+    <a class="nav-item" href="#personas">Personas</a>
+    <a class="nav-item" href="#principles">Design Principles</a>
+    <div class="nav-section">Requirements</div>
+    <a class="nav-item" href="#r1">R1 · Org Workspace</a>
+    <a class="nav-item" href="#r2">R2 · Collective Memory</a>
+    <a class="nav-item" href="#r3">R3 · Federated Identity</a>
+    <a class="nav-item" href="#r4">R4 · Content Permissions</a>
+    <a class="nav-item" href="#r5">R5 · Typed Objects</a>
+    <a class="nav-item" href="#r6">R6 · Governance Ledger</a>
+    <a class="nav-item" href="#r7">R7 · Integration Mesh</a>
+    <div class="nav-section">Platform</div>
+    <a class="nav-item" href="#data-model">Data Model</a>
+    <a class="nav-item" href="#api">API Surface</a>
+    <a class="nav-item" href="#roadmap">Roadmap</a>
+    <a class="nav-item" href="#constraints">Constraints</a>
+  </nav>
+
+  <!-- Main content -->
+  <div class="content">
+    <div class="hero">
+      <div class="breadcrumb">
+        <a href="research.html">Research Brief</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="feature-patterns.html">Feature Patterns</a>
+        <span class="breadcrumb-sep">/</span>
+        <span>PRD</span>
+      </div>
+      <div class="doc-type">Product Requirements Document</div>
+      <h1>Parachute <em>Enterprise</em></h1>
+      <p class="hero-sub">Organizational AI memory — shared knowledge infrastructure with institutional-grade access control, typed knowledge objects, audit integrity, and an integration mesh designed for humans and agents equally.</p>
+      <div class="meta-grid">
+        <div class="meta-cell">
+          <div class="meta-label">Document version</div>
+          <div class="meta-value gold">v0.1 — Draft</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Date</div>
+          <div class="meta-value">April 22, 2026</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Author</div>
+          <div class="meta-value">Todd Youngblood</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Status</div>
+          <div class="meta-value">For review</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Target product</div>
+          <div class="meta-value">Parachute Enterprise</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Design partner</div>
+          <div class="meta-value">RegenHub, LCA</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Overview -->
+    <div class="overview">
+      <a class="section-anchor" id="overview"></a>
+      <div class="overview-inner">
+
+        <p class="overview-lede">Your organization already has knowledge. It lives in meeting notes, decisions, agreements, Slack threads, and shared documents. The problem is that <em>none of it is accessible to AI</em> in a structured, trustworthy way — and AI without organizational memory gives you generic answers, not grounded ones.</p>
+
+        <div class="overview-problem">
+          <div class="overview-problem-label">The gap Parachute fills</div>
+          <p>Every AI tool you deploy today starts from zero context about your organization. It doesn't know your agreements, your decisions, your members' roles, or your operational history. It can't be held accountable for what it writes. It can't distinguish between what the whole org should know and what only the admin should see. You're giving powerful AI tools no organizational memory to work with — and getting outputs that reflect that absence.</p>
+        </div>
+
+        <div class="pillars">
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg></div>
+            <div class="pillar-title">Structured organizational memory</div>
+            <div class="pillar-desc">A shared knowledge graph — notes, decisions, agreements, records — that accumulates over time and is always accessible to your team and your agents.</div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <div class="pillar-title">Access control that agents respect</div>
+            <div class="pillar-desc">Role-based permissions and note-level visibility tiers enforced for humans and AI agents equally. The AI sees what you've authorized — nothing more.</div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div class="pillar-title">Audit-grade record integrity</div>
+            <div class="pillar-desc">Designated record types are append-only and content-addressed. Every change is attributed. Deletions are tombstoned. Governance records are verifiable.</div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg></div>
+            <div class="pillar-title">Open and self-hostable</div>
+            <div class="pillar-desc">AGPL-licensed. Runs on your infrastructure or ours. Your knowledge isn't held hostage by a proprietary platform — it's yours, in portable SQLite, always.</div>
+          </div>
+        </div>
+
+        <div class="overview-for">
+          <span class="overview-for-label">Built for</span>
+          <span class="for-pill">Law firms</span>
+          <span class="for-pill">Research labs</span>
+          <span class="for-pill">DAOs &amp; cooperatives</span>
+          <span class="for-pill">Nonprofits &amp; foundations</span>
+          <span class="for-pill">Healthcare orgs</span>
+          <span class="for-pill">Policy orgs</span>
+          <span class="for-pill">Developer tool companies</span>
+          <span class="for-pill">Any knowledge-intensive team deploying AI</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="article">
+
+      <!-- Vision -->
+      <div class="prd-section">
+        <a class="section-anchor" id="vision"></a>
+        <h2>Product Vision</h2>
+        <div class="section-id">§ 1.0</div>
+        <p>Parachute Enterprise is the organizational layer of the Parachute ecosystem — a shared AI memory infrastructure that gives knowledge-intensive organizations a single, structured, agent-accessible knowledge graph representing how they actually work.</p>
+        <p>Where the personal vault answers: <em>"What do I know?"</em> — Parachute Enterprise answers: <em>"What does our organization know, who can access it, how has it changed, and what can our AI agents do with it?"</em></p>
+
+        <div class="callout teal">
+          <p><strong>Core positioning:</strong> Every existing knowledge management tool was designed for human readers and writers. Parachute Enterprise is the first organizational knowledge platform designed for humans and AI agents as equal first-class participants — where the access model, schema layer, audit trail, and integration mesh serve both, without compromise.</p>
+        </div>
+
+        <h3>What it is not</h3>
+        <ul>
+          <li>Not a document editor (Notion, Confluence) — though documents live in the graph</li>
+          <li>Not a project management tool — though decisions and agreements are typed objects</li>
+          <li>Not a chatbot wrapper — the vault is persistent, structured memory, not a conversation</li>
+          <li>Not an enterprise SaaS platform with proprietary lock-in — AGPL, self-hostable, protocol-portable</li>
+        </ul>
+      </div>
+
+      <!-- Personas -->
+      <div class="prd-section">
+        <a class="section-anchor" id="personas"></a>
+        <h2>Personas</h2>
+        <div class="section-id">§ 2.0</div>
+        <p>Parachute Enterprise serves four distinct actors. Requirements must be validated against all four — including the two non-human ones.</p>
+
+        <div class="persona-grid">
+          <div class="persona">
+            <div class="persona-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg></div>
+            <div class="persona-name">Org Admin</div>
+            <div class="persona-desc">Provisions the workspace, manages roles, configures schemas and integrations, reviews audit trail. Steward or operations lead. Needs full visibility and control.</div>
+          </div>
+          <div class="persona">
+            <div class="persona-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+            <div class="persona-name">Member</div>
+            <div class="persona-desc">Creates and reads notes within their permission tier. May have elevated access to specific vaults or object types. Authenticates individually — not through a shared org credential.</div>
+          </div>
+          <div class="persona">
+            <div class="persona-icon"><svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <div class="persona-name">Observer</div>
+            <div class="persona-desc">Read-only access to the org knowledge base. External partners, advisors, auditors, or board members who need visibility but not write access.</div>
+          </div>
+          <div class="persona">
+            <div class="persona-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 11V7"/><circle cx="12" cy="5" r="2"/><path d="M7 15h.01M12 15h.01M17 15h.01"/></svg></div>
+            <div class="persona-name">Org Agent</div>
+            <div class="persona-desc">AI agent with its own identity and org-scoped credentials. Reads and writes on behalf of the organization, not any individual member. Scope is declared and auditable.</div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <p><strong>Agent identity is first-class.</strong> The Org Agent is not a member who happens to be a bot. It has distinct authentication, a declared scope that does not expand without admin action, and every action it takes is attributed in the audit trail under its own identity — not a member's.</p>
+        </div>
+      </div>
+
+      <!-- Design Principles -->
+      <div class="prd-section">
+        <a class="section-anchor" id="principles"></a>
+        <h2>Design Principles</h2>
+        <div class="section-id">§ 3.0</div>
+        <ol>
+          <li><strong>Principle of least privilege.</strong> Every actor — human or agent — gets the minimum access required for their role. Elevation requires explicit admin action, not convenience defaults.</li>
+          <li><strong>Audit by default.</strong> Changes to org-designated objects are logged. The audit trail is not a feature to enable; it is on for all typed objects in the org workspace.</li>
+          <li><strong>Protocol over platform.</strong> Enterprise features extend the module protocol — they do not create a proprietary layer. An org vault speaks the same /.parachute/* contracts as a personal vault. MCP surface is identical; permissions are additive.</li>
+          <li><strong>Personal vault sovereignty.</strong> Individual member vaults remain the member's own. The org workspace is a shared layer, not a takeover. A member can read from org context in the same MCP session as their personal vault without conflating the two.</li>
+          <li><strong>Agent trust is declared, not inferred.</strong> An Org Agent's capabilities are enumerated in its manifest. The system never infers additional capability from context.</li>
+          <li><strong>AGPL and self-hostable.</strong> Enterprise features ship in the open-source codebase. A hosted enterprise tier is a convenience layer on the same AGPL code, not a proprietary fork.</li>
+        </ol>
+      </div>
+
+      <hr class="rule">
+
+      <!-- R1: Org Workspace -->
+      <div class="prd-section">
+        <a class="section-anchor" id="r1"></a>
+        <h2>R1 — Organizational Workspace</h2>
+        <div class="section-id">§ 4.1 · Phase 1 · Foundational</div>
+        <p>An Org Workspace is an entity-owned vault — a shared knowledge space that members and agents access under individual identities with role-based permissions. It is the prerequisite for every other enterprise requirement.</p>
+
+        <h3>User stories</h3>
+        <div class="stories">
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can create an org workspace with a display name, slug, and description, and invite members to it — without those members needing to share a password or credential.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can assign members to roles (admin, member, observer) and change those roles without revoking and re-issuing credentials.
+          </div>
+          <div class="story">
+            <div class="story-as">As a Member</div>
+            I can authenticate to the org workspace using my individual identity (email/password, SSO, or wallet) and receive an access token scoped to my role — without admin involvement in routine access.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can provision an Org Agent with a declared scope (e.g. <code>org:vault:read org:vault:write</code>) and rotate its credentials without affecting member access.
+          </div>
+          <div class="story">
+            <div class="story-as">As a Member</div>
+            I can connect to the org workspace in the same MCP session as my personal vault, and the AI clearly distinguishes between org context and personal context.
+          </div>
+        </div>
+
+        <h3>Acceptance criteria</h3>
+        <ul class="criteria">
+          <li>Org workspace has its own OAuth 2.1 client registration, separate from any member's personal vault</li>
+          <li>Roles: <code>org:admin</code>, <code>org:member</code>, <code>org:observer</code>; role maps to a declared scope set</li>
+          <li>Member invitation: email-based or link-based; invited member authenticates with their own credential, not a shared one</li>
+          <li>Org Agent has a machine identity (client_credentials flow); its scope is immutable without admin action and visible in the workspace dashboard</li>
+          <li>MCP session for a member exposes both <code>personal:/</code> and <code>org:/</code> namespaces; tools are prefixed to avoid collision</li>
+          <li>Revoke a member: their tokens are invalidated within 60 seconds; ongoing MCP sessions receive a 401 on next request</li>
+          <li>Workspace slug is URL-safe and unique within the hosted instance</li>
+        </ul>
+
+        <h3>Technical notes</h3>
+        <p>The Org Workspace is a first-class entity in the data model — not just a vault with a special tag. It owns a membership table, a role-to-scope mapping, and an agent registry. The hub's OAuth issuer surface is extended to support client_credentials for Org Agents and org-scoped authorization codes for members. Vault names in an org workspace use the org slug as a namespace prefix.</p>
+      </div>
+
+      <!-- R2: Collective Memory -->
+      <div class="prd-section">
+        <a class="section-anchor" id="r2"></a>
+        <h2>R2 — Collective Memory</h2>
+        <div class="section-id">§ 4.2 · Phase 1 · Foundational</div>
+        <p>The org workspace accumulates notes, decisions, agreements, and artifacts contributed by multiple members into a single traversable knowledge graph. Members and agents read and write to this shared layer with attribution preserved.</p>
+
+        <h3>User stories</h3>
+        <div class="stories">
+          <div class="story">
+            <div class="story-as">As a Member</div>
+            I can write a note to the org workspace, and it is attributed to me and visible to other members with appropriate access — without me having to copy it from my personal vault.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Agent</div>
+            I can search the org knowledge graph by tag, note type, date range, and full-text, and receive results with attribution metadata (who wrote it, when, under which role).
+          </div>
+          <div class="story">
+            <div class="story-as">As a Member</div>
+            I can link a personal note to an org note, and the link appears in both the personal and org graph without merging the two namespaces.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can see which agents have read or written to the org knowledge base in the last 30 days, and what they accessed.
+          </div>
+        </div>
+
+        <h3>Acceptance criteria</h3>
+        <ul class="criteria">
+          <li>Every note in the org workspace carries <code>created_by</code> (member ID or agent ID), <code>created_at</code>, <code>last_modified_by</code>, <code>last_modified_at</code></li>
+          <li>MCP <code>search</code> and <code>query</code> tools operate on the org namespace with attribution fields in response payload</li>
+          <li>Cross-namespace links (personal → org, org → personal) are represented as link edges with namespace prefix; traversal respects ACL at each hop</li>
+          <li>Agent activity log: queryable by agent ID, date range, operation type (read/write/delete)</li>
+          <li>Full-text search across the org namespace returns results within 500 ms for indexes up to 100k notes</li>
+          <li>Wikilinks within org notes resolve to org-namespace notes by default; explicit <code>personal::</code> prefix required to link to personal vault</li>
+        </ul>
+
+        <h3>Technical notes</h3>
+        <p>The collective memory layer is a shared vault in the org namespace (<code>org/{slug}/vault/{name}</code>) with the SQLite schema extended for attribution columns and namespace-aware link resolution. The MCP session initialization for org context sends a <code>vault_description</code> that describes the org, its conventions, and the member's role — so agents always have context for what kind of knowledge space they are working in.</p>
+      </div>
+
+      <!-- R3: Federated Identity -->
+      <div class="prd-section">
+        <a class="section-anchor" id="r3"></a>
+        <h2>R3 — Federated Identity</h2>
+        <div class="section-id">§ 4.3 · Phase 2 · Growth</div>
+        <p>Members authenticate to the org workspace via the identity systems the organization already uses — SAML/OIDC for enterprise, wallet-based auth for digitally-native orgs, or social graph identity (Farcaster, GitHub). The org chooses its identity source; Parachute maps to roles.</p>
+
+        <h3>User stories</h3>
+        <div class="stories">
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can configure our org workspace to use our company's Okta/Google Workspace as the identity provider — so members log in with their existing work credentials, not a new Parachute password.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can configure wallet-based authentication (Sign in with Ethereum) so members authenticate using their self-custodied identity, without email or password.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can map external identity attributes (SAML groups, wallet address, GitHub org membership) to Parachute org roles — so role assignment is derived from the external IdP, not managed separately.
+          </div>
+          <div class="story">
+            <div class="story-as">As a Member</div>
+            When I rotate my wallet (key migration), my org access and attribution history are preserved under my member identity — not lost because my signing key changed.
+          </div>
+        </div>
+
+        <h3>Acceptance criteria</h3>
+        <ul class="criteria">
+          <li>SAML 2.0 SP-initiated SSO: org admin configures metadata URL or XML; hub issues org-scoped tokens on successful SAML assertion</li>
+          <li>OIDC: generic OIDC client configuration (authorization_endpoint, token_endpoint, client_id, client_secret); supports Google, Microsoft, Okta, Auth0, and any spec-compliant IdP</li>
+          <li>SIWE (Sign in with Ethereum): EIP-4361 compliant; nonce challenge from hub, signed message from wallet, hub verifies on-chain; ENS name resolved and stored as display name</li>
+          <li>Role mapping: configurable rules (e.g. SAML group "parachute-admin" → org:admin; GitHub org membership → org:member); evaluated at login, stored in session</li>
+          <li>Wallet rotation: member can associate a new wallet address with their member identity by signing a migration message with the old key; attribution history is preserved</li>
+          <li>Multiple IdPs per org: an org can offer both OIDC (for employees) and SIWE (for external contributors) simultaneously</li>
+          <li>Personal vault authentication is independent of org IdP configuration</li>
+        </ul>
+
+        <h3>Technical notes</h3>
+        <p>The hub's OAuth issuer surface gains an IdP federation layer. For SAML/OIDC, the hub acts as an SP and maps assertions to its own member identity. For SIWE, the hub issues a challenge nonce, validates the EIP-4361 message, and creates/retrieves a member identity linked to the wallet address. The member identity (UUID) is the stable internal key — external identifiers (email, wallet address) are aliases that resolve to it.</p>
+      </div>
+
+      <!-- R4: Content Permissions -->
+      <div class="prd-section">
+        <a class="section-anchor" id="r4"></a>
+        <h2>R4 — Content Permissions</h2>
+        <div class="section-id">§ 4.4 · Phase 1 · Foundational</div>
+        <p>Knowledge objects in the org workspace carry a visibility tier that gates access for both human members and AI agents. The information architecture of the organization is enforced by the system — not managed through shared-by-convention.</p>
+
+        <h3>Visibility tiers</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tier</th><th>Access</th><th>Typical use</th></tr></thead>
+            <tbody>
+              <tr><td>private</td><td class="dim-cell">Author only (member or agent that created the note)</td><td class="dim-cell">Draft notes, personal working documents, sensitive deliberation</td></tr>
+              <tr><td>team</td><td class="dim-cell">Members in a specified role set (e.g. org:admin only)</td><td class="dim-cell">Internal governance, compensation, personnel records</td></tr>
+              <tr><td>org</td><td class="dim-cell">All org members including org:observer</td><td class="dim-cell">Decisions, agreements, meeting records, shared knowledge</td></tr>
+              <tr><td>public</td><td class="dim-cell">World-readable, no authentication required</td><td class="dim-cell">Published position papers, public governance records, external-facing docs</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>User stories</h3>
+        <div class="stories">
+          <div class="story">
+            <div class="story-as">As a Member</div>
+            When I create a note in the org workspace, I can set its visibility tier. The default tier for the org is configured by the admin; I can raise it to more permissive, but not exceed my own access level.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Agent</div>
+            When I query the org knowledge graph, I only receive notes I am authorized to read — determined by my declared scope, not by the query itself. I cannot enumerate notes I lack access to even if I know their IDs.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can set a default visibility tier for each note type schema — so Decision notes default to org, Personnel notes default to team, and Draft notes default to private.
+          </div>
+        </div>
+
+        <h3>Acceptance criteria</h3>
+        <ul class="criteria">
+          <li>Every note has a <code>visibility</code> field defaulting to the org's configured default (configurable per note type)</li>
+          <li>All read operations (MCP query, REST GET, full-text search) filter results by the requesting actor's access level before returning results — server-side, not client-side</li>
+          <li>Agents: scope <code>org:vault:read</code> grants access up to <code>org</code> tier; scope <code>org:vault:read:team:{role}</code> grants access up to <code>team</code> tier for that role; <code>public</code> requires no scope</li>
+          <li>Visibility change: raising a note's visibility requires the actor to have access at the target tier; lowering requires the actor to be the author or org:admin</li>
+          <li>Public notes render at <code>/org/{slug}/view/{noteId}</code> without authentication; all other tiers require a valid token</li>
+          <li>ACL enforcement in graph traversal: BFS path-finding stops at nodes the actor cannot read; those nodes appear as opaque to the requesting actor</li>
+        </ul>
+      </div>
+
+      <!-- R5: Typed Objects -->
+      <div class="prd-section">
+        <a class="section-anchor" id="r5"></a>
+        <h2>R5 — Typed Knowledge Objects</h2>
+        <div class="section-id">§ 4.5 · Phase 2 · Growth</div>
+        <p>Organizations can define schema-enforced note types — typed objects with required fields, field types, and validation rules — that AI agents can query by type, write reliably, and reason over as structured data rather than freeform text.</p>
+
+        <h3>Built-in types (starter library)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Type</th><th>Required fields</th><th>Default visibility</th></tr></thead>
+            <tbody>
+              <tr><td>Decision</td><td class="dim-cell">title, body, decided_at, decided_by[], outcome</td><td class="dim-cell">org</td></tr>
+              <tr><td>Agreement</td><td class="dim-cell">title, parties[], effective_date, terms, status</td><td class="dim-cell">org</td></tr>
+              <tr><td>Meeting</td><td class="dim-cell">title, date, attendees[], agenda, notes, action_items[]</td><td class="dim-cell">org</td></tr>
+              <tr><td>MemberRecord</td><td class="dim-cell">member_id, display_name, roles[], joined_at, status</td><td class="dim-cell">team:admin</td></tr>
+              <tr><td>CapitalEntry</td><td class="dim-cell">member_id, amount, type, period, recorded_at, recorded_by</td><td class="dim-cell">team:admin</td></tr>
+              <tr><td>GovernanceVote</td><td class="dim-cell">proposal, vote_type, votes_for, votes_against, quorum, outcome</td><td class="dim-cell">org</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>User stories</h3>
+        <div class="stories">
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can define a custom note type with a JSON Schema — specifying required fields, field types (string, number, date, member_ref, note_ref, enum), and a default visibility tier — and publish it for use by members and agents in my workspace.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Agent</div>
+            I can query the org workspace for all notes of type Decision from the past 90 days, receive typed structured objects (not freeform text), and reason over fields like <code>outcome</code> and <code>decided_by</code> without parsing prose.
+          </div>
+          <div class="story">
+            <div class="story-as">As a Member</div>
+            When I create a Decision note, the system validates required fields before saving. If I omit <code>decided_at</code>, I get a clear validation error — not a silently incomplete record.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can version a schema — adding optional fields to existing types — without invalidating notes written against the previous version.
+          </div>
+        </div>
+
+        <h3>Acceptance criteria</h3>
+        <ul class="criteria">
+          <li>Schema definition: JSON Schema (draft 2020-12) stored per org workspace; validated on save</li>
+          <li>MCP tool <code>create_typed_note</code> accepts <code>type</code> and <code>fields</code>; server validates against schema before writing</li>
+          <li>MCP tool <code>query_typed_notes</code> accepts <code>type</code>, field filters, date ranges, and returns structured JSON objects (not rendered markdown)</li>
+          <li>Schema versioning: semver; minor versions (new optional fields) are backward compatible; major versions require migration script</li>
+          <li>Built-in types are pre-loaded in all new org workspaces and not deletable; custom types can be added, archived (not deleted if notes exist)</li>
+          <li>Field type <code>member_ref</code> validates against current org membership at write time; <code>note_ref</code> validates that the target note exists and is readable by the writing actor</li>
+          <li>Freeform notes remain valid in the org workspace alongside typed objects</li>
+        </ul>
+      </div>
+
+      <!-- R6: Governance Ledger -->
+      <div class="prd-section">
+        <a class="section-anchor" id="r6"></a>
+        <h2>R6 — Governance Ledger</h2>
+        <div class="section-id">§ 4.6 · Phase 3 · Premium</div>
+        <p>Designated note types in the org workspace are written to an append-only, content-addressed event log. Deletes are soft (tombstoned). The full history of any record is queryable. Optional on-chain anchoring provides external verifiability for organizations that need it.</p>
+
+        <h3>User stories</h3>
+        <div class="stories">
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can designate specific note types (e.g. Decision, Agreement, CapitalEntry) as ledger-tracked — meaning every create and update to notes of those types is recorded immutably.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Agent</div>
+            I can retrieve the complete version history of any ledger-tracked note — who wrote each version, when, what changed — and present it as evidence of a governance process.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Observer</div>
+            I can request a cryptographic proof that a specific Decision note existed with specific content at a specific point in time — and verify that proof without trusting Parachute's servers.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            Even if a member "deletes" a ledger-tracked note, it is soft-deleted — I can see that it existed, who deleted it, and when. The content is retained in the ledger for admin access.
+          </div>
+        </div>
+
+        <h3>Acceptance criteria</h3>
+        <ul class="criteria">
+          <li>Ledger event log: append-only table with columns (event_id, note_id, event_type [create/update/soft_delete], actor_id, timestamp, content_hash, prev_hash)</li>
+          <li>Content hash: SHA-256 of canonical JSON serialization of the note at that version; prev_hash forms a chain</li>
+          <li>Soft delete: ledger-tracked notes cannot be hard-deleted; <code>DELETE</code> creates a tombstone event; content is accessible to org:admin</li>
+          <li>Version history MCP tool: <code>get_note_history(note_id)</code> returns ordered event log with diffs</li>
+          <li>Proof export: <code>export_ledger_proof(note_id, version)</code> returns a signed JSON object (JOSE/JWS) with the event chain; verifiable offline against the org's public key</li>
+          <li>On-chain anchoring (optional, org-configurable): periodic Merkle root of ledger state posted to Base L2; proof includes Merkle path to on-chain root</li>
+          <li>Ledger access follows ACL: an actor can only retrieve ledger history for notes they can read (or tombstones of notes they could read at time of deletion)</li>
+        </ul>
+      </div>
+
+      <!-- R7: Integration Mesh -->
+      <div class="prd-section">
+        <a class="section-anchor" id="r7"></a>
+        <h2>R7 — Integration Mesh</h2>
+        <div class="section-id">§ 4.7 · Phase 2 · Growth</div>
+        <p>The org workspace exposes declarative outbound webhooks (vault events → external systems) and inbound webhooks (external systems → vault notes), with org-level authentication, filter rules, retry logic, and transformation templates.</p>
+
+        <h3>User stories</h3>
+        <div class="stories">
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can configure a webhook that fires whenever a Decision note is created in the org workspace — posting a structured payload to our project management tool or coordination surface.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Agent</div>
+            I can write a note to the org workspace from an external system via an inbound webhook — for example, when a meeting ends in our video platform, the transcript is automatically created as a Meeting typed note.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can see all webhook deliveries for the past 30 days, including payload, response status, retry history, and failure reasons — without needing server log access.
+          </div>
+          <div class="story">
+            <div class="story-as">As an Org Admin</div>
+            I can configure field-level transformation rules so that an incoming JSON payload from an external system maps correctly to the fields of a typed note — without writing custom code.
+          </div>
+        </div>
+
+        <h3>Acceptance criteria</h3>
+        <ul class="criteria">
+          <li>Outbound webhook config: event filter (note type, event type, tag, visibility tier), destination URL, secret (HMAC-SHA256 signing), and custom headers</li>
+          <li>Payload: canonical JSON of the note event, including attribution metadata and org context; Content-Type: application/json</li>
+          <li>Retry: exponential backoff, up to 5 attempts over 24 hours; delivery log persisted for 30 days</li>
+          <li>Inbound webhook endpoint: <code>POST /org/{slug}/inbound/{webhook_id}</code>; authenticated by shared secret; parses JSON payload, applies transformation template, creates a typed note or appends to existing</li>
+          <li>Transformation template: JSONPath-based field mapping (no code required); validation against target schema before write; on validation failure, creates a draft note with error metadata</li>
+          <li>Org-level auth token for webhooks: separate from member or agent credentials; scoped to <code>org:webhook:send</code> only; rotatable independently</li>
+          <li>Delivery dashboard accessible to org:admin via Lens UI and via MCP tool <code>list_webhook_deliveries</code></li>
+        </ul>
+
+        <h3>Standard integration library</h3>
+        <p>Pre-built transformation templates for common integrations — maintained as open-source under <code>parachute-patterns</code>:</p>
+        <ul>
+          <li>Otter.ai / Fireflies transcript → Meeting note</li>
+          <li>GitHub issue closed → Decision note</li>
+          <li>Cal.com booking confirmed → Meeting note (pre-fill)</li>
+          <li>Stripe invoice paid → CapitalEntry note</li>
+          <li>Linear project update → org note with tags</li>
+        </ul>
+      </div>
+
+      <hr class="rule">
+
+      <!-- Data Model -->
+      <div class="prd-section">
+        <a class="section-anchor" id="data-model"></a>
+        <h2>Data Model</h2>
+        <div class="section-id">§ 5.0</div>
+        <p>The enterprise data model extends the personal vault schema with five new entity types. All entities are namespaced under the org slug and isolated from personal vault storage.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Entity</th><th>Key fields</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>org_workspace</td>
+                <td class="dim-cell">id, slug, display_name, created_at, owner_member_id, settings{}</td>
+                <td class="dim-cell">Top-level org entity. Settings include default_visibility, ledger_types[], idp_config.</td>
+              </tr>
+              <tr>
+                <td>org_membership</td>
+                <td class="dim-cell">id, org_id, member_id, role, joined_at, status</td>
+                <td class="dim-cell">Junction table. member_id references identity, not vault-owner. Soft-delete on revocation.</td>
+              </tr>
+              <tr>
+                <td>org_agent</td>
+                <td class="dim-cell">id, org_id, display_name, scope[], client_id, created_at, last_used_at</td>
+                <td class="dim-cell">Machine identity. client_credentials OAuth flow. Scope is immutable post-creation except by org:admin.</td>
+              </tr>
+              <tr>
+                <td>note_schema</td>
+                <td class="dim-cell">id, org_id, type_name, version, json_schema, default_visibility, is_built_in, created_at</td>
+                <td class="dim-cell">Schema registry per org. Built-in types pre-seeded. Custom types added by org:admin.</td>
+              </tr>
+              <tr>
+                <td>ledger_event</td>
+                <td class="dim-cell">id, note_id, event_type, actor_id, timestamp, content_hash, prev_hash, payload_snapshot</td>
+                <td class="dim-cell">Append-only. payload_snapshot stores full note JSON at that version. Never updated or deleted.</td>
+              </tr>
+              <tr>
+                <td>webhook_config</td>
+                <td class="dim-cell">id, org_id, direction, filter{}, destination_url, secret_hash, transform_template, enabled</td>
+                <td class="dim-cell">Outbound and inbound. secret stored as HMAC-safe hash; delivery log in separate table.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <p><strong>Storage isolation:</strong> Org workspace notes live in a dedicated SQLite database per org (not the same file as any member's personal vault). In the cloud offering, this maps to a dedicated Durable Object per org workspace — not per member.</p>
+        </div>
+      </div>
+
+      <!-- API Surface -->
+      <div class="prd-section">
+        <a class="section-anchor" id="api"></a>
+        <h2>API Surface</h2>
+        <div class="section-id">§ 6.0</div>
+        <p>Enterprise endpoints extend the existing vault REST and MCP surfaces. All org endpoints are scoped under <code>/org/{slug}/</code> and require org-scoped tokens.</p>
+
+        <h3>Workspace management</h3>
+        <div class="api-block">
+          <div class="api-header"><span class="method post">POST</span><span class="api-path">/org/create</span></div>
+          <div class="api-body">{ "slug": "regenhub", "display_name": "RegenHub, LCA", "settings": {} }
+→ { "org_id": "…", "slug": "regenhub", "hub_url": "…" }</div>
+        </div>
+        <div class="api-block">
+          <div class="api-header"><span class="method post">POST</span><span class="api-path">/org/{slug}/invite</span></div>
+          <div class="api-body">{ "email": "member@example.com", "role": "org:member" }  // or wallet_address
+→ { "invite_id": "…", "expires_at": "…" }</div>
+        </div>
+        <div class="api-block">
+          <div class="api-header"><span class="method patch">PATCH</span><span class="api-path">/org/{slug}/members/{member_id}</span></div>
+          <div class="api-body">{ "role": "org:admin" }  // or { "status": "revoked" }
+→ 200 OK</div>
+        </div>
+        <div class="api-block">
+          <div class="api-header"><span class="method post">POST</span><span class="api-path">/org/{slug}/agents</span></div>
+          <div class="api-body">{ "display_name": "Nou", "scope": ["org:vault:read", "org:vault:write"] }
+→ { "agent_id": "…", "client_id": "…", "client_secret": "…" }  // secret shown once</div>
+        </div>
+
+        <h3>Typed notes (extends vault API)</h3>
+        <div class="api-block">
+          <div class="api-header"><span class="method post">POST</span><span class="api-path">/org/{slug}/vault/{vault}/notes</span></div>
+          <div class="api-body">{ "type": "Decision", "visibility": "org", "fields": {
+  "title": "Adopt quarterly patronage model",
+  "decided_at": "2026-04-22",
+  "decided_by": ["member:todd", "member:aaron"],
+  "outcome": "Approved 7-0"
+} }
+→ { "note_id": "…", "ledger_event_id": "…" }</div>
+        </div>
+        <div class="api-block">
+          <div class="api-header"><span class="method get">GET</span><span class="api-path">/org/{slug}/vault/{vault}/notes?type=Decision&from=2026-01-01</span></div>
+          <div class="api-body">→ { "notes": [ { "note_id": "…", "type": "Decision", "fields": {…}, "created_by": "…", "visibility": "org" }, … ] }</div>
+        </div>
+
+        <h3>Ledger</h3>
+        <div class="api-block">
+          <div class="api-header"><span class="method get">GET</span><span class="api-path">/org/{slug}/ledger/{note_id}/history</span></div>
+          <div class="api-body">→ { "events": [ { "event_type": "create", "actor_id": "…", "timestamp": "…", "content_hash": "…" }, … ] }</div>
+        </div>
+        <div class="api-block">
+          <div class="api-header"><span class="method get">GET</span><span class="api-path">/org/{slug}/ledger/{note_id}/proof?version=3</span></div>
+          <div class="api-body">→ { "jws": "eyJ…", "merkle_path": […], "chain_root": "0x…" }  // verifiable offline</div>
+        </div>
+
+        <h3>MCP tools (org namespace additions)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tool</th><th>Description</th><th>Required scope</th></tr></thead>
+            <tbody>
+              <tr><td>org_query</td><td class="dim-cell">Search org knowledge graph; respects ACL</td><td class="dim-cell">org:vault:read</td></tr>
+              <tr><td>org_create_note</td><td class="dim-cell">Create freeform or typed note in org workspace</td><td class="dim-cell">org:vault:write</td></tr>
+              <tr><td>org_update_note</td><td class="dim-cell">Update note; ledger-tracked types append event</td><td class="dim-cell">org:vault:write</td></tr>
+              <tr><td>org_get_history</td><td class="dim-cell">Retrieve version history of a ledger-tracked note</td><td class="dim-cell">org:vault:read</td></tr>
+              <tr><td>org_list_members</td><td class="dim-cell">List org members with roles</td><td class="dim-cell">org:vault:read</td></tr>
+              <tr><td>org_agent_activity</td><td class="dim-cell">Query agent read/write log</td><td class="dim-cell">org:admin</td></tr>
+              <tr><td>org_list_webhooks</td><td class="dim-cell">List webhook configs and delivery stats</td><td class="dim-cell">org:admin</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Roadmap -->
+      <div class="prd-section">
+        <a class="section-anchor" id="roadmap"></a>
+        <h2>Delivery Roadmap</h2>
+        <div class="section-id">§ 7.0</div>
+        <p>Three phases, sequenced by dependency. Phase 1 is the minimum viable enterprise product — without it, no org-level sale is possible. Phases 2 and 3 expand the addressable market and deepen the value proposition.</p>
+
+        <div class="phases">
+          <div class="phase">
+            <div class="phase-label">
+              <div class="phase-name">Phase 1</div>
+              <div class="phase-time">Months 1–3</div>
+            </div>
+            <div class="phase-body">
+              <p><strong>Minimum viable org workspace.</strong> Multi-member access and collective memory with basic ACL. This unlocks the first enterprise customer.</p>
+              <div class="phase-items">
+                <span class="phase-item">R1 — Org Workspace</span>
+                <span class="phase-item">R2 — Collective Memory</span>
+                <span class="phase-item">R4 — Content Permissions (tiers 1–4)</span>
+                <span class="phase-item">Org Agent identity</span>
+                <span class="phase-item">Lens — org workspace UI</span>
+                <span class="phase-item">Built-in note types (Decision, Meeting, Agreement)</span>
+              </div>
+            </div>
+          </div>
+          <div class="phase">
+            <div class="phase-label">
+              <div class="phase-name">Phase 2</div>
+              <div class="phase-time">Months 4–7</div>
+            </div>
+            <div class="phase-body">
+              <p><strong>Enterprise-ready platform.</strong> SSO, typed objects, and integration mesh. Unlocks regulated industries and orgs with existing tool stacks.</p>
+              <div class="phase-items">
+                <span class="phase-item">R3 — Federated Identity (SAML/OIDC + SIWE)</span>
+                <span class="phase-item">R5 — Typed Knowledge Objects</span>
+                <span class="phase-item">R7 — Integration Mesh</span>
+                <span class="phase-item">Schema authoring UI in Lens</span>
+                <span class="phase-item">Standard integration library v1</span>
+                <span class="phase-item">Webhook delivery dashboard</span>
+              </div>
+            </div>
+          </div>
+          <div class="phase">
+            <div class="phase-label">
+              <div class="phase-name">Phase 3</div>
+              <div class="phase-time">Months 8–12</div>
+            </div>
+            <div class="phase-body">
+              <p><strong>Compliance-grade and premium tier.</strong> Governance ledger with cryptographic proofs and optional on-chain anchoring. Unlocks legal, financial, and public-benefit governance customers.</p>
+              <div class="phase-items">
+                <span class="phase-item">R6 — Governance Ledger</span>
+                <span class="phase-item">Ledger proof export (JOSE/JWS)</span>
+                <span class="phase-item">On-chain Merkle anchoring (Base)</span>
+                <span class="phase-item">Compliance export (SOC2 event log format)</span>
+                <span class="phase-item">Wallet rotation + identity continuity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Constraints -->
+      <div class="prd-section">
+        <a class="section-anchor" id="constraints"></a>
+        <h2>Constraints &amp; Non-Goals</h2>
+        <div class="section-id">§ 8.0</div>
+
+        <h3>Hard constraints</h3>
+        <ul>
+          <li><strong>AGPL compliance.</strong> All enterprise features ship in the open-source codebase. No enterprise-only proprietary code. Cloud hosting is a convenience layer on AGPL.</li>
+          <li><strong>Self-hostable at every tier.</strong> Any org must be able to run the full enterprise feature set on their own infrastructure. The hosted offering is not required.</li>
+          <li><strong>Personal vault sovereignty.</strong> Enterprise features never automatically merge or expose personal vault content. Cross-namespace access is always explicit, always gated by the member's individual consent.</li>
+          <li><strong>Bun + SQLite stack.</strong> No new runtime dependencies for core functionality. Cloudflare Workers + Durable Objects for cloud deployment. No Postgres requirement introduced by enterprise features.</li>
+        </ul>
+
+        <h3>Non-goals for v1</h3>
+        <ul>
+          <li>Real-time collaborative editing (Google Docs-style) — notes have a single last-writer-wins model</li>
+          <li>Geographic data residency pinning — Durable Objects placement is Cloudflare-managed</li>
+          <li>Cross-org federation (two separate org workspaces sharing notes) — deferred to post-v1</li>
+          <li>Mobile app for org workspace — Lens (PWA) is the primary UI; native app is separate roadmap</li>
+          <li>AI model hosting — Parachute is memory infrastructure, not inference infrastructure</li>
+        </ul>
+
+        <h3>Design partner validation gate</h3>
+        <div class="callout green">
+          <p>Each phase requires successful deployment and active use by RegenHub, LCA before the phase is marked complete. The cooperative is the design partner, not a beta tester — requirements are co-authored against real operational workflows, and the LCA's governance, patronage accounting, and multi-agent coordination serve as the acceptance test suite.</p>
+        </div>
+      </div>
+
+      <hr class="rule">
+
+      <div class="footer">
+        <div class="footer-left">
+          Todd Youngblood — Ventures &amp; Operations Steward, RegenHub, LCA<br>
+          Parachute Enterprise PRD v0.1 · April 22, 2026 · For review
+        </div>
+        <div class="footer-right">
+          <a href="research.html">Research Brief</a> ·
+          <a href="feature-patterns.html">Feature Patterns</a><br>
+          <a href="https://parachute.computer">parachute.computer</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '◑ light' : '◑ dark';
+  }
+  // Highlight active nav item on scroll
+  const anchors = document.querySelectorAll('.section-anchor');
+  const navItems = document.querySelectorAll('.nav-item');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const match = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  anchors.forEach(a => observer.observe(a));
+</script>
+</body>
+</html>
