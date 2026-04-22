@@ -112,7 +112,8 @@
   .persona-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:1px;border:1px solid var(--border-dim);border-radius:6px;overflow:hidden;margin:1rem 0 1.5rem;}
   .persona{background:var(--panel);padding:1rem 1.1rem;border-right:1px solid var(--border-dim);}
   .persona:last-child{border-right:none;}
-  .persona-icon{font-size:1.4rem;margin-bottom:.4rem;}
+  .persona-icon{width:28px;height:28px;margin-bottom:.6rem;color:var(--gold);opacity:0.85;}
+  .persona-icon svg{width:28px;height:28px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
   .persona-name{font-family:var(--mono);font-size:12px;color:var(--parchment);margin-bottom:.3rem;font-weight:500;}
   .persona-desc{font-size:12.5px;color:var(--muted);line-height:1.5;}
 
@@ -290,22 +291,22 @@
 
         <div class="persona-grid">
           <div class="persona">
-            <div class="persona-icon">🏛️</div>
+            <div class="persona-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg></div>
             <div class="persona-name">Org Admin</div>
             <div class="persona-desc">Provisions the workspace, manages roles, configures schemas and integrations, reviews audit trail. Steward or operations lead. Needs full visibility and control.</div>
           </div>
           <div class="persona">
-            <div class="persona-icon">👤</div>
+            <div class="persona-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
             <div class="persona-name">Member</div>
             <div class="persona-desc">Creates and reads notes within their permission tier. May have elevated access to specific vaults or object types. Authenticates individually — not through a shared org credential.</div>
           </div>
           <div class="persona">
-            <div class="persona-icon">👁️</div>
+            <div class="persona-icon"><svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
             <div class="persona-name">Observer</div>
             <div class="persona-desc">Read-only access to the org knowledge base. External partners, advisors, auditors, or board members who need visibility but not write access.</div>
           </div>
           <div class="persona">
-            <div class="persona-icon">🤖</div>
+            <div class="persona-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M12 11V7"/><circle cx="12" cy="5" r="2"/><path d="M7 15h.01M12 15h.01M17 15h.01"/></svg></div>
             <div class="persona-name">Org Agent</div>
             <div class="persona-desc">AI agent with its own identity and org-scoped credentials. Reads and writes on behalf of the organization, not any individual member. Scope is declared and auditable.</div>
           </div>
