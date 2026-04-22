@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Parachute Ventures · Techne Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Parachute Ventures — Design System
+   Reference aesthetic: parachute.computer
+   Extended for: Techne Studio venture documents
+   ========================================================= */
+
+:root {
+  /* ── Core palette (from parachute.computer) ── */
+  --bg:           #faf8f4;
+  --bg-soft:      #f3f0ea;
+  --fg:           #2c2a26;
+  --fg-muted:     #6b6860;
+  --fg-dim:       #9a9690;
+  --accent:       #4a7c59;
+  --accent-soft:  rgba(74,124,89,0.08);
+  --accent-hover: #3d6849;
+  --accent-light: #6a9b77;
+  --sky:          #5b8fa8;
+  --sky-soft:     rgba(91,143,168,0.08);
+  --border:       #e4e0d8;
+  --border-light: #ece9e2;
+  --card-bg:      #ffffff;
+  --card-hover:   #fefdfb;
+
+  /* ── Extended tokens for document suite ── */
+  --amber:        #b07d2a;
+  --amber-soft:   rgba(176,125,42,0.09);
+  --red:          #b0392a;
+  --red-soft:     rgba(176,57,42,0.08);
+
+  /* Priority levels */
+  --p-found-bg:   var(--accent-soft);
+  --p-found-fg:   var(--accent);
+  --p-high-bg:    var(--sky-soft);
+  --p-high-fg:    var(--sky);
+  --p-med-bg:     var(--amber-soft);
+  --p-med-fg:     var(--amber);
+
+  /* ── Typography ── */
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans:  'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono:  'JetBrains Mono', 'SF Mono', Monaco, monospace;
+
+  /* ── Layout ── */
+  --max-width:     960px;
+  --content-width: 680px;
+  --sidebar-width: 220px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.65;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; transition: color .2s; }
+a:hover { color: var(--accent-hover); }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.fade-up { animation: fadeUp .7s ease-out both; }
+.fade-up-1 { animation-delay:.05s; }
+.fade-up-2 { animation-delay:.15s; }
+.fade-up-3 { animation-delay:.25s; }
+@media (prefers-reduced-motion:reduce) { .fade-up { animation:none; opacity:1; } }
+
+/* ── Nav ── */
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 2rem;
+  background: rgba(250,248,244,.92);
+  backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 100;
+}
+nav {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo { font-family: var(--serif); font-size: 1.15rem; color: var(--fg); }
+.logo:hover { color: var(--accent); }
+.breadcrumb {
+  font-size: .8rem;
+  color: var(--fg-dim);
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.breadcrumb a { color: var(--fg-dim); }
+.breadcrumb a:hover { color: var(--accent); }
+.breadcrumb-sep { color: var(--border); font-size: .7rem; }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-links a {
+  color: var(--fg-muted);
+  font-size: .875rem;
+  position: relative;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--fg); }
+.nav-links a::after {
+  content: ""; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 1px; background: var(--accent); transition: width .3s;
+}
+.nav-links a:hover::after { width: 100%; }
+
+/* ── Main layout ── */
+main { max-width: var(--max-width); margin: 0 auto; padding: 4rem 2rem 6rem; }
+
+/* ── Page header ── */
+.page-header { margin-bottom: 4rem; }
+.page-header h1 {
+  font-family: var(--serif);
+  font-size: 3rem;
+  font-weight: 400;
+  letter-spacing: -.02em;
+  color: var(--fg);
+  margin-bottom: .5rem;
+}
+.page-header .subtitle {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+.page-header .meta {
+  font-size: .8rem;
+  color: var(--fg-dim);
+  margin-top: .75rem;
+  font-family: var(--mono);
+  letter-spacing: .02em;
+}
+
+/* ── Sections ── */
+.ds-section { margin-bottom: 5rem; }
+.ds-section h2 {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: var(--fg);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: .75rem;
+  margin-bottom: 1.75rem;
+  letter-spacing: -.01em;
+}
+.ds-section h3 {
+  font-family: var(--mono);
+  font-size: .75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--fg-dim);
+  margin-bottom: .85rem;
+  margin-top: 2rem;
+}
+.ds-section h3:first-child { margin-top: 0; }
+.ds-section p {
+  color: var(--fg-muted);
+  max-width: var(--content-width);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+/* ── Color palette ── */
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: .75rem;
+  margin-bottom: 1.5rem;
+}
+.swatch {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.swatch-color { height: 60px; }
+.swatch-info { padding: .5rem .65rem; background: var(--card-bg); }
+.swatch-name { font-family: var(--mono); font-size: .7rem; color: var(--fg); font-weight: 500; }
+.swatch-var  { font-family: var(--mono); font-size: .65rem; color: var(--fg-dim); margin-top: .1rem; }
+
+/* ── Type specimens ── */
+.type-specimen { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 1rem; }
+.type-spec-label {
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--border);
+  padding: .5rem .85rem;
+  font-family: var(--mono);
+  font-size: .7rem;
+  color: var(--fg-dim);
+  letter-spacing: .04em;
+}
+.type-spec-body { padding: 1.25rem 1.25rem; background: var(--card-bg); }
+.t-serif-display { font-family: var(--serif); font-size: 2.5rem; font-weight: 400; color: var(--fg); line-height: 1.1; letter-spacing: -.02em; }
+.t-serif-h1 { font-family: var(--serif); font-size: 1.75rem; font-weight: 400; color: var(--fg); }
+.t-serif-h2 { font-family: var(--serif); font-size: 1.35rem; font-weight: 400; color: var(--accent); }
+.t-serif-italic { font-family: var(--serif); font-style: italic; font-size: 1.2rem; color: var(--fg-muted); }
+.t-sans-body { font-family: var(--sans); font-size: 1rem; color: var(--fg-muted); line-height: 1.7; }
+.t-sans-small { font-family: var(--sans); font-size: .875rem; color: var(--fg-muted); }
+.t-mono { font-family: var(--mono); font-size: .85rem; color: var(--fg); }
+.t-mono-label { font-family: var(--mono); font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--fg-dim); }
+
+/* ── Components ── */
+/* Buttons */
+.btn {
+  display: inline-block;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: .875rem;
+  letter-spacing: .01em;
+  border-radius: 8px;
+  padding: .7rem 1.75rem;
+  cursor: pointer;
+  border: none;
+  transition: background .2s, transform .15s, box-shadow .2s;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(74,124,89,.15);
+}
+.btn-primary:hover { background: var(--accent-hover); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(74,124,89,.2); }
+.btn-ghost {
+  background: transparent;
+  color: var(--fg-muted);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { color: var(--fg); border-color: var(--accent-light); }
+.btn-sky {
+  background: var(--sky);
+  color: #fff;
+}
+.btn-sky:hover { background: #4a7d94; color: #fff; }
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: .7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: .2rem .6rem;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+.badge-done     { background: var(--accent-soft); color: var(--accent); }
+.badge-active   { background: var(--sky-soft); color: var(--sky); }
+.badge-upcoming { background: rgba(154,150,144,.1); color: var(--fg-dim); }
+
+/* Priority badges */
+.badge-found { background: var(--p-found-bg); color: var(--p-found-fg); }
+.badge-high  { background: var(--p-high-bg); color: var(--p-high-fg); }
+.badge-med   { background: var(--p-med-bg); color: var(--p-med-fg); }
+
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  transition: border-color .3s, box-shadow .3s;
+}
+.card:hover { border-color: var(--accent-light); box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+.card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: .75rem;
+}
+.card h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; color: var(--fg); }
+.card p { color: var(--fg-muted); font-size: .95rem; line-height: 1.65; }
+
+/* Doc nav card */
+.doc-card {
+  display: grid;
+  grid-template-columns: 52px 1fr 40px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: border-color .2s;
+  background: var(--card-bg);
+}
+.doc-card:hover { border-color: var(--accent); }
+.doc-num {
+  font-family: var(--mono);
+  font-size: .75rem;
+  color: var(--fg-dim);
+  background: var(--bg-soft);
+  border-right: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1.25rem .75rem;
+  transition: color .2s;
+}
+.doc-card:hover .doc-num { color: var(--accent); }
+.doc-body { padding: 1.1rem 1.25rem; }
+.doc-type { font-family: var(--mono); font-size: .65rem; text-transform: uppercase; letter-spacing: .08em; color: var(--fg-dim); margin-bottom: .35rem; }
+.doc-title { font-family: var(--serif); font-size: 1.15rem; font-weight: 400; color: var(--fg); margin-bottom: .35rem; }
+.doc-desc { font-size: .875rem; color: var(--fg-muted); line-height: 1.55; }
+.doc-arrow {
+  border-left: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-dim);
+  background: var(--bg-soft);
+  transition: color .2s;
+}
+.doc-card:hover .doc-arrow { color: var(--accent); }
+.doc-arrow svg { width:14px; height:14px; stroke:currentColor; stroke-width:1.5; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+
+/* Code blocks */
+.code-block {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.1rem 1.25rem;
+  overflow-x: auto;
+  margin: .75rem 0;
+}
+.code-block code { font-family: var(--mono); font-size: .825rem; color: var(--fg-muted); line-height: 1.7; }
+code {
+  font-family: var(--mono);
+  font-size: .875em;
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: .1em .35em;
+  border-radius: 4px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { text-align: left; padding: .75rem 1rem; border-bottom: 1px solid var(--border); }
+th { font-family: var(--mono); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--fg-dim); font-weight: 400; background: var(--bg-soft); }
+td { color: var(--fg-muted); }
+tr:last-child td { border-bottom: none; }
+.table-wrap { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+
+/* Callouts */
+.callout {
+  border-left: 2px solid var(--accent);
+  padding: .9rem 1.1rem;
+  background: var(--accent-soft);
+  border-radius: 0 6px 6px 0;
+  margin: 1rem 0;
+}
+.callout.sky { border-color: var(--sky); background: var(--sky-soft); }
+.callout.amber { border-color: var(--amber); background: var(--amber-soft); }
+.callout p { color: var(--fg); font-size: .9rem; margin: 0; }
+
+/* Sidebar layout preview */
+.layout-preview {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  min-height: 200px;
+  background: var(--bg-soft);
+}
+.layout-sidebar {
+  width: 160px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  background: var(--bg);
+  padding: 1rem;
+}
+.layout-sidebar-item {
+  font-size: .75rem;
+  padding: .3rem .5rem;
+  border-radius: 4px;
+  color: var(--fg-dim);
+  margin-bottom: .2rem;
+  font-family: var(--mono);
+}
+.layout-sidebar-item.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.layout-main { flex: 1; padding: 1.25rem 1.5rem; }
+.layout-main h4 { font-family: var(--serif); font-size: 1.1rem; color: var(--fg); margin-bottom: .5rem; }
+.layout-main p  { font-size: .85rem; color: var(--fg-muted); line-height: 1.6; }
+
+/* Inline components row */
+.comp-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin: 1rem 0; }
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--fg-dim);
+  font-size: .85rem;
+}
+footer a { color: var(--fg-dim); }
+footer a:hover { color: var(--accent); }
+footer p { margin-bottom: .5rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="intro.html" class="logo">Parachute — Techne Studio</a>
+    <div class="breadcrumb">
+      <a href="https://techne.institute">techne.institute</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="intro.html">ventures/parachute</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>design-system</span>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="page-header fade-up fade-up-1">
+    <h1>Design System</h1>
+    <p class="subtitle">Parachute Ventures · Techne Studio</p>
+    <p class="meta">Reference aesthetic: parachute.computer &nbsp;·&nbsp; Extended for venture document suite</p>
+  </div>
+
+  <!-- COLORS -->
+  <div class="ds-section fade-up fade-up-2">
+    <h2>Color</h2>
+    <p>The palette follows parachute.computer — warm cream ground, forest green accent, sky blue secondary. Extended with amber and muted variants for document-specific needs like priority tiers.</p>
+
+    <h3>Core</h3>
+    <div class="palette-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#faf8f4;border-bottom:1px solid #e4e0d8;"></div><div class="swatch-info"><div class="swatch-name">#faf8f4</div><div class="swatch-var">--bg</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#f3f0ea;border-bottom:1px solid #e4e0d8;"></div><div class="swatch-info"><div class="swatch-name">#f3f0ea</div><div class="swatch-var">--bg-soft</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#ffffff;border-bottom:1px solid #e4e0d8;"></div><div class="swatch-info"><div class="swatch-name">#ffffff</div><div class="swatch-var">--card-bg</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#2c2a26;"></div><div class="swatch-info"><div class="swatch-name">#2c2a26</div><div class="swatch-var">--fg</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#6b6860;"></div><div class="swatch-info"><div class="swatch-name">#6b6860</div><div class="swatch-var">--fg-muted</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#9a9690;"></div><div class="swatch-info"><div class="swatch-name">#9a9690</div><div class="swatch-var">--fg-dim</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#e4e0d8;"></div><div class="swatch-info"><div class="swatch-name">#e4e0d8</div><div class="swatch-var">--border</div></div></div>
+    </div>
+
+    <h3>Accent</h3>
+    <div class="palette-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#4a7c59;"></div><div class="swatch-info"><div class="swatch-name">#4a7c59</div><div class="swatch-var">--accent</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#3d6849;"></div><div class="swatch-info"><div class="swatch-name">#3d6849</div><div class="swatch-var">--accent-hover</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#6a9b77;"></div><div class="swatch-info"><div class="swatch-name">#6a9b77</div><div class="swatch-var">--accent-light</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#5b8fa8;"></div><div class="swatch-info"><div class="swatch-name">#5b8fa8</div><div class="swatch-var">--sky</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#b07d2a;"></div><div class="swatch-info"><div class="swatch-name">#b07d2a</div><div class="swatch-var">--amber</div></div></div>
+    </div>
+
+    <h3>Semantic</h3>
+    <div class="comp-row">
+      <span class="badge badge-done">Available</span>
+      <span class="badge badge-active">In Progress</span>
+      <span class="badge badge-upcoming">Planned</span>
+      <span class="badge badge-found">Foundational</span>
+      <span class="badge badge-high">High Priority</span>
+      <span class="badge badge-med">Medium Priority</span>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="ds-section">
+    <h2>Typography</h2>
+    <p>Three families. Instrument Serif carries the editorial voice — page titles, section headers, card headings. DM Sans for readable body text. JetBrains Mono for labels, metadata, and code.</p>
+
+    <div class="type-specimen">
+      <div class="type-spec-label">Instrument Serif · Display / Page title · 3rem · weight 400</div>
+      <div class="type-spec-body"><span class="t-serif-display">Open knowledge infrastructure</span></div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-spec-label">Instrument Serif · Section heading · 1.75rem · weight 400</div>
+      <div class="type-spec-body"><span class="t-serif-h1">Enterprise Feature Patterns</span></div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-spec-label">Instrument Serif · Italic tagline · 1.2rem</div>
+      <div class="type-spec-body"><span class="t-serif-italic">A self-hostable ecosystem for your knowledge</span></div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-spec-label">DM Sans · Body · 1rem · weight 400 · line-height 1.7</div>
+      <div class="type-spec-body"><span class="t-sans-body">Every AI you use stores your context as one flat text file. Whatever you said yesterday, your AI doesn't really remember. Parachute is a different shape: a personal knowledge graph organized around notes, tags, and links, accessible to any AI via MCP.</span></div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-spec-label">JetBrains Mono · Code / label · .85rem</div>
+      <div class="type-spec-body"><span class="t-mono">parachute install vault &nbsp;·&nbsp; GET /.parachute/info &nbsp;·&nbsp; 2026-04-22</span></div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-spec-label">JetBrains Mono · Metadata label · .7rem · uppercase · letter-spacing .08em</div>
+      <div class="type-spec-body"><span class="t-mono-label">Research Brief &nbsp;·&nbsp; Foundational Priority &nbsp;·&nbsp; Enterprise Pattern</span></div>
+    </div>
+  </div>
+
+  <!-- COMPONENTS -->
+  <div class="ds-section">
+    <h2>Components</h2>
+
+    <h3>Buttons</h3>
+    <div class="comp-row">
+      <a href="#" class="btn btn-primary">Get Started</a>
+      <a href="#" class="btn btn-ghost">View Docs</a>
+      <a href="#" class="btn btn-sky">Enterprise</a>
+    </div>
+
+    <h3>Cards</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0;">
+      <div class="card">
+        <div class="card-head">
+          <h3>Parachute Vault</h3>
+          <span class="badge badge-done">Available</span>
+        </div>
+        <p>SQLite-backed knowledge graph. MCP-native, REST API, full-text search.</p>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Org Workspace</h3>
+          <span class="badge badge-found">Foundational</span>
+        </div>
+        <p>Multi-tenant isolation with role-based access control and team namespacing.</p>
+      </div>
+    </div>
+
+    <h3>Document Navigation Card</h3>
+    <div style="display:flex;flex-direction:column;gap:2px;margin:1rem 0;">
+      <a href="#" class="doc-card">
+        <span class="doc-num">01</span>
+        <span class="doc-body">
+          <span class="doc-type">Research Brief</span>
+          <span class="doc-title" style="display:block;">Parachute Computer — Body of Work</span>
+          <span class="doc-desc" style="display:block;">Architecture, ecosystem, and current state of the open source Parachute stack.</span>
+        </span>
+        <span class="doc-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
+      </a>
+    </div>
+
+    <h3>Code Blocks</h3>
+    <div class="code-block"><code>bun add -g @openparachute/cli &amp;&amp; parachute install vault</code></div>
+    <div class="code-block"><code>GET /.parachute/info
+{
+  "name": "vault",
+  "version": "1.0.0",
+  "services": ["mcp", "rest", "oauth"]
+}</code></div>
+    <p>Inline code: <code>--accent</code> and <code>parachute.json</code> and <code>PATCH /notes/:id</code>.</p>
+
+    <h3>Tables</h3>
+    <div class="table-wrap" style="margin:1rem 0;">
+      <table>
+        <thead><tr><th>Pattern</th><th>Priority</th><th>LCA Origin</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Org Workspace / RBAC</td><td><span class="badge badge-found">Foundational</span></td><td>Member roster, role differentiation</td><td><span class="badge badge-active">In Progress</span></td></tr>
+          <tr><td>Collective Memory</td><td><span class="badge badge-found">Foundational</span></td><td>Policy, meeting, decision capture</td><td><span class="badge badge-upcoming">Planned</span></td></tr>
+          <tr><td>Integration Mesh</td><td><span class="badge badge-med">Medium</span></td><td>External tool connectors</td><td><span class="badge badge-upcoming">Planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Callouts</h3>
+    <div class="callout"><p><strong>Design note:</strong> The accent green is the primary signal color. Use it for affirmative states, completed items, and primary interactive elements.</p></div>
+    <div class="callout sky"><p><strong>Sky:</strong> Secondary signal. Use for in-progress states, informational callouts, and secondary patterns.</p></div>
+    <div class="callout amber"><p><strong>Amber:</strong> Medium priority or cautionary context. Not an error state — a considered deferral.</p></div>
+
+    <h3>Page Layout — Sidebar + Content</h3>
+    <div class="layout-preview">
+      <div class="layout-sidebar">
+        <div class="layout-sidebar-item">Overview</div>
+        <div class="layout-sidebar-item active">Requirements</div>
+        <div class="layout-sidebar-item">Data Model</div>
+        <div class="layout-sidebar-item">API Surface</div>
+        <div class="layout-sidebar-item">Roadmap</div>
+      </div>
+      <div class="layout-main">
+        <h4>Functional Requirements</h4>
+        <p>Scroll-aware sticky sidebar with IntersectionObserver active state. 220px sidebar, remaining width for content. Collapses to stacked on mobile.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOKENS REFERENCE -->
+  <div class="ds-section">
+    <h2>Token Reference</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td><code>--bg</code></td><td>#faf8f4</td><td>Page background</td></tr>
+          <tr><td><code>--bg-soft</code></td><td>#f3f0ea</td><td>Secondary bg, code blocks, sidebar</td></tr>
+          <tr><td><code>--card-bg</code></td><td>#ffffff</td><td>Card and panel backgrounds</td></tr>
+          <tr><td><code>--fg</code></td><td>#2c2a26</td><td>Primary text</td></tr>
+          <tr><td><code>--fg-muted</code></td><td>#6b6860</td><td>Body text, secondary content</td></tr>
+          <tr><td><code>--fg-dim</code></td><td>#9a9690</td><td>Labels, timestamps, metadata</td></tr>
+          <tr><td><code>--accent</code></td><td>#4a7c59</td><td>Primary interactive, links, done</td></tr>
+          <tr><td><code>--accent-soft</code></td><td>rgba(74,124,89,.08)</td><td>Accent bg tint, code inline bg</td></tr>
+          <tr><td><code>--accent-light</code></td><td>#6a9b77</td><td>Hover borders, list markers</td></tr>
+          <tr><td><code>--sky</code></td><td>#5b8fa8</td><td>Secondary accent, active/in-progress</td></tr>
+          <tr><td><code>--sky-soft</code></td><td>rgba(91,143,168,.08)</td><td>Sky bg tint</td></tr>
+          <tr><td><code>--amber</code></td><td>#b07d2a</td><td>Medium priority, caution</td></tr>
+          <tr><td><code>--border</code></td><td>#e4e0d8</td><td>All borders and dividers</td></tr>
+          <tr><td><code>--serif</code></td><td>Instrument Serif</td><td>Display, h1, h2, card titles</td></tr>
+          <tr><td><code>--sans</code></td><td>DM Sans</td><td>Body text, buttons, UI</td></tr>
+          <tr><td><code>--mono</code></td><td>JetBrains Mono</td><td>Labels, metadata, code</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VOICE -->
+  <div class="ds-section">
+    <h2>Voice &amp; Framing</h2>
+    <p>These documents sit at the intersection of two voices: Parachute Computer's open, airy technical precision and Techne Studio's grounded, situated perspective. The aesthetic carries both.</p>
+    <p>Parachute's epigraph — <em>"The mind is like a parachute — it doesn't work if it's not open"</em> — sets the register: accessible, curious, unhurried. Our documents inherit this. Dense technical content is welcome; so is silence between ideas.</p>
+    <div class="callout">
+      <p>Lead with the thing before you explain it. State the requirement, then the rationale. Show the component before you document it. Parachute.computer does this well — we follow.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>Parachute Ventures · Techne Studio</p>
+  <p><a href="intro.html">← All documents</a></p>
+</footer>
+
+</body>
+</html>
