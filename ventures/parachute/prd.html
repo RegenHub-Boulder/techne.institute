@@ -1,217 +1,510 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Parachute Enterprise — Product Requirements Document · Techne Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --void:      #0c0c0c;
-    --ink:       #111111;
-    --surface:   #161616;
-    --panel:     #222222;
-    --raised:    #2a2a2a;
-    --border:    #383838;
-    --border-dim:#2a2a2a;
-    --gold:      #c4956a;
-    --gold-20:   rgba(196,149,106,0.20);
-    --gold-12:   rgba(196,149,106,0.12);
-    --gold-06:   rgba(196,149,106,0.06);
-    --parchment: #f0f0f0;
-    --warm:      #d0d0d0;
-    --muted:     #9a9a9a;
-    --dim:       #707070;
-    --ghost:     #505050;
-    --green:     #4ade80;
-    --amber:     #fbbf24;
-    --red:       #ef4444;
-    --blue:      #8bbfff;
-    --teal:      #7ccfb8;
-    --purple:    #a78bfa;
-    --orange:    #fb923c;
-    --mono:      'IBM Plex Mono', monospace;
-    --serif:     'Cormorant', Georgia, serif;
-    --sans:      'Inter', system-ui, sans-serif;
+    --bg:           #faf8f4;
+    --bg-soft:      #f3f0ea;
+    --card-bg:      #ffffff;
+    --fg:           #2c2a26;
+    --fg-muted:     #6b6860;
+    --fg-dim:       #9a9690;
+    --accent:       #4a7c59;
+    --accent-soft:  rgba(74,124,89,.08);
+    --accent-hover: #3d6849;
+    --accent-light: #6a9b77;
+    --sky:          #5b8fa8;
+    --sky-soft:     rgba(91,143,168,.08);
+    --amber:        #b07d2a;
+    --amber-soft:   rgba(176,125,42,.09);
+    --red:          #c0392b;
+    --red-soft:     rgba(192,57,43,.08);
+    --border:       #e4e0d8;
+    --border-light: #ece9e2;
+    --serif:        'Instrument Serif', Georgia, serif;
+    --sans:         'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:         'JetBrains Mono', 'SF Mono', Monaco, monospace;
   }
-  [data-theme="light"] {
-    --void:#f5f3f0;--ink:#fffdf9;--surface:#faf8f4;--panel:#f0ede7;
-    --raised:#e8e4dc;--border:#d4cfc6;--border-dim:#e0dbd2;
-    --parchment:#1a1814;--warm:#3a3630;--muted:#706a60;--dim:#9a9488;--ghost:#bcb6aa;
+  *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
   }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
-  body{background:var(--void);color:var(--warm);font-family:var(--sans);font-size:15px;line-height:1.7;min-height:100vh;}
 
-  .theme-toggle{position:fixed;top:1.25rem;right:1.25rem;z-index:200;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:.4rem .7rem;cursor:pointer;color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.05em;transition:color .15s,border-color .15s;}
-  .theme-toggle:hover{color:var(--gold);border-color:var(--gold);}
+  /* ── Layout ── */
+  .layout { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidenav { display: none; }
+  }
 
-  /* Sidebar nav */
-  .layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
-  @media(max-width:760px){.layout{grid-template-columns:1fr;}.sidenav{display:none;}}
-  .sidenav{background:var(--ink);border-right:1px solid var(--border-dim);position:sticky;top:0;height:100vh;overflow-y:auto;padding:2rem 0;}
-  .sidenav-logo{padding:.75rem 1.25rem 1.25rem;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border-bottom:1px solid var(--border-dim);margin-bottom:1rem;}
-  .sidenav-logo span{color:var(--gold);}
-  .nav-section{padding:.5rem 1.25rem .25rem;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);}
-  .nav-item{display:block;padding:.35rem 1.25rem;font-size:13px;color:var(--muted);text-decoration:none;border-left:2px solid transparent;transition:color .15s,border-color .15s;}
-  .nav-item:hover{color:var(--parchment);border-left-color:var(--gold-20);}
-  .nav-item.active{color:var(--gold);border-left-color:var(--gold);}
-  .nav-sub{padding:.25rem 1.25rem .25rem 2rem;font-size:12px;color:var(--dim);text-decoration:none;display:block;transition:color .15s;}
-  .nav-sub:hover{color:var(--muted);}
+  /* ── Sidebar ── */
+  .sidenav {
+    background: var(--bg-soft);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 2rem 0;
+  }
+  .sidenav-logo {
+    padding: .75rem 1.25rem 1.25rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  .sidenav-logo span { color: var(--accent); }
+  .nav-section {
+    padding: .5rem 1.25rem .25rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+  }
+  .nav-item {
+    display: block;
+    padding: .35rem 1.25rem;
+    font-size: 13px;
+    color: var(--fg-muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+  }
+  .nav-item:hover { color: var(--fg); border-left-color: var(--border); }
+  .nav-item.active { color: var(--accent); border-left-color: var(--accent); }
 
-  /* Main content */
-  .content{overflow:auto;}
-  .hero{background:var(--ink);border-bottom:1px solid var(--border-dim);padding:3.5rem 3rem 3rem;position:relative;overflow:hidden;}
-  .hero::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(196,149,106,.07) 0%,transparent 70%);pointer-events:none;}
-  .breadcrumb{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);margin-bottom:1.4rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
-  .breadcrumb a{color:var(--gold);text-decoration:none;}
-  .breadcrumb a:hover{text-decoration:underline;}
-  .breadcrumb-sep{color:var(--ghost);}
-  .doc-type{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;}
-  .doc-type::before{content:'';display:inline-block;width:16px;height:1px;background:var(--gold);}
-  h1{font-family:var(--serif);font-size:clamp(2rem,4vw,2.8rem);font-weight:500;color:var(--parchment);line-height:1.15;margin-bottom:.7rem;letter-spacing:-.01em;}
-  h1 em{font-style:italic;color:var(--gold);}
-  .hero-sub{font-size:.95rem;color:var(--muted);max-width:560px;line-height:1.65;margin-bottom:2rem;}
-  .meta-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem;}
-  .meta-cell{background:var(--panel);border:1px solid var(--border-dim);border-radius:4px;padding:.5rem .75rem;}
-  .meta-label{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:.2rem;}
-  .meta-value{font-size:13px;color:var(--warm);}
-  .meta-value.gold{color:var(--gold);}
+  /* ── Content area ── */
+  .content { overflow: auto; }
 
-  /* Article body */
-  .article{padding:2.5rem 3rem 5rem;max-width:820px;}
-  @media(max-width:760px){.hero,.article{padding-left:1.5rem;padding-right:1.5rem;}}
+  /* ── Hero ── */
+  .hero {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 3.5rem 3rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  @media (max-width: 760px) { .hero { padding: 2rem 1.5rem; } }
 
-  /* Sections */
-  .prd-section{margin-bottom:4rem;}
-  .section-anchor{position:relative;top:-80px;display:block;visibility:hidden;}
-  h2{font-family:var(--serif);font-size:1.75rem;font-weight:500;color:var(--parchment);margin-bottom:.25rem;padding-bottom:.6rem;border-bottom:1px solid var(--border-dim);letter-spacing:.01em;}
-  .section-id{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem;margin-top:.35rem;}
-  h3{font-family:var(--sans);font-size:.75rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);margin:2rem 0 .7rem;}
-  h4{font-family:var(--sans);font-size:.9rem;font-weight:600;color:var(--parchment);margin:1.25rem 0 .4rem;}
-  p{margin-bottom:.85rem;color:var(--warm);}
-  a{color:var(--gold);text-decoration:none;}
-  a:hover{text-decoration:underline;}
-  strong{color:var(--parchment);font-weight:600;}
-  em{font-style:italic;}
-  code{font-family:var(--mono);font-size:12.5px;background:var(--panel);border:1px solid var(--border-dim);border-radius:3px;padding:1px 5px;color:var(--teal);}
+  .breadcrumb {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    margin-bottom: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-wrap: wrap;
+  }
+  .breadcrumb a { color: var(--accent); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .breadcrumb-sep { color: var(--fg-dim); }
 
-  /* Callouts */
-  .callout{background:var(--panel);border:1px solid var(--border-dim);border-left:2px solid var(--gold);border-radius:4px;padding:1rem 1.25rem;margin:1.25rem 0;font-size:14px;}
-  .callout.green{border-left-color:var(--green);}
-  .callout.amber{border-left-color:var(--amber);}
-  .callout.teal{border-left-color:var(--teal);}
-  .callout.blue{border-left-color:var(--blue);}
-  .callout.red{border-left-color:var(--red);}
-  .callout p{margin-bottom:0;}
-  .callout p+p{margin-top:.5rem;}
+  .doc-type {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 1rem;
+  }
+  .doc-type::before {
+    content: '';
+    display: inline-block;
+    width: 16px; height: 1px;
+    background: var(--accent);
+  }
 
-  /* Personas */
-  .persona-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:1px;border:1px solid var(--border-dim);border-radius:6px;overflow:hidden;margin:1rem 0 1.5rem;}
-  .persona{background:var(--panel);padding:1rem 1.1rem;border-right:1px solid var(--border-dim);}
-  .persona:last-child{border-right:none;}
-  .persona-icon{width:28px;height:28px;margin-bottom:.6rem;color:var(--gold);opacity:0.85;}
-  .persona-icon svg{width:28px;height:28px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 400;
+    color: var(--fg);
+    line-height: 1.15;
+    margin-bottom: .7rem;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
 
-  /* Product overview */
-  .overview{background:var(--ink);border-bottom:1px solid var(--border-dim);padding:3rem;}
-  @media(max-width:760px){.overview{padding:2rem 1.5rem;}}
-  .overview-inner{max-width:820px;}
-  .overview-lede{font-family:var(--serif);font-size:clamp(1.15rem,2.5vw,1.45rem);font-weight:400;color:var(--parchment);line-height:1.55;margin-bottom:1.75rem;letter-spacing:.01em;}
-  .overview-lede em{color:var(--gold);font-style:italic;}
-  .overview-problem{background:var(--panel);border:1px solid var(--border-dim);border-radius:6px;padding:1.25rem 1.5rem;margin-bottom:2rem;}
-  .overview-problem-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:.6rem;}
-  .overview-problem p{color:var(--warm);font-size:14.5px;margin-bottom:0;line-height:1.65;}
-  .pillars{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:1px;border:1px solid var(--border-dim);border-radius:6px;overflow:hidden;margin-bottom:2rem;}
-  .pillar{background:var(--panel);padding:1.25rem 1.1rem;}
-  .pillar-icon{width:22px;height:22px;color:var(--gold);margin-bottom:.7rem;}
-  .pillar-icon svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;}
-  .pillar-title{font-size:.85rem;font-weight:600;color:var(--parchment);margin-bottom:.35rem;}
-  .pillar-desc{font-size:13px;color:var(--muted);line-height:1.55;}
-  .overview-for{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;}
-  .overview-for-label{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);}
-  .for-pill{font-family:var(--mono);font-size:11.5px;color:var(--warm);background:var(--raised);border:1px solid var(--border-dim);border-radius:4px;padding:3px 10px;}
-  .persona-name{font-family:var(--mono);font-size:12px;color:var(--parchment);margin-bottom:.3rem;font-weight:500;}
-  .persona-desc{font-size:12.5px;color:var(--muted);line-height:1.5;}
+  .hero-sub {
+    font-size: .95rem;
+    color: var(--fg-muted);
+    max-width: 560px;
+    line-height: 1.65;
+    margin-bottom: 2rem;
+  }
 
-  /* Requirements blocks */
-  .req-block{margin-bottom:2.5rem;}
-  .req-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:.8rem;flex-wrap:wrap;}
-  .req-title{font-family:var(--sans);font-size:1rem;font-weight:600;color:var(--parchment);}
-  .badges{display:flex;gap:.4rem;flex-wrap:wrap;}
-  .badge{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;white-space:nowrap;}
-  .badge-p1{background:rgba(196,149,106,.15);color:var(--gold);}
-  .badge-p2{background:rgba(74,222,128,.12);color:var(--green);}
-  .badge-p3{background:rgba(167,139,250,.12);color:var(--purple);}
-  .badge-must{background:rgba(239,68,68,.12);color:var(--red);}
-  .badge-should{background:rgba(251,191,36,.12);color:var(--amber);}
-  .badge-could{background:rgba(139,191,255,.12);color:var(--blue);}
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: .75rem;
+  }
+  .meta-cell {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: .5rem .75rem;
+  }
+  .meta-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    margin-bottom: .2rem;
+  }
+  .meta-value { font-size: 13px; color: var(--fg); }
+  .meta-value.accent { color: var(--accent); }
 
-  /* User stories */
-  .stories{display:flex;flex-direction:column;gap:.5rem;margin:.75rem 0 1rem;}
-  .story{background:var(--surface);border:1px solid var(--border-dim);border-radius:4px;padding:.65rem 1rem;font-size:13.5px;color:var(--warm);line-height:1.55;}
-  .story-as{color:var(--muted);font-size:12px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.15rem;}
+  /* ── Product overview ── */
+  .overview {
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem;
+  }
+  @media (max-width: 760px) { .overview { padding: 2rem 1.5rem; } }
+  .overview-inner { max-width: 820px; }
 
-  /* Acceptance criteria */
-  .criteria{margin:.5rem 0 1rem;}
-  .criteria li{font-size:13.5px;margin-bottom:.35rem;color:var(--warm);}
-  .criteria li::marker{color:var(--gold);}
+  .overview-lede {
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    font-weight: 400;
+    color: var(--fg);
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+  }
+  .overview-lede em { color: var(--accent); font-style: italic; }
 
-  /* Tables */
-  .table-wrap{overflow-x:auto;margin:1rem 0 1.5rem;}
-  table{width:100%;border-collapse:collapse;font-size:13.5px;}
-  thead th{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:.5rem .9rem;border-bottom:1px solid var(--border);text-align:left;background:var(--ink);}
-  tbody td{padding:.65rem .9rem;border-bottom:1px solid var(--border-dim);vertical-align:top;color:var(--warm);}
-  tbody tr:last-child td{border-bottom:none;}
-  tbody td:first-child{font-family:var(--mono);font-size:12.5px;color:var(--gold);}
-  .dim-cell{color:var(--muted);font-size:13px;}
+  .overview-problem {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .overview-problem-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    margin-bottom: .6rem;
+  }
+  .overview-problem p {
+    color: var(--fg-muted);
+    font-size: 14.5px;
+    margin-bottom: 0;
+    line-height: 1.65;
+  }
 
-  /* Phase timeline */
-  .phases{display:flex;flex-direction:column;gap:1px;margin:1rem 0 1.5rem;}
-  .phase{display:grid;grid-template-columns:140px 1fr;border:1px solid var(--border-dim);border-radius:4px;overflow:hidden;}
-  .phase-label{background:var(--panel);padding:.75rem 1rem;border-right:1px solid var(--border-dim);}
-  .phase-name{font-family:var(--mono);font-size:12px;color:var(--parchment);margin-bottom:.2rem;}
-  .phase-time{font-family:var(--mono);font-size:11px;color:var(--dim);}
-  .phase-body{padding:.75rem 1rem;background:var(--surface);}
-  .phase-body p{font-size:13.5px;margin-bottom:0;color:var(--warm);}
-  .phase-items{margin-top:.4rem;display:flex;flex-wrap:wrap;gap:.4rem;}
-  .phase-item{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--panel);border:1px solid var(--border-dim);border-radius:3px;padding:2px 7px;}
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .pillar {
+    background: var(--card-bg);
+    padding: 1.25rem 1.1rem;
+    transition: background .15s;
+  }
+  .pillar:hover { background: var(--bg-soft); }
+  .pillar-icon { width: 22px; height: 22px; color: var(--accent); margin-bottom: .7rem; }
+  .pillar-icon svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .pillar-title { font-size: .85rem; font-weight: 500; color: var(--fg); margin-bottom: .35rem; }
+  .pillar-desc { font-size: 13px; color: var(--fg-muted); line-height: 1.55; }
 
-  /* API spec blocks */
-  .api-block{background:var(--ink);border:1px solid var(--border-dim);border-radius:6px;overflow:hidden;margin:1rem 0;}
-  .api-header{padding:.5rem 1rem;border-bottom:1px solid var(--border-dim);display:flex;align-items:center;gap:.75rem;}
-  .method{font-family:var(--mono);font-size:11px;font-weight:500;padding:2px 8px;border-radius:3px;}
-  .get{background:rgba(74,222,128,.15);color:var(--green);}
-  .post{background:rgba(139,191,255,.15);color:var(--blue);}
-  .patch{background:rgba(251,191,36,.15);color:var(--amber);}
-  .del{background:rgba(239,68,68,.15);color:var(--red);}
-  .api-path{font-family:var(--mono);font-size:12.5px;color:var(--muted);}
-  .api-body{padding:.75rem 1rem;font-family:var(--mono);font-size:12px;color:var(--warm);line-height:1.6;white-space:pre-wrap;}
+  .overview-for { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+  .overview-for-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+  }
+  .for-pill {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--fg-muted);
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 10px;
+  }
 
-  /* Lists */
-  ul,ol{padding-left:1.2rem;margin-bottom:.85rem;}
-  li{margin-bottom:.35rem;color:var(--warm);font-size:14.5px;}
-  li strong{color:var(--parchment);}
+  /* ── Article body ── */
+  .article { padding: 2.5rem 3rem 5rem; max-width: 820px; }
+  @media (max-width: 760px) { .article { padding: 1.5rem; } }
 
-  hr.rule{border:none;border-top:1px solid var(--border-dim);margin:2.5rem 0;}
+  /* ── Sections ── */
+  .prd-section { margin-bottom: 4rem; }
+  .section-anchor { position: relative; top: -80px; display: block; visibility: hidden; }
 
-  /* Footer */
-  .footer{border-top:1px solid var(--border-dim);padding-top:1.5rem;margin-top:3rem;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;}
-  .footer-left{font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.7;}
-  .footer-right{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:right;}
-  .footer a{color:var(--gold);}
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--fg);
+    margin-bottom: .25rem;
+    padding-bottom: .6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-id {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    margin-bottom: 1rem;
+    margin-top: .35rem;
+  }
+  h3 {
+    font-family: var(--sans);
+    font-size: .75rem;
+    font-weight: 500;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 2rem 0 .7rem;
+  }
+  h4 { font-size: .9rem; font-weight: 500; color: var(--fg); margin: 1.25rem 0 .4rem; }
+  p { margin-bottom: .85rem; color: var(--fg-muted); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--fg); font-weight: 500; }
+  em { font-style: italic; }
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1px 5px;
+    color: var(--accent);
+  }
+
+  /* ── Callouts ── */
+  .callout {
+    background: var(--accent-soft);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    font-size: 14px;
+  }
+  .callout.sky {
+    background: var(--sky-soft);
+    border-left-color: var(--sky);
+  }
+  .callout.amber {
+    background: var(--amber-soft);
+    border-left-color: var(--amber);
+  }
+  .callout p { margin-bottom: 0; color: var(--fg-muted); }
+  .callout p + p { margin-top: .5rem; }
+
+  /* ── Personas ── */
+  .persona-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1rem 0 1.5rem;
+  }
+  .persona { background: var(--card-bg); padding: 1rem 1.1rem; }
+  .persona-icon { width: 28px; height: 28px; margin-bottom: .6rem; color: var(--accent); opacity: .85; }
+  .persona-icon svg { width: 28px; height: 28px; stroke: currentColor; stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .persona-name { font-family: var(--mono); font-size: 12px; color: var(--fg); margin-bottom: .3rem; font-weight: 500; }
+  .persona-desc { font-size: 12.5px; color: var(--fg-muted); line-height: 1.5; }
+
+  /* ── Requirements blocks ── */
+  .req-block { margin-bottom: 2.5rem; }
+  .req-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: .8rem; flex-wrap: wrap; }
+  .req-title { font-size: 1rem; font-weight: 500; color: var(--fg); }
+  .badges { display: flex; gap: .4rem; flex-wrap: wrap; }
+  .badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .badge-p1 { background: var(--accent-soft); color: var(--accent); }
+  .badge-p2 { background: var(--sky-soft); color: var(--sky); }
+  .badge-p3 { background: var(--bg-soft); color: var(--fg-muted); border: 1px solid var(--border); }
+
+  /* ── User stories ── */
+  .stories { display: flex; flex-direction: column; gap: .5rem; margin: .75rem 0 1rem; }
+  .story {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: .65rem 1rem;
+    font-size: 13.5px;
+    color: var(--fg-muted);
+    line-height: 1.55;
+  }
+  .story-as {
+    color: var(--accent);
+    font-size: 11px;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: .15rem;
+  }
+
+  /* ── Acceptance criteria ── */
+  .criteria { margin: .5rem 0 1rem; }
+  .criteria li { font-size: 13.5px; margin-bottom: .35rem; color: var(--fg-muted); }
+  .criteria li::marker { color: var(--accent); }
+
+  /* ── Tables ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 1rem 0 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead th {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    font-weight: 500;
+    padding: .5rem .9rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    background: var(--bg-soft);
+  }
+  tbody td { padding: .65rem .9rem; border-bottom: 1px solid var(--border-light); vertical-align: top; color: var(--fg-muted); }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody td:first-child { font-family: var(--mono); font-size: 12.5px; color: var(--accent); }
+
+  /* ── Phase timeline ── */
+  .phases { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 1rem 0 1.5rem; }
+  .phase { display: grid; grid-template-columns: 140px 1fr; background: var(--card-bg); }
+  @media (max-width: 560px) { .phase { grid-template-columns: 1fr; } }
+  .phase-label { background: var(--bg-soft); padding: .75rem 1rem; border-right: 1px solid var(--border); }
+  .phase-name { font-family: var(--mono); font-size: 12px; color: var(--fg); margin-bottom: .2rem; font-weight: 500; }
+  .phase-time { font-family: var(--mono); font-size: 11px; color: var(--fg-dim); }
+  .phase-body { padding: .75rem 1rem; }
+  .phase-body p { font-size: 13.5px; margin-bottom: 0; color: var(--fg-muted); }
+  .phase-items { margin-top: .5rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+  .phase-item {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2px 7px;
+  }
+
+  /* ── API spec blocks ── */
+  .api-block {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+  .api-header {
+    padding: .5rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    background: var(--card-bg);
+  }
+  .method {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  .get  { background: var(--sky-soft); color: var(--sky); }
+  .post { background: var(--accent-soft); color: var(--accent); }
+  .patch{ background: var(--amber-soft); color: var(--amber); }
+  .del  { background: var(--red-soft); color: var(--red); }
+  .api-path { font-family: var(--mono); font-size: 12.5px; color: var(--fg-muted); }
+  .api-body {
+    padding: .75rem 1rem;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--fg-muted);
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+
+  /* ── Lists ── */
+  ul, ol { padding-left: 1.2rem; margin-bottom: .85rem; }
+  li { margin-bottom: .35rem; color: var(--fg-muted); font-size: 14.5px; }
+  li strong { color: var(--fg); }
+
+  hr.rule { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+  /* ── Footer ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+    margin-top: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  .footer-left { font-family: var(--mono); font-size: 11px; color: var(--fg-dim); line-height: 1.7; }
+  .footer-right { font-family: var(--mono); font-size: 11px; color: var(--fg-dim); text-align: right; }
+  .footer a { color: var(--accent); }
 </style>
 </head>
 <body>
-
-<button class="theme-toggle" onclick="
-  const t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',t);
-  localStorage.setItem('theme',t);
-  this.textContent=t==='dark'?'◑ light':'◑ dark';
-">◑ light</button>
 
 <div class="layout">
 
@@ -242,6 +535,8 @@
   <div class="content">
     <div class="hero">
       <div class="breadcrumb">
+        <a href="intro.html">Overview</a>
+        <span class="breadcrumb-sep">/</span>
         <a href="research.html">Research Brief</a>
         <span class="breadcrumb-sep">/</span>
         <a href="feature-patterns.html">Feature Patterns</a>
@@ -254,7 +549,7 @@
       <div class="meta-grid">
         <div class="meta-cell">
           <div class="meta-label">Document version</div>
-          <div class="meta-value gold">v0.1 — Draft</div>
+          <div class="meta-value accent">v0.1 — Draft</div>
         </div>
         <div class="meta-cell">
           <div class="meta-label">Date</div>
@@ -339,7 +634,7 @@
         <p>Parachute Enterprise is the organizational layer of the Parachute ecosystem — a shared AI memory infrastructure that gives knowledge-intensive organizations a single, structured, agent-accessible knowledge graph representing how they actually work.</p>
         <p>Where the personal vault answers: <em>"What do I know?"</em> — Parachute Enterprise answers: <em>"What does our organization know, who can access it, how has it changed, and what can our AI agents do with it?"</em></p>
 
-        <div class="callout teal">
+        <div class="callout sky">
           <p><strong>Core positioning:</strong> Every existing knowledge management tool was designed for human readers and writers. Parachute Enterprise is the first organizational knowledge platform designed for humans and AI agents as equal first-class participants — where the access model, schema layer, audit trail, and integration mesh serve both, without compromise.</p>
         </div>
 
@@ -545,10 +840,10 @@
           <table>
             <thead><tr><th>Tier</th><th>Access</th><th>Typical use</th></tr></thead>
             <tbody>
-              <tr><td>private</td><td class="dim-cell">Author only (member or agent that created the note)</td><td class="dim-cell">Draft notes, personal working documents, sensitive deliberation</td></tr>
-              <tr><td>team</td><td class="dim-cell">Members in a specified role set (e.g. org:admin only)</td><td class="dim-cell">Internal governance, compensation, personnel records</td></tr>
-              <tr><td>org</td><td class="dim-cell">All org members including org:observer</td><td class="dim-cell">Decisions, agreements, meeting records, shared knowledge</td></tr>
-              <tr><td>public</td><td class="dim-cell">World-readable, no authentication required</td><td class="dim-cell">Published position papers, public governance records, external-facing docs</td></tr>
+              <tr><td>private</td><td>Author only (member or agent that created the note)</td><td>Draft notes, personal working documents, sensitive deliberation</td></tr>
+              <tr><td>team</td><td>Members in a specified role set (e.g. org:admin only)</td><td>Internal governance, compensation, personnel records</td></tr>
+              <tr><td>org</td><td>All org members including org:observer</td><td>Decisions, agreements, meeting records, shared knowledge</td></tr>
+              <tr><td>public</td><td>World-readable, no authentication required</td><td>Published position papers, public governance records, external-facing docs</td></tr>
             </tbody>
           </table>
         </div>
@@ -592,12 +887,12 @@
           <table>
             <thead><tr><th>Type</th><th>Required fields</th><th>Default visibility</th></tr></thead>
             <tbody>
-              <tr><td>Decision</td><td class="dim-cell">title, body, decided_at, decided_by[], outcome</td><td class="dim-cell">org</td></tr>
-              <tr><td>Agreement</td><td class="dim-cell">title, parties[], effective_date, terms, status</td><td class="dim-cell">org</td></tr>
-              <tr><td>Meeting</td><td class="dim-cell">title, date, attendees[], agenda, notes, action_items[]</td><td class="dim-cell">org</td></tr>
-              <tr><td>MemberRecord</td><td class="dim-cell">member_id, display_name, roles[], joined_at, status</td><td class="dim-cell">team:admin</td></tr>
-              <tr><td>CapitalEntry</td><td class="dim-cell">member_id, amount, type, period, recorded_at, recorded_by</td><td class="dim-cell">team:admin</td></tr>
-              <tr><td>GovernanceVote</td><td class="dim-cell">proposal, vote_type, votes_for, votes_against, quorum, outcome</td><td class="dim-cell">org</td></tr>
+              <tr><td>Decision</td><td>title, body, decided_at, decided_by[], outcome</td><td>org</td></tr>
+              <tr><td>Agreement</td><td>title, parties[], effective_date, terms, status</td><td>org</td></tr>
+              <tr><td>Meeting</td><td>title, date, attendees[], agenda, notes, action_items[]</td><td>org</td></tr>
+              <tr><td>MemberRecord</td><td>member_id, display_name, roles[], joined_at, status</td><td>team:admin</td></tr>
+              <tr><td>CapitalEntry</td><td>member_id, amount, type, period, recorded_at, recorded_by</td><td>team:admin</td></tr>
+              <tr><td>GovernanceVote</td><td>proposal, vote_type, votes_for, votes_against, quorum, outcome</td><td>org</td></tr>
             </tbody>
           </table>
         </div>
@@ -737,33 +1032,33 @@
             <tbody>
               <tr>
                 <td>org_workspace</td>
-                <td class="dim-cell">id, slug, display_name, created_at, owner_member_id, settings{}</td>
-                <td class="dim-cell">Top-level org entity. Settings include default_visibility, ledger_types[], idp_config.</td>
+                <td>id, slug, display_name, created_at, owner_member_id, settings{}</td>
+                <td>Top-level org entity. Settings include default_visibility, ledger_types[], idp_config.</td>
               </tr>
               <tr>
                 <td>org_membership</td>
-                <td class="dim-cell">id, org_id, member_id, role, joined_at, status</td>
-                <td class="dim-cell">Junction table. member_id references identity, not vault-owner. Soft-delete on revocation.</td>
+                <td>id, org_id, member_id, role, joined_at, status</td>
+                <td>Junction table. member_id references identity, not vault-owner. Soft-delete on revocation.</td>
               </tr>
               <tr>
                 <td>org_agent</td>
-                <td class="dim-cell">id, org_id, display_name, scope[], client_id, created_at, last_used_at</td>
-                <td class="dim-cell">Machine identity. client_credentials OAuth flow. Scope is immutable post-creation except by org:admin.</td>
+                <td>id, org_id, display_name, scope[], client_id, created_at, last_used_at</td>
+                <td>Machine identity. client_credentials OAuth flow. Scope is immutable post-creation except by org:admin.</td>
               </tr>
               <tr>
                 <td>note_schema</td>
-                <td class="dim-cell">id, org_id, type_name, version, json_schema, default_visibility, is_built_in, created_at</td>
-                <td class="dim-cell">Schema registry per org. Built-in types pre-seeded. Custom types added by org:admin.</td>
+                <td>id, org_id, type_name, version, json_schema, default_visibility, is_built_in, created_at</td>
+                <td>Schema registry per org. Built-in types pre-seeded. Custom types added by org:admin.</td>
               </tr>
               <tr>
                 <td>ledger_event</td>
-                <td class="dim-cell">id, note_id, event_type, actor_id, timestamp, content_hash, prev_hash, payload_snapshot</td>
-                <td class="dim-cell">Append-only. payload_snapshot stores full note JSON at that version. Never updated or deleted.</td>
+                <td>id, note_id, event_type, actor_id, timestamp, content_hash, prev_hash, payload_snapshot</td>
+                <td>Append-only. payload_snapshot stores full note JSON at that version. Never updated or deleted.</td>
               </tr>
               <tr>
                 <td>webhook_config</td>
-                <td class="dim-cell">id, org_id, direction, filter{}, destination_url, secret_hash, transform_template, enabled</td>
-                <td class="dim-cell">Outbound and inbound. secret stored as HMAC-safe hash; delivery log in separate table.</td>
+                <td>id, org_id, direction, filter{}, destination_url, secret_hash, transform_template, enabled</td>
+                <td>Outbound and inbound. secret stored as HMAC-safe hash; delivery log in separate table.</td>
               </tr>
             </tbody>
           </table>
@@ -815,7 +1110,7 @@
 → { "note_id": "…", "ledger_event_id": "…" }</div>
         </div>
         <div class="api-block">
-          <div class="api-header"><span class="method get">GET</span><span class="api-path">/org/{slug}/vault/{vault}/notes?type=Decision&from=2026-01-01</span></div>
+          <div class="api-header"><span class="method get">GET</span><span class="api-path">/org/{slug}/vault/{vault}/notes?type=Decision&amp;from=2026-01-01</span></div>
           <div class="api-body">→ { "notes": [ { "note_id": "…", "type": "Decision", "fields": {…}, "created_by": "…", "visibility": "org" }, … ] }</div>
         </div>
 
@@ -834,13 +1129,13 @@
           <table>
             <thead><tr><th>Tool</th><th>Description</th><th>Required scope</th></tr></thead>
             <tbody>
-              <tr><td>org_query</td><td class="dim-cell">Search org knowledge graph; respects ACL</td><td class="dim-cell">org:vault:read</td></tr>
-              <tr><td>org_create_note</td><td class="dim-cell">Create freeform or typed note in org workspace</td><td class="dim-cell">org:vault:write</td></tr>
-              <tr><td>org_update_note</td><td class="dim-cell">Update note; ledger-tracked types append event</td><td class="dim-cell">org:vault:write</td></tr>
-              <tr><td>org_get_history</td><td class="dim-cell">Retrieve version history of a ledger-tracked note</td><td class="dim-cell">org:vault:read</td></tr>
-              <tr><td>org_list_members</td><td class="dim-cell">List org members with roles</td><td class="dim-cell">org:vault:read</td></tr>
-              <tr><td>org_agent_activity</td><td class="dim-cell">Query agent read/write log</td><td class="dim-cell">org:admin</td></tr>
-              <tr><td>org_list_webhooks</td><td class="dim-cell">List webhook configs and delivery stats</td><td class="dim-cell">org:admin</td></tr>
+              <tr><td>org_query</td><td>Search org knowledge graph; respects ACL</td><td>org:vault:read</td></tr>
+              <tr><td>org_create_note</td><td>Create freeform or typed note in org workspace</td><td>org:vault:write</td></tr>
+              <tr><td>org_update_note</td><td>Update note; ledger-tracked types append event</td><td>org:vault:write</td></tr>
+              <tr><td>org_get_history</td><td>Retrieve version history of a ledger-tracked note</td><td>org:vault:read</td></tr>
+              <tr><td>org_list_members</td><td>List org members with roles</td><td>org:vault:read</td></tr>
+              <tr><td>org_agent_activity</td><td>Query agent read/write log</td><td>org:admin</td></tr>
+              <tr><td>org_list_webhooks</td><td>List webhook configs and delivery stats</td><td>org:admin</td></tr>
             </tbody>
           </table>
         </div>
@@ -931,7 +1226,7 @@
         </ul>
 
         <h3>Design partner validation gate</h3>
-        <div class="callout green">
+        <div class="callout">
           <p>Each phase requires successful deployment and active use by RegenHub, LCA before the phase is marked complete. The cooperative is the design partner, not a beta tester — requirements are co-authored against real operational workflows, and the LCA's governance, patronage accounting, and multi-agent coordination serve as the acceptance test suite.</p>
         </div>
       </div>
@@ -944,8 +1239,10 @@
           Parachute Enterprise PRD v0.1 · April 22, 2026 · For review
         </div>
         <div class="footer-right">
+          <a href="intro.html">Overview</a> ·
           <a href="research.html">Research Brief</a> ·
           <a href="feature-patterns.html">Feature Patterns</a><br>
+          <a href="design-system.html">Design System</a> ·
           <a href="https://parachute.computer">parachute.computer</a>
         </div>
       </div>
@@ -955,11 +1252,6 @@
 </div>
 
 <script>
-  const saved = localStorage.getItem('theme');
-  if (saved) {
-    document.documentElement.setAttribute('data-theme', saved);
-    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '◑ light' : '◑ dark';
-  }
   // Highlight active nav item on scroll
   const anchors = document.querySelectorAll('.section-anchor');
   const navItems = document.querySelectorAll('.nav-item');
@@ -967,7 +1259,7 @@
     entries.forEach(e => {
       if (e.isIntersecting) {
         navItems.forEach(n => n.classList.remove('active'));
-        const match = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+        const match = document.querySelector(\`.nav-item[href="#\${e.target.id}"]\`);
         if (match) match.classList.add('active');
       }
     });
