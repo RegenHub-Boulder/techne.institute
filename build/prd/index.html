@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Labor Scenario Engine · Product Requirements Document</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --border: #333333;
+    --terra: #c4956a;
+    --terra-dim: rgba(196, 149, 106, 0.15);
+    --terra-glow: rgba(196, 149, 106, 0.06);
+    --terra-border: rgba(196, 149, 106, 0.2);
+    --white: #e8e0d8;
+    --text: #d4d4d4;
+    --muted: #999999;
+    --faint: #666666;
+    --serif: 'Libre Baskerville', Georgia, serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 15.5px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrapper {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 88px 24px 128px;
+  }
+
+  .meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 28px;
+    line-height: 1.8;
+  }
+
+  .meta span { color: var(--faint); }
+
+  .label {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    opacity: 0.85;
+  }
+
+  .rule {
+    width: 48px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--terra), transparent);
+    margin: 20px 0 32px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(34px, 6vw, 48px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+    margin-top: 24px;
+  }
+
+  p {
+    margin-bottom: 18px;
+    color: var(--text);
+  }
+
+  p.lead {
+    font-size: clamp(16px, 2.1vw, 19px);
+    line-height: 1.7;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+
+  em { color: var(--white); font-style: italic; }
+
+  a { color: var(--terra); text-decoration: none; }
+
+  section { margin-top: 72px; }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 24px;
+    transition: border-color 0.3s ease;
+  }
+
+  .card:hover { border-color: var(--terra-border); }
+
+  .card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .card-head h3 {
+    margin: 0;
+    font-size: 15.5px;
+  }
+
+  .card-tag {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    color: var(--terra);
+    opacity: 0.75;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .card-body {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .t-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 12.5px;
+  }
+
+  th, td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  th {
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+    border-bottom: 1px solid var(--terra-border);
+    background: rgba(196, 149, 106, 0.03);
+  }
+
+  td { color: var(--text); }
+
+  td.cite {
+    color: var(--terra);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    opacity: 0.8;
+    white-space: nowrap;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  .panel {
+    background: linear-gradient(135deg, var(--surface), var(--terra-glow));
+    border: 1px solid var(--terra-border);
+    border-radius: 14px;
+    padding: 32px 28px;
+    margin: 32px 0;
+  }
+
+  .note {
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--muted);
+    border-left: 1px solid var(--terra-border);
+    padding-left: 18px;
+    margin: 24px 0;
+  }
+
+  ol.spec {
+    counter-reset: step;
+    list-style: none;
+    margin: 24px 0;
+  }
+
+  ol.spec li {
+    counter-increment: step;
+    padding-left: 48px;
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  ol.spec li::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 3px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--terra);
+    border-top: 1px solid var(--terra-border);
+    width: 36px;
+    padding-top: 4px;
+  }
+
+  ol.spec li strong {
+    color: var(--white);
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  footer {
+    margin-top: 96px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--faint);
+  }
+
+  footer p { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="meta">
+    Product Requirements Document · v0.1 · <span>Draft for review</span><br>
+    RegenHub, LCA · Techne Institute · April 2026
+  </div>
+
+  <span class="label">Scenario engine</span>
+  <div class="rule"></div>
+  <h1>A Tool for Estimating the Labor and Infrastructure of Building Digital Things.</h1>
+  <p class="lead">
+    The Labor Scenario Engine is a public-facing instrument that translates a
+    proposed digital project into a legible pool of labor hours, role
+    allocations, infrastructure commitments, and pre-authorized pricing.
+    It lives at <a href="#">techne.institute/build</a> and serves two
+    purposes in a single surface: it teaches visitors how web technologies
+    are actually built and maintained, and it generates the pre-authorized
+    invoices that bring work into the cooperative.
+  </p>
+
+  <section id="summary">
+    <span class="label">01 · Summary</span>
+    <div class="rule"></div>
+    <h2>What the engine does.</h2>
+    <p>
+      A visitor arrives at <em>techne.institute/build</em> with a project in
+      mind, whether specific or vague. The engine walks them through a
+      configuration: project identity, pattern selection, scope calibration,
+      infrastructure tier, and ongoing operations window. As the visitor
+      moves, the engine computes a labor allocation across named roles at
+      Fair Market Value rates, an infrastructure estimate across named
+      line items, and a total build-plus-operations cost over the chosen
+      horizon.
+    </p>
+    <p>
+      When the scenario is settled, the visitor can request a
+      <em>pre-authorized invoice</em>. This is a committed quote from the
+      cooperative's side: a documented offer to perform the work at the
+      priced scope, contingent on member availability and final
+      countersignature. The invoice is paid through Stripe or through
+      Mercury ACH. Every step, from first configuration change through
+      payment receipt, writes a hash to an append-only chain that
+      confirms the authoritative off-chain record.
+    </p>
+    <p>
+      The engine is not a calculator. It is a working model of how this
+      cooperative thinks about digital labor: as a pool of hours, bound
+      by member capacity and priced at Fair Market Value, organized around
+      a library of patterns that correspond to real systems people build.
+    </p>
+  </section>
+
+  <section id="purpose">
+    <span class="label">02 · Purpose</span>
+    <div class="rule"></div>
+    <h2>Why this, and why here.</h2>
+    <p>
+      The cooperative needs a way for prospective customers to arrive at a
+      defensible estimate without first requiring a sales conversation. Sales
+      conversations are expensive in human time and they gate access: only
+      visitors who feel confident enough to pick up the phone ever enter
+      the pipeline. A configuration-first instrument widens the door.
+    </p>
+    <p>
+      The Institute needs a way to make the cost of digital work visible to
+      students, clients, and the public. Most people who commission digital
+      tools have no working model of where the money goes. They see a
+      quoted number and accept or reject it. The engine shows the
+      underlying structure, which is itself a learning artifact.
+    </p>
+    <p>
+      The LCA needs a committed front door for incoming work that hands the
+      resulting invoice directly to the financial plumbing already in
+      place: Stripe for card and on-chain payments, Mercury for ACH,
+      Supabase for the authoritative record, a chain attestation layer
+      for public accountability. The engine is designed to fit that
+      plumbing, not compete with it.
+    </p>
+  </section>
+
+  <section id="users">
+    <span class="label">03 · Users and surfaces</span>
+    <div class="rule"></div>
+    <h2>Who this is for.</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><h3>Prospective customer</h3><span class="card-tag">primary</span></div>
+        <div class="card-body">
+          Anyone considering commissioning digital work. The engine gives
+          them a configurable scenario, a defensible estimate, and a path
+          from curiosity to signed engagement without requiring a meeting
+          to begin.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Curious learner</h3><span class="card-tag">secondary</span></div>
+        <div class="card-body">
+          Visitors using the engine to understand how digital systems are
+          built and maintained. The engine must remain informative even
+          when no invoice is generated. Every number is annotated,
+          every role is explained, every infrastructure choice is
+          described in plain language.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Cooperative member</h3><span class="card-tag">operator</span></div>
+        <div class="card-body">
+          Members who need visibility into what the engine is committing
+          to on their behalf. Members have a private view showing current
+          capacity commitments, pending pre-authorized invoices, and their
+          own scheduled hours across active engagements.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Operations steward</h3><span class="card-tag">admin</span></div>
+        <div class="card-body">
+          The staff role that countersigns pre-authorized invoices,
+          confirms member availability, and moves invoices from pending
+          to active. The admin surface is where the engine becomes a
+          commitment rather than a quote.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="functional">
+    <span class="label">04 · Functional requirements</span>
+    <div class="rule"></div>
+    <h2>What the engine must do.</h2>
+    <p>
+      The requirements below are grouped by function. Each function is a
+      unit of work that can be implemented and tested in isolation. The
+      sequencing of implementation is separate from this document and is
+      held in the development tracker.
+    </p>
+
+    <h3>4.1 Scenario composition</h3>
+    <p>
+      The visitor composes a scenario through a guided sequence. At any
+      point they can move forward, move back, or reset. The scenario is
+      persisted in the browser session so navigation does not destroy
+      work. Composition is complete when a pattern has been selected and
+      the required calibration fields have values.
+    </p>
+
+    <h3>4.2 Pattern library</h3>
+    <p>
+      The engine ships with a curated library of patterns, each corresponding
+      to a common digital system. Patterns are stored as structured records
+      with a baseline labor distribution across roles, a baseline
+      infrastructure profile, and a narrative description of what the
+      system actually is. The initial library contains six patterns,
+      expandable by operations staff through the admin surface.
+    </p>
+    <div class="t-wrap">
+      <table>
+        <thead>
+          <tr><th>Pattern</th><th>Description</th><th>Complexity</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Static page</td><td>One-page or small multi-page site. Informational, no database, minimal ongoing.</td><td class="cite">low</td></tr>
+          <tr><td>Content site</td><td>Editorially managed, CMS-backed. Content changes regularly. Moderate ongoing.</td><td class="cite">low-mid</td></tr>
+          <tr><td>Web application</td><td>Authenticated, single-tenant. Users have accounts and state. Real ongoing.</td><td class="cite">mid</td></tr>
+          <tr><td>SaaS platform</td><td>Multi-tenant, billing, admin tools. Customers are organizations. High ongoing.</td><td class="cite">mid-high</td></tr>
+          <tr><td>Data platform</td><td>Ingestion, processing, dashboards. Data pipelines run on schedules.</td><td class="cite">high</td></tr>
+          <tr><td>Distributed system</td><td>Multi-service, possibly multi-modal, with AI inference or chain settlement.</td><td class="cite">high</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>4.3 Labor taxonomy and FMV rates</h3>
+    <p>
+      The engine holds a role taxonomy. Each role has a Fair Market Value
+      hourly rate calibrated against the regional market for senior
+      practitioners. Rates are versioned; changes are logged; the active
+      rate at the time of pre-authorization is the rate that governs the
+      invoice. The table below is the seed taxonomy for launch.
+    </p>
+    <div class="t-wrap">
+      <table>
+        <thead>
+          <tr><th>Role</th><th>What the role does</th><th>FMV rate</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Design</td><td>Information architecture, interaction design, visual system.</td><td class="cite">$165 / hr</td></tr>
+          <tr><td>Frontend</td><td>Implementation of the visible surface in HTML, CSS, JavaScript.</td><td class="cite">$175 / hr</td></tr>
+          <tr><td>Backend</td><td>Server, database, application logic, authentication.</td><td class="cite">$195 / hr</td></tr>
+          <tr><td>DevOps</td><td>Deployment pipelines, monitoring, incident response.</td><td class="cite">$210 / hr</td></tr>
+          <tr><td>Data engineering</td><td>Pipelines, warehousing, schema design, data quality.</td><td class="cite">$215 / hr</td></tr>
+          <tr><td>ML engineering</td><td>Model training, inference infrastructure, evaluation loops.</td><td class="cite">$245 / hr</td></tr>
+          <tr><td>Quality</td><td>Test design, regression coverage, accessibility verification.</td><td class="cite">$135 / hr</td></tr>
+          <tr><td>Product</td><td>Scope shepherding, stakeholder communication, delivery rhythm.</td><td class="cite">$185 / hr</td></tr>
+          <tr><td>Content</td><td>Copywriting, editorial review, content operations.</td><td class="cite">$125 / hr</td></tr>
+          <tr><td>Research</td><td>User research, mechanism design, structured inquiry.</td><td class="cite">$225 / hr</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      FMV rates are what the customer pays. They are not what the member
+      receives. The member's patronage credit for the work is a separate
+      computation, governed by the cooperative's allocation formula
+      (labor 40, revenue generation 30, cash 20, community 10) and
+      resolved at the capital account layer. The engine does not expose
+      this translation to the customer.
+    </p>
+
+    <h3>4.4 Member availability reflection</h3>
+    <p>
+      When a scenario is configured, the engine queries the current
+      capacity roster to determine whether the required labor can be
+      fulfilled within the customer's preferred window. Three outcomes
+      are possible and the engine must surface them honestly.
+    </p>
+    <ol class="spec">
+      <li><strong>Available.</strong> The required hours are fully covered by members currently open to taking work in the requested domain. The engine displays a green confirmation and proceeds to pre-authorization.</li>
+      <li><strong>Partially available.</strong> Some but not all of the required hours are covered. The engine offers three paths: extend the timeline, reduce the scope, or queue the scenario pending capacity.</li>
+      <li><strong>Not available.</strong> The required capacity cannot be matched in the current period. The engine offers to schedule a planning conversation and queue the scenario for a future capacity window.</li>
+    </ol>
+
+    <h3>4.5 Infrastructure cost model</h3>
+    <p>
+      Every pattern carries an infrastructure profile. The profile names
+      the line items a real system of that pattern would carry, estimates
+      the monthly cost for each, and lets the customer toggle between
+      three provisioning tiers. Line items are explicit, not hidden; the
+      customer sees exactly what they are paying to keep the system alive.
+    </p>
+    <div class="t-wrap">
+      <table>
+        <thead>
+          <tr><th>Tier</th><th>Provisioning approach</th><th>Typical range</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Lean</td><td>Static hosting, managed services at free or low tiers, third-party auth. Suited for low traffic and simple systems.</td><td class="cite">$0 to $75 / mo</td></tr>
+          <tr><td>Standard</td><td>Managed PaaS, production database, monitoring, backups, CDN. Suited for real users and real uptime expectations.</td><td class="cite">$75 to $600 / mo</td></tr>
+          <tr><td>Sovereign</td><td>Self-hosted on cooperative servers (Boulder node or Hetzner), with control and data locality. Suited for organizations that want to own their infrastructure.</td><td class="cite">$150 to $1,500 / mo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>4.6 Cost computation</h3>
+    <p>
+      The build cost is the sum of labor hours multiplied by FMV rates for
+      each role, with a complexity multiplier applied by the customer
+      (range 0.8 to 1.5). The ongoing cost is the sum of monthly
+      infrastructure charges plus a monthly maintenance labor allocation,
+      expressed as a percentage of build labor (default 8 percent). The
+      total engagement cost is the build cost plus the ongoing cost over
+      the customer's selected horizon, typically 6, 12, or 24 months.
+    </p>
+
+    <h3>4.7 Pre-authorized invoice generation</h3>
+    <p>
+      When the visitor requests a pre-authorized invoice, the engine
+      produces a structured document containing the project identity, the
+      pattern selection, the role-level labor allocation, the infrastructure
+      profile, the monthly ongoing estimate, the total over horizon, a
+      pricing lock window (default 14 days), a member availability
+      confirmation, and an append-only hash referencing the scenario
+      state at authorization time. The invoice is stored in Supabase,
+      surfaced to operations staff for final review, and emailed to the
+      customer as a PDF with a unique hash-linked URL.
+    </p>
+
+    <h3>4.8 Payment pipeline</h3>
+    <p>
+      On final approval by operations staff, the invoice becomes payable
+      through two rails. Stripe handles card and on-chain payments, with
+      a fee premium of approximately three percent absorbed into the
+      quoted price. Mercury handles ACH direct debit for larger
+      engagements where the fee premium is not justified. The customer
+      chooses the rail at the point of payment. On receipt, payment
+      confirmation writes back to the Supabase record and triggers the
+      engagement kickoff workflow through Make.com.
+    </p>
+
+    <h3>4.9 Merkle accountability chain</h3>
+    <p>
+      Every consequential event in the scenario lifecycle writes a record
+      to an append-only log. The log is structured as a hash chain: each
+      record's hash includes the hash of the prior record, so no record
+      can be silently altered without breaking the chain forward of the
+      alteration. Periodic root hashes are published to Base for public
+      verifiability. The chain is confirmation infrastructure; it
+      references the Supabase record but does not replace it.
+    </p>
+    <div class="t-wrap">
+      <table>
+        <thead>
+          <tr><th>Event</th><th>What the hash covers</th><th>Publication</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Scenario composed</td><td>Pattern, scope, complexity multiplier, configuration timestamp.</td><td class="cite">Supabase only</td></tr>
+          <tr><td>Pre-authorization requested</td><td>Full scenario state, customer identity, total quote, pricing lock window.</td><td class="cite">Supabase + chain pending</td></tr>
+          <tr><td>Operations countersignature</td><td>Operator identity, availability confirmation, approved invoice hash.</td><td class="cite">Supabase + chain</td></tr>
+          <tr><td>Payment receipt</td><td>Payment rail, amount, Stripe or Mercury reference, timestamp.</td><td class="cite">Supabase + chain</td></tr>
+          <tr><td>Engagement kickoff</td><td>Active engagement record, assigned members, schedule commitment.</td><td class="cite">Supabase + chain</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="nonfunctional">
+    <span class="label">05 · Non-functional requirements</span>
+    <div class="rule"></div>
+    <h2>How the engine should behave.</h2>
+    <p>
+      The engine loads in under two seconds on a typical connection and
+      functions entirely on the client for the composition phase, so
+      visitors can explore scenarios without any backend round-trip until
+      they request a pre-authorized invoice. Every form control is keyboard
+      accessible. Color contrast meets WCAG AA across the interface.
+      The visual language follows the <em>co-op.us</em> design system.
+    </p>
+    <p>
+      The engine degrades gracefully. If the availability query fails, the
+      engine proceeds but marks the scenario as capacity-pending. If the
+      hash chain service is unavailable, the Supabase record is still
+      written and the chain reconciles on recovery. If Stripe or Mercury
+      is down, the invoice remains valid and the customer is offered an
+      alternative payment window.
+    </p>
+  </section>
+
+  <section id="data">
+    <span class="label">06 · Data model</span>
+    <div class="rule"></div>
+    <h2>The records the engine creates.</h2>
+    <p>
+      The engine creates and maintains records across four primary tables
+      in Supabase. Each table has row-level security tuned to the access
+      pattern. Customers see only their own scenarios; members see only
+      their own capacity commitments; operations staff see the full set.
+    </p>
+    <div class="t-wrap">
+      <table>
+        <thead>
+          <tr><th>Table</th><th>Purpose</th><th>Primary relations</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>scenarios</td><td>One row per configured scenario, including pattern, scope, computed totals, and current state.</td><td class="cite">customer · pattern</td></tr>
+          <tr><td>invoices</td><td>One row per pre-authorized or active invoice. Linked to a scenario. Carries payment state and payment rail.</td><td class="cite">scenario · customer</td></tr>
+          <tr><td>capacity</td><td>Rolling roster of member availability windows. Updated by members directly or via calendar integration.</td><td class="cite">member · period</td></tr>
+          <tr><td>chain_log</td><td>Append-only event log. Each row carries a hash, a reference to the source record, and the prior hash in the chain.</td><td class="cite">event · prior_hash</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="integration">
+    <span class="label">07 · Integration surfaces</span>
+    <div class="rule"></div>
+    <h2>What the engine talks to.</h2>
+    <div class="t-wrap">
+      <table>
+        <thead>
+          <tr><th>System</th><th>Role</th><th>Principle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Supabase</td><td>Authoritative record for scenarios, invoices, capacity, chain log.</td><td class="cite">system of record</td></tr>
+          <tr><td>Make.com</td><td>Workflow orchestration: notifications, email delivery, kickoff sequences.</td><td class="cite">orchestrates</td></tr>
+          <tr><td>Stripe</td><td>Card and on-chain payment capture. Webhook writes back to invoice state.</td><td class="cite">external rail</td></tr>
+          <tr><td>Mercury</td><td>ACH direct debit for larger engagements. Reconciliation via CSV export and Make.com ingestion.</td><td class="cite">external rail</td></tr>
+          <tr><td>Base</td><td>Public chain attestation of merkle root hashes at configurable cadence.</td><td class="cite">confirms, does not replace</td></tr>
+          <tr><td>Claude API</td><td>Scenario narration, pattern suggestion, plain-language explanation of line items on the learner surface.</td><td class="cite">augments</td></tr>
+          <tr><td>Calendar</td><td>Member availability reflection. Members publish windows; engine reads them.</td><td class="cite">reference</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="acceptance">
+    <span class="label">08 · Acceptance criteria</span>
+    <div class="rule"></div>
+    <h2>What counts as done.</h2>
+    <ol class="spec">
+      <li><strong>A visitor can compose a scenario.</strong> Starting from techne.institute/build, a visitor can name a project, select a pattern, adjust complexity and infrastructure tier, choose an ongoing horizon, and see live totals update as they move.</li>
+      <li><strong>The labor breakdown is legible.</strong> Each role in the allocation carries a one-sentence explanation of what the role contributes. The total labor hours are the sum of the role hours. Clicking a role reveals a further explanation.</li>
+      <li><strong>The infrastructure breakdown is legible.</strong> Each line item in the infrastructure profile names a real service or provisioning choice and carries an estimated monthly cost. The total monthly infrastructure is the sum of the line items.</li>
+      <li><strong>A visitor can request a pre-authorized invoice.</strong> Completing a scenario writes a record to Supabase, generates a PDF invoice with a hash-linked URL, emails the PDF to the customer, and surfaces the pending invoice to operations staff.</li>
+      <li><strong>Operations can countersign.</strong> An operations staff member can mark an invoice as approved, which transitions it to payable and sends the customer a payment link.</li>
+      <li><strong>A customer can pay.</strong> From the payment link, the customer chooses Stripe or Mercury, completes payment, and receives a confirmation. The scenario record reflects the payment and the engagement is scheduled.</li>
+      <li><strong>The chain is verifiable.</strong> Every event in the scenario lifecycle writes a hash to the chain log. A root hash is published to Base at configurable cadence. A public verifier page at techne.institute/build/verify lets anyone submit a record hash and confirm its presence in the chain.</li>
+      <li><strong>Members see their commitments.</strong> A signed-in member viewing their private dashboard sees their current capacity commitments, pending pre-authorized invoices referencing their capacity, and active engagement schedule.</li>
+    </ol>
+  </section>
+
+  <section id="scope">
+    <span class="label">09 · Scope exclusions</span>
+    <div class="rule"></div>
+    <h2>What the engine is not.</h2>
+    <p>
+      The engine is not a project management tool. Once an engagement is
+      active, the work is tracked elsewhere. The engine is not a contract
+      drafting surface. The pre-authorized invoice references a statement
+      of work but does not generate it; statements of work are drafted in
+      the cooperative's agreements repository. The engine is not an
+      internal compensation system. The customer-facing FMV pricing and
+      the internal patronage allocation are distinct surfaces, deliberately
+      kept separate because they answer different questions.
+    </p>
+    <p>
+      The engine does not attempt to price every possible digital system.
+      It prices the patterns the cooperative has built before and can
+      confidently build again. A visitor whose project does not fit any
+      pattern is offered a planning conversation rather than an extrapolated
+      number.
+    </p>
+  </section>
+
+  <section id="open">
+    <span class="label">10 · Open questions</span>
+    <div class="rule"></div>
+    <h2>Still to be resolved.</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-head"><h3>Rate adjustment for aligned organizations</h3><span class="card-tag">policy</span></div>
+        <div class="card-body">
+          Whether cooperatives, nonprofits, and civic organizations receive an
+          adjustment at the engine layer, or whether the adjustment is applied
+          at the countersignature stage by operations staff.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Member representation in the estimate</h3><span class="card-tag">visibility</span></div>
+        <div class="card-body">
+          Whether the scenario preview shows the names of likely assigned
+          members, or keeps the assignment opaque until countersignature.
+          There are arguments on both sides: legibility of the labor pool
+          against the member's right to decline specific engagements.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Chain publication cadence</h3><span class="card-tag">infra</span></div>
+        <div class="card-body">
+          How often merkle roots are published to Base. More frequent means
+          stronger public guarantees but higher gas costs. A daily rollup
+          with immediate attestation for payment events is a reasonable
+          starting position.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Fallback for pattern mismatch</h3><span class="card-tag">ux</span></div>
+        <div class="card-body">
+          When a visitor's project does not fit any library pattern, how
+          the engine handles the conversation handoff. An embedded intake
+          form that captures the scenario as drafted, rather than a bounce
+          to email, preserves context for the planning conversation.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="learner">
+    <span class="label">11 · The learner surface</span>
+    <div class="rule"></div>
+    <h2>The tool as pedagogy.</h2>
+    <p>
+      A visitor who never intends to commission work should still leave the
+      engine having learned something. The engine embeds explanations at
+      every decision point. A hover on "DevOps" explains what the role
+      actually does. A click on "managed PaaS" opens a short plain-language
+      description of what a Platform-as-a-Service is and why it costs what
+      it costs. A tooltip on the complexity multiplier explains what
+      complexity means in practice and why small changes to a product
+      surface often imply large changes to the labor pool underneath.
+    </p>
+    <p>
+      The engine is the first instrument of the Institute's broader
+      commitment: that <em>legibility</em> is the condition under which
+      ordinary people can make informed decisions about the digital tools
+      they commission, operate, or inherit. The engine should leave a
+      visitor more capable of reasoning about digital work, regardless of
+      whether an invoice is ever generated.
+    </p>
+  </section>
+
+  <footer>
+    <p>techne.institute/build · RegenHub, LCA · Boulder, Colorado · 2026</p>
+    <p>This PRD is v0.1 and open for revision by the cooperative.</p>
+  </footer>
+
+</div>
+</body>
+</html>
