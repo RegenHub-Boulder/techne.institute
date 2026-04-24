@@ -55,8 +55,8 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── NAV ── */
-    nav {
+    /* ── SITE NAV ── */
+    .site-nav {
       position: sticky;
       top: 0;
       z-index: 100;
@@ -224,6 +224,19 @@
       transition: color 0.1s, transform 0.1s;
     }
     .toc a:hover .toc-arrow {
+      color: var(--accent);
+    }
+    .toc a.active {
+      background: var(--surface-2);
+    }
+    .toc a.active .toc-num {
+      opacity: 1;
+      color: var(--accent);
+    }
+    .toc a.active .toc-title {
+      color: var(--text);
+    }
+    .toc a.active .toc-arrow {
       color: var(--accent);
     }
 
@@ -689,7 +702,7 @@
 </head>
 <body>
 
-  <nav>
+  <nav class="site-nav">
     <div class="nav-left">
       <a href="/" class="nav-home">Techne</a>
       <span class="nav-divider">/</span>
@@ -1395,5 +1408,41 @@
 
   </main>
 
+  <script>
+    // Scrollspy — highlight TOC entry for the section currently in view
+    (function () {
+      var tocLinks = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+      var sections = tocLinks.map(function (a) {
+        return document.querySelector(a.getAttribute('href'));
+      }).filter(Boolean);
+
+      function onScroll() {
+        var scrollY = window.scrollY || window.pageYOffset;
+        var navH = 60; // site-nav height + buffer
+        var active = null;
+
+        for (var i = sections.length - 1; i >= 0; i--) {
+          if (sections[i].getBoundingClientRect().top + scrollY - navH <= scrollY) {
+            active = sections[i].id;
+            break;
+          }
+        }
+
+        // Default to first if above all sections
+        if (!active && sections.length) active = sections[0].id;
+
+        tocLinks.forEach(function (a) {
+          var isActive = a.getAttribute('href') === '#' + active;
+          a.classList.toggle('active', isActive);
+          a.setAttribute('aria-current', isActive ? 'true' : 'false');
+        });
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll(); // run on load
+    })();
+  </script>
+
 </body>
 </html>
+
