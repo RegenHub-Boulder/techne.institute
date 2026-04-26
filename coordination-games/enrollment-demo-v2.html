@@ -1809,14 +1809,25 @@
       });
     }
 
-    const fidx = fullScreens.indexOf(id);
-    if (fidx >= 0) {
-      fullBars.forEach((bid, i) => {
+    // Full path: 9 logical steps — setup screen covers steps 1-4 together
+    const FULL_TOTAL = 9;
+    const fullConfig = {
+      'screen-full-setup':     { done: 0, end: 4 }, // steps 1-4 all on one page
+      'screen-full-archetype': { done: 4, end: 5 },
+      'screen-full-skilldoc':  { done: 5, end: 6 },
+      'screen-full-testrun':   { done: 6, end: 7 },
+      'screen-full-publish':   { done: 7, end: 8 },
+      'screen-full-sign':      { done: 8, end: 9 },
+    };
+    const fcfg = fullConfig[id];
+    if (fcfg) {
+      fullBars.forEach((bid) => {
         const el = document.getElementById(bid);
         if (!el) return;
-        el.innerHTML = fullScreens.map((_,j) =>
-          `<div class="step ${j < fidx ? 'done' : j === fidx ? 'active' : ''}"></div>`
-        ).join('');
+        el.innerHTML = Array.from({length: FULL_TOTAL}, (_, j) => {
+          let cls = j < fcfg.done ? 'done' : j < fcfg.end ? 'active' : '';
+          return `<div class="step ${cls}"></div>`;
+        }).join('');
       });
     }
   }
