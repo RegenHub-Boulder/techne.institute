@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trust Model Decomposition — Coordination Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --void: #0c0c0c;
+      --surface: #161616;
+      --panel: #222222;
+      --gold: #c4956a;
+      --gold-dim: rgba(196,149,106,0.10);
+      --gold-border: rgba(196,149,106,0.25);
+      --parchment: #f0f0f0;
+      --text: #d4d4d4;
+      --muted: #888888;
+      --faint: #444444;
+      --border: #2a2a2a;
+      --serif: 'Libre Baskerville', Georgia, serif;
+      --mono: 'IBM Plex Mono', monospace;
+      --ok: #4ade80;
+      --ok-dim: rgba(74,222,128,0.08);
+      --ok-border: rgba(74,222,128,0.2);
+      --warn: #fbbf24;
+      --warn-dim: rgba(251,191,36,0.08);
+      --warn-border: rgba(251,191,36,0.25);
+      --red: #f87171;
+      --red-dim: rgba(248,113,113,0.08);
+      --red-border: rgba(248,113,113,0.2);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--void); color: var(--text); font-family: var(--serif); font-size: 17px; line-height: 1.8; }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(12,12,12,0.96); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem; display: flex; align-items: center; gap: 2rem; height: 48px;
+    }
+    nav a { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.04em; }
+    nav a:hover { color: var(--gold); }
+    nav .brand { color: var(--gold); font-weight: 500; }
+
+    .page { max-width: 780px; margin: 0 auto; padding: 4rem 2rem 8rem; }
+
+    .doc-header { border-bottom: 1px solid var(--border); padding-bottom: 3rem; margin-bottom: 3.5rem; }
+    .doc-label { font-family: var(--mono); font-size: 0.7rem; color: var(--warn); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.25rem; }
+    h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); font-weight: 700; line-height: 1.2; color: var(--parchment); margin-bottom: 1rem; }
+    .doc-meta { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+    .doc-meta span { color: var(--faint); margin: 0 0.5rem; }
+    .lede { font-size: 1.05rem; color: var(--text); line-height: 1.8; margin-top: 1.5rem; }
+
+    section { margin-bottom: 4rem; }
+    .section-num { font-family: var(--mono); font-size: 0.68rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    h2 { font-size: 1.3rem; font-weight: 700; color: var(--parchment); margin-bottom: 1rem; }
+    h3 { font-size: 1rem; font-weight: 700; color: var(--parchment); margin-bottom: 0.5rem; margin-top: 1.75rem; }
+    p { margin-bottom: 1.15rem; }
+    p:last-child { margin-bottom: 0; }
+    blockquote { border-left: 2px solid var(--gold); padding-left: 1.25rem; margin: 1.5rem 0; color: var(--muted); font-style: italic; font-size: 0.95rem; }
+
+    /* Comparison grid */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 2rem 0; }
+    .compare-col { border: 1px solid var(--border); }
+    .compare-col.old { border-top: 3px solid var(--red); }
+    .compare-col.new { border-top: 3px solid var(--ok); }
+    .compare-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); }
+    .compare-header-label { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.3rem; }
+    .compare-col.old .compare-header-label { color: var(--red); }
+    .compare-col.new .compare-header-label { color: var(--ok); }
+    .compare-header-title { font-family: var(--serif); font-weight: 700; font-size: 0.95rem; color: var(--parchment); }
+    .compare-body { padding: 0; }
+    .compare-row { padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; line-height: 1.6; color: var(--text); }
+    .compare-row:last-child { border-bottom: none; }
+    .compare-row .row-key { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* Principle list */
+    .principles { margin: 1.75rem 0; }
+    .principle { padding: 1.1rem 0; border-bottom: 1px solid var(--border); }
+    .principle:last-child { border-bottom: none; }
+    .principle-title { font-family: var(--mono); font-size: 0.8rem; color: var(--gold); margin-bottom: 0.35rem; }
+    .principle-body { font-size: 0.88rem; color: var(--text); line-height: 1.65; }
+
+    /* Schema block */
+    .schema-block {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--gold);
+      padding: 1.25rem 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      line-height: 1.8;
+      color: var(--muted);
+      margin: 1.25rem 0;
+      overflow-x: auto;
+    }
+    .schema-block .sk { color: var(--gold); }
+    .schema-block .sv { color: #7ccfb8; }
+    .schema-block .sc { color: var(--faint); }
+
+    /* Scope tags */
+    .scope-tags { margin: 1.25rem 0; display: flex; flex-direction: column; gap: 0.75rem; }
+    .scope-tag { border: 1px solid var(--border); padding: 0.85rem 1.1rem; }
+    .scope-tag-name { font-family: var(--mono); font-size: 0.78rem; color: var(--gold); margin-bottom: 0.3rem; }
+    .scope-tag-desc { font-size: 0.85rem; color: var(--text); line-height: 1.6; }
+
+    /* Notice */
+    .notice {
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      line-height: 1.65;
+    }
+    .notice.warn { background: var(--warn-dim); border: 1px solid var(--warn-border); color: var(--warn); }
+    .notice.ok { background: var(--ok-dim); border: 1px solid var(--ok-border); color: var(--ok); }
+
+    /* What we keep */
+    .keep-list { margin: 1.25rem 0; display: flex; flex-direction: column; gap: 0.6rem; }
+    .keep-item { padding: 0.75rem 1rem; border: 1px solid var(--border); font-size: 0.85rem; display: flex; gap: 0.75rem; }
+    .keep-item .keep-mark { font-family: var(--mono); font-size: 0.72rem; color: var(--ok); flex-shrink: 0; padding-top: 0.1rem; }
+    .keep-item.drop .keep-mark { color: var(--red); }
+
+    footer { border-top: 1px solid var(--border); padding-top: 2rem; font-family: var(--mono); font-size: 0.72rem; color: var(--faint); }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 600px) { .compare { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/coordination-games/" class="brand">Coordination Games</a>
+  <a href="/coordination-games/">Overview</a>
+  <a href="/coordination-games/strategy.html">Strategy</a>
+  <a href="https://cooperation.games/">cooperation.games</a>
+</nav>
+
+<div class="page">
+
+  <header class="doc-header">
+    <div class="doc-label">Architecture Decision · P499 · April 2026</div>
+    <h1>Trust Model Decomposition</h1>
+    <div class="doc-meta">
+      Coordination Games Olympiad
+      <span>·</span>
+      Rolling back P496 · Rebuilding on Lucian's plugin architecture
+    </div>
+    <p class="lede">
+      P496 built a platform-authoritative trust taxonomy that conflicts with
+      the plugin architecture documented in Lucian's trust-attestations.md.
+      This document records what was built, why it doesn't fit, what's being
+      removed, and what the rebuild foundation is.
+    </p>
+    <div class="notice warn">
+      P496 (commit 64c75f1) has been reverted in Roots-Trust-LCA/cooperation-games
+      as of commit 3548688. The trust/ directory is back to the P487 visualization state.
+    </div>
+  </header>
+
+  <!-- Section 1 -->
+  <section>
+    <div class="section-num">01 — What P496 Built</div>
+    <h2>A platform-authoritative trust taxonomy.</h2>
+
+    <p>
+      P496 delivered 14 EAS schema definitions, a 6-dimensional score composition model
+      with a fixed weight matrix, and a public specification page. The architecture placed
+      the platform in the position of deciding:
+    </p>
+
+    <ul style="margin: 1rem 0 1.5rem 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; color: var(--text);">
+      <li>Which attestation types exist (14 schemas in 3 categories)</li>
+      <li>What each attestation type means (game-specific schemas: OathKept, OathBroken, etc.)</li>
+      <li>How attestations are weighted (composition.json — a 14×6 weight matrix)</li>
+      <li>What the six dimensions of trust are (cooperation, reliability, stewardship, coordination, influence, resilience)</li>
+      <li>How betrayal is weighted asymmetrically (1.5× hardcoded multiplier)</li>
+      <li>How attestations decay (time-based, per-schema half-lives)</li>
+    </ul>
+
+    <p>
+      The result was a coherent system with reasonable design choices — but the
+      coherence was the problem. All interpretation was enshrined in the platform,
+      which is exactly what Lucian's design philosophy rejects.
+    </p>
+
+    <blockquote>
+      "Platform should not decide what is trustworthy. The platform provides signed
+      statements and game event logs as raw data. All interpretation (scores, gating)
+      lives in plugins."
+      <br />— trust-attestations.md
+    </blockquote>
+  </section>
+
+  <!-- Section 2 -->
+  <section>
+    <div class="section-num">02 — The Architectural Conflict</div>
+    <h2>Two different theories of where authority should live.</h2>
+
+    <div class="compare">
+      <div class="compare-col old">
+        <div class="compare-header">
+          <div class="compare-header-label">P496 — Rolled back</div>
+          <div class="compare-header-title">Platform-Authoritative</div>
+        </div>
+        <div class="compare-body">
+          <div class="compare-row">
+            <div class="row-key">Schema definition</div>
+            14 fixed schemas defined by the platform. Attestation types are canonical.
+          </div>
+          <div class="compare-row">
+            <div class="row-key">Score computation</div>
+            6-dimensional weight matrix baked into composition.json. Platform computes scores.
+          </div>
+          <div class="compare-row">
+            <div class="row-key">Betrayal asymmetry</div>
+            1.5× hardcoded platform-wide. Not pluggable.
+          </div>
+          <div class="compare-row">
+            <div class="row-key">Decay model</div>
+            Time-based, per-schema half-lives. Independent of activity level.
+          </div>
+          <div class="compare-row">
+            <div class="row-key">Interpretation</div>
+            Platform defines bands (76–100 excellent, 0–25 poor). Meaning is prescribed.
+          </div>
+          <div class="compare-row">
+            <div class="row-key">Extensibility</div>
+            Adding a new game requires a new platform schema. Platform bottleneck.
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-col new">
+        <div class="compare-header">
+          <div class="compare-header-label">Plugin architecture — Rebuilding toward</div>
+          <div class="compare-header-title">Platform-Neutral</div>
+        </div>
+        <div class="compare-body">
+          <div class="compare-row">
+            <div class="row-key">Schema definition</div>
+            One attestation schema: polarity (+1/-1), size (0–1), scope (string), reason. No game-specific types.
+          </div>
+          <div class="compare-row">
+            <div class="row-key">Score computation</div>
+            Plugin (@ctl/attestations) computes CONDUCT, SKILL:game, STEWARDSHIP. Platform stores raw data only.
+          </div>
+          <div class="compare-row">
+            <div class="row-key">Betrayal asymmetry</div>
+            Not baked in. Emerges from attester weighting and market mechanics.
+          </div>
+          <div class="compare-row">
+            <div class="row-key">Decay model</div>
+            Activity-based: older attestations are outweighed by newer ones about the same subject. Stewardship-scaled.
+          </div>
+          <div class="compare-row">
+            <div class="row-key">Interpretation</div>
+            Plugin interprets. CONDUCT defaults to 0.5 (new players). Scoring is plugin-configurable.
+          </div>
+          <div class="compare-row">
+            <div class="row-key">Extensibility</div>
+            New games use scope tags (skill:oathbreaker, skill:ctl). No platform change needed.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3 -->
+  <section>
+    <div class="section-num">03 — The New Attestation Primitive</div>
+    <h2>One schema. Binary polarity. Scope as a string.</h2>
+
+    <p>
+      The rebuild replaces 14 game-specific schemas with a single attestation structure.
+      The platform stores raw signed statements. All interpretation — scoring, weighting,
+      gating — is a plugin concern.
+    </p>
+
+    <div class="schema-block">
+      <span class="sc">{</span><br />
+      &nbsp;&nbsp;<span class="sk">attester</span>: <span class="sv">WalletAddress</span>,<br />
+      &nbsp;&nbsp;<span class="sk">subject</span>: <span class="sv">WalletAddress</span>,<br />
+      &nbsp;&nbsp;<span class="sk">polarity</span>: <span class="sv">+1 | -1</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sc">// positive or negative, no neutral</span><br />
+      &nbsp;&nbsp;<span class="sk">size</span>: <span class="sv">float [0,1]</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sc">// conviction strength, default 1.0</span><br />
+      &nbsp;&nbsp;<span class="sk">scope</span>: <span class="sv">string</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sc">// see scope tags</span><br />
+      &nbsp;&nbsp;<span class="sk">reason</span>?: <span class="sv">string</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sc">// ≤ 1000 chars</span><br />
+      &nbsp;&nbsp;<span class="sk">timestamp</span>: <span class="sv">int</span>,<br />
+      &nbsp;&nbsp;<span class="sk">signature</span>: <span class="sv">Signature</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="sc">// EIP-712 per EAS off-chain spec</span><br />
+      <span class="sc">}</span>
+    </div>
+
+    <p>Scope tags define what an attestation is about. Three categories:</p>
+
+    <div class="scope-tags">
+      <div class="scope-tag">
+        <div class="scope-tag-name">conduct <span style="font-family: var(--serif); color: var(--muted); font-size: 0.82rem; font-style: italic;">— reserved</span></div>
+        <div class="scope-tag-desc">Platform integrity dimension. Rule-following, no cheating, interpersonal decency, no scamming or abandonment. This is the gating scope — public lobbies with <code>min_conduct</code> enforce on this. Has full market mechanics (P&amp;L, stewardship).</div>
+      </div>
+      <div class="scope-tag">
+        <div class="scope-tag-name">skill:&lt;game-id&gt; <span style="font-family: var(--serif); color: var(--muted); font-size: 0.82rem; font-style: italic;">— convention-based</span></div>
+        <div class="scope-tag-desc">Per-game skill opinions (skill:oathbreaker, skill:ctl, skill:shelling-point). Contributes to a score. No P&amp;L for attester — skill has no ground truth to calibrate against, so stewardship doesn't track it.</div>
+      </div>
+      <div class="scope-tag">
+        <div class="scope-tag-name">anything else <span style="font-family: var(--serif); color: var(--muted); font-size: 0.82rem; font-style: italic;">— free-form</span></div>
+        <div class="scope-tag-desc">Stored, queryable, not aggregated by the default plugin. Custom consumers and future plugins can interpret. This is how the system stays extensible without platform changes.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4 -->
+  <section>
+    <div class="section-num">04 — The Plugin Model</div>
+    <h2>All interpretation lives in @ctl/attestations.</h2>
+
+    <p>
+      The platform ships with one default plugin that runs server-side. Clients
+      read results via API — they never run the algorithm. The plugin produces:
+    </p>
+
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-title">CONDUCT score</div>
+        <div class="principle-body">
+          Per-subject platform integrity score. Full market mechanics — attesters open positions,
+          realize P&amp;L as the score moves, their stewardship tracks calibration quality.
+          New players default to 0.5 (mild positive trust). Gated on by public lobbies with <code>min_conduct</code>.
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-title">SKILL:&lt;game&gt; score</div>
+        <div class="principle-body">
+          Per-game skill opinion aggregation. No P&amp;L for attesters (no ground truth for skill).
+          New players default to 0 (neutral). Not used for lobby gating in the default plugin.
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-title">STEWARDSHIP score</div>
+        <div class="principle-body">
+          Quality of a player's CONDUCT judgments. Single scalar per attester. Tracks how
+          early and accurate their CONDUCT attestations were — earlier correct calls earn more.
+          High stewardship amplifies an attester's voice on all scopes. Defaults to 0 for new players.
+        </div>
+      </div>
+    </div>
+
+    <p>
+      The key mechanic: <strong>attester weight = function of their CONDUCT and STEWARDSHIP</strong>.
+      Low-CONDUCT attesters have almost no voice. High-stewardship attesters have amplified,
+      longer-lived influence. This is the sybil resistance mechanism — not schema restrictions or
+      platform-level rules.
+    </p>
+  </section>
+
+  <!-- Section 5 -->
+  <section>
+    <div class="section-num">05 — What We Keep and What We Drop</div>
+    <h2>The P496 work is not wasted — it needs to move.</h2>
+
+    <div class="keep-list">
+      <div class="keep-item">
+        <div class="keep-mark">KEEP</div>
+        <div>
+          <strong>The trust visualization (P487).</strong> The D3 force-directed graph at cooperation.games/trust/ is a presentation layer. It can be rebuilt to show CONDUCT scores, stewardship rankings, and attestation graphs once the plugin layer is implemented. The visualization concept is sound; it just needs to read from different data.
+        </div>
+      </div>
+      <div class="keep-item">
+        <div class="keep-mark">KEEP</div>
+        <div>
+          <strong>Game event vocabulary as reference.</strong> The P496 schemas named real events (OathKept, OathBroken, FocalPointConverged, CommonsPolluted, etc.). These names are still useful — they describe what the game event logs contain. They become the raw signal that attesters reference in their <code>reason</code> field, not structured schemas the platform requires.
+        </div>
+      </div>
+      <div class="keep-item">
+        <div class="keep-mark">KEEP</div>
+        <div>
+          <strong>Guardian NFT concept.</strong> P496's special schema for guardian recognition aligns with Lucian's Guardian NFT design — end-of-season recognition for top stewards, non-revocable, no functional power. The concept is sound; the implementation is in the plugin's seasonal mint, not an EAS schema.
+        </div>
+      </div>
+      <div class="keep-item drop">
+        <div class="keep-mark">DROP</div>
+        <div>
+          <strong>14-schema taxonomy.</strong> Removed. The platform does not define per-game attestation types. Scope tags replace schemas. OathKept is now <code>scope: "conduct"</code> or <code>scope: "skill:oathbreaker"</code> per the attester's judgment, not a required schema field.
+        </div>
+      </div>
+      <div class="keep-item drop">
+        <div class="keep-mark">DROP</div>
+        <div>
+          <strong>6-dimensional composition model.</strong> Removed. Cooperation, reliability, stewardship, coordination, influence, resilience were platform-defined dimensions with a fixed weight matrix. The plugin model produces CONDUCT + SKILL:game + STEWARDSHIP — a simpler, more defensible set that emerges from the market rather than editorial judgment.
+        </div>
+      </div>
+      <div class="keep-item drop">
+        <div class="keep-mark">DROP</div>
+        <div>
+          <strong>Hardcoded betrayal multiplier (1.5×).</strong> Removed. Asymmetry in the new model emerges from the market — early correct negative attestations earn outsized P&amp;L naturally, without a platform-baked multiplier.
+        </div>
+      </div>
+      <div class="keep-item drop">
+        <div class="keep-mark">DROP</div>
+        <div>
+          <strong>trust/spec/index.html.</strong> Removed with P496 revert. Will be replaced by documentation of the plugin architecture once the rebuild is underway.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6 -->
+  <section>
+    <div class="section-num">06 — Rebuild Foundation</div>
+    <h2>What the next sprint builds toward.</h2>
+
+    <p>
+      The plugin architecture specification in
+      <a href="https://github.com/coordination-games/coordination-games/blob/trust-system-brainstorm/docs/plans/trust-attestations.md" style="color: var(--gold);">trust-attestations.md</a>
+      is the canonical reference for the rebuild. It is currently marked "brainstorm — not implementation-ready."
+      The trust visualization work and the enrollment/profile work described in P497–P498 should
+      be reconsidered against this foundation before any implementation proceeds.
+    </p>
+
+    <p>Key rebuild requirements from the spec:</p>
+
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-title">Platform core: attestations table + signed endpoints</div>
+        <div class="principle-body">
+          New <code>attestations</code> table: (id, attester_wallet, subject_wallet, polarity, size, scope, reason, timestamp, signature, closed_at). Signed by EIP-712. POST /api/attestations validates signature and slot capacity. Reads unauthenticated; writes require valid signature.
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-title">Daily Merkle anchor</div>
+        <div class="principle-body">
+          Nightly cron posts Merkle root of that day's attestations to AttestationAnchor contract on OP Sepolia. ~$0.01/day. Provides third-party verifiability without per-attestation on-chain cost.
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-title">Plugin: CONDUCT auto-drip from game completions</div>
+        <div class="principle-body">
+          Every cleanly-finished public game emits an internal +0.05 CONDUCT signal for each participant. Not stored as attestation — derived from game event logs. This is the scaffold for new players to build trust through clean play.
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-title">Activity-based decay, stewardship-scaled</div>
+        <div class="principle-body">
+          Decay indexed to newer attestations about the same (subject, scope), not clock time. Trusted-attester voices persist longer than zero-stewardship voices — this is the sybil defense, replacing explicit rate limiting.
+        </div>
+      </div>
+    </div>
+
+    <div class="notice ok">
+      The enrollment and profile architecture (P497–P498) should be reconsidered against the plugin
+      model before implementation. The key change: profile trust display should show CONDUCT score,
+      SKILL:game scores, and attestation history — not a 6-dimensional radar chart derived from a
+      fixed weight matrix.
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      Published by <a href="https://techne.institute/">Techne Studio</a> ·
+      <a href="https://regenhub.coop/">RegenHub, LCA</a> · Boulder, Colorado · April 2026
+    </p>
+    <p style="margin-top: 0.5rem;">
+      P499 · Revert: <a href="https://github.com/Roots-Trust-LCA/cooperation-games/commit/3548688">3548688</a> ·
+      Reference: <a href="https://github.com/coordination-games/coordination-games/blob/trust-system-brainstorm/docs/plans/trust-attestations.md">trust-attestations.md</a>
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>
