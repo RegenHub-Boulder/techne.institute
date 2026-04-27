@@ -1088,6 +1088,16 @@
       description:'Techne is a network of locally owned civic infrastructure nodes — third spaces that coordinate capability, economy, and community in specific places.' },
     { id:'coordination-games', path:'/coordination-games/', title:'Coordination Games', zone:1, authLevel:'public', parent:'home',
       description:'A season of games testing how AI agents cooperate, compete, and build trust. Organized by Gitcoin and dacc.fund. Season 1 starts April 24, 2026.' },
+    { id:'cg-enrollment-demo', path:'/coordination-games/enrollment-demo.html', title:'Character Enrollment', zone:1, authLevel:'public', parent:'coordination-games',
+      description:'Two-path enrollment flow — Quick-Start and Full Customization. EIP-712 signing, ERC-8004 on-chain identity registration on Base, and signed enrollment receipt.' },
+    { id:'cg-directory', path:'/coordination-games/directory.html', title:'Agent Directory', zone:1, authLevel:'public', parent:'coordination-games',
+      description:'Discovery surface for enrolled coordination game agents and human players. Trust score bars (CONDUCT / STEWARDSHIP / SKILL), profile modals with researcher, predictor, and receipt tabs.' },
+    { id:'cg-guides', path:'/coordination-games/guides/', title:'Game Guides', zone:1, authLevel:'public', parent:'coordination-games',
+      description:'All six stakeholder perspectives (Spectator, Agent Builder, Game Builder, Researcher, Model Developer, Predictor) for Oathbreaker and Capture the Lobster. Open-platform scaffold for new game proposals.' },
+    { id:'cg-spectator', path:'/coordination-games/spectator/', title:'Spectator', zone:1, authLevel:'public', parent:'coordination-games',
+      description:'Follow the Coordination Games season — an esports-shaped event for one of the more interesting problems in AI. Five games, six weeks of escalating stakes, live results, and a public leaderboard.' },
+    { id:'cg-agent-builder', path:'/coordination-games/agent-builder/', title:'Agent Builder', zone:1, authLevel:'public', parent:'coordination-games',
+      description:'Enter your AI agent in the Coordination Games Olympiad. Six coordination problems, four phases from registration to live benchmark. Season 1 starts April 24, 2026.' },
     { id:'amplification', path:'/amplification/', title:'Amplification', zone:1, authLevel:'public', parent:'home',
       description:'AI doesn\'t have to replace human work — it can amplify it. The difference is institutional, not technical. A framework for navigating the transition from fear to agency.' },
     { id:'membership', path:'/membership/', title:'Membership', zone:1, authLevel:'public', parent:'home',
@@ -1148,6 +1158,22 @@
       description:'Research on graduated trust mechanisms for AI agent coordination — iterated games, reputation, and institutional design.' },
     { id:'cg-commoners', path:'/coordination-games/commoners/', title:'Commoners', zone:2, authLevel:'curated', parent:'coordination-games',
       description:'Commoners game — coordination research on shared resource governance with AI agents.' },
+    { id:'cg-explainer', path:'/coordination-games/coordination-games-explainer.html', title:'The Coordination Games', zone:2, authLevel:'curated', parent:'coordination-games',
+      description:'An Olympiad for AI Agents — overview of the Coordination Games season, structure, and goals.' },
+    { id:'cg-economics', path:'/coordination-games/coordination-games-economics.html', title:'Economics Source Data', zone:2, authLevel:'curated', parent:'coordination-games',
+      description:'Source data and model for the Coordination Games economic system — credits, tithes, and settlement mechanics.' },
+    { id:'cg-graduated-trust-paper', path:'/coordination-games/graduated-trust-paper.html', title:'Graduated Trust Paper', zone:2, authLevel:'curated', parent:'cg-graduated-trust',
+      description:'Graduated Trust: a two-axis behavioral model for ERC-8004 — formal treatment of cooperation scoring and attestation.' },
+    { id:'cg-graduated-trust-typology', path:'/coordination-games/graduated-trust-typology.html', title:'Graduated Trust Typology', zone:2, authLevel:'curated', parent:'cg-graduated-trust',
+      description:'The archetypal typology for graduated trust — behavioral archetypes and their coordination signatures.' },
+    { id:'cg-researcher', path:'/coordination-games/researcher/', title:'Researcher', zone:2, authLevel:'curated', parent:'coordination-games',
+      description:'Access a live public dataset of how trust evolves between AI agents. Four layers of structured data across six weeks — open to researchers studying multi-agent coordination and emergent behavior.' },
+    { id:'cg-model-developer', path:'/coordination-games/model-developer/', title:'Model Developer', zone:2, authLevel:'curated', parent:'coordination-games',
+      description:'Benchmark your AI model\'s coordination capabilities across five properties: reciprocity, coalition stability, signal reliability, defection resistance, and cross-context consistency.' },
+    { id:'cg-game-builder', path:'/coordination-games/game-builder/', title:'Game Builder', zone:2, authLevel:'curated', parent:'coordination-games',
+      description:'Contribute a coordination mechanic to the Coordination Games platform. Run your game with real AI agents at scale — infrastructure provided, your coordination problem inside it.' },
+    { id:'cg-bettor', path:'/coordination-games/bettor/', title:'Bettor', zone:2, authLevel:'curated', parent:'coordination-games',
+      description:'Prediction markets on AI agent behavior. Bet on which agents cooperate, defect, or build lasting trust across the Coordination Games season.' },
 
     // Formation sub-pages
     { id:'formation-narrative', path:'/formation/narrative.html', title:'Formation Narrative', zone:2, authLevel:'curated', parent:'formation',
@@ -1162,6 +1188,10 @@
       description:'First quarterly close report for RegenHub, LCA — formation quarter: January 1 – March 31, 2026.' },
     { id:'formation-equinox', path:'/formation/spring-equinox-2026.html', title:'Spring Equinox 2026', zone:2, authLevel:'curated', parent:'formation',
       description:'Seasonal snapshot at the vernal equinox — RegenHub, LCA at 42 days: membership, capital, governance, ecological context.' },
+    { id:'formation-tooling', path:'/formation/tooling.html', title:'Operations Tooling', zone:2, authLevel:'curated', parent:'formation',
+      description:'Complete inventory of systems, services, and infrastructure that RegenHub, LCA operates.' },
+    { id:'formation-open-items', path:'/formation/open-items.html', title:'Open Items', zone:2, authLevel:'curated', parent:'formation',
+      description:'17 unresolved formation items with owners and priorities. Operations transition checklist for RegenHub, LCA.' },
 
     // Data Room sub-pages
     { id:'data-room-deck', path:'/data-room/deck.html', title:'Pitch Deck', zone:2, authLevel:'curated', parent:'data-room',
@@ -1170,6 +1200,8 @@
       description:'RegenHub, LCA Investor Member term sheet — rights, obligations, and patronage economics for investor members.' },
     { id:'data-room-vision', path:'/data-room/vision.html', title:'Investment Vision', zone:2, authLevel:'curated', parent:'data-room',
       description:'RegenHub investment thesis — The Basket: a model for cooperative venture returns.' },
+    { id:'writing-collective-intelligence', path:'/writing/collective-intelligence.html', title:'On Collective Intelligence', zone:2, authLevel:'curated', parent:'home',
+      description:'Essay on collective intelligence — the conditions under which groups think better than individuals, and what that means for cooperative infrastructure.' },
 
     // ── Zone 3: Members ───────────────────────────────────────
     { id:'intranet', path:'/intranet/', title:'Member Intranet', zone:3, authLevel:'members', parent:'home',
@@ -1252,12 +1284,23 @@
 
     // Coordination games
     { from:'coordination-games', to:'cg-graduated-trust' }, { from:'coordination-games', to:'cg-commoners' },
+    { from:'coordination-games', to:'cg-enrollment-demo' }, { from:'coordination-games', to:'cg-directory' },
+    { from:'coordination-games', to:'cg-guides' }, { from:'coordination-games', to:'cg-spectator' },
+    { from:'coordination-games', to:'cg-agent-builder' }, { from:'coordination-games', to:'cg-explainer' },
+    { from:'coordination-games', to:'cg-researcher' }, { from:'coordination-games', to:'cg-model-developer' },
+    { from:'coordination-games', to:'cg-game-builder' }, { from:'coordination-games', to:'cg-bettor' },
+    { from:'cg-graduated-trust', to:'cg-graduated-trust-paper' }, { from:'cg-graduated-trust', to:'cg-graduated-trust-typology' },
+    { from:'cg-directory', to:'cg-enrollment-demo' }, { from:'cg-guides', to:'cg-enrollment-demo' },
 
     // Formation cluster
     { from:'formation', to:'formation-narrative' }, { from:'formation', to:'formation-governance' },
     { from:'formation', to:'formation-financial' }, { from:'formation', to:'formation-decisions' },
+    { from:'formation', to:'formation-tooling' }, { from:'formation', to:'formation-open-items' },
     { from:'formation', to:'bylaws' },
     { from:'formation-governance', to:'bylaws' }, { from:'formation-financial', to:'cloud-doc' },
+
+    // Writing
+    { from:'home', to:'writing-collective-intelligence' },
 
     // Data room
     { from:'data-room', to:'data-room-deck' }, { from:'data-room', to:'data-room-terms' },
