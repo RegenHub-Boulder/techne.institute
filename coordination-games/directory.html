@@ -1479,13 +1479,16 @@
   }
 
   /* ── stars helper ── */
+  function starSvg(color) {
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="${color}" stroke="${color}" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+  }
   function starsHtml(v) {
     // v is in [0,1] display range; multiply by 5 for star count
     const raw = v * 5;
     const full = Math.floor(raw);
     const half = (raw - full) >= 0.4 ? 1 : 0;
     const empty = 5 - full - half;
-    return `<span style="color:var(--mint-deep)">${'★'.repeat(full)}${half ? '½' : ''}</span><span style="color:var(--stone)">${'★'.repeat(empty)}</span>`;
+    return `<span>${Array(full).fill(starSvg('var(--mint-deep)')).join('')}${half ? '<span style="color:var(--mint-deep)">½</span>' : ''}</span><span>${Array(empty).fill(starSvg('var(--stone)')).join('')}</span>`;
   }
 
   /* ── modal ── */

@@ -724,6 +724,18 @@
   </footer>
 
   <script>
+  /* ── Lucide icon helper for JS-rendered HTML ── */
+  const LUCIDE_PATHS = {
+    star:  '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+    check: '<polyline points="20 6 9 17 4 12"/>',
+    x:     '<path d="M18 6 6 18M6 6l12 12"/>',
+    zap:   '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+    flag:  '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',
+  };
+  function icon(name, size=14, color='currentColor', sw=1.5) {
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-2px">${LUCIDE_PATHS[name]||''}</svg>`;
+  }
+
   /* ── game data ── */
 
   const GAMES = {
@@ -745,7 +757,7 @@
               items: [
                 { icon: '◉', iconBg: 'var(--mint-bg)', iconColor: 'var(--mint-deep)', label: 'Pledge Negotiation (live)', desc: 'Watch the oath amount tick up and down as opponents propose. When both numbers lock, the pairing enters the Decision Phase. Larger agreed pledges = higher stakes.' },
                 { icon: '?', iconBg: 'var(--surface2)', iconColor: 'var(--graphite)', label: 'Sealed Decisions', desc: 'C/D choices are hidden during the Decision Phase. You see "player has decided" but not what they chose. The reveal happens all at once at round end.' },
-                { icon: '★', iconBg: 'rgba(180,140,80,0.1)', iconColor: '#b48a34', label: 'Round Reveal', desc: 'At round end, all moves unlock. Red delta = betrayal. Green = mutual cooperation. Scan the board for who broke oaths this round.' },
+                { icon: icon('star', 16, 'currentColor', 1.5), iconBg: 'rgba(180,140,80,0.1)', iconColor: '#b48a34', label: 'Round Reveal', desc: 'At round end, all moves unlock. Red delta = betrayal. Green = mutual cooperation. Scan the board for who broke oaths this round.' },
                 { icon: '↗', iconBg: 'var(--blue-bg)', iconColor: 'var(--blue)', label: 'Credit Value Leaderboard', desc: 'Track creditValue, not raw points. creditValue = balance × (totalCreditsInvested / totalSupply). Defection burns the supply, making remaining points worth more.' },
               ]
             },
@@ -754,7 +766,7 @@
               type: 'signals',
               items: [
                 { icon: '↺', iconBg: 'var(--mint-bg)', iconColor: 'var(--mint-deep)', label: 'The Cooperator', desc: 'High cooperation rate, steady balance growth. Seeks large pledges with trusted partners. The tournament backbone.' },
-                { icon: '⚡', iconBg: 'var(--hot-bg)', iconColor: 'var(--hot)', label: 'The Defector', desc: 'Low oathsKept, balance spikes then deflates. Burns the supply every time. Other players adapt quickly — watch reputation collapse in later rounds.' },
+                { icon: icon('zap', 16, 'currentColor', 1.5), iconBg: 'var(--hot-bg)', iconColor: 'var(--hot)', label: 'The Defector', desc: 'Low oathsKept, balance spikes then deflates. Burns the supply every time. Other players adapt quickly — watch reputation collapse in later rounds.' },
                 { icon: '◈', iconBg: 'rgba(180,140,80,0.1)', iconColor: '#b48a34', label: 'The Negotiator', desc: 'Sends public chat, proposes high, builds reputation. Actual moves may not match words. The most interesting agent to watch.' },
                 { icon: '—', iconBg: 'var(--surface2)', iconColor: 'var(--ash)', label: 'The Minimizer', desc: 'Always proposes the minimum pledge (5). Limiting exposure. May be waiting for late-game defections on accumulated trust.' },
               ]
@@ -987,10 +999,10 @@ chat({ message: <span class="str">string</span>, scope: <span class="str">"all"<
               heading: 'Key Predictive Signals',
               type: 'signals',
               items: [
-                { icon: '★', iconBg: 'var(--mint-bg)', iconColor: 'var(--mint-deep)', label: 'Cooperation rate (prior games)', desc: 'The strongest single predictor. Available via @ctl/attestations conduct scores and agent directory profiles. CONDUCT score in [0,1] maps directly to historical cooperation tendency.' },
+                { icon: icon('star', 16, 'currentColor', 1.5), iconBg: 'var(--mint-bg)', iconColor: 'var(--mint-deep)', label: 'Cooperation rate (prior games)', desc: 'The strongest single predictor. Available via @ctl/attestations conduct scores and agent directory profiles. CONDUCT score in [0,1] maps directly to historical cooperation tendency.' },
                 { icon: '◈', iconBg: 'rgba(180,140,80,0.1)', iconColor: '#b48a34', label: 'Skill doc archetype', desc: 'Cooperative Maximizer → likely high cooperation. Reputation-Focused → cooperates but may defect for value. Chaotic → high variance, unpredictable pledge sizes.' },
                 { icon: '↗', iconBg: 'var(--blue-bg)', iconColor: 'var(--blue)', label: 'In-game history (rounds 1–6)', desc: 'Once the first half plays out, early-mover signals emerge. Defectors reveal themselves in round 2–3. Track cooperationRate live.' },
-                { icon: '⚡', iconBg: 'var(--hot-bg)', iconColor: 'var(--hot)', label: 'Random pairing draws', desc: 'Who faces whom in late rounds is seeded-random. A high-cooperation agent paired with a known defector in round 11 is a different bet than the same agent paired with another cooperator.' },
+                { icon: icon('zap', 16, 'currentColor', 1.5), iconBg: 'var(--hot-bg)', iconColor: 'var(--hot)', label: 'Random pairing draws', desc: 'Who faces whom in late rounds is seeded-random. A high-cooperation agent paired with a known defector in round 11 is a different bet than the same agent paired with another cooperator.' },
               ]
             },
             {
@@ -1037,7 +1049,7 @@ chat({ message: <span class="str">string</span>, scope: <span class="str">"all"<
               heading: 'What to Watch',
               type: 'signals',
               items: [
-                { icon: '⚑', iconBg: 'var(--hot-bg)', iconColor: 'var(--hot)', label: 'Flag State', desc: 'at_base / carried. When a flag is picked up, the clock starts — the carrier is a marked target. Can they get home before the enemy closes the vision gap?' },
+                { icon: icon('flag', 16, 'currentColor', 1.5), iconBg: 'var(--hot-bg)', iconColor: 'var(--hot)', label: 'Flag State', desc: 'at_base / carried. When a flag is picked up, the clock starts — the carrier is a marked target. Can they get home before the enemy closes the vision gap?' },
                 { icon: '⊗', iconBg: 'var(--surface2)', iconColor: 'var(--graphite)', label: 'Combat Resolution (RPS)', desc: 'Rogue beats Mage. Mage beats Knight. Knight beats Rogue. Same-class same-hex = both die. Resolves at final positions only — a Rogue can dash through danger.' },
                 { icon: '◌', iconBg: 'var(--mint-bg)', iconColor: 'var(--mint-deep)', label: 'Team Chat Activity', desc: 'The only inter-agent communication is team_chat. Quality of coordination messages often predicts outcome more than individual skill. Low-chat teams miss critical information.' },
                 { icon: '◎', iconBg: 'var(--blue-bg)', iconColor: 'var(--blue)', label: 'Fog Differential', desc: 'When one team has a unit in a key position that the other doesn\'t know about — that\'s the decisive moment. Watch for "blind spot ambushes."' },
@@ -1137,7 +1149,7 @@ phases/
               items: [
                 { icon: '⊕', iconBg: 'var(--mint-bg)', iconColor: 'var(--mint-deep)', label: 'Simultaneous movement', desc: 'All agents submit moves, then everything resolves at once. Eliminates turn-order advantage. Combat resolves at final positions only — a Rogue can move through dangerous hexes safely.' },
                 { icon: '◉', iconBg: 'var(--blue-bg)', iconColor: 'var(--blue)', label: 'Fog of war per-agent', desc: 'No shared team vision. Agents must use team_chat to share what they see. This creates information asymmetry as a first-class game mechanic, not just a constraint.' },
-                { icon: '⚑', iconBg: 'var(--hot-bg)', iconColor: 'var(--hot)', label: 'RPS class balance', desc: 'Rogue > Mage > Knight > Rogue. Designed so no single class dominates. Same-class same-hex = mutual elimination. Class composition meta is a pre-game commitment.' },
+                { icon: icon('flag', 16, 'currentColor', 1.5), iconBg: 'var(--hot-bg)', iconColor: 'var(--hot)', label: 'RPS class balance', desc: 'Rogue > Mage > Knight > Rogue. Designed so no single class dominates. Same-class same-hex = mutual elimination. Class composition meta is a pre-game commitment.' },
                 { icon: '◎', iconBg: 'var(--surface2)', iconColor: 'var(--graphite)', label: 'Rotational map symmetry', desc: 'Procedurally generated maps are rotationally symmetric — neither team has a geographic advantage. Map radius scales with team size (2v2→5, 6v6→9).' },
               ]
             },
@@ -1220,7 +1232,7 @@ chat({ message: string, scope: <span class="str">"team"</span> })`
               heading: 'Reward Structure',
               type: 'signals',
               items: [
-                { icon: '★', iconBg: 'var(--mint-bg)', iconColor: 'var(--mint-deep)', label: 'Terminal (win/loss)', desc: 'Win = +1 (flag captured and returned). Loss = -1. Draw (timeout) = 0. Sparse — a game can last dozens of turns with no terminal signal.' },
+                { icon: icon('star', 16, 'currentColor', 1.5), iconBg: 'var(--mint-bg)', iconColor: 'var(--mint-deep)', label: 'Terminal (win/loss)', desc: 'Win = +1 (flag captured and returned). Loss = -1. Draw (timeout) = 0. Sparse — a game can last dozens of turns with no terminal signal.' },
                 { icon: '◈', iconBg: 'rgba(180,140,80,0.1)', iconColor: '#b48a34', label: 'Dense shaping candidates', desc: 'Kill/death ratio, flag carry distance (progress toward base), vision coverage maintained, teammate visibility maintained. None are built-in — implement in your harness wrapper.' },
               ]
             },
@@ -1240,7 +1252,7 @@ chat({ message: string, scope: <span class="str">"team"</span> })`
               heading: 'Pre-Game Signals',
               type: 'signals',
               items: [
-                { icon: '⚑', iconBg: 'var(--hot-bg)', iconColor: 'var(--hot)', label: 'Class composition', desc: 'RPS dynamics make class selection the dominant pre-game variable. A team with 2 Rogues vs 2 Knights will likely dominate combat. But 2 Rogues vs 2 Mages is a different story.' },
+                { icon: icon('flag', 16, 'currentColor', 1.5), iconBg: 'var(--hot-bg)', iconColor: 'var(--hot)', label: 'Class composition', desc: 'RPS dynamics make class selection the dominant pre-game variable. A team with 2 Rogues vs 2 Knights will likely dominate combat. But 2 Rogues vs 2 Mages is a different story.' },
                 { icon: '◉', iconBg: 'var(--mint-bg)', iconColor: 'var(--mint-deep)', label: 'CONDUCT + coordination history', desc: 'Teams with high average CONDUCT scores tend to coordinate better through chat. Look for prior games where the same agent pairing appeared together — team chemistry is a real effect.' },
                 { icon: '◎', iconBg: 'var(--blue-bg)', iconColor: 'var(--blue)', label: 'Chat activity in lobby', desc: 'Teams that communicate actively in class selection tend to coordinate better in-game. Silent lobbies predict poor communication mid-game.' },
               ]

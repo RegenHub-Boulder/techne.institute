@@ -258,7 +258,7 @@
         <button class="toggle-btn"        id="rm-proportional" onclick="setRewardModel('proportional')">Prop.</button>
         <button class="toggle-btn"        id="rm-tiered"       onclick="setRewardModel('tiered')">Tiered</button>
         <button class="toggle-btn"        id="rm-patronage"    onclick="setRewardModel('patronage')">Patronage</button>
-        <button class="toggle-btn"        id="rm-commons"      onclick="setRewardModel('commons')" style="color:var(--gold)">Commons ★</button>
+        <button class="toggle-btn"        id="rm-commons"      onclick="setRewardModel('commons')" style="color:var(--gold)">Commons <i data-lucide="star" style="width:11px;height:11px;vertical-align:-1px;margin-left:2px"></i></button>
       </div>
       <div style="font-size:11px; color:var(--muted); line-height:1.5;" id="rm-desc">
         Top winners receive a fixed Quarter amount. All others receive nothing.
@@ -876,7 +876,7 @@ function renderRewards(p, c) {
 
   const commonsPool = (p.rewardModel === 'commons') ? totalCOIN * (p.commonsPct || 0.10) : 0;
 
-  const modelLabels = { fixed: 'Fixed Payout', proportional: 'Proportional', tiered: 'Tiered', patronage: 'Patronage', commons: 'Commons ★' };
+  const modelLabels = { fixed: 'Fixed Payout', proportional: 'Proportional', tiered: 'Tiered', patronage: 'Patronage', commons: 'Commons ' + icon('star', 10, 'var(--gold)', 1.5) };
   const modelDescs = {
     fixed:        'Top winners share the prize pool equally in Quarters. All others receive zero. Clearest incentive; binary outcome.',
     proportional: 'Every agent earns Quarters proportional to their rank. First place earns the most; last place earns a small positive amount. Reward is distributed smoothly across the entire field.',
@@ -923,7 +923,7 @@ function renderRewards(p, c) {
           ${pt.coin > 0 ? fmtQ(Math.round(pt.coin)) + ' · ' + fmt$(usd, 0) : 'no payout'}
         </div>
       </div>
-      ${pt.rank <= (breakEvenRank||0) ? '<div style="font-size:10px;color:var(--status-ok);margin-left:4px;white-space:nowrap">✓ profit</div>' : '<div style="font-size:10px;color:var(--ghost);margin-left:4px;white-space:nowrap">loss</div>'}
+      ${pt.rank <= (breakEvenRank||0) ? '<div style="font-size:10px;color:var(--status-ok);margin-left:4px;white-space:nowrap">${icon('check', 10, 'var(--status-ok)')} profit</div>' : '<div style="font-size:10px;color:var(--ghost);margin-left:4px;white-space:nowrap">loss</div>'}
     </div>`;
   }).join('');
 
@@ -934,7 +934,7 @@ function renderRewards(p, c) {
     <div class="cards">
       <div class="card accent-coin">
         <div class="card-label">Model: ${modelLabels[p.rewardModel]}</div>
-        <div class="card-value" style="font-size:18px">${breakEvenRank ? 'Top ' + breakEvenPct + '%' : 'All'}${breakEvenRank ? '' : ' ✓'}</div>
+        <div class="card-value" style="font-size:18px">${breakEvenRank ? 'Top ' + breakEvenPct + '%' : 'All'}${breakEvenRank ? '' : ' ' + icon('check', 11, 'var(--status-ok)')}</div>
         <div class="card-sub">break-even rank threshold</div>
       </div>
       <div class="card accent-green">
@@ -950,7 +950,7 @@ function renderRewards(p, c) {
       <div class="card ${medianPayout >= buyInCOIN ? 'accent-green' : 'accent-amber'}">
         <div class="card-label">Median Payout</div>
         <div class="card-value">${fmt$(medianPayout / rate, 2)}</div>
-        <div class="card-sub">${medianPayout >= buyInCOIN ? '✓ above break-even' : '✗ below break-even'}</div>
+        <div class="card-sub">${medianPayout >= buyInCOIN ? icon('check',11,'var(--status-ok)') + ' above break-even' : icon('x',11,'var(--hot)') + ' below break-even'}</div>
       </div>
       ${commonsPool > 0 ? `<div class="card accent-coin"><div class="card-label">Forge Pool</div><div class="card-value">${fmt$(commonsPool/rate, 0)}</div><div class="card-sub">${fmtQ(commonsPool)} → game grants</div></div>` : ''}
     </div>
@@ -962,7 +962,7 @@ function renderRewards(p, c) {
         ${p.rewardModel === 'fixed' ? `<div style="margin-top:8px;color:var(--muted);font-size:12px">Winners threshold: top ${(winnerFrac*100).toFixed(0)}% (${Math.round(N*winnerFrac).toLocaleString()} of ${N.toLocaleString()} agents). Fixed payout: ${fmtQ(Math.round(totalCOIN / (N * winnerFrac)))} each (${fmt$(Math.round(totalCOIN / (N * winnerFrac)) / rate, 2)}).</div>` : ''}
         ${p.rewardModel === 'tiered' ? '<div style="margin-top:8px;color:var(--muted);font-size:12px">Brackets: Top 10% → 50% of pool · Next 20% → 30% · Next 30% → 20% · Bottom 40% → nothing.</div>' : ''}
         ${p.rewardModel === 'commons' ? `<div style="margin-top:8px;color:var(--muted);font-size:12px">Forge carve-out: ${fmtQ(commonsPool)} (${fmt$(commonsPool/rate,0)}) · Floor per agent: ${fmtQ(Math.round((totalCOIN*(1-p.commonsPct)*p.participation)/N))} · Merit tiers: 35/30/20/15%</div>` : ''}
-        <div style="margin-top:8px;font-size:12px;color:var(--muted)">Entry cost: ${fmtQ(buyInCOIN)} (${fmt$(p.buyIn)}) · Break-even: ${breakEvenRank ? 'top ' + breakEvenPct + '% (rank ' + (breakEvenRank||0).toLocaleString() + ' of ' + N.toLocaleString() + ')' : 'all committed agents ✓'}</div>
+        <div style="margin-top:8px;font-size:12px;color:var(--muted)">Entry cost: ${fmtQ(buyInCOIN)} (${fmt$(p.buyIn)}) · Break-even: ${breakEvenRank ? 'top ' + breakEvenPct + '% (rank ' + (breakEvenRank||0).toLocaleString() + ' of ' + N.toLocaleString() + ')' : 'all committed agents ' + icon('check', 10, 'var(--status-ok)')}</div>
       </div>
     </div>
 
@@ -1020,13 +1020,13 @@ function renderRewards(p, c) {
             <td><strong>Patronage</strong></td>
             <td style="color:var(--muted)">Guaranteed floor + merit bonus. Showing up has inherent value.</td>
             <td style="color:var(--muted)">Reduces exit incentive for mid-tier agents. Strong cooperative signal: commitment is rewarded even without winning.</td>
-            <td class="num" style="color:var(--status-ok)">All ✓</td>
+            <td class="num" style="color:var(--status-ok)">All ${icon('check',11,'var(--status-ok)')}</td>
           </tr>
           <tr ${p.rewardModel==='commons'?'class="highlight-row"':''}>
-            <td><strong>Commons ★</strong></td>
+            <td><strong>Commons ${icon('star',10,'var(--gold)',1.5)}</strong></td>
             <td style="color:var(--muted)">Floor + compressed merit + Forge investment. Platform gets richer each season.</td>
             <td style="color:var(--muted)">Closes the investment loop: players fund the Forge, Forge builds games, games attract players. LCA-aligned. Recommended for Season 1.</td>
-            <td class="num" style="color:var(--status-ok)">All ✓</td>
+            <td class="num" style="color:var(--status-ok)">All ${icon('check',11,'var(--status-ok)')}</td>
           </tr>
         </tbody>
       </table>
@@ -1070,7 +1070,7 @@ function setRewardModel(model) {
     proportional: 'Every agent earns Quarters proportional to rank. No hard cutoff — last place still earns a small amount.',
     tiered:       'Bracket system: top 10% → 50% of pool, next 20% → 30%, next 30% → 20%, bottom 40% → zero.',
     patronage:    'Cooperative floor: floor share % divided equally among ALL agents; remaining merit pool distributed to top winners. Everyone earns something.',
-    commons:      '★ LCA-aligned: Forge carve-out % reserved for game grants; floor share % for all committed agents; remainder via compressed tiers (35/30/20/15) — bottom bracket still earns.',
+    commons:      'LCA-aligned: Forge carve-out % reserved for game grants; floor share % for all committed agents; remainder via compressed tiers (35/30/20/15) — bottom bracket still earns.',
   };
   document.getElementById('rm-desc').textContent = descs[model];
   // Show/hide conditional params
@@ -1188,6 +1188,8 @@ function render() {
 // Initial render
 render();
 </script>
+<script src="https://unpkg.com/lucide@0.513.0/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
 </body>
 </html>
 
