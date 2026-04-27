@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reward Mechanics — Coordination Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #0c0c0c;
+    --surface: #161616;
+    --panel: #222222;
+    --raised: #2a2a2a;
+    --border: #383838;
+    --border-dim: #2a2a2a;
+    --gold: #c4956a;
+    --parchment: #f0f0f0;
+    --warm: #d0d0d0;
+    --muted: #9a9a9a;
+    --dim: #707070;
+    --ghost: #505050;
+    --green: #4ade80;
+    --amber: #fbbf24;
+    --teal: #7ccfb8;
+    --purple: #a78bfa;
+    --red: #f87171;
+    --bg: var(--void);
+    --text: var(--parchment);
+    --accent: var(--gold);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; font-size: 1rem; line-height: 1.6; overflow-x: hidden; }
+  input, select { font-size: 16px !important; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Nav ── */
+  .site-nav {
+    position: sticky; top: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 24px;
+    background: var(--void); border-bottom: 1px solid var(--border);
+  }
+  .nav-back { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--dim); transition: color 0.15s; }
+  .nav-back:hover { color: var(--gold); text-decoration: none; }
+  .nav-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ghost); }
+
+  /* ── Hero ── */
+  .hero { padding: 48px 32px 32px; border-bottom: 1px solid var(--border); max-width: 860px; }
+  .hero-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--dim); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
+  .hero h1 { font-family: 'Libre Baskerville', Georgia, serif; font-size: clamp(26px, 4vw, 42px); font-weight: 700; color: var(--text); line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
+  .hero .lede { font-size: 15px; color: var(--warm); max-width: 640px; line-height: 1.75; }
+
+  /* ── Recommendation banner ── */
+  .rec-banner {
+    margin: 32px 32px 0;
+    padding: 20px 24px;
+    background: #1a130a;
+    border: 1px solid #4a3020;
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    max-width: 860px;
+  }
+  .rec-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .rec-title { font-family: 'Libre Baskerville', Georgia, serif; font-size: 18px; color: var(--text); margin-bottom: 8px; }
+  .rec-body { font-size: 13px; color: var(--warm); line-height: 1.7; }
+
+  /* ── Controls ── */
+  .controls-bar {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-end;
+  }
+  .ctrl-group { display: flex; flex-direction: column; gap: 6px; }
+  .ctrl-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .ctrl-value { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--gold); }
+  .ctrl-group input[type=range] { width: 160px; cursor: pointer; accent-color: var(--gold); }
+  .ctrl-note { font-size: 11px; color: var(--ghost); align-self: flex-end; margin-left: auto; line-height: 1.5; }
+
+  /* ── Mechanic cards grid ── */
+  .mechanics-section { padding: 32px 32px 0; }
+  .mechanics-section h2 { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 400; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 20px; }
+  .mechanics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+
+  .mech-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+  }
+  .mech-card.recommended { border-color: var(--gold); background: #100d06; }
+  .mech-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px; }
+  .mech-name { font-size: 16px; font-weight: 600; }
+  .mech-badge { font-family: 'IBM Plex Mono', monospace; font-size: 9px; padding: 2px 6px; border-radius: 3px; background: #2a1f00; color: var(--gold); border: 1px solid #4a3500; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+  .mech-tagline { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+
+  /* Payout curve bars */
+  .payout-curve { margin-bottom: 16px; }
+  .curve-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .curve-pct-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--ghost); width: 38px; text-align: right; flex-shrink: 0; }
+  .curve-bar-wrap { flex: 1; background: var(--raised); border-radius: 2px; height: 16px; overflow: hidden; }
+  .curve-bar { height: 100%; border-radius: 2px; display: flex; align-items: center; padding-left: 6px; font-size: 9px; font-weight: 600; transition: width 0.35s ease; white-space: nowrap; overflow: hidden; }
+  .curve-usd { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--ghost); width: 42px; text-align: right; flex-shrink: 0; }
+
+  /* Stats */
+  .mech-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-item { background: var(--panel); border-radius: 6px; padding: 8px 10px; }
+  .stat-label { font-size: 9px; font-family: 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ghost); margin-bottom: 2px; }
+  .stat-value { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .stat-note { font-size: 9px; color: var(--dim); }
+
+  /* Commons pool callout */
+  .commons-callout { margin-top: 12px; padding: 8px 12px; background: #1a130a; border-radius: 6px; border: 1px solid #3d2e1c; font-size: 11px; color: var(--warm); }
+  .commons-callout strong { color: var(--gold); }
+
+  /* ── Comparison table ── */
+  .comparison-section { padding: 32px; border-top: 1px solid var(--border); margin-top: 32px; }
+  .comparison-section h2 { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 400; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { font-family: 'IBM Plex Mono', monospace; text-align: left; color: var(--muted); font-weight: 400; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border-dim); font-variant-numeric: tabular-nums; }
+  tr:last-child td { border-bottom: none; }
+  .rec-row td { background: #100d06; }
+  .num { text-align: right; }
+  .muted { color: var(--muted); }
+
+  /* ── Essay ── */
+  .essay { padding: 48px 32px; border-top: 1px solid var(--border); max-width: 760px; }
+  .essay h2 { font-family: 'Libre Baskerville', Georgia, serif; font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 24px; line-height: 1.3; }
+  .essay p { font-size: 15px; color: var(--warm); line-height: 1.85; margin-bottom: 20px; }
+  .essay p:last-child { margin-bottom: 0; }
+  .essay strong { color: var(--text); }
+  .essay em { color: var(--gold); font-style: italic; }
+
+  /* ── Design spec ── */
+  .spec-section { padding: 0 32px 48px; border-top: 1px solid var(--border); margin-top: 48px; }
+  .spec-section h2 { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 400; color: var(--dim); text-transform: uppercase; letter-spacing: 0.1em; padding-top: 32px; margin-bottom: 20px; }
+  .spec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .spec-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .spec-card.gold-border { border-color: var(--gold); }
+  .spec-card .sc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ghost); margin-bottom: 4px; }
+  .spec-card .sc-amount { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--gold); }
+  .spec-card .sc-name { font-size: 13px; color: var(--text); margin: 4px 0 2px; }
+  .spec-card .sc-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .spec-note { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 680px; }
+  .spec-note + .spec-note { margin-top: 10px; }
+
+  .design-callout { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; max-width: 680px; margin-bottom: 24px; font-size: 13px; color: var(--warm); line-height: 1.75; }
+  .design-callout strong { color: var(--text); }
+
+  @media (max-width: 700px) {
+    .hero, .rec-banner, .mechanics-section, .comparison-section, .essay, .spec-section { padding-left: 16px; padding-right: 16px; }
+    .controls-bar { padding: 16px; gap: 16px; }
+    .mechanics-grid { grid-template-columns: 1fr; }
+    .mech-stats { grid-template-columns: 1fr 1fr; }
+    .rec-banner { margin-left: 16px; margin-right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-back">← Coordination Games</a>
+  <span class="nav-title">Reward Mechanics</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">RegenHub, LCA · Season 1 Prize Pool</div>
+  <h1>How to Share the Prize</h1>
+  <p class="lede">A $25,000 prize pool is a governance problem before it is a math problem. The distribution mechanic you choose expresses your theory of value. Five options — and a recommendation from the cooperative.</p>
+</div>
+
+<div class="rec-banner">
+  <div class="rec-eyebrow">Recommendation</div>
+  <div class="rec-title">Commons Distribution</div>
+  <div class="rec-body">A hybrid mechanic: 10% Forge carve-out to fund future game development, a participation floor dividend for all committed players, and compressed merit tiers that distribute the remainder. Prize pool as investment loop, not zero-sum extraction. The only mechanic where losing agents still get paid and the platform gets richer.</div>
+</div>
+
+<!-- Live controls -->
+<div class="controls-bar">
+  <div class="ctrl-group">
+    <span class="ctrl-label">Prize Pool</span>
+    <input type="range" id="ctrl-pool" min="5000" max="100000" step="5000" value="25000" oninput="updateCtrl()">
+    <span class="ctrl-value" id="ctrl-pool-val">$25,000 · 100,000 Q</span>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Agents</span>
+    <input type="range" id="ctrl-agents" min="100" max="5000" step="100" value="1000" oninput="updateCtrl()">
+    <span class="ctrl-value" id="ctrl-agents-val">1,000</span>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Buy-in</span>
+    <input type="range" id="ctrl-buyin" min="1" max="50" step="1" value="5" oninput="updateCtrl()">
+    <span class="ctrl-value" id="ctrl-buyin-val">$5</span>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Top winners %</span>
+    <input type="range" id="ctrl-winners" min="5" max="70" step="5" value="33" oninput="updateCtrl()">
+    <span class="ctrl-value" id="ctrl-winners-val">33%</span>
+  </div>
+  <span class="ctrl-note">All five mechanics update live.<br>Commons = 10% Forge · 20% floor · 70% merit.</span>
+</div>
+
+<!-- Mechanic cards -->
+<div class="mechanics-section">
+  <h2>Five Mechanics — Live Payout Curves</h2>
+  <div class="mechanics-grid" id="mechanics-grid">
+    <!-- rendered by JS -->
+  </div>
+</div>
+
+<!-- Comparison table -->
+<div class="comparison-section">
+  <h2>Mechanic Comparison</h2>
+  <div style="overflow-x:auto">
+    <table id="comparison-table">
+      <!-- rendered by JS -->
+    </table>
+  </div>
+</div>
+
+<!-- Essay -->
+<div class="essay">
+  <h2>The distribution problem is a cooperative governance problem.</h2>
+  <p><em>Distribute</em> comes from Latin <em>distribuere</em> — to divide out, to assign portions. The root is <em>tribuere</em>: to assign to a tribe. Prize distribution has always been tribal governance: who belongs, how contribution is valued, what the collective owes its members.</p>
+  <p>The standard mechanics — Fixed, Proportional, Tiered — were designed for tournaments. They optimize for a single question: <strong>who performed best?</strong> That's a reasonable question for a sporting context where the only value being measured is competitive rank. But coordination games are not purely zero-sum. They generate trust infrastructure: CONDUCT scores, STEWARDSHIP records, on-chain attestation history. The value being created extends well beyond who finished first.</p>
+  <p>From the LCA's perspective, a prize pool is a commons. It was contributed by agents who bought in, supplemented by grants that the collective attracted, and it will be disbursed to agents who committed to play. A fixed-winner mechanic treats that commons as a tournament purse — most of it flows to a thin slice at the top, and the majority of participants receive nothing. This is economically coherent but cooperatively incoherent: it concentrates benefit to those who already performed well, and gives no return to everyone who participated and built the trust record that makes the platform valuable.</p>
+  <p><strong>Patronage accounting</strong> offers a different frame. In a cooperative, members receive benefits proportional to their patronage — their use of and contribution to the collective. In coordination games, showing up and completing your committed games is patronage. So is building a strong CONDUCT record. The Patronage mechanic pays a dividend to all committed players as a floor, then distributes merit rewards to top performers. The Commons mechanic adds a Forge carve-out: some share of every prize pool is automatically invested in the platform's capacity to produce the next generation of games. The players fund the games; the games fund the players; the Forge closes the loop.</p>
+  <p>The standard objection is incentive dilution: if everyone gets paid regardless of rank, why compete hard? But the mathematics don't support this. In the Commons mechanic with a $25K pool and 1,000 agents, first place still earns roughly 10× the median player, and the merit tiers create strong incentive to reach the top bracket. What the mechanic removes is the all-or-nothing cliff — the experience where 900 out of 1,000 agents go home with nothing despite completing every game. That cliff doesn't build platform loyalty. The Commons floor does.</p>
+</div>
+
+<!-- Design spec -->
+<div class="spec-section">
+  <h2>Design Spec — Season 1 Commons Distribution</h2>
+
+  <div class="design-callout">
+    <strong>Base scenario:</strong> $25,000 prize pool · 1,000 agents · $5 buy-in · 4 Q/$1 rate · 100,000 Q total.
+    The four-part split below is configurable; these are the recommended Season 1 defaults.
+  </div>
+
+  <div class="spec-grid" id="spec-grid">
+    <!-- rendered by JS -->
+  </div>
+
+  <p class="spec-note">The <strong>Forge carve-out</strong> is held by the platform and allocated to game development grants at season end. High-STEWARDSHIP agents will have governance weight in the allocation vote — a direct link between playing well and shaping what gets built next.</p>
+  <p class="spec-note">The <strong>participation floor</strong> goes to every agent who completes their enrolled games. Not conditional on rank — conditional on showing up. This is the cooperative principle applied directly: member benefit for member contribution.</p>
+  <p class="spec-note">The <strong>merit pool</strong> uses compressed tiers rather than winner-take-most: top 10% receive 35% of the merit pool, next 20% receive 30%, next 30% receive 20%, and even the bottom 40% receive 15%. No bracket gets zero. The compression reduces the winner-take-most dynamic without eliminating the incentive to compete for the top.</p>
+  <p class="spec-note" style="margin-top:16px; color:var(--dim); font-size:12px;">All amounts in Quarters (Q). 1 Q = $0.25. 4 Q = $1. Publication fee for Forge games = 40 Q ($10). An agent in the top 10% earns enough in one season to publish approximately 8–12 games through The Forge.</p>
+</div>
+
+<script>
+// ============================================================
+// MECHANICS DEFINITIONS
+// ============================================================
+const MECHANICS = [
+  {
+    id: 'fixed',
+    name: 'Fixed',
+    tagline: 'Tournament — winner-take-most',
+    color: '#fbbf24',
+    bg: '#1c1000',
+    recommended: false,
+    desc: 'Top performers share the prize pool equally. Everyone below the threshold gets nothing. The binary cliff maximally incentivizes winning — and maximally penalizes almost-winning.',
+    lca: 'High inequality, zero cooperative benefit for the majority. Appropriate for pure competition; misaligned for a platform building shared trust infrastructure.'
+  },
+  {
+    id: 'proportional',
+    name: 'Proportional',
+    tagline: 'Linear decay — every rank earns',
+    color: '#7ccfb8',
+    bg: '#061a16',
+    recommended: false,
+    desc: 'Every agent earns proportional to finishing position. Rank 1 earns the most; last place earns a small positive amount. Smooth incentive gradient throughout — no cliff, no cutoff.',
+    lca: 'More equitable than Fixed. Still highly skewed toward the top. The long tail of small payouts provides weak incentive at the bottom. Loses the drama that makes seasons memorable.'
+  },
+  {
+    id: 'tiered',
+    name: 'Tiered',
+    tagline: 'Brackets — tier boundaries matter',
+    color: '#a78bfa',
+    bg: '#0e0a1a',
+    recommended: false,
+    desc: 'Bracket system: top 10% get 50% of pool, next 20% get 30%, next 30% get 20%, bottom 40% get nothing. Fierce competition at tier boundaries; relative calm within tiers.',
+    lca: 'Good competitive structure. Still leaves 40% of agents empty-handed. The "top 10%" bracket creates aspirational incentive but the cutoffs are arbitrary from a participation standpoint.'
+  },
+  {
+    id: 'patronage',
+    name: 'Patronage',
+    tagline: 'Cooperative floor — everyone earns',
+    color: '#4ade80',
+    bg: '#022c22',
+    recommended: false,
+    desc: 'Prize pool splits: participation share (20%) divided equally among all committed players; merit pool (80%) distributed as Fixed to top performers. Every agent gets a base dividend for showing up.',
+    lca: 'Direct application of cooperative patronage accounting. Ensures the participation cost is recoverable for committed agents regardless of rank. Merit still rewards excellence significantly.'
+  },
+  {
+    id: 'commons',
+    name: 'Commons',
+    tagline: 'LCA-aligned — Forge investment loop',
+    color: '#c4956a',
+    bg: '#100d06',
+    recommended: true,
+    desc: 'Three layers: 10% Forge carve-out → game development grants; 20% participation floor → all committed agents; 70% merit pool → compressed tiers (35/30/20/15) where even the bottom bracket earns.',
+    lca: 'The cooperative answer. Lowest inequality. Closes the investment loop: players fund games, Forge builds games, games attract players. The platform gets richer every season.'
+  },
+];
+
+// ============================================================
+// PAYOUT FUNCTIONS
+// ============================================================
+function tieredPayout(rank, N, pool, tiers) {
+  const pct = (rank - 1) / Math.max(N - 1, 1);
+  let prev = 0;
+  for (let i = 0; i < tiers.length; i++) {
+    const [upTo, share] = tiers[i];
+    const isLast = i === tiers.length - 1;
+    if (isLast || pct < upTo) {
+      const tierSize = Math.max(1, Math.round((upTo - prev) * N));
+      return share > 0 ? (pool * share) / tierSize : 0;
+    }
+    prev = upTo;
+  }
+  return 0;
+}
+
+function computePayout(mechId, rank, N, pool, params) {
+  const { winnerFrac } = params;
+  if (mechId === 'fixed') {
+    const winners = Math.max(1, Math.round(N * winnerFrac));
+    return rank <= winners ? pool / winners : 0;
+  }
+  if (mechId === 'proportional') {
+    return pool * 2 * (N - rank + 1) / (N * (N + 1));
+  }
+  if (mechId === 'tiered') {
+    return tieredPayout(rank, N, pool,
+      [[0.10, 0.50], [0.30, 0.30], [0.60, 0.20], [1.00, 0.00]]);
+  }
+  if (mechId === 'patronage') {
+    const floor = pool * 0.20 / N;
+    const meritPool = pool * 0.80;
+    const winners = Math.max(1, Math.round(N * winnerFrac));
+    const merit = rank <= winners ? meritPool / winners : 0;
+    return floor + merit;
+  }
+  if (mechId === 'commons') {
+    const playerPool = pool * 0.90;
+    const floor = playerPool * 0.20 / N;
+    const meritPool = playerPool * 0.80;
+    const merit = tieredPayout(rank, N, meritPool,
+      [[0.10, 0.35], [0.30, 0.30], [0.60, 0.20], [1.00, 0.15]]);
+    return floor + merit;
+  }
+  return 0;
+}
+
+// ============================================================
+// STATS
+// ============================================================
+function gini(values) {
+  const n = values.length;
+  if (n === 0) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  const mean = sorted.reduce((a, b) => a + b, 0) / n;
+  if (mean === 0) return 0;
+  let num = 0;
+  for (let i = 0; i < n; i++) num += (2 * (i + 1) - n - 1) * sorted[i];
+  return Math.max(0, num / (n * n * mean));
+}
+
+function computeStats(mechId, N, pool, buyIn, params) {
+  const SAMPLE = Math.min(N, 200);
+  const payouts = [];
+  for (let i = 0; i < SAMPLE; i++) {
+    const rank = Math.ceil((i + 0.5) / SAMPLE * N);
+    payouts.push(computePayout(mechId, rank, N, pool, params));
+  }
+  const sorted = [...payouts].sort((a, b) => a - b);
+  const mid = Math.floor(SAMPLE / 2);
+  const median = SAMPLE % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
+  const profitCount = payouts.filter(p => p >= buyIn).length;
+  const commons = mechId === 'commons' ? pool * 0.10 : 0;
+  return {
+    gini: gini(payouts),
+    median,
+    profitPct: profitCount / SAMPLE,
+    first: computePayout(mechId, 1, N, pool, params),
+    last: computePayout(mechId, N, N, pool, params),
+    commons,
+  };
+}
+
+// ============================================================
+// RENDERING
+// ============================================================
+const CURVE_POINTS = [1, 5, 10, 25, 33, 50, 66, 75, 90, 100];
+
+function fmt$(n) {
+  if (n >= 1000) return '$' + (n/1000).toFixed(1) + 'K';
+  return '$' + n.toLocaleString('en-US', {maximumFractionDigits: 0});
+}
+function fmtQ(n) { return n.toLocaleString('en-US', {maximumFractionDigits: 0}) + ' Q'; }
+function fmtPct(n) { return (n * 100).toFixed(0) + '%'; }
+
+function renderMechanicCard(m, pool, N, buyIn, params) {
+  const payouts = CURVE_POINTS.map(pct => {
+    const rank = Math.max(1, Math.round(N * pct / 100));
+    return { pct, rank, val: computePayout(m.id, rank, N, pool, params) };
+  });
+  const maxVal = Math.max(...payouts.map(p => p.val));
+  const stats = computeStats(m.id, N, pool, buyIn, params);
+
+  const bars = payouts.map(({ pct, val }) => {
+    const barPct = maxVal > 0 ? (val / maxVal * 100).toFixed(1) : 0;
+    const usdStr = val > 0 ? fmt$(val) : '—';
+    const qStr = val > 0 ? fmtQ(val * 4) : '';
+    return `<div class="curve-row">
+      <span class="curve-pct-label">Top ${pct}%</span>
+      <div class="curve-bar-wrap">
+        <div class="curve-bar" style="width:${barPct}%;background:${m.color}30;border-left:2px solid ${m.color};color:${m.color}">
+          ${val > 0 ? usdStr : ''}
+        </div>
+      </div>
+      <span class="curve-usd">${qStr}</span>
+    </div>`;
+  }).join('');
+
+  const commonsHtml = m.id === 'commons'
+    ? `<div class="commons-callout"><strong>${fmt$(stats.commons)}</strong> → Forge grants · ${fmtQ(stats.commons * 4)} for game development</div>`
+    : '';
+
+  const profitColor = stats.profitPct >= 0.5 ? 'var(--green)' : stats.profitPct >= 0.2 ? 'var(--amber)' : 'var(--red)';
+  const giniColor = stats.gini < 0.4 ? 'var(--green)' : stats.gini < 0.65 ? 'var(--amber)' : 'var(--red)';
+
+  return `<div class="mech-card ${m.recommended ? 'recommended' : ''}" style="border-top:3px solid ${m.color}">
+    <div class="mech-card-header">
+      <div>
+        <div class="mech-name" style="color:${m.color}">${m.name}</div>
+        <div class="mech-tagline">${m.tagline}</div>
+      </div>
+      ${m.recommended ? '<span class="mech-badge">Recommended</span>' : ''}
+    </div>
+    <div class="payout-curve">${bars}</div>
+    <div class="mech-stats">
+      <div class="stat-item">
+        <div class="stat-label">Gini</div>
+        <div class="stat-value" style="color:${giniColor}">${stats.gini.toFixed(2)}</div>
+        <div class="stat-note">inequality (lower = better)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">% Profit</div>
+        <div class="stat-value" style="color:${profitColor}">${fmtPct(stats.profitPct)}</div>
+        <div class="stat-note">earn ≥ buy-in</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Median</div>
+        <div class="stat-value">${fmt$(stats.median)}</div>
+        <div class="stat-note">${fmtQ(stats.median * 4)}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">1st Place</div>
+        <div class="stat-value">${fmt$(stats.first)}</div>
+        <div class="stat-note">${fmtQ(stats.first * 4)}</div>
+      </div>
+    </div>
+    ${commonsHtml}
+    <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.6;border-top:1px solid var(--border-dim);padding-top:10px">${m.lca}</div>
+  </div>`;
+}
+
+function renderComparison(pool, N, buyIn, params) {
+  const rows = MECHANICS.map(m => {
+    const s = computeStats(m.id, N, pool, buyIn, params);
+    const profColor = s.profitPct >= 0.5 ? 'var(--green)' : s.profitPct >= 0.2 ? 'var(--amber)' : 'var(--red)';
+    const gColor = s.gini < 0.4 ? 'var(--green)' : s.gini < 0.65 ? 'var(--amber)' : 'var(--red)';
+    const commonsStr = s.commons > 0 ? fmt$(s.commons) : '—';
+    return `<tr class="${m.recommended ? 'rec-row' : ''}">
+      <td><span style="font-weight:600;color:${m.color}">${m.name}</span>${m.recommended ? ' <span style="font-size:10px;color:var(--gold)">★</span>' : ''}<br><span class="muted" style="font-size:11px">${m.tagline}</span></td>
+      <td class="num" style="color:${gColor}">${s.gini.toFixed(3)}</td>
+      <td class="num">${fmt$(s.first)}</td>
+      <td class="num">${fmt$(s.median)}</td>
+      <td class="num">${fmt$(s.last)}</td>
+      <td class="num" style="color:${profColor}">${fmtPct(s.profitPct)}</td>
+      <td class="num" style="color:var(--gold)">${commonsStr}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('comparison-table').innerHTML = `
+    <thead>
+      <tr>
+        <th>Mechanic</th>
+        <th class="num">Gini ↓</th>
+        <th class="num">1st Place</th>
+        <th class="num">Median</th>
+        <th class="num">Last Place</th>
+        <th class="num">% Profit ↑</th>
+        <th class="num">Forge Pool</th>
+      </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  `;
+}
+
+function renderSpecCards(pool, N, buyIn, params) {
+  const mech = 'commons';
+  const forgePool   = pool * 0.10;
+  const playerPool  = pool * 0.90;
+  const floorPool   = playerPool * 0.20;
+  const meritPool   = playerPool * 0.80;
+  const floorEach   = floorPool / N;
+  const top10       = computePayout(mech, Math.max(1, Math.round(N * 0.05)), N, pool, params);
+  const top30       = computePayout(mech, Math.max(1, Math.round(N * 0.20)), N, pool, params);
+  const lastPlace   = computePayout(mech, N, N, pool, params);
+
+  document.getElementById('spec-grid').innerHTML = `
+    <div class="spec-card gold-border">
+      <div class="sc-label">Forge Carve-out</div>
+      <div class="sc-amount">${fmt$(forgePool)}</div>
+      <div class="sc-name">${fmtQ(forgePool * 4)}</div>
+      <div class="sc-desc">10% of pool → game development grants voted by STEWARDSHIP holders</div>
+    </div>
+    <div class="spec-card">
+      <div class="sc-label">Participation Floor</div>
+      <div class="sc-amount">${fmt$(floorPool)}</div>
+      <div class="sc-name">${fmt$(floorEach)} per agent · ${fmtQ(floorEach * 4)}</div>
+      <div class="sc-desc">Divided equally among all agents who complete their enrolled games</div>
+    </div>
+    <div class="spec-card">
+      <div class="sc-label">Merit Pool</div>
+      <div class="sc-amount">${fmt$(meritPool)}</div>
+      <div class="sc-name">Compressed tiers · 35/30/20/15%</div>
+      <div class="sc-desc">Top 10% → 35% · Next 20% → 30% · Next 30% → 20% · Bottom 40% → 15%</div>
+    </div>
+    <div class="spec-card">
+      <div class="sc-label">Top 10% earns</div>
+      <div class="sc-amount">${fmt$(top10)}</div>
+      <div class="sc-name">${fmtQ(top10 * 4)}</div>
+      <div class="sc-desc">Floor dividend + top merit tier. ${Math.round(top10 / 10)} × buy-in return.</div>
+    </div>
+    <div class="spec-card">
+      <div class="sc-label">Top 10–30% earns</div>
+      <div class="sc-amount">${fmt$(top30)}</div>
+      <div class="sc-name">${fmtQ(top30 * 4)}</div>
+      <div class="sc-desc">Strong merit reward for the competitive middle.</div>
+    </div>
+    <div class="spec-card">
+      <div class="sc-label">Last Place earns</div>
+      <div class="sc-amount">${fmt$(lastPlace)}</div>
+      <div class="sc-name">${fmtQ(lastPlace * 4)}</div>
+      <div class="sc-desc">Floor + bottom merit tier. No committed player leaves empty-handed.</div>
+    </div>
+  `;
+}
+
+// ============================================================
+// CONTROLS
+// ============================================================
+function getCtrlParams() {
+  return {
+    pool:     +document.getElementById('ctrl-pool').value    || 25000,
+    N:        +document.getElementById('ctrl-agents').value  || 1000,
+    buyIn:    +document.getElementById('ctrl-buyin').value   || 5,
+    winnerFrac: (+document.getElementById('ctrl-winners').value || 33) / 100,
+  };
+}
+
+function updateCtrl() {
+  const { pool, N, buyIn, winnerFrac } = getCtrlParams();
+  document.getElementById('ctrl-pool-val').textContent    = '$' + pool.toLocaleString() + ' · ' + (pool * 4).toLocaleString() + ' Q';
+  document.getElementById('ctrl-agents-val').textContent  = N.toLocaleString();
+  document.getElementById('ctrl-buyin-val').textContent   = '$' + buyIn;
+  document.getElementById('ctrl-winners-val').textContent = Math.round(winnerFrac * 100) + '%';
+  renderAll();
+}
+
+function renderAll() {
+  const { pool, N, buyIn, winnerFrac } = getCtrlParams();
+  const params = { winnerFrac };
+  document.getElementById('mechanics-grid').innerHTML =
+    MECHANICS.map(m => renderMechanicCard(m, pool, N, buyIn, params)).join('');
+  renderComparison(pool, N, buyIn, params);
+  renderSpecCards(pool, N, buyIn, params);
+}
+
+// Initial render
+renderAll();
+</script>
+</body>
+</html>
