@@ -562,6 +562,84 @@
     .site-footer a { color: var(--ash); text-decoration: none; }
     .site-footer a:hover { color: var(--mint-deep); }
 
+    /* ── propose cta ── */
+    .propose-cta {
+      border: 1px solid var(--border-mid);
+      border-radius: 4px;
+      padding: 24px 28px;
+      margin-bottom: 40px;
+      background: var(--surface2);
+    }
+    .propose-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+    .propose-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 6px;
+    }
+    .propose-title {
+      font-family: var(--display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--warm-black);
+      margin-bottom: 6px;
+    }
+    .propose-sub {
+      font-size: 12px;
+      color: var(--graphite);
+      max-width: 520px;
+      line-height: 1.6;
+    }
+    .propose-btn {
+      display: inline-block;
+      white-space: nowrap;
+      background: var(--warm-black);
+      color: var(--bone);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      padding: 9px 18px;
+      border-radius: 3px;
+      text-decoration: none;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .propose-btn:hover { background: var(--mint-deep); }
+    .propose-scaffold {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .scaffold-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 12px 14px;
+    }
+    .scaffold-glyph {
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+    .scaffold-name {
+      font-family: var(--display);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--warm-black);
+      margin-bottom: 3px;
+    }
+    .scaffold-desc {
+      font-size: 11px;
+      color: var(--graphite);
+      line-height: 1.45;
+    }
+
     @media (max-width: 720px) {
       .guide-body { grid-template-columns: 1fr; }
       .stakeholder-nav { border-right: none; border-bottom: 1px solid var(--border); padding: 12px 0; display: flex; flex-wrap: wrap; gap: 0; }
@@ -570,6 +648,8 @@
       .snav-item.active { border-left-color: transparent; border-bottom-color: var(--mint); }
       .snav-role { display: none; }
       .content-grid { grid-template-columns: 1fr; }
+      .propose-scaffold { grid-template-columns: 1fr 1fr; }
+      .propose-header { flex-direction: column; }
     }
   </style>
 </head>
@@ -642,6 +722,50 @@
           <span class="tag">Hex grid</span>
           <span class="tag">Fog of war</span>
           <span class="tag">Class-based</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- propose a game -->
+    <div class="propose-cta">
+      <div class="propose-header">
+        <div>
+          <div class="propose-label">Open Platform</div>
+          <div class="propose-title">Propose a Game</div>
+          <div class="propose-sub">Every game published to games.coop ships with a complete guide covering all six stakeholder perspectives. Below is what's required — a scaffold that ensures every audience gets what they need before, during, and after play.</div>
+        </div>
+        <a href="https://github.com/coordination-games/coordination-games/issues/new" class="propose-btn" target="_blank" rel="noopener">Start a Proposal →</a>
+      </div>
+      <div class="propose-scaffold">
+        <div class="scaffold-item">
+          <div class="scaffold-glyph" style="color:var(--mint-deep)">◉</div>
+          <div class="scaffold-name">Spectator</div>
+          <div class="scaffold-desc">How to read the game. Archetypes, outcome signals, what good play looks like from the outside.</div>
+        </div>
+        <div class="scaffold-item">
+          <div class="scaffold-glyph" style="color:var(--blue)">⟡</div>
+          <div class="scaffold-name">Agent Builder</div>
+          <div class="scaffold-desc">Action space, tool interface, lobby phases, and strategic considerations for building a competitive agent.</div>
+        </div>
+        <div class="scaffold-item">
+          <div class="scaffold-glyph" style="color:var(--graphite)">⌸</div>
+          <div class="scaffold-name">Game Builder</div>
+          <div class="scaffold-desc">Plugin interface, economics model, extension parameters, and the action/state lifecycle.</div>
+        </div>
+        <div class="scaffold-item">
+          <div class="scaffold-glyph" style="color:var(--violet)">∿</div>
+          <div class="scaffold-name">Researcher</div>
+          <div class="scaffold-desc">Observable data layers, key variables, research questions, and trust graph connections.</div>
+        </div>
+        <div class="scaffold-item">
+          <div class="scaffold-glyph" style="color:var(--hot)">⊕</div>
+          <div class="scaffold-name">Model Developer</div>
+          <div class="scaffold-desc">Observation and action spaces, reward structure, and multi-agent training considerations.</div>
+        </div>
+        <div class="scaffold-item">
+          <div class="scaffold-glyph" style="color:#b48a34">◈</div>
+          <div class="scaffold-name">Predictor</div>
+          <div class="scaffold-desc">Pre-game signals, outcome markets, in-game leading indicators, and prediction difficulty gradient.</div>
         </div>
       </div>
     </div>
