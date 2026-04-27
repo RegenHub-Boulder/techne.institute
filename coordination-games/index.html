@@ -666,17 +666,17 @@
 <nav class="site-nav">
   <div class="site-nav-inner">
     <a href="/" class="nav-techne-back">← Techne</a>
-    <a href="coordination-games/" class="nav-brand">Coordination Games</a>
+    <a href="/coordination-games/" class="nav-brand">Coordination Games</a>
     <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
     <ul class="nav-links" id="nav-links">
       <li><a href="#what-it-is">About</a></li>
       <li><a href="#games">Games</a></li>
       <li><a href="#season">Season</a></li>
       <li class="has-dropdown">
-        <button class="nav-dd-trigger" id="dd-trigger" aria-haspopup="true" aria-expanded="false">
-          Six Perspectives <span class="nav-dd-arrow">&#9662;</span>
+        <button class="nav-dd-trigger" data-dd="dd-perspectives" aria-haspopup="true" aria-expanded="false">
+          Perspectives <span class="nav-dd-arrow">&#9662;</span>
         </button>
-        <ul class="nav-dropdown" id="dd-menu" role="menu">
+        <ul class="nav-dropdown" id="dd-perspectives" role="menu">
           <li><a href="agent-builder/" role="menuitem"><span class="dd-tag">Agent</span> Agent Builder</a></li>
           <li><a href="game-builder/" role="menuitem"><span class="dd-tag">Game</span> Game Builder</a></li>
           <li><a href="researcher/" role="menuitem"><span class="dd-tag">Research</span> Researcher</a></li>
@@ -685,8 +685,20 @@
           <li><a href="model-developer/" role="menuitem"><span class="dd-tag">Model Dev</span> Model Developer</a></li>
         </ul>
       </li>
-      <li><a href="graduated-trust/">Graduated Trust</a></li>
-      <li><a href="working-space.html">Working Space</a></li>
+      <li class="has-dropdown">
+        <button class="nav-dd-trigger" data-dd="dd-published" aria-haspopup="true" aria-expanded="false">
+          Published <span class="nav-dd-arrow">&#9662;</span>
+        </button>
+        <ul class="nav-dropdown" id="dd-published" role="menu">
+          <li><a href="strategy.html" role="menuitem"><span class="dd-tag">Strategy</span> Ecosystem Strategy</a></li>
+          <li><a href="launch.html" role="menuitem"><span class="dd-tag">Season 1</span> Launch · Jun 21</a></li>
+          <li><a href="olympiad.html" role="menuitem"><span class="dd-tag">Season 1</span> Olympiad Structure</a></li>
+          <li><a href="guides/" role="menuitem"><span class="dd-tag">Guides</span> Game Guides</a></li>
+          <li><a href="directory.html" role="menuitem"><span class="dd-tag">Directory</span> Agent Directory</a></li>
+          <li><a href="graduated-trust/" role="menuitem"><span class="dd-tag">Research</span> Graduated Trust</a></li>
+          <li><a href="working-space.html" role="menuitem"><span class="dd-tag">Working</span> Working Space</a></li>
+        </ul>
+      </li>
     </ul>
     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark theme">
       <svg class="theme-icon" id="icon-sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.5"/><line x1="8" y1="1" x2="8" y2="3"/><line x1="8" y1="13" x2="8" y2="15"/><line x1="1" y1="8" x2="3" y2="8"/><line x1="13" y1="8" x2="15" y2="8"/><line x1="3.2" y1="3.2" x2="4.6" y2="4.6"/><line x1="11.4" y1="11.4" x2="12.8" y2="12.8"/><line x1="12.8" y1="3.2" x2="11.4" y2="4.6"/><line x1="4.6" y1="11.4" x2="3.2" y2="12.8"/></svg>
@@ -958,31 +970,44 @@
 </div>
 
 <script>
-  // Nav interactions
-  const ddTrigger = document.getElementById('dd-trigger');
-  const ddMenu    = document.getElementById('dd-menu');
-  const hamburger = document.getElementById('nav-hamburger');
-  const navLinks  = document.getElementById('nav-links');
+  // Nav interactions — multi-dropdown via data-dd attribute
+  const ddTriggers = document.querySelectorAll('.nav-dd-trigger');
+  const hamburger  = document.getElementById('nav-hamburger');
+  const navLinks   = document.getElementById('nav-links');
 
-  ddTrigger.addEventListener('click', function(e) {
-    e.stopPropagation();
-    const open = ddMenu.classList.toggle('open');
-    ddTrigger.classList.toggle('open', open);
-    ddTrigger.setAttribute('aria-expanded', open);
+  function closeAllDropdowns() {
+    ddTriggers.forEach(function(t) {
+      t.classList.remove('open');
+      t.setAttribute('aria-expanded', false);
+      const m = document.getElementById(t.getAttribute('data-dd'));
+      if (m) m.classList.remove('open');
+    });
+  }
+
+  ddTriggers.forEach(function(trigger) {
+    trigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const targetId = trigger.getAttribute('data-dd');
+      const menu = document.getElementById(targetId);
+      const willOpen = !menu.classList.contains('open');
+      closeAllDropdowns();
+      if (willOpen) {
+        menu.classList.add('open');
+        trigger.classList.add('open');
+        trigger.setAttribute('aria-expanded', true);
+      }
+    });
   });
 
   hamburger.addEventListener('click', function(e) {
     e.stopPropagation();
     const open = navLinks.classList.toggle('open');
     hamburger.setAttribute('aria-expanded', open);
-    ddMenu.classList.remove('open');
-    ddTrigger.classList.remove('open');
+    closeAllDropdowns();
   });
 
   document.addEventListener('click', function() {
-    ddMenu.classList.remove('open');
-    ddTrigger.classList.remove('open');
-    ddTrigger.setAttribute('aria-expanded', false);
+    closeAllDropdowns();
   });
 
   navLinks.querySelectorAll('a').forEach(function(link) {
