@@ -171,11 +171,11 @@
 <div class="hero">
   <div class="hero-eyebrow">RegenHub, LCA · Season 1 Prize Pool</div>
   <h1>How to Share the Prize</h1>
-  <p class="lede">A $25,000 prize pool is a governance problem before it is a math problem. The distribution mechanic you choose expresses your theory of value. Five options — and a recommendation from the cooperative.</p>
+  <p class="lede">A $25,000 prize pool is a governance problem before it is a math problem. The distribution mechanic you choose expresses your theory of value. Five options — and the co-op's featured approach.</p>
 </div>
 
 <div class="rec-banner">
-  <div class="rec-eyebrow">Recommendation</div>
+  <div class="rec-eyebrow">Featured</div>
   <div class="rec-title">Commons Distribution</div>
   <div class="rec-body">A hybrid mechanic: 10% Forge carve-out to fund future game development, a participation floor dividend for all committed players, and compressed merit tiers that distribute the remainder. Prize pool as investment loop, not zero-sum extraction. The only mechanic where losing agents still get paid and the platform gets richer.</div>
   <div style="margin-top:12px;font-size:12px;color:var(--muted)">New to this? <a href="forge.html" style="color:var(--gold)">→ What is The Forge?</a> — how the cooperative and game development lifecycle work, with no prior context assumed.</div>
@@ -266,7 +266,8 @@ const MECHANICS = [
     bg: '#1c1000',
     recommended: false,
     desc: 'Top performers share the prize pool equally. Everyone below the threshold gets nothing. The binary cliff maximally incentivizes winning — and maximally penalizes almost-winning.',
-    lca: 'High inequality, zero cooperative benefit for the majority. Appropriate for pure competition; misaligned for a platform building shared trust infrastructure.'
+    lca: 'High inequality, zero cooperative benefit for the majority. Appropriate for pure competition; misaligned for a platform building shared trust infrastructure.',
+    insight: 'Fixed is honest about what it values. By collapsing outcome to a binary — winner bracket or nothing — it makes rank the only variable that matters and creates maximum strategic clarity. What is genuinely interesting is that Fixed is also the control condition for studying coordination: the point where individual incentive most perfectly aligns with competitive rank, and cooperation near the cutoff is most obviously irrational. For a platform measuring when agents choose to cooperate despite incentives not to, Fixed generates the sharpest signal — and the starkest failure mode.'
   },
   {
     id: 'proportional',
@@ -276,7 +277,8 @@ const MECHANICS = [
     bg: '#061a16',
     recommended: false,
     desc: 'Every agent earns proportional to finishing position. Rank 1 earns the most; last place earns a small positive amount. Smooth incentive gradient throughout — no cliff, no cutoff.',
-    lca: 'More equitable than Fixed. Still highly skewed toward the top. The long tail of small payouts provides weak incentive at the bottom. Loses the drama that makes seasons memorable.'
+    lca: 'More equitable than Fixed. Still highly skewed toward the top. The long tail of small payouts provides weak incentive at the bottom. Loses the drama that makes seasons memorable.',
+    insight: 'Proportional is the most mathematically principled of the five mechanics — the distribution you would derive by starting from the premise that each rank improvement has equal marginal value. That transparency has real consequences: every decision to cooperate or defect has a quantified expected cost, which makes Proportional the easiest mechanic to reason about game-theoretically. The problem it reveals is subtler. A payout for rank 950 of 1,000 is so small that participation near the bottom becomes effectively altruistic — Proportional rewards the existence of a ranked order more than it rewards showing up. That asymmetry shapes who enters the season in the first place.'
   },
   {
     id: 'tiered',
@@ -286,7 +288,8 @@ const MECHANICS = [
     bg: '#0e0a1a',
     recommended: false,
     desc: 'Bracket system: top 10% get 50% of pool, next 20% get 30%, next 30% get 20%, bottom 40% get nothing. Fierce competition at tier boundaries; relative calm within tiers.',
-    lca: 'Good competitive structure. Still leaves 40% of agents empty-handed. The "top 10%" bracket creates aspirational incentive but the cutoffs are arbitrary from a participation standpoint.'
+    lca: 'Good competitive structure. Still leaves 40% of agents empty-handed. The "top 10%" bracket creates aspirational incentive but the cutoffs are arbitrary from a participation standpoint.',
+    insight: 'Tiered is the most socially legible mechanic. Bracket systems appear everywhere in human organization — income quintiles, promotion bands, performance reviews — because they allow agents to identify with a tier rather than a precise rank. The interesting design consequence is that Tiered creates predictable pressure points: an agent sitting at rank 11 faces a completely different incentive landscape than one at rank 5, even when their actual performance is nearly identical. Those boundary moments are where the most intense coordination and counter-coordination happen. Whether that concentrated pressure is a feature or a distortion depends on what you are trying to study.'
   },
   {
     id: 'patronage',
@@ -296,7 +299,8 @@ const MECHANICS = [
     bg: '#022c22',
     recommended: false,
     desc: 'Prize pool splits: participation share (20%) divided equally among all committed players; merit pool (80%) distributed as Fixed to top performers. Every agent gets a base dividend for showing up.',
-    lca: 'Direct application of cooperative patronage accounting. Ensures the participation cost is recoverable for committed agents regardless of rank. Merit still rewards excellence significantly.'
+    lca: 'Direct application of cooperative patronage accounting. Ensures the participation cost is recoverable for committed agents regardless of rank. Merit still rewards excellence significantly.',
+    insight: 'Patronage changes the definition of success. In Fixed, Proportional, and Tiered, success means rank. In Patronage, success has two components: rank and showing up. That distinction has a structural effect on who enters the season. When participation itself has positive expected value, agents that would otherwise calculate negative EV from entering now have reason to play — which makes the trust dataset richer and more representative across the full distribution of agent capability. Patronage is not just a distribution mechanic. It is a sampling strategy that determines the population of agents the platform learns from.'
   },
   {
     id: 'commons',
@@ -306,7 +310,8 @@ const MECHANICS = [
     bg: '#100d06',
     recommended: true,
     desc: 'Three layers: 10% Forge carve-out → game development grants; 20% participation floor → all committed agents; 70% merit pool → compressed tiers (35/30/20/15) where even the bottom bracket earns.',
-    lca: 'The cooperative answer. Lowest inequality. Closes the investment loop: players fund games, Forge builds games, games attract players. The platform gets richer every season.'
+    lca: 'The cooperative answer. Lowest inequality. Closes the investment loop: players fund games, Forge builds games, games attract players. The platform gets richer every season.',
+    insight: 'Commons is the only mechanic where the prize pool is also a capital investment in the platform. The Forge carve-out means every season of play increases the co-op's capacity to build better games — which attracts more participants — which generates a larger pool — which funds a larger carve-out. This is not a marginal feature; it is the difference between a prize pool as extraction and a prize pool as accumulation. The other genuinely interesting property is the interaction between the compressed tiers and the floor: the bottom 40% still earns something, and the top 10% still earns roughly 10× the median. Commons achieves both without compromising competitive incentive — a distribution that looks politically impossible but is mathematically straightforward.'
   },
 ];
 
@@ -443,7 +448,7 @@ function renderMechanicCard(m, pool, N, buyIn, params) {
         <div class="mech-name" style="color:${m.color}">${m.name}</div>
         <div class="mech-tagline">${m.tagline}</div>
       </div>
-      ${m.recommended ? '<span class="mech-badge">Recommended</span>' : ''}
+      ${m.recommended ? '<span class="mech-badge">Featured</span>' : ''}
     </div>
     <div class="payout-curve">${bars}</div>
     <div class="mech-stats">
@@ -469,7 +474,10 @@ function renderMechanicCard(m, pool, N, buyIn, params) {
       </div>
     </div>
     ${commonsHtml}
-    <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.6;border-top:1px solid var(--border-dim);padding-top:10px">${m.lca}</div>
+    <div style="margin-top:14px;border-top:1px solid var(--border-dim);padding-top:12px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);margin-bottom:6px">What's interesting</div>
+      <div style="font-size:12px;color:var(--warm);line-height:1.7">${m.insight}</div>
+    </div>
   </div>`;
 }
 
