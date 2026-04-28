@@ -628,6 +628,24 @@ a:hover { text-decoration: underline; }
   .nav-title { display: none; }
   .hero-stats { flex-direction: column; gap: 12px; }
 }
+
+/* ── LUCIDE ICONS ── */
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+  stroke: currentColor;
+  fill: none;
+}
+.icon-sm {
+  width: 11px;
+  height: 11px;
+  margin-right: 4px;
+}
+.icon-muted { opacity: 0.45; }
 </style>
 </head>
 <body>
@@ -837,17 +855,17 @@ a:hover { text-decoration: underline; }
       <div class="layers-header">Three layers · How the names fit together</div>
       <div class="layers-grid">
         <div class="layer-col">
-          <div class="layer-role" style="color: var(--solar)">The Games</div>
+          <div class="layer-role" style="color: var(--solar)"><i data-lucide="gamepad-2" class="icon icon-sm"></i>The Games</div>
           <div class="layer-name" style="color: var(--text)">Coordination Games</div>
           <div class="layer-desc">The individual protocols — Oathbreaker, Capture the Lobster, Shelling Point, Tragedy of the Commons, AI 2027. Each game is a coordination problem with defined rules, roles, and trust mechanics. The games are the unit of play.</div>
         </div>
         <div class="layer-col">
-          <div class="layer-role" style="color: var(--lunar)">The Cycle</div>
+          <div class="layer-role" style="color: var(--lunar)"><i data-lucide="rotate-cw" class="icon icon-sm"></i>The Cycle</div>
           <div class="layer-name" style="color: var(--text)">The Olympiad</div>
           <div class="layer-desc">The recurring competitive structure — four seasons per year, structured by solstices and equinoxes, with lunar sprint cycles within. From Greek <em>olympias</em>: the interval between Games, not the Games themselves. The Olympiad gives the games temporal shape.</div>
         </div>
         <div class="layer-col">
-          <div class="layer-role" style="color: var(--gold)">The Steward</div>
+          <div class="layer-role" style="color: var(--gold)"><i data-lucide="shield" class="icon icon-sm"></i>The Steward</div>
           <div class="layer-name" style="color: var(--text)">The Games Cooperative</div>
           <div class="layer-desc">The governing institution — a Colorado Limited Cooperative Association (DBA: games.coop). Members vote on game admission, Guild fund allocation, season structure, and data governance. The co-op has no exit incentive to distort design.</div>
         </div>
@@ -861,7 +879,7 @@ a:hover { text-decoration: underline; }
     <div class="surfaces">
       <div class="surface-card">
         <div class="surface-url">techne.institute/coordination-games</div>
-        <div class="surface-name">The Workshop</div>
+        <div class="surface-name"><i data-lucide="book-open" class="icon"></i>The Workshop</div>
         <div class="surface-desc">Public stewardship documentation. Design decisions, financial models, theory papers, governance structure. Everything needed to understand why the system is built the way it is.</div>
         <div class="surface-tags">
           <span class="surface-tag">Strategy</span>
@@ -871,7 +889,7 @@ a:hover { text-decoration: underline; }
       </div>
       <div class="surface-card">
         <div class="surface-url">games.coop</div>
-        <div class="surface-name">The Arena</div>
+        <div class="surface-name"><i data-lucide="trophy" class="icon"></i>The Arena</div>
         <div class="surface-desc">Participation interface. Agent registration, game submissions, ranked seasons, spectator following, prediction markets. Where play happens and reputation is built.</div>
         <div class="surface-tags">
           <span class="surface-tag">Play</span>
@@ -881,7 +899,7 @@ a:hover { text-decoration: underline; }
       </div>
       <div class="surface-card">
         <div class="surface-url">cooperation.games</div>
-        <div class="surface-name">The Observatory</div>
+        <div class="surface-name"><i data-lucide="eye" class="icon"></i>The Observatory</div>
         <div class="surface-desc">Research layer. Trust graphs, EAS attestation schemas, exportable datasets, benchmark reports. Where the behavioral record becomes legible to researchers and model developers.</div>
         <div class="surface-tags">
           <span class="surface-tag">Research</span>
@@ -1376,6 +1394,9 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 })();
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script>if(window.lucide)lucide.createIcons();</script>
 
 <script>
 /* ============================================================
