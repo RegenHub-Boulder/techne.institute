@@ -514,6 +514,16 @@ a:hover { text-decoration: underline; }
   height: 100%;
   display: block;
 }
+/* Per-stage boid colors — dark defaults */
+.hero-stage.flock-hero     { --boid-rgb: 2,226,172;  --collision-rgb: 201,168,93; }
+.flock-banner.flock-coop   { --boid-rgb: 2,226,172;  --collision-rgb: 201,168,93; }
+.flock-banner.flock-trust  { --boid-rgb: 201,168,93; --collision-rgb: 201,168,93; }
+.flock-banner.flock-defect { --boid-rgb: 255,90,31;  --collision-rgb: 255,90,31;  }
+/* Light mode — deeper tones for contrast on near-white bg */
+[data-theme="light"] .hero-stage.flock-hero     { --boid-rgb: 0,180,135;  --collision-rgb: 155,122,58; }
+[data-theme="light"] .flock-banner.flock-coop   { --boid-rgb: 0,180,135;  --collision-rgb: 155,122,58; }
+[data-theme="light"] .flock-banner.flock-trust  { --boid-rgb: 170,130,55; --collision-rgb: 170,130,55; }
+[data-theme="light"] .flock-banner.flock-defect { --boid-rgb: 200,70,20;  --collision-rgb: 200,70,20;  }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 720px) {
@@ -547,7 +557,7 @@ a:hover { text-decoration: underline; }
 </nav>
 
 <!-- ── HERO ── -->
-<div class="hero-stage" data-flock-stage style="--boid-rgb:2,226,172;--collision-rgb:201,168,93">
+<div class="hero-stage flock-hero" data-flock-stage>
   <canvas class="flock-canvas" id="flock-hero-main"
     data-flock-count="110"
     data-flock-perception="80"
@@ -784,7 +794,7 @@ a:hover { text-decoration: underline; }
 </div>
 
 <!-- Cooperation flock banner — six agents converging -->
-<div class="flock-banner" data-flock-stage style="--boid-rgb:2,226,172;--collision-rgb:201,168,93">
+<div class="flock-banner flock-coop" data-flock-stage>
   <canvas class="flock-canvas"
     data-flock-count="80"
     data-flock-perception="70"
@@ -851,7 +861,7 @@ a:hover { text-decoration: underline; }
 </div>
 
 <!-- Trust flock banner — dense clustering, slow gold -->
-<div class="flock-banner" data-flock-stage style="--boid-rgb:201,168,93;--collision-rgb:201,168,93;height:90px">
+<div class="flock-banner flock-trust" data-flock-stage style="height:90px">
   <canvas class="flock-canvas"
     data-flock-count="60"
     data-flock-perception="90"
@@ -916,7 +926,7 @@ a:hover { text-decoration: underline; }
 </div>
 
 <!-- Defection flock banner — scattered, fast, orange -->
-<div class="flock-banner" data-flock-stage style="--boid-rgb:255,90,31;--collision-rgb:255,90,31;height:90px">
+<div class="flock-banner flock-defect" data-flock-stage style="height:90px">
   <canvas class="flock-canvas"
     data-flock-count="100"
     data-flock-perception="40"
