@@ -5,7 +5,8 @@
   (function(){var s=localStorage.getItem('techne-theme');if(s==='light'||s==='dark'){document.documentElement.setAttribute('data-theme',s);}else if(window.matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.setAttribute('data-theme','dark');}else{document.documentElement.setAttribute('data-theme','light');}})();
 </script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
 <title>Coordination Games — RegenHub, LCA · Techne</title>
 <meta name="description" content="The Coordination Games are a live public experiment in AI cooperation — a cooperative institution and body of research aligned with the named public benefits of RegenHub, LCA.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -526,6 +527,24 @@ a:hover { text-decoration: underline; }
 [data-theme="light"] .flock-banner.flock-defect { --boid-rgb: 200,70,20;  --collision-rgb: 200,70,20;  }
 
 /* ── RESPONSIVE ── */
+
+/* Minmax floors: clamp to screen width on tiny devices */
+.surfaces    { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+.games-grid  { grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
+.perspectives { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+
+/* cta-btn touch target */
+.cta-btn { min-height: 44px; }
+
+/* Flock banner heights scale on small screens */
+@media (max-width: 640px) { .flock-banner { height: 64px !important; } }
+@media (max-width: 480px) { .flock-banner { height: 44px !important; } }
+
+/* Tablet: two-column layers grid */
+@media (max-width: 900px) {
+  .layers-grid { grid-template-columns: 1fr 1fr; }
+}
+
 @media (max-width: 720px) {
   .layers-grid { grid-template-columns: 1fr; }
   .layer-col { border-right: none; border-bottom: 1px solid var(--border); }
@@ -536,6 +555,74 @@ a:hover { text-decoration: underline; }
   .benefit-card.full { grid-column: auto; }
   .hero-stats { gap: 20px; }
   .doc-index { grid-template-columns: 1fr; }
+  /* Trust bands: stack on narrow */
+  .band { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .band-name { width: 100%; }
+  /* Hero sizing */
+  .hero { padding: 48px 0 40px; }
+  .hero .lede { font-size: 16px; }
+  .hero h1 { letter-spacing: -0.5px; }
+}
+
+@media (max-width: 600px) {
+  /* Nav: collapse links behind toggle */
+  .nav-links-mobile {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 200px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-top: none;
+    flex-direction: column;
+    z-index: 99;
+  }
+  .nav-links-mobile.open { display: flex; }
+  .nav-links-mobile .nav-link {
+    padding: 10px 20px;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+  .nav-toggle-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: 1px solid var(--border);
+    padding: 6px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  .nav-toggle-btn span {
+    display: block;
+    width: 16px;
+    height: 1.5px;
+    background: var(--muted);
+  }
+  /* Hide desktop nav links */
+  .nav-right > .nav-link { display: none; }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: clamp(28px, 8vw, 40px); }
+  .hero .hero-sub { font-size: 11px; }
+  .section { padding: 40px 0; }
+  /* Doc link: stack tag above text */
+  .doc-link { flex-direction: column; gap: 8px; }
+  .doc-tag { margin-top: 0; }
+  /* Pull quote */
+  .pull-quote p { font-size: clamp(14px, 4vw, 17px); }
+  /* CTA full-width on phone */
+  .hero-cta { flex-direction: column; }
+  .cta-btn { width: 100%; justify-content: center; }
+  /* Surface cards no min-width squeeze */
+  .surface-card, .game-card { padding: 16px; }
+}
+
+@media (max-width: 380px) {
+  .nav-title { display: none; }
+  .hero-stats { flex-direction: column; gap: 12px; }
 }
 </style>
 </head>
@@ -547,12 +634,21 @@ a:hover { text-decoration: underline; }
     <a href="/index.html" class="nav-back">← Techne</a>
     <span class="nav-title">Coordination Games · RegenHub, LCA</span>
   </div>
-  <div class="nav-right">
+  <div class="nav-right" style="position:relative;">
     <a href="/coordination-games/" class="nav-link">Overview</a>
     <a href="/coordination-games/strategy.html" class="nav-link">Strategy</a>
     <a href="/coordination-games/guides/" class="nav-link">Guides</a>
     <a href="/coordination-games/membership.html" class="nav-link">Membership</a>
     <button class="nav-theme" onclick="toggleTheme()">Light</button>
+    <button class="nav-toggle-btn" id="gc-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links-mobile" id="gc-nav-links">
+      <a href="/coordination-games/" class="nav-link">Overview</a>
+      <a href="/coordination-games/strategy.html" class="nav-link">Strategy</a>
+      <a href="/coordination-games/guides/" class="nav-link">Guides</a>
+      <a href="/coordination-games/membership.html" class="nav-link">Membership</a>
+    </div>
   </div>
 </nav>
 
@@ -1258,6 +1354,23 @@ document.addEventListener('DOMContentLoaded', function() {
   const t = document.documentElement.getAttribute('data-theme');
   document.querySelector('.nav-theme').textContent = t === 'dark' ? 'Light' : 'Dark';
 });
+
+/* Mobile nav toggle */
+(function(){
+  var btn = document.getElementById('gc-nav-toggle');
+  var menu = document.getElementById('gc-nav-links');
+  if(!btn || !menu) return;
+  btn.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  });
+  document.addEventListener('click', function(e){
+    if(!btn.contains(e.target) && !menu.contains(e.target)){
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', false);
+    }
+  });
+})();
 </script>
 
 <script>
