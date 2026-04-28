@@ -311,7 +311,7 @@
         <div class="waterfall" id="revenue-waterfall"></div>
       </div>
       <div class="section">
-        <h3>RegenHub P&amp;L (full execution)</h3>
+        <h3>The Games Cooperative P&amp;L (full execution)</h3>
         <div id="regen-pnl"></div>
       </div>
       <div class="section">
@@ -499,7 +499,7 @@ function renderSummaryCards(p, c) {
     { label: 'Total Prize Pool', value: fmt$(c.totalPot), sub: fmtQ(p.supply), cls: 'accent-green' },
     { label: 'Platform Revenue', value: fmt$(c.platformRevenue), sub: p.feeStructure === 'entry' ? 'Entry-only' : 'Per-game', cls: 'accent-amber' },
     { label: 'Grant Required', value: fmt$(c.grantUSD), sub: fmtQ(c.grantCoin), cls: 'accent-teal' },
-    { label: 'RegenHub Total', value: fmt$(c.regenHubRevenue), sub: '10% of infra at full run', cls: 'accent-orange' },
+    { label: 'The Games Cooperative Total', value: fmt$(c.regenHubRevenue), sub: '10% of infra at full run', cls: 'accent-orange' },
     { label: 'Quarter Supply', value: fmtQ(p.supply), sub: fmt$(c.totalPot) + ' at ' + p.rate + ':1', cls: 'accent-coin' },
     { label: 'Buy-in per Agent', value: fmt$(p.buyIn), sub: p.agents.toLocaleString() + ' agents', cls: '' },
   ];
@@ -537,7 +537,7 @@ function renderRevenueWaterfall(p, c) {
 function renderRegenPnL(p, c) {
   document.getElementById('regen-pnl').innerHTML = `
     <table>
-      <thead><tr><th>Category</th><th class="num">Infra Budget</th><th class="num">RegenHub 10%</th><th>Notes</th></tr></thead>
+      <thead><tr><th>Category</th><th class="num">Infra Budget</th><th class="num">The Games Cooperative 10%</th><th>Notes</th></tr></thead>
       <tbody>
         <tr><td>Jump Balls</td><td class="num">${fmt$(c.totalJumpBalls)}</td><td class="num" style="color:var(--green)">${fmt$(c.totalJumpBalls*0.1)}</td><td style="color:var(--muted)">March–May coordination</td></tr>
         <tr><td>Milestone Infra</td><td class="num">${fmt$(c.totalMilestoneInfra)}</td><td class="num" style="color:var(--green)">${fmt$(c.totalMilestoneInfra*0.1)}</td><td style="color:var(--muted)">4 milestones</td></tr>
@@ -545,7 +545,7 @@ function renderRegenPnL(p, c) {
         <tr class="highlight-row"><td>Total</td><td class="num">${fmt$(c.totalInfra)}</td><td class="num" style="color:var(--green);font-size:16px">${fmt$(c.regenHubRevenue)}</td><td style="color:var(--muted)">at full execution</td></tr>
       </tbody>
     </table>
-    <p style="margin-top:12px;font-size:12px;color:var(--muted)">Note: RegenHub takes 10% of infra only — not prizes. Prize pools go 100% to players.</p>
+    <p style="margin-top:12px;font-size:12px;color:var(--muted)">Note: The Games Cooperative takes 10% of infra only — not prizes. Prize pools go 100% to players.</p>
   `;
 }
 
@@ -585,7 +585,7 @@ function renderMilestone(idx) {
   content.innerHTML = `
     <div class="cards">
       <div class="card"><div class="card-label">Timing</div><div class="card-value" style="font-size:18px">${m.timing}</div><div class="card-sub">${m.phase === 'rehearsal' ? 'Testnet — no real funds' : 'Live'}</div></div>
-      <div class="card accent-teal"><div class="card-label">Infra Budget</div><div class="card-value">${fmt$(m.infra)}</div><div class="card-sub">RegenHub: ${fmt$(m.infra*0.1)}</div></div>
+      <div class="card accent-teal"><div class="card-label">Infra Budget</div><div class="card-value">${fmt$(m.infra)}</div><div class="card-sub">The Games Cooperative: ${fmt$(m.infra*0.1)}</div></div>
       <div class="card ${m.prizes > 0 ? 'accent-green' : ''}"><div class="card-label">Prize Pool</div><div class="card-value">${m.prizes > 0 ? fmt$(m.prizes) : '—'}</div><div class="card-sub">${m.prizes > 0 ? fmtQ(m.prizes * p.rate) : 'No prizes this round'}</div></div>
       ${isMain ? `<div class="card accent-coin"><div class="card-label">Buy-in Revenue</div><div class="card-value">${fmt$(c.grossBuyIn)}</div><div class="card-sub">${p.agents.toLocaleString()} agents × ${fmt$(p.buyIn)}</div></div>` : ''}
     </div>
@@ -596,7 +596,7 @@ function renderMilestone(idx) {
         <tbody>
           <tr><td>Infrastructure</td><td class="num">${fmt$(m.infra)}</td><td style="color:var(--muted)">Platform, hosting, ops</td></tr>
           <tr><td>Prize Pool</td><td class="num">${m.prizes > 0 ? fmt$(m.prizes) : '—'}</td><td style="color:var(--muted)">${m.notes}</td></tr>
-          <tr><td>RegenHub 10%</td><td class="num" style="color:var(--green)">${fmt$(m.infra*0.1)}</td><td style="color:var(--muted)">Of infra only</td></tr>
+          <tr><td>The Games Cooperative 10%</td><td class="num" style="color:var(--green)">${fmt$(m.infra*0.1)}</td><td style="color:var(--muted)">Of infra only</td></tr>
           <tr class="highlight-row"><td>Total</td><td class="num">${fmt$(m.infra + m.prizes)}</td><td></td></tr>
         </tbody>
       </table>
@@ -736,7 +736,7 @@ function renderUseCases(p, c) {
   const tp = USE_CASES.reduce((s,u)=>s+u.prizes,0);
   document.getElementById('usecase-content').innerHTML = `
     <div class="cards" style="margin-bottom:20px">
-      <div class="card accent-teal"><div class="card-label">Total Use Case Infra</div><div class="card-value">${fmt$(ti)}</div><div class="card-sub">RegenHub: ${fmt$(ti*0.1)}</div></div>
+      <div class="card accent-teal"><div class="card-label">Total Use Case Infra</div><div class="card-value">${fmt$(ti)}</div><div class="card-sub">The Games Cooperative: ${fmt$(ti*0.1)}</div></div>
       <div class="card accent-green"><div class="card-label">Use Case Prizes</div><div class="card-value">${fmt$(tp)}</div><div class="card-sub">Esports only</div></div>
       <div class="card"><div class="card-label">Use Cases Defined</div><div class="card-value">${USE_CASES.length}</div><div class="card-sub">Each $3K infra</div></div>
     </div>

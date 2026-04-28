@@ -5,7 +5,7 @@
 <script>(function(){var t=localStorage.getItem('techne-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches){document.documentElement.setAttribute('data-theme','light');}})()</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Olympiad — Coordination Games</title>
-<meta name="description" content="How solar and lunar cycles structure the Coordination Games Olympiad — ranked seasons, free play, The Forge development lifecycle, and the intercalation problem as embedded coordination challenge.">
+<meta name="description" content="How solar and lunar cycles structure the Coordination Games — ranked seasons, free play, The Forge development lifecycle, and the intercalation problem as embedded coordination challenge.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://techne.institute/coordination-games/olympiad.html">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -337,6 +337,28 @@
     and the forge window for the builders who make new games possible.
   </p>
 
+  <!-- ── Three Layers ──────────────────────────────────────────────────────── -->
+  <div style="border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 2rem 0;">
+    <div style="background: var(--surface); padding: 0.6rem 1.25rem; border-bottom: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim);">Three Layers · How the names fit together</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 0;">
+      <div style="padding: 1.1rem 1.25rem; border-right: 1px solid var(--border);">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--solar); margin-bottom: 0.35rem;">The Games</div>
+        <div style="font-family: 'Libre Baskerville', Georgia, serif; font-size: 0.95rem; color: var(--parchment); margin-bottom: 0.4rem;">Coordination Games</div>
+        <div style="font-size: 0.78rem; color: var(--muted); line-height: 1.55;">The individual protocols — Oathbreaker, Capture the Lobster, and whatever enters through The Forge. Each game is a coordination problem with defined rules, roles, and trust mechanics.</div>
+      </div>
+      <div style="padding: 1.1rem 1.25rem; border-right: 1px solid var(--border);">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lunar); margin-bottom: 0.35rem;">The Cycle</div>
+        <div style="font-family: 'Libre Baskerville', Georgia, serif; font-size: 0.95rem; color: var(--parchment); margin-bottom: 0.4rem;">The Olympiad</div>
+        <div style="font-size: 0.78rem; color: var(--muted); line-height: 1.55;">The recurring competitive structure — four seasons of ranked play, each season separated by equinox pivots, the whole arc closing and renewing at the summer solstice. The temporal container the games run inside.</div>
+      </div>
+      <div style="padding: 1.1rem 1.25rem;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem;">The Steward</div>
+        <div style="font-family: 'Libre Baskerville', Georgia, serif; font-size: 0.95rem; color: var(--parchment); margin-bottom: 0.4rem;">The Games Cooperative</div>
+        <div style="font-size: 0.78rem; color: var(--muted); line-height: 1.55;">The governing body — a Colorado Limited Cooperative Association (DBA: <a href="https://games.coop" style="color: var(--gold);">games.coop</a>). Owns the infrastructure, sets the parameters, distributes surpluses to members through patronage accounting. No exit incentive.</div>
+      </div>
+    </div>
+  </div>
+
   <div class="pull">
     <p>Two clocks, two layers. The sun sets the season — who is playing, what is ranked, when attestations settle. The moon sets the sprint — when coordination is tested, when behavior is revealed, when new games go into the arena.</p>
   </div>
@@ -578,7 +600,7 @@
     <h2>How new games enter the arena</h2>
 
     <p>
-      The Olympiad is not a closed game library. Any co-op member on
+      The Olympiad is not a closed game library. Any Games Cooperative member on
       <a href="https://games.coop">games.coop</a> can propose, develop, and publish a new
       coordination game — the development lifecycle follows the lunar cadence, so there is
       always a forge window available without disrupting ranked play.
@@ -587,7 +609,7 @@
     <div class="forge-intro">
       <ol class="forge-steps">
         <li>
-          <strong>Proposal.</strong> Any games.coop co-op member submits a game concept —
+          <strong>Proposal.</strong> Any Games Cooperative member submits a game concept —
           coordination problem, win conditions, player roles, trust mechanics.
           No fee at this stage. Proposals enter a review queue.
         </li>
@@ -783,7 +805,7 @@
 
 <footer class="page-footer" style="max-width: 760px; margin: 0 auto; padding: 0 2rem 3rem;">
   <span>techne.institute / coordination-games</span>
-  <span>RegenHub, LCA · Boulder, Colorado</span>
+  <span>The Games Cooperative · Boulder, Colorado</span>
 </footer>
 
 <script>lucide.createIcons();</script>
