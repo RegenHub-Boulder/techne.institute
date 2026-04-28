@@ -923,7 +923,7 @@ function renderRewards(p, c) {
           ${pt.coin > 0 ? fmtQ(Math.round(pt.coin)) + ' · ' + fmt$(usd, 0) : 'no payout'}
         </div>
       </div>
-      ${pt.rank <= (breakEvenRank||0) ? '<div style="font-size:10px;color:var(--status-ok);margin-left:4px;white-space:nowrap">${icon('check', 10, 'var(--status-ok)')} profit</div>' : '<div style="font-size:10px;color:var(--ghost);margin-left:4px;white-space:nowrap">loss</div>'}
+      ${pt.rank <= (breakEvenRank||0) ? '<div style="font-size:10px;color:var(--status-ok);margin-left:4px;white-space:nowrap">\u2713 profit</div>' : '<div style="font-size:10px;color:var(--ghost);margin-left:4px;white-space:nowrap">loss</div>'}
     </div>`;
   }).join('');
 
