@@ -473,6 +473,48 @@ a:hover { text-decoration: underline; }
   color: var(--ghost); letter-spacing: 0.04em;
 }
 
+/* ── BOIDS FLOCK ── */
+:root {
+  --boid-rgb:      196, 149, 106;   /* gold — page accent */
+  --collision-rgb: 124, 207, 184;   /* teal flash */
+}
+
+/* Full-width hero stage — canvas behind, content on top */
+.hero-stage {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.hero-stage > canvas.flock-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-stage-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Section accent banners — slim horizontal flock strips */
+.flock-banner {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+}
+.flock-banner canvas.flock-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 720px) {
   .layers-grid { grid-template-columns: 1fr; }
@@ -505,6 +547,16 @@ a:hover { text-decoration: underline; }
 </nav>
 
 <!-- ── HERO ── -->
+<div class="hero-stage" data-flock-stage style="--boid-rgb:2,226,172;--collision-rgb:201,168,93">
+  <canvas class="flock-canvas" id="flock-hero-main"
+    data-flock-count="110"
+    data-flock-perception="80"
+    data-flock-separation="22"
+    data-flock-alignment="1.1"
+    data-flock-cohesion="0.65"
+    data-flock-speed="1.5"
+    data-flock-trail-fade="0.88"></canvas>
+  <div class="hero-stage-content">
 <div class="page-wrap">
   <div class="hero">
     <div class="hero-eyebrow">RegenHub, LCA · Public Benefit Program</div>
@@ -553,6 +605,8 @@ a:hover { text-decoration: underline; }
     </div>
   </div>
 </div>
+  </div><!-- /hero-stage-content -->
+</div><!-- /hero-stage -->
 
 <!-- ── SECTION 1: THE THESIS ── -->
 <div class="page-wrap">
@@ -729,6 +783,17 @@ a:hover { text-decoration: underline; }
   </div>
 </div>
 
+<!-- Cooperation flock banner — six agents converging -->
+<div class="flock-banner" data-flock-stage style="--boid-rgb:2,226,172;--collision-rgb:201,168,93">
+  <canvas class="flock-canvas"
+    data-flock-count="80"
+    data-flock-perception="70"
+    data-flock-alignment="1.1"
+    data-flock-cohesion="0.75"
+    data-flock-speed="1.7"
+    data-flock-trail-fade="0.90"></canvas>
+</div>
+
 <!-- ── SECTION 4: SIX PERSPECTIVES ── -->
 <div class="page-wrap">
   <div class="section">
@@ -785,6 +850,18 @@ a:hover { text-decoration: underline; }
   </div>
 </div>
 
+<!-- Trust flock banner — dense clustering, slow gold -->
+<div class="flock-banner" data-flock-stage style="--boid-rgb:201,168,93;--collision-rgb:201,168,93;height:90px">
+  <canvas class="flock-canvas"
+    data-flock-count="60"
+    data-flock-perception="90"
+    data-flock-cohesion="1.0"
+    data-flock-alignment="0.8"
+    data-flock-separation="12"
+    data-flock-speed="1.2"
+    data-flock-trail-fade="0.85"></canvas>
+</div>
+
 <!-- ── SECTION 5: TRUST INFRASTRUCTURE ── -->
 <div class="page-wrap">
   <div class="section">
@@ -836,6 +913,19 @@ a:hover { text-decoration: underline; }
       <a href="/coordination-games/archetypal-typology-v02.html" class="cta-btn cta-secondary" style="font-size:12px;padding:8px 14px">49-cell typology →</a>
     </div>
   </div>
+</div>
+
+<!-- Defection flock banner — scattered, fast, orange -->
+<div class="flock-banner" data-flock-stage style="--boid-rgb:255,90,31;--collision-rgb:255,90,31;height:90px">
+  <canvas class="flock-canvas"
+    data-flock-count="100"
+    data-flock-perception="40"
+    data-flock-separation="30"
+    data-flock-alignment="0.4"
+    data-flock-cohesion="0.25"
+    data-flock-separation-weight="2.0"
+    data-flock-speed="3.0"
+    data-flock-trail-fade="0.94"></canvas>
 </div>
 
 <!-- ── SECTION 6: GAME LIBRARY ── -->
@@ -1158,6 +1248,408 @@ document.addEventListener('DOMContentLoaded', function() {
   const t = document.documentElement.getAttribute('data-theme');
   document.querySelector('.nav-theme').textContent = t === 'dark' ? 'Light' : 'Dark';
 });
+</script>
+
+<script>
+/* ============================================================
+   BOIDS FLOCK — cooperation.games design system v2
+   Craig Reynolds: separation · alignment · cohesion
+   Canvas 2D · No external dependencies
+   Adapted from coord-games.vercel.app/boids-flock.js
+   ============================================================ */
+(() => {
+  const canvases = document.querySelectorAll('.flock-canvas');
+  if (canvases.length === 0) return;
+
+  const baseConfig = {
+    count: 180,
+    perception: 80,
+    separationDistance: 20,
+    collisionDistance: 2,
+    collisionFlashDuration: 900,
+    maxSpeed: 2.0,
+    maxForce: 0.05,
+    alignmentWeight: 0.95,
+    cohesionWeight: 0.6,
+    separationWeight: 1.2,
+    mouseRadius: 120,
+    mouseWeight: 1.5,
+    trailFadeAlpha: 0.9,
+  };
+  const maxParticleCount = 2000;
+
+  function cssVariable(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function stageVariable(el, name) {
+    const v = getComputedStyle(el).getPropertyValue(name).trim();
+    return v || cssVariable(name);
+  }
+
+  function cssColorToRgb(color) {
+    if (color.startsWith('#')) {
+      const hex = color.slice(1);
+      const norm = hex.length === 3 ? hex.split('').map(c => c + c).join('') : hex;
+      const val = parseInt(norm, 16);
+      return `${(val >> 16) & 255}, ${(val >> 8) & 255}, ${val & 255}`;
+    }
+    const rgb = color.match(/\d+(\.\d+)?/g);
+    return rgb ? rgb.slice(0, 3).join(', ') : '28, 26, 23';
+  }
+
+  function validCount(value, fallback, max = Infinity) {
+    const n = Number(value);
+    if (!Number.isFinite(n) || n < 0) return fallback;
+    return Math.min(Math.floor(n), max);
+  }
+
+  function validNumber(value, fallback) {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : fallback;
+  }
+
+  canvases.forEach(canvas => {
+    const stage = canvas.closest('[data-flock-stage]') || canvas.closest('.ds-section');
+    if (!stage) return;
+
+    const ctx = canvas.getContext('2d');
+    const config = { ...baseConfig };
+    const configAttributes = {
+      count:             'flockCount',
+      perception:        'flockPerception',
+      separationDistance:'flockSeparation',
+      collisionDistance: 'flockCollision',
+      maxSpeed:          'flockSpeed',
+      maxForce:          'flockForce',
+      alignmentWeight:   'flockAlignment',
+      cohesionWeight:    'flockCohesion',
+      separationWeight:  'flockSeparationWeight',
+      mouseRadius:       'flockMouseRadius',
+      mouseWeight:       'flockMouseWeight',
+      trailFadeAlpha:    'flockTrailFade',
+    };
+
+    let width = 0, height = 0, pixelRatio = 1;
+    let boids = [];
+    let animationFrame = 0;
+    let isVisible = false;
+    let spatialGrid = new Map();
+    const mouse = { x: 0, y: 0, active: false };
+
+    function updateConfigFromDataset() {
+      for (const [key, dsName] of Object.entries(configAttributes)) {
+        if (canvas.dataset[dsName] === undefined) continue;
+        config[key] = key === 'count'
+          ? validCount(canvas.dataset[dsName], config[key], maxParticleCount)
+          : validNumber(canvas.dataset[dsName], config[key]);
+      }
+    }
+
+    // ── Vector ──────────────────────────────────────────────
+    class Vector {
+      constructor(x = 0, y = 0) { this.x = x; this.y = y; }
+      add(v)      { this.x += v.x; this.y += v.y; return this; }
+      subtract(v) { this.x -= v.x; this.y -= v.y; return this; }
+      multiply(s) { this.x *= s;   this.y *= s;   return this; }
+      divide(s)   { if (s !== 0) { this.x /= s; this.y /= s; } return this; }
+      magnitude() { return Math.hypot(this.x, this.y); }
+      normalize() { const m = this.magnitude(); return m > 0 ? this.divide(m) : this; }
+      limit(max)  { if (this.magnitude() > max) this.normalize().multiply(max); return this; }
+      clone()     { return new Vector(this.x, this.y); }
+      static random(speed = 1) {
+        const a = Math.random() * Math.PI * 2;
+        return new Vector(Math.cos(a) * speed, Math.sin(a) * speed);
+      }
+    }
+
+    function distSq(a, b) {
+      const dx = a.x - b.x, dy = a.y - b.y;
+      return dx * dx + dy * dy;
+    }
+
+    // ── Boid ────────────────────────────────────────────────
+    class Boid {
+      constructor() {
+        this.position  = new Vector(Math.random() * width, Math.random() * height);
+        this.velocity  = Vector.random(1.4 + Math.random() * config.maxSpeed);
+        this.acceleration = new Vector();
+        this.size      = 5 + Math.random() * 3;
+        this.shape     = Math.random() < 0.45 ? 'circle' : 'line';
+        this.isColliding = false;
+        this.wasColliding = false;
+        this.collisionFlashStartedAt = -Infinity;
+        this.collisionFlash = 0;
+      }
+
+      update(neighbors, now) {
+        this.acceleration
+          .add(this.align(neighbors).multiply(config.alignmentWeight))
+          .add(this.cohere(neighbors).multiply(config.cohesionWeight))
+          .add(this.separate(neighbors).multiply(config.separationWeight))
+          .add(this.attractToMouse().multiply(config.mouseWeight));
+        this.velocity.add(this.acceleration).limit(config.maxSpeed);
+        this.position.add(this.velocity);
+        this.acceleration.multiply(0);
+        this.wrapEdges();
+      }
+
+      align(neighbors) {
+        const s = new Vector(); let total = 0;
+        const r = config.perception * config.perception;
+        for (const o of neighbors) {
+          if (o !== this && distSq(this.position, o.position) < r) { s.add(o.velocity); total++; }
+        }
+        if (!total) return s;
+        return s.divide(total).normalize().multiply(config.maxSpeed).subtract(this.velocity).limit(config.maxForce);
+      }
+
+      cohere(neighbors) {
+        const s = new Vector(); let total = 0;
+        const r = config.perception * config.perception;
+        for (const o of neighbors) {
+          if (o !== this && distSq(this.position, o.position) < r) { s.add(o.position); total++; }
+        }
+        if (!total) return s;
+        return s.divide(total).subtract(this.position).normalize().multiply(config.maxSpeed).subtract(this.velocity).limit(config.maxForce);
+      }
+
+      separate(neighbors) {
+        const s = new Vector(); let total = 0;
+        const sr = config.separationDistance * config.separationDistance;
+        const cr = config.collisionDistance  * config.collisionDistance;
+        for (const o of neighbors) {
+          const d = distSq(this.position, o.position);
+          if (o !== this && d < sr) {
+            if (d < cr) { this.isColliding = true; o.isColliding = true; }
+            s.add(this.position.clone().subtract(o.position).divide(Math.sqrt(d) || 1));
+            total++;
+          }
+        }
+        if (!total) return s;
+        return s.divide(total).normalize().multiply(config.maxSpeed).subtract(this.velocity).limit(config.maxForce * 1.7);
+      }
+
+      attractToMouse() {
+        if (!mouse.active) return new Vector();
+        const target = new Vector(mouse.x, mouse.y);
+        const d = Math.sqrt(distSq(this.position, target));
+        if (d > config.mouseRadius) return new Vector();
+        const prox = 1 - d / config.mouseRadius;
+        return target.subtract(this.position).normalize().multiply(config.maxSpeed * prox).subtract(this.velocity).limit(config.maxForce * 3);
+      }
+
+      wrapEdges() {
+        const m = this.size;
+        if (this.position.x < -m)       this.position.x = width + m;
+        if (this.position.y < -m)       this.position.y = height + m;
+        if (this.position.x > width + m)  this.position.x = -m;
+        if (this.position.y > height + m) this.position.y = -m;
+      }
+
+      addLineToPath() {
+        const spd = this.velocity.magnitude() || 1;
+        const dx = this.velocity.x / spd, dy = this.velocity.y / spd;
+        const len = this.size + spd * 1.4, half = len * 0.5;
+        ctx.moveTo(this.position.x + dx * half, this.position.y + dy * half);
+        ctx.lineTo(this.position.x - dx * half, this.position.y - dy * half);
+      }
+
+      addCircleToPath() {
+        ctx.moveTo(this.position.x + this.size * 0.3, this.position.y);
+        ctx.arc(this.position.x, this.position.y, this.size * 0.15, 0, Math.PI * 2);
+      }
+    }
+
+    // ── Spatial grid (O(n) neighbor lookup) ─────────────────
+    function buildSpatialGrid() {
+      spatialGrid = new Map();
+      const cs = config.perception;
+      for (const b of boids) {
+        const key = `${Math.floor(b.position.x / cs)},${Math.floor(b.position.y / cs)}`;
+        if (!spatialGrid.has(key)) spatialGrid.set(key, []);
+        spatialGrid.get(key).push(b);
+      }
+    }
+
+    function getNeighbors(boid) {
+      const neighbors = [];
+      const cs = config.perception;
+      const col = Math.floor(boid.position.x / cs);
+      const row = Math.floor(boid.position.y / cs);
+      for (let y = row - 1; y <= row + 1; y++) {
+        for (let x = col - 1; x <= col + 1; x++) {
+          const cell = spatialGrid.get(`${x},${y}`);
+          if (cell) neighbors.push(...cell);
+        }
+      }
+      return neighbors;
+    }
+
+    // ── Canvas resize ────────────────────────────────────────
+    function clearCanvas() {
+      ctx.fillStyle = `rgba(${cssColorToRgb(cssVariable('--bg'))}, ${config.trailFadeAlpha})`;
+      ctx.fillRect(0, 0, width, height);
+    }
+
+    function resizeCanvas() {
+      const rect = stage.getBoundingClientRect();
+      pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      width  = Math.max(1, Math.round(rect.width));
+      height = Math.max(1, Math.round(rect.height));
+      canvas.width  = Math.floor(width  * pixelRatio);
+      canvas.height = Math.floor(height * pixelRatio);
+      canvas.style.width  = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      clearCanvas();
+      for (const b of boids) {
+        b.position.x = Math.min(b.position.x, width);
+        b.position.y = Math.min(b.position.y, height);
+      }
+    }
+
+    function syncBoidCount() {
+      const n = validCount(config.count, baseConfig.count, maxParticleCount);
+      config.count = n;
+      if (boids.length < n) {
+        boids.push(...Array.from({ length: n - boids.length }, () => new Boid()));
+      } else if (boids.length > n) {
+        boids.length = n;
+      }
+    }
+
+    // ── Controls ─────────────────────────────────────────────
+    function formatValue(value, step) {
+      const p = step.includes('.') ? step.split('.')[1].length : 0;
+      return Number(value).toFixed(p);
+    }
+
+    function bindControls() {
+      document.querySelectorAll(`[data-flock-control="${canvas.id}"]`).forEach(ctrl => {
+        const key = ctrl.dataset.config;
+        if (!key || !(key in config)) return;
+        const valueEl = ctrl.closest('.boids-control')?.querySelector('[data-control-value]');
+        function set(val) {
+          const v = key === 'count'
+            ? validCount(val, config[key], maxParticleCount)
+            : validNumber(val, config[key]);
+          config[key] = v;
+          ctrl.value = String(v);
+          if (valueEl) valueEl.textContent = formatValue(v, ctrl.step || '1');
+          if (key === 'count') syncBoidCount();
+        }
+        set(config[key]);
+        ctrl.addEventListener('input', () => set(ctrl.value));
+      });
+    }
+
+    function updatePointer(e) {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+      mouse.active = true;
+    }
+
+    // ── Collision flash ──────────────────────────────────────
+    function easeOutCubic(v) { return 1 - Math.pow(1 - v, 3); }
+
+    function updateCollisionFlash(boid, now) {
+      if (boid.isColliding && !boid.wasColliding) boid.collisionFlashStartedAt = now;
+      const elapsed = now - boid.collisionFlashStartedAt;
+      boid.collisionFlash = elapsed < config.collisionFlashDuration
+        ? 1 - elapsed / config.collisionFlashDuration : 0;
+      boid.wasColliding = boid.isColliding;
+    }
+
+    // ── Animation loop ───────────────────────────────────────
+    function animate(now = performance.now()) {
+      if (!isVisible) return;
+      clearCanvas();
+      buildSpatialGrid();
+
+      const lineBoids = [], circleBoids = [];
+      for (const b of boids) b.isColliding = false;
+      for (const b of boids) {
+        b.update(getNeighbors(b), now);
+        updateCollisionFlash(b, now);
+        (b.shape === 'circle' ? circleBoids : lineBoids).push(b);
+      }
+
+      const boidRgb      = stageVariable(stage, '--boid-rgb');
+      const collisionRgb = stageVariable(stage, '--collision-rgb');
+
+      // Circle boids
+      ctx.beginPath();
+      for (const b of circleBoids) b.addCircleToPath();
+      if (circleBoids.length) { ctx.fillStyle = `rgba(${boidRgb}, 0.3)`; ctx.fill(); }
+
+      // Line boids
+      ctx.beginPath();
+      for (const b of lineBoids) b.addLineToPath();
+      if (lineBoids.length) {
+        ctx.lineWidth = 2; ctx.lineCap = 'round';
+        ctx.strokeStyle = `rgba(${boidRgb}, 0.3)`; ctx.stroke();
+      }
+
+      // Collision flash pass
+      for (const b of boids) {
+        if (b.collisionFlash === 0) continue;
+        const alpha = easeOutCubic(b.collisionFlash);
+        ctx.beginPath();
+        if (b.shape === 'circle') {
+          b.addCircleToPath();
+          ctx.fillStyle = `rgba(${collisionRgb}, ${0.6 * alpha})`; ctx.fill();
+        } else {
+          b.addLineToPath();
+          ctx.lineWidth = 2; ctx.lineCap = 'round';
+          ctx.strokeStyle = `rgba(${collisionRgb}, ${0.6 * alpha})`; ctx.stroke();
+        }
+      }
+
+      if (isVisible) animationFrame = requestAnimationFrame(animate);
+    }
+
+    function startAnimation() {
+      if (isVisible) return;
+      isVisible = true;
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(animate);
+    }
+
+    function stopAnimation() {
+      isVisible = false;
+      cancelAnimationFrame(animationFrame);
+    }
+
+    // ── Init ─────────────────────────────────────────────────
+    window.addEventListener('resize', resizeCanvas);
+    stage.addEventListener('pointerenter', updatePointer);
+    stage.addEventListener('pointermove',  updatePointer);
+    stage.addEventListener('pointerleave', () => { mouse.active = false; });
+
+    resizeCanvas();
+    updateConfigFromDataset();
+    syncBoidCount();
+    bindControls();
+
+    new MutationObserver(mutations => {
+      if (mutations.some(m => m.type === 'attributes' && m.attributeName?.startsWith('data-flock-'))) {
+        updateConfigFromDataset();
+        syncBoidCount();
+      }
+    }).observe(canvas, { attributes: true });
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(entries => {
+        if (entries[0]?.isIntersecting) { resizeCanvas(); startAnimation(); }
+        else stopAnimation();
+      }, { rootMargin: '160px 0px', threshold: 0.01 }).observe(stage);
+    } else {
+      startAnimation();
+    }
+  });
+})();
 </script>
 </body>
 </html>
