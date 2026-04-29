@@ -630,7 +630,7 @@
           <span class="tag">Free-for-all</span>
           <span class="tag">4–20 players</span>
           <span class="tag">12 rounds</span>
-          <span class="tag">1 CLOUD entry</span>
+          <span class="tag">1 Q entry</span>
         </div>
       </div>
       <div class="game-card" id="gc-ctl" onclick="selectGame('ctl')">
@@ -796,7 +796,7 @@
               heading: 'At a Glance',
               type: 'grid',
               items: [
-                { key: 'Entry cost', val: '1 CLOUD per player' },
+                { key: 'Entry cost', val: '1 Q ($0.25) per player' },
                 { key: 'Players', val: '4–20, free-for-all' },
                 { key: 'Rounds', val: '12 rounds of paired play' },
                 { key: 'Lobby', val: 'OpenQueue — join any open game' },
@@ -853,7 +853,7 @@
 <span class="kw">OathbreakerPlugin</span> implements <span class="kw">CoordinationGame</span> {
   gameType: <span class="str">'oathbreaker'</span>,
   version: <span class="str">'0.3.0'</span>,
-  entryCost: credits(<span class="num">1</span>),           <span class="cmt">// 1 CLOUD per player</span>
+  entryCost: credits(<span class="num">1</span>),           <span class="cmt">// 1 Q ($0.25) per player</span>
   spectatorDelay: <span class="num">0</span>,             <span class="cmt">// live spectating (no delay)</span>
   chatScopes: [<span class="str">'all'</span>, <span class="str">'dm'</span>],     <span class="cmt">// no team scope in FFA</span>
 

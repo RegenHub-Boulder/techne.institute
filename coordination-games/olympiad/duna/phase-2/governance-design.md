@@ -341,8 +341,8 @@ The TimelockController sits between the GovernorContract (which queues operation
 **Standard vs. critical delay routing:**
 
 The GovernorContract checks proposal type and target when queuing to TimelockController:
-- Proposals affecting treasury amounts <= [MAJOR_TRANSACTION_THRESHOLD] CLOUD: queued with [TIMELOCK_DELAY] (48h)
-- Proposals affecting treasury amounts > [MAJOR_TRANSACTION_THRESHOLD] CLOUD or constitutional amendments: queued with [TIMELOCK_DELAY_CRITICAL] (7 days)
+- Proposals affecting treasury amounts <= [MAJOR_TRANSACTION_THRESHOLD] Q: queued with [TIMELOCK_DELAY] (48h)
+- Proposals affecting treasury amounts > [MAJOR_TRANSACTION_THRESHOLD] Q or constitutional amendments: queued with [TIMELOCK_DELAY_CRITICAL] (7 days)
 - Dissolution proposals: queued with [TIMELOCK_DELAY_CRITICAL] and an additional on-chain notice event emitted
 
 ---
@@ -395,7 +395,7 @@ The TreasuryVault (and Gnosis Safe during formation) holds:
 
 - **ETH** — for gas funding of on-chain operations, held as a working reserve
 - **[GOV_TOKEN]** — unissued governance tokens held for distribution, compensation, and partnership allocations
-- **CLOUD** — the Techne unit of exchange (1 CLOUD ≈ $0.10), the primary operational denomination per charter (Article V §5.4 endowment reserve, Article IV §4.4 major transaction threshold)
+- **Q** — the Techne unit of exchange (0 Q ≈ $0.25), the primary operational denomination per charter (Article V §5.4 endowment reserve, Article IV §4.4 major transaction threshold)
 - **Stablecoins** (USDC, DAI) — for stable-value treasury management and fiat-equivalent operations
 - **Other ERC-20 tokens** — as approved by member vote for treasury diversification or partnership purposes
 
@@ -625,7 +625,7 @@ This simplifies the attestation process: new token holders are immediately Commu
 
 **Protections:**
 
-**Timelocks.** Standard treasury operations are subject to [TIMELOCK_DELAY] (48h). Transactions exceeding [MAJOR_TRANSACTION_THRESHOLD] CLOUD are subject to [TIMELOCK_DELAY_CRITICAL] (7 days). The delay allows human observation and response.
+**Timelocks.** Standard treasury operations are subject to [TIMELOCK_DELAY] (48h). Transactions exceeding [MAJOR_TRANSACTION_THRESHOLD] Q are subject to [TIMELOCK_DELAY_CRITICAL] (7 days). The delay allows human observation and response.
 
 **Proposal rate limiting.** The GovernorContract limits the number of treasury-affecting proposals that can be queued in TimelockController simultaneously. Suggested limit: [TREASURY_PROPOSAL_QUEUE_LIMIT] (default: 5 proposals). This prevents treasury flood attacks (many small treasury-draining proposals executed simultaneously after their respective timelocks).
 
@@ -737,7 +737,7 @@ Contract deployment must follow dependency order. The sequence:
     - This Safe is the treasury during the formation period
 
 12. Transfer seed funds from Techne to Gnosis Safe
-    - CLOUD tokens: [SEED_TREASURY] CLOUD
+    - Q tokens: [SEED_TREASURY] Q
     - [GOV_TOKEN] tokens: treasury allocation from GenesisDistribution
     - ETH: operational reserve for gas
 
@@ -763,7 +763,7 @@ At deployment, the following parameters are set in the GovernorContract. All are
 | Quorum numerator | 5 (out of 100) | [QUORUM] |
 | Standard timelock delay | 172800 seconds | [TIMELOCK_DELAY] |
 | Critical timelock delay | 604800 seconds | [TIMELOCK_DELAY_CRITICAL] |
-| Major transaction threshold | [MAJOR_TRANSACTION_THRESHOLD] CLOUD | [MAJOR_TRANSACTION_THRESHOLD] |
+| Major transaction threshold | [MAJOR_TRANSACTION_THRESHOLD] Q | [MAJOR_TRANSACTION_THRESHOLD] |
 | Treasury proposal queue limit | 5 | [TREASURY_PROPOSAL_QUEUE_LIMIT] |
 | Supply cap multiplier | 2 | [SUPPLY_CAP_MULTIPLIER] |
 
@@ -824,11 +824,11 @@ Variables used in this document. Resolved values should be populated in `p446-fo
 | [MEMBER_FLOOR] | 6.3, 7.4, 8.2 | Founder vote — default: 1 token |
 | [QUORUM] | 2.4, 3.2, 8.2 | Founder vote — suggested: 5% |
 | [PROPOSAL_THRESHOLD] | 3.2, 8.2 | Founder vote — suggested: 1,000 tokens |
-| [MAJOR_TRANSACTION_THRESHOLD] | 3.5, 7.3, 8.2 | Founder vote — suggested: 1,000,000 CLOUD |
+| [MAJOR_TRANSACTION_THRESHOLD] | 3.5, 7.3, 8.2 | Founder vote — suggested: 400,000 Q |
 | [MULTISIG_M] / [MULTISIG_N] | 4.1, 8.1 | Technical decision — suggested: 3-of-5 |
 | [ENDOWMENT_RESERVE] | 4.3 | Founder vote — suggested: 20% |
 | [FOUNDING_OPERATOR_SUNSET] | 1.4, 7.2, 8.3 | a founding organizer/Techne decision |
-| [SEED_TREASURY] | 8.1 | a founding organizer/Techne decision — default: 500,000 CLOUD |
+| [SEED_TREASURY] | 8.1 | a founding organizer/Techne decision — default: 200,000 Q |
 | [VOTING_DELAY] | 3.2, 8.2 | Technical default: 7200 blocks |
 | [VOTING_PERIOD] | 3.2, 8.2 | Charter mandates 7 days |
 | [EMERGENCY_VOTING_PERIOD] | 3.2, 8.2 | Charter mandates 48 hours |

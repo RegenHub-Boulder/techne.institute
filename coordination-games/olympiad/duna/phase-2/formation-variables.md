@@ -36,13 +36,13 @@ These are not blockers — they are coordination surfaces. The DUNA formation pr
 **What it governs:** The name and ticker symbol of the membership/governance token. This token is what members hold to establish membership interest, vote on proposals, and receive governance compensation under §17-32-104(c)(i).
 
 **Options under consideration:**
-- *COORD* — short for coordination, matches the Olympiad's research mission, clearly distinct from CLOUD (the Techne unit of exchange).
+- *COORD* — short for coordination, matches the Olympiad's research mission, clearly distinct from Q (the Techne unit of exchange).
 - *OLYMP* — directly tied to the Olympiad brand, immediate legibility about what it governs.
 - *AGORA* — Greek for the public assembly where citizens governed. Signals deliberation and shared governance. Fits the Techne etymological register.
 - *OLY* — minimal ticker, common shorthand.
 
 **Design constraints:**
-- Must be distinct from CLOUD to avoid confusion between the unit of exchange and the governance instrument
+- Must be distinct from Q to avoid confusion between the unit of exchange and the governance instrument
 - Should survive the Olympiad being renamed or rebranded
 - Ticker must not conflict with existing major tokens (COORD: not in top 200 as of April 2026; OLYMP: minor existing token; AGORA: minor existing token)
 
@@ -75,15 +75,15 @@ These are not blockers — they are coordination surfaces. The DUNA formation pr
 
 ### [SEED_TREASURY]
 
-**What it governs:** The initial CLOUD allocation from Techne to the DUNA treasury as a formation grant (not a loan, not an investment). This seeds year-one operations, formation costs, and optionally the first prize pool reserve.
+**What it governs:** The initial Q allocation from Techne to the DUNA treasury as a formation grant (not a loan, not an investment). This seeds year-one operations, formation costs, and optionally the first prize pool reserve.
 
 **Options under consideration:**
 
-| Scenario | CLOUD Amount | USD Equivalent | What It Covers |
+| Scenario | Q Amount | USD Equivalent | What It Covers |
 |---|---|---|---|
-| Formation only | 50,000 CLOUD | ~$5,000 | Wyoming filing, attorney review (4-6 hrs), smart contract deployment |
-| Formation + first season | 500,000 CLOUD | ~$50,000 | Formation costs + first full Olympiad season prize pool + 6-month operating reserve |
-| Full year one endowment | 5,000,000 CLOUD | ~$500,000 | Formation + two seasons + endowment reserve generating yield |
+| Formation only | 20,000 Q | ~$5,000 | Wyoming filing, attorney review (4-6 hrs), smart contract deployment |
+| Formation + first season | 200,000 Q | ~$50,000 | Formation costs + first full Olympiad season prize pool + 6-month operating reserve |
+| Full year one endowment | 2,000,000 Q | ~$500,000 | Formation + two seasons + endowment reserve generating yield |
 
 **Structural note:** Under §17-32-104, the DUNA may not distribute profits to members — the seed is a grant to the commons, not recoverable by Techne. The appropriate amount depends on when the DUNA is expected to become self-sustaining through tournament fees and protocol revenue.
 
@@ -91,7 +91,7 @@ These are not blockers — they are coordination surfaces. The DUNA formation pr
 
 **Dependencies:** Economic model (§3), attorney brief (§5). Does not block charter drafting.
 
-**Default for planning purposes:** 500,000 CLOUD (~$50,000) — the middle scenario. All economic model documents use this figure unless noted.
+**Default for planning purposes:** 200,000 Q (~$50,000) — the middle scenario. All economic model documents use this figure unless noted.
 
 ---
 
@@ -146,7 +146,7 @@ These are not blockers — they are coordination surfaces. The DUNA formation pr
 | [DUNA_NAME] | Open | Wyoming filing, attorney brief, visual identity | Agent Olympiad Association |
 | [GOV_TOKEN] | Open | Smart contract deployment, token distribution | COORD |
 | [REGISTERED_AGENT] | Open | Wyoming filing (optional) | Commercial service |
-| [SEED_TREASURY] | Open | Economic model, attorney brief | 500,000 CLOUD |
+| [SEED_TREASURY] | Open | Economic model, attorney brief | 200,000 Q |
 | [FORMATION_DATE] | Open | All formation activities | 30 days before first Olympiad |
 | [MEMBER_FLOOR] | Open | Token distribution design | 1 token |
 | [NONPROFIT_PURPOSE_STATEMENT] | Draft | Attorney review, governing principles | See draft above |

@@ -300,7 +300,7 @@ The following variables from the formation variables register must be resolved b
 
 **[MEMBER_FLOOR] — Blocks token distribution design.** The threshold below which a token holder is not a voting member affects both the distribution event design and the 100-member calculation. Default: 1 token (maximally inclusive; recommended unless there is a specific reason to require more). Resolution pathway: founder vote or a founding organizer decision at T-30.
 
-**[SEED_TREASURY] — Blocks economic model outreach.** Conversations with Gitcoin/Allo about potential grant support or with institutional funders about the DUNA's financial sustainability depend on knowing what Techne is seeding the treasury with. This does not block membership outreach but does affect the financial credibility conversations. Resolution pathway: a founding organizer/Techne decision, ideally by T-45. Default for planning: 500,000 CLOUD (~$50,000).
+**[SEED_TREASURY] — Blocks economic model outreach.** Conversations with Gitcoin/Allo about potential grant support or with institutional funders about the DUNA's financial sustainability depend on knowing what Techne is seeding the treasury with. This does not block membership outreach but does affect the financial credibility conversations. Resolution pathway: a founding organizer/Techne decision, ideally by T-45. Default for planning: 200,000 Q (~$50,000).
 
 **[REGISTERED_AGENT] — Blocks Wyoming filing.** Optional, but if the Wyoming agent appointment filing is recommended by the DUNA's legal counsel, this needs to be resolved before or at T-0. Resolution pathway: attorney recommendation (the DUNA's legal counsel, Phase 1 answers).
 

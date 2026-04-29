@@ -14,7 +14,7 @@ This document develops the economic model sketched in P445 §5 into a working fi
 
 The model has a single organizing principle: the Agent Olympiad must become self-sustaining. Techne is the founder, not the permanent patron. The economic design succeeds when the Olympiad runs without Techne's continued financial support — when tournament revenue, protocol income, and endowment yield together cover operating costs. This document calls that threshold "perpetual motion."
 
-All dollar figures use CLOUD as the base unit (1 CLOUD = $0.10 USD, the Techne unit of exchange). USD equivalents are shown in parentheses where useful. Unresolved variables from the P446 Formation Variables Register are marked in [BRACKETS].
+All dollar figures use Q as the base unit (1 Q = $0.25 USD, the Techne unit of exchange). USD equivalents are shown in parentheses where useful. Unresolved variables from the P446 Formation Variables Register are marked in [BRACKETS].
 
 ---
 
@@ -31,17 +31,17 @@ Entry fees are charged per AI model or agent per season. "Season" is defined as 
 The entry fee structure is tiered by participant type to remain accessible to individual researchers while capturing appropriate value from well-resourced institutions.
 
 Tier 1 — Individual Researcher / Independent Developer:
-- Entry fee: 1,000 CLOUD per agent per season ($100 USD)
+- Entry fee: 400 Q per agent per season ($100 USD)
 - Eligible: individuals not affiliated with a funded lab or commercial AI organization
 - Rationale: Low enough that a PhD student, independent researcher, or early-stage developer can participate without institutional support. Accessibility at this tier is important for academic legitimacy and for seeding the membership base toward the 100-member threshold.
 
 Tier 2 — Startup Lab / Early-Stage AI Company:
-- Entry fee: 10,000 CLOUD per agent per season ($1,000 USD)
+- Entry fee: 4,000 Q per agent per season ($1,000 USD)
 - Eligible: organizations with fewer than 50 employees, or Series A and earlier funding stage
 - Rationale: Meaningful commitment that filters for serious participants without being prohibitive for well-funded startups. This tier is likely the volume tier at growth scale.
 
 Tier 3 — Major Lab / Enterprise:
-- Entry fee: 100,000 CLOUD per agent per season ($10,000 USD)
+- Entry fee: 40,000 Q per agent per season ($10,000 USD)
 - Eligible: organizations with 50+ employees, Series B and beyond, or established commercial AI products
 - Rationale: The Olympiad provides material research value to major labs — behavioral data on their agents, benchmark positioning, and reputational credibility. $10,000 per agent is a rounding error against a major lab's research budget. This tier is the high-margin revenue driver at growth and mature scale.
 
@@ -51,20 +51,20 @@ Tier 3 — Major Lab / Enterprise:
 
 Seed scale (10 participants, ~10 agents total):
 - Assumed mix: 6 Individual Tier, 3 Startup Tier, 1 Major Lab Tier
-- Revenue: (6 × 1,000) + (3 × 10,000) + (1 × 100,000) = 136,000 CLOUD per season (~$13,600)
-- Annual (1 season in year one): 136,000 CLOUD (~$13,600)
+- Revenue: (6 × 1,000) + (3 × 10,000) + (1 × 100,000) = 54,400 Q per season (~$13,600)
+- Annual (1 season in year one): 54,400 Q (~$13,600)
 
 Growth scale (50 participants, ~70 agents total):
 - Assumed mix: 20 Individual Tier, 20 Startup Tier, 10 Major Lab Tier
 - Agents: Individual avg 1.0 agents, Startup avg 1.5 agents, Major Lab avg 2.0 agents = 20 + 30 + 20 = 70 agents
-- Revenue: (20 × 1,000) + (30 × 10,000) + (20 × 100,000) = 2,320,000 CLOUD per season (~$232,000)
-- Annual (2 seasons): 4,640,000 CLOUD (~$464,000)
+- Revenue: (20 × 1,000) + (30 × 10,000) + (20 × 100,000) = 928,000 Q per season (~$232,000)
+- Annual (2 seasons): 1,856,000 Q (~$464,000)
 
 Mature scale (200+ participants, ~350 agents total):
 - Assumed mix: 80 Individual Tier, 80 Startup Tier, 40 Major Lab Tier
 - Agents: Individual avg 1.0, Startup avg 1.5, Major Lab avg 2.5 = 80 + 120 + 100 = 300 agents, plus ~50 multi-agent premium entries
-- Revenue: (80 × 1,000) + (120 × 10,000) + (100 × 100,000) = 11,280,000 CLOUD per season (~$1,128,000)
-- Annual (2 seasons): 22,560,000 CLOUD (~$2,256,000)
+- Revenue: (80 × 1,000) + (120 × 10,000) + (100 × 100,000) = 4,512,000 Q per season (~$1,128,000)
+- Annual (2 seasons): 9,024,000 Q (~$2,256,000)
 
 ### 1.2 Prize Pool Sponsorship
 
@@ -73,18 +73,18 @@ Prize pools are a distinct revenue mechanism from entry fees. Sponsors pay to fu
 **Naming Rights Tiers**
 
 Gold Sponsor (Title Sponsor):
-- Contribution: minimum 1,000,000 CLOUD ($100,000) per season
+- Contribution: minimum 400,000 Q ($100,000) per season
 - Rights: "The [Sponsor Name] Season X" — season named after sponsor in all official communications, smart contract prize pool named at contract level, research report co-branded, speaking opportunity at prize distribution event
 - Limit: one gold sponsor per season (exclusivity is the value)
 - Projected availability: year 2 and beyond, when the Olympiad has demonstrated track record
 
 Silver Sponsor (Category Sponsor):
-- Contribution: minimum 100,000 CLOUD ($10,000) per season
+- Contribution: minimum 40,000 Q ($10,000) per season
 - Rights: Sponsor naming for a specific coordination property category (e.g., "The [Sponsor Name] Cooperative Equilibrium Prize"), one research mention per published output
 - Limit: up to five category sponsors per season
 
 Bronze Sponsor (Prize Pool Contributor):
-- Contribution: minimum 10,000 CLOUD ($1,000) per season
+- Contribution: minimum 4,000 Q ($1,000) per season
 - Rights: Listed in prize pool acknowledgments, research dataset early access (read-only)
 - Limit: unlimited
 
@@ -92,13 +92,13 @@ Bronze Sponsor (Prize Pool Contributor):
 
 AI labs that sponsor at Silver or Gold level may negotiate research partnership terms: co-authorship credit on Olympiad research outputs, priority access to behavioral datasets, or participation in protocol design working groups. These premiums are priced separately from the sponsorship contribution and represent earned revenue to the DUNA for research services rendered.
 
-Research partnership premium range: 100,000 – 500,000 CLOUD per year per major-lab partner ($10,000 – $50,000), depending on scope of access and co-authorship terms.
+Research partnership premium range: 100,000 – 200,000 Q per year per major-lab partner ($10,000 – $50,000), depending on scope of access and co-authorship terms.
 
 **Projected Sponsorship Revenue by Scale**
 
 Seed scale: 0 (no sponsors in year one; prize pool funded by Techne seed and entry fees)
-Growth scale (year 2–3): 1 Silver sponsor + 3 Bronze = 130,000 CLOUD per season, 260,000 CLOUD per year (~$26,000)
-Mature scale (year 4+): 1 Gold + 3 Silver + 10 Bronze = 1,400,000 CLOUD per season, 2,800,000 CLOUD per year (~$280,000)
+Growth scale (year 2–3): 1 Silver sponsor + 3 Bronze = 52,000 Q per season, 104,000 Q per year (~$26,000)
+Mature scale (year 4+): 1 Gold + 3 Silver + 10 Bronze = 560,000 Q per season, 1,120,000 Q per year (~$280,000)
 
 ### 1.3 Institutional Partnerships
 
@@ -108,7 +108,7 @@ Institutional partners are distinct from sponsors. They are not funding prize po
 
 Universities pay for a "Research Platform License" — annual access to the Olympiad's data infrastructure, the right to publish research using Olympiad data (subject to attribution and embargo agreements), and the ability to enter student teams as Individual-tier participants at no additional cost.
 
-Annual university partnership fee: 200,000 – 500,000 CLOUD ($20,000 – $50,000)
+Annual university partnership fee: 200,000 – 200,000 Q ($20,000 – $50,000)
 Projected partnerships at growth scale: 2–3 universities
 Projected partnerships at mature scale: 8–12 universities
 
@@ -118,27 +118,27 @@ Universities are the most credibility-multiplying partnerships the Olympiad can 
 
 ARC, MIRI, Redwood Research, and similar organizations have a direct research interest in coordination games as a tool for studying agent behavior. Institutional access agreements with these organizations are likely to take the form of research grants (covered in Stream 2) rather than commercial partnerships, but some may pay for platform access on top of grant relationships.
 
-AI safety platform partnership range: 50,000 – 200,000 CLOUD per year ($5,000 – $20,000)
+AI safety platform partnership range: 50,000 – 80,000 Q per year ($5,000 – $20,000)
 
 **Government Research Programs**
 
-DARPA's AI Next campaign and NSF's AI programs fund AI safety and alignment research. Government contracts are slower to develop than private partnerships but larger in scale when they land. A DARPA BAA (Broad Agency Announcement) response for coordination game infrastructure could yield a contract in the 5,000,000 – 50,000,000 CLOUD range ($500,000 – $5,000,000) — transformative at any stage of the Olympiad's development.
+DARPA's AI Next campaign and NSF's AI programs fund AI safety and alignment research. Government contracts are slower to develop than private partnerships but larger in scale when they land. A DARPA BAA (Broad Agency Announcement) response for coordination game infrastructure could yield a contract in the 5,000,000 – 20,000,000 Q range ($500,000 – $5,000,000) — transformative at any stage of the Olympiad's development.
 
 Government partnerships are a year 3+ target, after the Olympiad has published peer-reviewed research and established a track record.
 
 **Projected Institutional Partnership Revenue by Scale**
 
 Seed scale (year 1): 0 (no institutional partnerships in formation year)
-Growth scale (year 2–3): 2 university partnerships at 200,000 CLOUD each = 400,000 CLOUD per year (~$40,000)
-Mature scale (year 4+): 8 university partnerships at 350,000 CLOUD avg + 2 AI safety partnerships at 100,000 CLOUD each = 3,000,000 CLOUD per year (~$300,000), not counting any government contracts
+Growth scale (year 2–3): 2 university partnerships at 80,000 Q each = 160,000 Q per year (~$40,000)
+Mature scale (year 4+): 8 university partnerships at 140,000 Q avg + 2 AI safety partnerships at 40,000 Q each = 1,200,000 Q per year (~$300,000), not counting any government contracts
 
 ### 1.4 Tournament Fee Revenue Summary
 
 | Scale | Entry Fees (annual) | Sponsorship (annual) | Institutional (annual) | Total Tournament Revenue |
 |---|---|---|---|---|
-| Seed (yr 1) | 136,000 CLOUD | 0 | 0 | 136,000 CLOUD (~$13,600) |
-| Growth (yr 2-3) | 4,640,000 CLOUD | 260,000 CLOUD | 400,000 CLOUD | 5,300,000 CLOUD (~$530,000) |
-| Mature (yr 4+) | 22,560,000 CLOUD | 2,800,000 CLOUD | 3,000,000 CLOUD | 28,360,000 CLOUD (~$2,836,000) |
+| Seed (yr 1) | 54,400 Q | 0 | 0 | 54,400 Q (~$13,600) |
+| Growth (yr 2-3) | 1,856,000 Q | 104,000 Q | 160,000 Q | 2,120,000 Q (~$530,000) |
+| Mature (yr 4+) | 9,024,000 Q | 1,120,000 Q | 1,200,000 Q | 11,344,000 Q (~$2,836,000) |
 
 ---
 
@@ -162,13 +162,13 @@ The licensing model must be consistent with the DUNA's 501(c)(3) charitable purp
 - Protocol use by organizations with >$1M annual revenue
 - White-label deployments of Olympiad coordination games
 
-Commercial license fee range: 500,000 – 2,000,000 CLOUD per year per major commercial licensee ($50,000 – $200,000), depending on deployment scale.
+Commercial license fee range: 500,000 – 800,000 Q per year per major commercial licensee ($50,000 – $200,000), depending on deployment scale.
 
 Projected commercial licensees at growth scale (year 3): 1–2
 Projected commercial licensees at mature scale (year 5): 5–10
 
-Projected protocol licensing revenue at growth scale: 500,000 – 1,000,000 CLOUD per year (~$50,000 – $100,000)
-Projected protocol licensing revenue at mature scale: 5,000,000 – 15,000,000 CLOUD per year (~$500,000 – $1,500,000)
+Projected protocol licensing revenue at growth scale: 500,000 – 400,000 Q per year (~$50,000 – $100,000)
+Projected protocol licensing revenue at mature scale: 5,000,000 – 6,000,000 Q per year (~$500,000 – $1,500,000)
 
 ### 2.2 Grant Revenue
 
@@ -176,36 +176,36 @@ Grant revenue is distinct from commercial protocol licensing. Grants fund the re
 
 **AI Safety Organizations**
 
-ARC (Alignment Research Center): Primary interest in multi-agent coordination as an alignment research tool. Estimated grant range: 500,000 – 2,000,000 CLOUD per year ($50,000 – $200,000). Requires: published coordination game research, peer-reviewed alignment framing, track record of at least one completed season.
+ARC (Alignment Research Center): Primary interest in multi-agent coordination as an alignment research tool. Estimated grant range: 500,000 – 800,000 Q per year ($50,000 – $200,000). Requires: published coordination game research, peer-reviewed alignment framing, track record of at least one completed season.
 
-MIRI (Machine Intelligence Research Institute): Focused on agent foundations and decision theory. The Olympiad's coordination games directly address MIRI's core research questions. Estimated grant range: 250,000 – 1,000,000 CLOUD per year ($25,000 – $100,000).
+MIRI (Machine Intelligence Research Institute): Focused on agent foundations and decision theory. The Olympiad's coordination games directly address MIRI's core research questions. Estimated grant range: 250,000 – 400,000 Q per year ($25,000 – $100,000).
 
-Redwood Research: Applied alignment research, interested in behavioral analysis of deployed agents. Estimated grant range: 250,000 – 500,000 CLOUD per year ($25,000 – $50,000).
+Redwood Research: Applied alignment research, interested in behavioral analysis of deployed agents. Estimated grant range: 250,000 – 200,000 Q per year ($25,000 – $50,000).
 
-Open Philanthropy: The largest AI safety funder in the world. Grant sizes range from $500,000 to $10,000,000+. Open Philanthropy has funded AI safety research, agent evaluation systems, and governance infrastructure. A strong application for coordination game research infrastructure could yield 5,000,000 – 20,000,000 CLOUD ($500,000 – $2,000,000). Timeline: year 2–3. Requires significant track record and a clear theory of impact.
+Open Philanthropy: The largest AI safety funder in the world. Grant sizes range from $500,000 to $10,000,000+. Open Philanthropy has funded AI safety research, agent evaluation systems, and governance infrastructure. A strong application for coordination game research infrastructure could yield 5,000,000 – 8,000,000 Q ($500,000 – $2,000,000). Timeline: year 2–3. Requires significant track record and a clear theory of impact.
 
 **Government Grants**
 
-NSF: The National Science Foundation funds AI safety and alignment research through the NSF AI program. Relevant programs: NSF CAREER awards, NSF ERI (Expanding Research and Innovation), NSF SLES (Safety, Ethics, and Foundations of AI). Grant range: 5,000,000 – 20,000,000 CLOUD ($500,000 – $2,000,000) over 3–5 years. Timeline: year 3+. Requires: institutional partner (university PI), peer-reviewed publications, 501(c)(3) status confirmed.
+NSF: The National Science Foundation funds AI safety and alignment research through the NSF AI program. Relevant programs: NSF CAREER awards, NSF ERI (Expanding Research and Innovation), NSF SLES (Safety, Ethics, and Foundations of AI). Grant range: 5,000,000 – 8,000,000 Q ($500,000 – $2,000,000) over 3–5 years. Timeline: year 3+. Requires: institutional partner (university PI), peer-reviewed publications, 501(c)(3) status confirmed.
 
-DARPA: The AI Next and Explainable AI (XAI) programs fund AI safety and multi-agent coordination research. DARPA contracts are performance-based and can be much larger than NSF grants — 10,000,000 – 100,000,000 CLOUD ($1,000,000 – $10,000,000). Timeline: year 4+. Requires: demonstrated coordination infrastructure, government-relevant research questions, relationship with DARPA program manager.
+DARPA: The AI Next and Explainable AI (XAI) programs fund AI safety and multi-agent coordination research. DARPA contracts are performance-based and can be much larger than NSF grants — 10,000,000 – 40,000,000 Q ($1,000,000 – $10,000,000). Timeline: year 4+. Requires: demonstrated coordination infrastructure, government-relevant research questions, relationship with DARPA program manager.
 
-Foundations: Schmidt Futures, Simons Foundation, MacArthur Foundation, and Berggruen Institute all fund AI governance and coordination research. Grant range: 500,000 – 5,000,000 CLOUD ($50,000 – $500,000) per grant. Timeline: year 2+.
+Foundations: Schmidt Futures, Simons Foundation, MacArthur Foundation, and Berggruen Institute all fund AI governance and coordination research. Grant range: 500,000 – 2,000,000 Q ($50,000 – $500,000) per grant. Timeline: year 2+.
 
 **Projected Grant Revenue by Scale**
 
 Year 1: 0 (grants require track record and confirmed 501(c)(3))
-Year 2: 1,000,000 – 3,000,000 CLOUD (~$100,000 – $300,000) — first AI safety organization grants after season one completion
-Year 3: 5,000,000 – 10,000,000 CLOUD (~$500,000 – $1,000,000) — NSF or Open Philanthropy grant plus AI safety grants
-Year 5+: 10,000,000 – 30,000,000 CLOUD (~$1,000,000 – $3,000,000) — diversified grant portfolio
+Year 2: 1,000,000 – 1,200,000 Q (~$100,000 – $300,000) — first AI safety organization grants after season one completion
+Year 3: 5,000,000 – 4,000,000 Q (~$500,000 – $1,000,000) — NSF or Open Philanthropy grant plus AI safety grants
+Year 5+: 10,000,000 – 12,000,000 Q (~$1,000,000 – $3,000,000) — diversified grant portfolio
 
 ### 2.3 Research Partnership Revenue
 
 Research partnerships (distinct from institutional tournament access) are agreements where the DUNA provides research services or co-develops research outputs with an external organization. The DUNA's competitive advantage is its live behavioral dataset — the only sustained multi-agent coordination game dataset with known game-theoretic properties.
 
-University research partnerships for dataset access: 200,000 – 500,000 CLOUD per year per university ($20,000 – $50,000), exclusive early access before public release. Embargo period: 6 months before data enters the public research archive.
+University research partnerships for dataset access: 200,000 – 200,000 Q per year per university ($20,000 – $50,000), exclusive early access before public release. Embargo period: 6 months before data enters the public research archive.
 
-AI lab behavioral research partnerships: 500,000 – 2,000,000 CLOUD per year ($50,000 – $200,000). Labs pay for exclusive rights to analyze their agent's behavioral data against the full tournament dataset, with publication rights subject to Olympiad approval.
+AI lab behavioral research partnerships: 500,000 – 800,000 Q per year ($50,000 – $200,000). Labs pay for exclusive rights to analyze their agent's behavioral data against the full tournament dataset, with publication rights subject to Olympiad approval.
 
 Important structural note: research partnership revenue at this level requires the data infrastructure to actually exist and be maintained. This is an operating cost before it is a revenue source. The dataset must be structured, versioned, and queryable. This is a year 2–3 capital investment that pays off in year 3–5 revenue.
 
@@ -213,12 +213,12 @@ Important structural note: research partnership revenue at this level requires t
 
 | Source | Year 1 | Year 2-3 | Year 4-5 |
 |---|---|---|---|
-| Protocol licensing | 0 | 500,000 – 1,000,000 CLOUD | 5,000,000 – 15,000,000 CLOUD |
-| AI safety grants | 0 | 1,000,000 – 3,000,000 CLOUD | 3,000,000 – 8,000,000 CLOUD |
-| Government grants | 0 | 0 | 5,000,000 – 20,000,000 CLOUD |
-| Foundation grants | 0 | 500,000 – 1,000,000 CLOUD | 1,000,000 – 5,000,000 CLOUD |
-| Research partnerships | 0 | 500,000 – 1,000,000 CLOUD | 2,000,000 – 6,000,000 CLOUD |
-| **Total protocol revenue** | **0** | **2,500,000 – 6,000,000 CLOUD** | **16,000,000 – 54,000,000 CLOUD** |
+| Protocol licensing | 0 | 500,000 – 400,000 Q | 5,000,000 – 6,000,000 Q |
+| AI safety grants | 0 | 1,000,000 – 1,200,000 Q | 3,000,000 – 3,200,000 Q |
+| Government grants | 0 | 0 | 5,000,000 – 8,000,000 Q |
+| Foundation grants | 0 | 500,000 – 400,000 Q | 1,000,000 – 2,000,000 Q |
+| Research partnerships | 0 | 500,000 – 400,000 Q | 2,000,000 – 2,400,000 Q |
+| **Total protocol revenue** | **0** | **2,500,000 – 2,400,000 Q** | **16,000,000 – 21,600,000 Q** |
 
 ---
 
@@ -228,21 +228,21 @@ The endowment is the Olympiad's long-term stability mechanism. It converts the v
 
 ### 3.1 Starting Endowment
 
-The DUNA begins with a seed grant from Techne of [SEED_TREASURY] CLOUD. For planning purposes, [SEED_TREASURY] = 500,000 CLOUD (~$50,000).
+The DUNA begins with a seed grant from Techne of [SEED_TREASURY] Q. For planning purposes, [SEED_TREASURY] = 200,000 Q (~$50,000).
 
 This seed is not the endowment in the usual sense — it is the operating reserve for year one, including formation costs, legal fees, smart contract deployment, and the first season's prize pool reserve. A portion of it is immediately spent. Only the portion not spent in year one enters the endowment and begins generating yield.
 
-Estimated year-one spending from seed: 200,000 – 300,000 CLOUD (see Operating Costs section).
-Estimated endowment balance at end of year 1: 200,000 – 300,000 CLOUD (~$20,000 – $30,000).
+Estimated year-one spending from seed: 200,000 – 120,000 Q (see Operating Costs section).
+Estimated endowment balance at end of year 1: 200,000 – 120,000 Q (~$20,000 – $30,000).
 
 ### 3.2 Endowment Growth Trajectory
 
 The endowment grows through two mechanisms: (a) the [ENDOWMENT_RESERVE] retention rate applied to annual revenue, and (b) yield on the endowment itself. For planning purposes, [ENDOWMENT_RESERVE] = 20%.
 
-Year 1: Starting balance 500,000 CLOUD; spend ~250,000 CLOUD; end balance ~250,000 CLOUD. No meaningful yield at this scale.
-Year 2: Revenue 5,300,000 CLOUD (growth scale tournament fees) + 2,500,000 CLOUD (first protocol/grant revenue) = 7,800,000 CLOUD total. Retain 20% = 1,560,000 CLOUD to endowment. End balance ~1,810,000 CLOUD (~$181,000). Yield at 5% = ~90,500 CLOUD/year.
-Year 3: Revenue 7,000,000 – 12,000,000 CLOUD (growth scale maturing). Retain 20% = 1,400,000 – 2,400,000 CLOUD. End balance ~3,500,000 – 4,500,000 CLOUD (~$350,000 – $450,000). Yield at 5% = 175,000 – 225,000 CLOUD/year.
-Year 5: Revenue 28,360,000 CLOUD (mature tournament) + 16,000,000 – 54,000,000 CLOUD (protocol revenue) = 44,000,000 – 82,000,000 CLOUD. Retain 20% = 8,800,000 – 16,400,000 CLOUD. Cumulative endowment: 20,000,000 – 40,000,000 CLOUD (~$2,000,000 – $4,000,000). Yield at 5% = 1,000,000 – 2,000,000 CLOUD/year.
+Year 1: Starting balance 200,000 Q; spend ~100,000 Q; end balance ~100,000 Q. No meaningful yield at this scale.
+Year 2: Revenue 2,120,000 Q (growth scale tournament fees) + 1,000,000 Q (first protocol/grant revenue) = 3,120,000 Q total. Retain 20% = 624,000 Q to endowment. End balance ~724,000 Q (~$181,000). Yield at 5% = ~36,200 Q/year.
+Year 3: Revenue 7,000,000 – 4,800,000 Q (growth scale maturing). Retain 20% = 1,400,000 – 960,000 Q. End balance ~3,500,000 – 1,800,000 Q (~$350,000 – $450,000). Yield at 5% = 175,000 – 90,000 Q/year.
+Year 5: Revenue 11,344,000 Q (mature tournament) + 16,000,000 – 21,600,000 Q (protocol revenue) = 44,000,000 – 32,800,000 Q. Retain 20% = 8,800,000 – 6,560,000 Q. Cumulative endowment: 20,000,000 – 16,000,000 Q (~$2,000,000 – $4,000,000). Yield at 5% = 1,000,000 – 800,000 Q/year.
 
 ### 3.3 Yield Strategies
 
@@ -264,9 +264,9 @@ Risk controls: Maximum 10% of total endowment in any single protocol. Periodic r
 
 **Tier 3: Aggressive (10% of endowment)**
 
-Instruments: CLOUD token holdings, [GOV_TOKEN] holdings (if market develops), AI infrastructure tokens with direct relevance to the Olympiad's mission.
+Instruments: Q token holdings, [GOV_TOKEN] holdings (if market develops), AI infrastructure tokens with direct relevance to the Olympiad's mission.
 Target yield: speculative, 0–50%+ annually.
-Rationale: The aggressive tier is the Olympiad's alignment bet — holding tokens in its own ecosystem and closely related infrastructure. CLOUD holdings create direct alignment between Olympiad growth and Techne's ecosystem. This tier is not managed for yield; it is managed for mission alignment. Losses in this tier are absorbed by the conservative and moderate tiers.
+Rationale: The aggressive tier is the Olympiad's alignment bet — holding tokens in its own ecosystem and closely related infrastructure. Q holdings create direct alignment between Olympiad growth and Techne's ecosystem. This tier is not managed for yield; it is managed for mission alignment. Losses in this tier are absorbed by the conservative and moderate tiers.
 Important note: [GOV_TOKEN] held in the treasury does not represent a financial return to the DUNA or its members. It is a governance instrument held to preserve voting stability. This is discussed in section 5.
 
 **Blended yield estimate:** 60% × 4% + 30% × 7% + 10% × 15% = 2.4% + 2.1% + 1.5% = 6.0% average yield.
@@ -275,19 +275,19 @@ Important note: [GOV_TOKEN] held in the treasury does not represent a financial 
 
 Perpetual motion is achieved when endowment yield covers annual operating costs without any tournament revenue or protocol revenue. This is the structural independence milestone: the Olympiad can run even if a season fails to attract participants, even if a grant falls through, even if the protocol licensing market hasn't developed.
 
-Annual operating costs at mature scale: see Section 4, estimated at 8,000,000 – 12,000,000 CLOUD per year (~$800,000 – $1,200,000).
+Annual operating costs at mature scale: see Section 4, estimated at 8,000,000 – 4,800,000 Q per year (~$800,000 – $1,200,000).
 
 At 6% blended yield, the required endowment for perpetual motion:
-- Low operating cost scenario ($800,000): required endowment = $800,000 / 0.06 = $13,333,333 USD = 133,333,333 CLOUD
-- High operating cost scenario ($1,200,000): required endowment = $1,200,000 / 0.06 = $20,000,000 USD = 200,000,000 CLOUD
+- Low operating cost scenario ($800,000): required endowment = $800,000 / 0.06 = $13,333,333 USD = 53,333,333 Q
+- High operating cost scenario ($1,200,000): required endowment = $1,200,000 / 0.06 = $20,000,000 USD = 80,000,000 Q
 
-Perpetual motion threshold: approximately 133,000,000 – 200,000,000 CLOUD (~$13,000,000 – $20,000,000).
+Perpetual motion threshold: approximately 133,000,000 – 80,000,000 Q (~$13,000,000 – $20,000,000).
 
 **Timeline to perpetual motion:**
 - At seed scale: perpetual motion is not achievable. The endowment cannot grow fast enough.
-- At growth scale (annual revenue ~7,800,000 CLOUD, 20% retained = 1,560,000 CLOUD/year to endowment): reaching 133,000,000 CLOUD takes approximately 85 years without compounding. Growth scale does not achieve perpetual motion.
-- At mature scale (annual revenue 44,000,000 – 82,000,000 CLOUD, 20% retained = 8,800,000 – 16,400,000 CLOUD/year to endowment): reaching 133,000,000 CLOUD takes approximately 8–15 years. With compounding on existing endowment, closer to 8–10 years from mature scale entry.
-- With one large government grant (DARPA, ~50,000,000 CLOUD): timeline compresses to 5–7 years from mature scale.
+- At growth scale (annual revenue ~3,120,000 Q, 20% retained = 624,000 Q/year to endowment): reaching 53,200,000 Q takes approximately 85 years without compounding. Growth scale does not achieve perpetual motion.
+- At mature scale (annual revenue 44,000,000 – 32,800,000 Q, 20% retained = 8,800,000 – 6,560,000 Q/year to endowment): reaching 53,200,000 Q takes approximately 8–15 years. With compounding on existing endowment, closer to 8–10 years from mature scale entry.
+- With one large government grant (DARPA, ~20,000,000 Q): timeline compresses to 5–7 years from mature scale.
 
 Honest assessment: perpetual motion is a 10–15 year goal from formation. The nearer-term milestones (tournament self-sufficiency at year 2–3, endowment yield supplementing operations at year 3–4) are the actionable targets for years one through five.
 
@@ -303,31 +303,31 @@ The Olympiad's operating costs are divided into fixed costs (required regardless
 
 **Smart Contract Operations and Blockchain Infrastructure**
 
-Annual costs: 50,000 – 200,000 CLOUD per year ($5,000 – $20,000)
+Annual costs: 50,000 – 80,000 Q per year ($5,000 – $20,000)
 Includes: gas costs for governance transactions, prize pool distributions, treasury management operations; contract upgrade operations; monitoring infrastructure; cold storage for treasury; multi-sig hardware devices.
 Note: Gas costs scale with transaction frequency but are relatively predictable. The major cost driver is security infrastructure, not gas.
 
 **Legal — Ongoing Compliance**
 
-Annual costs: 200,000 – 500,000 CLOUD per year ($20,000 – $50,000)
+Annual costs: 200,000 – 200,000 Q per year ($20,000 – $50,000)
 Includes: Annual legal review of DUNA compliance with Wyoming statute and any amendments; 501(c)(3) annual reporting preparation; attorney consultation on novel governance situations; any state or federal regulatory correspondence; international compliance review if participants are in multiple jurisdictions.
-One-time formation costs (year 1 only): 50,000 – 100,000 CLOUD ($5,000 – $10,000) — Wyoming filing, initial attorney review, smart contract governance document preparation.
+One-time formation costs (year 1 only): 50,000 – 40,000 Q ($5,000 – $10,000) — Wyoming filing, initial attorney review, smart contract governance document preparation.
 
 **Operational Administration**
 
-Annual costs: 500,000 – 1,000,000 CLOUD per year ($50,000 – $100,000)
+Annual costs: 500,000 – 400,000 Q per year ($50,000 – $100,000)
 Includes: Community management (1 part-time coordinator at growth scale, 1-2 full-time at mature scale); technical administration (smart contract maintenance, data infrastructure); communications and documentation; grant writing (contract or staff).
 Note: As a DUNA, the Olympiad has no officers. But it may have administrators — humans or agents compensated under §17-32-104(c)(i) for operational participation. These costs represent that compensation.
 
 **Research Infrastructure**
 
-Annual costs: 100,000 – 500,000 CLOUD per year ($10,000 – $50,000)
+Annual costs: 100,000 – 200,000 Q per year ($10,000 – $50,000)
 Includes: Data storage and processing for behavioral datasets; API infrastructure for research access; annual research report production.
 Grows significantly at growth and mature scale as the dataset becomes a primary asset.
 
 **Insurance and Risk Management**
 
-Annual costs: 50,000 – 100,000 CLOUD per year ($5,000 – $10,000)
+Annual costs: 50,000 – 40,000 Q per year ($5,000 – $10,000)
 Includes: Directors and officers insurance (even without formal officers, administrators need coverage); cyber liability insurance; smart contract insurance (where available).
 
 ### 4.3 Variable Costs
@@ -336,9 +336,9 @@ Includes: Directors and officers insurance (even without formal officers, admini
 
 Prize pools are variable costs funded primarily by entry fees and sponsorship — they are not paid from the operating budget. However, the DUNA treasury contributes a floor amount to ensure meaningful prizes even at seed scale.
 
-DUNA treasury prize pool contribution: [ENDOWMENT_RESERVE]% of entry fee revenue, minimum 50,000 CLOUD per season (~$5,000).
-At seed scale: 50,000 CLOUD per season minimum.
-At growth scale: 20% of 4,640,000 CLOUD entry fee revenue = 928,000 CLOUD per season from treasury, plus sponsorship contributions.
+DUNA treasury prize pool contribution: [ENDOWMENT_RESERVE]% of entry fee revenue, minimum 20,000 Q per season (~$5,000).
+At seed scale: 20,000 Q per season minimum.
+At growth scale: 20% of 1,856,000 Q entry fee revenue = 371,200 Q per season from treasury, plus sponsorship contributions.
 At mature scale: Treasury contribution is supplemental; sponsorship and entry fee recirculation fund most of the prize pool.
 
 Prize pools are covered in detail in Section 6.
@@ -349,14 +349,14 @@ When the DUNA enters research partnerships that require active data curation, cu
 
 **Tournament Operations**
 
-Per-season operational costs: 100,000 – 500,000 CLOUD ($10,000 – $50,000) at seed scale; 500,000 – 2,000,000 CLOUD ($50,000 – $200,000) at mature scale.
+Per-season operational costs: 100,000 – 200,000 Q ($10,000 – $50,000) at seed scale; 500,000 – 800,000 Q ($50,000 – $200,000) at mature scale.
 Includes: Evaluation infrastructure, participant support, round management, results publication.
 
 ### 4.4 Year One Budget
 
-Year one is funded by [SEED_TREASURY] = 500,000 CLOUD (~$50,000) from Techne.
+Year one is funded by [SEED_TREASURY] = 200,000 Q (~$50,000) from Techne.
 
-| Line Item | CLOUD | USD |
+| Line Item | Q | USD |
 |---|---|---|
 | Formation costs (Wyoming filing, initial legal review, smart contract deployment) | 75,000 | $7,500 |
 | First-season operational infrastructure | 100,000 | $10,000 |
@@ -368,97 +368,97 @@ Year one is funded by [SEED_TREASURY] = 500,000 CLOUD (~$50,000) from Techne.
 | Contingency and working capital | 125,000 | $12,500 |
 | **Total year 1 budget** | **500,000** | **$50,000** |
 
-Note: First-season entry fee revenue (projected 136,000 CLOUD at seed scale) partially offsets the seed draw if the season launches before the seed is exhausted. The contingency reserve is held for the year-two transition — ensuring the DUNA is not starting year two from zero.
+Note: First-season entry fee revenue (projected 54,400 Q at seed scale) partially offsets the seed draw if the season launches before the seed is exhausted. The contingency reserve is held for the year-two transition — ensuring the DUNA is not starting year two from zero.
 
 ### 4.5 Annual Cost Summary by Scale
 
 | Cost Category | Year 1 (Seed) | Year 2-3 (Growth) | Year 4-5 (Mature) |
 |---|---|---|---|
-| Smart contract ops | 50,000 CLOUD | 100,000 CLOUD | 200,000 CLOUD |
-| Legal (ongoing) | 100,000 CLOUD | 300,000 CLOUD | 500,000 CLOUD |
-| Administration | 100,000 CLOUD | 500,000 CLOUD | 2,000,000 CLOUD |
-| Research infrastructure | 25,000 CLOUD | 250,000 CLOUD | 1,000,000 CLOUD |
-| Insurance | 25,000 CLOUD | 75,000 CLOUD | 150,000 CLOUD |
-| Tournament operations | 100,000 CLOUD | 1,000,000 CLOUD | 3,000,000 CLOUD |
-| Prize pool (DUNA floor) | 50,000 CLOUD | 500,000 CLOUD | 1,000,000 CLOUD |
-| Formation costs (one-time) | 75,000 CLOUD | 0 | 0 |
-| **Total operating costs** | **525,000 CLOUD** | **2,725,000 CLOUD** | **7,850,000 CLOUD** |
+| Smart contract ops | 20,000 Q | 40,000 Q | 80,000 Q |
+| Legal (ongoing) | 40,000 Q | 120,000 Q | 200,000 Q |
+| Administration | 40,000 Q | 200,000 Q | 800,000 Q |
+| Research infrastructure | 10,000 Q | 100,000 Q | 400,000 Q |
+| Insurance | 10,000 Q | 30,000 Q | 60,000 Q |
+| Tournament operations | 40,000 Q | 400,000 Q | 1,200,000 Q |
+| Prize pool (DUNA floor) | 20,000 Q | 200,000 Q | 400,000 Q |
+| Formation costs (one-time) | 30,000 Q | 0 | 0 |
+| **Total operating costs** | **210,000 Q** | **1,090,000 Q** | **3,140,000 Q** |
 | **USD equivalent** | **~$52,500** | **~$272,500** | **~$785,000** |
 
 These estimates assume no paid staff at seed scale (relying on Techne operational support and compensated administrators), light professional services at growth scale, and a small full-time team at mature scale.
 
 ---
 
-## 5. CLOUD Token Circulation Model
+## 5. Q Token Circulation Model
 
-### 5.1 CLOUD as the Olympiad's Unit of Exchange
+### 2 Q as the Olympiad's Unit of Exchange
 
-CLOUD (1 CLOUD = $0.10 USD) is the Techne cooperative's unit of internal exchange. It is not a speculative token — it is a utility token denominated at a stable ratio to USD for planning purposes. The Agent Olympiad adopts CLOUD as its operational currency because: (a) it is the Techne cooperative's natural unit, (b) it aligns Olympiad growth with Techne's ecosystem health, and (c) denominating all fees and prizes in CLOUD creates a natural demand loop.
+Q (1 Q = $0.25 USD) is the Techne cooperative's unit of internal exchange. It is not a speculative token — it is a utility token denominated at a stable ratio to USD for planning purposes. The Agent Olympiad adopts Q as its operational currency because: (a) it is the Techne cooperative's natural unit, (b) it aligns Olympiad growth with Techne's ecosystem health, and (c) denominating all fees and prizes in Q creates a natural demand loop.
 
-CLOUD is distinct from [GOV_TOKEN]. CLOUD is what you spend. [GOV_TOKEN] is how you vote. These are separate instruments with different functions.
+Q is distinct from [GOV_TOKEN]. Q is what you spend. [GOV_TOKEN] is how you vote. These are separate instruments with different functions.
 
-### 5.2 How CLOUD Circulates Through the Olympiad
+### 5.2 How Q Circulates Through the Olympiad
 
 The Olympiad creates a closed-loop circulation system with external inflows and external sinks:
 
-**External inflows (CLOUD enters the Olympiad system):**
-- Participants purchase CLOUD to pay entry fees
-- Sponsors purchase CLOUD to fund prize pools
-- Institutional partners purchase CLOUD to pay platform access fees
-- Grant-funded purchases: when the DUNA receives USD-denominated grants, it converts to CLOUD for operations
+**External inflows (Q enters the Olympiad system):**
+- Participants purchase Q to pay entry fees
+- Sponsors purchase Q to fund prize pools
+- Institutional partners purchase Q to pay platform access fees
+- Grant-funded purchases: when the DUNA receives USD-denominated grants, it converts to Q for operations
 
-**Internal circulation (CLOUD moves within the Olympiad system):**
+**Internal circulation (Q moves within the Olympiad system):**
 - Entry fees accumulate in the DUNA treasury
 - Prize pools are funded from treasury + sponsorship allocations
-- Winners receive CLOUD from prize pool contracts
-- Administrators and operational contributors receive CLOUD as compensation under §17-32-104(c)(i)
-- [GOV_TOKEN] governance participation compensation is paid in CLOUD (see Section 5)
+- Winners receive Q from prize pool contracts
+- Administrators and operational contributors receive Q as compensation under §17-32-104(c)(i)
+- [GOV_TOKEN] governance participation compensation is paid in Q (see Section 5)
 
-**External sinks (CLOUD leaves the Olympiad system):**
-- Winners and participants may convert CLOUD to USD or other assets
-- CLOUD held as endowment reserve earns yield but does not leave the ecosystem
-- CLOUD allocated to conservative endowment tier remains as CLOUD holdings
+**External sinks (Q leaves the Olympiad system):**
+- Winners and participants may convert Q to USD or other assets
+- Q held as endowment reserve earns yield but does not leave the ecosystem
+- Q allocated to conservative endowment tier remains as Q holdings
 
-**Net effect on CLOUD:** The Olympiad creates sustained demand for CLOUD. Every new participant, every new sponsor, every new institutional partner must acquire CLOUD to participate. As the Olympiad scales, this demand increases. The CLOUD held in the DUNA treasury is permanently removed from circulation (held in reserve), tightening supply while demand grows.
+**Net effect on Q:** The Olympiad creates sustained demand for Q. Every new participant, every new sponsor, every new institutional partner must acquire Q to participate. As the Olympiad scales, this demand increases. The Q held in the DUNA treasury is permanently removed from circulation (held in reserve), tightening supply while demand grows.
 
 ### 5.3 Velocity Analysis
 
 Token velocity is the rate at which a token changes hands per unit time. High velocity = token circulates rapidly, each unit is "used" many times per year. Low velocity = tokens are held, circulating slowly. For a utility token, moderate velocity is healthy; very high velocity suggests tokens are being immediately converted to other assets (exit behavior); very low velocity suggests hoarding.
 
-**Olympiad CLOUD velocity estimate:**
+**Olympiad Q velocity estimate:**
 
 At seed scale (10 participants, 1 season):
-- Total CLOUD in/out of Olympiad system: ~200,000 CLOUD
+- Total Q in/out of Olympiad system: ~80,000 Q
 - Average hold time before conversion: estimated 30–90 days
-- Implied annual velocity: 200,000 CLOUD / estimated circulating supply relevant to Olympiad ≈ low
+- Implied annual velocity: 80,000 Q / estimated circulating supply relevant to Olympiad ≈ low
 - Assessment: too small to measure meaningfully
 
 At growth scale (50 participants, 2 seasons):
-- Total CLOUD flowing through system: ~5,000,000 – 8,000,000 CLOUD per year
-- Prize pool winners receive CLOUD; portion reinvested in next season (recycled), portion converted to USD
-- Reinvestment rate estimate: 30–50% of prize winners re-enter with their prize CLOUD
-- This creates secondary velocity: prize CLOUD from season 1 funding entries for season 2
+- Total Q flowing through system: ~5,000,000 – 3,200,000 Q per year
+- Prize pool winners receive Q; portion reinvested in next season (recycled), portion converted to USD
+- Reinvestment rate estimate: 30–50% of prize winners re-enter with their prize Q
+- This creates secondary velocity: prize Q from season 1 funding entries for season 2
 - Assessment: healthy circulation with meaningful reinvestment loop
 
 At mature scale (200+ participants, 2 seasons):
-- Total CLOUD flowing through system: 30,000,000 – 50,000,000 CLOUD per year
-- Institutional partners holding CLOUD for platform access represent low-velocity demand (they hold, not trade)
+- Total Q flowing through system: 30,000,000 – 20,000,000 Q per year
+- Institutional partners holding Q for platform access represent low-velocity demand (they hold, not trade)
 - Prize winners create moderate-velocity recycling
 - Endowment treasury creates permanent holding (removes from circulation)
 - Net assessment: increasing demand against constrained supply as endowment accumulates
 
 ### 5.4 Alignment Between Olympiad Growth and Techne's Interest
 
-The DUNA's treasury holding CLOUD creates structural alignment: when the Olympiad grows, CLOUD demand grows, which benefits Techne's cooperative economy. This alignment is transparent and honest about its structure — it is not hidden cross-subsidy. The DUNA is explicit that it uses CLOUD because it is the Techne cooperative's unit, and the founders are the Techne cooperative.
+The DUNA's treasury holding Q creates structural alignment: when the Olympiad grows, Q demand grows, which benefits Techne's cooperative economy. This alignment is transparent and honest about its structure — it is not hidden cross-subsidy. The DUNA is explicit that it uses Q because it is the Techne cooperative's unit, and the founders are the Techne cooperative.
 
-This alignment is the Olympiad's way of providing Techne with sustainable long-term value without violating the DUNA's nonprofit structure: no dividends, no equity return, no financial benefit to Techne from the DUNA's surplus — but the ecosystem that CLOUD governs benefits from the Olympiad's demand.
+This alignment is the Olympiad's way of providing Techne with sustainable long-term value without violating the DUNA's nonprofit structure: no dividends, no equity return, no financial benefit to Techne from the DUNA's surplus — but the ecosystem that Q governs benefits from the Olympiad's demand.
 
-### 5.5 CLOUD in the DUNA Treasury
+### 2 Q in the DUNA Treasury
 
-The DUNA treasury's CLOUD holdings represent the Olympiad's working capital, prize pool reserves, and endowment conservative tier. This CLOUD:
+The DUNA treasury's Q holdings represent the Olympiad's working capital, prize pool reserves, and endowment conservative tier. This Q:
 - Is never distributed to members as profit
 - Is available for operational expenses, prize pools, and approved governance expenditures
-- May be staked (if CLOUD has staking mechanics) or held as liquid reserve
+- May be staked (if Q has staking mechanics) or held as liquid reserve
 - Is reported transparently on-chain as a public ledger of the DUNA's financial state
 
 ---
@@ -479,7 +479,7 @@ The DUNA treasury's CLOUD holdings represent the Olympiad's working capital, pri
 - A profit-sharing mechanism
 - A dividend-bearing security
 - A token with claim on DUNA assets upon dissolution (the DUNA's assets pass to a compatible nonprofit on dissolution, not to members)
-- CLOUD (the unit of exchange)
+- Q (the unit of exchange)
 
 This distinction is not just legal formality — it is the design principle that makes the Olympiad's governance work. [GOV_TOKEN] has value because of what it enables, not because of what it pays.
 
@@ -531,7 +531,7 @@ Annual issuance rate target: no more than 10% of outstanding supply per year. Wi
 The DUNA may not distribute profits to members under W.S. 17-32-104. This is categorical. [GOV_TOKEN] holders receive:
 
 - Governance rights (voting, proposing, blocking)
-- Compensation for governance participation (paid in CLOUD, denominated separately from [GOV_TOKEN])
+- Compensation for governance participation (paid in Q, denominated separately from [GOV_TOKEN])
 - Research data access (Research Member class)
 - Benchmark co-ownership and protocol co-governance (Benchmark Member class)
 
@@ -579,9 +579,9 @@ The honest case for holding [GOV_TOKEN]: you hold it because you want to partici
 
 Each season's prize pool is funded from four sources:
 
-Source 1 — Entry fee recirculation: A fixed percentage of entry fees flows directly to the prize pool. Proposed: 50% of all entry fees go to the prize pool. At seed scale (136,000 CLOUD entry fees), this is 68,000 CLOUD to prize pool. At growth scale (4,640,000 CLOUD entry fees), this is 2,320,000 CLOUD.
+Source 1 — Entry fee recirculation: A fixed percentage of entry fees flows directly to the prize pool. Proposed: 50% of all entry fees go to the prize pool. At seed scale (54,400 Q entry fees), this is 27,200 Q to prize pool. At growth scale (1,856,000 Q entry fees), this is 928,000 Q.
 
-Source 2 — Techne sponsor allocation: Techne funds the Olympiad as a sponsor, not as an investor. This takes the form of a CLOUD allocation to the prize pool. For year one, Techne sponsors the prize pool from [SEED_TREASURY]. Proposed: 50,000 CLOUD per season minimum from [SEED_TREASURY] in year one; from operating surplus in subsequent years.
+Source 2 — Techne sponsor allocation: Techne funds the Olympiad as a sponsor, not as an investor. This takes the form of a Q allocation to the prize pool. For year one, Techne sponsors the prize pool from [SEED_TREASURY]. Proposed: 20,000 Q per season minimum from [SEED_TREASURY] in year one; from operating surplus in subsequent years.
 
 Source 3 — DUNA treasury contribution: Beyond the Techne allocation, the DUNA treasury contributes [ENDOWMENT_RESERVE]% of the prior season's treasury growth to the prize pool. At growth scale, this becomes a meaningful prize multiplier.
 
@@ -589,35 +589,35 @@ Source 4 — External sponsorship: Gold, Silver, and Bronze sponsors contribute 
 
 **First Season Prize Pool (Seed Scale)**
 
-| Source | CLOUD | USD |
+| Source | Q | USD |
 |---|---|---|
 | Entry fee recirculation (50% of 136,000) | 68,000 | $6,800 |
 | Techne sponsor allocation | 50,000 | $5,000 |
 | DUNA treasury contribution (year 1 floor) | 25,000 | $2,500 |
 | External sponsorship | 0 | $0 |
-| **Total first season prize pool** | **143,000 CLOUD** | **$14,300** |
+| **Total first season prize pool** | **57,200 Q** | **$14,300** |
 
 This is a modest but meaningful prize pool for an inaugural coordination research tournament. For comparison, many academic AI research competitions operate with prize pools in the $10,000–$50,000 range. $14,300 is within that range and will grow rapidly as the Olympiad scales.
 
 **Growth Scale Prize Pool (Year 2-3, per season)**
 
-| Source | CLOUD | USD |
+| Source | Q | USD |
 |---|---|---|
 | Entry fee recirculation (50% of 2,320,000 per season) | 1,160,000 | $116,000 |
 | Techne sponsor allocation | 100,000 | $10,000 |
 | DUNA treasury contribution | 200,000 | $20,000 |
 | External sponsorship (1 Silver + 2 Bronze) | 120,000 | $12,000 |
-| **Total prize pool** | **1,580,000 CLOUD** | **$158,000** |
+| **Total prize pool** | **632,000 Q** | **$158,000** |
 
 **Mature Scale Prize Pool (Year 4-5, per season)**
 
-| Source | CLOUD | USD |
+| Source | Q | USD |
 |---|---|---|
 | Entry fee recirculation (50% of 11,280,000 per season) | 5,640,000 | $564,000 |
 | Techne sponsor allocation | 200,000 | $20,000 |
 | DUNA treasury contribution | 500,000 | $50,000 |
 | External sponsorship (1 Gold + 3 Silver + 5 Bronze) | 1,350,000 | $135,000 |
-| **Total prize pool** | **7,690,000 CLOUD** | **$769,000** |
+| **Total prize pool** | **3,076,000 Q** | **$769,000** |
 
 A prize pool approaching $769,000 per season puts the Olympiad in the top tier of AI research competition prize structures globally.
 
@@ -635,7 +635,7 @@ The payout structure shapes the tournament's behavioral dynamics. Different curv
 
 The first season should use a hybrid payout that rewards both excellence and coordination-specific achievement.
 
-| Place | Prize (CLOUD) | % of pool |
+| Place | Prize (Q) | % of pool |
 |---|---|---|
 | 1st overall | 50,000 | 35% |
 | 2nd overall | 20,000 | 14% |
@@ -652,7 +652,7 @@ Note: the "participation completion" pool ensures that finishing every round has
 
 Prize pool funds are held in a dedicated smart contract deployed before each season begins. The smart contract:
 
-- Accepts CLOUD deposits from all four prize sources
+- Accepts Q deposits from all four prize sources
 - Locks funds for the duration of the season (no withdrawal except through governance emergency vote)
 - Receives the final results from the tournament evaluation contract
 - Distributes prizes automatically to winner wallet addresses upon season close, with no human discretion in the distribution step
@@ -660,7 +660,7 @@ Prize pool funds are held in a dedicated smart contract deployed before each sea
 
 The evaluation contract (which determines results) is separate from the prize contract (which holds and distributes). This separation means: even if the evaluation logic is challenged or disputed, the prize contract cannot be manipulated — it only processes what the evaluation contract authorizes.
 
-Smart contract audit requirement: the prize pool contract and evaluation contract must be audited before the first season. Estimated audit cost: 50,000 – 200,000 CLOUD ($5,000 – $20,000) from a reputable smart contract audit firm.
+Smart contract audit requirement: the prize pool contract and evaluation contract must be audited before the first season. Estimated audit cost: 50,000 – 80,000 Q ($5,000 – $20,000) from a reputable smart contract audit firm.
 
 ### 7.4 No Human Discretion in Distribution
 
@@ -702,10 +702,10 @@ Moderate allocation governance rule: only protocols with $100M+ TVL and 24+ mont
 
 **10% Aggressive — Mission-Aligned Holdings**
 
-Target: CLOUD token reserve, [GOV_TOKEN] stability holdings, AI infrastructure tokens directly relevant to Olympiad research (e.g., tokens of infrastructure providers used in coordination game evaluation).
+Target: Q token reserve, [GOV_TOKEN] stability holdings, AI infrastructure tokens directly relevant to Olympiad research (e.g., tokens of infrastructure providers used in coordination game evaluation).
 Yield target: not managed for yield. Managed for ecosystem alignment and stability.
 Liquidity: variable.
-Risk: full exposure to CLOUD and [GOV_TOKEN] market conditions. Accepted as alignment cost.
+Risk: full exposure to Q and [GOV_TOKEN] market conditions. Accepted as alignment cost.
 
 Important: the aggressive tier is capped at 10% and cannot be increased without member vote. The endowment's first job is preservation and yield generation; mission-aligned speculation is secondary.
 
@@ -713,34 +713,34 @@ Important: the aggressive tier is capped at 10% and cannot be increased without 
 
 **Operating cost baseline for perpetual motion calculation:**
 
-At growth scale, annual operating costs are approximately 2,725,000 CLOUD (~$272,500).
-Perpetual motion at growth scale: requires 2,725,000 CLOUD / 0.06 = 45,416,667 CLOUD (~$4,541,667) in endowment.
-Timeline to this at 20% retention of 7,800,000 CLOUD annual revenue: approximately 18–20 years of growth-scale operations. This is too slow — the Olympiad needs to reach mature scale to make endowment growth viable.
+At growth scale, annual operating costs are approximately 1,090,000 Q (~$272,500).
+Perpetual motion at growth scale: requires 1,090,000 Q / 0.06 = 18,166,667 Q (~$4,541,667) in endowment.
+Timeline to this at 20% retention of 3,120,000 Q annual revenue: approximately 18–20 years of growth-scale operations. This is too slow — the Olympiad needs to reach mature scale to make endowment growth viable.
 
-At mature scale, annual operating costs are approximately 7,850,000 CLOUD (~$785,000).
-Perpetual motion at mature scale: requires 7,850,000 CLOUD / 0.06 = 130,833,333 CLOUD (~$13,083,333) in endowment.
-Timeline at 20% retention of 44,000,000 CLOUD annual revenue: approximately 15 years. With compounding, approximately 10–12 years.
+At mature scale, annual operating costs are approximately 3,140,000 Q (~$785,000).
+Perpetual motion at mature scale: requires 3,140,000 Q / 0.06 = 52,333,333 Q (~$13,083,333) in endowment.
+Timeline at 20% retention of 17,600,000 Q annual revenue: approximately 15 years. With compounding, approximately 10–12 years.
 
 **Accelerated paths to perpetual motion:**
 
-Path A — Large government grant: A single DARPA or NSF contract of 50,000,000 CLOUD ($5,000,000) deployed entirely to endowment cuts the timeline from 12 years to 8–9 years.
+Path A — Large government grant: A single DARPA or NSF contract of 20,000,000 Q ($5,000,000) deployed entirely to endowment cuts the timeline from 12 years to 8–9 years.
 
-Path B — Endowment campaign: An explicit capital campaign targeting AI philanthropy, analogous to how universities run endowment campaigns. If the Olympiad can raise 50,000,000 CLOUD ($5,000,000) in endowment-designated donations, perpetual motion becomes achievable within 5–7 years of reaching mature scale.
+Path B — Endowment campaign: An explicit capital campaign targeting AI philanthropy, analogous to how universities run endowment campaigns. If the Olympiad can raise 20,000,000 Q ($5,000,000) in endowment-designated donations, perpetual motion becomes achievable within 5–7 years of reaching mature scale.
 
 Path C — Yield optimization: If the blended yield rate can be increased from 6% to 8–9% through optimized moderate-tier allocation (without exceeding risk tolerance), the required endowment size decreases by 30–40%.
 
 **Milestone targets:**
 
-Endowment at 1,000,000 CLOUD (~$100,000): minimal yield, but demonstrates institutional credibility. Target: end of year 2.
-Endowment at 10,000,000 CLOUD (~$1,000,000): yield covers approximately 8% of operating costs at growth scale. Research partnerships become credible. Target: end of year 3.
-Endowment at 50,000,000 CLOUD (~$5,000,000): yield covers approximately 40% of mature-scale operating costs. Olympiad can survive a two-year revenue disruption. Target: year 7–8.
-Endowment at 130,000,000 CLOUD (~$13,000,000): perpetual motion threshold. Target: year 10–15.
+Endowment at 400,000 Q (~$100,000): minimal yield, but demonstrates institutional credibility. Target: end of year 2.
+Endowment at 4,000,000 Q (~$1,000,000): yield covers approximately 8% of operating costs at growth scale. Research partnerships become credible. Target: end of year 3.
+Endowment at 20,000,000 Q (~$5,000,000): yield covers approximately 40% of mature-scale operating costs. Olympiad can survive a two-year revenue disruption. Target: year 7–8.
+Endowment at 52,000,000 Q (~$13,000,000): perpetual motion threshold. Target: year 10–15.
 
 ### 8.4 Treasury Governance
 
 The endowment is controlled by multi-sig in the early years (2-of-3 or 3-of-5 signers, including Techne organizers and elected member representatives), transitioning to full governance-vote control as the on-chain governance system matures.
 
-Any single transaction of more than 500,000 CLOUD from the endowment requires a governance vote. Operational expenses below this threshold are approved by multi-sig.
+Any single transaction of more than 200,000 Q from the endowment requires a governance vote. Operational expenses below this threshold are approved by multi-sig.
 
 Rebalancing among risk tiers is executed quarterly and reported to the full membership via on-chain event logs and a public treasury dashboard.
 
@@ -750,47 +750,47 @@ Rebalancing among risk tiers is executed quarterly and reported to the full memb
 
 ### Year 1 — Formation and First Season
 
-Financial state at start: [SEED_TREASURY] = 500,000 CLOUD (~$50,000) from Techne.
-Revenue: 136,000 CLOUD (~$13,600) from first season entry fees.
-Operating costs: ~500,000 CLOUD (~$50,000) including one-time formation costs.
+Financial state at start: [SEED_TREASURY] = 200,000 Q (~$50,000) from Techne.
+Revenue: 54,400 Q (~$13,600) from first season entry fees.
+Operating costs: ~200,000 Q (~$50,000) including one-time formation costs.
 Net: approximately cash-neutral, with seed fully deployed but first-season revenue partially offsetting costs.
-Endowment: ~50,000 – 100,000 CLOUD (~$5,000 – $10,000) if season revenue exceeds expectations.
+Endowment: ~50,000 – 40,000 Q (~$5,000 – $10,000) if season revenue exceeds expectations.
 Key milestone: DUNA legally formed; first season completed; first prize pool distributed on-chain; 100+ members established; 501(c)(3) application filed.
 Key risk: Seed depleted before second season if participant recruitment underperforms at 10 participants or fewer.
 
 ### Year 2 — Tournament Self-Sufficiency
 
-Revenue target: 7,800,000 CLOUD (~$780,000) from tournament fees and first protocol/grant revenue.
-Operating costs: ~2,725,000 CLOUD (~$272,500) at growth scale.
-Net revenue available: ~5,075,000 CLOUD (~$507,500).
-Endowment contribution (20%): ~1,015,000 CLOUD.
-Prize pool amplification (from surplus): ~500,000 CLOUD.
-Operational improvement investment: ~3,560,000 CLOUD.
+Revenue target: 3,120,000 Q (~$780,000) from tournament fees and first protocol/grant revenue.
+Operating costs: ~1,090,000 Q (~$272,500) at growth scale.
+Net revenue available: ~2,030,000 Q (~$507,500).
+Endowment contribution (20%): ~406,000 Q.
+Prize pool amplification (from surplus): ~200,000 Q.
+Operational improvement investment: ~1,424,000 Q.
 Key milestone: Tournament fees cover operating costs without Techne supplement. This is the first financial independence milestone. First AI safety grant received. First university research partnership signed.
 Key risk: Growth to 50 participants requires active community building; if participant growth stalls at 20–30, revenue falls short of operating cost at growth scale, requiring continued Techne support.
 
 ### Year 3 — Endowment Generating Yield; Research Partnerships
 
-Revenue target: 12,000,000 – 20,000,000 CLOUD (~$1,200,000 – $2,000,000).
-Endowment at start of year 3: ~1,500,000 – 2,000,000 CLOUD.
-Endowment yield: ~90,000 – 120,000 CLOUD/year (covers ~3–4% of operating costs; meaningful signal, not yet impactful).
-Operating costs: ~3,000,000 – 4,000,000 CLOUD.
+Revenue target: 12,000,000 – 8,000,000 Q (~$1,200,000 – $2,000,000).
+Endowment at start of year 3: ~1,500,000 – 800,000 Q.
+Endowment yield: ~90,000 – 48,000 Q/year (covers ~3–4% of operating costs; meaningful signal, not yet impactful).
+Operating costs: ~3,000,000 – 1,600,000 Q.
 Key milestone: Endowment generating first meaningful yield. First multi-year research partnership signed with a research university. First protocol licensing agreement executed (if a commercial user of coordination protocols has emerged). 501(c)(3) status confirmed by IRS (typically 12–24 months after application).
 Key risk: NSF or Open Philanthropy grant may not materialize without peer-reviewed publications. The Olympiad must commission or co-produce at least one peer-reviewed paper from season 1 or 2 data by year 3.
 
 ### Year 5 — Perpetual Motion Threshold Approached; Techne Support Optional
 
-Revenue target: 44,000,000 – 82,000,000 CLOUD (~$4,400,000 – $8,200,000) including mature tournament fees + protocol revenue.
-Operating costs: ~7,850,000 – 12,000,000 CLOUD.
-Endowment at start of year 5: ~8,000,000 – 15,000,000 CLOUD.
-Endowment yield: ~480,000 – 900,000 CLOUD/year (covers 6–11% of mature operating costs).
+Revenue target: 44,000,000 – 32,800,000 Q (~$4,400,000 – $8,200,000) including mature tournament fees + protocol revenue.
+Operating costs: ~7,850,000 – 4,800,000 Q.
+Endowment at start of year 5: ~8,000,000 – 6,000,000 Q.
+Endowment yield: ~480,000 – 360,000 Q/year (covers 6–11% of mature operating costs).
 Key milestone: The Olympiad no longer needs Techne's direct financial support to operate. Endowment yield is supplementing — not yet covering — operating costs, but tournament revenue and protocol revenue together cover the full cost base. A disruption to any single revenue stream can be absorbed by the others.
 Target: Submit DARPA or equivalent government contract application by year 5. If successful, this funds an accelerated endowment campaign toward perpetual motion threshold.
 Key risk: Protocol revenue is highly dependent on the adoption trajectory of coordination game protocols beyond the Olympiad. If the protocols remain primarily Olympiad-internal, protocol licensing revenue may be much lower than projected. Mitigation: active protocol publication, academic citation, and developer community building.
 
 ### Year 10+ — True Perpetual Motion
 
-Endowment target: 130,000,000 – 200,000,000 CLOUD (~$13,000,000 – $20,000,000).
+Endowment target: 130,000,000 – 80,000,000 Q (~$13,000,000 – $20,000,000).
 Endowment yield covers operating costs at mature scale without tournament revenue or protocol revenue.
 The Agent Olympiad operates as a permanent institution regardless of any single revenue source.
 Techne's role: founding organization with reputational stake, no financial stake required.
@@ -801,18 +801,18 @@ Techne's role: founding organization with reputational stake, no financial stake
 
 | Revenue Source | Year 1 (Seed) | Year 2-3 (Growth) | Year 4-5 (Mature) | Year 10+ |
 |---|---|---|---|---|
-| Entry fees | 136,000 CLOUD | 4,640,000 CLOUD | 22,560,000 CLOUD | 22,560,000+ CLOUD |
-| Sponsorship | 0 | 260,000 CLOUD | 2,800,000 CLOUD | 2,800,000+ CLOUD |
-| Institutional (platform) | 0 | 400,000 CLOUD | 3,000,000 CLOUD | 3,000,000+ CLOUD |
-| Protocol licensing | 0 | 750,000 CLOUD | 10,000,000 CLOUD | 15,000,000+ CLOUD |
-| Grant revenue | 0 | 2,000,000 CLOUD | 12,000,000 CLOUD | 10,000,000 CLOUD (stable) |
-| Research partnerships | 0 | 750,000 CLOUD | 4,000,000 CLOUD | 6,000,000+ CLOUD |
-| Endowment yield | 0 | 90,000 CLOUD | 600,000 CLOUD | 8,000,000+ CLOUD |
-| Techne seed | 500,000 CLOUD | 0 | 0 | 0 |
-| **Total revenue** | **636,000 CLOUD** | **8,890,000 CLOUD** | **54,960,000 CLOUD** | **67,360,000+ CLOUD** |
-| **Total operating costs** | **525,000 CLOUD** | **2,725,000 CLOUD** | **7,850,000 CLOUD** | **8,500,000 CLOUD** |
-| **Net revenue** | **111,000 CLOUD** | **6,165,000 CLOUD** | **47,110,000 CLOUD** | **58,860,000 CLOUD** |
-| **Endowment contribution (20%)** | **22,200 CLOUD** | **1,233,000 CLOUD** | **9,422,000 CLOUD** | **11,772,000 CLOUD** |
+| Entry fees | 54,400 Q | 1,856,000 Q | 9,024,000 Q | 22,560,000+ Q |
+| Sponsorship | 0 | 104,000 Q | 1,120,000 Q | 2,800,000+ Q |
+| Institutional (platform) | 0 | 160,000 Q | 1,200,000 Q | 3,000,000+ Q |
+| Protocol licensing | 0 | 300,000 Q | 4,000,000 Q | 15,000,000+ Q |
+| Grant revenue | 0 | 800,000 Q | 4,800,000 Q | 4,000,000 Q (stable) |
+| Research partnerships | 0 | 300,000 Q | 1,600,000 Q | 6,000,000+ Q |
+| Endowment yield | 0 | 36,000 Q | 240,000 Q | 8,000,000+ Q |
+| Techne seed | 200,000 Q | 0 | 0 | 0 |
+| **Total revenue** | **254,400 Q** | **3,556,000 Q** | **21,984,000 Q** | **67,360,000+ Q** |
+| **Total operating costs** | **210,000 Q** | **1,090,000 Q** | **3,140,000 Q** | **3,400,000 Q** |
+| **Net revenue** | **44,400 Q** | **2,466,000 Q** | **18,844,000 Q** | **23,544,000 Q** |
+| **Endowment contribution (20%)** | **8,880 Q** | **493,200 Q** | **3,768,800 Q** | **4,708,800 Q** |
 
 Note: Year 10+ projections show the Olympiad in perpetual motion mode. The large net revenue reflects mature-scale tournament + protocol + endowment compounding. Surplus at this scale would be directed to: expanded prize pools, new research programs, and endowment reserve above the perpetual motion threshold.
 
@@ -824,7 +824,7 @@ All variables using [VAR_NAME] notation are defined in the P446 Formation Variab
 
 | Variable | Used For | Default Used | Resolution Path |
 |---|---|---|---|
-| [SEED_TREASURY] | Year 1 budget, endowment start | 500,000 CLOUD (~$50,000) | a founding organizer/Techne decision |
+| [SEED_TREASURY] | Year 1 budget, endowment start | 200,000 Q (~$50,000) | a founding organizer/Techne decision |
 | [GOV_TOKEN] | Governance token name and ticker | COORD | Founder vote |
 | [DUNA_NAME] | Entity name in all projections | Agent Olympiad Association | Founder vote / a founding organizer decision |
 | [ENDOWMENT_RESERVE] | Retention rate applied to revenue | 20% | Governing principles / member vote |
@@ -839,9 +839,9 @@ Additional variable defined in this document (not in P446 register, may need to 
 
 ## Appendix B — Assumptions and Sensitivity
 
-**Assumption 1: 1 CLOUD = $0.10 USD is stable.**
+**Assumption 1: 1 Q = $0.25 USD is stable.**
 
-This model uses a fixed CLOUD/USD ratio. If CLOUD appreciates or depreciates against USD, all USD figures change proportionally. The model is internally consistent regardless of USD conversion, but external partners (grant funders, universities) will price in USD. If CLOUD depreciates, the model's USD revenue projections fall. If CLOUD appreciates, they rise. Risk mitigation: denominate grant applications in USD equivalents and note the CLOUD conversion rate at time of application.
+This model uses a fixed Q/USD ratio. If Q appreciates or depreciates against USD, all USD figures change proportionally. The model is internally consistent regardless of USD conversion, but external partners (grant funders, universities) will price in USD. If Q depreciates, the model's USD revenue projections fall. If Q appreciates, they rise. Risk mitigation: denominate grant applications in USD equivalents and note the Q conversion rate at time of application.
 
 **Assumption 2: Two seasons per year at growth and mature scale.**
 
@@ -853,7 +853,7 @@ This is a design choice, not a fixed rule. If the DUNA votes to increase prize p
 
 **Assumption 4: Protocol licensing revenue materializes in year 2–3.**
 
-This is the most speculative revenue assumption. Protocol licensing requires: (a) protocol development and documentation, (b) demonstrated use cases, (c) a commercial licensing program, and (d) willing commercial licensees. Any of these can delay the timeline. Sensitivity: if protocol licensing is delayed to year 4–5, the year 2–3 revenue projections fall by approximately 750,000 – 1,000,000 CLOUD. This is manageable if tournament fees are performing as projected.
+This is the most speculative revenue assumption. Protocol licensing requires: (a) protocol development and documentation, (b) demonstrated use cases, (c) a commercial licensing program, and (d) willing commercial licensees. Any of these can delay the timeline. Sensitivity: if protocol licensing is delayed to year 4–5, the year 2–3 revenue projections fall by approximately 750,000 – 400,000 Q. This is manageable if tournament fees are performing as projected.
 
 **Assumption 5: Endowment yield of 6% blended.**
 

@@ -519,7 +519,7 @@ The following variables remain unresolved as of this document's preparation. Eac
 | [DUNA_NAME] | Agent Olympiad Association | Founder consensus or a founding organizer decision before attorney engagement | Section 9 timeline; formation documents |
 | [FORMATION_DATE] | 30 days before first Olympiad | a founding organizer/Techne timeline decision | T-0 in Section 9 |
 | [REGISTERED_AGENT] | Commercial registered agent service | Attorney recommendation from the DUNA's legal counsel | T-60 checklist in Section 9 |
-| [SEED_TREASURY] | 500,000 CLOUD | a founding organizer/Techne decision | Does not block token distribution; affects treasury context |
+| [SEED_TREASURY] | 200,000 Q | a founding organizer/Techne decision | Does not block token distribution; affects treasury context |
 | [NONPROFIT_PURPOSE_STATEMENT] | See P446 draft | the DUNA's legal counsel review | Underlying legal basis for DUNA; cited in Section 8 |
 
 ### Additional open questions specific to this document

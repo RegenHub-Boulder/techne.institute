@@ -111,7 +111,7 @@ These principles are the human-readable specification. The authoritative governi
 
 **4.4 Supermajority decisions.** The following decisions require approval of 2/3 of membership interests participating in a vote with quorum:
 - Amendment of these governing principles
-- Sale or transfer of treasury assets exceeding [MAJOR_TRANSACTION_THRESHOLD] CLOUD in a single transaction
+- Sale or transfer of treasury assets exceeding [MAJOR_TRANSACTION_THRESHOLD] Q in a single transaction
 - Merger with another entity (§17-32-127)
 - Conversion to another entity type (§17-32-128)
 - Dissolution
@@ -224,7 +224,7 @@ The following placeholders require resolution before this charter is finalized (
 | [CONTRACT_ADDRESS] | §4.1 | Post-deployment |
 | [MEMBER_FLOOR] | §3.1 | Founder vote (default: 1 token) |
 | [QUORUM] | §4.3 | Founder vote (suggested: 5% of total supply) |
-| [MAJOR_TRANSACTION_THRESHOLD] | §4.4 | Founder vote (suggested: 1,000,000 CLOUD) |
+| [MAJOR_TRANSACTION_THRESHOLD] | §4.4 | Founder vote (suggested: 400,000 Q) |
 | [PROPOSAL_THRESHOLD] | §4.6 | Founder vote (suggested: 1,000 tokens) |
 | [MULTISIG_M] / [MULTISIG_N] | §5.2 | Technical decision (suggested: 3-of-5) |
 | [ENDOWMENT_RESERVE] | §5.4 | Founder vote (suggested: 20%) |
