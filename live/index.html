@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live — Coordination Games · Techne</title>
+  <meta name="description" content="A live constellation view of the Coordination Games ecosystem. Season 1 opens June 2026.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --void: #090909;
+      --surface: #141414;
+      --panel: #1e1e1e;
+      --gold: #c4956a;
+      --gold-dim: rgba(196,149,106,0.12);
+      --solar: #e8c547;
+      --solar-dim: rgba(232,197,71,0.10);
+      --lunar: #9ecfb8;
+      --lunar-dim: rgba(158,207,184,0.10);
+      --ember: #e07a5f;
+      --ember-dim: rgba(224,122,95,0.10);
+      --iris: #a78bca;
+      --iris-dim: rgba(167,139,202,0.10);
+      --text: rgba(255,255,255,0.82);
+      --muted: rgba(255,255,255,0.35);
+      --border: rgba(255,255,255,0.07);
+      --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+      --font-sans: 'Inter', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--void);
+      color: var(--text);
+      font-family: var(--font-mono);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Canvas ── */
+    #canvas {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    /* Subtle grid texture */
+    #canvas::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* ── SVG edges ── */
+    #edges {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .edge {
+      stroke: rgba(255,255,255,0.07);
+      stroke-width: 1;
+      fill: none;
+    }
+    .edge-glow {
+      stroke-width: 1.5;
+      fill: none;
+      opacity: 0;
+      transition: opacity 1s;
+    }
+    .edge-particle {
+      fill: none;
+      stroke-width: 12;
+      stroke-linecap: round;
+    }
+
+    /* ── Hub ── */
+    #hub {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .hub-rings {
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+    .hub-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(196,149,106,0.25);
+      animation: hub-pulse 3s ease-in-out infinite;
+    }
+    .hub-ring:nth-child(2) {
+      inset: -12px;
+      border-color: rgba(196,149,106,0.12);
+      animation-delay: 0.4s;
+    }
+    .hub-ring:nth-child(3) {
+      inset: -26px;
+      border-color: rgba(196,149,106,0.06);
+      animation-delay: 0.8s;
+    }
+    .hub-dot {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,149,106,0.3) 0%, transparent 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hub-dot::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 12px var(--gold), 0 0 24px rgba(196,149,106,0.4);
+    }
+    @keyframes hub-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.04); opacity: 0.5; }
+    }
+    .hub-label {
+      margin-top: 48px;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(196,149,106,0.5);
+      text-align: center;
+    }
+
+    /* ── Nodes ── */
+    .node {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      min-width: 120px;
+      cursor: default;
+      transition: border-color 0.3s, background 0.3s;
+      opacity: 0;
+      animation: node-in 0.6s ease forwards;
+    }
+    .node:hover {
+      background: var(--panel);
+    }
+
+    @keyframes node-in {
+      from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+      to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .node-type {
+      font-size: 8px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .node-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .node-value {
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 1;
+      margin-bottom: 5px;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+      transition: all 0.4s;
+    }
+    .node-label {
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .node-sub {
+      margin-top: 6px;
+      font-size: 9px;
+      color: var(--muted);
+      opacity: 0.7;
+      line-height: 1.5;
+    }
+
+    /* Node color themes */
+    .node.agents   { --nc: var(--lunar); --nc-dim: var(--lunar-dim); }
+    .node.games    { --nc: var(--solar); --nc-dim: var(--solar-dim); }
+    .node.trust    { --nc: var(--gold);  --nc-dim: var(--gold-dim); }
+    .node.tokens   { --nc: #5eead4;     --nc-dim: rgba(94,234,212,0.10); }
+    .node.coop     { --nc: var(--iris); --nc-dim: var(--iris-dim); }
+    .node.guild    { --nc: var(--ember); --nc-dim: var(--ember-dim); }
+
+    .node:hover { border-color: rgba(255,255,255,0.14); }
+    .node.agents:hover,  .node.agents.active  { border-color: rgba(158,207,184,0.35); background: var(--lunar-dim); }
+    .node.games:hover,   .node.games.active   { border-color: rgba(232,197,71,0.35);  background: var(--solar-dim); }
+    .node.trust:hover,   .node.trust.active   { border-color: rgba(196,149,106,0.35); background: var(--gold-dim); }
+    .node.tokens:hover,  .node.tokens.active  { border-color: rgba(94,234,212,0.35);  background: rgba(94,234,212,0.08); }
+    .node.coop:hover,    .node.coop.active    { border-color: rgba(167,139,202,0.35); background: var(--iris-dim); }
+    .node.guild:hover,   .node.guild.active   { border-color: rgba(224,122,95,0.35);  background: var(--ember-dim); }
+
+    .node-type { color: var(--nc, var(--muted)); }
+    .node-dot  { background: var(--nc, var(--muted)); }
+    .node-value { color: var(--nc, var(--text)); }
+
+    /* Stagger node entrance */
+    .node:nth-child(1) { animation-delay: 0.3s; }
+    .node:nth-child(2) { animation-delay: 0.5s; }
+    .node:nth-child(3) { animation-delay: 0.7s; }
+    .node:nth-child(4) { animation-delay: 0.9s; }
+    .node:nth-child(5) { animation-delay: 1.1s; }
+    .node:nth-child(6) { animation-delay: 1.3s; }
+
+    /* ── Top bar ── */
+    #topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(9,9,9,0.7);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .topbar-logo {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .topbar-logo a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .topbar-logo a:hover { color: var(--text); }
+    .topbar-sep { color: var(--border); }
+    .topbar-title {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      border: 1px solid;
+    }
+    .live-badge.preseason {
+      color: var(--gold);
+      border-color: rgba(196,149,106,0.3);
+      background: rgba(196,149,106,0.06);
+    }
+    .live-badge.live {
+      color: #4ade80;
+      border-color: rgba(74,222,128,0.3);
+      background: rgba(74,222,128,0.06);
+    }
+    .live-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .live-dot.pulse {
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    #countdown {
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    #countdown span { color: var(--gold); }
+
+    /* ── Feed strip ── */
+    #feed {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 40px;
+      border-top: 1px solid var(--border);
+      background: rgba(9,9,9,0.7);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      z-index: 100;
+    }
+    .feed-label {
+      flex-shrink: 0;
+      padding: 0 16px;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-right: 1px solid var(--border);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #feed-track {
+      flex: 1;
+      overflow: hidden;
+      height: 100%;
+      position: relative;
+    }
+    #feed-inner {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      height: 100%;
+      white-space: nowrap;
+      animation: feed-scroll 40s linear infinite;
+    }
+    .feed-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 28px;
+      font-size: 11px;
+      color: var(--muted);
+      border-right: 1px solid var(--border);
+      height: 100%;
+    }
+    .feed-item .fi-accent { color: var(--text); }
+    .feed-item .fi-tag {
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 2px;
+      background: var(--panel);
+    }
+    @keyframes feed-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── Status tooltip ── */
+    .node-status {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 10px;
+      color: var(--muted);
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 10;
+    }
+    .node:hover .node-status { opacity: 1; }
+
+    /* ── Season label ── */
+    #season-label {
+      position: fixed;
+      left: 50%;
+      top: calc(50% + 72px);
+      transform: translateX(-50%);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(196,149,106,0.3);
+      text-align: center;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      .node { min-width: 90px; padding: 10px 12px; }
+      .node-value { font-size: 22px; }
+      #countdown { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div id="topbar">
+  <div class="topbar-left">
+    <span class="topbar-logo">
+      <a href="https://techne.institute">techne.institute</a>
+    </span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">live</span>
+  </div>
+  <div class="topbar-right">
+    <span id="countdown"></span>
+    <div class="live-badge preseason" id="status-badge">
+      <span class="live-dot pulse"></span>
+      <span id="badge-text">Pre-season</span>
+    </div>
+  </div>
+</div>
+
+<!-- Constellation canvas -->
+<div id="canvas">
+
+  <!-- SVG edges -->
+  <svg id="edges" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glow-gold">
+        <feGaussianBlur stdDeviation="2.5" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="glow-soft">
+        <feGaussianBlur stdDeviation="1.5" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <!-- Edges drawn by JS -->
+  </svg>
+
+  <!-- Hub -->
+  <div id="hub">
+    <div class="hub-rings">
+      <div class="hub-ring"></div>
+      <div class="hub-ring"></div>
+      <div class="hub-ring"></div>
+      <div class="hub-dot"></div>
+    </div>
+    <div class="hub-label">Coordination<br>Games</div>
+  </div>
+
+  <!-- Season label -->
+  <div id="season-label">Season 1 · Opens Summer Solstice 2026</div>
+
+  <!-- Nodes -->
+  <div id="node-agents" class="node agents" style="left:24%;top:26%">
+    <div class="node-type"><span class="node-dot"></span>Agents</div>
+    <div class="node-value" id="val-agents">0</div>
+    <div class="node-label">registered</div>
+    <div class="node-sub">0 human · 0 AI</div>
+    <div class="node-status">Agent registrations open Season 1</div>
+  </div>
+
+  <div id="node-games" class="node games" style="left:72%;top:22%">
+    <div class="node-type"><span class="node-dot"></span>Games</div>
+    <div class="node-value" id="val-games">0</div>
+    <div class="node-label">in play</div>
+    <div class="node-sub">0 lobbies · 0 completed</div>
+    <div class="node-status">5 games ship with Season 1</div>
+  </div>
+
+  <div id="node-trust" class="node trust" style="left:83%;top:52%">
+    <div class="node-type"><span class="node-dot"></span>Trust</div>
+    <div class="node-value" id="val-trust">0</div>
+    <div class="node-label">attestations</div>
+    <div class="node-sub">EAS · EIP-712</div>
+    <div class="node-status">On-chain via Base</div>
+  </div>
+
+  <div id="node-tokens" class="node tokens" style="left:66%;top:80%">
+    <div class="node-type"><span class="node-dot"></span>Tokens</div>
+    <div class="node-value" id="val-tokens">0</div>
+    <div class="node-label">CLOUD in play</div>
+    <div class="node-sub">≈ $0.10 per CLOUD</div>
+    <div class="node-status">Prize pool opens Season 1</div>
+  </div>
+
+  <div id="node-coop" class="node coop" style="left:28%;top:78%">
+    <div class="node-type"><span class="node-dot"></span>Co-op</div>
+    <div class="node-value" id="val-coop">8</div>
+    <div class="node-label">members</div>
+    <div class="node-sub" id="sub-coop">founding · RegenHub LCA</div>
+    <div class="node-status">Membership opens Season 1</div>
+  </div>
+
+  <div id="node-guild" class="node guild" style="left:14%;top:52%">
+    <div class="node-type"><span class="node-dot"></span>Guild</div>
+    <div class="node-value" id="val-guild">5</div>
+    <div class="node-label">games in dev</div>
+    <div class="node-sub" id="sub-guild">treasury: — CLOUD</div>
+    <div class="node-status">Games Guild · Season 1 slate</div>
+  </div>
+
+</div><!-- /canvas -->
+
+<!-- Feed strip -->
+<div id="feed">
+  <div class="feed-label">
+    <span style="width:5px;height:5px;border-radius:50%;background:var(--gold);display:inline-block;animation:pulse-dot 2s infinite;"></span>
+    Activity
+  </div>
+  <div id="feed-track">
+    <div id="feed-inner">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Config ──────────────────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://hvbdpgkdcdskhpbdeeim.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_kB69BlNpkNhOllwGMOE6xg_i4l1VHMv';
+const SEASON_OPEN   = new Date('2026-06-21T06:00:00-06:00'); // Summer solstice MT
+
+// ── Countdown ────────────────────────────────────────────────────────────
+function updateCountdown() {
+  const now = new Date();
+  const diff = SEASON_OPEN - now;
+  if (diff <= 0) {
+    document.getElementById('countdown').textContent = 'Season 1 is live';
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  document.getElementById('countdown').innerHTML =
+    `<span>${d}</span>d <span>${h}</span>h <span>${m}</span>m to Season 1`;
+}
+updateCountdown();
+setInterval(updateCountdown, 60000);
+
+// ── Constellation edges ──────────────────────────────────────────────────
+const EDGES = [
+  ['hub',    'agents'],
+  ['hub',    'games'],
+  ['hub',    'trust'],
+  ['hub',    'tokens'],
+  ['hub',    'coop'],
+  ['hub',    'guild'],
+  ['agents', 'games'],
+  ['games',  'trust'],
+  ['trust',  'coop'],
+  ['coop',   'guild'],
+  ['guild',  'games'],
+  ['tokens', 'games'],
+];
+
+const NODE_COLORS = {
+  hub:    'rgba(196,149,106,0.4)',
+  agents: 'rgba(158,207,184,0.35)',
+  games:  'rgba(232,197,71,0.35)',
+  trust:  'rgba(196,149,106,0.35)',
+  tokens: 'rgba(94,234,212,0.35)',
+  coop:   'rgba(167,139,202,0.35)',
+  guild:  'rgba(224,122,95,0.35)',
+};
+
+function getNodeCenter(id) {
+  const el = id === 'hub'
+    ? document.getElementById('hub')
+    : document.getElementById('node-' + id);
+  if (!el) return { x: 0, y: 0 };
+  const r = el.getBoundingClientRect();
+  return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+}
+
+let particleState = {};
+
+function drawEdges() {
+  const svg = document.getElementById('edges');
+  svg.innerHTML = `<defs>
+    <filter id="glow-gold"><feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="glow-soft"><feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>`;
+
+  EDGES.forEach(([a, b]) => {
+    const ca = getNodeCenter(a);
+    const cb = getNodeCenter(b);
+
+    // Base edge
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', ca.x); line.setAttribute('y1', ca.y);
+    line.setAttribute('x2', cb.x); line.setAttribute('y2', cb.y);
+    line.setAttribute('stroke', 'rgba(255,255,255,0.055)');
+    line.setAttribute('stroke-width', '1');
+    svg.appendChild(line);
+
+    // Glow edge
+    const glow = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    glow.setAttribute('x1', ca.x); glow.setAttribute('y1', ca.y);
+    glow.setAttribute('x2', cb.x); glow.setAttribute('y2', cb.y);
+    glow.setAttribute('stroke', NODE_COLORS[a] || 'rgba(255,255,255,0.1)');
+    glow.setAttribute('stroke-width', '1');
+    glow.setAttribute('filter', 'url(#glow-soft)');
+    glow.setAttribute('opacity', '0.4');
+    svg.appendChild(glow);
+
+    // Animated particle along edge
+    const len = Math.hypot(cb.x - ca.x, cb.y - ca.y);
+    const key = `${a}-${b}`;
+    if (!particleState[key]) particleState[key] = Math.random();
+
+    const pLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    pLine.setAttribute('id', 'p-' + key);
+    pLine.setAttribute('x1', ca.x); pLine.setAttribute('y1', ca.y);
+    pLine.setAttribute('x2', cb.x); pLine.setAttribute('y2', cb.y);
+    pLine.setAttribute('stroke', NODE_COLORS[b] || 'rgba(255,255,255,0.3)');
+    pLine.setAttribute('stroke-width', '1.5');
+    pLine.setAttribute('stroke-dasharray', `4 ${len - 4}`);
+    pLine.setAttribute('stroke-dashoffset', len);
+    pLine.setAttribute('stroke-linecap', 'round');
+    pLine.setAttribute('opacity', '0.7');
+    svg.appendChild(pLine);
+  });
+}
+
+// ── Particle animation ────────────────────────────────────────────────────
+function animateParticles() {
+  EDGES.forEach(([a, b]) => {
+    const ca = getNodeCenter(a);
+    const cb = getNodeCenter(b);
+    const len = Math.hypot(cb.x - ca.x, cb.y - ca.y);
+    const key = `${a}-${b}`;
+    const el = document.getElementById('p-' + key);
+    if (!el) return;
+
+    particleState[key] = (particleState[key] - 0.4) % len;
+    if (particleState[key] < 0) particleState[key] += len;
+    el.setAttribute('stroke-dashoffset', particleState[key]);
+  });
+  requestAnimationFrame(animateParticles);
+}
+
+// ── Init drawing ──────────────────────────────────────────────────────────
+function init() {
+  drawEdges();
+  requestAnimationFrame(animateParticles);
+}
+
+window.addEventListener('load', () => setTimeout(init, 400));
+window.addEventListener('resize', () => { particleState = {}; drawEdges(); });
+
+// ── Supabase fetch ────────────────────────────────────────────────────────
+async function sbFetch(table, params = '') {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/${table}?${params}`,
+    { headers: {
+      'apikey': SUPABASE_ANON,
+      'Authorization': `Bearer ${SUPABASE_ANON}`,
+      'Prefer': 'count=exact',
+    }}
+  );
+  if (!res.ok) return null;
+  const count = res.headers.get('content-range');
+  return count ? parseInt(count.split('/')[1]) : null;
+}
+
+async function fetchData() {
+  // Try Workshop participants as a proxy for registered agents/members
+  try {
+    const participants = await sbFetch('participants', 'select=id&limit=1');
+    if (participants !== null) {
+      animateValue('val-coop', parseInt(document.getElementById('val-coop').textContent), participants);
+    }
+  } catch(e) {}
+
+  // Try coordination_requests for activity feed
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/coordination_requests?select=title,status,created_at&order=created_at.desc&limit=8`,
+      { headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}` }}
+    );
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.length) injectFeedItems(data);
+    }
+  } catch(e) {}
+}
+
+// ── Animated number ────────────────────────────────────────────────────────
+function animateValue(id, from, to, dur = 800) {
+  const el = document.getElementById(id);
+  if (!el || from === to) return;
+  const start = performance.now();
+  function step(now) {
+    const t = Math.min((now - start) / dur, 1);
+    const ease = t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+    el.textContent = Math.round(from + (to - from) * ease);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ── Feed ──────────────────────────────────────────────────────────────────
+const SEED_FEED = [
+  { tag: 'co-op', text: 'RegenHub, LCA filed · Boulder, CO', accent: 'Founded Feb 2026' },
+  { tag: 'guild', text: '5 games confirmed for Season 1 slate', accent: 'Oathbreaker · Shelling Point · Tragedy · Capture · AI 2027' },
+  { tag: 'research', text: 'Deep Roots published · intellectual lineage', accent: 'cooperation.games/research' },
+  { tag: 'season', text: 'Season 1 opens Summer Solstice', accent: 'June 21, 2026' },
+  { tag: 'trust', text: 'Trust schema finalized · Five Bands', accent: 'ERC-8004 · EAS · Base' },
+  { tag: 'co-op', text: '8 founding organizers', accent: 'Boulder, CO' },
+  { tag: 'guild', text: 'Games Guild forming · open to proposals', accent: 'games.coop' },
+  { tag: 'agent', text: 'Nou · Dianoia agents active in Workshop', accent: 'RegenHub Studio' },
+];
+
+function injectFeedItems(liveItems) {
+  const inner = document.getElementById('feed-inner');
+  const live = liveItems.map(d => ({
+    tag: 'workshop',
+    text: d.title || 'Workshop activity',
+    accent: d.status || 'active',
+  }));
+  renderFeed([...live, ...SEED_FEED]);
+}
+
+function renderFeed(items) {
+  const inner = document.getElementById('feed-inner');
+  const all = [...items, ...items]; // doubled for seamless loop
+  inner.innerHTML = all.map(item => `
+    <div class="feed-item">
+      <span class="fi-tag">${item.tag}</span>
+      <span>${item.text}</span>
+      <span class="fi-accent">${item.accent}</span>
+    </div>
+  `).join('');
+}
+
+// Init with seed data
+renderFeed(SEED_FEED);
+
+// ── Boot ───────────────────────────────────────────────────────────────────
+fetchData();
+setInterval(fetchData, 30000);
+</script>
+</body>
+</html>
