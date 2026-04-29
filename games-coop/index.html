@@ -1,3 +1,4 @@
+SHA: a813c38b27008966b4284bd1e15a9363a39a7318
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -646,6 +647,61 @@ a:hover { text-decoration: underline; }
   margin-right: 4px;
 }
 .icon-muted { opacity: 0.45; }
+
+  /* ── Hero meta ── */
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+  .hero-meta-item {
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .hero-meta-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--dim);
+  }
+  .hero-meta-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--warm);
+  }
+  .hero-meta-value a { color: var(--warm); }
+
+  /* ── Organizers ── */
+  .organizers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .org-item {
+    padding: 1.25rem 1.5rem;
+    border-right: 1px solid var(--border-dim);
+  }
+  .org-item:last-child { border-right: none; }
+  .org-role {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 0.35rem;
+  }
+  .org-name {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1rem; font-weight: 700;
+    color: var(--parchment); margin-bottom: 0.4rem;
+  }
+  .org-name a { color: var(--parchment); text-decoration: none; }
+  .org-name a:hover { color: var(--gold); }
+  .org-desc {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.73rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
 </style>
 </head>
 <body>
@@ -720,6 +776,16 @@ a:hover { text-decoration: underline; }
       <div class="stat">
         <div class="stat-num">Jun 21</div>
         <div class="stat-label"><i data-lucide="calendar" class="icon icon-sm icon-muted"></i>Season 1 Opens</div>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Steward</span>
+        <span class="hero-meta-value">RegenHub, LCA</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Co-founded with</span>
+        <span class="hero-meta-value"><a href="https://gitcoin.co/" target="_blank" rel="noopener">Gitcoin</a> &amp; <a href="https://www.dacc.fund/" target="_blank" rel="noopener">dacc.fund</a></span>
       </div>
     </div>
   </div>
@@ -1317,6 +1383,27 @@ a:hover { text-decoration: underline; }
 </div>
 
 <!-- ── FOOTER ── -->
+
+<!-- Who's organizing -->
+<section class="section" id="organizers">
+  <div class="page-wrap">
+    <div class="section-kicker">Organizers</div>
+    <h2>Who's behind it.</h2>
+    <div class="organizers">
+      <div class="org-item">
+        <div class="org-role">Steward</div>
+        <div class="org-name"><a href="https://techne.institute/" target="_blank">RegenHub, LCA</a></div>
+        <div class="org-desc">A Colorado Limited Cooperative Association — the primary steward of Coordination Games Season 1. Holds the IP, the grant, and the working group driving execution. DBA: Techne Studio.</div>
+      </div>
+      <div class="org-item">
+        <div class="org-role">Co-founders</div>
+        <div class="org-name"><a href="https://gitcoin.co/" target="_blank">Gitcoin</a> &amp; <a href="https://www.dacc.fund/" target="_blank">dacc.fund</a></div>
+        <div class="org-desc">Gitcoin originated the initiative and transferred IP and grant funding to The Games Cooperative LCA. Ongoing ~10% engagement: media, distribution, and partnership introductions. dacc.fund (Defensive Acceleration) co-founded the season format.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="page-wrap">
   <div class="footer">
     <div class="footer-grid">
@@ -1801,3 +1888,4 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
