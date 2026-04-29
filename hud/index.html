@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <style>
     /* ── Palette ─────────────────────────────────────────────────────────── */
     :root {
@@ -103,6 +104,11 @@
     }
     .hud-dot.pulse { animation: pulse 2.5s ease-in-out infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.18} }
+    .hp-icon {
+      width: 9px; height: 9px; display: inline-block;
+      vertical-align: middle; margin-right: 4px; margin-top: -1px;
+      stroke-width: 2; opacity: 0.55;
+    }
 
     /* ── Bottom feed ──────────────────────────────────────────────────────── */
     #feed {
@@ -256,9 +262,9 @@
       z-index: 100;
     }
     #phase-glyph {
-      font-size: 20px; line-height: 1;
-      margin-bottom: 2px;
-      filter: saturate(0) brightness(1.6) opacity(0.55);
+      width: 22px; height: 22px;
+      margin: 0 auto 5px;
+      opacity: 0.82;
     }
     #phase-name {
       font-size: 7px; letter-spacing: 0.14em;
@@ -334,7 +340,7 @@
 <!-- Metric panels — positioned by JS -->
 <div id="panel-agents" class="hud-panel hp-agents">
   <span class="hp-corner-tr"></span><span class="hp-corner-bl"></span>
-  <div class="hp-type"><span class="hp-dot"></span>Agents</div>
+  <div class="hp-type"><i data-lucide="users" class="hp-icon"></i>Agents</div>
   <div class="hp-val" id="val-agents">0</div>
   <div class="hp-label">registered</div>
   <div class="hp-sub">0 human · 0 AI</div>
@@ -342,7 +348,7 @@
 
 <div id="panel-games" class="hud-panel hp-games">
   <span class="hp-corner-tr"></span><span class="hp-corner-bl"></span>
-  <div class="hp-type"><span class="hp-dot"></span>Games</div>
+  <div class="hp-type"><i data-lucide="gamepad-2" class="hp-icon"></i>Games</div>
   <div class="hp-val" id="val-games">0</div>
   <div class="hp-label">in play</div>
   <div class="hp-sub">5 in slate</div>
@@ -350,7 +356,7 @@
 
 <div id="panel-trust" class="hud-panel hp-trust">
   <span class="hp-corner-tr"></span><span class="hp-corner-bl"></span>
-  <div class="hp-type"><span class="hp-dot"></span>Trust</div>
+  <div class="hp-type"><i data-lucide="shield-check" class="hp-icon"></i>Trust</div>
   <div class="hp-val" id="val-trust">0</div>
   <div class="hp-label">attestations</div>
   <div class="hp-sub">EAS · Base</div>
@@ -358,7 +364,7 @@
 
 <div id="panel-tokens" class="hud-panel hp-tokens">
   <span class="hp-corner-tr"></span><span class="hp-corner-bl"></span>
-  <div class="hp-type"><span class="hp-dot"></span>Tokens</div>
+  <div class="hp-type"><i data-lucide="zap" class="hp-icon"></i>Tokens</div>
   <div class="hp-val" id="val-tokens">0</div>
   <div class="hp-label">CLOUD in play</div>
   <div class="hp-sub">≈ $0.10 each</div>
@@ -366,7 +372,7 @@
 
 <div id="panel-coop" class="hud-panel hp-coop">
   <span class="hp-corner-tr"></span><span class="hp-corner-bl"></span>
-  <div class="hp-type"><span class="hp-dot"></span>Co-op</div>
+  <div class="hp-type"><i data-lucide="building-2" class="hp-icon"></i>Co-op</div>
   <div class="hp-val" id="val-coop">8</div>
   <div class="hp-label">members</div>
   <div class="hp-sub">RegenHub LCA</div>
@@ -374,7 +380,7 @@
 
 <div id="panel-guild" class="hud-panel hp-guild">
   <span class="hp-corner-tr"></span><span class="hp-corner-bl"></span>
-  <div class="hp-type"><span class="hp-dot"></span>Guild</div>
+  <div class="hp-type"><i data-lucide="layers" class="hp-icon"></i>Guild</div>
   <div class="hp-val" id="val-guild">5</div>
   <div class="hp-label">games in dev</div>
   <div class="hp-sub">treasury: —</div>
@@ -421,16 +427,37 @@ function getLunarPhase(date) {
   return ((diff % LUNAR_PERIOD_MS) / LUNAR_PERIOD_MS + 1) % 1;
 }
 
+function moonPhaseSVG(p) {
+  const s = 22, cx = 11, cy = 11, r = 9;
+  const fill = 'rgba(180,215,255,0.62)';
+  const ring = 'rgba(180,215,255,0.22)';
+  const bg   = 'rgba(180,215,255,0.05)';
+  const top  = `${cx},${cy - r}`;
+  const bot  = `${cx},${cy + r}`;
+  const disc = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${bg}" stroke="${ring}" stroke-width="0.6"/>`;
+  let lit = '';
+  if (p >= 0.033 && p < 0.967) {
+    if      (p < 0.175) lit = `<path d="M ${top} A ${r},${r} 0 0,1 ${bot} A 5,${r} 0 0,0 ${top} Z" fill="${fill}"/>`;
+    else if (p < 0.225) lit = `<path d="M ${top} A ${r},${r} 0 0,1 ${bot} L ${top} Z" fill="${fill}"/>`;
+    else if (p < 0.475) lit = `<path d="M ${top} A ${r},${r} 0 0,1 ${bot} A 5,${r} 0 0,1 ${top} Z" fill="${fill}"/>`;
+    else if (p < 0.525) lit = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}"/>`;
+    else if (p < 0.725) lit = `<path d="M ${top} A ${r},${r} 0 0,0 ${bot} A 5,${r} 0 0,1 ${top} Z" fill="${fill}"/>`;
+    else if (p < 0.775) lit = `<path d="M ${top} A ${r},${r} 0 0,0 ${bot} L ${top} Z" fill="${fill}"/>`;
+    else                lit = `<path d="M ${top} A ${r},${r} 0 0,0 ${bot} A 5,${r} 0 0,0 ${top} Z" fill="${fill}"/>`;
+  }
+  return `<svg viewBox="0 0 ${s} ${s}" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;display:block;margin:0 auto">${disc}${lit}</svg>`;
+}
+
 function lunarPhaseName(p) {
-  if (p < 0.033)              return ['🌑', 'New Moon'];
-  if (p < 0.175)              return ['🌒', 'Waxing Crescent'];
-  if (p < 0.225)              return ['🌓', 'First Quarter'];
-  if (p < 0.475)              return ['🌔', 'Waxing Gibbous'];
-  if (p < 0.525)              return ['🌕', 'Full Moon'];
-  if (p < 0.725)              return ['🌖', 'Waning Gibbous'];
-  if (p < 0.775)              return ['🌗', 'Third Quarter'];
-  if (p < 0.967)              return ['🌘', 'Waning Crescent'];
-  return ['🌑', 'New Moon'];
+  if (p < 0.033)  return [moonPhaseSVG(p), 'New Moon'];
+  if (p < 0.175)  return [moonPhaseSVG(p), 'Waxing Crescent'];
+  if (p < 0.225)  return [moonPhaseSVG(p), 'First Quarter'];
+  if (p < 0.475)  return [moonPhaseSVG(p), 'Waxing Gibbous'];
+  if (p < 0.525)  return [moonPhaseSVG(p), 'Full Moon'];
+  if (p < 0.725)  return [moonPhaseSVG(p), 'Waning Gibbous'];
+  if (p < 0.775)  return [moonPhaseSVG(p), 'Third Quarter'];
+  if (p < 0.967)  return [moonPhaseSVG(p), 'Waning Crescent'];
+  return [moonPhaseSVG(p), 'New Moon'];
 }
 
 // Date → clockwise angle from Winter Solstice (0° = 12 o'clock = Dec 21)
@@ -770,7 +797,7 @@ function positionSeasonPanel() {
 function updateLunarDisplay() {
   const phase = getLunarPhase(new Date());
   const [glyph, name] = lunarPhaseName(phase);
-  document.getElementById('phase-glyph').textContent = glyph;
+  document.getElementById('phase-glyph').innerHTML = glyph;
   document.getElementById('phase-name').textContent  = name;
 }
 
@@ -876,6 +903,7 @@ function renderFeed(items) {
 
 // ── Init ───────────────────────────────────────────────────────────────────────
 function init() {
+  lucide.createIcons();
   drawHUD();
   updateLunarDisplay();
   updateClock();
@@ -894,3 +922,4 @@ window.addEventListener('resize', () => { drawHUD(); positionSeasonPanel(); });
 </script>
 </body>
 </html>
+
