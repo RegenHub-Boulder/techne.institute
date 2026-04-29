@@ -431,14 +431,114 @@
     .sb-right { padding: 0 0 0 10px; }
 
     /* ── Responsive ──────────────────────────────────────────────────── */
-    @media (max-width: 900px) {
-      #main { grid-template-columns: 1fr 220px; }
-      #sidebar { display: none; }
+
+    /* Large tablet: tighten columns */
+    @media (max-width: 1100px) {
+      #main { grid-template-columns: 180px 1fr 220px; }
     }
-    @media (max-width: 600px) {
-      #main { grid-template-columns: 1fr; }
-      #logcol { display: none; }
-      #center { grid-template-columns: 1fr; }
+
+    /* Tablet: drop sidebar */
+    @media (max-width: 900px) {
+      #main { grid-template-columns: 1fr 200px; }
+      #sidebar { display: none; }
+      .tb-seg:nth-child(n+5) { display: none; }
+    }
+
+    /* Small tablet: compress log column */
+    @media (max-width: 768px) {
+      #main { grid-template-columns: 1fr 180px; }
+      .tb-seg:nth-child(n+4) { display: none; }
+      #statusbar { display: none; }
+    }
+
+    /* Mobile: scrollable single column */
+    @media (max-width: 640px) {
+      /* Convert fixed viewport layout to scrollable page */
+      html, body {
+        height: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+        font-size: 12px;
+      }
+      #root {
+        position: relative;
+        height: auto;
+        min-height: 100vh;
+      }
+      /* Sticky chrome */
+      #topbar {
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        height: 40px;
+        overflow: hidden;
+      }
+      #cmdbar {
+        position: sticky;
+        bottom: 0;
+        z-index: 200;
+        height: 44px;  /* touch-friendly target */
+        padding: 0 14px;
+      }
+      .cmd-prompt { font-size: 13px; }
+      #cmd-input  { font-size: 16px; } /* prevent iOS auto-zoom */
+      .cmd-hint   { display: none; }
+      #refresh-indicator { display: none; }
+
+      /* Collapse topbar to essentials */
+      .tb-seg:nth-child(n+3) { display: none; }
+      .tb-seg { padding: 0 8px; font-size: 10px; }
+      #statusbar { display: none; }
+
+      /* Main becomes natural height */
+      #main {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        border-bottom: none;
+      }
+      #sidebar  { display: none; }
+      #logcol   { display: none; }
+
+      /* Center panels stack vertically */
+      #center {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+      }
+      .panel {
+        height: auto;
+        min-height: 160px;
+        border-bottom: 1px solid var(--border);
+        overflow: visible;
+      }
+      .panel-body {
+        max-height: none;
+        overflow: visible;
+        padding: 12px;
+      }
+      .big-val { font-size: 28px; }
+      .big-label { margin-bottom: 8px; }
+
+      /* Boot screen: tighter on small screens */
+      #boot { padding: 12vw 8vw; overflow: hidden; }
+      .boot-line { font-size: 11px; }
+    }
+
+    /* Safe area insets (notched phones) */
+    @supports (padding: env(safe-area-inset-left)) {
+      #topbar {
+        padding-left: max(10px, env(safe-area-inset-left));
+        padding-right: max(10px, env(safe-area-inset-right));
+      }
+      #cmdbar {
+        padding-left: max(10px, env(safe-area-inset-left));
+        padding-right: max(10px, env(safe-area-inset-right));
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      @media (max-width: 640px) {
+        #cmdbar { height: calc(44px + env(safe-area-inset-bottom)); }
+      }
     }
   </style>
 </head>

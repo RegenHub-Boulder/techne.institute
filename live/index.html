@@ -419,10 +419,131 @@
       white-space: nowrap;
     }
 
+    /* ── Mobile card grid ────────────────────────────────────────────── */
+    #mobile-grid {
+      display: none;
+      position: fixed;
+      top: 44px; bottom: 40px; left: 0; right: 0;
+      padding: 12px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(3, 1fr);
+      gap: 8px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .m-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 0;
+    }
+    .m-card.agents { --nc: var(--lunar); }
+    .m-card.games  { --nc: var(--solar); }
+    .m-card.trust  { --nc: var(--gold); }
+    .m-card.tokens { --nc: #5eead4; }
+    .m-card.coop   { --nc: var(--iris); }
+    .m-card.guild  { --nc: var(--ember); }
+    .m-card-type {
+      font-size: 8px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--nc, var(--muted));
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 6px;
+    }
+    .m-card-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--nc, var(--muted));
+      flex-shrink: 0;
+    }
+    .m-card-val {
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--nc, var(--text));
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 4px;
+    }
+    .m-card-label {
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .m-season {
+      grid-column: 1 / -1;
+      background: rgba(196,149,106,0.06);
+      border: 1px solid rgba(196,149,106,0.15);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .m-season-label {
+      font-size: 9px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: rgba(196,149,106,0.45);
+    }
+    .m-season-val {
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--gold);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .node { min-width: 110px; }
+    }
+    @media (max-width: 900px) {
+      .node { min-width: 100px; padding: 10px 14px; }
+      .node-value { font-size: 24px; }
+    }
     @media (max-width: 768px) {
-      .node { min-width: 90px; padding: 10px 12px; }
-      .node-value { font-size: 22px; }
+      .node { min-width: 86px; padding: 9px 11px; }
+      .node-value { font-size: 20px; }
+      .node-sub { display: none; }
       #countdown { display: none; }
+    }
+    /* Small mobile: swap constellation for card grid */
+    @media (max-width: 600px) {
+      #canvas { display: none; }
+      #season-label { display: none; }
+      #mobile-grid { display: grid; }
+      #topbar { height: 44px; padding: 0 14px; }
+      .topbar-logo { display: none; }
+      .topbar-sep { display: none; }
+      .topbar-title { font-size: 12px; letter-spacing: 0.04em; }
+      #feed { height: 44px; }
+      .feed-item { padding: 0 14px; font-size: 10px; }
+      .feed-label { font-size: 8px; padding: 0 10px; }
+    }
+    /* Safe area insets (notched phones) */
+    @supports (padding: env(safe-area-inset-left)) {
+      #topbar {
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+      }
+      #feed {
+        padding-bottom: env(safe-area-inset-bottom);
+        height: calc(40px + env(safe-area-inset-bottom));
+      }
+      @media (max-width: 600px) {
+        #mobile-grid { bottom: calc(44px + env(safe-area-inset-bottom)); }
+        #feed { height: calc(44px + env(safe-area-inset-bottom)); }
+      }
     }
   </style>
 </head>
@@ -561,6 +682,8 @@ function updateCountdown() {
   const m = Math.floor((diff % 3600000) / 60000);
   document.getElementById('countdown').innerHTML =
     `<span>${d}</span>d <span>${h}</span>h <span>${m}</span>m to Season 1`;
+  const mc = document.getElementById('m-countdown');
+  if (mc) mc.textContent = `${d}d ${h}h ${m}m`;
 }
 updateCountdown();
 setInterval(updateCountdown, 60000);
@@ -698,7 +821,11 @@ async function fetchData() {
   try {
     const participants = await sbFetch('participants', 'select=id&limit=1');
     if (participants !== null) {
-      animateValue('val-coop', parseInt(document.getElementById('val-coop').textContent), participants);
+      const coopCur = parseInt(document.getElementById('val-coop').textContent) || 8;
+      animateValue('val-coop', coopCur, participants > 8 ? participants : 8);
+      animateValue('val-agents', 0, participants);
+      animateValue('m-val-coop', coopCur, participants > 8 ? participants : 8);
+      animateValue('m-val-agents', 0, participants);
     }
   } catch(e) {}
 
@@ -770,5 +897,55 @@ renderFeed(SEED_FEED);
 fetchData();
 setInterval(fetchData, 30000);
 </script>
+
+<!-- Mobile card grid (visible at <600px, replaces constellation) -->
+<div id="mobile-grid">
+  <div class="m-card agents">
+    <div>
+      <div class="m-card-type"><span class="m-card-dot"></span>Agents</div>
+      <div class="m-card-val" id="m-val-agents">0</div>
+    </div>
+    <div class="m-card-label">registered</div>
+  </div>
+  <div class="m-card games">
+    <div>
+      <div class="m-card-type"><span class="m-card-dot"></span>Games</div>
+      <div class="m-card-val">0</div>
+    </div>
+    <div class="m-card-label">in play</div>
+  </div>
+  <div class="m-card trust">
+    <div>
+      <div class="m-card-type"><span class="m-card-dot"></span>Trust</div>
+      <div class="m-card-val">0</div>
+    </div>
+    <div class="m-card-label">attestations</div>
+  </div>
+  <div class="m-card tokens">
+    <div>
+      <div class="m-card-type"><span class="m-card-dot"></span>Tokens</div>
+      <div class="m-card-val">0</div>
+    </div>
+    <div class="m-card-label">CLOUD in play</div>
+  </div>
+  <div class="m-card coop">
+    <div>
+      <div class="m-card-type"><span class="m-card-dot"></span>Co-op</div>
+      <div class="m-card-val" id="m-val-coop">8</div>
+    </div>
+    <div class="m-card-label">members</div>
+  </div>
+  <div class="m-card guild">
+    <div>
+      <div class="m-card-type"><span class="m-card-dot"></span>Guild</div>
+      <div class="m-card-val">5</div>
+    </div>
+    <div class="m-card-label">games in dev</div>
+  </div>
+  <div class="m-season">
+    <span class="m-season-label">Season 1 · Summer Solstice 2026</span>
+    <span class="m-season-val" id="m-countdown"></span>
+  </div>
+</div>
 </body>
 </html>
