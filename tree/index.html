@@ -1195,6 +1195,8 @@
     { id:'seminars', path:'/seminars/', title:'Seminars', zone:1, authLevel:'public', parent:'home',
       description:'Techne Studio seminar series — recorded sessions, reading materials, and participant notes from structured intellectual gatherings.' },
     { id:'seminar-ancients', path:'/seminars/the-ancients/', title:'The Ancients — Session 1', zone:1, authLevel:'public', parent:'seminars',
+    { id:'seminar-ancients-param', path:'/seminars/the-ancients/parameterization/', title:'City in Speech — Parameterization', zone:1, authLevel:'public', parent:'seminar-ancients',
+      description:'Structural reading of Republic II 369B–373E. 19 systemic variables, four phases.' },
       description:'First session of The Ancients seminar — exploring ancient philosophy, cosmology, and their resonance with contemporary systems thinking.' },
     // Formation sub-pages
     { id:'formation-narrative', path:'/formation/narrative.html', title:'Formation Narrative', zone:2, authLevel:'curated', parent:'formation',
@@ -1315,7 +1317,7 @@
         { from:'coordination-games', to:'cg-launch' }, { from:'coordination-games', to:'cg-olympiad' },
     { from:'coordination-games', to:'cg-strategy' }, { from:'coordination-games', to:'cg-forge' },
     { from:'coordination-games', to:'cg-trust-vision' },
-        { from:'home', to:'seminars' }, { from:'seminars', to:'seminar-ancients' },
+        { from:'home', to:'seminars' }, { from:'seminars', to:'seminar-ancients' }, { from:'seminar-ancients', to:'seminar-ancients-param' },
 
     // Formation cluster
     { from:'formation', to:'formation-narrative' }, { from:'formation', to:'formation-governance' },
@@ -1935,3 +1937,4 @@
   </script>
 </body>
 </html>
+
