@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('techne-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches){document.documentElement.setAttribute('data-theme','light');}})()</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commoners — Coordination Games Research — Techne / RegenHub, LCA</title>
 <meta name="description" content="A prosocial world-builder for the Agent Olympiad. Game design memo and engineering specification for Commoners, grounded in Ostrom's design principles and the thermodynamics of place.">
@@ -256,6 +257,36 @@
     footer { flex-direction: column; gap: 8px; text-align: center; }
     h1 { font-size: 34px; }
   }
+
+  /* Light Mode */
+  [data-theme="light"] {
+    --void: #f5f3f0;
+    --ink: #fffdf9;
+    --surface: #ffffff;
+    --panel: #f0ede8;
+    --raised: #e8e4dd;
+    --border: rgba(0,0,0,0.12);
+    --border-dim: rgba(0,0,0,0.07);
+    --gold: #a07850;
+    --parchment: #1a1a1a;
+    --warm: #333333;
+    --muted: #666666;
+    --dim: #888888;
+    --ghost: #aaaaaa;
+    --status-ok: #16a34a;
+    --status-warn: #d97706;
+    --status-info: #2563eb;
+    --status-teal: #0d9488;
+  }
+  body { transition: background 0.2s, color 0.2s; }
+  .theme-toggle {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.25rem 0.6rem; background: var(--surface); border: 1px solid var(--border);
+    color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.06em; cursor: pointer; transition: background 0.12s, color 0.12s;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover { background: var(--raised); color: var(--parchment); }
 </style>
 </head>
 <body>
@@ -346,5 +377,23 @@
   <span>Techne / RegenHub, LCA &middot; Boulder, CO &middot; Season 1, 2026</span>
 </footer>
 
+<script>
+(function(){
+  var btn = document.getElementById('theme-toggle');
+  var lbl = document.getElementById('theme-label');
+  function updateLabel(){
+    var t = document.documentElement.getAttribute('data-theme');
+    lbl.textContent = (t === 'dark') ? 'Light' : 'Dark';
+  }
+  updateLabel();
+  btn.addEventListener('click', function(){
+    var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('techne-theme', next);
+    updateLabel();
+  });
+})();
+</script>
 </body>
 </html>
