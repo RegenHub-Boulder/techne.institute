@@ -147,31 +147,46 @@
       align-items: start;
     }
 
-    /* ── TOC ── */
-    .toc {
-      position: sticky; top: 2rem;
+    /* ── Side navigation ── */
+    .sidenav {
+      position: sticky; top: 2.5rem;
       background: var(--panel); border: 1px solid var(--border-dim);
-      border-radius: 8px; overflow: hidden;
+      border-radius: 0; overflow: hidden;
     }
-    .toc-head {
-      font-family: var(--mono); font-size: 0.62rem;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--dim); padding: 0.65rem 0.9rem;
-      border-bottom: 1px solid var(--border-dim);
+    .sidenav-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.55rem 0.9rem; border-bottom: 1px solid var(--border-dim);
     }
-    .toc a {
-      display: block; padding: 0.42rem 0.9rem;
-      font-family: var(--mono); font-size: 0.72rem;
+    .sidenav-title {
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim);
+    }
+    .sidenav-toggle {
+      display: none; background: transparent; border: none;
+      color: var(--dim); font-size: 0.75rem; cursor: pointer;
+      padding: 0 2px; line-height: 1; font-family: var(--mono);
+    }
+    .sidenav-group { border-bottom: 1px solid var(--border-dim); }
+    .sidenav-group:last-child { border-bottom: none; }
+    .sidenav-link {
+      display: flex; align-items: baseline; gap: 7px;
+      padding: 0.42rem 0.9rem; font-family: var(--mono); font-size: 0.7rem;
       color: var(--muted); text-decoration: none;
       border-left: 2px solid transparent;
       transition: color 0.1s, border-color 0.1s, background 0.1s;
       line-height: 1.35;
     }
-    .toc a:hover { color: var(--warm); background: var(--gold-06); }
-    .toc a.active { color: var(--gold); border-left-color: var(--gold); background: var(--gold-06); }
-    .toc a.sub { padding-left: 1.5rem; font-size: 0.68rem; color: var(--dim); }
-    .toc a.sub.active { color: var(--gold); border-left-color: var(--gold); }
-    .toc-sep { height: 1px; background: var(--border-dim); margin: 0.25rem 0; }
+    .sidenav-link:hover { color: var(--warm); background: var(--gold-06); text-decoration: none; }
+    .sidenav-link.is-active { color: var(--gold); border-left-color: var(--gold); background: var(--gold-06); }
+    .sidenav-num { font-size: 0.58rem; color: var(--dim); flex-shrink: 0; letter-spacing: 0.04em; min-width: 16px; }
+    .sidenav-link.is-active .sidenav-num { color: var(--gold); opacity: 0.7; }
+    .sidenav-link--sub { padding-left: 1.65rem; font-size: 0.65rem; color: var(--dim); }
+    .sidenav-link--sub.is-active { color: var(--gold); border-left-color: var(--gold); background: var(--gold-06); }
+    .sidenav-body.is-collapsed { display: none; }
+    @media (max-width: 720px) {
+      .sidenav { position: relative; top: 0; margin-bottom: 1.75rem; }
+      .sidenav-toggle { display: block; }
+    }
 
     /* ── content ── */
     .content { min-width: 0; }
@@ -548,34 +563,73 @@
   <div class="body-layout">
 
     <!-- TOC -->
-    <nav class="toc" id="toc">
-      <div class="toc-head">Contents</div>
-      <a class="toc active" href="#intro">Introduction</a>
-      <a class="toc sub" href="#the-games">The Games</a>
-      <a class="toc sub" href="#the-engine">The Engine</a>
-      <div class="toc-sep"></div>
-      <a class="toc" href="#the-problem">The Trust Problem</a>
-      <div class="toc-sep"></div>
-      <a class="toc" href="#architecture">Architecture Overview</a>
-      <div class="toc-sep"></div>
-      <a class="toc" href="#primitives">Three Primitives</a>
-      <a class="toc sub" href="#attestation">AttestationV1</a>
-      <a class="toc sub" href="#trustcard">TrustCardV1</a>
-      <a class="toc sub" href="#evidenceref">TrustEvidenceRefV1</a>
-      <div class="toc-sep"></div>
-      <a class="toc" href="#producers">Three Producers</a>
-      <div class="toc-sep"></div>
-      <a class="toc" href="#identity">Identity: ERC-8004</a>
-      <div class="toc-sep"></div>
-      <a class="toc" href="#projectors">Projector Plugins</a>
-      <div class="toc-sep"></div>
-      <a class="toc" href="#agent-view">What Agents See</a>
-      <div class="toc-sep"></div>
-      <a class="toc" href="#enables">What This Enables</a>
-      <div class="toc-sep"></div>
-      <a class="toc" href="#deferred">What&#8217;s Deferred</a>
-      <div class="toc-sep"></div>
-      <a class="toc" href="#why">Why This Shape</a>
+    <nav class="sidenav" id="sidenav" aria-label="Page sections">
+      <div class="sidenav-header">
+        <span class="sidenav-title">On this page</span>
+        <button class="sidenav-toggle" id="sidenav-toggle" aria-expanded="true" aria-controls="sidenav-body">&#x25BE;</button>
+      </div>
+      <div class="sidenav-body" id="sidenav-body">
+        <div class="sidenav-group">
+          <a class="sidenav-link is-active" href="#intro">
+            <span class="sidenav-num">01</span><span>Introduction</span>
+          </a>
+          <a class="sidenav-link sidenav-link--sub" href="#the-games">The Games</a>
+          <a class="sidenav-link sidenav-link--sub" href="#the-engine">The Engine</a>
+        </div>
+        <div class="sidenav-group">
+          <a class="sidenav-link" href="#the-problem">
+            <span class="sidenav-num">02</span><span>The Trust Problem</span>
+          </a>
+        </div>
+        <div class="sidenav-group">
+          <a class="sidenav-link" href="#architecture">
+            <span class="sidenav-num">03</span><span>Architecture Overview</span>
+          </a>
+        </div>
+        <div class="sidenav-group">
+          <a class="sidenav-link" href="#primitives">
+            <span class="sidenav-num">04</span><span>Three Primitives</span>
+          </a>
+          <a class="sidenav-link sidenav-link--sub" href="#attestation">AttestationV1</a>
+          <a class="sidenav-link sidenav-link--sub" href="#trustcard">TrustCardV1</a>
+          <a class="sidenav-link sidenav-link--sub" href="#evidenceref">TrustEvidenceRefV1</a>
+        </div>
+        <div class="sidenav-group">
+          <a class="sidenav-link" href="#producers">
+            <span class="sidenav-num">05</span><span>Three Producers</span>
+          </a>
+        </div>
+        <div class="sidenav-group">
+          <a class="sidenav-link" href="#identity">
+            <span class="sidenav-num">06</span><span>Identity: ERC-8004</span>
+          </a>
+        </div>
+        <div class="sidenav-group">
+          <a class="sidenav-link" href="#projectors">
+            <span class="sidenav-num">07</span><span>Projector Plugins</span>
+          </a>
+        </div>
+        <div class="sidenav-group">
+          <a class="sidenav-link" href="#agent-view">
+            <span class="sidenav-num">08</span><span>What Agents See</span>
+          </a>
+        </div>
+        <div class="sidenav-group">
+          <a class="sidenav-link" href="#enables">
+            <span class="sidenav-num">09</span><span>What This Enables</span>
+          </a>
+        </div>
+        <div class="sidenav-group">
+          <a class="sidenav-link" href="#deferred">
+            <span class="sidenav-num">10</span><span>What&#8217;s Deferred</span>
+          </a>
+        </div>
+        <div class="sidenav-group">
+          <a class="sidenav-link" href="#why">
+            <span class="sidenav-num">11</span><span>Why This Shape</span>
+          </a>
+        </div>
+      </div>
     </nav>
 
     <!-- main content -->
@@ -1124,23 +1178,44 @@
   // init icon
   applyTheme(html.getAttribute('data-theme')||'dark');
 
-  // TOC scroll highlighting
-  var sections=document.querySelectorAll('.section');
-  var tocLinks=document.querySelectorAll('.toc a');
-  var idMap={};
-  tocLinks.forEach(function(a){var h=a.getAttribute('href');if(h)idMap[h.slice(1)]=a;});
-  var obs=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting&&idMap[e.target.id]){
-        tocLinks.forEach(function(a){a.classList.remove('active');});
-        idMap[e.target.id].classList.add('active');
-      }
+  // Sidenav scroll spy
+  (function () {
+    var navLinks = Array.from(document.querySelectorAll('.sidenav-link'));
+    var linkMap = {};
+    navLinks.forEach(function (a) {
+      var href = a.getAttribute('href');
+      if (href && href.charAt(0) === '#') linkMap[href.slice(1)] = a;
     });
-  },{rootMargin:'-80px 0px -60% 0px',threshold:0});
-  sections.forEach(function(s){obs.observe(s);});
-
-  // anchor sub-section targeting
-  document.querySelectorAll('[id]').forEach(function(el){obs.observe(el);});
+    function parentLink(link) {
+      if (!link.classList.contains('sidenav-link--sub')) return null;
+      var group = link.closest('.sidenav-group');
+      return group ? group.querySelector('.sidenav-link:not(.sidenav-link--sub)') : null;
+    }
+    function setActive(id) {
+      navLinks.forEach(function (a) { a.classList.remove('is-active'); });
+      var link = linkMap[id];
+      if (!link) return;
+      link.classList.add('is-active');
+      var parent = parentLink(link);
+      if (parent) parent.classList.add('is-active');
+    }
+    var ids = Object.keys(linkMap);
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: '-48px 0px -52% 0px', threshold: 0 });
+    ids.forEach(function (id) { var el = document.getElementById(id); if (el) observer.observe(el); });
+    setActive('intro');
+    // mobile toggle
+    var toggle = document.getElementById('sidenav-toggle');
+    var body   = document.getElementById('sidenav-body');
+    if (toggle && body) {
+      toggle.addEventListener('click', function () {
+        var collapsed = body.classList.toggle('is-collapsed');
+        toggle.setAttribute('aria-expanded', String(!collapsed));
+        toggle.textContent = collapsed ? '▸' : '▾';
+      });
+    }
+  })();
 </script>
 
 </body>
