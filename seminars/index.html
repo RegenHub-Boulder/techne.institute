@@ -203,19 +203,18 @@
     overflow: hidden;
   }
 
-  a.session-row {
+  .session-row {
     display: grid;
     grid-template-columns: 56px 1fr;
     gap: 0 1.5rem;
     align-items: center;
     padding: 1.1rem 1.4rem;
     border-bottom: 1px solid var(--border-dim);
-    text-decoration: none;
-    color: var(--warm);
     transition: background 0.12s;
   }
-  a.session-row:last-child { border-bottom: none; }
-  a.session-row:hover { background: var(--surface); text-decoration: none; }
+  .session-row:last-child { border-bottom: none; }
+  a.session-row { text-decoration: none; color: var(--warm); }
+  a.session-row:hover { background: var(--surface); }
 
   .session-row.upcoming {
     opacity: 0.45;
