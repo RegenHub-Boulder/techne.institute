@@ -276,6 +276,35 @@
     --moss: #4a6b50;
   }
 
+
+  /* Audio player */
+  .audio-player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    padding: 1.1rem 1.4rem;
+    margin-bottom: 2.5rem;
+  }
+  .audio-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 0.3rem;
+  }
+  .audio-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  .audio-player audio {
+    width: 100%;
+    accent-color: var(--gold);
+    display: block;
+  }
+
   body { transition: background 0.2s, color 0.2s; }
 
   @media (max-width: 600px) {
@@ -315,8 +344,12 @@
     <p>This is a thematic edit of the seminar transcript. The conversation moved quickly across many voices, often overlapping; rather than attribute lines to participants, the edit preserves the substance of the inquiry as it unfolded. Direct readings from Plato's <i>Phaedrus</i> and <i>Republic</i> are set apart as block quotations. Paul Diduch led the session.</p>
   </div>
 
-  <div class="editor-note" style="margin-top:1rem; border-left-color: var(--gold);">
-    <p>Session reading: <a href="/seminars/the-ancients/parameterization/">The City in Speech — A Parameterization</a>. A structural reading of Republic Book II 369B–373E, tracking the 19 variables Socrates introduces as the city is built up <em>in logos</em>.</p>
+  <div class="audio-player">
+    <div class="audio-label">Recording</div>
+    <div class="audio-title">Techne and Civilization &#8212; Session I</div>
+    <audio controls preload="none">
+      <source src="https://drive.usercontent.google.com/download?id=1bh7_HcyHvL6DcrnDILW0Tuf0FgTOE26I&export=download" type="audio/mp4">
+    </audio>
   </div>
 
   <h2>Opening the series</h2>
