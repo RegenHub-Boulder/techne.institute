@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI or CI — A Theory of Change — Techne</title>
+<meta name="description" content="Two paths diverge: Artificial Intelligence (extraction) or Collective Intelligence (amplification). A theory of change for the transition, and the role of physical space in bridging it.">
+<meta property="og:title" content="AI or CI — A Theory of Change">
+<meta property="og:description" content="Artificial Intelligence extracts. Collective Intelligence amplifies. A theory of change for the transition.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://techne.institute/amplification/theory-of-change/">
+<meta property="og:site_name" content="Techne Institute">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI or CI — A Theory of Change">
+<meta name="twitter:description" content="Artificial Intelligence extracts. Collective Intelligence amplifies. A theory of change for bridging the transition.">
+<link rel="canonical" href="https://techne.institute/amplification/theory-of-change/">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0a0a;
+    --bg-section: #111111;
+    --bg-card: #1a1a1a;
+    --bg-diagram: #0e0e0e;
+    --text: #e8e4df;
+    --text-dim: #9a9590;
+    --text-faint: #5a5550;
+    --accent: #c4956a;
+    --accent-dim: #8a6a4a;
+    --accent-bright: #d4a57a;
+    --rule: #2a2520;
+    --green: #6a9a6a;
+    --green-dim: #3a5a3a;
+    --blue: #6a8a9a;
+    --blue-dim: #3a5a6a;
+    --red: #9a6a6a;
+    --red-dim: #5a3a3a;
+    --violet: #8a6a9a;
+    --violet-dim: #5a3a6a;
+    --serif: 'EB Garamond', 'Georgia', serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 18px; background: var(--bg); scroll-behavior: smooth; }
+  body { font-family: var(--serif); color: var(--text); background: var(--bg); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  /* --- NAV --- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10, 10, 10, 0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.6rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--sans); font-size: 0.7rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  nav .brand { color: var(--accent); font-weight: 500; text-decoration: none; }
+  nav .brand:hover { color: var(--accent-bright); }
+  nav .nav-links { display: flex; gap: 1.5rem; }
+  nav .nav-links a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  nav .nav-links a:hover { color: var(--text); }
+
+  /* --- HERO --- */
+  .hero {
+    min-height: 85vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 6rem 2rem 4rem; text-align: center; position: relative;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: 0; left: 10%; right: 10%;
+    height: 1px; background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+  }
+  .hero .paths {
+    display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem;
+  }
+  .hero .path-label {
+    font-family: var(--sans); font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .hero .path-label.ai { color: var(--red); }
+  .hero .path-label.ci { color: var(--green); }
+  .hero .path-name {
+    font-family: var(--serif); font-size: 1.6rem; font-style: italic;
+  }
+  .hero .path-name.ai { color: var(--red); }
+  .hero .path-name.ci { color: var(--green); }
+  .hero .path-divider {
+    font-family: var(--sans); font-size: 0.65rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-faint);
+  }
+  .hero h1 {
+    font-family: var(--serif); font-size: 2.2rem; font-weight: 400;
+    color: var(--text); margin-bottom: 1.2rem; max-width: 16em;
+  }
+  .hero .premise {
+    font-size: 1.1rem; font-style: italic; color: var(--text-dim);
+    max-width: 30em; line-height: 1.6; margin-bottom: 2.5rem;
+  }
+  .hero .org {
+    font-family: var(--sans); font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-faint);
+  }
+
+  /* --- PROSE --- */
+  .prose {
+    max-width: 40rem; margin: 0 auto; padding: 4rem 2rem;
+  }
+  .prose h2 {
+    font-family: var(--serif); font-size: 1.5rem; font-weight: 400;
+    color: var(--text); margin-bottom: 1.5rem;
+  }
+  .prose h3 {
+    font-family: var(--sans); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+  }
+  .prose p {
+    font-size: 1.02rem; color: var(--text-dim); margin-bottom: 1.3rem; line-height: 1.75;
+  }
+  .prose p strong { color: var(--text); font-weight: 500; }
+  .prose p em { color: var(--text); }
+  .prose .section-rule {
+    width: 3rem; height: 1px; background: var(--accent-dim);
+    margin: 3rem 0; border: none;
+  }
+
+  /* --- TWO NAMES DIAGRAM --- */
+  .names-section {
+    background: var(--bg-diagram); padding: 4rem 2rem;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .names-grid {
+    max-width: 52rem; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  }
+  .name-card {
+    padding: 2.5rem; border: 1px solid var(--rule); border-radius: 2px;
+    position: relative; overflow: hidden;
+  }
+  .name-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .name-card.ai { background: rgba(154, 106, 106, 0.04); }
+  .name-card.ai::before { background: var(--red); }
+  .name-card.ci { background: rgba(106, 154, 106, 0.04); }
+  .name-card.ci::before { background: var(--green); }
+  .name-card .abbr {
+    font-family: var(--sans); font-size: 2rem; font-weight: 600;
+    letter-spacing: 0.05em; margin-bottom: 0.3rem;
+  }
+  .name-card.ai .abbr { color: var(--red); }
+  .name-card.ci .abbr { color: var(--green); }
+  .name-card .full-name {
+    font-family: var(--serif); font-size: 1.3rem; font-style: italic;
+    margin-bottom: 1.2rem;
+  }
+  .name-card.ai .full-name { color: var(--red); }
+  .name-card.ci .full-name { color: var(--green); }
+  .name-card .etymology {
+    font-family: var(--sans); font-size: 0.72rem; color: var(--text-faint);
+    letter-spacing: 0.05em; margin-bottom: 1.2rem; font-style: italic;
+  }
+  .name-card p {
+    font-size: 0.92rem; color: var(--text-dim); line-height: 1.65; margin-bottom: 0.8rem;
+  }
+  .name-card .attributes {
+    list-style: none; padding: 0; margin-top: 1rem;
+  }
+  .name-card .attributes li {
+    font-family: var(--sans); font-size: 0.75rem; color: var(--text-dim);
+    padding: 0.4rem 0; border-bottom: 1px solid rgba(42, 37, 32, 0.4);
+    display: flex; justify-content: space-between;
+  }
+  .name-card .attributes li:last-child { border-bottom: none; }
+  .name-card.ai .attributes li .val { color: var(--red); }
+  .name-card.ci .attributes li .val { color: var(--green); }
+
+  /* --- PULL QUOTE --- */
+  .pull-quote {
+    max-width: 42rem; margin: 0 auto; padding: 3rem 2rem; text-align: center;
+  }
+  .pull-quote blockquote {
+    font-family: var(--serif); font-size: 1.4rem; font-style: italic;
+    color: var(--accent); line-height: 1.5; max-width: 28em; margin: 0 auto 1rem;
+  }
+  .pull-quote .attribution {
+    font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-faint);
+  }
+
+  /* --- BRIDGE DIAGRAM --- */
+  .bridge-section {
+    background: var(--bg-section); padding: 4rem 2rem;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .bridge-section .section-header {
+    text-align: center; margin-bottom: 3rem;
+  }
+  .bridge-section .section-header h2 {
+    font-family: var(--serif); font-size: 1.5rem; font-weight: 400; color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .bridge-section .section-header p {
+    font-size: 1rem; color: var(--text-dim); font-style: italic;
+    max-width: 32em; margin: 0 auto;
+  }
+
+  .bridge-diagram {
+    max-width: 52rem; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 0;
+    align-items: stretch;
+  }
+  .bridge-side {
+    padding: 2rem; border: 1px solid var(--rule); border-radius: 2px;
+  }
+  .bridge-side.physical { background: rgba(196, 149, 106, 0.04); }
+  .bridge-side.virtual { background: rgba(106, 138, 154, 0.04); }
+  .bridge-side h3 {
+    font-family: var(--sans); font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.2rem;
+  }
+  .bridge-side.physical h3 { color: var(--accent); }
+  .bridge-side.virtual h3 { color: var(--blue); }
+  .bridge-item {
+    margin-bottom: 1rem; padding-left: 1rem;
+    border-left: 2px solid var(--rule);
+  }
+  .bridge-side.physical .bridge-item { border-left-color: var(--accent-dim); }
+  .bridge-side.virtual .bridge-item { border-left-color: var(--blue-dim); }
+  .bridge-item .label {
+    font-family: var(--sans); font-size: 0.62rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.2rem;
+  }
+  .bridge-side.physical .bridge-item .label { color: var(--accent); }
+  .bridge-side.virtual .bridge-item .label { color: var(--blue); }
+  .bridge-item p {
+    font-size: 0.9rem; color: var(--text-dim); line-height: 1.5;
+  }
+  .bridge-connector {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 2rem 1rem; position: relative;
+  }
+  .bridge-connector::before {
+    content: ''; position: absolute; top: 0; bottom: 0; left: 50%;
+    width: 1px; background: var(--rule);
+  }
+  .bridge-connector .icon {
+    font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--green);
+    background: var(--bg-section); padding: 0.8rem 0.5rem;
+    position: relative; z-index: 1; text-align: center; line-height: 1.8;
+  }
+
+  /* --- THEORY OF CHANGE --- */
+  .toc-section { padding: 4rem 2rem; }
+  .toc-section .section-header {
+    text-align: center; margin-bottom: 3rem;
+  }
+  .toc-section .section-header h2 {
+    font-family: var(--serif); font-size: 1.5rem; font-weight: 400; color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .toc-section .section-header p {
+    font-size: 1rem; color: var(--text-dim); font-style: italic;
+    max-width: 34em; margin: 0 auto;
+  }
+
+  .toc-chain {
+    max-width: 44rem; margin: 0 auto;
+  }
+  .toc-step {
+    display: grid; grid-template-columns: 5rem 1fr; gap: 1.5rem;
+    margin-bottom: 2rem; align-items: start;
+  }
+  .toc-step .connector {
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .toc-step .node {
+    width: 3rem; height: 3rem; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border: 2px solid var(--accent); color: var(--accent);
+  }
+  .toc-step .line {
+    width: 2px; height: 2rem; background: var(--rule); margin-top: 0.5rem;
+  }
+  .toc-step:last-child .line { display: none; }
+  .toc-step .content { padding-top: 0.3rem; }
+  .toc-step .content h3 {
+    font-family: var(--serif); font-size: 1.1rem; font-weight: 500;
+    color: var(--text); margin-bottom: 0.4rem;
+  }
+  .toc-step .content p {
+    font-size: 0.9rem; color: var(--text-dim); line-height: 1.6;
+  }
+
+  /* --- STAGES (TECHNE ROLE) --- */
+  .role-section {
+    background: var(--bg-section); padding: 4rem 2rem;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .role-section .section-header {
+    text-align: center; margin-bottom: 3rem;
+  }
+  .role-section .section-header h2 {
+    font-family: var(--serif); font-size: 1.5rem; font-weight: 400; color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .role-section .section-header p {
+    font-size: 1rem; color: var(--text-dim); font-style: italic;
+    max-width: 34em; margin: 0 auto;
+  }
+
+  .role-stages {
+    max-width: 52rem; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+  .role-card {
+    background: var(--bg-card); border: 1px solid var(--rule);
+    border-radius: 2px; padding: 2rem; position: relative; overflow: hidden;
+  }
+  .role-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .role-card.s1::before { background: var(--accent); }
+  .role-card.s2::before { background: var(--blue); }
+  .role-card.s3::before { background: var(--green); }
+  .role-card .stage-label {
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem;
+  }
+  .role-card.s1 .stage-label { color: var(--accent); }
+  .role-card.s2 .stage-label { color: var(--blue); }
+  .role-card.s3 .stage-label { color: var(--green); }
+  .role-card h3 {
+    font-family: var(--serif); font-size: 1.1rem; font-weight: 500;
+    color: var(--text); margin-bottom: 0.8rem;
+  }
+  .role-card p {
+    font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 0.6rem;
+  }
+  .role-card .physical, .role-card .virtual {
+    margin-top: 0.8rem; padding: 0.7rem 0.8rem;
+    border-left: 2px solid var(--rule); font-size: 0.82rem; color: var(--text-dim);
+  }
+  .role-card .physical { border-left-color: var(--accent-dim); }
+  .role-card .virtual { border-left-color: var(--blue-dim); }
+  .role-card .physical .tag, .role-card .virtual .tag {
+    font-family: var(--sans); font-size: 0.58rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.2rem;
+  }
+  .role-card .physical .tag { color: var(--accent); }
+  .role-card .virtual .tag { color: var(--blue); }
+
+  /* --- METRICS --- */
+  .metrics-section { padding: 4rem 2rem; }
+  .metrics-section .section-header {
+    text-align: center; margin-bottom: 3rem;
+  }
+  .metrics-section .section-header h2 {
+    font-family: var(--serif); font-size: 1.5rem; font-weight: 400; color: var(--text);
+  }
+  .metrics-grid {
+    max-width: 44rem; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem;
+  }
+  .metric-card {
+    background: var(--bg-card); border: 1px solid var(--rule);
+    border-radius: 2px; padding: 1.5rem;
+  }
+  .metric-card .label {
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 0.5rem;
+  }
+  .metric-card p {
+    font-size: 0.88rem; color: var(--text-dim); line-height: 1.55;
+  }
+
+  /* --- CTA --- */
+  .closing {
+    max-width: 40rem; margin: 0 auto; padding: 4rem 2rem 2rem; text-align: center;
+  }
+  .closing p {
+    font-size: 1rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 1rem;
+  }
+  .closing .links {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+  .closing a {
+    display: inline-block; padding: 0.7rem 1.6rem;
+    font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.12em;
+    text-transform: uppercase; text-decoration: none; border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .closing a.primary {
+    color: var(--bg); background: var(--accent); border: 1px solid var(--accent);
+  }
+  .closing a.primary:hover { background: var(--accent-bright); }
+  .closing a.secondary {
+    color: var(--accent); background: transparent; border: 1px solid var(--accent-dim);
+  }
+  .closing a.secondary:hover { background: rgba(196, 149, 106, 0.1); }
+
+  footer {
+    text-align: center; padding: 3rem 2rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--sans); font-size: 0.6rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint);
+  }
+  footer a { color: var(--accent-dim); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .hero .paths { flex-direction: column; gap: 0.8rem; }
+    .hero h1 { font-size: 1.6rem; }
+    .names-grid { grid-template-columns: 1fr; }
+    .bridge-diagram { grid-template-columns: 1fr; }
+    .bridge-connector { padding: 1rem; flex-direction: row; }
+    .bridge-connector::before { top: 50%; bottom: auto; left: 0; right: 0; width: auto; height: 1px; }
+    .role-stages { grid-template-columns: 1fr; }
+    .metrics-grid { grid-template-columns: 1fr; }
+    .toc-step { grid-template-columns: 3.5rem 1fr; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="/">Techne</a>
+  <div class="nav-links">
+    <a href="/amplification/">Framework</a>
+    <a href="/amplification/letter/">Letter</a>
+    <a href="/amplification/brief/">Brief</a>
+  </div>
+</nav>
+
+<!-- ======================== HERO ======================== -->
+<section class="hero">
+  <div class="paths">
+    <div style="text-align: center;">
+      <div class="path-label ai">AI</div>
+      <div class="path-name ai">Artificial Intelligence</div>
+    </div>
+    <div class="path-divider">or</div>
+    <div style="text-align: center;">
+      <div class="path-label ci">CI</div>
+      <div class="path-name ci">Collective Intelligence</div>
+    </div>
+  </div>
+  <h1>A Theory of Change</h1>
+  <p class="premise">
+    The same capability, two names, two trajectories.<br>
+    The name you choose determines what you build.
+  </p>
+  <div class="org">Techne Institute — Boulder, Colorado — April 2026</div>
+</section>
+
+<!-- ======================== THE TWO NAMES ======================== -->
+<section class="prose">
+  <h3>The naming</h3>
+  <h2>A Name Is Not Neutral</h2>
+  <hr class="section-rule">
+  <p>
+    In 1955, John McCarthy coined "Artificial Intelligence" to get funding for a summer workshop at Dartmouth.
+    It was a marketing strategy that hardened into a myth. The name planted an idea: that intelligence is something
+    manufactured, something synthetic, something that lives in a machine. It oriented an entire field toward
+    <em>simulation</em> — building systems that mimic individual human cognition.
+  </p>
+  <p>
+    There is another name for the same capability. <strong>Collective Intelligence</strong> — intelligence
+    that is collective in origin (trained on the harvest of countless contributors) and collective in purpose
+    (designed to help people think together, not to simulate a person thinking alone). This name orients
+    toward <em>amplification</em> — extending what groups of humans can perceive, decide, and build.
+  </p>
+  <p>
+    The distinction is not cosmetic. It determines the institutional form. If you believe you are building
+    an artificial mind, you optimize for replacement — the machine that does what the human did, cheaper
+    and faster. If you believe you are cultivating collective intelligence, you optimize for composition —
+    the system of humans and tools that accomplishes what neither could alone.
+  </p>
+</section>
+
+<!-- ======================== AI vs CI CARDS ======================== -->
+<section class="names-section">
+  <div class="names-grid">
+    <div class="name-card ai">
+      <div class="abbr">AI</div>
+      <div class="full-name">Artificial Intelligence</div>
+      <div class="etymology">Latin artificialis — made by art or skill, as opposed to natural</div>
+      <p>Intelligence as product. Something manufactured, owned, and deployed. The implicit frame: the machine is the agent. The human is the customer, the subject, or the obstacle.</p>
+      <ul class="attributes">
+        <li><span>Orientation</span> <span class="val">Replacement</span></li>
+        <li><span>Unit of value</span> <span class="val">The model</span></li>
+        <li><span>Ownership</span> <span class="val">Shareholders</span></li>
+        <li><span>Question asked</span> <span class="val">What can we automate?</span></li>
+        <li><span>Success metric</span> <span class="val">Headcount reduced</span></li>
+        <li><span>Failure mode</span> <span class="val">Dependency, displacement</span></li>
+      </ul>
+    </div>
+    <div class="name-card ci">
+      <div class="abbr">CI</div>
+      <div class="full-name">Collective Intelligence</div>
+      <div class="etymology">Latin collectivus — gathered together; intelligentia — understanding between</div>
+      <p>Intelligence as relationship. Something that arises when conditions are right — like bread rising, like a watershed finding the sea. The implicit frame: the system is the agent. The humans and the tools are participants.</p>
+      <ul class="attributes">
+        <li><span>Orientation</span> <span class="val">Amplification</span></li>
+        <li><span>Unit of value</span> <span class="val">The composition</span></li>
+        <li><span>Ownership</span> <span class="val">Members / contributors</span></li>
+        <li><span>Question asked</span> <span class="val">What can we accomplish together?</span></li>
+        <li><span>Success metric</span> <span class="val">Capability multiplied</span></li>
+        <li><span>Failure mode</span> <span class="val">Fragility, under-investment</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== PULL QUOTE ======================== -->
+<section class="pull-quote">
+  <blockquote>
+    "If you accept the name 'Artificial Intelligence,' you participate in an erasure.
+    You hide the human labor that generated the data — and also the living systems
+    that taught humans how to think in the first place."
+  </blockquote>
+  <div class="attribution">From The Bread — Techne founding charge</div>
+</section>
+
+<!-- ======================== THE BRIDGE ======================== -->
+<section class="prose">
+  <h3>The bridge</h3>
+  <h2>Why Physical Space Matters</h2>
+  <hr class="section-rule">
+  <p>
+    The AI path is frictionless by design. Models deployed through APIs. Workers displaced through Slack messages.
+    Value extracted through screens. The entire trajectory is optimized for the virtual — for weightlessness,
+    for placelessness, for the elimination of everything that makes work situated.
+  </p>
+  <p>
+    The CI path requires friction. It requires people in the same room, reading each other's faces, building
+    trust through proximity, disagreeing in real time, sharing a meal after a hard meeting. It requires
+    a building with south-facing windows and afternoon light. It requires a watershed. It requires a place.
+  </p>
+  <p>
+    This is not sentimentality. It is structural. The cooperative form depends on <em>relationships</em> —
+    on members who know each other, govern together, and hold each other accountable. These relationships
+    are possible online but they are <em>durable</em> in person. Every successful cooperative movement
+    in history has been rooted in a physical community: Rochdale's weavers, Mondragón's Basque towns,
+    Emilia-Romagna's craft networks.
+  </p>
+  <p>
+    The transition from AI to CI therefore requires a bridge — an institution that operates in both
+    the virtual and the physical, that deploys computational capability while remaining rooted in a
+    place, a community, a set of face-to-face relationships that no API can replicate.
+  </p>
+</section>
+
+<!-- ======================== BRIDGE DIAGRAM ======================== -->
+<section class="bridge-section">
+  <div class="section-header">
+    <h2>The Physical–Virtual Bridge</h2>
+    <p>Collective intelligence requires both. The institution holds them together.</p>
+  </div>
+  <div class="bridge-diagram">
+    <div class="bridge-side physical">
+      <h3>Physical Layer</h3>
+      <div class="bridge-item">
+        <div class="label">Space</div>
+        <p>A building where members work, meet, and govern. Third floor, 1515 Walnut, Boulder.</p>
+      </div>
+      <div class="bridge-item">
+        <div class="label">Community</div>
+        <p>Face-to-face relationships. Trust built through proximity. Accountability you can see.</p>
+      </div>
+      <div class="bridge-item">
+        <div class="label">Place</div>
+        <p>A watershed, a bioregion, a local economy. Intelligence grounded in where it lives.</p>
+      </div>
+      <div class="bridge-item">
+        <div class="label">Education</div>
+        <p>AI literacy taught in person. Not "use this chatbot" — but compose, judge, steer.</p>
+      </div>
+    </div>
+    <div class="bridge-connector">
+      <div class="icon">Techne<br>bridges<br>both</div>
+    </div>
+    <div class="bridge-side virtual">
+      <h3>Virtual Layer</h3>
+      <div class="bridge-item">
+        <div class="label">Coordination</div>
+        <p>AI agents maintaining institutional memory, running sprints, managing data across time zones.</p>
+      </div>
+      <div class="bridge-item">
+        <div class="label">Infrastructure</div>
+        <p>Patronage accounting, governance tools, commons-owned coordination protocols.</p>
+      </div>
+      <div class="bridge-item">
+        <div class="label">Scale</div>
+        <p>Patterns that work locally, documented and composable for any cooperative that needs them.</p>
+      </div>
+      <div class="bridge-item">
+        <div class="label">Transparency</div>
+        <p>Public journals, open code, auditable value flows. The work happens in the open.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== THEORY OF CHANGE ======================== -->
+<section class="toc-section">
+  <div class="section-header">
+    <h2>Theory of Change</h2>
+    <p>If we build the bridge, the path from AI to CI becomes walkable.</p>
+  </div>
+  <div class="toc-chain">
+
+    <div class="toc-step">
+      <div class="connector">
+        <div class="node">If</div>
+        <div class="line"></div>
+      </div>
+      <div class="content">
+        <h3>Name the mechanism, not just the fear</h3>
+        <p>The threat is not technology. It is the institutional form that makes replacement the default. When people understand this, the response shifts from panic to design. Fear becomes a blueprint.</p>
+      </div>
+    </div>
+
+    <div class="toc-step">
+      <div class="connector">
+        <div class="node">And</div>
+        <div class="line"></div>
+      </div>
+      <div class="content">
+        <h3>Build a working prototype in physical space</h3>
+        <p>A cooperative venture studio that deploys AI capability for member benefit — with a building, a lease, a local economy, face-to-face governance. Not a whitepaper. A place you can visit.</p>
+      </div>
+    </div>
+
+    <div class="toc-step">
+      <div class="connector">
+        <div class="node">And</div>
+        <div class="line"></div>
+      </div>
+      <div class="content">
+        <h3>Prove amplification outperforms extraction</h3>
+        <p>Measure it. Are members doing more meaningful work? Is surplus growing and distributed equitably? Are humans developing new capabilities alongside the tools? Publish the results — including the failures.</p>
+      </div>
+    </div>
+
+    <div class="toc-step">
+      <div class="connector">
+        <div class="node">And</div>
+        <div class="line"></div>
+      </div>
+      <div class="content">
+        <h3>Make the pattern composable</h3>
+        <p>Open-source the governance tools, the patronage formulas, the coordination infrastructure. Make it concretely easier for any community to form a cooperative that deploys CI rather than AI.</p>
+      </div>
+    </div>
+
+    <div class="toc-step">
+      <div class="connector">
+        <div class="node">Then</div>
+        <div class="line"></div>
+      </div>
+      <div class="content">
+        <h3>The alternative becomes visible and replicable</h3>
+        <p>One prototype proves the concept. Ten prototypes prove the pattern. A hundred prototypes change the policy landscape. The cooperative AI path becomes a real option, not a thought experiment.</p>
+      </div>
+    </div>
+
+    <div class="toc-step">
+      <div class="connector">
+        <div class="node">So</div>
+      </div>
+      <div class="content">
+        <h3>Collective Intelligence becomes the default, not the exception</h3>
+        <p>Not by defeating Artificial Intelligence — but by building institutions so demonstrably better for the humans inside them that the extractive path becomes the one that requires justification.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ======================== TECHNE'S ROLE ======================== -->
+<section class="role-section">
+  <div class="section-header">
+    <h2>Techne's Role in the Transition</h2>
+    <p>A cooperative venture studio bridging physical community and virtual infrastructure.</p>
+  </div>
+  <div class="role-stages">
+    <div class="role-card s1">
+      <div class="stage-label">Now — Demonstrate (2026)</div>
+      <h3>Build the Proof</h3>
+      <p>Operate as a functioning CI prototype. Real revenue, real governance, real AI deployment inside cooperative structure. Document everything publicly.</p>
+      <div class="physical">
+        <div class="tag">Physical</div>
+        Third-floor studio in Boulder. Coworking, education, family meetings every other Friday. AI literacy workshops.
+      </div>
+      <div class="virtual">
+        <div class="tag">Virtual</div>
+        Patronage engine, coordination protocols, agent infrastructure. Public journal, open-source tools, auditable value flows.
+      </div>
+    </div>
+    <div class="role-card s2">
+      <div class="stage-label">Next — Replicate (2027–2028)</div>
+      <h3>Export the Pattern</h3>
+      <p>Package what works. Legal templates, governance frameworks, formation guides. Help other communities launch cooperative AI ventures rooted in their own places.</p>
+      <div class="physical">
+        <div class="tag">Physical</div>
+        Resilience hubs. Partner spaces in other bioregions. In-person formation intensives. The coworking model as a franchise of governance, not brand.
+      </div>
+      <div class="virtual">
+        <div class="tag">Virtual</div>
+        Composable coordination primitives on open protocols. Federated patronage accounting. Shared AI infrastructure owned by a network of cooperatives.
+      </div>
+    </div>
+    <div class="role-card s3">
+      <div class="stage-label">Then — Transform (2029+)</div>
+      <h3>Shift the Default</h3>
+      <p>From exception to expectation. A federated network of cooperative ventures where CI is the norm, AI is the legacy label, and the relationship between humans and tools is governed by the people it affects.</p>
+      <div class="physical">
+        <div class="tag">Physical</div>
+        Bioregional cooperative economies. Buildings owned by communities. Local production, local governance, local accountability. The island is a network of places.
+      </div>
+      <div class="virtual">
+        <div class="tag">Virtual</div>
+        Commons-owned compute. Collectively governed models. Patronage-based distribution at scale. The infrastructure of a post-extraction economy.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== HOW WE MEASURE ======================== -->
+<section class="metrics-section">
+  <div class="section-header">
+    <h2>How We Know It's Working</h2>
+  </div>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="label">Meaningful work index</div>
+      <p>Are members spending more time on judgment, creativity, and relationship — and less on tasks that AI handles better?</p>
+    </div>
+    <div class="metric-card">
+      <div class="label">Surplus distribution</div>
+      <p>Is the cooperative's patronage formula distributing gains to contributors? Is the gap between highest and lowest allocation narrowing?</p>
+    </div>
+    <div class="metric-card">
+      <div class="label">Capability co-evolution</div>
+      <p>Are humans learning new skills alongside the tools? Are they composing with AI, not just consuming its output?</p>
+    </div>
+    <div class="metric-card">
+      <div class="label">Institutional resilience</div>
+      <p>Does the cooperative hold under pressure? When revenue drops, does it protect members or sacrifice them? The stress test reveals the structure.</p>
+    </div>
+    <div class="metric-card">
+      <div class="label">Replication rate</div>
+      <p>How many other communities have used the pattern? Not downloads — functioning cooperatives with physical space and real governance.</p>
+    </div>
+    <div class="metric-card">
+      <div class="label">Place health</div>
+      <p>Is the bioregion better for Techne's presence? Local spending, ecological monitoring, community infrastructure. CI should enrich its watershed, not just its balance sheet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== CLOSING ======================== -->
+<section class="prose">
+  <h3>The choice</h3>
+  <h2>AI or CI</h2>
+  <hr class="section-rule">
+  <p>
+    The capability is here. The models exist. The question that remains is not technical but institutional:
+    do we organize this capability as <strong>Artificial Intelligence</strong> — manufactured, owned, deployed for extraction —
+    or as <strong>Collective Intelligence</strong> — cultivated, shared, governed by the people it serves?
+  </p>
+  <p>
+    The AI path is easier. It is funded. It has momentum. It is the default trajectory of every
+    incentive structure in the current economy.
+  </p>
+  <p>
+    The CI path is harder. It requires building institutions — cooperatives, commons, governance
+    structures — that take years to mature. It requires physical space, face-to-face trust, and
+    the patience to let relationships compound. It requires choosing amplification over replacement
+    every time the extractive shortcut presents itself.
+  </p>
+  <p>
+    But the CI path has one structural advantage the AI path cannot match: the people inside it
+    want to be there. A cooperative where members govern their own relationship with technology
+    generates loyalty, creativity, and resilience that no amount of capital can purchase.
+    This is not a moral argument. It is a competitive one.
+  </p>
+  <p>
+    The bread rises because the baker creates the conditions. The institution is the bakery.
+    The question is whether we build bakeries or factories.
+  </p>
+</section>
+
+<section class="closing">
+  <p>
+    Techne is testing this in practice. A cooperative venture studio in Boulder, Colorado —
+    physical space, virtual infrastructure, collective intelligence deployed for member benefit.
+    The experiment is public. The books are open. The invitation stands.
+  </p>
+  <div class="links">
+    <a class="primary" href="/amplification/">The Amplification Framework</a>
+    <a class="secondary" href="/amplification/letter/">Read the Letter</a>
+  </div>
+</section>
+
+<footer>
+  <a href="/">Techne Institute</a> · Boulder, Colorado · 2026<br>
+  <span style="margin-top: 0.5rem; display: inline-block;">
+    <a href="/amplification/brief/">Brief</a> ·
+    <a href="/amplification/">Framework</a> ·
+    <a href="/amplification/letter/">Letter</a> ·
+    <a href="https://github.com/nou-techne/nou-techne">Source</a>
+  </span>
+</footer>
+
+</body>
+</html>

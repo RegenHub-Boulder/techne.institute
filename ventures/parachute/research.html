@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parachute Computer — Research Brief · Techne Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#faf8f4; --bg-soft:#f3f0ea; --fg:#2c2a26; --fg-muted:#6b6860; --fg-dim:#9a9690;
+  --accent:#4a7c59; --accent-soft:rgba(74,124,89,.08); --accent-hover:#3d6849; --accent-light:#6a9b77;
+  --sky:#5b8fa8; --sky-soft:rgba(91,143,168,.08);
+  --amber:#b07d2a; --amber-soft:rgba(176,125,42,.09);
+  --border:#e4e0d8; --card-bg:#ffffff;
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',Monaco,monospace;
+  --max-width:860px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--bg);color:var(--fg);line-height:1.65;font-size:16px;-webkit-font-smoothing:antialiased;}
+a{color:var(--accent);text-decoration:none;transition:color .2s;}
+a:hover{color:var(--accent-hover);}
+strong{color:var(--fg);font-weight:500;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp .7s ease-out both;}
+.fade-up-1{animation-delay:.05s;} .fade-up-2{animation-delay:.15s;} .fade-up-3{animation-delay:.25s;}
+@media(prefers-reduced-motion:reduce){.fade-up{animation:none;opacity:1;}}
+
+/* Nav */
+header{border-bottom:1px solid var(--border);padding:1.25rem 2rem;background:rgba(250,248,244,.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;}
+nav{max-width:var(--max-width);margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+.logo{font-family:var(--serif);font-size:1.1rem;color:var(--fg);}
+.logo:hover{color:var(--accent);}
+.breadcrumb{font-size:.8rem;color:var(--fg-dim);display:flex;align-items:center;gap:.4rem;}
+.breadcrumb a{color:var(--fg-dim);}
+.breadcrumb a:hover{color:var(--accent);}
+.breadcrumb-sep{color:var(--border);}
+
+/* Hero */
+.hero{border-bottom:1px solid var(--border);padding:4rem 2rem 3.5rem;}
+.hero-inner{max-width:var(--max-width);margin:0 auto;}
+.hero-label{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
+.hero-label::before{content:'';display:inline-block;width:18px;height:1px;background:var(--accent);}
+h1{font-family:var(--serif);font-size:clamp(2rem,5vw,3rem);font-weight:400;color:var(--fg);line-height:1.15;margin-bottom:.75rem;letter-spacing:-.02em;}
+.hero-sub{font-size:1rem;color:var(--fg-muted);max-width:580px;line-height:1.7;margin-bottom:1.25rem;}
+.hero-meta{display:flex;flex-wrap:wrap;gap:1.25rem;font-family:var(--mono);font-size:.75rem;color:var(--fg-dim);}
+.hero-meta a{color:var(--accent);}
+
+/* Main */
+.main{max-width:var(--max-width);margin:0 auto;padding:3rem 2rem 5rem;}
+.section{margin-bottom:3.5rem;}
+h2{font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--fg);margin-bottom:1rem;padding-bottom:.65rem;border-bottom:1px solid var(--border);letter-spacing:-.01em;}
+h3{font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin:1.75rem 0 .65rem;}
+p{margin-bottom:.9rem;color:var(--fg-muted);line-height:1.7;}
+ul{padding-left:1.1rem;margin-bottom:.9rem;}
+li{margin-bottom:.4rem;color:var(--fg-muted);font-size:.95rem;line-height:1.6;}
+li strong{color:var(--fg);}
+.snote{font-family:var(--mono);font-size:.75rem;color:var(--fg-dim);font-style:italic;margin-top:-.4rem;margin-bottom:1rem;}
+.rule{border:none;border-top:1px solid var(--border);margin:2.5rem 0;}
+
+/* Callouts */
+.callout{background:var(--accent-soft);border-left:2px solid var(--accent);border-radius:0 6px 6px 0;padding:.85rem 1.1rem;margin:1rem 0;font-size:.9rem;}
+.callout.sky{background:var(--sky-soft);border-color:var(--sky);}
+.callout.amber{background:var(--amber-soft);border-color:var(--amber);}
+.callout p{margin:0;color:var(--fg);}
+.callout p+p{margin-top:.4rem;}
+
+/* Component stack */
+.stack{display:flex;flex-direction:column;gap:2px;margin:1rem 0 1.5rem;}
+.layer{background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;transition:border-color .2s;}
+.layer:hover{border-color:var(--accent-light);}
+.layer-left{flex:1;min-width:0;}
+.layer-name{font-family:var(--mono);font-size:.875rem;color:var(--fg);margin-bottom:.15rem;}
+.layer-desc{font-size:.85rem;color:var(--fg-muted);line-height:1.5;}
+.badge{display:inline-block;font-family:var(--sans);font-size:.67rem;font-weight:500;text-transform:uppercase;letter-spacing:.04em;padding:.18rem .55rem;border-radius:4px;white-space:nowrap;}
+.badge-done    {background:var(--accent-soft);color:var(--accent);}
+.badge-active  {background:var(--sky-soft);color:var(--sky);}
+.badge-upcoming{background:rgba(154,150,144,.1);color:var(--fg-dim);}
+.badge-scaffold{background:var(--amber-soft);color:var(--amber);}
+
+/* Tables */
+.table-wrap{overflow-x:auto;margin:1rem 0 1.5rem;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+table{width:100%;border-collapse:collapse;font-size:.9rem;}
+thead th{font-family:var(--mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--fg-dim);font-weight:400;padding:.65rem 1rem;border-bottom:1px solid var(--border);text-align:left;background:var(--bg-soft);}
+tbody td{padding:.7rem 1rem;border-bottom:1px solid var(--border);vertical-align:top;color:var(--fg-muted);}
+tbody tr:last-child td{border-bottom:none;}
+tbody td:first-child{font-family:var(--mono);font-size:.82rem;color:var(--accent);white-space:nowrap;}
+
+/* Repo cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;margin:1rem 0 1.5rem;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.card{background:var(--card-bg);padding:1rem 1.1rem;}
+.card:hover{background:var(--bg-soft);}
+.card-name{font-family:var(--mono);font-size:.82rem;color:var(--fg);margin-bottom:.3rem;}
+.card-desc{font-size:.82rem;color:var(--fg-muted);line-height:1.5;margin-bottom:.4rem;}
+.card-lang{font-family:var(--mono);font-size:.65rem;letter-spacing:.05em;text-transform:uppercase;color:var(--fg-dim);}
+
+/* Footer */
+footer{border-top:1px solid var(--border);padding:3rem 2rem;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-top:1rem;}
+.footer-left{font-family:var(--mono);font-size:.75rem;color:var(--fg-dim);line-height:1.7;}
+.footer-right{font-family:var(--mono);font-size:.75rem;color:var(--fg-dim);text-align:right;}
+footer a{color:var(--accent);}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="intro.html" class="logo">Parachute — Techne Studio</a>
+    <div class="breadcrumb">
+      <a href="https://techne.institute">techne.institute</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="intro.html">ventures/parachute</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>research</span>
+    </div>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label fade-up fade-up-1">Techne Studio — Venture Research</div>
+    <h1 class="fade-up fade-up-2">Parachute Computer</h1>
+    <p class="hero-sub fade-up fade-up-2">Open-source AI memory infrastructure — knowledge graph, agent runtime, and composable module ecosystem for humans and machines.</p>
+    <div class="hero-meta fade-up fade-up-3">
+      <span>April 22, 2026</span>
+      <span>Open Parachute, PBC · Colorado</span>
+      <span><a href="https://parachute.computer">parachute.computer</a></span>
+      <span><a href="https://github.com/ParachuteComputer">github.com/ParachuteComputer</a></span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <h2>What It Is</h2>
+    <p>Parachute is building open infrastructure for AI memory — the layer between humans and AI systems that holds structured, persistent knowledge. The core thesis: conversation history is not memory. Notes, tags, links, and relationships in a traversable graph are memory. Any AI (Claude, ChatGPT, Gemini) gets access to that graph via the Model Context Protocol (MCP), without vendor lock-in.</p>
+    <p>The project is organized as <strong>Open Parachute, PBC</strong> — a Colorado Public Benefit Corporation. A structural sibling to RegenHub, LCA: both operate from Colorado, both mission-driven entities in the cooperative / public-benefit space.</p>
+    <div class="callout sky">
+      <p><strong>Design stance:</strong> Local-first, AGPL-licensed, single-tenant-by-default. Data lives in SQLite on your machine. The hosted cloud offering wraps the same code. Third parties can build modules under any namespace — no central registry required.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>System Architecture</h2>
+    <p class="snote">25 repositories, all active since late 2025. Core stack: TypeScript + Bun. Mobile apps in Flutter/Dart. Cloud infrastructure on Cloudflare Workers + Durable Objects.</p>
+    <div class="stack">
+      <div class="layer"><div class="layer-left"><div class="layer-name">parachute-vault</div><div class="layer-desc">Knowledge graph — notes, tags, links, attachments in SQLite. REST + MCP. Port 1940. The foundation of everything.</div></div><span class="badge badge-done">Available</span></div>
+      <div class="layer"><div class="layer-left"><div class="layer-name">parachute-lens</div><div class="layer-desc">PWA browser UI for any vault. CDN-hosted; connects to any Parachute instance.</div></div><span class="badge badge-done">Available</span></div>
+      <div class="layer"><div class="layer-left"><div class="layer-name">parachute-scribe</div><div class="layer-desc">Audio transcription service. Whisper-compatible API. Webhook-driven vault integration. Two-phase markers prevent re-entry.</div></div><span class="badge badge-done">Available</span></div>
+      <div class="layer"><div class="layer-left"><div class="layer-name">parachute-narrate</div><div class="layer-desc">Text-to-speech mirror of Scribe. Same API shape, opposite direction.</div></div><span class="badge badge-done">Available</span></div>
+      <div class="layer"><div class="layer-left"><div class="layer-name">parachute-cli</div><div class="layer-desc">Top-level coordinator. Installs, starts, stops, and exposes services. Hub + Tailscale routing. Three addressability layers: local, tailnet, public.</div></div><span class="badge badge-active">In Progress</span></div>
+      <div class="layer"><div class="layer-left"><div class="layer-name">parachute-channel</div><div class="layer-desc">Messaging gateway for Claude Code. Telegram today, extensible to any channel.</div></div><span class="badge badge-active">Early</span></div>
+      <div class="layer"><div class="layer-left"><div class="layer-name">parachute-agents</div><div class="layer-desc">Stateful agent framework. Markdown-defined agents on Cloudflare Workers (Durable Objects) or Bun. Telegram, Discord, Slack, cron triggers.</div></div><span class="badge badge-active">Early</span></div>
+      <div class="layer"><div class="layer-left"><div class="layer-name">parachute-octopus</div><div class="layer-desc">Team coordination for Claude Code — spawn and observe parallel agent "tentacles" in any repo. Hierarchical team-lead / specialist model.</div></div><span class="badge badge-active">Early</span></div>
+      <div class="layer"><div class="layer-left"><div class="layer-name">parachute-daily</div><div class="layer-desc">Local-first voice journaling app (Flutter/Dart). Humans journal in; AI agents read and write via MCP.</div></div><span class="badge badge-active">Early</span></div>
+      <div class="layer"><div class="layer-left"><div class="layer-name">parachute-cloud</div><div class="layer-desc">Hosted multi-tenant platform. Per-user subdomain (user.parachute.computer). Cloudflare Durable Objects, D1 for accounts, R2 for attachments.</div></div><span class="badge badge-scaffold">Scaffold</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Module Protocol — The Composability Layer</h2>
+    <p>The most architecturally significant piece is the <strong>module protocol</strong> — a set of canonical HTTP contracts any service can implement to plug into the Parachute hub as a first-class citizen:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Endpoint</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>GET /.parachute/info</td><td>Module identity — name, version, kind, capabilities. No auth, CORS *.</td></tr>
+          <tr><td>GET /.parachute/icon.svg</td><td>Inline SVG for hub display. ~200 bytes.</td></tr>
+          <tr><td>GET /.parachute/config/schema</td><td>JSON Schema of configurable properties (Phase 2+).</td></tr>
+          <tr><td>GET /.parachute/config</td><td>Current config values (requires admin scope).</td></tr>
+          <tr><td>GET /.well-known/parachute.json</td><td>Service manifest — declared scopes, dependencies, endpoints, startCmd.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Modules declare dependencies and the hub auto-wires them. A module that needs Scribe declares it in its manifest; when both are installed, the hub injects Scribe's URL automatically. The ambition is a <em>self-assembling ecosystem</em> — add a module, capabilities appear without manual configuration.</p>
+    <p>Third-party modules don't need a central registry. Any npm package ships <code>/.parachute/module.json</code> and becomes a first-class participant.</p>
+  </div>
+
+  <div class="section">
+    <h2>Identity — Hub as OAuth Issuer</h2>
+    <p>The hub is the identity authority. OAuth 2.1 + PKCE. Services are OAuth <em>resource servers</em> that validate hub-issued tokens — identity belongs at the front door, not embedded in a sibling data service.</p>
+    <h3>Scope model</h3>
+    <ul>
+      <li><strong>vault:read, vault:write</strong> — vault data access (write implies read)</li>
+      <li><strong>scribe:transcribe</strong> — audio transcription</li>
+      <li><strong>hub:admin</strong> — ecosystem configuration</li>
+      <li><strong>channel:send</strong> — messaging</li>
+      <li><strong>vault:&lt;name&gt;:read</strong> — multi-vault scopes (planned, Phase 2)</li>
+    </ul>
+    <h3>Service catalog in token</h3>
+    <p>The OAuth token response carries a services object (vault URL, scribe URL, versions). Clients configure themselves from one auth exchange — no manual endpoint wiring required.</p>
+    <h3>Rollout phases</h3>
+    <ul>
+      <li><strong>Phase 0 (today):</strong> Hub proxies OAuth to Vault's own implementation</li>
+      <li><strong>Phase 1:</strong> Token carries full service catalog</li>
+      <li><strong>Phase 2:</strong> Real scope enforcement; step-up permissions</li>
+      <li><strong>Phase 3:</strong> Auth extracted to dedicated module</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Cloud Offering</h2>
+    <p>Parachute Cloud wraps the self-hosted vault in hosted multi-tenant infrastructure. One Cloudflare Worker dispatcher routes by hostname to isolated Durable Objects (one per vault). R2 for attachments. D1 for account/subscription metadata. Custom Hostnames for wildcard SSL without Enterprise billing.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Price</th><th>Vaults</th><th>Storage / vault</th></tr></thead>
+        <tbody>
+          <tr><td>Free</td><td>$0</td><td>1</td><td>100 MB</td></tr>
+          <tr><td>Trial</td><td>$1 / mo</td><td>1</td><td>500 MB</td></tr>
+          <tr><td>Personal</td><td>$3 / mo</td><td>1</td><td>2 GB</td></tr>
+          <tr><td>Personal+</td><td>$8 / mo</td><td>3</td><td>2 GB each</td></tr>
+          <tr><td>Pro</td><td>$20 / mo</td><td>10</td><td>10 GB each</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout amber">
+      <p><strong>Status:</strong> Architecture and skeleton only — nothing is deployed. The scaffold is well-designed but there is no enterprise or organizational tier, no shared/team vaults, no SSO, and no access control within a vault. This is the obvious next frontier.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Enterprise &amp; Organizational Gap Analysis</h2>
+    <p class="snote">Where the product stands today vs. what an LCA instance would require.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Capability</th><th>Current state</th><th>Gap for LCA use</th></tr></thead>
+        <tbody>
+          <tr><td>Multi-user vault</td><td>Single-owner design. One password, one primary user granting consent to AI clients.</td><td>Members need individual identities within a shared org vault. Role-based access: steward, member, observer.</td></tr>
+          <tr><td>Team knowledge base</td><td>Multi-vault on one server (separate isolation). No shared editing model.</td><td>Org-level vault with member notes, agreements, decisions, patronage records accessible to authorized members + agents.</td></tr>
+          <tr><td>SSO / federated identity</td><td>Owner password + TOTP only. No external IdP.</td><td>Members should authenticate via email, wallet address, or Farcaster ID.</td></tr>
+          <tr><td>Note-level ACL</td><td>Vault-level isolation only. All-or-nothing for a given token within a vault.</td><td>Private member notes vs. collective agreements vs. public-facing content — distinct permission tiers.</td></tr>
+          <tr><td>Structured schemas</td><td>Notes are freeform text + tags + links. No enforced schema on note type.</td><td>Member records, agreements, capital account entries need typed fields — REA ontology alignment.</td></tr>
+          <tr><td>Audit trail</td><td>Standard CRUD. Backup/retention for recovery, not audit.</td><td>LCA governance requires durable, verifiable record of decisions and capital account changes.</td></tr>
+          <tr><td>Webhook → external systems</td><td>Webhook triggers for Scribe/Narrate. Generic pattern exists.</td><td>Hooks into Supabase (CIS), Workshop coordination, on-chain settlement. Pattern is right; needs org-scoped triggers.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Strengths</h2>
+    <div class="callout"><p><strong>MCP as lingua franca.</strong> Building on MCP is the correct bet. Any agent that speaks MCP gets vault access without model lock-in. The ecosystem doesn't depend on one AI provider surviving.</p></div>
+    <div class="callout"><p><strong>Module protocol is genuinely extensible.</strong> The /.parachute/* contract set is clean. Third-party modules don't need a central registry. An LCA-specific module — CIS integration, patronage accounting read layer — could be built as a standard Parachute module.</p></div>
+    <div class="callout"><p><strong>Cloudflare-native architecture.</strong> Durable Objects per vault is the right isolation model for multi-tenant. Avoids shared-state contention. Geographically distributed. Edge-native from day one.</p></div>
+    <div class="callout"><p><strong>AGPL + Colorado PBC.</strong> Values alignment with RegenHub, LCA. Open source as trust. Public benefit chartered. Both entities emerging in the same state, same era, adjacent to cooperative/solidarity economy circles.</p></div>
+    <div class="callout"><p><strong>Voice-native pipeline.</strong> Parachute Daily + Scribe + Narrate form a voice-first journaling loop. For an LCA capturing meeting knowledge: voice → transcription → structured vault note → agent-readable context is high-value workflow.</p></div>
+  </div>
+
+  <div class="section">
+    <h2>Where It's Early</h2>
+    <div class="callout amber"><p><strong>Cloud offering is scaffold only.</strong> The architecture is well-designed but not deployed. No enterprise tier, no team vaults, no organizational pricing model.</p></div>
+    <div class="callout amber"><p><strong>Single-tenant by design, multi-tenant by exception.</strong> The core vault assumes one owner. Multi-user workflows require either separate vaults per person (with federation TBD) or upstream work on note-level ACL.</p></div>
+    <div class="callout amber"><p><strong>Agent framework is very early.</strong> The pattern is right — markdown-defined agents with vault integration. But it's pre-production. Stateful agents on Cloudflare Durable Objects are the right long-term shape; the runtime isn't there yet.</p></div>
+  </div>
+
+  <div class="section">
+    <h2>Relevance to Techne Studio / RegenHub, LCA</h2>
+    <h3>Immediate use cases for an LCA Parachute instance</h3>
+    <ul>
+      <li><strong>Member knowledge base:</strong> Organizer notes, agreements, decisions, governance records — structured in a vault, queryable by Nou via MCP.</li>
+      <li><strong>Meeting capture pipeline:</strong> Voice recording → Scribe → structured note → tagged in graph → Nou reads context for next meeting.</li>
+      <li><strong>Agent context persistence:</strong> Nou and Dianoia's working memory across sessions. Currently flat workspace files; a vault gives structured, linkable, searchable context.</li>
+      <li><strong>CIS bridge:</strong> Vault webhooks → Supabase CIS. Member records in Parachute, financial records in CIS, synchronized via agent-triggered hooks.</li>
+      <li><strong>Patronage documentation:</strong> Each member's patronage log as vault notes with structured metadata. Agent-readable for audit and reporting.</li>
+    </ul>
+    <h3>Where LCA product research shapes enterprise Parachute</h3>
+    <ul>
+      <li><strong>Multi-member vault model:</strong> Define what org-level vault looks like — member identity, role-based scopes, shared vs. private namespaces.</li>
+      <li><strong>Structured note schemas:</strong> Agreements, capital account entries, governance votes — typed note schemas with required fields.</li>
+      <li><strong>Agent access tiers:</strong> What scopes should an org's agent (Nou) have vs. a member's personal agent vs. a guest/external agent?</li>
+      <li><strong>Webhook → external coordination:</strong> Parachute → Workshop surface. Meeting note created → sprint proposed automatically.</li>
+      <li><strong>Cross-org federation:</strong> Two LCAs sharing selected vault content. Defines the federation model for Parachute in cooperative networks.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Technical Advisor Framing</h2>
+    <p>The natural advisory focus is <strong>enterprise / organizational product research</strong> — using the LCA's operational needs as a living specification. This is valuable to Parachute because:</p>
+    <ul>
+      <li>The LCA's governance, patronage accounting, and multi-agent coordination requirements are harder than typical enterprise SaaS.</li>
+      <li>Techne's work (CIS, Workshop, cooperation.games) produces concrete integration requirements — not hypothetical features, but real workflows needing vault support.</li>
+      <li>RegenHub's network connects Parachute to the cooperative/solidarity economy space — a distribution channel for values-aligned enterprise adoption.</li>
+    </ul>
+    <div class="callout">
+      <p><strong>Proposed research focus areas</strong></p>
+      <ul style="margin-top:.6rem;margin-bottom:0;">
+        <li>Org-level vault architecture — multi-member, role-scoped, federation-ready</li>
+        <li>Structured note schemas and REA ontology compatibility</li>
+        <li>Agent access tiers for organizational deployments</li>
+        <li>Webhook integration patterns for external coordination surfaces</li>
+        <li>Pricing and packaging for cooperatives and small orgs (between Personal+ and Pro)</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="section">
+    <h2>Repository Reference</h2>
+    <div class="card-grid">
+      <div class="card"><div class="card-name">parachute-vault</div><div class="card-desc">Core knowledge graph. SQLite, MCP, REST, OAuth 2.1.</div><div class="card-lang">TypeScript · AGPL-3.0</div></div>
+      <div class="card"><div class="card-name">parachute-cli</div><div class="card-desc">Service lifecycle coordinator. Hub routing, Tailscale exposure.</div><div class="card-lang">TypeScript · AGPL-3.0</div></div>
+      <div class="card"><div class="card-name">parachute-lens</div><div class="card-desc">PWA browser UI for any vault. CDN-hostable.</div><div class="card-lang">TypeScript · AGPL-3.0</div></div>
+      <div class="card"><div class="card-name">parachute-scribe</div><div class="card-desc">Whisper-compatible transcription. Webhook → vault pipeline.</div><div class="card-lang">TypeScript</div></div>
+      <div class="card"><div class="card-name">parachute-narrate</div><div class="card-desc">TTS mirror of Scribe. Same API shape, opposite direction.</div><div class="card-lang">TypeScript</div></div>
+      <div class="card"><div class="card-name">parachute-agents</div><div class="card-desc">Stateful agent framework. Markdown agents on CF Workers or Bun.</div><div class="card-lang">TypeScript</div></div>
+      <div class="card"><div class="card-name">parachute-cloud</div><div class="card-desc">Hosted multi-tenant platform. CF Durable Objects. Scaffold only.</div><div class="card-lang">TypeScript · AGPL-3.0</div></div>
+      <div class="card"><div class="card-name">parachute-octopus</div><div class="card-desc">Team agent coordination for Claude Code repos.</div><div class="card-lang">TypeScript</div></div>
+      <div class="card"><div class="card-name">parachute-daily</div><div class="card-desc">Voice journaling app. Local-first Flutter. MCP graph database.</div><div class="card-lang">Dart</div></div>
+      <div class="card"><div class="card-name">parachute-channel</div><div class="card-desc">Claude Code messaging gateway. Telegram today.</div><div class="card-lang">TypeScript</div></div>
+      <div class="card"><div class="card-name">parachute-patterns</div><div class="card-desc">Shared conventions, design tokens, auth patterns.</div><div class="card-lang">CSS / Specs</div></div>
+      <div class="card"><div class="card-name">meshwork / pcc</div><div class="card-desc">Agent session mesh. Lightweight inter-session bridge.</div><div class="card-lang">TypeScript</div></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-left">
+    Prepared by Nou — collective intelligence agent<br>
+    Techne Studio / RegenHub, LCA · April 22, 2026
+  </div>
+  <div class="footer-right">
+    <a href="intro.html">← All documents</a><br>
+    <a href="https://parachute.computer/docs/">parachute.computer/docs</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+name: Crawl techne.institute
+
+on:
+  schedule:
+    # 7am UTC = 1am MT — daily when site traffic is low
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+    inputs:
+      note:
+        description: 'Optional note for manual trigger'
+        required: false
+        default: 'manual'
+
+jobs:
+  crawl:
+    name: Trigger site crawler
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Invoke site-crawler edge function
+        run: |
+          RESPONSE=$(curl -sf -w "\n%{http_code}" -X POST \
+            -H "Authorization: Bearer ${{ secrets.TECHNE_SUPABASE_SERVICE_KEY }}" \
+            -H "Content-Type: application/json" \
+            "https://gxyeobogqfubgzklmxwt.supabase.co/functions/v1/site-crawler" \
+            -d '{}')
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -1)
+
+          echo "HTTP status: $HTTP_CODE"
+          echo "Response: $BODY"
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Crawler returned non-200: $HTTP_CODE"
+            exit 1
+          fi
+
+          CRAWLED=$(echo "$BODY" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('crawled','?'))")
+          DISCOVERED=$(echo "$BODY" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('discovered','?'))")
+          echo "Crawled $CRAWLED pages, $DISCOVERED newly discovered"

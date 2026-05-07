@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <!-- Theme detection: runs before paint to prevent flash -->
+  <script>
+    (function() {
+      var s = localStorage.getItem('techne-theme');
+      if (s === 'light' || s === 'dark') {
+        document.documentElement.setAttribute('data-theme', s);
+      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Infrastructure — RegenHub, LCA</title>
+<meta name="description" content="Financial infrastructure of RegenHub, LCA. Capital accounts, patronage formula, venture basket model, Subchapter K tax treatment, revenue scenarios, and the path to sustainability.">
+<link rel="stylesheet" href="formation.css">
+
+<link rel="stylesheet" href="/assets/tokens.css">
+
+<script src="/assets/nav.js"></script>
+</head>
+<body>
+<techne-nav mode="public" active-section="formation"></techne-nav>
+
+<div class="container">
+  <div class="breadcrumb"><a href="/formation/">Formation Ecosystem</a> / Financial</div>
+</div>
+
+<div class="hero" style="min-height: 30vh;">
+  <div class="ql">Financial Infrastructure</div>
+  <h1>Capital, Patronage, and the Venture Basket</h1>
+  <div class="sub">Subchapter K partnership tax treatment with patronage-based allocation across four membership classes.</div>
+</div>
+
+<div class="container">
+
+  <div class="symbol-key">
+    <div class="symbol-key-title">Symbol Key</div>
+    <div class="symbol-key-grid">
+      <div class="symbol-key-item"><span class="symbol-key-glyph">&#9671;</span><span class="symbol-key-label">Financial</span></div>
+    </div>
+  </div>
+
+  <div class="health-grid">
+    <div class="health-card circulation">
+      <div class="health-label"><span class="health-pulse"></span> Circulation</div>
+      <div class="health-value">~$5K MRR &rarr; $10&ndash;11K target</div>
+      <div class="health-detail">Current monthly recurring revenue against the sustainability threshold for both floors by June 2027.</div>
+    </div>
+    <div class="health-card growth">
+      <div class="health-label"><span class="health-pulse"></span> Capital</div>
+      <div class="health-value">$120&ndash;130K committed</div>
+      <div class="health-detail">Investor members + institutional funding. 12-month runway at projected burn rate. Mercury bank operational; multisig treasury live.</div>
+    </div>
+  </div>
+
+  <div class="summary-cards">
+    <div class="summary-card"><span class="value">Sub K</span><span class="label">Tax Treatment</span></div>
+    <div class="summary-card"><span class="value">184</span><span class="label">Engine Tests</span></div>
+    <div class="summary-card"><span class="value">3</span><span class="label">Ventures</span></div>
+    <div class="summary-card"><span class="value">4+</span><span class="label">Revenue Lines</span></div>
+  </div>
+
+  <section>
+    <h2><span class="n">1</span><span class="sym">&#9671;</span> Tax Treatment: Subchapter K</h2>
+    <p>RegenHub elected partnership tax treatment under Subchapter K — a deliberate departure from the Meadow source template's Subchapter T (cooperative taxation). This is the most significant structural adaptation.</p>
+    <table>
+      <thead><tr><th>Dimension</th><th>Subchapter T (Meadow)</th><th>Subchapter K (RegenHub)</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Tax entity</td><td>Cooperative</td><td>Partnership (Form 1065)</td></tr>
+        <tr><td class="name">Member reporting</td><td>Qualified written notices</td><td>Schedule K-1</td></tr>
+        <tr><td class="name">Loss treatment</td><td>Board discretion</td><td>Pass-through per patronage formula</td></tr>
+        <tr><td class="name">Capital accounts</td><td>Equity account (cost basis)</td><td>IRC 704(b) book + parallel tax</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Why Sub K?</strong> The venture studio model requires: (1) loss pass-through to members during formation years, (2) flexible allocation of different income/loss types, (3) capital account precision for multi-class membership with varying economic interests.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span><span class="sym">&#9671;</span> Capital Accounts</h2>
+    <p>Each member maintains two parallel accounts:</p>
+
+    <h3>Book Capital Account (IRC 704(b))</h3>
+    <ul>
+      <li><strong>Increased by:</strong> cash/property contributions, allocated income and gain</li>
+      <li><strong>Decreased by:</strong> distributions, allocated losses and deductions</li>
+      <li><strong>Governs:</strong> liquidating distributions</li>
+    </ul>
+
+    <h3>Tax Capital Account</h3>
+    <p>Tracks member's tax basis in cooperative interest. Used for K-1 preparation. May diverge from book account due to 704(c) layers and timing differences.</p>
+
+    <!-- Capital Account Diagram -->
+    <div class="diagram">
+      <svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" style="max-width: 560px;">
+        <!-- Book Account -->
+        <rect x="20" y="20" width="240" height="160" rx="6" fill="#141412" stroke="#c4956a" stroke-width="1.5"/>
+        <text x="140" y="48" text-anchor="middle" fill="#e8e4df" font-size="13" font-family="'EB Garamond',serif">Book Capital Account</text>
+        <text x="140" y="64" text-anchor="middle" fill="#c4956a" font-size="10" font-family="'JetBrains Mono',monospace">IRC 704(b)</text>
+        <line x1="40" y1="74" x2="240" y2="74" stroke="#2a2520" stroke-width="1"/>
+        <!-- Up arrows -->
+        <text x="40" y="96" fill="#6a9a6a" font-size="11" font-family="Inter,sans-serif">&#8593; Contributions</text>
+        <text x="40" y="114" fill="#6a9a6a" font-size="11" font-family="Inter,sans-serif">&#8593; Allocated income</text>
+        <!-- Down arrows -->
+        <text x="40" y="140" fill="#c46a6a" font-size="11" font-family="Inter,sans-serif">&#8595; Distributions</text>
+        <text x="40" y="158" fill="#c46a6a" font-size="11" font-family="Inter,sans-serif">&#8595; Allocated losses</text>
+
+        <!-- Tax Account -->
+        <rect x="320" y="20" width="240" height="160" rx="6" fill="#141412" stroke="#5a5550" stroke-width="1"/>
+        <text x="440" y="48" text-anchor="middle" fill="#e8e4df" font-size="13" font-family="'EB Garamond',serif">Tax Capital Account</text>
+        <text x="440" y="64" text-anchor="middle" fill="#5a5550" font-size="10" font-family="'JetBrains Mono',monospace">K-1 basis</text>
+        <line x1="340" y1="74" x2="540" y2="74" stroke="#2a2520" stroke-width="1"/>
+        <text x="340" y="96" fill="#9a9590" font-size="11" font-family="Inter,sans-serif">Mirrors book account</text>
+        <text x="340" y="114" fill="#9a9590" font-size="11" font-family="Inter,sans-serif">+ 704(c) adjustments</text>
+        <text x="340" y="140" fill="#9a9590" font-size="11" font-family="Inter,sans-serif">May diverge over time</text>
+
+        <!-- Connector -->
+        <line x1="260" y1="100" x2="320" y2="100" stroke="#5a5550" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="290" y="94" text-anchor="middle" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">&#8596;</text>
+      </svg>
+    </div>
+
+    <h3>Substantial Economic Effect (704(b) Compliance)</h3>
+    <ol>
+      <li><strong>Economic Effect Test:</strong> Capital accounts maintained per regulations; liquidating distributions follow positive capital account balances; deficit restoration obligation (DRO) or qualified income offset (QIO)</li>
+      <li><strong>Liquidation follows capital accounts:</strong> Dissolution waterfall distributes based on capital account balances</li>
+      <li><strong>Substantiality:</strong> Allocations must have reasonable possibility of affecting dollar amounts received</li>
+    </ol>
+
+    <div class="card" style="border-left: 3px solid var(--accent);">
+      <p style="margin-bottom: 0;"><strong>Attorney review required:</strong> Jeff Pote must confirm QIO vs. DRO election, liquidation distribution language, and 704(c) method selection (Traditional / Curative / Remedial).</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span><span class="sym">&#9671;</span> Patronage Allocation</h2>
+
+    <h3>Proposed Formula</h3>
+    <table>
+      <thead><tr><th>Factor</th><th class="num">Weight</th><th>Measurement</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Labor</td><td class="num">40%</td><td>Hours contributed to cooperative operations and ventures</td></tr>
+        <tr><td class="name">Revenue</td><td class="num">30%</td><td>Revenue generated or attributed to member activity</td></tr>
+        <tr><td class="name">Capital</td><td class="num">20%</td><td>Cash and non-cash capital contributions</td></tr>
+        <tr><td class="name">Community</td><td class="num">10%</td><td>Governance, education, outreach, community development</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Patronage Formula Bars -->
+    <div class="bar-viz">
+      <div class="bar-row">
+        <span class="bar-label">Labor</span>
+        <div class="bar-track"><div class="bar-fill" style="width: 40%;"></div><span class="bar-value">40%</span></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Revenue</span>
+        <div class="bar-track"><div class="bar-fill" style="width: 30%;"></div><span class="bar-value">30%</span></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Capital</span>
+        <div class="bar-track"><div class="bar-fill" style="width: 20%;"></div><span class="bar-value">20%</span></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Community</span>
+        <div class="bar-track"><div class="bar-fill" style="width: 10%;"></div><span class="bar-value">10%</span></div>
+      </div>
+    </div>
+
+    <p>FSC initiated parameterization March 18-19, 2026. Operational definitions (how each factor is measured) are the FSC's primary task.</p>
+
+    <h3>Allocation Mechanics</h3>
+    <ul>
+      <li><strong>Frequency:</strong> Quarterly computation, annual reconciliation</li>
+      <li><strong>Distribution:</strong> Board discretion on timing and amount</li>
+      <li><strong>K-1 delivery:</strong> Annually per IRS deadlines</li>
+      <li><strong>Losses:</strong> Pass through per patronage-weighted formula</li>
+    </ul>
+
+    <h3>Patronage Engine</h3>
+    <p>The Habitat patronage engine was validated (March 17, 2026): 184 passing tests across 7 engine test files. Full lifecycle coverage: contribution recording, allocation calculation, distribution, equity tracking. Ready for production once FSC finalizes measurement methodology.</p>
+
+    <div class="card" style="border-left: 3px solid var(--accent);">
+      <h4 style="margin-top: 0;">Reconciliation Needed</h4>
+      <p style="margin-bottom: 0;">Bylaws use percentage weights (40/30/20/10) with categories Labor, Revenue, Cash, Community. Habitat templates use multiplier weights (1.0x, 1.5x, 0.5x, 1.0x) with categories Labor, Expertise, Capital, Relationship. The bylaws govern; the engine implements. These must be formally aligned.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span><span class="sym">&#9671;</span> Revenue Architecture</h2>
+    <table>
+      <thead><tr><th>Stream</th><th>Source</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Space revenue</td><td>Coworking, hot desks, dedicated desks</td><td><span class="status">Active</span> (~$4K/mo)</td></tr>
+        <tr><td class="name">Education revenue</td><td>LearnVibe.Build AI courses (3 tiers)</td><td>Launching April 2026</td></tr>
+        <tr><td class="name">Institutional partnerships</td><td>Community coworking + meetup hosting</td><td><span class="status">Committed</span> ($20&ndash;25K)</td></tr>
+        <tr><td class="name">Event space</td><td>Studio rental, programming, Sundance potential</td><td>Emerging ($10&ndash;30K/yr potential)</td></tr>
+        <tr><td class="name">Venture reciprocity</td><td>1% commitment + 10% equity gift</td><td>Committed (3 ventures)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Revenue → Economic Memory Diagram -->
+    <div class="diagram">
+      <svg viewBox="0 0 620 240" xmlns="http://www.w3.org/2000/svg" style="max-width: 600px;">
+        <!-- Revenue sources -->
+        <rect x="10" y="20" width="140" height="36" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="80" y="42" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Space Revenue</text>
+        <rect x="10" y="72" width="140" height="36" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="80" y="94" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Service Revenue</text>
+        <rect x="10" y="124" width="140" height="36" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="80" y="146" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Venture Reciprocity</text>
+        <!-- Arrows to center -->
+        <line x1="150" y1="38" x2="225" y2="80" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="150" y1="90" x2="225" y2="90" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="150" y1="142" x2="225" y2="100" stroke="#8a6a4a" stroke-width="1"/>
+        <!-- Center -->
+        <rect x="230" y="60" width="160" height="60" rx="6" fill="#141412" stroke="#c4956a" stroke-width="1.5"/>
+        <text x="310" y="85" text-anchor="middle" fill="#e8e4df" font-size="12" font-family="'EB Garamond',serif">Infrastructure</text>
+        <text x="310" y="102" text-anchor="middle" fill="#c4956a" font-size="9" font-family="Inter,sans-serif">cooperative operations</text>
+        <!-- Economic Memory outputs -->
+        <line x1="390" y1="75" x2="445" y2="50" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="390" y1="90" x2="445" y2="90" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="390" y1="105" x2="445" y2="130" stroke="#8a6a4a" stroke-width="1"/>
+        <!-- Time horizons -->
+        <rect x="450" y="30" width="155" height="36" rx="4" fill="#141412" stroke="#c4956a" stroke-width="1"/>
+        <text x="528" y="46" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Equity</text>
+        <text x="528" y="60" text-anchor="middle" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">long-term</text>
+        <rect x="450" y="72" width="155" height="36" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="528" y="88" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Royalties</text>
+        <text x="528" y="102" text-anchor="middle" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">medium-term</text>
+        <rect x="450" y="114" width="155" height="36" rx="4" fill="#141412" stroke="#5a5550" stroke-width="1"/>
+        <text x="528" y="130" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Patronage</text>
+        <text x="528" y="144" text-anchor="middle" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">current period</text>
+        <!-- Label -->
+        <text x="528" y="170" text-anchor="middle" fill="#5a5550" font-size="10" font-family="Inter,sans-serif" letter-spacing="0.08em">ECONOMIC MEMORY</text>
+      </svg>
+    </div>
+
+    <h3>Economic Memory System</h3>
+    <table>
+      <thead><tr><th>Horizon</th><th>Mechanism</th><th>Duration</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Equity</td><td>Stake in cooperative + venture ecosystem</td><td>Long-term</td></tr>
+        <tr><td class="name">Royalties</td><td>IP licensing, pattern deployment returns</td><td>Medium-term</td></tr>
+        <tr><td class="name">Patronage</td><td>Periodic allocation based on contribution</td><td>Current period</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="n">5</span><span class="sym">&#9671;</span> Venture Basket Model</h2>
+    <p>Each venture commits 10% of its equity to RegenHub as a cooperative gift:</p>
+    <table>
+      <thead><tr><th>Pool</th><th>Allocation</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Basket fund</td><td>1-2% per venture</td><td>Available to investor members</td></tr>
+        <tr><td class="name">Balance sheet reserve</td><td>8-9% per venture</td><td>Held by cooperative for future seasons</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Venture Basket Flow -->
+    <div class="diagram">
+      <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" style="max-width: 600px;">
+        <!-- Ventures -->
+        <rect x="10" y="20" width="110" height="34" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="65" y="41" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Parachute</text>
+        <rect x="10" y="64" width="110" height="34" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="65" y="85" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Postage</text>
+        <rect x="10" y="108" width="110" height="34" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="65" y="129" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Habitat</text>
+        <!-- 10% label -->
+        <text x="160" y="80" fill="#c4956a" font-size="10" font-family="'JetBrains Mono',monospace">10%</text>
+        <text x="155" y="92" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">equity gift</text>
+        <!-- Arrows to cooperative -->
+        <line x1="120" y1="37" x2="220" y2="75" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="120" y1="81" x2="220" y2="81" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="120" y1="125" x2="220" y2="88" stroke="#8a6a4a" stroke-width="1"/>
+        <!-- Cooperative -->
+        <rect x="225" y="55" width="150" height="52" rx="6" fill="#141412" stroke="#c4956a" stroke-width="2"/>
+        <text x="300" y="78" text-anchor="middle" fill="#e8e4df" font-size="12" font-family="'EB Garamond',serif">Cooperative</text>
+        <text x="300" y="96" text-anchor="middle" fill="#c4956a" font-size="9" font-family="Inter,sans-serif">venture basket</text>
+        <!-- Split arrows -->
+        <line x1="375" y1="70" x2="435" y2="45" stroke="#8a6a4a" stroke-width="1.5"/>
+        <line x1="375" y1="92" x2="435" y2="125" stroke="#8a6a4a" stroke-width="1.5"/>
+        <polygon points="433,41 433,49 441,45" fill="#8a6a4a"/>
+        <polygon points="433,121 433,129 441,125" fill="#8a6a4a"/>
+        <!-- Outputs -->
+        <rect x="440" y="25" width="165" height="40" rx="4" fill="#141412" stroke="#c4956a" stroke-width="1"/>
+        <text x="522" y="43" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Basket Fund</text>
+        <text x="522" y="57" text-anchor="middle" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">1-2% &#8594; investor members</text>
+        <rect x="440" y="105" width="165" height="40" rx="4" fill="#141412" stroke="#5a5550" stroke-width="1"/>
+        <text x="522" y="123" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Balance Sheet Reserve</text>
+        <text x="522" y="137" text-anchor="middle" fill="#5a5550" font-size="9" font-family="Inter,sans-serif">8-9% &#8594; future seasons</text>
+      </svg>
+    </div>
+
+    <h3>Founding Ventures</h3>
+    <table>
+      <thead><tr><th>Venture</th><th>Domain</th><th>Lead</th><th>Equity Gift</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Parachute</td><td>Voice-first, local-first AI</td><td>Aaron Gabriel</td><td>10%</td></tr>
+        <tr><td class="name">Postage</td><td>Blockchain email filtering (USDC on Base)</td><td>Lucian Hymer</td><td>10%</td></tr>
+        <tr><td class="name">Habitat</td><td>Legal &amp; financial primitives, cooperative infrastructure</td><td>Todd Youngblood</td><td>10%</td></tr>
+      </tbody>
+    </table>
+    <p>Techne Institute is explicitly outside the basket &mdash; structured as nonprofit, funded by grants and tuition.</p>
+
+    <p class="lead">The cooperative as local ETF: ventures gift equity into a diversified ecosystem fund. The ecosystem &mdash; not any single venture &mdash; becomes the investable thing.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span><span class="sym">&#9671;</span> Revenue Scenarios &amp; Sustainability</h2>
+    <p>The third floor lease (targeted June 2026, 12-month term) roughly doubles the cooperative's expense base. Three revenue ramp scenarios model the path to sustainability:</p>
+    <table>
+      <thead><tr><th>Scenario</th><th class="num">Monthly Ramp</th><th class="num">Year 1 Surplus</th><th>Outcome</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Aggressive</td><td class="num">+$1,000/mo</td><td class="num">~$57K</td><td>Sustainable &mdash; both floors renewed June 2027</td></tr>
+        <tr><td class="name">Moderate</td><td class="num">+$500/mo</td><td class="num">~$36K</td><td>Sustainable &mdash; tighter but viable</td></tr>
+        <tr><td class="name">Conservative</td><td class="num">+$200/mo</td><td class="num">~$15K</td><td>Unsustainable without additional capital</td></tr>
+      </tbody>
+    </table>
+    <p>The revenue flywheel thesis: AI education feeds coworking membership, coworking feeds community, community feeds events, events feed visibility and new members. Institutional partnerships and Sundance-season event revenue provide additional upside.</p>
+    <p>April 2026 goal: <strong>income exceeds expenses</strong> &mdash; new seats filled, all members paying on time, first education revenue.</p>
+
+    <div class="card" style="border-left: 3px solid var(--accent);">
+      <h4 style="margin-top: 0;">Default Alive Threshold</h4>
+      <p style="margin-bottom: 0;">At ~$5K/mo current MRR and a target of $10&ndash;11K/mo for both floors, the cooperative needs to roughly double its recurring revenue within 12 months. The moderate scenario ($500/mo ramp) reaches this threshold. Current growth trajectory &mdash; still being validated &mdash; will determine which scenario is closest to reality.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">7</span><span class="sym">&#9671;</span> Committed Capital</h2>
+    <table>
+      <thead><tr><th>Source</th><th class="num">Amount</th><th>Terms</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Kevin Owocki</td><td class="num">$50,000</td><td>Return TBD by FSC</td><td>Committed</td></tr>
+        <tr><td class="name">Jeremy Wood</td><td class="num">$50,000</td><td>Return TBD by FSC</td><td>Committed</td></tr>
+        <tr><td class="name">Institutional partnership</td><td class="num">$20&ndash;25,000</td><td>Coworking access + monthly meetup</td><td>Committed (two tranches)</td></tr>
+      </tbody>
+      <tfoot><tr><td>Total</td><td class="num">$120&ndash;125K</td><td colspan="2">Primary use: 1515 Walnut lease + operations</td></tr></tfoot>
+    </table>
+
+    <blockquote>"This capital contribution comes with no defined return to the investor. Any such return will be discussed and approved by the member body at a future date."</blockquote>
+    <p style="font-size: 0.85rem; color: var(--text-faint);">— Term sheet shape, agreed February 20, 2026 (Aaron G Neyer + Todd Youngblood)</p>
+  </section>
+
+  <section>
+    <h2><span class="n">8</span><span class="sym">&#9671;</span> Dissolution Waterfall</h2>
+    <p>Simplified from Meadow's 4-tier to 3-tier:</p>
+    <ol>
+      <li>Pay debts and obligations</li>
+      <li>Return capital account balances to members per IRC 704(b)</li>
+      <li>Distribute remainder per patronage-weighted allocation</li>
+    </ol>
+    <p><strong>Attorney review required:</strong> Jeff Pote must confirm the simplified version satisfies 704(b) requirements for liquidating distributions following capital account balances.</p>
+  </section>
+
+</div>
+
+<footer class="page-footer">
+  <a href="/formation/" class="back">Back to Formation Ecosystem</a>
+  <p>RegenHub, LCA -- Boulder, Colorado -- 2026</p>
+</footer>
+
+</body>
+</html>

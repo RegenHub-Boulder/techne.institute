@@ -1,0 +1,131 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* ── Scrollable tab row on mobile ── */
+.tab-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+/* ── Topbar ── */
+.topbar {
+  padding: 0 32px;
+}
+
+/* ── Header content ── */
+.header-content {
+  padding: 32px 32px 0;
+}
+
+/* ── Main content ── */
+.main-content {
+  padding: 32px 32px 60px;
+}
+
+/* ── Footer ── */
+.app-footer {
+  padding: 40px 32px 56px;
+}
+
+/* ── Organizer pills wrap ── */
+.organizer-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+/* ── Mobile breakpoint ── */
+@media (max-width: 640px) {
+  .topbar {
+    padding: 0 16px;
+  }
+
+  .header-content {
+    padding: 20px 16px 0;
+  }
+
+  /* Header h1 */
+  .header-content h1 {
+    font-size: 22px !important;
+  }
+
+  /* Header description */
+  .header-content p {
+    font-size: 14px !important;
+  }
+
+  .main-content {
+    padding: 20px 16px 40px;
+  }
+
+  .app-footer {
+    padding: 28px 16px 48px;
+  }
+
+  /* Tab row: horizontal scroll on mobile */
+  .tab-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .tab-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Group buttons: scrollable row */
+  .group-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .group-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Footer grid: single column */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Topbar label: shorten on very small screens */
+  .topbar-label-long {
+    display: none;
+  }
+  .topbar-label-short {
+    display: inline !important;
+  }
+
+  /* Tree leaf nodes: tighter indent on mobile */
+  .tree-leaf {
+    margin-left: 0 !important;
+  }
+
+  /* DocumentViewer: readable line length */
+  .doc-viewer {
+    font-size: 15px !important;
+  }
+}
+
+/* Touch-friendly minimum tap target */
+@media (hover: none) {
+  button {
+    min-height: 40px;
+  }
+}

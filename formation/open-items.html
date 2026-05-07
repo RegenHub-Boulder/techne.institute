@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <!-- Theme detection: runs before paint to prevent flash -->
+  <script>
+    (function() {
+      var s = localStorage.getItem('techne-theme');
+      if (s === 'light' || s === 'dark') {
+        document.documentElement.setAttribute('data-theme', s);
+      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open Items &amp; Transition — RegenHub, LCA</title>
+<meta name="description" content="17 unresolved formation items with owners and priorities. Operations transition checklist for RegenHub, LCA.">
+<link rel="stylesheet" href="formation.css">
+
+<link rel="stylesheet" href="/assets/tokens.css">
+
+<script src="/assets/nav.js"></script>
+</head>
+<body>
+<techne-nav mode="public" active-section="formation"></techne-nav>
+
+<div class="container">
+  <div class="breadcrumb"><a href="/formation/">Formation Ecosystem</a> / Open Items</div>
+</div>
+
+<div class="hero" style="min-height: 30vh;">
+  <div class="ql">Open Items + Transition</div>
+  <h1>What Remains</h1>
+  <div class="sub">All unresolved formation items. The single source of truth for what must be completed before the cooperative is fully operational.</div>
+</div>
+
+<div class="container">
+
+  <div class="summary-cards">
+    <div class="summary-card"><span class="value" style="color: var(--red);">3</span><span class="label">Blockers</span></div>
+    <div class="summary-card"><span class="value" style="color: var(--accent-bright);">6</span><span class="label">High Priority</span></div>
+    <div class="summary-card"><span class="value" style="color: var(--blue);">5</span><span class="label">Medium</span></div>
+    <div class="summary-card"><span class="value" style="color: var(--text-faint);">3</span><span class="label">Low</span></div>
+  </div>
+
+  <section>
+    <div class="priority-legend">
+      <span class="legend-item"><span class="legend-dot" style="background: var(--red);"></span> Blocker</span>
+      <span class="legend-item"><span class="legend-dot" style="background: var(--accent-bright);"></span> High</span>
+      <span class="legend-item"><span class="legend-dot" style="background: var(--blue);"></span> Medium</span>
+      <span class="legend-item"><span class="legend-dot" style="background: var(--text-faint);"></span> Low</span>
+    </div>
+
+    <h2>Blockers</h2>
+    <p class="ss">These block member admission and formal operations</p>
+
+    <div class="card" style="border-left: 3px solid var(--red); margin-bottom: 1rem;">
+      <h4 style="margin-top: 0; color: var(--red);">B1. Schedule A — Share Prices and Dues</h4>
+      <p><strong>Owner:</strong> Board (pending Board selection)</p>
+      <p>Entirely undefined for all four classes. Member admission is blocked — you cannot execute a Member Agreement without knowing what the member pays.</p>
+      <table>
+        <thead><tr><th>Class</th><th>Proposed Range</th><th>Dues</th></tr></thead>
+        <tbody>
+          <tr><td class="name">1 — Cooperative Member</td><td>$250-$500</td><td>TBD</td></tr>
+          <tr><td class="name">2 — Coworking Member</td><td>$100-$250</td><td>Monthly (TBD)</td></tr>
+          <tr><td class="name">3 — Community Participant</td><td>$0-$50</td><td>$0</td></tr>
+          <tr><td class="name">4 — Investor Member</td><td>TBD</td><td>N/A</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-bottom: 0; font-size: 0.85rem; color: var(--text-faint);">Depends on: Initial Board selection (B2), FSC guidance on investor class pricing.</p>
+    </div>
+
+    <div class="card" style="border-left: 3px solid var(--red); margin-bottom: 1rem;">
+      <h4 style="margin-top: 0; color: var(--red);">B2. Initial Board Selection</h4>
+      <p><strong>Owner:</strong> Organizers (8 founding organizers)</p>
+      <p>The Board approves member admissions, sets Schedule A, authorizes officers. Without a Board, the cooperative cannot formally operate. Size: 3-9 Directors.</p>
+    </div>
+
+    <div class="card" style="border-left: 3px solid var(--red); margin-bottom: 1rem;">
+      <h4 style="margin-top: 0; color: var(--red);">B3. Officer Elections</h4>
+      <p><strong>Owner:</strong> Board (requires B2)</p>
+      <p style="margin-bottom: 0;">Required: President (must be a Director, serves as CEO), Secretary, Treasurer. May combine Secretary-Treasurer.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>High Priority</h2>
+
+    <div class="open-item"><span class="tag high" style="margin-top: 0.15rem;">H1</span><div class="content"><div class="item-title">Voting Rights Reconciliation</div><div class="item-desc">Feb 27 decision (Class 1 only) vs. bylaws draft (all patron members vote). Owner: Organizers + Counsel.</div></div></div>
+    <div class="open-item"><span class="tag high" style="margin-top: 0.15rem;">H2</span><div class="content"><div class="item-title">Patronage Formula Operational Definitions</div><div class="item-desc">40/30/20/10 weights proposed but measurement methodology undefined. How are hours counted? Revenue attributed? Owner: FSC. Status: Initiated March 18-19.</div></div></div>
+    <div class="open-item"><span class="tag high" style="margin-top: 0.15rem;">H3</span><div class="content"><div class="item-title">Bylaws / Habitat Template Reconciliation</div><div class="item-desc">Bylaws use percentage weights; Habitat uses multiplier weights with different categories. Must align formally. Owner: FSC + Todd.</div></div></div>
+    <div class="open-item"><span class="tag high" style="margin-top: 0.15rem;">H4</span><div class="content"><div class="item-title">Term Sheet Formal Draft</div><div class="item-desc">Shape agreed. $100K committed. Jeff Pote needs to produce the formal legal draft. Owner: Jeff Pote.</div></div></div>
+    <div class="open-item"><span class="tag high" style="margin-top: 0.15rem;">H5</span><div class="content"><div class="item-title">704(b) Compliance — Attorney Review</div><div class="item-desc">QIO vs. DRO election, liquidation language, 704(c) method, dissolution waterfall compliance. Owner: Jeff Pote.</div></div></div>
+    <div class="open-item"><span class="tag high" style="margin-top: 0.15rem;">H6</span><div class="content"><div class="item-title">Subchapter T Remnant Audit</div><div class="item-desc">Cross-references to Sub T artifacts should be audited for completeness in the Sub K entity. Owner: Jeff Pote.</div></div></div>
+  </section>
+
+  <section>
+    <h2>Medium Priority</h2>
+
+    <div class="open-item"><span class="tag medium" style="margin-top: 0.15rem;">M1</span><div class="content"><div class="item-title">Non-Solicitation Period</div><div class="item-desc">Undefined (1 or 2 years). For a cooperative grounded in trust, may be shorter than default.</div></div></div>
+    <div class="open-item"><span class="tag medium" style="margin-top: 0.15rem;">M2</span><div class="content"><div class="item-title">Annual Benefit Report Template</div><div class="item-desc">Required as Public Benefit LCA. Publicly published, not third-party audited. Due by end of first fiscal year.</div></div></div>
+    <div class="open-item"><span class="tag high" style="margin-top: 0.15rem;">M3</span><div class="content"><div class="item-title">1515 Walnut Third Floor Lease</div><div class="item-desc">Active negotiation. Offer drafted at $6K/mo for 12 months, June 2026&ndash;June 2027. Market analysis supports $5.4&ndash;5.75K/mo anchor. Landlord firm but first floor also potentially vacant (leverage). Response due before end of week. Licensing requirements for third floor usage under review.</div></div></div>
+    <div class="open-item"><span class="tag medium" style="margin-top: 0.15rem;">M4</span><div class="content"><div class="item-title">Venture IP Carveout — Formal Documentation</div><div class="item-desc">Critical provision. Adapted from Meadow but not independently reviewed by counsel.</div></div></div>
+    <div class="open-item"><span class="tag medium" style="margin-top: 0.15rem;">M5</span><div class="content"><div class="item-title">Cloud Credits Operational Framework</div><div class="item-desc">1 CLOUD = $0.10. Four resource primitives. Designed but not operational.</div></div></div>
+  </section>
+
+  <section>
+    <h2>Low Priority</h2>
+
+    <div class="open-item"><span class="tag low" style="margin-top: 0.15rem;">L1</span><div class="content"><div class="item-title">Proxy Voting Procedures</div><div class="item-desc">Permitted by bylaws but no operational procedures defined.</div></div></div>
+    <div class="open-item"><span class="tag low" style="margin-top: 0.15rem;">L2</span><div class="content"><div class="item-title">Committee Framework</div><div class="item-desc">FSC established; no other committees. Additional likely needed as operations grow.</div></div></div>
+    <div class="open-item"><span class="tag low" style="margin-top: 0.15rem;">L3</span><div class="content"><div class="item-title">Electronic Voting Platform</div><div class="item-desc">Permitted at Board's election. Practically necessary once membership exceeds 11.</div></div></div>
+  </section>
+
+  <section>
+    <h2>Critical Path</h2>
+    <div class="diagram">
+      <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" style="max-width: 700px;">
+        <!-- Primary critical path (highlighted) -->
+        <!-- B2 -->
+        <rect x="10" y="20" width="140" height="44" rx="5" fill="#141412" stroke="#c4956a" stroke-width="2"/>
+        <text x="80" y="38" text-anchor="middle" fill="#c4956a" font-size="10" font-family="'JetBrains Mono',monospace">B2</text>
+        <text x="80" y="54" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Board Selection</text>
+        <!-- B1 -->
+        <rect x="240" y="20" width="140" height="44" rx="5" fill="#141412" stroke="#c4956a" stroke-width="2"/>
+        <text x="310" y="38" text-anchor="middle" fill="#c4956a" font-size="10" font-family="'JetBrains Mono',monospace">B1</text>
+        <text x="310" y="54" text-anchor="middle" fill="#e8e4df" font-size="11" font-family="'EB Garamond',serif">Schedule A</text>
+        <!-- Member Admission -->
+        <rect x="470" y="20" width="160" height="44" rx="5" fill="rgba(196,149,106,0.12)" stroke="#c4956a" stroke-width="1.5"/>
+        <text x="550" y="46" text-anchor="middle" fill="#e8e4df" font-size="12" font-family="'EB Garamond',serif">Member Admission</text>
+        <!-- Primary path arrows -->
+        <line x1="150" y1="42" x2="236" y2="42" stroke="#c4956a" stroke-width="2"/>
+        <polygon points="234,38 234,46 242,42" fill="#c4956a"/>
+        <line x1="380" y1="42" x2="466" y2="42" stroke="#c4956a" stroke-width="2"/>
+        <polygon points="464,38 464,46 472,42" fill="#c4956a"/>
+
+        <!-- B2 → B3 branch -->
+        <rect x="240" y="86" width="140" height="38" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="310" y="102" text-anchor="middle" fill="#8a6a4a" font-size="10" font-family="'JetBrains Mono',monospace">B3</text>
+        <text x="310" y="116" text-anchor="middle" fill="#9a9590" font-size="10" font-family="'EB Garamond',serif">Officers</text>
+        <line x1="150" y1="52" x2="190" y2="105" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="190" y1="105" x2="236" y2="105" stroke="#8a6a4a" stroke-width="1"/>
+        <polygon points="234,101 234,109 242,105" fill="#8a6a4a"/>
+
+        <!-- B2 → H1 → Bylaws Amendment -->
+        <rect x="240" y="142" width="140" height="38" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1"/>
+        <text x="310" y="158" text-anchor="middle" fill="#8a6a4a" font-size="10" font-family="'JetBrains Mono',monospace">H1</text>
+        <text x="310" y="172" text-anchor="middle" fill="#9a9590" font-size="10" font-family="'EB Garamond',serif">Voting Rights</text>
+        <rect x="470" y="142" width="160" height="38" rx="4" fill="#141412" stroke="#5a5550" stroke-width="1"/>
+        <text x="550" y="165" text-anchor="middle" fill="#9a9590" font-size="10" font-family="'EB Garamond',serif">Bylaws Amendment</text>
+        <line x1="150" y1="56" x2="190" y2="161" stroke="#8a6a4a" stroke-width="1"/>
+        <line x1="190" y1="161" x2="236" y2="161" stroke="#8a6a4a" stroke-width="1"/>
+        <polygon points="234,157 234,165 242,161" fill="#8a6a4a"/>
+        <line x1="380" y1="161" x2="466" y2="161" stroke="#5a5550" stroke-width="1"/>
+        <polygon points="464,157 464,165 472,161" fill="#5a5550"/>
+
+        <!-- H2 → H3 → Q1 Distributions -->
+        <rect x="10" y="206" width="175" height="38" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1.5"/>
+        <text x="98" y="222" text-anchor="middle" fill="#8a6a4a" font-size="10" font-family="'JetBrains Mono',monospace">H2</text>
+        <text x="98" y="236" text-anchor="middle" fill="#9a9590" font-size="10" font-family="'EB Garamond',serif">Patronage Definitions</text>
+        <rect x="260" y="206" width="175" height="38" rx="4" fill="#141412" stroke="#5a5550" stroke-width="1"/>
+        <text x="348" y="222" text-anchor="middle" fill="#5a5550" font-size="10" font-family="'JetBrains Mono',monospace">H3</text>
+        <text x="348" y="236" text-anchor="middle" fill="#9a9590" font-size="10" font-family="'EB Garamond',serif">Template Reconciliation</text>
+        <rect x="510" y="206" width="140" height="38" rx="4" fill="#141412" stroke="#5a5550" stroke-width="1"/>
+        <text x="580" y="229" text-anchor="middle" fill="#9a9590" font-size="10" font-family="'EB Garamond',serif">Q1 Distributions</text>
+        <line x1="185" y1="225" x2="256" y2="225" stroke="#5a5550" stroke-width="1"/>
+        <polygon points="254,221 254,229 262,225" fill="#5a5550"/>
+        <line x1="435" y1="225" x2="506" y2="225" stroke="#5a5550" stroke-width="1"/>
+        <polygon points="504,221 504,229 512,225" fill="#5a5550"/>
+
+        <!-- H4 → Capital → Lease -->
+        <rect x="10" y="268" width="145" height="38" rx="4" fill="#141412" stroke="#8a6a4a" stroke-width="1.5"/>
+        <text x="83" y="284" text-anchor="middle" fill="#8a6a4a" font-size="10" font-family="'JetBrains Mono',monospace">H4</text>
+        <text x="83" y="298" text-anchor="middle" fill="#9a9590" font-size="10" font-family="'EB Garamond',serif">Term Sheet Draft</text>
+        <rect x="230" y="268" width="145" height="38" rx="4" fill="#141412" stroke="#5a5550" stroke-width="1"/>
+        <text x="303" y="291" text-anchor="middle" fill="#9a9590" font-size="10" font-family="'EB Garamond',serif">Capital Deployment</text>
+        <rect x="450" y="268" width="130" height="38" rx="4" fill="#141412" stroke="#5a5550" stroke-width="1"/>
+        <text x="515" y="284" text-anchor="middle" fill="#5a5550" font-size="10" font-family="'JetBrains Mono',monospace">M3</text>
+        <text x="515" y="298" text-anchor="middle" fill="#9a9590" font-size="10" font-family="'EB Garamond',serif">Lease</text>
+        <line x1="155" y1="287" x2="226" y2="287" stroke="#5a5550" stroke-width="1"/>
+        <polygon points="224,283 224,291 232,287" fill="#5a5550"/>
+        <line x1="375" y1="287" x2="446" y2="287" stroke="#5a5550" stroke-width="1"/>
+        <polygon points="444,283 444,291 452,287" fill="#5a5550"/>
+      </svg>
+    </div>
+    <p class="lead">The single most important next step: Board selection (B2). Almost everything else depends on it.</p>
+  </section>
+
+  <section>
+    <h2>Operations Transition Checklist</h2>
+    <p class="ss">From formation mode to operational mode</p>
+
+    <h3>Phase 1: Legal Foundation</h3>
+    <div class="checklist">
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Select Initial Board — 3-9 Directors from 8 organizers</span><span class="check-ref">B2</span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Elect Officers — President (Director), Secretary, Treasurer</span><span class="check-ref">B3</span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Attorney review of bylaws — Resolve Sub T remnants, 704(b) compliance</span><span class="check-ref">H5, H6</span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Resolve voting rights — Class 1 only vs. all patron members</span><span class="check-ref">H1</span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Finalize and adopt bylaws — Board vote after attorney review</span><span class="check-ref"></span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Define Schedule A — Share prices and dues for all 4 classes</span><span class="check-ref">B1</span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Formal term sheet — Jeff Pote draft for Kevin/Jeremy investment</span><span class="check-ref">H4</span></div>
+    </div>
+
+    <h3>Phase 2: Member Admission</h3>
+    <div class="checklist">
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Accept capital contributions — Deploy $100K per term sheet terms</span><span class="check-ref"></span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Admit founding members — Organizers execute Member Agreements</span><span class="check-ref"></span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Issue membership certificates — Per class(es) joined</span><span class="check-ref"></span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Set up capital accounts — IRC 704(b) book + tax parallel accounts</span><span class="check-ref"></span></div>
+    </div>
+
+    <h3>Phase 3: Financial Operations</h3>
+    <div class="checklist">
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Finalize patronage formula — Operational definitions for all 4 factors</span><span class="check-ref">H2</span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Align bylaws with engine — Reconcile percentage vs. multiplier weights</span><span class="check-ref">H3</span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">First patronage computation — Q1 2026 (retroactive if needed)</span><span class="check-ref"></span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">K-1 preparation workflow — Annual process, IRS deadline compliance</span><span class="check-ref"></span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Venture IP carveout confirmation — Attorney sign-off</span><span class="check-ref">M4</span></div>
+    </div>
+
+    <h3>Phase 4: Space &amp; Physical Operations</h3>
+    <div class="checklist">
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">1515 Walnut lease execution — Finalize terms with Lynn</span><span class="check-ref">M3</span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Paul Bindel CCW engagement</span><span class="check-ref"></span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Space revenue model — Pricing for coworking, studio rental, events</span><span class="check-ref"></span></div>
+    </div>
+
+    <h3>Phase 5: Ongoing Compliance</h3>
+    <div class="checklist">
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Annual benefit report template — Before Dec 31, 2026</span><span class="check-ref">M2</span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Non-solicitation period — Define 1 or 2 years</span><span class="check-ref">M1</span></div>
+      <div class="check-item"><span class="check-box">[ ]</span><span class="check-text">Cloud credits launch — Operational framework + integration</span><span class="check-ref">M5</span></div>
+    </div>
+
+    <p class="lead" style="margin-top: 2rem;">Phase 1 is the critical path. Board selection unblocks everything.</p>
+  </section>
+
+</div>
+
+<footer class="page-footer">
+  <a href="/formation/" class="back">Back to Formation Ecosystem</a>
+  <p>RegenHub, LCA -- Boulder, Colorado -- 2026</p>
+</footer>
+
+</body>
+</html>

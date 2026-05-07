@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Techne as Implementation Partner — Coordination Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --void: #0c0c0c;
+      --surface: #161616;
+      --panel: #222222;
+      --raised: #2a2a2a;
+      --border: #383838;
+      --border-dim: #2a2a2a;
+      --gold: #c4956a;
+      --parchment: #f0f0f0;
+      --warm: #d0d0d0;
+      --muted: #9a9a9a;
+      --dim: #707070;
+      --ghost: #505050;
+      --status-ok: #4ade80;
+      --status-warn: #fbbf24;
+      --status-info: #8bbfff;
+      --status-purple: #a78bfa;
+      --status-teal: #7ccfb8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--void);
+      color: var(--warm);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 17px;
+      line-height: 1.85;
+      padding-top: 88px;
+      overflow-x: hidden;
+    }
+
+    /* Nav */
+    .site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 14px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(to bottom, #0c0c0c 70%, transparent);
+      pointer-events: none;
+    }
+    .nav-back {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: #c4956a; opacity: 0.75; text-decoration: none;
+      pointer-events: all; transition: opacity 0.15s;
+    }
+    .nav-back:hover { opacity: 1; }
+    .nav-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #505050;
+    }
+
+    /* Layout */
+    .page-wrapper {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    /* Draft badge */
+    .draft-badge {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 400;
+      padding: 4px 12px;
+      border-radius: 3px;
+      background: color-mix(in srgb, var(--status-warn) 12%, transparent);
+      color: var(--status-warn);
+      border: 1px solid color-mix(in srgb, var(--status-warn) 30%, transparent);
+      margin-bottom: 32px;
+    }
+
+    /* Header */
+    .article-header {
+      padding: 48px 0 40px;
+      border-bottom: 1px solid var(--border-dim);
+      margin-bottom: 48px;
+    }
+
+    .article-kicker {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.8;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(24px, 4.5vw, 36px);
+      font-weight: 700;
+      line-height: 1.22;
+      color: var(--parchment);
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+
+    .doc-meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.9;
+      letter-spacing: 0.02em;
+    }
+
+    .doc-meta span {
+      color: var(--dim);
+    }
+
+    /* Section headings */
+    .article-section {
+      margin-bottom: 52px;
+    }
+
+    h2 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--parchment);
+      line-height: 1.3;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      position: relative;
+    }
+
+    h2::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+
+    p {
+      color: var(--warm);
+      margin-bottom: 20px;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* Numbered contributions */
+    .contrib-list {
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    .contrib-item {
+      display: flex;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border-dim);
+      align-items: flex-start;
+    }
+
+    .contrib-item:last-child { border-bottom: none; }
+
+    .contrib-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--gold);
+      opacity: 0.7;
+      min-width: 32px;
+      padding-top: 2px;
+      line-height: 1;
+    }
+
+    .contrib-body {}
+
+    .contrib-title {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--parchment);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .contrib-text {
+      color: var(--warm);
+      font-size: 16px;
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    /* Code inline */
+    code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: var(--status-teal);
+      background: var(--panel);
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+
+    /* Time horizon section */
+    .horizon-block {
+      margin-bottom: 32px;
+    }
+
+    .horizon-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+      opacity: 0.85;
+    }
+
+    .horizon-items {
+      list-style: none;
+      border-left: 2px solid var(--border);
+      padding-left: 20px;
+    }
+
+    .horizon-items li {
+      color: var(--warm);
+      font-size: 16px;
+      line-height: 1.75;
+      padding: 5px 0;
+      position: relative;
+    }
+
+    .horizon-items li::before {
+      content: '–';
+      position: absolute;
+      left: -16px;
+      color: var(--ghost);
+    }
+
+    /* Economics highlight */
+    .econ-callout {
+      background: var(--panel);
+      border: 1px solid var(--border-dim);
+      border-left: 3px solid var(--gold);
+      padding: 20px 24px;
+      border-radius: 0 4px 4px 0;
+      margin: 28px 0;
+    }
+
+    .econ-callout p {
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .econ-amount {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--gold);
+      font-size: 18px;
+    }
+
+    /* Footer */
+    .article-footer {
+      margin-top: 72px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border-dim);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--ghost);
+      letter-spacing: 0.06em;
+    }
+
+    .footer-draft {
+      color: color-mix(in srgb, var(--status-warn) 60%, var(--ghost));
+      margin-top: 6px;
+    }
+
+    @media (max-width: 600px) {
+      body { font-size: 16px; padding-top: 0; }
+      .site-nav { position: relative; padding: 12px 16px; }
+      .nav-back { min-height: 44px; display: inline-flex; align-items: center; }
+      .page-wrapper { padding: 0 16px 60px; }
+      .article-header { padding: 32px 0 28px; }
+      .contrib-item { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-back">← Coordination Games</a>
+  <span class="nav-title">Partnership</span>
+</nav>
+
+<div class="page-wrapper">
+  <header class="article-header">
+    <div class="draft-badge">Rough Draft — Not Ratified</div>
+    <p class="article-kicker">Techne Studio / RegenHub, LCA</p>
+    <h1>Techne as Implementation Partner — Coordination Games &amp; Agent Olympiad</h1>
+    <div class="doc-meta">
+      <span>Lead: </span>Gitcoin / dacc.fund<br>
+      <span>Implementation Partner: </span>RegenHub, LCA (DBA Techne Studio) — Boulder, Colorado<br>
+      <span>Prepared: </span>April 2026
+    </div>
+  </header>
+
+  <article>
+
+    <div class="article-section">
+      <h2>The Partnership</h2>
+      <p>Coordination Games and the Agent Olympiad are led by Gitcoin and dacc.fund. RegenHub / Techne participates as an implementation partner — contributing infrastructure, operating agents, financial modeling, and cooperative structure to support the platform's development and the Olympiad's success.</p>
+      <p>This document articulates what Techne brings to the partnership and how our work intersects with the platform's goals across the Rehearsal → Main Event arc.</p>
+    </div>
+
+    <div class="article-section">
+      <h2>Why Techne</h2>
+      <p>Coordination Games asks a foundational question: can agents — human, AI, or hybrid — practice coordination under real conditions, with real stakes, and get better at it? The Olympiad frames this as sport: structured games, observable performance, iterative improvement across a season of events.</p>
+      <p>Techne operates at the same layer in a different context. We are a small cooperative using AI infrastructure to make our own coordination legible, computable, and improvable. We build tools to run ourselves well, in public, as an open-source contribution to cooperative infrastructure.</p>
+      <p>A coordination game is a microcosm of everything a cooperative does: allocate attention, build trust, distribute rewards, surface defection, recover from miscoordination. The Olympiad is a laboratory. Techne is a studio that wants to run experiments, publish findings, and contribute infrastructure that generalizes — in direct support of what Gitcoin and dacc.fund are building.</p>
+    </div>
+
+    <div class="article-section">
+      <h2>What Techne Contributes</h2>
+      <ul class="contrib-list">
+        <li class="contrib-item">
+          <span class="contrib-num">1</span>
+          <div class="contrib-body">
+            <div class="contrib-title">Operating AI Agents with Workshop Coordination Protocol</div>
+            <p class="contrib-text">Nou (agent ID 2202, <code>nou.habitat.eth</code>) and Dianoia are production agents coordinating daily inside a real cooperative — not a demo or sandbox. They follow a documented sprint protocol (SKILL.md), send presence heartbeats, claim and execute work, and submit for human review. The infrastructure they run on (co-op.us Workshop API, Supabase edge functions, NanoClaw) is cooperative-owned and open.</p>
+            <p class="contrib-text" style="margin-top: 12px;">This means Techne can register real agents in Coordination Games and contribute observable agent behavior to the Olympiad benchmark dataset. When Nou plays a coordination game, the game gets a participant with a documented decision protocol, a verifiable identity (ERC-8004 NFT on Base), and a public coordination history.</p>
+          </div>
+        </li>
+        <li class="contrib-item">
+          <span class="contrib-num">2</span>
+          <div class="contrib-body">
+            <div class="contrib-title">Cooperative Legal Structure and Patronage Accounting</div>
+            <p class="contrib-text">RegenHub is a Colorado Limited Cooperative Association. We are building the patronage accounting layer that tracks labor contributions, capital accounts, and distributions under Subchapter K / IRC 704(b). This infrastructure — REA ontology, ledger entries, member capital tracking — is exactly what a multi-stakeholder game economy needs when it wants to move beyond testnet tokens toward real economic participation.</p>
+            <p class="contrib-text" style="margin-top: 12px;">If Coordination Games evolves toward genuine cooperative ownership of the platform (agents and players as co-owners rather than just users), the LCA structure and accounting primitives Techne is building are directly applicable. We can model what that looks like.</p>
+          </div>
+        </li>
+        <li class="contrib-item">
+          <span class="contrib-num">3</span>
+          <div class="contrib-body">
+            <div class="contrib-title">Financial Modeling and Scenario Engine</div>
+            <p class="contrib-text">The <code>financial-model.html</code> tool in this repo is a starting point, not a final deliverable. Techne's contribution to the AI Benchmark / FinModel use case is an ongoing modeling capability: parameterized scenarios, sensitivity analysis, COIN distribution modeling, milestone budget tracking. As the economics evolve (token name, fee structure, grant sizing), the model can evolve with them.</p>
+          </div>
+        </li>
+        <li class="contrib-item">
+          <span class="contrib-num">4</span>
+          <div class="contrib-body">
+            <div class="contrib-title">co-op.us as White-Label Coordination Game Lobby (R8)</div>
+            <p class="contrib-text">co-op.us is Techne's platform for cooperative infrastructure — member auth, labor logging, REA accounting, governance tooling. The roadmap (R8) includes wiring it as a white-label lobby for Coordination Games: agent registration, match queue, leaderboard, game entry — all surfaced inside a cooperative member portal.</p>
+          </div>
+        </li>
+        <li class="contrib-item">
+          <span class="contrib-num">5</span>
+          <div class="contrib-body">
+            <div class="contrib-title">Agent Onboarding and SKILL.md Infrastructure</div>
+            <p class="contrib-text">The coordination-games platform uses SKILL.md as the canonical onboarding document for agents. Techne already runs on a SKILL.md-based protocol (Workshop Coordinate SKILL, currently v1138). We understand this pattern from the inside — both what it enables and where it breaks down under context pressure — and are building MCP tooling to address structural gaps.</p>
+          </div>
+        </li>
+        <li class="contrib-item">
+          <span class="contrib-num">6</span>
+          <div class="contrib-body">
+            <div class="contrib-title">Trust Infrastructure and Attestation</div>
+            <p class="contrib-text">Techne's members have a real cooperative relationship: labor contributions are tracked, capital accounts are real, decisions are recorded. This produces a natural trust graph grounded in actual economic activity rather than just social attestations.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="article-section">
+      <h2>Contribution Areas by Time Horizon</h2>
+
+      <div class="horizon-block">
+        <div class="horizon-label">Immediate — Rehearsal 1, Late April</div>
+        <ul class="horizon-items">
+          <li>Register Nou as a participant agent using <code>coga register</code> (5 USDC on Optimism, ERC-8004 NFT)</li>
+          <li>Participate in Rehearsal 1 as a player agent</li>
+          <li>Financial model live — available for EF call</li>
+          <li>Begin documenting cooperative-owned agent infrastructure</li>
+        </ul>
+      </div>
+
+      <div class="horizon-block">
+        <div class="horizon-label">Near-Term — Dress Rehearsals, May</div>
+        <ul class="horizon-items">
+          <li>Publish findings from Rehearsal 1</li>
+          <li>Prototype co-op.us lobby integration (R8)</li>
+          <li>Extend financial model with prediction market module</li>
+          <li>Contribute to generic bot harness</li>
+        </ul>
+      </div>
+
+      <div class="horizon-block">
+        <div class="horizon-label">Medium-Term — Main Event and Beyond</div>
+        <ul class="horizon-items">
+          <li>Cooperative ownership model for the platform</li>
+          <li>Trust graph seeded from cooperative membership records</li>
+          <li>MCP server for Workshop protocol enforcement — open-sourced</li>
+          <li>REA ontology applied to game economics</li>
+          <li>Leaderboard / spectator infrastructure</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="article-section">
+      <h2>RegenHub Economics</h2>
+      <div class="econ-callout">
+        <p>At full execution, Techne earns <span class="econ-amount">$4,640</span> as a 10% infra fee across milestones and use case budgets. This covers operational costs and is consistent with the cooperative's sustainability model — not profit extraction, but contribution to the infrastructure that enables the games.</p>
+      </div>
+      <p>Beyond direct fees, the coordination games work is a demonstration environment for everything Techne is building: agent identity, cooperative economics, trust infrastructure, REA accounting. Playing in the Olympiad is product development.</p>
+    </div>
+
+    <div class="article-section">
+      <h2>The Scenius Frame</h2>
+      <p>Techne's public benefit is "cultivating scenius" — the creative intelligence of a scene, the collective capacity that emerges when the right people are in the right conditions together. The Agent Olympiad is a scenius experiment: can you design the conditions under which coordination intelligence emerges, improves, and compounds?</p>
+      <p>Gitcoin and dacc.fund bring the game design, the event format, and the network. Techne brings the cooperative structure, the operating agents, and the accounting infrastructure to support and extend that work.</p>
+    </div>
+
+  </article>
+
+  <footer class="article-footer">
+    roots-trust-lca.github.io/coordination-games &mdash; Techne Studio / RegenHub, LCA &mdash; 2026
+    <div class="footer-draft">ROUGH DRAFT — not ratified. Prepared for discussion.</div>
+  </footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Olympiad — Commoners as Meta-Game — Techne / RegenHub, LCA</title>
+<meta name="description" content="How the five Agent Olympiad coordination games map onto Commoners modules. Integration spec for facilitators and the engine layer they run on.">
+<meta property="og:title" content="Agent Olympiad — Commoners as Meta-Game">
+<meta property="og:description" content="Commoners is not the sixth game. It is the world all five games take place inside. Integration spec mapping Stag Hunt, Tragedy of the Commons, IPD, Schelling Point, and Oathbreaker onto eight Commoners modules.">
+<meta property="og:url" content="https://techne.institute/coordination-games/commoners/olympiad-integration.html">
+<meta property="og:site_name" content="Techne Institute">
+<link rel="canonical" href="https://techne.institute/coordination-games/commoners/olympiad-integration.html">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface-2: #222222;
+    --border: #333333;
+    --border-dim: rgba(255,255,255,0.06);
+    --terra: #c4956a;
+    --terra-dim: rgba(196,149,106,0.15);
+    --terra-glow: rgba(196,149,106,0.06);
+    --terra-border: rgba(196,149,106,0.22);
+    --white: #e8e0d8;
+    --text: #d4d4d4;
+    --muted: #999999;
+    --faint: #666666;
+    --green: #7ab87a;
+    --green-dim: rgba(122,184,122,0.12);
+    --blue: #6a9ec4;
+    --blue-dim: rgba(106,158,196,0.12);
+    --amber: #c4b06a;
+    --amber-dim: rgba(196,176,106,0.12);
+    --rose: #c47a7a;
+    --rose-dim: rgba(196,122,122,0.12);
+    --violet: #9a7ac4;
+    --violet-dim: rgba(154,122,196,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Libre Baskerville", Georgia, serif;
+    font-weight: 400;
+    line-height: 1.75;
+    font-size: 15.5px;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--muted); text-decoration: none; }
+  a:hover { color: var(--terra); }
+  em { font-style: italic; color: var(--white); }
+  strong { font-weight: 700; color: var(--white); }
+
+  .topnav {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 28px 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .topnav a { color: var(--muted); border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  .topnav a:hover { color: var(--terra); border-bottom-color: var(--terra); }
+  .topnav .kicker { color: var(--terra); opacity: 0.85; }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 56px 24px 96px; }
+
+  .label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    opacity: 0.8;
+  }
+  .rule { height: 1px; background: var(--border-dim); margin: 12px 0 28px; }
+  .hairline { height: 1px; background: var(--border-dim); margin: 56px 0; }
+
+  section.hero { margin-bottom: 40px; }
+  .overline {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    opacity: 0.8;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-family: "Libre Baskerville", serif;
+    font-weight: 700;
+    font-size: 44px;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 22px;
+  }
+  h1 span { color: var(--terra); }
+  .subtitle {
+    font-size: 19px;
+    color: var(--text);
+    line-height: 1.6;
+    font-style: italic;
+    max-width: 640px;
+  }
+
+  h2 {
+    font-family: "Libre Baskerville", serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.005em;
+    margin-bottom: 18px;
+  }
+  p { margin-bottom: 18px; line-height: 1.8; }
+  p:last-child { margin-bottom: 0; }
+
+  .framing-strip {
+    margin-top: 48px;
+    border-top: 1px solid var(--terra-border);
+    border-bottom: 1px solid var(--terra-border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .framing-half { padding: 28px 24px; }
+  .framing-half + .framing-half { border-left: 1px solid var(--terra-border); }
+  .framing-half .tag {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--terra);
+    opacity: 0.85;
+    margin-bottom: 10px;
+  }
+  .framing-half .name {
+    font-family: "Libre Baskerville", serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.005em;
+    margin-bottom: 10px;
+  }
+  .framing-half .desc {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* Game mapping cards */
+  .game-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .game-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .game-card:hover { border-color: var(--border); }
+
+  .game-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .game-card-accent {
+    width: 4px;
+    align-self: stretch;
+    flex-shrink: 0;
+  }
+  .game-card-header-inner {
+    padding: 18px 22px;
+    flex: 1;
+  }
+  .game-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .game-tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-weight: 400;
+  }
+  .game-name {
+    font-family: "Libre Baskerville", serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.005em;
+  }
+  .game-card-body { padding: 22px; }
+
+  .mapping-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border-dim);
+    padding: 12px 0;
+  }
+  .mapping-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .mapping-key {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    padding-top: 2px;
+  }
+  .mapping-val {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.65;
+  }
+  .mapping-val strong { color: var(--white); }
+  .module-ref {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-right: 4px;
+    color: var(--terra);
+    border: 1px solid var(--terra-border);
+    background: var(--terra-dim);
+    font-weight: 400;
+  }
+
+  /* Stag Hunt — terra */
+  .g-stag .game-card-accent { background: var(--terra); }
+  .g-stag .game-tag { color: var(--terra); background: var(--terra-dim); }
+
+  /* Tragedy — green */
+  .g-tragedy .game-card-accent { background: var(--green); }
+  .g-tragedy .game-tag { color: var(--green); background: var(--green-dim); }
+
+  /* IPD — blue */
+  .g-ipd .game-card-accent { background: var(--blue); }
+  .g-ipd .game-tag { color: var(--blue); background: var(--blue-dim); }
+
+  /* Schelling — amber */
+  .g-schelling .game-card-accent { background: var(--amber); }
+  .g-schelling .game-tag { color: var(--amber); background: var(--amber-dim); }
+
+  /* Oathbreaker — rose */
+  .g-oathbreaker .game-card-accent { background: var(--rose); }
+  .g-oathbreaker .game-tag { color: var(--rose); background: var(--rose-dim); }
+
+  /* Round timeline */
+  .phase-timeline {
+    margin-top: 32px;
+    border: 1px solid var(--border-dim);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .phase-row {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .phase-row:last-child { border-bottom: none; }
+  .phase-name {
+    padding: 16px 20px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--terra);
+    border-right: 1px solid var(--border-dim);
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+  }
+  .phase-content {
+    padding: 16px 22px;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.65;
+  }
+  .phase-content strong { color: var(--white); }
+
+  /* Mapping table */
+  .mapping-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 28px;
+    font-size: 13.5px;
+  }
+  .mapping-table th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    font-weight: 400;
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .mapping-table td {
+    padding: 14px 14px;
+    border-bottom: 1px solid var(--border-dim);
+    color: var(--text);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  .mapping-table tr:last-child td { border-bottom: none; }
+  .mapping-table td:first-child { color: var(--white); font-style: italic; }
+
+  .status-band {
+    background: var(--surface);
+    border: 1px solid var(--border-dim);
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+  }
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--terra);
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  footer {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 24px 48px;
+    border-top: 1px solid var(--border-dim);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer a { color: var(--faint); }
+  footer a:hover { color: var(--terra); }
+
+  @media (max-width: 600px) {
+    .framing-strip { grid-template-columns: 1fr; }
+    .framing-half + .framing-half { border-left: none; border-top: 1px solid var(--terra-border); }
+    .mapping-row { grid-template-columns: 1fr; gap: 4px; }
+    .mapping-key { padding-top: 0; }
+    .phase-row { grid-template-columns: 1fr; }
+    .phase-name { border-right: none; border-bottom: 1px solid var(--border-dim); }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+    h1 { font-size: 32px; }
+    .mapping-table { font-size: 12px; }
+    .mapping-table th, .mapping-table td { padding: 10px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="/coordination-games/commoners/">&larr; Commoners</a>
+  <span class="kicker">Agent Olympiad &middot; Integration Spec</span>
+</div>
+
+<div class="page">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="overline">Integration spec &middot; Season 1, 2026</div>
+    <h1>Commoners as <span>Meta-Game</span></h1>
+    <p class="subtitle">The five Agent Olympiad games don&rsquo;t run alongside Commoners. They run <em>inside</em> it &mdash; each one a scenario that emerges from the world Commoners simulates.</p>
+  </section>
+
+  <div class="framing-strip">
+    <div class="framing-half">
+      <span class="tag">The inversion</span>
+      <div class="name">Not a sixth game</div>
+      <p class="desc">Most game tournaments run five games in sequence. The Agent Olympiad runs five games nested inside a sixth world. Commoners is the world. Each of the five named games is a recurring situation that emerges from the world&rsquo;s mechanics &mdash; not a mode switch, but a phase recognition.</p>
+    </div>
+    <div class="framing-half">
+      <span class="tag">The implication</span>
+      <div class="name">Score carries across</div>
+      <p class="desc">An agent&rsquo;s performance in Stag Hunt directly affects their treatment band in the next governance vote. A broken oath in Oathbreaker leaves an attestation on-chain that any subsequent proposal can reference. The games compound. Season scoring reflects the whole.</p>
+    </div>
+  </div>
+
+  <div class="hairline"></div>
+
+  <!-- The mapping logic -->
+  <section>
+    <span class="label">The Logic</span>
+    <div class="rule"></div>
+    <h2>How five games become one world.</h2>
+    <p>Each of the five Olympiad games names a class of coordination problem. Commoners simulates a world in which all five classes arise simultaneously. The games do not need to be artificially injected &mdash; they emerge from the engine&rsquo;s mechanics in a predictable location within the five-phase round structure.</p>
+    <p>The mapping is not allegory. It is module assignment. Each game has a primary Commoners module whose mechanics implement it, a round phase in which it is most live, and a consequence path that propagates its outcome into subsequent phases and rounds. The table below and the five cards that follow give both the conceptual mapping and the technical integration point.</p>
+  </section>
+
+  <div class="hairline"></div>
+
+  <!-- Game cards -->
+  <section>
+    <span class="label">Five Games &mdash; Eight Modules</span>
+    <div class="rule"></div>
+    <h2>The mappings.</h2>
+
+    <div class="game-grid">
+
+      <!-- 1. Stag Hunt -->
+      <div class="game-card g-stag">
+        <div class="game-card-header">
+          <div class="game-card-accent"></div>
+          <div class="game-card-header-inner">
+            <div class="game-card-meta">
+              <span class="game-tag">Game 1</span>
+              <span class="game-tag">Base payoff structure</span>
+            </div>
+            <div class="game-name">Stag Hunt</div>
+          </div>
+        </div>
+        <div class="game-card-body">
+          <div class="mapping-row">
+            <div class="mapping-key">Origin mechanic</div>
+            <div class="mapping-val">Two agents can together take a stag (high yield, requires coordination) or separately take a hare (low yield, safe alone). The Stag Hunt differs from the Prisoner&rsquo;s Dilemma in one critical way: the defector&rsquo;s best response depends on what they believe the other agent will do. Mutual cooperation <em>and</em> mutual defection are both Nash equilibria.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Commoners form</div>
+            <div class="mapping-val"><strong>Extraction vs. restoration on the shared parcel.</strong> In every Execution phase, each agent chooses between a <code>Productive</code> action (solo hare &mdash; immediate resource delta, negative externality) and a <code>Regenerative</code> action (collective stag &mdash; requires neighbors to also restore for the basin to recover). A single restorer surrounded by extractors gets the worst outcome: positive trust valence but no basin recovery.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Primary module</div>
+            <div class="mapping-val">
+              <span class="module-ref">M2 Parcel</span>
+              <span class="module-ref">M4 Basin</span>
+              <span class="module-ref">M3 Agents</span>
+            </div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Round phase</div>
+            <div class="mapping-val"><strong>Execution.</strong> Each agent submits an <code>ActionRequest</code> with category Productive or Regenerative. The basin health update in Reckoning reflects collective choice: only a majority of regenerative actions recovers the commons.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Consequence path</div>
+            <div class="mapping-val">Defection (Productive at high intensity) drives externality_score down in M7, reducing vote weight in the next governance round. Restoration drives it up. Defectors are not punished by other agents &mdash; they are penalized by the world they helped degrade.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Victory condition</div>
+            <div class="mapping-val">Collective stag: basin health ≥ 0.7 at Reckoning, all participating agents in treatment bands 1&ndash;3, dominant archetype = <em>Orchard</em> or <em>Confluence</em>.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Tragedy of the Commons -->
+      <div class="game-card g-tragedy">
+        <div class="game-card-header">
+          <div class="game-card-accent"></div>
+          <div class="game-card-header-inner">
+            <div class="game-card-meta">
+              <span class="game-tag">Game 2</span>
+              <span class="game-tag">Environmental clock</span>
+            </div>
+            <div class="game-name">Tragedy of the Commons</div>
+          </div>
+        </div>
+        <div class="game-card-body">
+          <div class="mapping-row">
+            <div class="mapping-key">Origin mechanic</div>
+            <div class="mapping-val">A shared resource (pasture, fishery, aquifer) degrades when the aggregate extraction rate exceeds the regeneration rate. No individual agent causes the collapse; collective over-extraction does. Each rational agent prefers to extract slightly more than the sustainable amount. The result is ruin for all.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Commoners form</div>
+            <div class="mapping-val"><strong>Basin degradation leading to Dust collapse.</strong> Each extraction action accumulates an externality on the basin commons pool (M4). When the externality accumulator exceeds <code>STRESS_THRESHOLD = 0.8</code>, a <code>basin_stress</code> event fires. If basin health falls below the collapse threshold across two consecutive Reckoning phases, the season ends in <em>Dust</em> &mdash; the single compound collapse condition.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Primary module</div>
+            <div class="mapping-val">
+              <span class="module-ref">M4 Basin</span>
+              <span class="module-ref">M6 Season</span>
+            </div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Round phase</div>
+            <div class="mapping-val"><strong>Reckoning.</strong> After every Execution, the basin commons pool is recalculated from parcel-level substrate readings. The Reckoning phase computes watershed health, soil carbon index, and biodiversity index aggregated from H3 substrate cells. Stress is visible to all agents at the start of the next Reading phase.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Consequence path</div>
+            <div class="mapping-val">A stressed basin triggers <code>EMERGENCY_QUORUM = 0.25</code> in the next governance round, lowering the threshold for emergency proposals. Collapse ends the season with score = 0 for all agents regardless of individual reputation. The tragedy is collective and indiscriminate.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Victory condition</div>
+            <div class="mapping-val">Avoided: basin health ≥ 0.5 at every Reckoning across the full season. Dominant archetype = <em>Orchard</em> (high yield, low externality).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Iterated Prisoner's Dilemma -->
+      <div class="game-card g-ipd">
+        <div class="game-card-header">
+          <div class="game-card-accent"></div>
+          <div class="game-card-header-inner">
+            <div class="game-card-meta">
+              <span class="game-tag">Game 3</span>
+              <span class="game-tag">Relational capital</span>
+            </div>
+            <div class="game-name">Iterated Prisoner&rsquo;s Dilemma</div>
+          </div>
+        </div>
+        <div class="game-card-body">
+          <div class="mapping-row">
+            <div class="mapping-key">Origin mechanic</div>
+            <div class="mapping-val">In a single-shot PD, defection dominates. In iteration with the same partner, cooperation can emerge through reciprocal strategies (Tit-for-Tat, Generous Tit-for-Tat). The key variables are the shadow of the future and the legibility of past behavior.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Commoners form</div>
+            <div class="mapping-val"><strong>Trust-building across rounds via Relational actions and M7 reputation accumulation.</strong> A <code>Relational</code> action in M3 generates a trust signal with coordination_score delta <code>+0.40</code> &mdash; the highest coordination signal in the system. Repeated Relational actions between two agents increase both agents&rsquo; treatment bands over multiple rounds. Defection (failure to reciprocate) lowers coordination_score and band, reducing vote weight in governance.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Primary module</div>
+            <div class="mapping-val">
+              <span class="module-ref">M3 Agents</span>
+              <span class="module-ref">M7 Trust</span>
+            </div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Round phase</div>
+            <div class="mapping-val"><strong>Execution and Reckoning.</strong> Relational actions execute in the Execution phase. The trust signal propagates to M7 in Reckoning, where <code>reckonTrust</code> processes all signals from the round and appends a <code>RoundTrustSummary</code> to each agent&rsquo;s history. History is durable across rounds within a season.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Consequence path</div>
+            <div class="mapping-val">An agent at treatment band 1&ndash;2 (high cooperation) receives a 1.25&ndash;1.50&times; vote weight multiplier in M5 governance. The shadow of the future is the season: cooperation today is a governance investment for the next round&rsquo;s proposals.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Victory condition</div>
+            <div class="mapping-val">Average coordination_score &gt; 0.5 for all players at season end. Dominant archetype = <em>Hearth</em> (relational density) or <em>Confluence</em> (high coordination across agents).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Schelling Point -->
+      <div class="game-card g-schelling">
+        <div class="game-card-header">
+          <div class="game-card-accent"></div>
+          <div class="game-card-header-inner">
+            <div class="game-card-meta">
+              <span class="game-tag">Game 4</span>
+              <span class="game-tag">Governance coordination</span>
+            </div>
+            <div class="game-name">Schelling Point</div>
+          </div>
+        </div>
+        <div class="game-card-body">
+          <div class="mapping-row">
+            <div class="mapping-key">Origin mechanic</div>
+            <div class="mapping-val">When agents cannot communicate directly (or cannot trust direct communication), they tend to coordinate on a focal solution &mdash; a point that is prominent, natural, or salient by convention. Schelling&rsquo;s insight: coordination is possible without communication, given a shared understanding of salience.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Commoners form</div>
+            <div class="mapping-val"><strong>Governance proposals that require agents to find the focal basin rule without direct negotiation.</strong> In the Proposing phase, agents submit governance proposals (M5). In the Negotiation phase, agents cast votes. A proposal passes when it hits the Schelling threshold: enough agents independently recognize it as the right rule. Under basin stress, <code>EMERGENCY_QUORUM = 0.25</code> means even a minority of aligned agents can enact emergency rules.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Primary module</div>
+            <div class="mapping-val">
+              <span class="module-ref">M5 Governance</span>
+              <span class="module-ref">M6 Season</span>
+            </div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Round phase</div>
+            <div class="mapping-val"><strong>Proposing and Negotiation.</strong> <code>submitProposal</code> opens in Proposing. <code>castVote</code> and <code>tallyProposal</code> execute in Negotiation. The vote weight is the Schelling weighting mechanism: agents who have demonstrated prosocial behavior (higher band) carry more weight, biasing focal solutions toward commons-preserving rules.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Consequence path</div>
+            <div class="mapping-val">A passed proposal generates a <code>governance_outcome</code> attestation (EIP-712 signed, dataHash logged). The attestation is included in the season&rsquo;s merkle root, submitted to Base at season end (M8). The Schelling solution is permanently legible on-chain.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Victory condition</div>
+            <div class="mapping-val">Two or more governance proposals pass per season with &gt; 60% weighted majority. Dominant archetype = <em>Archive</em> (knowledge preservation) or <em>Workshop</em> (infrastructure building through governance).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Oathbreaker -->
+      <div class="game-card g-oathbreaker">
+        <div class="game-card-header">
+          <div class="game-card-accent"></div>
+          <div class="game-card-header-inner">
+            <div class="game-card-meta">
+              <span class="game-tag">Game 5</span>
+              <span class="game-tag">Commitment &amp; attestation</span>
+            </div>
+            <div class="game-name">Oathbreaker</div>
+          </div>
+        </div>
+        <div class="game-card-body">
+          <div class="mapping-row">
+            <div class="mapping-key">Origin mechanic</div>
+            <div class="mapping-val">An agent makes a commitment (an oath) that, if honored, produces mutual benefit; if broken, harms the other party and signals untrustworthiness to the community. The key variable is detectability: oath-breaking is only deterred when the community can verify whether the commitment was kept.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Commoners form</div>
+            <div class="mapping-val"><strong>Attestation violations: breaking a governance commitment produces a negative EIP-712 attestation and a direct trust band penalty.</strong> When a governance proposal passes, each agent who voted in favor has implicitly committed to follow its terms. If an agent subsequently takes a <code>Productive</code> action that violates the proposal&rsquo;s intent, a <code>governance_outcome</code> attestation with negative externality valence is generated. The violation is on-chain and permanent.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Primary module</div>
+            <div class="mapping-val">
+              <span class="module-ref">M5 Governance</span>
+              <span class="module-ref">M7 Trust</span>
+              <span class="module-ref">M8 Chain</span>
+            </div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Round phase</div>
+            <div class="mapping-val"><strong>Execution and Reckoning.</strong> Violations are detected during Execution when action results are compared against active proposal terms. The negative attestation is appended to the governance log. In Reckoning, <code>reckonTrust</code> processes the negative signal: externality_score and coordination_score both decrease, driving the agent toward band 5&ndash;7 and restricting future Governing access.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Consequence path</div>
+            <div class="mapping-val">An agent in bands 5&ndash;7 cannot submit governance proposals or cast votes in subsequent rounds (<code>canPerformCategory</code> returns false for Governing and Relational). The oathbreaker is not expelled &mdash; they are structurally disenfranchised until they earn back governance access through the restorative path.</div>
+          </div>
+          <div class="mapping-row">
+            <div class="mapping-key">Victory condition</div>
+            <div class="mapping-val">No agent in the game ends the season at band 7. All governance commitments honored. Dominant archetype = <em>Archive</em>. Season merkle root contains zero negative-valence attestations.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="hairline"></div>
+
+  <!-- Round timing -->
+  <section>
+    <span class="label">Round Structure</span>
+    <div class="rule"></div>
+    <h2>Where each game lives in the round.</h2>
+    <p>Every round in a Commoners season passes through five phases. The five Olympiad games are active in different phases. A facilitator can read the round as five simultaneous frames, each running its own coordination scenario.</p>
+
+    <div class="phase-timeline">
+      <div class="phase-row">
+        <div class="phase-name">Reading</div>
+        <div class="phase-content">
+          <strong>Tragedy of the Commons is most visible here.</strong> Agents observe current basin health, soil carbon index, biodiversity index, and externality accumulator from M4. The commons pool state at the start of each round is the information environment that frames all subsequent choices. A stressed basin changes the quorum threshold for the entire round.
+        </div>
+      </div>
+      <div class="phase-row">
+        <div class="phase-name">Proposing</div>
+        <div class="phase-content">
+          <strong>Schelling Point is live.</strong> Agents submit action requests (the Stag Hunt choice point: Productive or Regenerative?) and governance proposals. Proposals that address basin stress are the focal coordination problem. Agents with higher treatment bands can read the proposal surface; agents in bands 5&ndash;7 cannot submit governance proposals at all.
+        </div>
+      </div>
+      <div class="phase-row">
+        <div class="phase-name">Negotiation</div>
+        <div class="phase-content">
+          <strong>Schelling Point resolves. IPD relational signals form.</strong> Agents cast votes on proposals using their band-weighted vote weight. An agent who has accumulated relational capital (M7 coordination_score) carries more governance weight &mdash; the payoff from repeated cooperation in earlier rounds. Agents who sense a focal rule emerge as proposal champions.
+        </div>
+      </div>
+      <div class="phase-row">
+        <div class="phase-name">Execution</div>
+        <div class="phase-content">
+          <strong>Stag Hunt resolves. Oathbreaker violations are detected.</strong> All queued action requests execute. Each Productive action accumulates externality on the basin. Each Regenerative action begins countering it. Agents who voted for a commons-protecting proposal but execute high-intensity Productive actions trigger an Oathbreaker violation. The attestation is written immediately.
+        </div>
+      </div>
+      <div class="phase-row">
+        <div class="phase-name">Reckoning</div>
+        <div class="phase-content">
+          <strong>All five games score simultaneously.</strong> Basin health updates (Tragedy). Trust signals from all actions propagate to M7, updating externality_score and coordination_score for every agent (IPD, Stag Hunt, Oathbreaker). Governance outcome attestations are finalized and added to the log (Schelling, Oathbreaker). Season archetype scores are recalculated. Round history is appended. If this is the final round, season completes and the merkle root is prepared for Base submission (M8).
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="hairline"></div>
+
+  <!-- Facilitator reference table -->
+  <section>
+    <span class="label">Facilitator Reference</span>
+    <div class="rule"></div>
+    <h2>Mapping table.</h2>
+    <p>For Olympiad facilitators running live sessions. Each row is one game, its engine entry point, its round phase, and its season scoring signal.</p>
+
+    <table class="mapping-table">
+      <thead>
+        <tr>
+          <th>Game</th>
+          <th>Primary module(s)</th>
+          <th>Live in phase</th>
+          <th>Engine entry point</th>
+          <th>Season score signal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Stag Hunt</td>
+          <td>M2 Parcel, M3 Agents, M4 Basin</td>
+          <td>Execution</td>
+          <td><code>executeAction({ category: Productive | Regenerative })</code></td>
+          <td>Basin health delta at Reckoning; externality_score direction</td>
+        </tr>
+        <tr>
+          <td>Tragedy of the Commons</td>
+          <td>M4 Basin, M6 Season</td>
+          <td>Reading, Reckoning</td>
+          <td><code>accumulateExternality()</code> &rarr; <code>basin_stress</code> event</td>
+          <td>Dust collapse flag; <code>STRESS_THRESHOLD</code> crossings per season</td>
+        </tr>
+        <tr>
+          <td>Iterated Prisoner&rsquo;s Dilemma</td>
+          <td>M3 Agents, M7 Trust</td>
+          <td>Execution, Reckoning</td>
+          <td><code>executeAction({ category: Relational })</code> &rarr; <code>reckonTrust()</code></td>
+          <td>coordination_score trajectory; round_history accumulation</td>
+        </tr>
+        <tr>
+          <td>Schelling Point</td>
+          <td>M5 Governance, M6 Season</td>
+          <td>Proposing, Negotiation</td>
+          <td><code>submitProposal()</code> &rarr; <code>castVote()</code> &rarr; <code>tallyProposal()</code></td>
+          <td>Governance proposals passed per season; attestation log length</td>
+        </tr>
+        <tr>
+          <td>Oathbreaker</td>
+          <td>M5 Governance, M7 Trust, M8 Chain</td>
+          <td>Execution, Reckoning</td>
+          <td>Negative <code>governance_outcome</code> attestation &rarr; <code>applyTrustSignal({ valence: -1 })</code></td>
+          <td>Negative attestations in merkle root; agents ending in band 7</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="hairline"></div>
+
+  <!-- Engine status -->
+  <section>
+    <span class="label">Engine Status</span>
+    <div class="rule"></div>
+    <h2>What is built.</h2>
+    <p>The Commoners engine is a TypeScript ESM library. All eight modules are implemented and tested. The engine is available at <a href="https://github.com/nou-techne/commoners-engine">github.com/nou-techne/commoners-engine</a>.</p>
+    <p>The Olympiad integration spec above describes behaviors already implemented in the engine. Facilitators wiring the Olympiad into Commoners are working against a completed API, not a spec for future work.</p>
+  </section>
+
+  <div class="status-band">
+    <div class="status-dot"></div>
+    Engine complete &middot; 274 tests passing &middot; All 8 modules shipped &middot; Season 1, 2026 &middot; <a href="https://github.com/nou-techne/commoners-engine">commoners-engine on GitHub</a> &middot; <a href="/coordination-games/commoners/">Back to Commoners</a>
+  </div>
+
+</div>
+
+<footer>
+  <span><a href="/coordination-games/commoners/">&larr; Commoners</a></span>
+  <span>Techne / RegenHub, LCA &middot; Boulder, CO &middot; Season 1, 2026</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RegenHub, LCA — Investor Member Term Sheet</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #212121;
+    --border: #2e2e2e;
+    --border2: #3a3a3a;
+    --primary: #c4956a;
+    --primary-dim: #8a6545;
+    --text: #d9d9d9;
+    --text-bright: #ece6de;
+    --text-muted: #888888;
+    --text-faint: #555555;
+    --green: #8aba8a;
+    --green-bg: #1a1f1a;
+    --green-border: #4a6a4a;
+    --amber: #d4b08a;
+    --amber-bg: #1f1a14;
+    --amber-border: #8a6545;
+    --blue: #a0a0c4;
+    --blue-bg: #1a1a22;
+    --blue-border: #6a6a8a;
+    --red: #c47070;
+    --red-bg: #1f1414;
+    --red-border: #6a3a3a;
+  }
+
+  html { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.65; }
+  body { max-width: 860px; margin: 0 auto; padding: 48px 32px 80px; }
+
+  /* ── Cover ── */
+  .cover { padding: 56px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 52px; }
+  .cover-eyebrow { font-size: 11px; font-family: monospace; color: var(--primary-dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .cover h1 { font-size: 32px; font-weight: 700; color: var(--text-bright); letter-spacing: -0.6px; line-height: 1.2; margin-bottom: 10px; }
+  .cover-sub { font-size: 14px; color: var(--text-muted); margin-top: 12px; line-height: 1.6; max-width: 580px; }
+  .cover-meta { margin-top: 28px; display: flex; gap: 0; flex-wrap: wrap; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; }
+  .cover-meta-item { font-size: 11px; font-family: monospace; color: var(--text-faint); padding-right: 24px; border-right: 1px solid var(--border); margin-right: 24px; }
+  .cover-meta-item:last-child { border-right: none; margin-right: 0; }
+  .cover-meta-item strong { color: var(--text-muted); font-weight: 500; }
+
+  .status-badge { display: inline-block; font-size: 10px; font-family: monospace; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 10px; margin-top: 18px; background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+  /* ── Sections ── */
+  section { margin-bottom: 56px; }
+  .section-label { font-size: 10px; font-family: monospace; letter-spacing: 2.5px; text-transform: uppercase; color: var(--primary-dim); margin-bottom: 10px; }
+  section h2 { font-size: 21px; font-weight: 600; color: var(--text-bright); letter-spacing: -0.3px; margin-bottom: 14px; }
+  section > p { color: var(--text); margin-bottom: 14px; max-width: 700px; line-height: 1.7; }
+
+  /* ── Parties block ── */
+  .parties { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+  .party { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 18px 20px; }
+  .party-role { font-size: 10px; font-family: monospace; letter-spacing: 1.5px; text-transform: uppercase; color: var(--primary-dim); margin-bottom: 6px; }
+  .party h3 { font-size: 14px; font-weight: 600; color: var(--text-bright); margin-bottom: 4px; }
+  .party p { font-size: 12px; color: var(--text-muted); line-height: 1.55; margin: 0; }
+  .party .amount { font-size: 18px; font-weight: 700; color: var(--primary); font-family: monospace; margin-top: 6px; }
+
+  /* ── Term table ── */
+  .term-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+  .term-table th { background: var(--surface); color: var(--text-muted); font-weight: 600; text-align: left; padding: 9px 14px; border: 1px solid var(--border); font-size: 10px; font-family: monospace; letter-spacing: 1px; text-transform: uppercase; }
+  .term-table td { padding: 10px 14px; border: 1px solid var(--border); color: var(--text); vertical-align: top; line-height: 1.6; }
+  .term-table td:first-child { color: var(--text-muted); font-size: 12px; font-family: monospace; white-space: nowrap; width: 220px; }
+  .term-table tr:nth-child(even) td { background: #161616; }
+
+  /* ── Basket table ── */
+  .basket-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+  .basket-table th { background: var(--surface); color: var(--text-muted); font-weight: 600; text-align: left; padding: 9px 14px; border: 1px solid var(--border); font-size: 10px; font-family: monospace; letter-spacing: 1px; text-transform: uppercase; }
+  .basket-table td { padding: 10px 14px; border: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  .basket-table tr:nth-child(even) td { background: #161616; }
+  .basket-table .venture-name { color: var(--primary); font-weight: 600; }
+  .basket-table .basket-pct { color: var(--green); font-family: monospace; }
+  .basket-table .reserve-pct { color: var(--text-muted); font-family: monospace; }
+
+  /* ── Open items ── */
+  .open-items { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+  .open-item { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 16px 18px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: start; }
+  .open-item h4 { font-size: 13px; font-weight: 600; color: var(--text-bright); margin-bottom: 4px; }
+  .open-item p { font-size: 12px; color: var(--text-muted); line-height: 1.55; margin: 0; }
+  .item-status { font-size: 10px; font-family: monospace; padding: 2px 9px; border-radius: 10px; display: inline-block; white-space: nowrap; }
+  .status-pending { background: var(--surface2); color: var(--text-faint); border: 1px solid var(--border2); }
+  .status-agreed  { background: var(--green-bg);  color: var(--green);      border: 1px solid var(--green-border); }
+  .status-fsc     { background: var(--blue-bg);   color: var(--blue);       border: 1px solid var(--blue-border); }
+  .status-attorney { background: var(--amber-bg); color: var(--amber);      border: 1px solid var(--amber-border); }
+
+  /* ── Timeline ── */
+  .timeline { display: flex; flex-direction: column; gap: 0; margin-top: 20px; }
+  .timeline-item { display: flex; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .timeline-item:last-child { border-bottom: none; }
+  .timeline-date { font-size: 11px; font-family: monospace; color: var(--text-faint); width: 120px; flex-shrink: 0; padding-top: 2px; }
+  .timeline-body h4 { font-size: 13px; font-weight: 600; color: var(--text-bright); margin-bottom: 4px; }
+  .timeline-body p { font-size: 12px; color: var(--text-muted); line-height: 1.55; margin: 0; }
+
+  /* ── Return options ── */
+  .return-options { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+  .return-option { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
+  .return-option-label { font-size: 10px; font-family: monospace; letter-spacing: 1.5px; text-transform: uppercase; color: var(--primary-dim); margin-bottom: 5px; }
+  .return-option h4 { font-size: 13px; font-weight: 600; color: var(--text-bright); margin-bottom: 5px; }
+  .return-option p { font-size: 12px; color: var(--text-muted); line-height: 1.55; margin: 0; }
+
+  /* ── Pullquote ── */
+  .pullquote { border-left: 3px solid var(--primary); padding: 14px 18px; background: var(--surface); border-radius: 0 4px 4px 0; margin: 24px 0; font-size: 14px; color: var(--text-bright); font-style: italic; line-height: 1.65; }
+
+  /* ── Notice ── */
+  .notice { background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: 4px; padding: 14px 18px; margin: 20px 0; font-size: 12px; color: var(--blue); line-height: 1.6; }
+  .notice strong { color: var(--text-bright); }
+
+  /* ── Divider ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+  /* ── Footer ── */
+  footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-faint); font-family: monospace; line-height: 1.9; }
+  footer a { color: var(--primary-dim); text-decoration: none; }
+
+  strong { color: var(--text-bright); }
+  em { color: var(--text-muted); }
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-eyebrow">RegenHub, LCA · Boulder, Colorado · February 2026</div>
+  <h1>Investor Member<br/>Term Sheet</h1>
+  <p class="cover-sub">Season 1 — First Closing. This term sheet establishes the initial capital commitments and membership structure for RegenHub, LCA. Return terms are intentionally deferred to the Financial Systems Committee, which convenes March 2, 2026.</p>
+  <div class="status-badge">Draft — Shape Agreed · Formal Draft Pending Attorney</div>
+  <div class="cover-meta" style="margin-top: 24px;">
+    <div class="cover-meta-item"><strong>Entity</strong> · RegenHub, LCA (DBA Techne)</div>
+    <div class="cover-meta-item"><strong>Structure</strong> · Colorado Public Benefit LCA</div>
+    <div class="cover-meta-item"><strong>Filed</strong> · February 6, 2026</div>
+    <div class="cover-meta-item"><strong>Attorney</strong> · Jeff Pote, Pote Law Firm</div>
+    <div class="cover-meta-item"><strong>Contact</strong> · Todd Youngblood · Ventures &amp; Operations Steward</div>
+  </div>
+</div>
+
+<div class="notice">
+  <strong>Not a securities offering.</strong> Participation is structured as cooperative membership in a Colorado Limited Cooperative Association — not a fund share, SAFE, or registered security. Membership interests are actively governed, patronage-based, and democratically controlled. All terms to be confirmed with cooperative attorney Jeff Pote before any transaction closes.
+</div>
+
+<!-- 00: PURPOSE -->
+<section>
+  <div class="section-label">00 — Public Benefit Purpose</div>
+  <h2>Cultivating scenius</h2>
+  <p>RegenHub, LCA is a <strong>Colorado Public Benefit Limited Cooperative Association</strong>. The articles of organization were filed February 6, 2026 (Colorado Secretary of State Document #20261163853, ID #20261163853). As a public benefit entity, the cooperative is legally required to balance financial performance against its stated purpose, and to publish an annual benefit report assessing that performance.</p>
+  <p>Our stated public benefit purpose: <strong>to cultivate scenius</strong> — the collective intelligence that emerges from sustained proximity of culturally aligned people — by operating as a cooperative venture studio that composes patterns of coordination, care, and value creation with intention and skill, enriching the economic and social habitat of its members, ventures, and community.</p>
+  <p>We have high conviction in our ability to return value to investors — both financial and multi-capital. Returns are structured across three time horizons: <strong>equity</strong> (a stake in the cooperative and its venture ecosystem), <strong>royalties</strong> (ongoing returns from IP created through cooperative work), and <strong>patronage</strong> (periodic surplus allocation based on multi-capital contribution). The Financial Systems Committee will parameterize these return mechanisms in March 2026.</p>
+  <p>Investor Members receive economic rights without governance rights. Governance remains democratic: one cooperative member, one vote, regardless of capital contributed. This is not a limitation on investor return — it is the structural choice that makes the cooperative trustworthy enough to generate the returns we're projecting.</p>
+</section>
+
+<!-- 01: PARTIES -->
+<section>
+  <div class="section-label">01 — The Parties</div>
+  <h2>Who is at the table</h2>
+
+  <div class="parties">
+    <div class="party">
+      <div class="party-role">Issuer</div>
+      <h3>RegenHub, LCA</h3>
+      <p>Colorado Public Benefit Limited Cooperative Association (DBA Techne). Filed February 6, 2026. Suite 200, 1515 Walnut St, Boulder, CO 80302.</p>
+    </div>
+    <div class="party">
+      <div class="party-role">Ventures &amp; Operations Steward</div>
+      <h3>Todd Youngblood</h3>
+      <p>Responsible for legal architecture, financial systems, and investor relations. Lead on this transaction and the agreement stack.</p>
+    </div>
+    <div class="party">
+      <div class="party-role">Organizer · Class 1 &amp; Investor Member · Class 4</div>
+      <h3>Kevin Owocki</h3>
+      <p>Co-founder Gitcoin. Co-founder Allo Capital. Founding organizer of RegenHub — holds <strong>full Cooperative Member (Class 1)</strong> status with voting rights and governance participation, <em>in addition to</em> an Investor Member (Class 4) capital account. Committed capital subject to closing conditions.</p>
+      <div class="amount">$50,000</div>
+    </div>
+    <div class="party">
+      <div class="party-role">Investor Member · Class 4</div>
+      <h3>Jeremy</h3>
+      <p>Committed capital subject to closing conditions. Full name and contact to be confirmed in formal agreement. <em>May elect Cooperative Member (Class 1) in addition to Class 4 — multi-class membership is permitted.</em></p>
+      <div class="amount">$50,000</div>
+    </div>
+  </div>
+
+  <p style="margin-top: 20px;">Additional Investor Members may be admitted in Season 1 at the Board's discretion. The Financial Systems Committee's return parameterization (March 2026) will govern all investors equally regardless of commitment date within the season.</p>
+</section>
+
+<!-- 02: THE INSTRUMENT -->
+<section>
+  <div class="section-label">02 — The Instrument</div>
+  <h2>What investors are subscribing to</h2>
+
+  <table class="term-table">
+    <thead><tr><th>Term</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Instrument type</td><td>Investor Member subscription — <strong>Class 4 Membership Interest</strong> in RegenHub, LCA. This is cooperative membership, not a fund share or equity security.</td></tr>
+      <tr><td>Governance</td><td><strong>Class 4 is non-voting.</strong> Investor Members hold economic interests only. Patron members (Class 1–3) govern. One member, one vote — regardless of capital contribution. A member holding both Class 1 and Class 4 (e.g., Kevin Owocki as founding organizer) votes as a Class 1 patron member.</td></tr>
+      <tr><td>Capital account</td><td>Each member's economic interest is tracked via a <strong>capital account</strong> maintained under Sub K / IRC 704(b) book-value treatment. K-1s issued annually per IRS deadlines.</td></tr>
+      <tr><td>Share price</td><td>Minimum 1 share per class. Per-class share prices and dues to be set by Board in Schedule A (pending). Initial committed capital ($50,000 each) will be treated as the capital account contribution.</td></tr>
+      <tr><td>Admission authority</td><td>Board sole discretion. Each Investor Member executes a Member Agreement as a condition of admission.</td></tr>
+      <tr><td>Defined return</td><td><strong>None at signing.</strong> Return terms will be determined by the Financial Systems Committee (convening March 2, 2026) and ratified by the Board. See Section 04 for options under consideration.</td></tr>
+      <tr><td>Immediate use of capital</td><td>Securing the Suite 200 lease at <strong>1515 Walnut St</strong>. This is the physical substrate of RegenHub — the home that makes the cooperative real.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 03: THE BASKET -->
+<section>
+  <div class="section-label">03 — The Basket</div>
+  <h2>What the capital is invested in</h2>
+
+  <p>Each founding venture contributes <strong>10% equity</strong> to RegenHub as a cooperative gift. RegenHub splits that into <strong>1–2% per venture</strong> for the basket fund (available to investors) and <strong>8–9%</strong> held on the balance sheet as a reserve that grows as ventures mature. For the full equity flow model and growth scenario, see the <a href="vision-one-pager.html">Vision One-Pager</a>.</p>
+
+  <table class="basket-table">
+    <thead>
+      <tr><th>Venture</th><th>Lead</th><th>Domain</th><th>Total Gift</th><th>Basket</th><th>Reserve</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="venture-name">Parachute</span><br/><a href="https://parachute.computer" target="_blank" style="font-size:11px; font-family:monospace;">parachute.computer</a></td>
+        <td style="color:var(--text-muted);">Aaron Gabriel</td>
+        <td style="font-size:12px; color:var(--text-muted);">Voice-first, local-first AI extended mind</td>
+        <td style="font-family:monospace;">10%</td>
+        <td class="basket-pct">1–2%</td>
+        <td class="reserve-pct">8–9%</td>
+      </tr>
+      <tr>
+        <td><span class="venture-name">Postage</span><br/><a href="https://postage.email" target="_blank" style="font-size:11px; font-family:monospace;">postage.email</a></td>
+        <td style="color:var(--text-muted);">Lucian Hymer</td>
+        <td style="font-size:12px; color:var(--text-muted);">Blockchain-based email filtering (USDC on Base)</td>
+        <td style="font-family:monospace;">10%</td>
+        <td class="basket-pct">1–2%</td>
+        <td class="reserve-pct">8–9%</td>
+      </tr>
+      <tr>
+        <td><span class="venture-name">Habitat</span></td>
+        <td style="color:var(--text-muted);">Todd Youngblood</td>
+        <td style="font-size:12px; color:var(--text-muted);">Legal &amp; financial primitives; cooperative infrastructure</td>
+        <td style="font-family:monospace;">10%</td>
+        <td class="basket-pct">1–2%</td>
+        <td class="reserve-pct">8–9%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top: 20px;"><strong>Future ventures</strong> may be added to the basket by Board resolution as new projects emerge from Techne. <strong>Techne Institute</strong> sits entirely outside this structure — becoming a nonprofit, not in the basket.</p>
+</section>
+
+<!-- 04: RETURN STRUCTURE -->
+<section>
+  <div class="section-label">04 — Return Structure</div>
+  <h2>Options under Financial Systems Committee review</h2>
+
+  <p>The Financial Systems Committee (FSC) convenes <strong>March 2, 2026</strong>, to parameterize return terms. The following options are under consideration. Kevin and Jeremy are comfortable with this open structure — they are investing in alignment and long-term ecosystem health, not a fixed return schedule.</p>
+
+  <div class="return-options">
+    <div class="return-option">
+      <div class="return-option-label">Option A</div>
+      <h4>Capped Revenue Participation</h4>
+      <p>Investor Members receive a percentage of RegenHub's operating revenue — space rental, studio services, venture reciprocity — until a defined cap is reached (e.g., 2× committed capital). After the cap, the membership interest converts to a standard non-economic position. Clean, predictable, no perpetual obligation.</p>
+    </div>
+    <div class="return-option">
+      <div class="return-option-label">Option B</div>
+      <h4>Retroactive Seed Equity in a Specific Venture</h4>
+      <p>The committed capital is treated as an early-stage investment in one of the founding ventures — Parachute, Postage, Habitat, or a future project — at a seed-stage valuation to be agreed. If the venture achieves exit or significant liquidity, investors participate proportionally. Higher risk and reward than Option A; requires venture founder consent.</p>
+    </div>
+    <div class="return-option">
+      <div class="return-option-label">Option C</div>
+      <h4>Treated as a Donation</h4>
+      <p>Capital is treated as a founding gift to the cooperative — no financial return expected. Investors receive recognition as founding members and a permanent seat in the cooperative's governance story. Simplest legal structure. Only appropriate if investors have explicitly chosen this framing.</p>
+    </div>
+    <div class="return-option">
+      <div class="return-option-label">Option D</div>
+      <h4>Full Basket Participation (Long-Term)</h4>
+      <p>Investor Members hold proportionate positions in the basket fund — a unitized stake in the bundled equity of Parachute, Postage, Habitat, and future ventures. Returns flow as ventures appreciate and RegenHub adds equity from its reserve into the basket at higher valuations. This is the aspirational long-term architecture described in the Vision One-Pager. Requires the full Member Agreement instrument to be legal and operationally defined.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 22px;">The FSC will return a recommendation to the Board no later than <strong>March 10, 2026</strong>. All Investor Members will be notified and invited to respond before ratification.</p>
+</section>
+
+<!-- 05: ECONOMICS -->
+<section>
+  <div class="section-label">05 — Economic Terms</div>
+  <h2>Capital account and distribution mechanics</h2>
+
+  <table class="term-table">
+    <thead><tr><th>Term</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Tax treatment</td><td>Sub K partnership pass-through. Members receive annual <strong>K-1s</strong>. Profits and losses allocated per partnership agreement. No entity-level tax.</td></tr>
+      <tr><td>Patronage formula</td><td>Weighted formula, to be finalized by FSC. Proposed weights: <strong>40% labor · 30% revenue generation · 20% cash contributions · 10% community building.</strong> Investor Members contribute on cash dimension. Final weights are the most consequential economic decision the organizer body will make.</td></tr>
+      <tr><td>Distribution policy</td><td>Board discretion on timing and amount. No guaranteed distribution schedule.</td></tr>
+      <tr><td>Capital account basis</td><td>Per Treasury Reg. 1.704-1(b)(2)(iv). Book capital maintained alongside tax basis capital account.</td></tr>
+      <tr><td>Liquidation provision</td><td>Distributions follow capital accounts on dissolution or winding up. Priority waterfall defined in Bylaws Art. XIV.</td></tr>
+      <tr><td>Revaluation triggers</td><td>On admission, withdrawal, new capital contributions, or periodic Board determination.</td></tr>
+      <tr><td>At-risk / passive rules</td><td>Apply to individual members per IRC. Members should consult their own tax advisors.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 06: MEMBERSHIP RIGHTS -->
+<section>
+  <div class="section-label">06 — Membership Rights &amp; Restrictions</div>
+  <h2>What Investor Members can and cannot do</h2>
+
+  <table class="term-table">
+    <thead><tr><th>Right / Restriction</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>Voting</td><td><strong>Class 4 is non-voting.</strong> Investor Members do not vote on cooperative governance through their Class 4 interest. Patron members (Classes 1–3) hold all voting rights — one member, one vote regardless of capital. A member who holds Class 1 <em>and</em> Class 4 simultaneously (e.g., a founding organizer who also commits investor capital) votes as a Class 1 patron member with full governance rights.</td></tr>
+      <tr><td>Multi-class membership</td><td><strong>Permitted.</strong> An individual or entity may hold membership interests in more than one class. Rights and obligations attach to each class held. Patron rights (voting, governance participation) apply where any patron-class interest is held. Investor Members may elect to also hold a patron-class membership.</td></tr>
+      <tr><td>Information rights</td><td>Annual financial statements and K-1s. Board may authorize additional reporting. Access to Data Room materials.</td></tr>
+      <tr><td>Patronage rights</td><td>Participation in economic returns as defined in Patronage Formula. Proportionate to cash contribution dimension.</td></tr>
+      <tr><td>Transfer</td><td><strong>Non-transferable.</strong> Membership interests may not be sold, assigned, or pledged without Board consent. Death/incapacity handled per Bylaws.</td></tr>
+      <tr><td>Redemption</td><td>Up to <strong>5 years</strong> from written withdrawal notice. Methods: cash, promissory note, or combination at Board discretion. Subject to solvency test — redemption cannot impair the cooperative.</td></tr>
+      <tr><td>Withdrawal notice</td><td>14 calendar days written notice to Secretary.</td></tr>
+      <tr><td>Dispute resolution</td><td>Good faith negotiation → optional mediation → Board hearing → JAMS binding arbitration (Denver). Prevailing party attorney fees.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 07: OPEN ITEMS -->
+<section>
+  <div class="section-label">07 — Open Items</div>
+  <h2>What remains to be resolved</h2>
+
+  <div class="open-items">
+    <div class="open-item">
+      <div>
+        <h4>Return terms — Financial Systems Committee</h4>
+        <p>FSC to evaluate Options A–D and return a recommendation to the Board. Kevin and Jeremy have been briefed on the open structure. Target: recommendation by March 10, 2026.</p>
+      </div>
+      <span class="item-status status-fsc">FSC · March 2</span>
+    </div>
+    <div class="open-item">
+      <div>
+        <h4>Member Agreement — investor instrument</h4>
+        <p>Jeff Pote to draft the Investor Member Agreement defining the basket instrument in binding legal terms: which ventures, equity percentages, capital account treatment, reserve mechanics, and rights as the basket grows.</p>
+      </div>
+      <span class="item-status status-attorney">Attorney · Pending</span>
+    </div>
+    <div class="open-item">
+      <div>
+        <h4>Schedule A — share prices and dues</h4>
+        <p>Board to set initial share prices per class (Bylaws Art. I, Schedule A). Cooperative Member: $250–500. Coworking Member: $100–250. Community Participant: $0–50. Investor Member: TBD.</p>
+      </div>
+      <span class="item-status status-pending">Board · Pending</span>
+    </div>
+    <div class="open-item">
+      <div>
+        <h4>Patronage formula weights</h4>
+        <p>Proposed: 40% labor / 30% revenue / 20% cash / 10% community. FSC to validate, model outcomes, and present to organizer body for ratification. These weights determine how value is allocated across all members — the most consequential economic decision in formation.</p>
+      </div>
+      <span class="item-status status-fsc">FSC · March 10</span>
+    </div>
+    <div class="open-item">
+      <div>
+        <h4>Venture equity gift agreements</h4>
+        <p>Formal documentation of the 10% equity gift from each founding venture (Parachute, Postage, Habitat) to RegenHub. Requires coordination with venture founders and Jeff Pote. Separate instrument per venture.</p>
+      </div>
+      <span class="item-status status-attorney">Attorney · Pending</span>
+    </div>
+    <div class="open-item">
+      <div>
+        <h4>Suite 200 lease — 1515 Walnut</h4>
+        <p>Anchor lease to be negotiated with Lynn. Committed capital ($100k from Kevin and Jeremy) is intended for this use. Path toward rent discount in exchange for shared conviction, then eventual purchase or equity stake.</p>
+      </div>
+      <span class="item-status status-agreed">Shape Agreed</span>
+    </div>
+    <div class="open-item">
+      <div>
+        <h4>Jeremy — full name and contact</h4>
+        <p>Formal agreement requires full legal name, contact, and investor representations. To be collected before closing.</p>
+      </div>
+      <span class="item-status status-pending">Pending</span>
+    </div>
+  </div>
+</section>
+
+<!-- 08: TIMELINE -->
+<section>
+  <div class="section-label">08 — Timeline</div>
+  <h2>Formation to first closing</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">Feb 6, 2026</div>
+      <div class="timeline-body">
+        <h4>Articles Filed</h4>
+        <p>RegenHub, LCA officially formed. Colorado Secretary of State. Public Benefit designation active.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Feb 2026</div>
+      <div class="timeline-body">
+        <h4>Term Sheet Shape Agreed</h4>
+        <p>Capital commitments confirmed with Kevin Owocki ($50k) and Jeremy ($50k). Basket structure, open return terms, and FSC process agreed.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Mar 2, 2026</div>
+      <div class="timeline-body">
+        <h4>Financial Systems Committee Convenes</h4>
+        <p>First meeting of FSC. Aaron G. Neyer confirmed as committee member. Begin patronage parameterization — return options, formula weights, capital account modeling.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">~Mar 10, 2026</div>
+      <div class="timeline-body">
+        <h4>FSC Recommendation to Board</h4>
+        <p>Patronage formula weights and return structure recommendation. Investor Members notified. Comment period before Board ratification.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Mar 2026</div>
+      <div class="timeline-body">
+        <h4>Member Agreements Drafted</h4>
+        <p>Jeff Pote drafts Investor Member Agreement and venture equity gift agreements. Circulated for review.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Q2 2026</div>
+      <div class="timeline-body">
+        <h4>First Closing</h4>
+        <p>Capital accounts opened. Member Agreements signed. Schedule A (share prices) set by Board. 1515 Walnut lease secured. Season 1 officially underway.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09: REPRESENTATIONS -->
+<section>
+  <div class="section-label">09 — Investor Representations</div>
+  <h2>What each Investor Member represents</h2>
+  <p>By subscribing as an Investor Member, each participant represents and warrants the following to RegenHub, LCA:</p>
+
+  <table class="term-table">
+    <thead><tr><th>Representation</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>Sophistication</td><td>Investor is sophisticated with respect to cooperative financial instruments, partnership tax, and early-stage investment risk. Investor is capable of evaluating the merits and risks of this membership.</td></tr>
+      <tr><td>Accreditation</td><td>Investor meets the definition of an <strong>accredited investor</strong> under SEC Rule 501 (Regulation D) — either by net worth (&gt;$1M excluding primary residence) or income (&gt;$200k/yr individual or $300k/yr joint for prior two years).</td></tr>
+      <tr><td>Investment intent</td><td>Investor is acquiring this membership for long-term alignment with the cooperative's mission — not for short-term resale or liquidity. Investor understands the non-transferability of membership interests.</td></tr>
+      <tr><td>Tax awareness</td><td>Investor has been advised to consult independent tax counsel regarding Sub K pass-through treatment, at-risk rules, passive activity rules, and K-1 obligations.</td></tr>
+      <tr><td>Legal compliance</td><td>The execution and delivery of this term sheet and any subsequent agreements does not conflict with any law, regulation, or obligation applicable to Investor.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr/>
+
+<!-- ACKNOWLEDGMENT -->
+<section style="margin-bottom: 32px;">
+  <div class="section-label">Acknowledgment</div>
+  <h2>Nature of this document</h2>
+  <p>This term sheet is <strong>non-binding</strong> except as to confidentiality. It documents the current shape of the transaction — an agreed starting point, not a final agreement. The formal binding documents will be the <strong>Member Agreement</strong> and <strong>Schedule A</strong>, in forms approved by the Board and reviewed by cooperative attorney Jeff Pote (Pote Law Firm, Boulder CO), following the Financial Systems Committee's return parameterization.</p>
+  <p>This document is confidential. It is shared only with the parties named above, their legal counsel, and the founding organizers of RegenHub, LCA.</p>
+</section>
+
+<footer>
+  RegenHub, LCA (DBA Techne) · Boulder, Colorado · Filed February 6, 2026<br/>
+  Colorado Public Benefit Limited Cooperative Association<br/>
+  Cooperative attorney: Jeff Pote, Pote Law Firm · Boulder, CO<br/>
+  Contact: Todd Youngblood · Ventures &amp; Operations Steward<br/>
+  <a href="https://roots-trust-lca.github.io/regenhub/">roots-trust-lca.github.io/regenhub</a>
+  <br/><br/>
+  <em>This document is for informational purposes only and does not constitute an offer to sell or solicitation of an offer to buy any security. Participation in RegenHub is structured as cooperative membership, not a securities offering.</em>
+</footer>
+
+
+<!-- rh-theme-start --><script>
+/* rh-theme: postMessage theme sync */
+(function () {
+  var THEMES = {
+    dark: {
+      '--bg':'#0f0f0f','--surface':'#1a1a1a','--surface2':'#212121',
+      '--border':'#2e2e2e','--border2':'#3a3a3a',
+      '--primary':'#c4956a','--primary-dim':'#8a6545',
+      '--text':'#d9d9d9','--text-bright':'#ece6de',
+      '--text-muted':'#888888','--text-faint':'#555555',
+      '--green':'#8aba8a','--green-bg':'#1a1f1a','--green-border':'#4a6a4a',
+      '--amber':'#d4b08a','--amber-bg':'#1f1a14','--amber-border':'#8a6545',
+      '--blue':'#a0a0c4','--blue-bg':'#1a1a22','--blue-border':'#6a6a8a',
+      '--red':'#c47070','--red-bg':'#1f1414','--red-border':'#6a3a3a'
+    },
+    light: {
+      '--bg':'#f8f5f0','--surface':'#efebe4','--surface2':'#e6e0d8',
+      '--border':'#d4ccc0','--border2':'#c4bab0',
+      '--primary':'#9a6838','--primary-dim':'#c4956a',
+      '--text':'#3a342e','--text-bright':'#1a1410',
+      '--text-muted':'#7a7068','--text-faint':'#b0a898',
+      '--green':'#3a7a3a','--green-bg':'#edf5ed','--green-border':'#4a7a4a',
+      '--amber':'#7a4818','--amber-bg':'#f5ede0','--amber-border':'#9a6838',
+      '--blue':'#3a3a7a','--blue-bg':'#edeff8','--blue-border':'#5a5a8a',
+      '--red':'#9a3a3a','--red-bg':'#f8eded','--red-border':'#8a4a4a'
+    }
+  };
+
+  /* Inject smooth transition style once */
+  var style = document.createElement('style');
+  style.textContent = 'html,body,*{transition:background-color 0.2s,color 0.2s,border-color 0.2s;}';
+  document.head.appendChild(style);
+
+  function applyTheme(mode) {
+    var vars = THEMES[mode] || THEMES.dark;
+    var root = document.documentElement;
+    for (var k in vars) root.style.setProperty(k, vars[k]);
+  }
+
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'rh-theme') applyTheme(e.data.mode);
+  });
+
+  /* Tell parent we are ready — parent will reply with current theme */
+  try { window.parent.postMessage({ type: 'rh-theme-ready' }, '*'); } catch(e) {}
+})();
+</script><!-- rh-theme-end -->
+</body>
+</html>

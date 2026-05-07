@@ -1,0 +1,20 @@
+User-agent: *
+
+# Authenticated sections — do not index
+Disallow: /intranet/
+Disallow: /admin/
+
+# Investor-gated content — do not index
+Disallow: /data-room/
+Disallow: /app/data-room/
+
+# Internal operations app
+Disallow: /app/
+
+# Presentations and internal materials
+Disallow: /lunch-presentation/
+
+# Allow everything else
+Allow: /
+
+Sitemap: https://techne.institute/sitemap.xml

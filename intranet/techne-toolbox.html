@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Techne / The Toolbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface-2: #222222;
+    --border: #333333;
+    --accent: #c4956a;
+    --accent-soft: rgba(196, 149, 106, 0.12);
+    --moss: #7a9478;
+    --moss-soft: rgba(122, 148, 120, 0.08);
+    --text: #e8e4dc;
+    --text-soft: #c8c3b8;
+    --muted: #999999;
+    --serif: 'Libre Baskerville', Georgia, serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 64px 36px 112px;
+  }
+
+  .masthead {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0 12px;
+    margin-bottom: 88px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .masthead .left { text-align: left; }
+  .masthead .center { text-align: center; color: var(--accent); font-weight: 500; }
+  .masthead .right { text-align: right; }
+
+  .hero { margin-bottom: 112px; }
+  .hero .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .hero .kicker::before {
+    content: "";
+    display: block;
+    width: 44px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(50px, 8vw, 100px);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin-bottom: 40px;
+  }
+  h1 .line2 {
+    display: block;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .hero .standfirst {
+    max-width: 680px;
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--text-soft);
+    margin-top: 28px;
+  }
+  .hero .standfirst strong { color: var(--text); font-weight: 700; }
+
+  .hero-meta {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 24px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .hero-meta div .label { color: var(--muted); display: block; margin-bottom: 6px; }
+  .hero-meta div .value { color: var(--text); font-weight: 500; font-size: 12px; letter-spacing: 0.04em; }
+
+  section {
+    margin-bottom: 96px;
+    scroll-margin-top: 40px;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 22px;
+    margin-bottom: 32px;
+  }
+  .section-head .num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    font-weight: 500;
+    flex: 0 0 auto;
+    padding-top: 6px;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(30px, 4.5vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    max-width: 760px;
+  }
+  h2 em { font-style: italic; font-weight: 400; color: var(--accent); }
+
+  h3 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--text);
+    margin: 36px 0 12px;
+  }
+
+  p {
+    margin-bottom: 20px;
+    max-width: 680px;
+    color: var(--text-soft);
+  }
+  p.lead {
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--text);
+    max-width: 720px;
+  }
+  p.lead strong { color: var(--text); font-weight: 700; }
+
+  em { font-style: italic; }
+  strong { font-weight: 700; color: var(--text); }
+
+  .pullquote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 26px;
+    line-height: 1.3;
+    color: var(--text);
+    padding: 40px 0 40px 34px;
+    margin: 56px 0;
+    max-width: 780px;
+    border-left: 2px solid var(--accent);
+  }
+
+  figure {
+    margin: 52px 0;
+    padding: 46px 28px 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  figure::before {
+    content: attr(data-fig);
+    position: absolute;
+    top: -9px;
+    left: 24px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  figcaption {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 26px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border);
+    text-align: center;
+  }
+  svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+
+  .tier-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 10px 0 10px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--accent);
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .tier-label .count {
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+  }
+
+  .tool-card {
+    border: 1px solid var(--border);
+    padding: 40px 36px;
+    margin-bottom: 28px;
+    background: var(--surface);
+    position: relative;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .tool-card:hover {
+    transform: translate(-2px, -2px);
+    border-color: var(--accent);
+  }
+  .tool-card.lens {
+    border-left-width: 3px;
+    border-left-color: var(--moss);
+  }
+  .tool-card.lens:hover { border-color: var(--moss); }
+
+  .tool-card .tool-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 20px;
+    align-items: baseline;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 26px;
+  }
+  .tool-card .tool-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .tool-card.lens .tool-num { color: var(--moss); }
+
+  .tool-card .tool-name {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    line-height: 1;
+  }
+  .tool-card .tool-rea {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: right;
+  }
+  .tool-card .tool-rea .rea-label {
+    color: var(--accent);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .tool-card.lens .tool-rea .rea-label { color: var(--moss); }
+
+  .tool-card .tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.4;
+    color: var(--accent);
+    margin-bottom: 22px;
+    max-width: 640px;
+  }
+  .tool-card.lens .tagline { color: var(--moss); }
+
+  .tool-card .section-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 8px;
+    margin-top: 22px;
+  }
+
+  .tool-card p {
+    margin-bottom: 0;
+    max-width: 720px;
+    color: var(--text-soft);
+  }
+
+  .requires-row {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 20px;
+    padding: 10px 14px;
+    background: var(--moss-soft);
+    border-left: 2px solid var(--moss);
+    display: inline-block;
+  }
+  .requires-row .req-label {
+    color: var(--muted);
+    margin-right: 10px;
+  }
+
+  .closing {
+    margin-top: 104px;
+    padding: 56px 44px;
+    background: var(--surface);
+    color: var(--text);
+    position: relative;
+    border: 1px solid var(--border);
+  }
+  .closing::before,
+  .closing::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+  }
+  .closing::before {
+    top: -1px; left: -1px;
+    border-top: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+  }
+  .closing::after {
+    bottom: -1px; right: -1px;
+    border-bottom: 2px solid var(--accent);
+    border-right: 2px solid var(--accent);
+  }
+  .closing .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 22px;
+  }
+  .closing h2 { color: var(--text); margin-bottom: 26px; }
+  .closing p { color: var(--text-soft); font-size: 17px; max-width: 700px; }
+  .closing .sig {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 36px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+  }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer .living { color: var(--accent); }
+  footer .living::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.25); }
+  }
+
+  @media (max-width: 680px) {
+    .wrap { padding: 48px 22px 80px; }
+    figure { padding: 36px 14px 22px; }
+    .tool-card { padding: 30px 22px; }
+    .tool-card .tool-header { grid-template-columns: 1fr; gap: 8px; }
+    .tool-card .tool-rea { text-align: left; }
+    .closing { padding: 40px 24px; }
+    .pullquote { font-size: 20px; padding: 28px 0 28px 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="left">Techne / RegenHub PB LCA</div>
+    <div class="center">Toolbox &amp; Positioning</div>
+    <div class="right">TCH-TBX-001</div>
+  </div>
+
+  <section class="hero">
+    <div class="kicker">Three foundations. Four lenses. One substrate.</div>
+    <h1>
+      The Toolbox
+      <span class="line2">for organizations<br>that learn.</span>
+    </h1>
+    <p class="standfirst">
+      Techne is an operational grammar for cooperation, built in two tiers.
+      <strong>Three foundations</strong> expose the raw substrate of agents,
+      resources, and events. <strong>Four lenses</strong> sit above them as
+      named capabilities, each drawing on a specific combination of foundations
+      to do something useful in the world. Adopt one. Adopt several. Deploy
+      under your own brand. Grow into the rest of the stack as you need it.
+    </p>
+    <div class="hero-meta">
+      <div><span class="label">Offered by</span><span class="value">RegenHub PB LCA</span></div>
+      <div><span class="label">Substrate</span><span class="value">REA Ontology</span></div>
+      <div><span class="label">Delivery</span><span class="value">Hosted or Self-Host</span></div>
+      <div><span class="label">Status</span><span class="value">v0.3 / Living</span></div>
+    </div>
+  </section>
+
+  <!-- §1 Positioning -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;1</span>
+      <h2>What Techne <em>is</em>, and who it is for.</h2>
+    </div>
+
+    <p class="lead">
+      Techne is infrastructure for organizations that want to run themselves
+      deliberately. Organizations that want to make their decisions traceable,
+      their commitments legible, their learning reusable, and their internal
+      economy visible beyond what shows up on a balance sheet. It was built at
+      RegenHub, a Colorado public benefit cooperative, and it is offered to any
+      organization that recognizes the same problems in its own work.
+    </p>
+
+    <p>
+      The market for this is wider than it first appears. Cooperatives and
+      commons-based organizations are the obvious fit. They have always needed
+      tools that traditional enterprise software could not provide. But the
+      deeper claim is that <strong>commons-based, participatory, iterative
+      practice is not only ethically compelling, it is practically superior</strong>
+      for navigating complexity, which is the condition every modern organization
+      now operates under. Traditional companies running innovation programs,
+      associations managing member engagement, nonprofits coordinating distributed
+      teams, and on-chain networks experimenting with new governance forms all
+      face problems Techne was built to address.
+    </p>
+
+    <p>
+      What distinguishes Techne from a typical SaaS toolkit is the substrate.
+      Every tool speaks the same underlying language, the Resource-Event-Agent
+      ontology specified in our companion document. This is what makes the tools
+      compose rather than merely coexist. When you add a second tool, it does not
+      need to be told what agents exist or what resources are in play. It already
+      knows, because both tools are reading the same event log.
+    </p>
+
+    <div class="pullquote">
+      The tools do not need to be integrated. They were never separated
+      in the first place.
+    </div>
+  </section>
+
+  <!-- §2 The shape -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;2</span>
+      <h2>The shape of <em>the toolbox</em>.</h2>
+    </div>
+
+    <p class="lead">
+      The toolbox has two tiers. The lower tier is three <strong>foundations</strong>
+      that expose the REA substrate directly: Treasury, People, and Agreements.
+      Each can be adopted and used alone. The upper tier is four <strong>lenses</strong>
+      that sit across specific combinations of foundations, each one a named
+      capability an organization can recognize and want: Patronage, Reconciliation,
+      Governance, and Learning. Lenses do not exist separately from their
+      foundations. Adopting a lens activates the foundations it rests on.
+    </p>
+
+    <figure data-fig="FIG. 01">
+      <svg viewBox="0 0 780 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig1title">
+        <title id="fig1title">Three foundations and four lenses arranged over the REA substrate</title>
+
+        <!-- Legend -->
+        <g transform="translate(40, 30)">
+          <rect x="0" y="0" width="14" height="10" fill="#1a1a1a" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="22" y="9" font-family="IBM Plex Mono, monospace" font-size="9" fill="#999999" letter-spacing="0.8">foundation</text>
+          <rect x="110" y="0" width="14" height="10" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="132" y="9" font-family="IBM Plex Mono, monospace" font-size="9" fill="#999999" letter-spacing="0.8">lens</text>
+        </g>
+
+        <!-- Triangle edges (dashed, behind everything) -->
+        <line x1="390" y1="130" x2="620" y2="420" stroke="#333333" stroke-width="1" stroke-dasharray="3 5"/>
+        <line x1="390" y1="130" x2="160" y2="420" stroke="#333333" stroke-width="1" stroke-dasharray="3 5"/>
+        <line x1="180" y1="430" x2="600" y2="430" stroke="#333333" stroke-width="1" stroke-dasharray="3 5"/>
+
+        <!-- Learning (center cross-cutting lens) -->
+        <g>
+          <circle cx="390" cy="300" r="56" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5" stroke-dasharray="2 3"/>
+          <text x="390" y="288" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478" letter-spacing="1.5">LENS 04</text>
+          <text x="390" y="306" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Learning</text>
+          <text x="390" y="322" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="9" font-style="italic" fill="#999999">cross-cutting</text>
+        </g>
+
+        <!-- Foundation: Treasury (top) -->
+        <g>
+          <rect x="305" y="60" width="170" height="72" fill="#1a1a1a" stroke="#c4956a" stroke-width="2"/>
+          <text x="317" y="80" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.4">FOUNDATION 01</text>
+          <text x="390" y="102" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="19" fill="#e8e4dc">Treasury</text>
+          <text x="390" y="118" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">what flows, what holds</text>
+        </g>
+
+        <!-- Foundation: People (bottom right) -->
+        <g>
+          <rect x="540" y="400" width="160" height="72" fill="#1a1a1a" stroke="#c4956a" stroke-width="2"/>
+          <text x="552" y="420" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.4">FOUNDATION 02</text>
+          <text x="620" y="442" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="19" fill="#e8e4dc">People</text>
+          <text x="620" y="458" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">who is in</text>
+        </g>
+
+        <!-- Foundation: Agreements (bottom left) -->
+        <g>
+          <rect x="80" y="400" width="160" height="72" fill="#1a1a1a" stroke="#c4956a" stroke-width="2"/>
+          <text x="92" y="420" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.4">FOUNDATION 03</text>
+          <text x="160" y="442" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="19" fill="#e8e4dc">Agreements</text>
+          <text x="160" y="458" text-anchor="middle" font-family="Libre Baskerville, serif" font-size="10" font-style="italic" fill="#999999">what is promised</text>
+        </g>
+
+        <!-- Lens: Patronage (right edge) -->
+        <g>
+          <rect x="455" y="215" width="140" height="52" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="465" y="234" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478" letter-spacing="1.2">LENS 01</text>
+          <text x="525" y="255" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Patronage</text>
+        </g>
+
+        <!-- Lens: Reconciliation (left edge) -->
+        <g>
+          <rect x="185" y="215" width="170" height="52" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="195" y="234" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478" letter-spacing="1.2">LENS 02</text>
+          <text x="270" y="255" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Reconciliation</text>
+        </g>
+
+        <!-- Lens: Governance (bottom edge) -->
+        <g>
+          <rect x="320" y="495" width="140" height="52" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="330" y="514" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478" letter-spacing="1.2">LENS 03</text>
+          <text x="390" y="535" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Governance</text>
+        </g>
+      </svg>
+      <figcaption>Fig. 01 &nbsp;&middot;&nbsp; Foundations at the vertices, edge-lenses along the sides, Learning at the center</figcaption>
+    </figure>
+
+    <p>
+      Three lenses sit along the edges of the triangle, each composed from the
+      two foundations it touches. Patronage lives between Treasury and People,
+      because it needs to know both what flowed and who was involved. Reconciliation
+      lives between Treasury and Agreements, because it tracks commitment against
+      fulfillment. Governance lives between People and Agreements, because it asks
+      who is empowered to bind us and what they have bound us to. Learning sits at
+      the center because it draws on all three foundations at once, turning the
+      whole event log into an institutional memory that other organizations can
+      later benefit from.
+    </p>
+  </section>
+
+  <!-- §3 Foundations -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;3</span>
+      <h2>The foundations, <em>specified</em>.</h2>
+    </div>
+
+    <div class="tier-label">
+      <span>Tier One &middot; Foundations</span>
+      <span class="count">Three primitives over the REA substrate</span>
+    </div>
+
+    <p style="margin-bottom: 36px;">
+      Each foundation exposes one face of the substrate directly. Each has
+      standalone value. Each becomes the condition for one or more lenses when
+      paired with the others.
+    </p>
+
+    <!-- FOUNDATION 01: TREASURY -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-num">FOUNDATION 01</div>
+        <div class="tool-name">Treasury</div>
+        <div class="tool-rea"><span class="rea-label">REA</span>Resources<br>Stockflow Events</div>
+      </div>
+      <p class="tagline">"Multi-capital accounting for the whole economy of your organization."</p>
+
+      <div class="section-label">Standalone value</div>
+      <p>
+        Track any resource whose flow matters: cash, labor hours, credits, tokens,
+        space-hours, carbon, care work, anything. Record events with signed
+        quantities. Balances are derived from the immutable event log. Generate
+        conventional double-entry reports for accountants, tax authorities, and
+        grant-makers, while keeping the richer underlying reality visible to
+        members who need it. Purpose-built to support partnership tax regimes like
+        Subchapter K, including 704(b) book capital accounts alongside the tax view.
+      </p>
+
+      <div class="section-label">First adopted by</div>
+      <p>
+        Organizations that recognize value in things beyond cash: cooperatives,
+        mutual aid networks, community land trusts, nonprofits with in-kind
+        economies. Also traditional companies wanting better visibility into
+        innovation credits, employee contribution, or ESG metrics, things their
+        general ledger cannot easily represent but their people care about.
+      </p>
+    </div>
+
+    <!-- FOUNDATION 02: PEOPLE -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-num">FOUNDATION 02</div>
+        <div class="tool-name">People</div>
+        <div class="tool-rea"><span class="rea-label">REA</span>Agents<br>Classes &middot; Credentials</div>
+      </div>
+      <p class="tagline">"Who is in, how they show up, and what that means over time."</p>
+
+      <div class="section-label">Standalone value</div>
+      <p>
+        A complete registry of the people, groups, and organizations participating
+        in your organization. Define classes with distinct rights and obligations.
+        Onboard new agents through defined flows. Issue and verify credentials.
+        Track tenure, status, and contribution history. Give every member a view
+        of their own standing they can query without steward mediation. Works on
+        its own as a modern member registry with first-class support for nested
+        organizations and non-human stewards.
+      </p>
+
+      <div class="section-label">First adopted by</div>
+      <p>
+        Any organization with a nontrivial membership structure: cooperatives,
+        associations, member-owned businesses, professional networks, mutual aid
+        groups, unions, on-chain networks. Also traditional companies that want
+        to model their workforce and partner network with more precision than
+        an HRIS provides, especially for work that crosses legal entity boundaries.
+      </p>
+    </div>
+
+    <!-- FOUNDATION 03: AGREEMENTS -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-num">FOUNDATION 03</div>
+        <div class="tool-name">Agreements</div>
+        <div class="tool-rea"><span class="rea-label">REA</span>Commitments<br>Contracts &middot; Events</div>
+      </div>
+      <p class="tagline">"The space between a handshake and a legal contract, made legible."</p>
+
+      <div class="section-label">Standalone value</div>
+      <p>
+        Draft, negotiate, and track mutual commitments. The promises that make up
+        most organizational life but that rarely warrant formal legal contracts.
+        See what is outstanding, what has been fulfilled, what has been revised,
+        and who agreed to what. Bundle related commitments into contracts. Route
+        disputed agreements into resolution processes without erasing the original
+        record. Works alone as a lightweight alternative to contract management
+        and institutional memory at once.
+      </p>
+
+      <div class="section-label">First adopted by</div>
+      <p>
+        Organizations that run on relationships: cooperatives, partner networks,
+        service exchanges, working groups, professional guilds, restorative
+        justice practices. Also innovation teams and project offices at traditional
+        companies who need to track cross-functional commitments without
+        generating legal overhead.
+      </p>
+    </div>
+  </section>
+
+  <!-- §4 Lenses -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;4</span>
+      <h2>The lenses, <em>specified</em>.</h2>
+    </div>
+
+    <div class="tier-label">
+      <span>Tier Two &middot; Lenses</span>
+      <span class="count">Four named capabilities composed from foundations</span>
+    </div>
+
+    <p style="margin-bottom: 36px;">
+      A lens is a named capability that presupposes a specific combination of
+      foundations. Adopting a lens activates its foundations automatically. You
+      never have to install them separately. This is the practical consequence of
+      building on one substrate: composition is free.
+    </p>
+
+    <!-- LENS 01: PATRONAGE -->
+    <div class="tool-card lens">
+      <div class="tool-header">
+        <div class="tool-num">LENS 01</div>
+        <div class="tool-name">Patronage</div>
+        <div class="tool-rea"><span class="rea-label">EDGE</span>Treasury<br>&times; People</div>
+      </div>
+      <p class="tagline">"Who contributed what, and what came back."</p>
+      <div class="requires-row"><span class="req-label">Requires</span>Treasury + People</div>
+
+      <div class="section-label">What the lens does</div>
+      <p>
+        Makes contribution legible at the level of the individual member. Every
+        Treasury event is already tagged with its agents, so Patronage can
+        compute, in real time, what each member has given and received across
+        every resource type the organization tracks. This is what turns surplus
+        allocation from an argument into a calculation, and what makes invisible
+        labor visible. For cooperatives that have elected Subchapter K partnership
+        taxation, Patronage is also where 704(b) book capital accounts live,
+        ensuring that the book side of the ledger can satisfy the substantial
+        economic effect test the allocations have to meet.
+      </p>
+
+      <div class="section-label">First adopted by</div>
+      <p>
+        Cooperatives with partnership tax elections, mutual aid networks, commons
+        stewardship groups, any organization that wants to distribute returns
+        based on contribution rather than ownership. Also grant-funded
+        organizations that need to show funders how contributed labor was tracked
+        and valued.
+      </p>
+    </div>
+
+    <!-- LENS 02: RECONCILIATION -->
+    <div class="tool-card lens">
+      <div class="tool-header">
+        <div class="tool-num">LENS 02</div>
+        <div class="tool-name">Reconciliation</div>
+        <div class="tool-rea"><span class="rea-label">EDGE</span>Treasury<br>&times; Agreements</div>
+      </div>
+      <p class="tagline">"What we said we would do, against what actually moved."</p>
+      <div class="requires-row"><span class="req-label">Requires</span>Treasury + Agreements</div>
+
+      <div class="section-label">What the lens does</div>
+      <p>
+        Closes the loop between promise and delivery. Every Agreement lives next
+        to a Treasury event log that can tell you, at any moment, which
+        commitments have been fulfilled, which are pending, and which have
+        quietly drifted past their expected close. Reconciliation also enforces
+        policy constraints at the ledger layer: a resource movement that would
+        violate an approved spending policy does not post silently, it gets
+        flagged for resolution. Shortfalls surface before they become disputes.
+      </p>
+
+      <div class="section-label">First adopted by</div>
+      <p>
+        Partnership networks, grant-funded organizations, fiscal sponsors, any
+        organization whose commitments do not always turn into actions. Also
+        project offices at traditional companies that need to track
+        cross-functional commitments against actual delivery without generating
+        legal or procurement overhead.
+      </p>
+    </div>
+
+    <!-- LENS 03: GOVERNANCE -->
+    <div class="tool-card lens">
+      <div class="tool-header">
+        <div class="tool-num">LENS 03</div>
+        <div class="tool-name">Governance</div>
+        <div class="tool-rea"><span class="rea-label">EDGE</span>People<br>&times; Agreements</div>
+      </div>
+      <p class="tagline">"How we decide together, and how we remember what we decided."</p>
+      <div class="requires-row"><span class="req-label">Requires</span>People + Agreements</div>
+
+      <div class="section-label">What the lens does</div>
+      <p>
+        Turns policy-making and decision processes into first-class, versioned,
+        auditable objects. Propose a policy. Run a structured decision process
+        (consent, consensus, majority, sociocratic rounds, or whatever your
+        organization actually uses). Vote with weights derived from agent class.
+        Preserve the full history of who proposed what, who weighed in, and what
+        was decided, with effective dates and version lineage. When disagreement
+        rises, route it into an appropriate resolution path without erasing the
+        original record. This is the lens that answers the question every mature
+        organization eventually asks itself: "wait, why did we decide that?"
+      </p>
+
+      <div class="section-label">First adopted by</div>
+      <p>
+        Cooperatives, sociocracies, member-owned businesses, on-chain networks,
+        nonprofits with active boards. Also traditional companies adopting
+        distributed decision-making, Teal practices, or governance innovations
+        they want to track rigorously rather than reconstruct from memory.
+      </p>
+    </div>
+
+    <!-- LENS 04: LEARNING -->
+    <div class="tool-card lens">
+      <div class="tool-header">
+        <div class="tool-num">LENS 04</div>
+        <div class="tool-name">Learning</div>
+        <div class="tool-rea"><span class="rea-label">CENTER</span>All three<br>foundations</div>
+      </div>
+      <p class="tagline">"What you figured out, captured before it evaporates."</p>
+      <div class="requires-row"><span class="req-label">Requires</span>Any foundation (benefits from all)</div>
+
+      <div class="section-label">What the lens does</div>
+      <p>
+        Makes organizational knowledge durable and reusable. Document what worked,
+        what did not, and why. Link learning artifacts directly to the events,
+        commitments, and decisions they came from, so that future members can
+        trace a lesson back to its source and forward to its consequences. Export
+        anonymized pattern libraries so that one organization's hard-won insight
+        can become another's starting point. This is also where public benefit
+        reporting lives for organizations that owe an account of their work to
+        funders, members, or the public, because a learning artifact linked to
+        its evidence is exactly the kind of report those audiences need.
+      </p>
+
+      <div class="section-label">First adopted by</div>
+      <p>
+        Research collectives, design studios, cooperatives committed to teaching
+        other cooperatives, professional communities, and any team whose
+        institutional memory walks out the door when someone leaves. Also
+        public-benefit organizations that need to show their work to funders
+        and the communities they serve.
+      </p>
+    </div>
+  </section>
+
+  <!-- §5 How to enter -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;5</span>
+      <h2>How organizations <em>enter the toolbox</em>.</h2>
+    </div>
+
+    <p>
+      Because lenses activate their foundations, an organization can enter the
+      toolbox at either tier. Starting with a foundation gives you the most
+      flexibility and the smallest upfront commitment. Starting with a lens gives
+      you a named capability the same day you install, with its foundations
+      quietly turning on underneath. Below are three common entry patterns. None
+      is prescriptive.
+    </p>
+
+    <figure data-fig="FIG. 02">
+      <svg viewBox="0 0 780 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig2title">
+        <title id="fig2title">Three common adoption pathways through the toolbox</title>
+
+        <defs>
+          <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#c4956a"/>
+          </marker>
+        </defs>
+
+        <!-- Path A: Cooperative -->
+        <text x="30" y="40" font-family="IBM Plex Mono, monospace" font-size="10" fill="#c4956a" letter-spacing="1.5" font-weight="600">PATH A &middot; COOPERATIVE</text>
+        <g transform="translate(30, 56)">
+          <rect x="0" y="0" width="210" height="50" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="105" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478">START: LENS</text>
+          <text x="105" y="38" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Patronage</text>
+          <line x1="210" y1="25" x2="250" y2="25" stroke="#c4956a" stroke-width="1" marker-end="url(#a1)"/>
+          <rect x="250" y="0" width="210" height="50" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="355" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478">ADD: LENS</text>
+          <text x="355" y="38" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Governance</text>
+          <line x1="460" y1="25" x2="500" y2="25" stroke="#c4956a" stroke-width="1" marker-end="url(#a1)"/>
+          <rect x="500" y="0" width="230" height="50" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="615" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478">ADD: LENSES</text>
+          <text x="615" y="38" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="13" fill="#e8e4dc">Reconciliation + Learning</text>
+          <text x="0" y="76" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#c8c3b8">Patronage activates Treasury + People on day one. Governance brings Agreements. Learning closes the loop.</text>
+        </g>
+
+        <!-- Path B: Traditional corp -->
+        <text x="30" y="200" font-family="IBM Plex Mono, monospace" font-size="10" fill="#c4956a" letter-spacing="1.5" font-weight="600">PATH B &middot; TRADITIONAL CORPORATION</text>
+        <g transform="translate(30, 216)">
+          <rect x="0" y="0" width="210" height="50" fill="#1a1a1a" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="105" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#c4956a">START: FOUNDATION</text>
+          <text x="105" y="38" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Treasury</text>
+          <line x1="210" y1="25" x2="250" y2="25" stroke="#c4956a" stroke-width="1" marker-end="url(#a1)"/>
+          <rect x="250" y="0" width="210" height="50" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="355" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478">ADD: LENS</text>
+          <text x="355" y="38" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Reconciliation</text>
+          <line x1="460" y1="25" x2="500" y2="25" stroke="#c4956a" stroke-width="1" marker-end="url(#a1)"/>
+          <rect x="500" y="0" width="230" height="50" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="615" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478">ADD: LENSES</text>
+          <text x="615" y="38" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="13" fill="#e8e4dc">Governance + Learning</text>
+          <text x="0" y="76" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#c8c3b8">Start with multi-capital accounting. Add Reconciliation to bring Agreements in. Let governance follow.</text>
+        </g>
+
+        <!-- Path C: On-chain network -->
+        <text x="30" y="340" font-family="IBM Plex Mono, monospace" font-size="10" fill="#c4956a" letter-spacing="1.5" font-weight="600">PATH C &middot; ON-CHAIN NETWORK</text>
+        <g transform="translate(30, 356)">
+          <rect x="0" y="0" width="210" height="50" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="105" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478">START: LENS</text>
+          <text x="105" y="38" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Governance</text>
+          <line x1="210" y1="25" x2="250" y2="25" stroke="#c4956a" stroke-width="1" marker-end="url(#a1)"/>
+          <rect x="250" y="0" width="210" height="50" fill="#1a1a1a" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="355" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#c4956a">ADD: FOUNDATION</text>
+          <text x="355" y="38" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Treasury</text>
+          <line x1="460" y1="25" x2="500" y2="25" stroke="#c4956a" stroke-width="1" marker-end="url(#a1)"/>
+          <rect x="500" y="0" width="230" height="50" fill="#0f0f0f" stroke="#7a9478" stroke-width="1.5"/>
+          <text x="615" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#7a9478">ADD: LENSES</text>
+          <text x="615" y="38" text-anchor="middle" font-family="Libre Baskerville, serif" font-weight="700" font-size="13" fill="#e8e4dc">Patronage + Reconciliation</text>
+          <text x="0" y="76" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#c8c3b8">Governance activates People + Agreements together. Add Treasury and the other two lenses follow immediately.</text>
+        </g>
+      </svg>
+      <figcaption>Fig. 02 &nbsp;&middot;&nbsp; Three illustrative adoption paths, crossing between tiers as they go</figcaption>
+    </figure>
+
+    <p>
+      The important property is that <strong>whatever you adopt first starts paying
+      off immediately</strong>. A foundation gives you raw capability. A lens gives
+      you a named capability with its foundations quietly activated underneath. And
+      whatever you add next compounds automatically, because the substrate was there
+      all along. No organization has to commit to the full stack on day one. Most
+      should not.
+    </p>
+  </section>
+
+  <!-- §6 Delivery -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;6</span>
+      <h2>How Techne is <em>delivered</em>.</h2>
+    </div>
+
+    <p class="lead">
+      Techne is offered in two forms. Client organizations can run the hosted
+      version, where RegenHub operates the infrastructure and clients configure
+      the tools for their own context under their own brand. Or they can self-host
+      from open-source reference implementations of the core substrate, with paid
+      offerings for managed operation, upgrades, and direct support from the
+      people who also build it.
+    </p>
+
+    <figure data-fig="FIG. 03">
+      <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig3title">
+        <title id="fig3title">The four layers of the delivery stack</title>
+
+        <g>
+          <rect x="60" y="40" width="640" height="60" fill="#c4956a" stroke="#333333" stroke-width="1.5"/>
+          <text x="80" y="64" font-family="IBM Plex Mono, monospace" font-size="9" fill="#0f0f0f" letter-spacing="1.5" font-weight="600">LAYER 1 &middot; CLIENT SURFACE</text>
+          <text x="80" y="88" font-family="Libre Baskerville, serif" font-weight="700" font-size="17" fill="#0f0f0f">Your brand, your voice, your members</text>
+        </g>
+
+        <g>
+          <rect x="60" y="120" width="640" height="80" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+          <text x="80" y="144" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5" font-weight="600">LAYER 2 &middot; CONFIGURED FOUNDATIONS AND LENSES</text>
+          <text x="80" y="168" font-family="Libre Baskerville, serif" font-weight="700" font-size="16" fill="#e8e4dc">Only the tools you chose, shaped to your policies</text>
+          <text x="80" y="188" font-family="Libre Baskerville, serif" font-size="11" font-style="italic" fill="#999999">any foundation, any lens, upgradeable without migration</text>
+        </g>
+
+        <g>
+          <rect x="60" y="220" width="640" height="60" fill="#222222" stroke="#333333" stroke-width="1.5"/>
+          <text x="80" y="244" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5" font-weight="600">LAYER 3 &middot; REA SUBSTRATE</text>
+          <text x="80" y="268" font-family="Libre Baskerville, serif" font-weight="700" font-size="16" fill="#e8e4dc">Agents &middot; Resources &middot; Events &middot; Commitments &middot; Policies</text>
+        </g>
+
+        <g>
+          <rect x="60" y="300" width="640" height="44" fill="#0f0f0f" stroke="#c4956a" stroke-width="1.5"/>
+          <text x="80" y="320" font-family="IBM Plex Mono, monospace" font-size="9" fill="#c4956a" letter-spacing="1.5" font-weight="600">LAYER 4 &middot; INFRASTRUCTURE</text>
+          <text x="80" y="336" font-family="Libre Baskerville, serif" font-weight="700" font-size="14" fill="#e8e4dc">Supabase, Glide, Make.com &middot; operated or self-hosted</text>
+        </g>
+      </svg>
+      <figcaption>Fig. 03 &nbsp;&middot;&nbsp; The four layers of the delivery stack</figcaption>
+    </figure>
+
+    <p>
+      The hosted arrangement gives a client organization infrastructure without
+      operating it, cooperative methodology without needing a cooperative
+      background to implement it, and real modularity without the usual
+      integration tax. It also means that when RegenHub improves a tool, because
+      we are running it ourselves and encountering the same edge cases, every
+      hosted client benefits from that improvement on the same schedule. The
+      self-hosted path preserves the option for organizations that need full
+      sovereignty over their data or infrastructure, without breaking the shared
+      substrate.
+    </p>
+  </section>
+
+  <!-- §7 Through-line -->
+  <section>
+    <div class="section-head">
+      <span class="num">&sect;7</span>
+      <h2>The through-line.</h2>
+    </div>
+
+    <p>
+      Techne is cooperative wisdom in a form that any organization can use. That
+      phrase deserves to be unpacked.
+    </p>
+
+    <p>
+      <strong>Cooperative wisdom</strong>, because the hardest organizational
+      problems (how to make distributed decisions legibly, how to track value
+      that is not money, how to handle conflict without erasing it, how to
+      compound learning across time) are problems the cooperative tradition has
+      been working on for over a century. Not always well, but persistently, and
+      with a clarity of intention that most enterprise software has never needed
+      to develop.
+    </p>
+
+    <p>
+      <strong>Any organization</strong>, because those problems are no longer
+      specific to cooperatives. A traditional corporation running distributed
+      innovation programs, a nonprofit coordinating across chapters, an on-chain
+      network trying to operationalize its charter: all of them are confronting
+      questions the cooperative movement has been wrestling with for generations.
+      Techne is how we make the answers available without requiring anyone to
+      adopt the legal form.
+    </p>
+
+    <p>
+      And <strong>in a form that any organization can use</strong> matters because
+      the answers are not useful as theory. They are only useful as tools you can
+      pick up, install, and start running. That is what the toolbox is for, and
+      that is why it has two tiers: foundations for those who want to build their
+      own way up, lenses for those who know what capability they need and want it
+      the day they install.
+    </p>
+  </section>
+
+  <!-- Closing -->
+  <div class="closing">
+    <div class="kicker">Invitation</div>
+    <h2>Start with <em>one</em>. Add more when you see what it is like.</h2>
+    <p>
+      We built Techne to run RegenHub, and we are offering it to other
+      organizations because the problems we solved are not ours alone. They
+      belong to anyone trying to build something deliberate, participatory, and
+      legible to its own members. The toolbox is open. Pick a foundation, pick
+      a lens, or pick the one thing that sounds most useful to you right now.
+      Each tool is already valuable by itself. The next one compounds. By the
+      time you have three or four of them running, you are on an operational
+      grammar designed from the ground up for organizations that learn.
+    </p>
+    <div class="sig">
+      RegenHub &middot; Public Benefit Limited Cooperative Association &middot; Boulder, Colorado
+    </div>
+  </div>
+
+  <footer>
+    <div>TCH-TBX-001 &middot; v0.3</div>
+    <div class="living">Living &middot; Open for amendment</div>
+    <div>RegenHub PB LCA</div>
+  </footer>
+
+</div>
+</body>
+</html>

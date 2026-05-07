@@ -1,0 +1,474 @@
+import { useState, useEffect } from 'react'
+import { useAuth } from '../hooks/useAuth.jsx'
+import { supabase } from '../lib/supabase.js'
+
+// ─── Mini-panel data fetchers ─────────────────────────────────────────────────
+
+function useDashboardMetrics(participantId) {
+  const [data, setData] = useState({})
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!participantId) return
+
+    async function fetchAll() {
+      const [capitalRes, laborRes, projectsRes, proposalsRes, ledgerRes] = await Promise.all([
+        supabase
+          .from('capital_accounts')
+          .select('book_balance, last_updated')
+          .eq('participant_id', participantId)
+          .maybeSingle(),
+        supabase
+          .from('labor_contributions')
+          .select('hours, fmv_total')
+          .eq('participant_id', participantId),
+        supabase
+          .from('projects')
+          .select('id, status')
+          .eq('status', 'active'),
+        supabase
+          .from('proposals')
+          .select('id, status')
+          .eq('status', 'open'),
+        supabase
+          .from('rea_ledger')
+          .select('resource_type, balance, state_merkle_root')
+          .order('resource_type'),
+      ])
+
+      const totalLabor = (laborRes.data || []).reduce((s, r) => s + Number(r.hours || 0), 0)
+      const totalFmv   = (laborRes.data || []).reduce((s, r) => s + Number(r.fmv_total || 0), 0)
+
+      // Get the most recent merkle root (from first rea_ledger entry that has one)
+      const rootEntry = (ledgerRes.data || []).find(r => r.state_merkle_root)
+
+      setData({
+        capital:     capitalRes.data || null,
+        laborHours:  totalLabor,
+        laborFmv:    totalFmv,
+        activeProjects: (projectsRes.data || []).length,
+        openProposals:  (proposalsRes.data || []).length,
+        merkleRoot:  rootEntry?.state_merkle_root || null,
+        ledger:      ledgerRes.data || [],
+      })
+      setLoading(false)
+    }
+
+    fetchAll()
+  }, [participantId])
+
+  return { data, loading }
+}
+
+// ─── Metric card component ────────────────────────────────────────────────────
+
+function MetricCard({ title, icon, href, color, children, badge }) {
+  return (
+    <a
+      href={href}
+      style={{
+        display: 'block',
+        textDecoration: 'none',
+        background: 'rgba(255,255,255,0.025)',
+        border: '1px solid #1a1a2e',
+        borderRadius: '10px',
+        padding: '1.25rem',
+        position: 'relative',
+        overflow: 'hidden',
+        transition: 'border-color 0.15s, background 0.15s',
+        cursor: 'pointer',
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.borderColor = color || 'var(--gold)'
+        e.currentTarget.style.background = 'var(--hover-light)'
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.borderColor = 'var(--hud-border)'
+        e.currentTarget.style.background = 'rgba(255,255,255,0.025)'
+      }}
+    >
+      {/* Color accent line */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        height: '2px',
+        background: `linear-gradient(90deg, ${color || 'var(--gold)'} 0%, transparent 100%)`,
+        opacity: 0.7,
+      }} />
+
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
+        <span style={{
+          fontSize: '0.68rem',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          color: 'var(--text-nav)',
+        }}>{title}</span>
+        {icon && icon.startsWith('M') ? (
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+            style={{ opacity: 0.45, color: color || 'var(--gold)' }}>
+            <path d={icon} />
+          </svg>
+        ) : (
+          <span style={{ fontSize: '1rem', opacity: 0.5 }}>{icon}</span>
+        )}
+      </div>
+
+      {/* Content */}
+      {children}
+
+      {badge && (
+        <div style={{
+          position: 'absolute', bottom: '0.75rem', right: '0.75rem',
+          fontSize: '0.62rem', color: color || 'var(--gold)',
+          background: `${color || 'var(--gold)'}18`,
+          padding: '2px 6px', borderRadius: '3px',
+          textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700,
+        }}>{badge}</div>
+      )}
+    </a>
+  )
+}
+
+function MetricValue({ value, sub, mono }) {
+  return (
+    <div>
+      <div style={{
+        fontSize: '1.6rem',
+        fontWeight: 700,
+        letterSpacing: '-0.03em',
+        color: 'var(--text-primary)',
+        fontFamily: mono ? "'JetBrains Mono', 'Fira Code', Consolas, monospace" : 'inherit',
+        lineHeight: 1.1,
+      }}>{value}</div>
+      {sub && (
+        <div style={{
+          fontSize: '0.75rem',
+          color: 'var(--text-nav)',
+          marginTop: '0.3rem',
+          lineHeight: 1.4,
+        }}>{sub}</div>
+      )}
+    </div>
+  )
+}
+
+function MerkleIndicator({ root }) {
+  if (!root) return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+      <span style={{ color: 'var(--gold)', fontSize: '0.7rem' }}>◎ No root</span>
+    </div>
+  )
+  return (
+    <div>
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.35rem',
+      }}>
+        <span style={{ color: 'var(--status-ok)', fontSize: '0.72rem', fontWeight: 700 }}>✓ Verifiable</span>
+      </div>
+      <div style={{
+        fontFamily: "'JetBrains Mono', 'Fira Code', Consolas, monospace",
+        fontSize: '0.68rem',
+        color: 'var(--text-nav)',
+        letterSpacing: '0.02em',
+        wordBreak: 'break-all',
+      }}>
+        {root.slice(0, 20)}…{root.slice(-8)}
+      </div>
+    </div>
+  )
+}
+
+// ─── Main Dashboard ───────────────────────────────────────────────────────────
+
+export default function Home() {
+  const { participant, isSteward } = useAuth()
+  const { data, loading } = useDashboardMetrics(participant?.id)
+
+  const fmt = (n) =>
+    Number(n || 0).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+  const fmtHrs = (n) =>
+    Number(n || 0).toFixed(1) + ' hrs'
+
+  const membershipLabel = {
+    1: 'Class 1 · Labor',
+    2: 'Class 2 · Patron',
+    3: 'Class 3 · Community',
+    4: 'Class 4 · Investor',
+  }
+
+  return (
+    <div style={styles.page}>
+      {/* Panel header */}
+      <div style={styles.panelHeader}>
+        <div>
+          <h1 style={styles.title}>
+            {participant?.name ? `${participant.name.split(' ')[0]}` : 'Dashboard'}
+          </h1>
+          <p style={styles.subtitle}>
+            {participant?.membership_class
+              ? membershipLabel[participant.membership_class]
+              : 'Cooperative member'}
+            {' · '}
+            <span style={{ color: 'var(--text-nav)' }}>techne.institute</span>
+          </p>
+        </div>
+        <div style={styles.headerMeta}>
+          <span style={styles.onlineDot} />
+          <span style={styles.onlineLabel}>Live</span>
+        </div>
+      </div>
+
+      {/* Metric grid */}
+      {loading ? (
+        <div style={styles.loadingGrid}>
+          {[...Array(6)].map((_, i) => (
+            <div key={i} style={styles.skeletonCard} />
+          ))}
+        </div>
+      ) : (
+        <div style={styles.grid}>
+
+          {/* Capital Account */}
+          <MetricCard
+            title="Capital Account"
+            icon="◉"
+            href="/intranet/account/"
+            color="var(--gold)"
+          >
+            <MetricValue
+              value={data.capital ? fmt(data.capital.book_balance) : '—'}
+              sub={data.capital?.last_updated
+                ? `Last updated ${new Date(data.capital.last_updated).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+                : 'No account data'}
+              mono
+            />
+          </MetricCard>
+
+          {/* Labor */}
+          <MetricCard
+            title="Labor Contributions"
+            icon="⏱"
+            href="/intranet/labor/"
+            color="var(--status-info)"
+          >
+            <MetricValue
+              value={fmtHrs(data.laborHours)}
+              sub={data.laborFmv > 0 ? `FMV: ${fmt(data.laborFmv)}` : 'Log hours to track FMV'}
+            />
+          </MetricCard>
+
+          {/* Projects */}
+          <MetricCard
+            title="Active Projects"
+            icon="◇"
+            href="/intranet/projects/"
+            color="var(--gold)"
+          >
+            <MetricValue
+              value={String(data.activeProjects ?? 0)}
+              sub="Currently running"
+            />
+          </MetricCard>
+
+          {/* Governance */}
+          <MetricCard
+            title="Governance"
+            icon="⊕"
+            href="/intranet/governance/"
+            color={data.openProposals > 0 ? 'var(--gold)' : 'var(--status-ok)'}
+            badge={data.openProposals > 0 ? `${data.openProposals} open` : null}
+          >
+            <MetricValue
+              value={String(data.openProposals ?? 0)}
+              sub={data.openProposals > 0 ? 'Proposals awaiting votes' : 'No pending proposals'}
+            />
+          </MetricCard>
+
+          {/* REA Ledger state */}
+          <MetricCard
+            title="State Verifier"
+            icon="◈"
+            href="/intranet/verify/"
+            color="var(--status-ok)"
+          >
+            <MerkleIndicator root={data.merkleRoot} />
+          </MetricCard>
+
+          {/* Cloud */}
+          <MetricCard
+            title="Cloud Micro-Grid"
+            icon="⬡"
+            href="/intranet/cloud/"
+            color="var(--status-info)"
+          >
+            <MetricValue
+              value="R13"
+              sub="Solar compute · 3 scenarios"
+            />
+          </MetricCard>
+
+          {/* Overview */}
+          <MetricCard
+            title="Overview"
+            icon="○"
+            href="/intranet/ecosystem/"
+            color="var(--status-ok)"
+          >
+            <MetricValue
+              value="Formation"
+              sub="Treasury · Governance · Metrics"
+            />
+          </MetricCard>
+
+          {/* REA Journal */}
+          <MetricCard
+            title="REA Journal"
+            icon="≡"
+            href="/intranet/journal/"
+            color="var(--text-accent)"
+          >
+            <MetricValue
+              value="Append-only"
+              sub="Economic event log"
+            />
+          </MetricCard>
+
+          {/* REA Ledger */}
+          <MetricCard
+            title="REA Ledger"
+            icon="⊞"
+            href="/intranet/ledger/"
+            color="var(--text-nav)"
+          >
+            <MetricValue
+              value={String(data.ledger?.length ?? 0)}
+              sub="Account balances"
+            />
+          </MetricCard>
+
+          {/* Patronage */}
+          <MetricCard
+            title="Patronage"
+            icon="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"
+            href="/intranet/patronage/"
+            color="var(--gold)"
+          >
+            <MetricValue
+              value="40/30/20/10"
+              sub="Labor · Revenue · Cash · Community"
+            />
+          </MetricCard>
+
+          {/* Treasury — steward only */}
+          {isSteward && (
+            <MetricCard
+              title="Treasury"
+              icon="⌖"
+              href="/intranet/treasury/"
+              color="var(--gold)"
+              badge="Steward"
+            >
+              <MetricValue
+                value="Bank accounts"
+                sub="Transactions & balances"
+              />
+            </MetricCard>
+          )}
+
+          {/* Member Guide */}
+          <MetricCard
+            title="Member Guide"
+            icon="≡"
+            href="/intranet/guide/"
+            color="var(--border-hud2)"
+          >
+            <MetricValue
+              value="Bylaws &amp; Docs"
+              sub="Articles, member agreement"
+            />
+          </MetricCard>
+
+          {/* Directory */}
+          <MetricCard
+            title="Directory"
+            icon="⊛"
+            href="/intranet/directory/"
+            color="var(--status-ok)"
+          >
+            <MetricValue
+              value="Organizers"
+              sub="Roles, crafts, membership"
+            />
+          </MetricCard>
+
+        </div>
+      )}
+    </div>
+  )
+}
+
+const styles = {
+  page: {
+    padding: '2rem',
+    maxWidth: '1100px',
+  },
+  panelHeader: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    marginBottom: '2rem',
+  },
+  title: {
+    fontSize: '1.75rem',
+    fontWeight: 800,
+    letterSpacing: '-0.03em',
+    color: 'var(--text-primary)',
+    margin: 0,
+    lineHeight: 1.15,
+  },
+  subtitle: {
+    fontSize: '0.8rem',
+    color: 'var(--text-nav)',
+    margin: '0.35rem 0 0',
+  },
+  headerMeta: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.4rem',
+    marginTop: '0.25rem',
+  },
+  onlineDot: {
+    width: '6px',
+    height: '6px',
+    borderRadius: '50%',
+    background: 'var(--status-ok)',
+    boxShadow: '0 0 6px #4a5f4a',
+    flexShrink: 0,
+  },
+  onlineLabel: {
+    fontSize: '0.68rem',
+    color: 'var(--status-ok)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.1em',
+    fontWeight: 700,
+  },
+  grid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+    gap: '1rem',
+  },
+  loadingGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+    gap: '1rem',
+  },
+  skeletonCard: {
+    height: '120px',
+    background: 'rgba(255,255,255,0.02)',
+    border: '1px solid #1a1a2e',
+    borderRadius: '10px',
+    animation: 'pulse 1.5s ease-in-out infinite',
+  },
+}

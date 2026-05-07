@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RegenHub — Pitch Deck</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #212121;
+    --border: #2e2e2e;
+    --border2: #3a3a3a;
+    --primary: #c4956a;
+    --primary-dim: #8a6545;
+    --text: #d9d9d9;
+    --text-bright: #ece6de;
+    --text-muted: #888888;
+    --text-faint: #555555;
+    --green: #8aba8a;
+    --green-bg: #1a1f1a;
+    --green-border: #4a6a4a;
+    --blue: #a0a0c4;
+    --blue-bg: #1a1a22;
+    --blue-border: #6a6a8a;
+  }
+
+  html { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.6; }
+
+  body { max-width: 860px; margin: 0 auto; padding: 48px 32px 80px; }
+
+  /* ── Cover ── */
+  .cover { padding: 56px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 52px; }
+  .cover-eyebrow { font-size: 11px; font-family: monospace; color: var(--primary-dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .cover h1 { font-size: 32px; font-weight: 700; color: var(--text-bright); letter-spacing: -0.6px; line-height: 1.2; margin-bottom: 10px; }
+  .cover h1 span { color: var(--primary); }
+  .cover-sub { font-size: 14px; color: var(--text-muted); margin-top: 12px; line-height: 1.6; max-width: 580px; }
+  .cover-meta { margin-top: 28px; display: flex; gap: 0; flex-wrap: wrap; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; }
+  .cover-meta-item { font-size: 11px; font-family: monospace; color: var(--text-faint); padding-right: 24px; border-right: 1px solid var(--border); margin-right: 24px; }
+  .cover-meta-item:last-child { border-right: none; margin-right: 0; }
+  .cover-meta-item strong { color: var(--text-muted); font-weight: 500; }
+
+  /* ── Sections ── */
+  section { margin-bottom: 56px; }
+  .section-label { font-size: 10px; font-family: monospace; letter-spacing: 2.5px; text-transform: uppercase; color: var(--primary-dim); margin-bottom: 10px; }
+  section h2 { font-size: 21px; font-weight: 600; color: var(--text-bright); letter-spacing: -0.3px; margin-bottom: 14px; }
+  section p { color: var(--text); margin-bottom: 14px; max-width: 700px; line-height: 1.7; }
+  section p:last-child { margin-bottom: 0; }
+
+  /* ── Pull quote ── */
+  .pullquote { border-left: 3px solid var(--primary); padding: 16px 20px; background: var(--surface); border-radius: 0 4px 4px 0; margin: 24px 0; font-size: 15px; color: var(--text-bright); font-style: italic; line-height: 1.65; }
+
+  /* ── Cards ── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 24px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 20px; }
+  .card-tag { font-size: 10px; font-family: monospace; letter-spacing: 1.5px; text-transform: uppercase; color: var(--primary-dim); margin-bottom: 8px; }
+  .card h3 { font-size: 15px; font-weight: 600; color: var(--text-bright); margin-bottom: 8px; }
+  .card p { font-size: 13px; color: var(--text-muted); line-height: 1.55; margin: 0; }
+  .card a { color: var(--primary); font-size: 12px; font-family: monospace; text-decoration: none; display: inline-block; margin-top: 10px; opacity: 0.8; }
+  .card-lead { font-size: 11px; font-family: monospace; color: var(--text-faint); margin-bottom: 10px; letter-spacing: 0.3px; }
+  .card-lead strong { color: var(--text-muted); font-weight: 500; }
+
+  /* ── Table ── */
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+  th { background: var(--surface); color: var(--text-bright); font-weight: 600; text-align: left; padding: 10px 14px; border: 1px solid var(--border); }
+  td { padding: 9px 14px; border: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  tr:nth-child(even) td { background: #161616; }
+
+  /* ── Stack layers ── */
+  .stack { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+  .stack-item { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 18px 20px; display: flex; align-items: flex-start; gap: 16px; }
+  .stack-num { font-family: monospace; font-size: 22px; font-weight: 700; color: var(--primary-dim); line-height: 1; flex-shrink: 0; width: 28px; }
+  .stack-body h4 { font-size: 14px; font-weight: 600; color: var(--text-bright); margin-bottom: 5px; }
+  .stack-body p { font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.55; }
+  .stack-status { font-size: 11px; font-family: monospace; margin-top: 7px; padding: 2px 9px; border-radius: 10px; display: inline-block; }
+  .status-ready { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .status-draft { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .status-pending { background: var(--surface2); color: var(--text-faint); border: 1px solid var(--border2); }
+
+  /* ── Path ── */
+  .path { display: flex; gap: 0; margin-top: 24px; flex-wrap: wrap; }
+  .path-step { flex: 1; min-width: 160px; padding: 18px 20px; background: var(--surface); border: 1px solid var(--border); position: relative; }
+  .path-step:not(:last-child)::after { content: '→'; position: absolute; right: -13px; top: 50%; transform: translateY(-50%); color: var(--primary-dim); font-size: 18px; z-index: 1; }
+  .path-step:not(:first-child) { border-left: none; }
+  .path-num { font-size: 10px; font-family: monospace; color: var(--text-faint); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+  .path-step h4 { font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 5px; }
+  .path-step p { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin: 0; }
+
+  /* ── Vision numbers ── */
+  .vision-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-top: 22px; }
+  .vision-item { padding: 18px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; }
+  .vision-number { font-size: 28px; font-weight: 700; color: var(--primary); font-family: monospace; letter-spacing: -1px; line-height: 1; margin-bottom: 6px; }
+  .vision-label { font-size: 12px; color: var(--text-muted); line-height: 1.45; }
+
+  /* ── Diagrams ── */
+  .diagram { margin: 32px 0 8px; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+
+  /* ── Footer ── */
+  footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-faint); font-family: monospace; line-height: 1.9; }
+  footer a { color: var(--primary-dim); text-decoration: none; }
+
+  /* ── Divider ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+  strong { color: var(--text-bright); }
+  em { color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-eyebrow">RegenHub, LCA · Boulder, Colorado · February 2026</div>
+  <h1>Investing in<br/><span>the Farm</span></h1>
+  <p class="cover-sub">RegenHub is a cooperative venture studio at 1515 Walnut St, Suite 200, Boulder. We are building the legal, financial, and physical infrastructure for a new generation of civic technology ventures — and we are looking for aligned partners to grow with us.</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Entity</strong> · RegenHub, LCA (DBA Techne)</div>
+    <div class="cover-meta-item"><strong>Structure</strong> · Colorado Public Benefit LCA</div>
+    <div class="cover-meta-item"><strong>Filed</strong> · February 6, 2026</div>
+    <div class="cover-meta-item"><strong>Location</strong> · Suite 200, 1515 Walnut St, Boulder</div>
+  </div>
+</div>
+
+<!-- 01: THE MODEL -->
+<section>
+  <div class="section-label">01 — The Model</div>
+  <h2>A cooperative venture studio</h2>
+  <p>RegenHub is a Colorado Public Benefit LCA incubating civic technology, AI tools, and bioregional infrastructure at 1515 Walnut St, Suite 200, Boulder. Three founding ventures have each committed 10% of their equity to RegenHub as a cooperative gift. That equity becomes the basket: a bundled, investable stake in the whole ecosystem rather than a single company.</p>
+  <p>For the full investment thesis — the CSA analogy, equity flow structure, venture profiles, and season-by-season growth scenario — see the <a href="vision-one-pager.html">Vision One-Pager</a>. This deck covers the place, the operational picture, the legal architecture, and where we're headed.</p>
+</section>
+
+<!-- 02: PUBLIC BENEFIT PURPOSE -->
+<section>
+  <div class="section-label">02 — Public Benefit Purpose</div>
+  <h2>Cultivating scenius</h2>
+  <p>RegenHub is a <strong>Colorado Public Benefit Limited Cooperative Association</strong> — filed February 6, 2026 (Colorado SOS Document #20261163853). As a public benefit entity, we are legally required to balance financial performance against our stated purpose: <strong>cultivating scenius</strong>, the collective intelligence that emerges from sustained proximity of culturally aligned people.</p>
+  <p>This is not altruism. It is a thesis about durable value creation. Organizations that emerge from a genuine scene — with accumulated context, deep relationships, and shared trust — produce better outcomes over longer time horizons than those assembled from scratch. We are building the soil. The ventures are the harvest.</p>
+  <p>Being a public benefit cooperative means our governance architecture is purpose-built for this: one-member-one-vote regardless of capital invested; surplus flows to contributors based on patronage rather than ownership; and the cooperative is legally accountable to its purpose, not just to financial return. We publish an annual benefit report assessing our performance against that purpose.</p>
+  <p>For investors: we have high conviction in our ability to return value — both financial and multi-capital. The economic memory system (equity + royalties + patronage) means contribution is recognized across multiple time horizons, not just at the moment of investment.</p>
+</section>
+
+<!-- 03: THE PLACE -->
+<section>
+  <div class="section-label">03 — The Place</div>
+  <h2>1515 Walnut St, Suite 200 · Boulder</h2>
+  <p>Suite 200 at 1515 Walnut St is more than office space. It is the physical substrate of the cooperative — where ventures incubate, cohorts learn, and collaborators converge. Across the street from Grace Common. Walking distance to Pearl Street and the University of Colorado campus.</p>
+  <p>Our vision for this space has three layers, each building on the last:</p>
+
+  <div class="path">
+    <div class="path-step">
+      <div class="path-num">Now</div>
+      <h4>Anchor Lease</h4>
+      <p>Suite 200 — standard lease. Stable home for Techne and the ventures.</p>
+    </div>
+    <div class="path-step">
+      <div class="path-num">Near-term</div>
+      <h4>Partnership</h4>
+      <p>Rent discount in exchange for shared conviction. Lynn as aligned partner in what we're building.</p>
+    </div>
+    <div class="path-step">
+      <div class="path-num">Long-term</div>
+      <h4>Stewardship</h4>
+      <p>Building purchase or equity stake. Appraisal as good-faith first step. A home we own together.</p>
+    </div>
+  </div>
+
+  <p style="margin-top: 24px;">Techne Institute — the education and programming layer — runs alongside the cooperative. Learn by Build cohorts (101 / 201 / 301 course sequences) generate foot traffic, talent flow, and tuition revenue. Cohorts focused on AI tools, civic technology, and bioregional infrastructure signal to the Boulder community what this building is for.</p>
+</section>
+
+<!-- 03: THE VENTURES -->
+<section>
+  <div class="section-label">04 — The Ventures</div>
+  <h2>What's in the basket</h2>
+  <p>Three operating projects are positioned to contribute equity to the initial basket, each with a founder embedded at 1515 Walnut St, Suite 200. See the <a href="vision-one-pager.html">Vision One-Pager</a> for full profiles.</p>
+
+  <table>
+    <thead>
+      <tr><th>Venture</th><th>Lead</th><th>Domain</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Parachute</strong> · <a href="https://parachute.computer" target="_blank">parachute.computer</a></td><td>Aaron Gabriel</td><td>Voice-first, local-first AI extended mind</td></tr>
+      <tr><td><strong>Postage</strong> · <a href="https://postage.email" target="_blank">postage.email</a></td><td>Lucian Hymer</td><td>Blockchain-based email filtering (USDC on Base)</td></tr>
+      <tr><td><strong>Habitat</strong></td><td>Todd Youngblood</td><td>Legal &amp; financial primitives for new instruments</td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top: 20px;"><strong>Techne Institute</strong> sits outside the basket — becoming a nonprofit funded by grants and tuition. It is the reason the basket keeps producing, not a vehicle for equity return.</p>
+</section>
+
+<!-- 04: THE STRUCTURE -->
+<section>
+  <div class="section-label">05 — The Structure</div>
+  <h2>Season 1 commitments</h2>
+  <p>Committed capital and equity contributions for the first closing. For the full equity flow model — basket fund, balance sheet reserve, and season-by-season growth — see the <a href="vision-one-pager.html">Vision One-Pager</a>.</p>
+
+  <table>
+    <thead>
+      <tr><th>Party</th><th>Contribution</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Kevin Owocki</strong></td><td>$50,000 cash</td><td>Cooperative Member (Class 1, voting) + Investor Member (Class 4, capital account)</td></tr>
+      <tr><td><strong>Jeremy</strong></td><td>$50,000 cash</td><td>Investor Member (Class 4) — may also elect Class 1 (multi-class permitted)</td></tr>
+      <tr><td><strong>Parachute</strong> <em style="font-size:11px;">· Aaron Gabriel</em></td><td>10% venture equity</td><td>1–2% to basket · 8–9% on RegenHub balance sheet</td></tr>
+      <tr><td><strong>Postage</strong> <em style="font-size:11px;">· Lucian Hymer</em></td><td>10% venture equity</td><td>1–2% to basket · 8–9% on RegenHub balance sheet</td></tr>
+      <tr><td><strong>Habitat</strong> <em style="font-size:11px;">· Todd Youngblood</em></td><td>10% venture equity</td><td>1–2% to basket · 8–9% on RegenHub balance sheet</td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top: 20px;">Target starting basket value: <strong>$250,000–$500,000</strong> (cash + venture equity). Unsubscribed value accrues to the cooperative and is available for shared infrastructure and the Suite 200 lease.</p>
+</section>
+
+<!-- 05: THE AGREEMENT STACK -->
+<section>
+  <div class="section-label">06 — The Agreement Stack</div>
+  <h2>The legal and economic architecture</h2>
+  <p>Participation is structured as <strong>cooperative membership</strong> — not a securities offering. Membership interests in a Colorado LCA are actively governed, patronage-based, and democratically controlled. The intent is that no SEC registration or state securities filing is required. All terms confirmed with cooperative attorney Jeff Pote (Pote Law Firm) before any transaction closes.</p>
+
+  <div class="stack">
+    <div class="stack-item">
+      <div class="stack-num">1</div>
+      <div class="stack-body">
+        <h4>Bylaws — Governance foundation</h4>
+        <p>Establishes member classes, capital account treatment, patronage formula, voting rights. Class 4 (Investor Member) is non-voting — one member, one vote regardless of capital contribution. Multi-class membership is permitted: a member holding any patron class (1–3) alongside Class 4 holds full voting rights through their patron-class interest.</p>
+        <span class="stack-status status-ready">Draft complete</span>
+      </div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-num">2</div>
+      <div class="stack-body">
+        <h4>Member Agreements — Instrument layer</h4>
+        <p>Per-class operating contracts that define the basket instrument in legal terms: which ventures, what equity percentages, capital account treatment, reserve mechanism, and rights as the basket grows. This is the document that makes the basket legible as a cooperative membership interest rather than a fund share.</p>
+        <span class="stack-status status-pending">Pending attorney draft</span>
+      </div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-num">3</div>
+      <div class="stack-body">
+        <h4>Term Sheet — First-season transaction</h4>
+        <p>Documents the initial investment event. Intentionally minimal: names the parties, the capital amounts, and establishes that return terms will be determined by the member body (Financial Systems Committee, convening March 2, 2026). No defined return at signing.</p>
+        <span class="stack-status status-draft">Shape agreed · formal draft pending</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06: THE VISION -->
+<section>
+  <div class="section-label">07 — The Vision</div>
+  <h2>Three to five years out</h2>
+  <p>Under the conditions we are working toward — Suite 200 secured, ventures maturing, basket growing — this is what RegenHub looks like in 2028–2030.</p>
+
+  <div class="vision-grid">
+    <div class="vision-item">
+      <div class="vision-number">$5m+</div>
+      <div class="vision-label">Basket value after venture appreciation — no new dilution required</div>
+    </div>
+    <div class="vision-item">
+      <div class="vision-number">3–5</div>
+      <div class="vision-label">Active ventures contributing equity to the basket, with more in formation</div>
+    </div>
+    <div class="vision-item">
+      <div class="vision-number">2–3</div>
+      <div class="vision-label">Cohort cycles per year through Techne Institute (101 / 201 / 301)</div>
+    </div>
+    <div class="vision-item">
+      <div class="vision-number">1</div>
+      <div class="vision-label">Building — 1515 Walnut, owned or co-stewarded. A permanent home with a name worth keeping.</div>
+    </div>
+  </div>
+
+  <p style="margin-top: 28px;">As the basket matures and its entry price rises, new funds can be created for the next generation of ventures emerging from RegenHub — cheaper, earlier, higher risk and reward. The first basket becomes an established fund. The second is the frontier. The ecosystem produces a continuous harvest of new opportunities, not a single bet.</p>
+
+  <div class="pullquote">"The prep work we do for this conversation is reusable. What we're building here is not just the pitch — it's the infrastructure for every aligned partnership that follows." — Kevin Owocki</div>
+</section>
+
+<!-- 07: NEXT STEPS -->
+<section>
+  <div class="section-label">08 — Next Steps</div>
+  <h2>Going deeper</h2>
+  <p>The <a href="data-room.html">Data Room</a> has the full document index — Vision One-Pager, Term Sheet, Bylaws Decision Tree, and the pending instruments (Member Agreement, Financials, Building Finance Model) with current status on each.</p>
+  <p>Contact: Todd Youngblood · Ventures &amp; Operations Steward · <a href="https://roots-trust-lca.github.io/regenhub/">roots-trust-lca.github.io/regenhub</a></p>
+</section>
+
+<hr/>
+
+<footer>
+  RegenHub, LCA (DBA Techne) · Boulder, Colorado · Filed February 6, 2026<br/>
+  Colorado Public Benefit Limited Cooperative Association<br/>
+  Cooperative attorney: Jeff Pote, Pote Law Firm<br/>
+  Contact: Todd Youngblood · Ventures &amp; Operations Steward<br/>
+  <a href="https://roots-trust-lca.github.io/regenhub/">roots-trust-lca.github.io/regenhub</a>
+</footer>
+
+
+<!-- rh-theme-start --><script>
+/* rh-theme: postMessage theme sync */
+(function () {
+  var THEMES = {
+    dark: {
+      '--bg':'#0f0f0f','--surface':'#1a1a1a','--surface2':'#212121',
+      '--border':'#2e2e2e','--border2':'#3a3a3a',
+      '--primary':'#c4956a','--primary-dim':'#8a6545',
+      '--text':'#d9d9d9','--text-bright':'#ece6de',
+      '--text-muted':'#888888','--text-faint':'#555555',
+      '--green':'#8aba8a','--green-bg':'#1a1f1a','--green-border':'#4a6a4a',
+      '--amber':'#d4b08a','--amber-bg':'#1f1a14','--amber-border':'#8a6545',
+      '--blue':'#a0a0c4','--blue-bg':'#1a1a22','--blue-border':'#6a6a8a',
+      '--red':'#c47070','--red-bg':'#1f1414','--red-border':'#6a3a3a'
+    },
+    light: {
+      '--bg':'#f8f5f0','--surface':'#efebe4','--surface2':'#e6e0d8',
+      '--border':'#d4ccc0','--border2':'#c4bab0',
+      '--primary':'#9a6838','--primary-dim':'#c4956a',
+      '--text':'#3a342e','--text-bright':'#1a1410',
+      '--text-muted':'#7a7068','--text-faint':'#b0a898',
+      '--green':'#3a7a3a','--green-bg':'#edf5ed','--green-border':'#4a7a4a',
+      '--amber':'#7a4818','--amber-bg':'#f5ede0','--amber-border':'#9a6838',
+      '--blue':'#3a3a7a','--blue-bg':'#edeff8','--blue-border':'#5a5a8a',
+      '--red':'#9a3a3a','--red-bg':'#f8eded','--red-border':'#8a4a4a'
+    }
+  };
+
+  /* Inject smooth transition style once */
+  var style = document.createElement('style');
+  style.textContent = 'html,body,*{transition:background-color 0.2s,color 0.2s,border-color 0.2s;}';
+  document.head.appendChild(style);
+
+  function applyTheme(mode) {
+    var vars = THEMES[mode] || THEMES.dark;
+    var root = document.documentElement;
+    for (var k in vars) root.style.setProperty(k, vars[k]);
+  }
+
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'rh-theme') applyTheme(e.data.mode);
+  });
+
+  /* Tell parent we are ready — parent will reply with current theme */
+  try { window.parent.postMessage({ type: 'rh-theme-ready' }, '*'); } catch(e) {}
+})();
+</script><!-- rh-theme-end -->
+</body>
+</html>

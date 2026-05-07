@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Before We Sit Down &mdash; RegenHub &amp; Techne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=IBM+Plex+Mono:wght@300;400&family=Source+Serif+4:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+<!-- Design system tokens — P412 -->
+<link rel="stylesheet" href="/assets/tokens.css" />
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:           #faf8f5;
+    --surface:      #f0ece6;
+    --surface-warm: #ede8e0;
+    --border:       #ddd7cd;
+    --primary:      #8a6340;
+    --primary-soft: rgba(138, 99, 64, 0.08);
+    --text:         #2e2a24;
+    --text-bright:  #111010;
+    --text-muted:   #6e665e;
+    --text-faint:   #9e968c;
+    --icon:         #c4b8a8;
+    --accent-warm:  #c49a6c;
+    --font-display: 'Cormorant', Georgia, serif;
+    --font-body:    'Source Serif 4', Georgia, serif;
+    --font-mono:    'IBM Plex Mono', 'SF Mono', monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:           #0c0b09;
+      --surface:      #161412;
+      --surface-warm: #1a1815;
+      --border:       #2a2622;
+      --primary:      #c4956a;
+      --primary-soft: rgba(196, 149, 106, 0.06);
+      --text:         #c8c2ba;
+      --text-bright:  #ece6de;
+      --text-muted:   #777067;
+      --text-faint:   #3e3830;
+      --icon:         #4a4438;
+      --accent-warm:  #c4956a;
+    }
+  }
+  [data-theme="dark"] {
+    --bg:#0c0b09; --surface:#161412; --surface-warm:#1a1815; --border:#2a2622;
+    --primary:#c4956a; --primary-soft:rgba(196,149,106,0.06);
+    --text:#c8c2ba; --text-bright:#ece6de; --text-muted:#777067;
+    --text-faint:#3e3830; --icon:#4a4438; --accent-warm:#c4956a;
+  }
+  [data-theme="light"] {
+    --bg:#faf8f5; --surface:#f0ece6; --surface-warm:#ede8e0; --border:#ddd7cd;
+    --primary:#8a6340; --primary-soft:rgba(138,99,64,0.08);
+    --text:#2e2a24; --text-bright:#111010; --text-muted:#6e665e;
+    --text-faint:#9e968c; --icon:#c4b8a8; --accent-warm:#c49a6c;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    line-height: 1.85;
+    font-weight: 300;
+    padding: 3.5rem 1.5rem 3rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .header-icon {
+    color: var(--accent-warm);
+    margin-bottom: 0.75rem;
+  }
+  .header-icon svg { width: 28px; height: 28px; stroke-width: 1.2; }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 2.1rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-bright);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.35rem;
+    line-height: 1.25;
+  }
+
+  .subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--primary);
+    margin-top: 2.25rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  h2 svg { width: 17px; height: 17px; stroke-width: 1.4; color: var(--icon); }
+
+  p { margin-bottom: 1rem; }
+
+  .welcome {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  .agenda-item {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+    margin-bottom: 1.2rem;
+    padding: 0.75rem 0.9rem;
+    background: var(--primary-soft);
+    border-radius: 6px;
+  }
+
+  .agenda-icon {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: var(--icon);
+  }
+  .agenda-icon svg { width: 17px; height: 17px; stroke-width: 1.4; }
+
+  .agenda-text { font-size: 1.05rem; line-height: 1.7; }
+  .agenda-text strong { color: var(--text-bright); font-weight: 600; }
+
+  .cta {
+    display: block;
+    text-align: center;
+    margin: 2.5rem auto 1rem;
+    padding: 1rem 2rem;
+    background: var(--surface-warm);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--primary);
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .cta:hover { border-color: var(--primary); background: var(--primary-soft); text-decoration: none; }
+
+  .closing {
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text-muted);
+    margin: 2rem 0 0.5rem;
+  }
+
+  .further-reading {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .further-reading h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.15rem;
+  }
+
+  .ref {
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+  }
+
+  .ref a {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  .ref-desc {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  .footer {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+    line-height: 1.8;
+    text-align: center;
+  }
+
+  .theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-faint);
+    transition: border-color 0.2s;
+    z-index: 100;
+  }
+  .theme-toggle:hover { border-color: var(--primary); color: var(--text-muted); }
+  .theme-toggle svg { width: 14px; height: 14px; stroke-width: 1.5; }
+
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  strong { color: var(--text-bright); font-weight: 600; }
+  em { font-style: italic; }
+
+  @media (max-width: 500px) {
+    body { padding: 2.5rem 1.15rem 2rem; }
+    h1 { font-size: 1.7rem; }
+    .agenda-item { padding: 0.6rem 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+  <i data-lucide="moon"></i>
+</button>
+
+<div class="header">
+  <div class="header-icon"><i data-lucide="coffee"></i></div>
+  <h1>Before We Sit Down</h1>
+  <div class="subtitle">March 10, 2026 &middot; Lunch &middot; Boulder</div>
+</div>
+
+<p class="welcome">Thank you for making time for lunch. Here's who we are and what we'd like to talk about.</p>
+
+<h2><i data-lucide="home"></i> Who We Are</h2>
+
+<p><strong>RegenHub, LCA</strong> is a Colorado Limited Cooperative Association &mdash; eight founding organizers building a venture studio and project ecosystem from 1515 Walnut. We've been on the second floor since May 2024.</p>
+
+<p><strong>Techne</strong> is what RegenHub is building next: technology education, venture incubation, and a rotating calendar of programs and convergences. Same cooperative, new capacity &mdash; opening from the third floor.</p>
+
+<h2><i data-lucide="message-circle"></i> Three Conversations</h2>
+
+<p>We have three things on our mind for lunch, each building on the last:</p>
+
+<div class="agenda-item">
+  <div class="agenda-icon"><i data-lucide="file-signature"></i></div>
+  <div class="agenda-text"><strong>The lease transfer.</strong> Moving our second-floor lease from West Software to RegenHub, LCA &mdash; aligning the contract with the cooperative entity now doing the work.</div>
+</div>
+
+<div class="agenda-item">
+  <div class="agenda-icon"><i data-lucide="door-open"></i></div>
+  <div class="agenda-text"><strong>The third floor.</strong> Leasing the third floor to open Techne &mdash; coworking, programs, and venture incubation. We have committed capital from investors who are also participants in the work.</div>
+</div>
+
+<div class="agenda-item">
+  <div class="agenda-icon"><i data-lucide="building"></i></div>
+  <div class="agenda-text"><strong>The longer view.</strong> A conversation about the future of 1515 Walnut &mdash; where we hope this partnership goes over the next two to three years.</div>
+</div>
+
+<p>We're not asking for decisions on all three tomorrow. We're sharing the full picture so everyone at the table sees the same horizon.</p>
+
+<a class="cta" href="/lunch-presentation/">Read the full plan &rarr;</a>
+
+<p class="closing">We come prepared and we come in good faith.<br/>We look forward to sitting down together.</p>
+
+<div class="further-reading">
+  <h2><i data-lucide="book-open"></i> Further Reading</h2>
+  <div class="ref">
+    <a href="https://techne.institute" target="_blank">techne.institute</a>
+    <span class="ref-desc">Techne Institute &mdash; technology education, programs, and community.</span>
+  </div>
+  <div class="ref">
+    <a href="https://regenhub.xyz" target="_blank">regenhub.xyz</a>
+    <span class="ref-desc">RegenHub &mdash; Boulder's regenerative workspace and cooperative foundation.</span>
+  </div>
+</div>
+
+<div class="footer">
+  Prepared March 2026 &middot; RegenHub, LCA (DBA Techne) &middot; Boulder, Colorado
+</div>
+
+<script>
+(function() {
+  var btn = document.getElementById('themeToggle');
+  var stored = localStorage.getItem('techne-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+
+  function isDark() {
+    var t = document.documentElement.getAttribute('data-theme');
+    return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function render() {
+    btn.innerHTML = isDark()
+      ? '<i data-lucide="sun"></i>'
+      : '<i data-lucide="moon"></i>';
+    lucide.createIcons();
+  }
+  render();
+  lucide.createIcons();
+
+  btn.addEventListener('click', function() {
+    var next = isDark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('techne-theme', next);
+    render();
+  });
+})();
+</script>
+</body>
+</html>

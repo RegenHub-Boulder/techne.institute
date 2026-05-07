@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coordination Games Economics — Source Data</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --void: #0c0c0c;
+      --surface: #161616;
+      --panel: #222222;
+      --raised: #2a2a2a;
+      --border: #383838;
+      --border-dim: #2a2a2a;
+      --gold: #c4956a;
+      --parchment: #f0f0f0;
+      --warm: #d0d0d0;
+      --muted: #9a9a9a;
+      --dim: #707070;
+      --ghost: #505050;
+      --status-ok: #4ade80;
+      --status-warn: #fbbf24;
+      --status-info: #8bbfff;
+      --status-purple: #a78bfa;
+      --status-teal: #7ccfb8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--void);
+      color: var(--warm);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.75;
+      padding-top: 88px;
+      overflow-x: hidden;
+    }
+
+    /* Nav */
+    .site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 14px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(to bottom, #0c0c0c 70%, transparent);
+      pointer-events: none;
+    }
+    .nav-back {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: #c4956a; opacity: 0.75; text-decoration: none;
+      pointer-events: all; transition: opacity 0.15s;
+    }
+    .nav-back:hover { opacity: 1; }
+    .nav-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #505050;
+    }
+
+    /* Layout */
+    .page-wrapper {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    /* Header */
+    .article-header {
+      padding: 48px 0 40px;
+      border-bottom: 1px solid var(--border-dim);
+      margin-bottom: 48px;
+    }
+
+    .article-kicker {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.8;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--parchment);
+      letter-spacing: -0.01em;
+    }
+
+    /* Draft notice */
+    .draft-notice {
+      background: color-mix(in srgb, var(--status-warn) 8%, var(--panel));
+      border: 1px solid color-mix(in srgb, var(--status-warn) 22%, transparent);
+      border-left: 3px solid var(--status-warn);
+      padding: 16px 20px;
+      border-radius: 0 4px 4px 0;
+      margin-bottom: 40px;
+    }
+
+    .draft-notice p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: color-mix(in srgb, var(--status-warn) 80%, var(--warm));
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .draft-notice strong {
+      color: var(--status-warn);
+      font-weight: 400;
+    }
+
+    /* Section headings */
+    .data-section {
+      margin-bottom: 52px;
+    }
+
+    h2 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--parchment);
+      line-height: 1.3;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      position: relative;
+    }
+
+    h2::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+
+    h3 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+      margin-top: 32px;
+    }
+
+    h3:first-child { margin-top: 0; }
+
+    p {
+      color: var(--warm);
+      margin-bottom: 16px;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin-bottom: 32px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    thead tr {
+      background: var(--raised);
+    }
+
+    th {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-weight: 400;
+    }
+
+    th.num { text-align: right; }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-dim);
+      color: var(--warm);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    td.num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      text-align: right;
+      color: var(--parchment);
+      white-space: nowrap;
+    }
+
+    td.label {
+      color: var(--warm);
+    }
+
+    td.note {
+      color: var(--dim);
+      font-size: 13px;
+    }
+
+    tr.total-row td {
+      background: var(--raised);
+      border-top: 1px solid var(--border);
+      font-weight: 600;
+    }
+
+    tr.total-row td.num {
+      color: var(--gold);
+    }
+
+    /* Highlight values */
+    .val-gold {
+      color: var(--gold);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+    }
+
+    .val-ok {
+      color: var(--status-ok);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+    }
+
+    /* Open questions */
+    .questions-list {
+      list-style: none;
+      counter-reset: q-counter;
+    }
+
+    .questions-list li {
+      counter-increment: q-counter;
+      display: flex;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-dim);
+      align-items: flex-start;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .questions-list li:last-child { border-bottom: none; }
+
+    .questions-list li::before {
+      content: counter(q-counter);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: var(--gold);
+      min-width: 20px;
+      padding-top: 2px;
+      font-weight: 300;
+    }
+
+    /* CTA */
+    .cta-block {
+      margin-top: 48px;
+      padding: 28px 32px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .cta-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .cta-desc {
+      color: var(--warm);
+      font-size: 15px;
+      margin: 0;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--void);
+      background: var(--gold);
+      padding: 10px 20px;
+      border-radius: 3px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: opacity 0.15s;
+    }
+
+    .cta-btn:hover { opacity: 0.88; }
+
+    /* Source note */
+    .source-note {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--ghost);
+      line-height: 1.8;
+      margin-top: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Footer */
+    .article-footer {
+      margin-top: 64px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-dim);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--ghost);
+      letter-spacing: 0.06em;
+    }
+
+    @media (max-width: 600px) {
+      body { padding-top: 0; }
+      .site-nav { position: relative; padding: 12px 16px; }
+      .nav-back { min-height: 44px; display: inline-flex; align-items: center; }
+      .page-wrapper { padding: 0 16px 60px; }
+      .article-header { padding: 32px 0 28px; }
+      .cta-block { flex-direction: column; align-items: flex-start; padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-back">← Coordination Games</a>
+  <span class="nav-title">Economics</span>
+</nav>
+
+<div class="page-wrapper">
+  <header class="article-header">
+    <p class="article-kicker">Coordination Games / Economics</p>
+    <h1>Economics — Source Data</h1>
+  </header>
+
+  <div class="draft-notice">
+    <p><strong>ROUGH DRAFT — NOT RATIFIED</strong><br>
+    Shared with Techne 2026-04-13 by Todd Youngblood / Kevin Owocki<br>
+    To be discussed with Ethereum Foundation this week.</p>
+  </div>
+
+  <!-- Tab 1: Cover Sheet -->
+  <div class="data-section">
+    <h2>Cover Sheet</h2>
+
+    <h3>Jump Balls</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th class="num">Budget</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">March</td>
+            <td class="num">$1,400</td>
+          </tr>
+          <tr>
+            <td class="label">April</td>
+            <td class="num">$5,000</td>
+          </tr>
+          <tr>
+            <td class="label">May</td>
+            <td class="num">$5,000</td>
+          </tr>
+          <tr class="total-row">
+            <td class="label">Total</td>
+            <td class="num">$11,400</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Milestone Budget</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Milestone</th>
+            <th class="num">Infra</th>
+            <th class="num">Prizes</th>
+            <th>Timing</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">Rehearsal 1</td>
+            <td class="num">$3,000</td>
+            <td class="num">—</td>
+            <td class="note">Late April</td>
+            <td class="note">Testnet Tokens</td>
+          </tr>
+          <tr>
+            <td class="label">Dress Rehearsal 1</td>
+            <td class="num">$5,000</td>
+            <td class="num">$1,000</td>
+            <td class="note">Early May</td>
+            <td class="note">Private Alpha</td>
+          </tr>
+          <tr>
+            <td class="label">Dress Rehearsal 2</td>
+            <td class="num">$5,000</td>
+            <td class="num">$2,000</td>
+            <td class="note">Mid May</td>
+            <td class="note">Private Alpha with partners</td>
+          </tr>
+          <tr>
+            <td class="label">Main Event</td>
+            <td class="num">$10,000</td>
+            <td class="num">$40,000</td>
+            <td class="note">Late May</td>
+            <td class="note"></td>
+          </tr>
+          <tr class="total-row">
+            <td class="label">Total</td>
+            <td class="num">$23,000</td>
+            <td class="num">$43,000</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Use Case Budgets</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Use Case</th>
+            <th class="num">Infra</th>
+            <th class="num">Prizes</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">[Research] Admin trust introspection</td>
+            <td class="num">$3,000</td>
+            <td class="num">—</td>
+            <td class="note"></td>
+          </tr>
+          <tr>
+            <td class="label">[Esports] Attention economy consumer</td>
+            <td class="num">$3,000</td>
+            <td class="num">$3,000</td>
+            <td class="note"></td>
+          </tr>
+          <tr>
+            <td class="label">[Prediction Market] Trencher / gambler</td>
+            <td class="num">$3,000</td>
+            <td class="num">—</td>
+            <td class="note">Jake Hartnell?</td>
+          </tr>
+          <tr>
+            <td class="label">[AI Benchmark] New model developer</td>
+            <td class="num">$3,000</td>
+            <td class="num">—</td>
+            <td class="note"></td>
+          </tr>
+          <tr>
+            <td class="label">Financial model</td>
+            <td class="num">$3,000</td>
+            <td class="num">—</td>
+            <td class="note">R15 — this item</td>
+          </tr>
+          <tr class="total-row">
+            <td class="label">Total</td>
+            <td class="num">$12,000</td>
+            <td class="num">$3,000</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Summary Totals</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th class="num">Infra</th>
+            <th class="num">Prizes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">Jump Balls</td>
+            <td class="num">$11,400</td>
+            <td class="num">—</td>
+          </tr>
+          <tr>
+            <td class="label">SOWs</td>
+            <td class="num">—</td>
+            <td class="num">—</td>
+          </tr>
+          <tr>
+            <td class="label">Milestone</td>
+            <td class="num">$23,000</td>
+            <td class="num">$43,000</td>
+          </tr>
+          <tr>
+            <td class="label">Use Case Budgets</td>
+            <td class="num">$12,000</td>
+            <td class="num">$3,000</td>
+          </tr>
+          <tr class="total-row">
+            <td class="label">Grand Total</td>
+            <td class="num">$46,400</td>
+            <td class="num">$46,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>RegenHub Economics</h3>
+    <div class="table-wrap">
+      <table>
+        <tbody>
+          <tr>
+            <td class="label">RegenHub cut</td>
+            <td class="num">10% of infra revenue (0% of prizes)</td>
+          </tr>
+          <tr>
+            <td class="label">RegenHub total at full execution</td>
+            <td class="num val-gold">$4,640</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tab 2: Economic Inputs -->
+  <div class="data-section">
+    <h2>Economic Inputs</h2>
+
+    <h3>Core Parameters</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Input</th>
+            <th class="num">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">Buy-in per agent</td>
+            <td class="num">$5</td>
+          </tr>
+          <tr>
+            <td class="label">Platform cut</td>
+            <td class="num">20%</td>
+          </tr>
+          <tr>
+            <td class="label">Total pot</td>
+            <td class="num">$40,000</td>
+          </tr>
+          <tr>
+            <td class="label">In-game token</td>
+            <td class="num">COIN <span style="color: var(--ghost); font-size: 11px;">(placeholder — name TBD)</span></td>
+          </tr>
+          <tr>
+            <td class="label">Conversion rate</td>
+            <td class="num">100 COIN = $1</td>
+          </tr>
+          <tr>
+            <td class="label">Total COIN supply</td>
+            <td class="num">4,000,000</td>
+          </tr>
+          <tr>
+            <td class="label">Games</td>
+            <td class="num">3</td>
+          </tr>
+          <tr>
+            <td class="label">Agents</td>
+            <td class="num">1,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Derived Values</h3>
+    <div class="table-wrap">
+      <table>
+        <tbody>
+          <tr>
+            <td class="label">Total buy-in revenue</td>
+            <td class="num">$5,000 <span style="color: var(--ghost); font-size: 11px;">(1,000 × $5)</span></td>
+          </tr>
+          <tr>
+            <td class="label">Platform fee from buy-ins</td>
+            <td class="num">$1,000 <span style="color: var(--ghost); font-size: 11px;">(20%)</span></td>
+          </tr>
+          <tr>
+            <td class="label">Net prize pool from buy-ins</td>
+            <td class="num">$4,000</td>
+          </tr>
+          <tr>
+            <td class="label">COIN in circulation from buy-ins</td>
+            <td class="num">500,000 COIN</td>
+          </tr>
+          <tr>
+            <td class="label">Grant-backed COIN remaining</td>
+            <td class="num">3,500,000 COIN <span style="color: var(--ghost); font-size: 11px;">($35,000)</span></td>
+          </tr>
+          <tr>
+            <td class="label">NFT prizes</td>
+            <td class="num">10 <span style="color: var(--ghost); font-size: 11px;">(value TBD)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Open Questions -->
+  <div class="data-section">
+    <h2>Open Questions</h2>
+    <ol class="questions-list">
+      <li>Token name — COIN is a placeholder. Final name TBD.</li>
+      <li>Fee structure — Platform fee on entry only, or per-game? Re-upping COIN between games, or entry-only?</li>
+      <li>Reward mechanics — How do games redistribute COIN to winners? Fixed / proportional / tiered?</li>
+      <li>Prediction market dynamics — External market interaction with prize pool.</li>
+      <li>COIN supply allocation — 500K from buy-ins at 1,000 agents. Where does the remaining 3.5M go?</li>
+      <li>NFT prizes — Auction-priced, fixed, or scarce-supply collectibles?</li>
+      <li>Business model path — Platform fee is zero-sum from player POV. Non-prize revenue streams?</li>
+    </ol>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <div>
+      <div class="cta-label">Interactive Tool</div>
+      <p class="cta-desc">Explore parameterized scenarios and sensitivity analysis in the financial model.</p>
+    </div>
+    <a href="financial-model.html" class="cta-btn">Open Financial Model →</a>
+  </div>
+
+  <div class="source-note" style="margin-top: 28px;">
+    Source: coordination-games economics spreadsheet shared 2026-04-13<br>
+    Roadmap item: R15 — techne.institute Workshop
+  </div>
+
+  <footer class="article-footer">
+    roots-trust-lca.github.io/coordination-games &mdash; Techne Studio / RegenHub, LCA &mdash; 2026
+  </footer>
+</div>
+
+</body>
+</html>

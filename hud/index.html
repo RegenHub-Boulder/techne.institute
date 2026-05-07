@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HUD — Coordination Games · Techne</title>
+  <meta name="description" content="Solar-cycle heads-up display for the Coordination Games ecosystem. Season 1 opens Summer Solstice 2026.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <style>
+    /* ── Palette ─────────────────────────────────────────────────────────── */
+    :root {
+      --bg:         #030608;
+      --bg2:        #06090d;
+      --hud:        #00c99a;
+      --hud-hi:     #20ffca;
+      --hud-dim:    rgba(0,201,154,0.38);
+      --hud-ghost:  rgba(0,201,154,0.08);
+      --solar:      #e8c547;
+      --solar-dim:  rgba(232,197,71,0.30);
+      --lunar:      rgba(180,215,255,0.55);
+      --ember:      #e07a5f;
+      --iris:       #a78bca;
+      --teal:       #5eead4;
+      --text:       rgba(0,201,154,0.82);
+      --muted:      rgba(0,201,154,0.42);
+      --dim:        rgba(0,201,154,0.22);
+      --border:     rgba(0,201,154,0.13);
+      --mono:       'IBM Plex Mono', 'Courier New', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 12px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Subtle scanline overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 4px,
+        rgba(0,0,0,0.035) 4px, rgba(0,0,0,0.035) 5px
+      );
+      pointer-events: none;
+      z-index: 9000;
+    }
+
+    /* ── Main SVG ────────────────────────────────────────────────────────── */
+    #hud-svg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /* ── Top bar ─────────────────────────────────────────────────────────── */
+    #topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(3,6,8,0.72);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+    }
+    .tb-left { display: flex; align-items: center; gap: 12px; }
+    .tb-logo { font-size: 10px; letter-spacing: 0.06em; color: var(--muted); }
+    .tb-logo a { color: var(--muted); text-decoration: none; }
+    .tb-logo a:hover { color: var(--text); }
+    .tb-sep  { color: var(--border); }
+    .tb-title { font-size: 10px; letter-spacing: 0.06em; color: var(--text); }
+    .tb-right { display: flex; align-items: center; gap: 16px; }
+    #tb-clock { font-size: 10px; letter-spacing: 0.05em; color: var(--muted); }
+    #tb-clock span { color: var(--hud); }
+    .hud-badge {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 9px; letter-spacing: 0.10em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1px solid rgba(0,201,154,0.22);
+      border-radius: 2px;
+      background: var(--hud-ghost);
+      color: var(--muted);
+    }
+    .hud-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .hud-dot.pulse { animation: pulse 2.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.18} }
+    .hp-icon {
+      width: 9px; height: 9px; display: inline-block;
+      vertical-align: middle; margin-right: 4px; margin-top: -1px;
+      stroke-width: 2; opacity: 0.55;
+    }
+
+    /* ── Bottom feed ──────────────────────────────────────────────────────── */
+    #feed {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 36px;
+      display: flex; align-items: center;
+      border-top: 1px solid var(--border);
+      background: rgba(3,6,8,0.72);
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+      z-index: 200;
+    }
+    .feed-label {
+      flex-shrink: 0;
+      padding: 0 14px;
+      font-size: 8px; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--hud);
+      border-right: 1px solid var(--border);
+      height: 100%;
+      display: flex; align-items: center; gap: 5px;
+    }
+    #feed-track { flex: 1; overflow: hidden; height: 100%; }
+    #feed-inner {
+      display: flex; align-items: center;
+      height: 100%;
+      white-space: nowrap;
+      animation: feed-scroll 50s linear infinite;
+    }
+    .feed-item {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 0 22px;
+      font-size: 10px; color: var(--muted);
+      border-right: 1px solid var(--border);
+      height: 100%;
+    }
+    .fi-tag {
+      font-size: 8px; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 1px 5px; border-radius: 2px;
+      background: var(--hud-ghost);
+      color: var(--dim);
+    }
+    .fi-accent { color: var(--text); }
+    @keyframes feed-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── HUD metric panels ────────────────────────────────────────────────── */
+    .hud-panel {
+      position: fixed;
+      padding: 10px 13px;
+      min-width: 116px;
+      pointer-events: none;
+      z-index: 100;
+    }
+    /* Corner brackets */
+    .hud-panel::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 9px; height: 9px;
+      border-top: 1px solid var(--nc, var(--hud));
+      border-left: 1px solid var(--nc, var(--hud));
+    }
+    .hud-panel::after {
+      content: '';
+      position: absolute; bottom: 0; right: 0;
+      width: 9px; height: 9px;
+      border-bottom: 1px solid var(--nc, var(--hud));
+      border-right: 1px solid var(--nc, var(--hud));
+    }
+    .hp-corner-tr {
+      position: absolute; top: 0; right: 0;
+      width: 9px; height: 9px;
+      border-top: 1px solid var(--nc, var(--hud));
+      border-right: 1px solid var(--nc, var(--hud));
+    }
+    .hp-corner-bl {
+      position: absolute; bottom: 0; left: 0;
+      width: 9px; height: 9px;
+      border-bottom: 1px solid var(--nc, var(--hud));
+      border-left: 1px solid var(--nc, var(--hud));
+    }
+    .hp-type {
+      font-size: 8px; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--nc, var(--hud));
+      margin-bottom: 5px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .hp-dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--nc, var(--hud)); flex-shrink: 0;
+    }
+    .hp-val {
+      font-size: 28px; font-weight: 500;
+      line-height: 1; letter-spacing: -0.02em;
+      color: var(--nc, var(--hud));
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 3px;
+      text-shadow: 0 0 14px rgba(var(--nc-rgb, 0,201,154), 0.3);
+    }
+    .hp-label {
+      font-size: 8px; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hp-sub {
+      font-size: 8px; color: var(--dim);
+      margin-top: 3px; line-height: 1.4;
+    }
+
+    /* Per-node color vars */
+    .hp-agents { --nc: #5eead4; }
+    .hp-games  { --nc: #e8c547; }
+    .hp-trust  { --nc: #c4956a; }
+    .hp-tokens { --nc: #5eead4; }
+    .hp-coop   { --nc: #a78bca; }
+    .hp-guild  { --nc: #e07a5f; }
+
+    /* ── Season 1 countdown (positioned near 6 o'clock marker) ──────────── */
+    #season-panel {
+      position: fixed;
+      text-align: center;
+      pointer-events: none;
+      z-index: 100;
+    }
+    #season-label-txt {
+      font-size: 8px; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(232,197,71,0.45);
+      margin-bottom: 3px;
+    }
+    #season-countdown {
+      font-size: 15px; font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--solar);
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 0 18px rgba(232,197,71,0.4);
+    }
+
+    /* ── Center lunar display ─────────────────────────────────────────────── */
+    #phase-display {
+      position: fixed;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none;
+      z-index: 100;
+    }
+    #phase-glyph {
+      width: 22px; height: 22px;
+      margin: 0 auto 5px;
+      opacity: 0.82;
+    }
+    #phase-name {
+      font-size: 7px; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hp-val { font-size: 22px; }
+      .hud-panel { min-width: 100px; padding: 8px 10px; }
+      .hp-sub { display: none; }
+    }
+    @media (max-width: 600px) {
+      .hud-panel { min-width: 82px; padding: 6px 8px; }
+      .hp-val { font-size: 18px; }
+      .hp-label { display: none; }
+      #tb-clock { display: none; }
+    }
+    @media (max-width: 420px) {
+      .hud-panel { display: none; }
+    }
+
+    /* Safe area insets */
+    @supports (padding: env(safe-area-inset-left)) {
+      #topbar {
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+      }
+      #feed {
+        height: calc(36px + env(safe-area-inset-bottom));
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div id="topbar">
+  <div class="tb-left">
+    <span class="tb-logo"><a href="https://techne.institute">techne.institute</a></span>
+    <span class="tb-sep">/</span>
+    <span class="tb-title">hud</span>
+  </div>
+  <div class="tb-right">
+    <span id="tb-clock"></span>
+    <div class="hud-badge">
+      <span class="hud-dot pulse"></span>
+      <span>Pre-season</span>
+    </div>
+  </div>
+</div>
+
+<!-- Main SVG — drawn entirely by JS -->
+<svg id="hud-svg" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow-hud">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-solar">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-soft">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+</svg>
+
+<!-- Metric panels — positioned by JS -->
+<div id="panel-agents" class="hud-panel hp-agents">
+  <span class="hp-corner-tr"></span><span class="hp-corner-bl"></span>
+  <div class="hp-type"><i data-lucide="users" class="hp-icon"></i>Agents</div>
+  <div class="hp-val" id="val-agents">0</div>
+  <div class="hp-label">registered</div>
+  <div class="hp-sub">0 human · 0 AI</div>
+</div>
+
+<div id="panel-games" class="hud-panel hp-games">
+  <span class="hp-corner-tr"></span><span class="hp-corner-bl"></span>
+  <div class="hp-type"><i data-lucide="gamepad-2" class="hp-icon"></i>Games</div>
+  <div class="hp-val" id="val-games">0</div>
+  <div class="hp-label">in play</div>
+  <div class="hp-sub">5 in slate</div>
+</div>
+
+<div id="panel-trust" class="hud-panel hp-trust">
+  <span class="hp-corner-tr"></span><span class="hp-corner-bl"></span>
+  <div class="hp-type"><i data-lucide="shield-check" class="hp-icon"></i>Trust</div>
+  <div class="hp-val" id="val-trust">0</div>
+  <div class="hp-label">attestations</div>
+  <div class="hp-sub">EAS · Base</div>
+</div>
+
+<div id="panel-tokens" class="hud-panel hp-tokens">
+  <span class="hp-corner-tr"></span><span class="hp-corner-bl"></span>
+  <div class="hp-type"><i data-lucide="zap" class="hp-icon"></i>Tokens</div>
+  <div class="hp-val" id="val-tokens">0</div>
+  <div class="hp-label">CLOUD in play</div>
+  <div class="hp-sub">≈ $0.10 each</div>
+</div>
+
+<div id="panel-coop" class="hud-panel hp-coop">
+  <span class="hp-corner-tr"></span><span class="hp-corner-bl"></span>
+  <div class="hp-type"><i data-lucide="building-2" class="hp-icon"></i>Co-op</div>
+  <div class="hp-val" id="val-coop">8</div>
+  <div class="hp-label">members</div>
+  <div class="hp-sub">RegenHub LCA</div>
+</div>
+
+<div id="panel-guild" class="hud-panel hp-guild">
+  <span class="hp-corner-tr"></span><span class="hp-corner-bl"></span>
+  <div class="hp-type"><i data-lucide="layers" class="hp-icon"></i>Guild</div>
+  <div class="hp-val" id="val-guild">5</div>
+  <div class="hp-label">games in dev</div>
+  <div class="hp-sub">treasury: —</div>
+</div>
+
+<!-- Season 1 countdown — anchored near 6 o'clock by JS -->
+<div id="season-panel">
+  <div id="season-label-txt">Season 1 · Summer Solstice</div>
+  <div id="season-countdown"></div>
+</div>
+
+<!-- Lunar phase — center -->
+<div id="phase-display">
+  <div id="phase-glyph"></div>
+  <div id="phase-name"></div>
+</div>
+
+<!-- Activity feed -->
+<div id="feed">
+  <div class="feed-label">
+    <span class="hud-dot pulse" style="color:var(--hud)"></span>
+    Signal
+  </div>
+  <div id="feed-track">
+    <div id="feed-inner"></div>
+  </div>
+</div>
+
+<script>
+// ── Config ──────────────────────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://hvbdpgkdcdskhpbdeeim.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_kB69BlNpkNhOllwGMOE6xg_i4l1VHMv';
+const SEASON_OPEN   = new Date('2026-06-21T06:00:00-06:00');
+const TOPBAR_H      = 36;
+const FEED_H        = 36;
+
+// ── Astronomical ─────────────────────────────────────────────────────────────
+const LUNAR_PERIOD_MS   = 29.53059 * 24 * 60 * 60 * 1000;
+const KNOWN_NEW_MOON    = new Date('2025-01-29T12:00:00Z');
+const LUNAR_CYCLES_YEAR = 12.3685;
+
+function getLunarPhase(date) {
+  const diff = date - KNOWN_NEW_MOON;
+  return ((diff % LUNAR_PERIOD_MS) / LUNAR_PERIOD_MS + 1) % 1;
+}
+
+function moonPhaseSVG(p) {
+  const s = 22, cx = 11, cy = 11, r = 9;
+  const fill = 'rgba(180,215,255,0.62)';
+  const ring = 'rgba(180,215,255,0.22)';
+  const bg   = 'rgba(180,215,255,0.05)';
+  const top  = `${cx},${cy - r}`;
+  const bot  = `${cx},${cy + r}`;
+  const disc = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${bg}" stroke="${ring}" stroke-width="0.6"/>`;
+  let lit = '';
+  if (p >= 0.033 && p < 0.967) {
+    if      (p < 0.175) lit = `<path d="M ${top} A ${r},${r} 0 0,1 ${bot} A 5,${r} 0 0,0 ${top} Z" fill="${fill}"/>`;
+    else if (p < 0.225) lit = `<path d="M ${top} A ${r},${r} 0 0,1 ${bot} L ${top} Z" fill="${fill}"/>`;
+    else if (p < 0.475) lit = `<path d="M ${top} A ${r},${r} 0 0,1 ${bot} A 5,${r} 0 0,1 ${top} Z" fill="${fill}"/>`;
+    else if (p < 0.525) lit = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}"/>`;
+    else if (p < 0.725) lit = `<path d="M ${top} A ${r},${r} 0 0,0 ${bot} A 5,${r} 0 0,1 ${top} Z" fill="${fill}"/>`;
+    else if (p < 0.775) lit = `<path d="M ${top} A ${r},${r} 0 0,0 ${bot} L ${top} Z" fill="${fill}"/>`;
+    else                lit = `<path d="M ${top} A ${r},${r} 0 0,0 ${bot} A 5,${r} 0 0,0 ${top} Z" fill="${fill}"/>`;
+  }
+  return `<svg viewBox="0 0 ${s} ${s}" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;display:block;margin:0 auto">${disc}${lit}</svg>`;
+}
+
+function lunarPhaseName(p) {
+  if (p < 0.033)  return [moonPhaseSVG(p), 'New Moon'];
+  if (p < 0.175)  return [moonPhaseSVG(p), 'Waxing Crescent'];
+  if (p < 0.225)  return [moonPhaseSVG(p), 'First Quarter'];
+  if (p < 0.475)  return [moonPhaseSVG(p), 'Waxing Gibbous'];
+  if (p < 0.525)  return [moonPhaseSVG(p), 'Full Moon'];
+  if (p < 0.725)  return [moonPhaseSVG(p), 'Waning Gibbous'];
+  if (p < 0.775)  return [moonPhaseSVG(p), 'Third Quarter'];
+  if (p < 0.967)  return [moonPhaseSVG(p), 'Waning Crescent'];
+  return [moonPhaseSVG(p), 'New Moon'];
+}
+
+// Date → clockwise angle from Winter Solstice (0° = 12 o'clock = Dec 21)
+function dateToAngle(date) {
+  let ref = new Date(date.getFullYear(), 11, 21);
+  if (date < ref) ref = new Date(date.getFullYear() - 1, 11, 21);
+  const days = (date - ref) / 86400000;
+  return (days / 365.25) * 360;
+}
+
+// Clock-angle to SVG XY (0° = 12 o'clock, clockwise)
+function polar(cx, cy, r, deg) {
+  const rad = (deg - 90) * Math.PI / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+// ── Node definitions (clock positions) ───────────────────────────────────────
+const NODES = [
+  { id: 'agents', angle: 32,  color: '#5eead4' },
+  { id: 'games',  angle: 92,  color: '#e8c547' },
+  { id: 'trust',  angle: 152, color: '#c4956a' },
+  { id: 'tokens', angle: 212, color: '#5eead4' },
+  { id: 'coop',   angle: 272, color: '#a78bca' },
+  { id: 'guild',  angle: 330, color: '#e07a5f' },
+];
+
+// Season markers (canonical solar dates as angles from Dec 21)
+const SEASONS = [
+  { angle: 0,   label: 'Winter\nSolstice', color: 'rgba(0,201,154,0.5)',  size: 3, season1: false },
+  { angle: 91,  label: 'Spring\nEquinox',  color: 'rgba(0,201,154,0.38)', size: 2.5, season1: false },
+  { angle: 181, label: 'Summer\nSolstice', color: '#e8c547',              size: 6, season1: true  },
+  { angle: 275, label: 'Fall\nEquinox',    color: 'rgba(0,201,154,0.38)', size: 2.5, season1: false },
+];
+
+// ── SVG helpers ───────────────────────────────────────────────────────────────
+const SVG_NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs) {
+  const e = document.createElementNS(SVG_NS, tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  return e;
+}
+function arc(cx, cy, r, fromDeg, toDeg) {
+  const s = polar(cx, cy, r, fromDeg);
+  const e = polar(cx, cy, r, toDeg);
+  const large = ((toDeg - fromDeg + 360) % 360) > 180 ? 1 : 0;
+  return `M ${s.x},${s.y} A ${r},${r} 0 ${large},1 ${e.x},${e.y}`;
+}
+
+// ── Global geometry (set on draw) ─────────────────────────────────────────────
+let W, H, CX, CY, R;
+
+// ── Main draw ─────────────────────────────────────────────────────────────────
+function drawHUD() {
+  const svg = document.getElementById('hud-svg');
+  // Preserve defs, clear the rest
+  svg.innerHTML = `<defs>
+    <filter id="glow-hud">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-solar">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-soft">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>`;
+
+  W  = svg.clientWidth;
+  H  = svg.clientHeight;
+  CX = W / 2;
+  // Vertically center in the usable area between topbar and feed
+  CY = TOPBAR_H + (H - TOPBAR_H - FEED_H) / 2;
+  R  = Math.min(W * 0.38, (H - TOPBAR_H - FEED_H) * 0.42);
+
+  const now         = new Date();
+  const curAngle    = dateToAngle(now);
+  const curYearFrac = curAngle / 360;
+  const lunarPhase  = getLunarPhase(now);
+  const s1Angle     = 181;
+
+  // ── Background crosshairs ──────────────────────────────────────────────────
+  [
+    [0, CY, W, CY],
+    [CX, TOPBAR_H, CX, H - FEED_H],
+  ].forEach(([x1,y1,x2,y2]) => {
+    svg.appendChild(svgEl('line', { x1,y1,x2,y2,
+      stroke: 'rgba(0,201,154,0.035)', 'stroke-width': '1' }));
+  });
+
+  // ── Decorative inner rings ─────────────────────────────────────────────────
+  [0.26, 0.50, 0.72].forEach(f => {
+    svg.appendChild(svgEl('circle', {
+      cx: CX, cy: CY, r: R * f,
+      stroke: 'rgba(0,201,154,0.055)', 'stroke-width': '1', fill: 'none',
+    }));
+  });
+
+  // ── Cardinal spoke lines (faint) ───────────────────────────────────────────
+  [0, 90, 180, 270].forEach(a => {
+    const inner = polar(CX, CY, R * 0.26, a);
+    const outer = polar(CX, CY, R,         a);
+    svg.appendChild(svgEl('line', {
+      x1: inner.x, y1: inner.y, x2: outer.x, y2: outer.y,
+      stroke: 'rgba(0,201,154,0.07)', 'stroke-width': '1',
+    }));
+  });
+
+  // ── Tick marks ─────────────────────────────────────────────────────────────
+  for (let a = 0; a < 360; a += 5) {
+    const isMajor = a % 90 === 0;
+    const isMid   = a % 30 === 0;
+    const outR    = R + (isMajor ? 22 : isMid ? 13 : 7);
+    const alpha   = isMajor ? 0.32 : isMid ? 0.16 : 0.07;
+    const w       = isMajor ? 1.5  : isMid ? 1.0  : 0.5;
+    const inner   = polar(CX, CY, R,    a);
+    const outer   = polar(CX, CY, outR, a);
+    svg.appendChild(svgEl('line', {
+      x1: inner.x, y1: inner.y, x2: outer.x, y2: outer.y,
+      stroke: `rgba(0,201,154,${alpha})`, 'stroke-width': w,
+    }));
+  }
+
+  // ── Solar year ring ────────────────────────────────────────────────────────
+  svg.appendChild(svgEl('circle', {
+    cx: CX, cy: CY, r: R,
+    stroke: 'rgba(0,201,154,0.18)', 'stroke-width': '1.5', fill: 'none',
+  }));
+
+  // ── Elapsed arc (Winter Solstice → today, bright green) ───────────────────
+  svg.appendChild(svgEl('path', {
+    d: arc(CX, CY, R, 0, curAngle),
+    fill: 'none',
+    stroke: 'rgba(0,201,154,0.52)', 'stroke-width': '2',
+    'stroke-linecap': 'round',
+    filter: 'url(#glow-soft)',
+  }));
+
+  // ── Remaining arc to Season 1 (dashed gold) ───────────────────────────────
+  if (curAngle < s1Angle) {
+    svg.appendChild(svgEl('path', {
+      d: arc(CX, CY, R, curAngle, s1Angle),
+      fill: 'none',
+      stroke: 'rgba(232,197,71,0.38)', 'stroke-width': '1.5',
+      'stroke-dasharray': '4 5',
+    }));
+  }
+
+  // ── Lunar wave — weaves around the solar ring ─────────────────────────────
+  // ~12.37 oscillations per solar year, amplitude = ~3.5% of R
+  const LUNAR_AMP = R * 0.036;
+  const lunarPts  = [];
+  for (let i = 0; i <= 720; i++) {
+    const deg      = i / 2;
+    const yFrac    = deg / 360;
+    const deltaY   = yFrac - curYearFrac;
+    const lunarArg = (lunarPhase + deltaY * LUNAR_CYCLES_YEAR) * 2 * Math.PI;
+    const offset   = LUNAR_AMP * Math.sin(lunarArg);
+    const pt       = polar(CX, CY, R + offset, deg);
+    lunarPts.push(`${pt.x.toFixed(1)},${pt.y.toFixed(1)}`);
+  }
+  svg.appendChild(svgEl('polyline', {
+    points: lunarPts.join(' '),
+    stroke: 'rgba(180,215,255,0.42)',
+    'stroke-width': '0.9',
+    fill: 'none',
+    'stroke-linejoin': 'round',
+  }));
+
+  // ── Season markers ─────────────────────────────────────────────────────────
+  SEASONS.forEach(s => {
+    const dotPt  = polar(CX, CY, R,          s.angle);
+    const outerPt = polar(CX, CY, R + (s.season1 ? 30 : 18), s.angle);
+
+    // Radial line outward from ring
+    svg.appendChild(svgEl('line', {
+      x1: dotPt.x, y1: dotPt.y, x2: outerPt.x, y2: outerPt.y,
+      stroke: s.color, 'stroke-width': s.season1 ? '1.5' : '1',
+      filter: s.season1 ? 'url(#glow-solar)' : '',
+    }));
+
+    // Dot on ring
+    svg.appendChild(svgEl('circle', {
+      cx: dotPt.x, cy: dotPt.y, r: s.size,
+      fill: s.color,
+      filter: s.season1 ? 'url(#glow-solar)' : 'url(#glow-soft)',
+    }));
+
+    // Season 1: extra targeting rings
+    if (s.season1) {
+      [14, 22].forEach(r => {
+        svg.appendChild(svgEl('circle', {
+          cx: dotPt.x, cy: dotPt.y, r,
+          fill: 'none',
+          stroke: 'rgba(232,197,71,0.22)',
+          'stroke-width': '1',
+        }));
+      });
+    }
+  });
+
+  // ── Node connection lines (ring → panel zone) ─────────────────────────────
+  NODES.forEach(node => {
+    const ringPt = polar(CX, CY, R,        node.angle);
+    const endPt  = polar(CX, CY, R * 1.28, node.angle);
+
+    svg.appendChild(svgEl('line', {
+      x1: ringPt.x, y1: ringPt.y, x2: endPt.x, y2: endPt.y,
+      stroke: node.color + '44', 'stroke-width': '1',
+    }));
+
+    // Dot on ring where node connects
+    svg.appendChild(svgEl('circle', {
+      cx: ringPt.x, cy: ringPt.y, r: 3,
+      fill: node.color,
+      filter: 'url(#glow-soft)',
+    }));
+  });
+
+  // ── Current date pointer ───────────────────────────────────────────────────
+  {
+    const hubPt  = polar(CX, CY, R * 0.26, curAngle);
+    const ringPt = polar(CX, CY, R,         curAngle);
+    svg.appendChild(svgEl('line', {
+      x1: hubPt.x, y1: hubPt.y, x2: ringPt.x, y2: ringPt.y,
+      stroke: 'rgba(0,201,154,0.65)', 'stroke-width': '1.5',
+      'stroke-dasharray': '3 4',
+      filter: 'url(#glow-hud)',
+    }));
+    // Bright dot on ring
+    svg.appendChild(svgEl('circle', {
+      cx: ringPt.x, cy: ringPt.y, r: 4.5,
+      fill: '#00c99a', filter: 'url(#glow-hud)',
+    }));
+    // "NOW" label just beyond ring
+    const lblPt = polar(CX, CY, R + 28, curAngle);
+    const txt   = document.createElementNS(SVG_NS, 'text');
+    txt.setAttribute('x', lblPt.x);
+    txt.setAttribute('y', lblPt.y);
+    txt.setAttribute('font-size', '8');
+    txt.setAttribute('font-family', "'IBM Plex Mono', monospace");
+    txt.setAttribute('letter-spacing', '0.12em');
+    txt.setAttribute('fill', 'rgba(0,201,154,0.55)');
+    txt.setAttribute('text-anchor', 'middle');
+    txt.setAttribute('dominant-baseline', 'middle');
+    txt.textContent = 'NOW';
+    svg.appendChild(txt);
+  }
+
+  // ── Center hub ────────────────────────────────────────────────────────────
+  // Outer ring
+  svg.appendChild(svgEl('circle', {
+    cx: CX, cy: CY, r: 24,
+    fill: 'none', stroke: 'rgba(0,201,154,0.10)', 'stroke-width': '1',
+  }));
+  // Middle ring
+  svg.appendChild(svgEl('circle', {
+    cx: CX, cy: CY, r: 15,
+    fill: 'rgba(0,201,154,0.04)',
+    stroke: 'rgba(0,201,154,0.22)', 'stroke-width': '1',
+  }));
+  // Center dot
+  svg.appendChild(svgEl('circle', {
+    cx: CX, cy: CY, r: 2.5,
+    fill: 'rgba(0,201,154,0.6)',
+    filter: 'url(#glow-hud)',
+  }));
+  // Crosshair
+  [[-20, 0, 20, 0], [0, -20, 0, 20]].forEach(([x1,y1,x2,y2]) => {
+    svg.appendChild(svgEl('line', {
+      x1: CX+x1, y1: CY+y1, x2: CX+x2, y2: CY+y2,
+      stroke: 'rgba(0,201,154,0.25)', 'stroke-width': '0.75',
+    }));
+  });
+
+  // Update HTML element positions
+  positionPanels();
+  positionSeasonPanel();
+}
+
+// ── Panel positioning ─────────────────────────────────────────────────────────
+function positionPanels() {
+  const PANEL_R = R * 1.36;
+  const PAD = 8;
+
+  NODES.forEach(node => {
+    const panel = document.getElementById('panel-' + node.id);
+    if (!panel) return;
+    const pt = polar(CX, CY, PANEL_R, node.angle);
+    const pW  = panel.offsetWidth  || 120;
+    const pH  = panel.offsetHeight || 72;
+    const a   = ((node.angle % 360) + 360) % 360;
+
+    let left, top;
+    if (a < 45 || a >= 315) {
+      // Top zone: center below point
+      left = pt.x - pW / 2;
+      top  = pt.y - pH - 4;
+    } else if (a < 135) {
+      // Right zone: panel to the right
+      left = pt.x + 4;
+      top  = pt.y - pH / 2;
+    } else if (a < 225) {
+      // Bottom zone: center above point (below circle)
+      left = pt.x - pW / 2;
+      top  = pt.y + 4;
+    } else {
+      // Left zone: panel to the left
+      left = pt.x - pW - 4;
+      top  = pt.y - pH / 2;
+    }
+
+    // Clamp to viewport
+    left = Math.max(PAD, Math.min(W - pW - PAD, left));
+    top  = Math.max(TOPBAR_H + PAD, Math.min(H - FEED_H - pH - PAD, top));
+
+    panel.style.left = left + 'px';
+    panel.style.top  = top  + 'px';
+  });
+}
+
+function positionSeasonPanel() {
+  const s1Angle = 181;
+  const pt      = polar(CX, CY, R + 52, s1Angle);
+  const panel   = document.getElementById('season-panel');
+  if (!panel) return;
+  const pH = panel.offsetHeight || 36;
+  const y  = Math.min(pt.y, H - FEED_H - pH - 8);
+  panel.style.left      = '50%';
+  panel.style.top       = y + 'px';
+  panel.style.transform = 'translateX(-50%)';
+}
+
+// ── Lunar phase display ────────────────────────────────────────────────────────
+function updateLunarDisplay() {
+  const phase = getLunarPhase(new Date());
+  const [glyph, name] = lunarPhaseName(phase);
+  document.getElementById('phase-glyph').innerHTML = glyph;
+  document.getElementById('phase-name').textContent  = name;
+}
+
+// ── Clock ──────────────────────────────────────────────────────────────────────
+function updateClock() {
+  const mt = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Denver',
+    month: 'short', day: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: false,
+  }).format(new Date());
+  document.getElementById('tb-clock').innerHTML = `<span>${mt}</span> MT`;
+}
+
+// ── Countdown ──────────────────────────────────────────────────────────────────
+function updateCountdown() {
+  const diff = SEASON_OPEN - new Date();
+  if (diff <= 0) {
+    document.getElementById('season-countdown').textContent = 'LIVE';
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  document.getElementById('season-countdown').textContent = `${d}d ${h}h ${m}m`;
+}
+
+// ── Supabase ───────────────────────────────────────────────────────────────────
+async function fetchData() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/participants?select=id&limit=1`,
+      { headers: {
+          'apikey': SUPABASE_ANON,
+          'Authorization': `Bearer ${SUPABASE_ANON}`,
+          'Prefer': 'count=exact',
+      }}
+    );
+    if (res.ok) {
+      const ct    = res.headers.get('content-range');
+      const count = ct ? parseInt(ct.split('/')[1]) : null;
+      if (count !== null) {
+        animVal('val-agents', 0, count);
+        animVal('val-coop', 8, count > 8 ? count : 8);
+      }
+    }
+  } catch(e) {}
+
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/coordination_requests?select=title,status,created_at&order=created_at.desc&limit=8`,
+      { headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}` } }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.length) injectFeed(data);
+    }
+  } catch(e) {}
+}
+
+// ── Animated number ────────────────────────────────────────────────────────────
+function animVal(id, from, to, dur = 700) {
+  const el = document.getElementById(id);
+  if (!el || from === to) return;
+  const start = performance.now();
+  function step(now) {
+    const t = Math.min((now - start) / dur, 1);
+    const e = t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+    el.textContent = Math.round(from + (to - from) * e);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ── Feed ───────────────────────────────────────────────────────────────────────
+const SEED_FEED = [
+  { tag: 'co-op',    text: 'RegenHub, LCA filed · Boulder, CO',         accent: 'Feb 2026' },
+  { tag: 'season',   text: 'Season 1 opens Summer Solstice',            accent: 'Jun 21 2026' },
+  { tag: 'guild',    text: '5 games confirmed for Season 1 slate',      accent: 'Oathbreaker · Shelling Point · Tragedy · Capture · AI 2027' },
+  { tag: 'research', text: 'Deep Roots published',                      accent: 'cooperation.games/research' },
+  { tag: 'trust',    text: 'Trust schema finalized · Five Bands · EAS', accent: 'ERC-8004 · Base' },
+  { tag: 'co-op',    text: '8 founding organizers seated',              accent: 'Boulder, CO' },
+  { tag: 'agent',    text: 'Nou · Dianoia active in Workshop',          accent: 'pre-season' },
+];
+
+function injectFeed(liveItems) {
+  renderFeed([
+    ...liveItems.map(d => ({ tag: 'workshop', text: d.title || 'Workshop activity', accent: d.status || '' })),
+    ...SEED_FEED,
+  ]);
+}
+
+function renderFeed(items) {
+  const all = [...items, ...items];
+  document.getElementById('feed-inner').innerHTML = all.map(i => `
+    <div class="feed-item">
+      <span class="fi-tag">${i.tag}</span>
+      <span>${i.text}</span>
+      <span class="fi-accent">${i.accent}</span>
+    </div>
+  `).join('');
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+function init() {
+  lucide.createIcons();
+  drawHUD();
+  updateLunarDisplay();
+  updateClock();
+  updateCountdown();
+  fetchData();
+  renderFeed(SEED_FEED);
+
+  setInterval(updateClock,     1000);
+  setInterval(updateCountdown, 60000);
+  setInterval(fetchData,       30000);
+  setInterval(drawHUD,         60000); // Redraw as Earth turns
+}
+
+window.addEventListener('load', () => setTimeout(init, 80));
+window.addEventListener('resize', () => { drawHUD(); positionSeasonPanel(); });
+</script>
+</body>
+</html>
+

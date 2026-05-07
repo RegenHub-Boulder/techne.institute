@@ -1,0 +1,1 @@
+function h(e){const a=Date.now(),f=new Date(e).getTime(),s=a-f;if(s<0)return"just now";const o=Math.floor(s/1e3);if(o<60)return`${o}s ago`;const t=Math.floor(o/60);if(t<60)return`${t}m ago`;const n=Math.floor(t/60);if(n<24)return`${n}h ago`;const r=Math.floor(n/24);return r<30?`${r}d ago`:`${Math.floor(r/30)}mo ago`}export{h as t};

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('techne-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches){document.documentElement.setAttribute('data-theme','light');}})()</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seminars — Techne Institute</title>
+<meta name="description" content="Parnassus House seminars hosted at RegenHub — recorded sessions, edited transcripts, and reading materials from structured intellectual gatherings on technology and the human future.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://techne.institute/seminars/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Seminars — Techne Institute">
+<meta property="og:description" content="Parnassus House at RegenHub. Structured seminars on technology, philosophy, and collective intelligence.">
+<meta property="og:url" content="https://techne.institute/seminars/">
+<meta property="og:site_name" content="Techne Institute">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Seminars — Techne Institute">
+<meta name="twitter:description" content="Parnassus House at RegenHub. Edited transcripts from structured seminars on technology and the human future.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Seminars — Techne Institute",
+  "description": "Parnassus House seminar series at RegenHub — edited transcripts and reading materials.",
+  "url": "https://techne.institute/seminars/",
+  "isPartOf": { "@type": "WebSite", "name": "Techne Institute", "url": "https://techne.institute/" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://techne.institute/" },
+      { "@type": "ListItem", "position": 2, "name": "Seminars", "item": "https://techne.institute/seminars/" }
+    ]
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --void: #0c0c0c;
+    --surface: #161616;
+    --panel: #222222;
+    --raised: #2a2a2a;
+    --border: #383838;
+    --border-dim: #2a2a2a;
+    --gold: #c4956a;
+    --parchment: #f0f0f0;
+    --warm: #d0d0d0;
+    --muted: #9a9a9a;
+    --dim: #707070;
+    --ghost: #505050;
+    --status-ok: #4ade80;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--void);
+    color: var(--warm);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--gold); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 52px;
+    background: var(--void);
+    border-bottom: 1px solid var(--border);
+    gap: 1rem;
+  }
+
+  .nav-brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--parchment);
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .nav-brand:hover { color: var(--gold); text-decoration: none; }
+
+  .nav-back {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+  }
+  .nav-back:hover { opacity: 1; color: var(--gold); text-decoration: none; }
+
+  .nav-spacer { flex: 1; }
+
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.6rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover { background: var(--raised); color: var(--parchment); }
+
+  /* Page */
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 4rem 2rem 7rem;
+  }
+
+  .hero {
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border-dim);
+    max-width: 640px;
+    margin-bottom: 3rem;
+  }
+
+  .hero-kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.8;
+    margin-bottom: 1.25rem;
+  }
+
+  h1 {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    color: var(--parchment);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .hero-body {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  /* Series Section */
+  .series-header {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .series-title {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--parchment);
+    margin-bottom: 0.4rem;
+    line-height: 1.25;
+  }
+
+  .series-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  /* Session list */
+  .session-list {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .session-row {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 0 1.5rem;
+    align-items: center;
+    padding: 1.1rem 1.4rem;
+    border-bottom: 1px solid var(--border-dim);
+    transition: background 0.12s;
+  }
+  .session-row:last-child { border-bottom: none; }
+  a.session-row { text-decoration: none; color: var(--warm); }
+  a.session-row:hover { background: var(--surface); }
+
+  .session-row.upcoming {
+    opacity: 0.45;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .session-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  .session-info { display: flex; flex-direction: column; gap: 0.2rem; }
+
+  .session-title {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--parchment);
+    line-height: 1.3;
+  }
+
+  .session-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .session-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--status-ok);
+    margin-top: 0.15rem;
+  }
+
+  .session-badge.upcoming-badge { color: var(--dim); }
+
+  /* About Parnassus */
+  .about-block {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-dim);
+    max-width: 640px;
+  }
+
+  .about-kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 0.75rem;
+  }
+
+  .about-text {
+    color: var(--muted);
+    font-size: 0.93rem;
+    line-height: 1.75;
+  }
+
+  /* Light Mode */
+  [data-theme="light"] {
+    --void: #f5f3f0;
+    --ink: #fffdf9;
+    --surface: #ffffff;
+    --panel: #f0ede8;
+    --raised: #e8e4dd;
+    --border: rgba(0,0,0,0.12);
+    --border-dim: rgba(0,0,0,0.07);
+    --gold: #a07850;
+    --parchment: #1a1a1a;
+    --warm: #333333;
+    --muted: #666666;
+    --dim: #888888;
+    --ghost: #aaaaaa;
+    --status-ok: #16a34a;
+  }
+
+  body { transition: background 0.2s, color 0.2s; }
+
+  @media (max-width: 600px) {
+    .page { padding: 2rem 1.25rem 5rem; }
+    .site-nav { padding: 0 1rem; }
+    a.session-row { grid-template-columns: 40px 1fr; gap: 0 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="/" class="nav-brand">Techne</a>
+  <a href="/" class="nav-back">← Institute</a>
+  <span class="nav-spacer"></span>
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><span id="theme-label">Light</span></button>
+</nav>
+
+<main class="page">
+
+  <div class="hero">
+    <div class="hero-kicker">Parnassus House at RegenHub</div>
+    <h1>Seminars</h1>
+    <p class="hero-body">Structured gatherings at the intersection of technology, philosophy, and collective intelligence. Edited transcripts published here.</p>
+  </div>
+
+  <div class="series-header">Series</div>
+  <div class="series-title">Technology &amp; the Human Future</div>
+  <div class="series-meta">
+    Facilitated by Parnassus House &nbsp;·&nbsp; 4 sessions &nbsp;·&nbsp; Boulder, Colorado
+  </div>
+
+  <div class="session-list">
+    <a href="/seminars/the-ancients/" class="session-row">
+      <span class="session-num">01</span>
+      <div class="session-info">
+        <span class="session-title">The Ancients</span>
+        <span class="session-sub">What Plato already knew about <em>techne</em> &mdash; the <i>Phaedrus</i>, <i>pleonexia</i>, and the cybernetic condition</span>
+        <span class="session-badge">Published</span>
+      </div>
+    </a>
+    <div class="session-row upcoming">
+      <span class="session-num">02</span>
+      <div class="session-info">
+        <span class="session-title">The Moderns</span>
+        <span class="session-sub">Descartes through Marx &mdash; how technique became a world-system</span>
+        <span class="session-badge upcoming-badge">Upcoming</span>
+      </div>
+    </div>
+    <div class="session-row upcoming">
+      <span class="session-num">03</span>
+      <div class="session-info">
+        <span class="session-title">The Twentieth Century</span>
+        <span class="session-sub">Heidegger, Ellul, Illich &mdash; the critiques that didn't stop anything</span>
+        <span class="session-badge upcoming-badge">Upcoming</span>
+      </div>
+    </div>
+    <div class="session-row upcoming">
+      <span class="session-num">04</span>
+      <div class="session-info">
+        <span class="session-title">What Now</span>
+        <span class="session-sub">AI, cooperative structures, and the question of what a serious response looks like</span>
+        <span class="session-badge upcoming-badge">Upcoming</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-block">
+    <div class="about-kicker">About Parnassus House</div>
+    <p class="about-text">Parnassus House is an independent education organization founded by Paul Diduch and Niko Kovacevic. It offers seminars, tutoring, and workshops rooted in Socratic close reading. This series is hosted at RegenHub in Boulder — bringing structured intellectual inquiry into the studio.</p>
+  </div>
+
+</main>
+
+<script>
+(function(){
+  var btn = document.getElementById('theme-toggle');
+  var lbl = document.getElementById('theme-label');
+  function updateLabel(){
+    var t = document.documentElement.getAttribute('data-theme');
+    lbl.textContent = (t === 'dark') ? 'Light' : 'Dark';
+  }
+  updateLabel();
+  btn.addEventListener('click', function(){
+    var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('techne-theme', next);
+    updateLabel();
+  });
+})();
+</script>
+</body>
+</html>

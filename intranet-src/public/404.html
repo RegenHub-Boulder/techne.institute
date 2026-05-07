@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Techne Intranet</title>
+  <script>
+    // GitHub Pages SPA routing shim
+    // Redirects 404s back to the SPA with the path encoded as ?p=
+    var path = window.location.pathname.replace('/intranet', '') || '/'
+    window.location.replace(
+      '/intranet/?p=' + encodeURIComponent(path) +
+      (window.location.search ? '&' + window.location.search.slice(1) : '') +
+      window.location.hash
+    )
+  </script>
+</head>
+<body></body>
+</html>

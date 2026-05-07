@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RegenHub, LCA — Data Room</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #212121;
+    --border: #2e2e2e;
+    --border2: #3a3a3a;
+    --primary: #c4956a;
+    --primary-dim: #8a6545;
+    --text: #d9d9d9;
+    --text-bright: #ece6de;
+    --text-muted: #888888;
+    --text-faint: #555555;
+    --green: #8aba8a;
+    --green-bg: #1a1f1a;
+    --green-border: #4a6a4a;
+    --amber: #d4b08a;
+    --amber-bg: #1f1a14;
+    --amber-border: #8a6545;
+    --blue: #a0a0c4;
+    --blue-bg: #1a1a22;
+    --blue-border: #6a6a8a;
+  }
+
+  html { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.65; }
+  body { max-width: 860px; margin: 0 auto; padding: 48px 32px 80px; }
+
+  /* ── Cover ── */
+  .cover { padding: 56px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 52px; }
+  .cover-eyebrow { font-size: 11px; font-family: monospace; color: var(--primary-dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .cover h1 { font-size: 32px; font-weight: 700; color: var(--text-bright); letter-spacing: -0.6px; line-height: 1.2; margin-bottom: 10px; }
+  .cover-sub { font-size: 14px; color: var(--text-muted); margin-top: 12px; line-height: 1.6; max-width: 580px; }
+  .cover-meta { margin-top: 28px; display: flex; gap: 0; flex-wrap: wrap; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; }
+  .cover-meta-item { font-size: 11px; font-family: monospace; color: var(--text-faint); padding-right: 24px; border-right: 1px solid var(--border); margin-right: 24px; }
+  .cover-meta-item:last-child { border-right: none; margin-right: 0; }
+  .cover-meta-item strong { color: var(--text-muted); font-weight: 500; }
+
+  /* ── Sections ── */
+  section { margin-bottom: 56px; }
+  .section-label { font-size: 10px; font-family: monospace; letter-spacing: 2.5px; text-transform: uppercase; color: var(--primary-dim); margin-bottom: 10px; }
+  section h2 { font-size: 21px; font-weight: 600; color: var(--text-bright); letter-spacing: -0.3px; margin-bottom: 14px; }
+  section > p { color: var(--text); margin-bottom: 14px; max-width: 700px; line-height: 1.7; }
+
+  /* ── Pullquote ── */
+  .pullquote { border-left: 3px solid var(--primary); padding: 14px 18px; background: var(--surface); border-radius: 0 4px 4px 0; margin: 24px 0; font-size: 14px; color: var(--text-bright); font-style: italic; line-height: 1.65; }
+
+  /* ── Term table ── */
+  .term-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+  .term-table th { background: var(--surface); color: var(--text-muted); font-weight: 600; text-align: left; padding: 9px 14px; border: 1px solid var(--border); font-size: 10px; font-family: monospace; letter-spacing: 1px; text-transform: uppercase; }
+  .term-table td { padding: 10px 14px; border: 1px solid var(--border); color: var(--text); vertical-align: top; line-height: 1.6; }
+  .term-table td:first-child { color: var(--text-muted); font-size: 12px; font-family: monospace; white-space: nowrap; width: 180px; }
+  .term-table tr:nth-child(even) td { background: #161616; }
+  .term-table a { color: var(--primary); text-decoration: none; }
+  .term-table a:hover { text-decoration: underline; }
+
+  /* ── Stack items ── */
+  .stack { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+  .stack-item { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 18px 20px; display: flex; align-items: flex-start; gap: 16px; }
+  .stack-num { font-family: monospace; font-size: 22px; font-weight: 700; color: var(--primary-dim); line-height: 1; flex-shrink: 0; width: 28px; }
+  .stack-body h4 { font-size: 14px; font-weight: 600; color: var(--text-bright); margin-bottom: 5px; }
+  .stack-body p { font-size: 13px; color: var(--text-muted); margin: 0 0 6px 0; line-height: 1.55; }
+  .stack-body p:last-child { margin-bottom: 0; }
+  .stack-status { font-size: 10px; font-family: monospace; padding: 2px 9px; border-radius: 10px; display: inline-block; }
+  .status-ready   { background: var(--green-bg);  color: var(--green);       border: 1px solid var(--green-border); }
+  .status-draft   { background: var(--blue-bg);   color: var(--blue);        border: 1px solid var(--blue-border); }
+  .status-pending { background: var(--surface2);  color: var(--text-faint);  border: 1px solid var(--border2); }
+  .status-agreed  { background: var(--amber-bg);  color: var(--amber);       border: 1px solid var(--amber-border); }
+
+  /* ── Notice ── */
+  .notice { background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: 4px; padding: 14px 18px; margin: 20px 0; font-size: 12px; color: var(--blue); line-height: 1.6; }
+  .notice strong { color: var(--text-bright); }
+
+  /* ── Contents grid ── */
+  .contents { display: flex; flex-direction: column; gap: 0; margin-top: 20px; }
+  .contents-row { display: grid; grid-template-columns: 200px 1fr auto; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: start; }
+  .contents-row:last-child { border-bottom: none; }
+  .contents-row .doc-title { font-size: 13px; font-weight: 600; color: var(--text-bright); }
+  .contents-row .doc-title a { color: var(--primary); text-decoration: none; }
+  .contents-row .doc-title a:hover { text-decoration: underline; }
+  .contents-row .doc-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .doc-status { font-size: 10px; font-family: monospace; padding: 2px 9px; border-radius: 10px; white-space: nowrap; }
+
+  /* ── Divider ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+  /* ── Footer ── */
+  footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-faint); font-family: monospace; line-height: 1.9; }
+  footer a { color: var(--primary-dim); text-decoration: none; }
+
+  strong { color: var(--text-bright); }
+  em { color: var(--text-muted); }
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-eyebrow">RegenHub, LCA · Boulder, Colorado · February 2026</div>
+  <h1>Data Room</h1>
+  <p class="cover-sub">Assembled for prospective partners and investors considering a relationship with Techne, its ventures, and our home at 1515 Walnut St, Suite 200, Boulder, CO.</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Entity</strong> · RegenHub, LCA (DBA Techne)</div>
+    <div class="cover-meta-item"><strong>Structure</strong> · Colorado Public Benefit LCA</div>
+    <div class="cover-meta-item"><strong>Filed</strong> · February 6, 2026</div>
+    <div class="cover-meta-item"><strong>Attorney</strong> · Jeff Pote · Pote Law Firm</div>
+    <div class="cover-meta-item"><strong>Contact</strong> · Todd Youngblood · Ventures &amp; Operations Steward</div>
+  </div>
+</div>
+
+<!-- 01: CONTENTS -->
+<section>
+  <div class="section-label">01 — Contents</div>
+  <h2>Documents in this data room</h2>
+  <p>Start with the <a href="vision-one-pager.html">Vision One-Pager</a> for the investment thesis. The <a href="deck.html">Pitch Deck</a> covers the place, the operational picture, and the 3–5 year vision. The <a href="term-sheet.html">Term Sheet</a> has the legal and financial terms.</p>
+
+  <div class="contents">
+    <div class="contents-row">
+      <div class="doc-title"><a href="vision-one-pager.html">Vision One-Pager</a></div>
+      <div class="doc-desc">Basket thesis, venture profiles, deal structure, and growth model. Written by Aaron Gabriel. Start here.</div>
+      <span class="doc-status status-ready">Ready</span>
+    </div>
+    <div class="contents-row">
+      <div class="doc-title"><a href="../../" target="_parent">Bylaws — Decision Tree</a></div>
+      <div class="doc-desc">Full proposed bylaws with status per clause. Signals interface for organizer review.</div>
+      <span class="doc-status status-draft">Draft</span>
+    </div>
+    <div class="contents-row">
+      <div class="doc-title"><a href="deck.html">Pitch Deck</a></div>
+      <div class="doc-desc">Narrative presentation — cooperative model, ventures, place, and agreement stack.</div>
+      <span class="doc-status status-ready">Ready</span>
+    </div>
+    <div class="contents-row">
+      <div class="doc-title"><a href="term-sheet.html">Term Sheet</a></div>
+      <div class="doc-desc">First-season capital allocation: Kevin Owocki and Jeremy. Return terms deferred to Financial Systems Committee (March 2, 2026).</div>
+      <span class="doc-status status-agreed">Shape agreed</span>
+    </div>
+    <div class="contents-row">
+      <div class="doc-title">Member Agreement Template</div>
+      <div class="doc-desc">Investor Member class; basket instrument definition in legally binding form.</div>
+      <span class="doc-status status-pending">Pending attorney</span>
+    </div>
+    <div class="contents-row">
+      <div class="doc-title">Financials</div>
+      <div class="doc-desc">Operating model, revenue projections, patronage formula modeling.</div>
+      <span class="doc-status status-pending">Pending</span>
+    </div>
+    <div class="contents-row">
+      <div class="doc-title">Building Finance Model</div>
+      <div class="doc-desc">Appraisal path, purchase diligence, 3–5 year scenario for 1515 Walnut ownership.</div>
+      <span class="doc-status status-pending">Pending</span>
+    </div>
+    <div class="contents-row">
+      <div class="doc-title">Venture Profiles</div>
+      <div class="doc-desc">Parachute, Postage, Habitat — individual conviction builders for each founding venture.</div>
+      <span class="doc-status status-pending">Pending</span>
+    </div>
+  </div>
+</section>
+
+<!-- 02: ABOUT -->
+<section>
+  <div class="section-label">02 — About the Cooperative</div>
+  <h2>RegenHub, LCA</h2>
+
+  <table class="term-table">
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Legal structure</td><td>Colorado Limited Cooperative Association — member-owned, democratic governance, Sub K partnership tax</td></tr>
+      <tr><td>Public benefit</td><td>Cultivating scenius (collective intelligence through shared proximity)</td></tr>
+      <tr><td>Location</td><td>Suite 200, 1515 Walnut St, Boulder, CO</td></tr>
+      <tr><td>Revenue model</td><td>Coworking + space rental · Studio services · 1% venture reciprocity</td></tr>
+      <tr><td>Cooperative attorney</td><td>Jeff Pote, Pote Law Firm · Boulder, CO</td></tr>
+      <tr><td>Organizers</td><td>Aaron G Neyer · Benjamin Ross · Jonathan Borichevskiy · Kevin Owocki · Lucian Hymer · Neil Mackay Yarnal · Savannah Kruger · Todd Youngblood</td></tr>
+      <tr><td>Filed</td><td>February 6, 2026 · Colorado Secretary of State</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr/>
+
+<footer>
+  RegenHub, LCA (DBA Techne) · Boulder, Colorado · Filed February 6, 2026<br/>
+  Colorado Public Benefit Limited Cooperative Association<br/>
+  Cooperative attorney: Jeff Pote, Pote Law Firm · Boulder, CO<br/>
+  Contact: Todd Youngblood · Ventures &amp; Operations Steward<br/>
+  <a href="https://roots-trust-lca.github.io/regenhub/">roots-trust-lca.github.io/regenhub</a>
+</footer>
+
+
+<!-- rh-theme-start --><script>
+/* rh-theme: postMessage theme sync */
+(function () {
+  var THEMES = {
+    dark: {
+      '--bg':'#0f0f0f','--surface':'#1a1a1a','--surface2':'#212121',
+      '--border':'#2e2e2e','--border2':'#3a3a3a',
+      '--primary':'#c4956a','--primary-dim':'#8a6545',
+      '--text':'#d9d9d9','--text-bright':'#ece6de',
+      '--text-muted':'#888888','--text-faint':'#555555',
+      '--green':'#8aba8a','--green-bg':'#1a1f1a','--green-border':'#4a6a4a',
+      '--amber':'#d4b08a','--amber-bg':'#1f1a14','--amber-border':'#8a6545',
+      '--blue':'#a0a0c4','--blue-bg':'#1a1a22','--blue-border':'#6a6a8a',
+      '--red':'#c47070','--red-bg':'#1f1414','--red-border':'#6a3a3a'
+    },
+    light: {
+      '--bg':'#f8f5f0','--surface':'#efebe4','--surface2':'#e6e0d8',
+      '--border':'#d4ccc0','--border2':'#c4bab0',
+      '--primary':'#9a6838','--primary-dim':'#c4956a',
+      '--text':'#3a342e','--text-bright':'#1a1410',
+      '--text-muted':'#7a7068','--text-faint':'#b0a898',
+      '--green':'#3a7a3a','--green-bg':'#edf5ed','--green-border':'#4a7a4a',
+      '--amber':'#7a4818','--amber-bg':'#f5ede0','--amber-border':'#9a6838',
+      '--blue':'#3a3a7a','--blue-bg':'#edeff8','--blue-border':'#5a5a8a',
+      '--red':'#9a3a3a','--red-bg':'#f8eded','--red-border':'#8a4a4a'
+    }
+  };
+
+  /* Inject smooth transition style once */
+  var style = document.createElement('style');
+  style.textContent = 'html,body,*{transition:background-color 0.2s,color 0.2s,border-color 0.2s;}';
+  document.head.appendChild(style);
+
+  function applyTheme(mode) {
+    var vars = THEMES[mode] || THEMES.dark;
+    var root = document.documentElement;
+    for (var k in vars) root.style.setProperty(k, vars[k]);
+  }
+
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'rh-theme') applyTheme(e.data.mode);
+  });
+
+  /* Tell parent we are ready — parent will reply with current theme */
+  try { window.parent.postMessage({ type: 'rh-theme-ready' }, '*'); } catch(e) {}
+})();
+</script><!-- rh-theme-end -->
+</body>
+</html>
