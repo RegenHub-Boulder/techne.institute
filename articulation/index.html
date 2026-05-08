@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <!-- Theme detection: runs before paint to prevent flash -->
+  <script>
+    (function() {
+      var s = localStorage.getItem('techne-theme');
+      if (s === 'light' || s === 'dark') {
+        document.documentElement.setAttribute('data-theme', s);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Techne Cooperative — An Articulation</title>
+  <meta name="description" content="A working articulation of Techne Cooperative — what it is, what RegenHub becomes, how bodies of work nest inside, and how the cooperative is coming into itself. For members and close parties.">
+  <meta property="og:title" content="Techne Cooperative — An Articulation">
+  <meta property="og:description" content="The cooperative formerly known as RegenHub, LCA — and the wider thing it has become. A working articulation for members and close parties.">
+  <meta property="og:url" content="https://techne.institute/articulation/">
+  <meta property="og:site_name" content="Techne Institute">
+  <link rel="canonical" href="https://techne.institute/articulation/">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/public.css">
+  <script src="/assets/nav.js" defer></script>
+  <style>
+    /* ─── Articulation-specific ─── */
+
+    .container--reading {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* TL;DR callout */
+    .tldr {
+      background: var(--accent-glow);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 1.5rem 1.75rem;
+      margin: 2.5rem 0 3rem;
+    }
+    .tldr-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.85rem;
+    }
+    .tldr ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .tldr li {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-body);
+      padding: 0.45rem 0 0.45rem 1.5rem;
+      position: relative;
+    }
+    .tldr li::before {
+      content: '·';
+      position: absolute;
+      left: 0.5rem;
+      top: 0.4rem;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .tldr li strong { color: var(--text-primary); }
+
+    /* Toggle controls */
+    .toc-controls {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      margin: 1.75rem 0 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .toc-controls button {
+      font-family: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+      text-transform: inherit;
+      color: var(--text-faint);
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      padding: 0.3rem 0.75rem;
+      cursor: pointer;
+      transition: color 150ms, border-color 150ms, background 150ms;
+    }
+    .toc-controls button:hover {
+      color: var(--accent);
+      border-color: var(--accent-dim);
+    }
+    .toc-controls .sep {
+      color: var(--text-faint);
+      opacity: 0.5;
+    }
+
+    /* Collapsible sections */
+    details.section {
+      border-top: 1px solid var(--rule);
+      padding: 0;
+      margin: 0;
+    }
+    details.section:last-of-type {
+      border-bottom: 1px solid var(--rule);
+    }
+
+    details.section > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 1.6rem 0;
+      display: grid;
+      grid-template-columns: 2.5rem 1fr 1.25rem;
+      gap: 1rem;
+      align-items: baseline;
+      transition: background 150ms;
+    }
+    details.section > summary::-webkit-details-marker { display: none; }
+    details.section > summary::marker { display: none; }
+    details.section > summary:hover .section-title { color: var(--accent); }
+
+    .section-marker {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-faint);
+      letter-spacing: 0.05em;
+      align-self: start;
+      padding-top: 0.3rem;
+    }
+    .section-head {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.25;
+      transition: color 150ms;
+    }
+    .section-essence {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+    .section-chev {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-faint);
+      align-self: start;
+      padding-top: 0.45rem;
+      transition: transform 200ms var(--ease-out), color 150ms;
+      transform-origin: center;
+      user-select: none;
+    }
+    .section-chev::before { content: '+'; }
+    details.section[open] > summary .section-chev::before { content: '−'; }
+    details.section[open] > summary .section-chev { color: var(--accent); }
+
+    .section-body {
+      padding: 0 0 2rem 3.5rem;
+      animation: section-fade 250ms ease-out;
+    }
+    @keyframes section-fade {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-body p { margin-bottom: 1rem; }
+    .section-body p.lead {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--text-primary);
+      margin-bottom: 1.25rem;
+    }
+    .section-body h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin: 1.75rem 0 0.6rem;
+    }
+
+    /* Mobile: pull section body inline with marker */
+    @media (max-width: 640px) {
+      details.section > summary {
+        grid-template-columns: 1.75rem 1fr 1rem;
+        gap: 0.75rem;
+        padding: 1.25rem 0;
+      }
+      .section-title { font-size: 1.2rem; }
+      .section-essence { font-size: 0.9rem; }
+      .section-body { padding-left: 0; }
+    }
+
+    /* Two-entity comparison */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0 1.75rem;
+    }
+    .two-col .col {
+      background: var(--bg-card);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 1.25rem 1.4rem;
+    }
+    .two-col .col-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .two-col h4 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      font-weight: 500;
+      margin: 0 0 0.5rem;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .two-col dl { margin: 0.5rem 0 0; }
+    .two-col dt {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-top: 0.65rem;
+    }
+    .two-col dd {
+      font-size: 0.88rem;
+      color: var(--text-body);
+      margin: 0.15rem 0 0;
+      line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    /* CoP relationship cards */
+    .pattern-card {
+      background: var(--bg-card);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 1.25rem 1.4rem;
+      margin: 1rem 0;
+    }
+    .pattern-card .pattern-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .pattern-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin: 0 0 0.5rem;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .pattern-card .examples {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-faint);
+      letter-spacing: 0.04em;
+      margin-top: 0.6rem;
+    }
+
+    /* Substrate primitives grid */
+    .primitives {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+      margin: 1.25rem 0 1.5rem;
+    }
+    .primitive {
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      padding: 0.85rem 1rem;
+      background: var(--bg-card);
+    }
+    .primitive .name {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--text-primary);
+      margin-bottom: 0.2rem;
+    }
+    .primitive .what {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      color: var(--text-body);
+      line-height: 1.5;
+    }
+
+    /* Closing invitation */
+    .invitation {
+      margin: 4rem 0 0;
+      padding: 2rem 0 1.5rem;
+      border-top: 1px solid var(--rule);
+      text-align: center;
+    }
+    .invitation p {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--text-primary);
+      max-width: 32em;
+      margin: 0 auto 0.75rem;
+      line-height: 1.55;
+    }
+    .invitation .draft-mark {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-top: 1rem;
+    }
+
+    /* Lead paragraphs in opening framing */
+    .opening p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 1.1rem;
+    }
+    .opening p:first-child::first-letter {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      float: left;
+      line-height: 0.85;
+      padding: 0.35rem 0.45rem 0 0;
+      color: var(--accent);
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<techne-nav mode="public" active-section="about"></techne-nav>
+
+<div class="page-hero">
+  <p class="eyebrow">Articulation · May 2026</p>
+  <h1>Techne Cooperative</h1>
+  <p class="deck">An articulation, for members and close parties.</p>
+  <p class="meta"><span>A proposal for member consideration</span><span>Boulder, Colorado</span><span>2026</span></p>
+</div>
+
+<main id="main">
+<div class="container--reading">
+
+  <section class="opening" style="padding-top: 3rem;">
+    <p>In February we filed a Colorado Limited Cooperative Association under the name <strong>RegenHub, LCA</strong>. Six months later, the thing that LCA holds has continued to grow — and the name no longer quite contains it. What follows is an articulation of where we are now, what's coming clear, and what we're calling it.</p>
+    <p>This is not a pivot. The cooperative we filed is the cooperative we are. The public benefit purpose — <em>cultivating scenius</em> — is the public benefit purpose we still hold. What might change is that the name catches up to the shape.</p>
+    <p>What follows is <strong>a proposal, not a decision</strong>. Whether to rename, whether to develop a sister entity, how membership and substrate take their final form — these are choices for the cooperative membership to make together. This articulation is an offer of language for that conversation.</p>
+  </section>
+
+  <aside class="tldr" aria-label="In brief">
+    <p class="tldr-label">In brief</p>
+    <ul>
+      <li><strong>Proposal:</strong> rename the cooperative to <strong>Techne Cooperative</strong>, with RegenHub continuing as a DBA — the name of the headquarters at 1515 Walnut.</li>
+      <li>A 501(c)(3) sister entity for educational and charitable work — possibly <strong>Techne Institute</strong> — is one possibility on a longer horizon. May be a new entity, may emerge from an existing aligned nonprofit.</li>
+      <li>Multiple <strong>bodies of work</strong> nest inside Techne — communities of practice, ventures, programs — each with its own relationship to the cooperative: owned, fiscally sponsored, or aligned peer.</li>
+      <li><strong>Communities of practice</strong> (Learn Vibe Build, Neighborhood Village Project, Open Civics) function as pathways into membership. <strong>Partner events</strong> (Boulder Startup Week, Cohere Boulder) serve as convergence points — distinct from membership pathways.</li>
+      <li>A shared <strong>information substrate</strong> — directory, treasury, inventory, governance — would align the bodies of work without homogenizing them.</li>
+      <li>The legal entity, the public benefit purpose, the eight organizers, the lease, the patronage architecture — all preserved regardless of how the proposal lands.</li>
+    </ul>
+  </aside>
+
+  <div class="toc-controls" aria-label="Section controls">
+    <button type="button" id="expandAll">Expand all</button>
+    <button type="button" id="collapseAll">Collapse all</button>
+    <span class="sep">·</span>
+    <span>Ten sections</span>
+  </div>
+
+  <!-- ============ 01 ============ -->
+  <details class="section" id="becoming-clear">
+    <summary>
+      <span class="section-marker">01</span>
+      <span class="section-head">
+        <span class="section-title">What's becoming clear</span>
+        <span class="section-essence">The cooperative grew beyond the name we filed.</span>
+      </span>
+      <span class="section-chev" aria-hidden="true"></span>
+    </summary>
+    <div class="section-body">
+      <p>When we incorporated, RegenHub was the cooperative <em>and</em> the co-working space <em>and</em> the loose collection of ventures forming around both. One name for three things. That was honest at the time — the cooperative <em>was</em> RegenHub, because RegenHub was the only thing the cooperative had yet held.</p>
+      <p>That is no longer accurate. The cooperative now holds:</p>
+      <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 1.85; color: var(--text-body);">
+        <li>The <strong>co-working community</strong> at 1515 Walnut — the founding body of work, the place, the room where this began.</li>
+        <li>An <strong>educational current</strong> — Learn Vibe Build, the Techne Institute vision, the pedagogy that has formed around AI tools and right use of them.</li>
+        <li>A <strong>set of ventures and inquiries</strong> — Parachute, Postage, Habitat, and others — building tools and infrastructure that ventures elsewhere can also use.</li>
+        <li>An <strong>expanding constellation of communities</strong> — Neighborhood Village Project, Open Civics, the Coordination Games — each pursuing right relationship with technology in their own domain.</li>
+      </ul>
+      <p>The cooperative is the underlying body that holds all of this. RegenHub is one of the things it holds — specifically, the co-working community of practice in Boulder. We're keeping the name because it has earned it, because the people who showed up at 1515 Walnut showed up under that name, and because the place itself wants to be called what it is.</p>
+      <p>The cooperative needs a name that reflects the whole.</p>
+    </div>
+  </details>
+
+  <!-- ============ 02 ============ -->
+  <details class="section" id="the-name">
+    <summary>
+      <span class="section-marker">02</span>
+      <span class="section-head">
+        <span class="section-title">The name</span>
+        <span class="section-essence">Techne Cooperative is what we are. RegenHub is where we meet.</span>
+      </span>
+      <span class="section-chev" aria-hidden="true"></span>
+    </summary>
+    <div class="section-body">
+      <p class="lead">Techne — <em>τέχνη</em> — is the Greek word for productive knowledge: the craft of bringing something into being, where art and skill and practical wisdom were not yet separated.</p>
+      <p>It names what the cooperative is actually about: the recovery of craft in an age that has tried to separate the maker from the making, the tool from the wisdom of its use, the community from the technologies that mediate it.</p>
+      <p>If the proposal advances, <strong>RegenHub</strong> would continue as a doing-business-as name. The legal entity would remain the same, the SOS filing carries forward, the public benefit purpose preserved. RegenHub would become the name of the headquarters: the co-working space at 1515 Walnut, second floor, where the cooperative gathers and where its first community of practice still meets.</p>
+      <p>Two names doing two jobs.</p>
+    </div>
+  </details>
+
+  <!-- ============ 03 ============ -->
+  <details class="section" id="two-entity">
+    <summary>
+      <span class="section-marker">03</span>
+      <span class="section-head">
+        <span class="section-title">The two-entity vision</span>
+        <span class="section-essence">A cooperative for patronage. Possibly an institute for charitable work. Two functions, one name.</span>
+      </span>
+      <span class="section-chev" aria-hidden="true"></span>
+    </summary>
+    <div class="section-body">
+      <p>The cooperative form is well-suited for patronage-based, member-governed work. Some aligned work — educational programming, charitable grants, fiscal sponsorship — may fit better in a different vessel.</p>
+
+      <p>One possibility we're holding: a 501(c)(3) sister entity, <em>working name</em> <strong>Techne Institute</strong>, that holds the educational and charitable layer alongside the cooperative. If formed, it could hold the pedagogy — the cohorts, the framing of how human capability develops alongside increasingly powerful tools — and serve as a fiscal sponsor for aligned nonprofit-shaped work that doesn't fit cleanly inside a cooperative structure.</p>
+
+      <p>How this comes about is also open. Two paths worth naming:</p>
+      <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 1.85; color: var(--text-body);">
+        <li>Form a new 501(c)(3) under the Techne Institute name.</li>
+        <li>Repurpose an existing aligned nonprofit. <em>Woven Web</em>, an existing 501(c)(3) currently fiscally sponsoring Cohere Boulder, is one candidate that could potentially evolve into Techne Institute.</li>
+      </ul>
+
+      <p>The shape, if it forms, would split clean:</p>
+
+      <div class="two-col">
+        <div class="col">
+          <p class="col-label">For-profit · Patronage</p>
+          <h4>Techne Cooperative</h4>
+          <dl>
+            <dt>Form</dt><dd>Public Benefit Limited Cooperative Association (the existing LCA, if renamed)</dd>
+            <dt>Holds</dt><dd>Patronage, governance, owned ventures, the membership</dd>
+            <dt>Domain</dt><dd>techne.coop</dd>
+            <dt>Membership</dt><dd>Patron members building bodies of work</dd>
+            <dt>Income</dt><dd>Patronage to contributors; surplus to community reinvestment</dd>
+          </dl>
+        </div>
+        <div class="col">
+          <p class="col-label">Nonprofit · Educational</p>
+          <h4>Techne Institute</h4>
+          <dl>
+            <dt>Form</dt><dd>501(c)(3) charitable nonprofit (possible — new or repurposed)</dd>
+            <dt>Holds</dt><dd>Educational programs, charitable grants, fiscal sponsorship</dd>
+            <dt>Domain</dt><dd>techne.institute</dd>
+            <dt>Membership</dt><dd>Open participation in programs</dd>
+            <dt>Income</dt><dd>Reinvested in mission</dd>
+          </dl>
+        </div>
+      </div>
+
+      <p>The cooperative is filed and operating; the Institute layer is one path among several, and a longer-horizon question. The bigger ask of this articulation is the cooperative vision and the rename. The Institute is flagged here for clarity about where charitable and educational work might find a home — not as something to settle now.</p>
+    </div>
+  </details>
+
+  <!-- ============ 04 ============ -->
+  <details class="section" id="one-sentence">
+    <summary>
+      <span class="section-marker">04</span>
+      <span class="section-head">
+        <span class="section-title">What Techne is, in one sentence</span>
+        <span class="section-essence">The inquiry into right relationship between tools and the people who use them.</span>
+      </span>
+      <span class="section-chev" aria-hidden="true"></span>
+    </summary>
+    <div class="section-body">
+      <p class="lead">Techne is the inquiry into right relationship between tools and the people who use them — held by a cooperative, made operable through bodies of work, supported by a shared substrate, and grounded in a specific place.</p>
+
+      <h3>The inquiry</h3>
+      <p>The same question — <em>what does it mean to use this tool well, in service of life rather than at its expense?</em> — runs through every body of work the cooperative holds. AI in Learn Vibe Build. Civic infrastructure in Open Civics. Mutual obligation in Neighborhood Village Project. Co-working in RegenHub. Computing-as-soft-landing in Parachute. The tools differ. The question is the same.</p>
+
+      <h3>The cooperative</h3>
+      <p>The cooperative is the holder. Not because the cooperative <em>owns</em> every body of work — it does not — but because the cooperative is the membership container through which people stand in relationship to the inquiry and to one another. To be a member of Techne is to be standing in this question with others.</p>
+
+      <h3>Bodies of work</h3>
+      <p>Bodies of work are the operable units. Some are communities of practice. Some are ventures. Some are programs. Some are inquiries that haven't yet decided what they are. The cooperative provides the conditions — legal, economic, infrastructural, cultural — under which bodies of work can form, grow, and recognize one another.</p>
+
+      <h3>The shared substrate</h3>
+      <p>What aligns the bodies of work without homogenizing them. A common pattern of directory, treasury, inventory, and governance — offered to each, adopted on its own terms.</p>
+
+      <h3>The place</h3>
+      <p>Boulder, Colorado, at 1515 Walnut Street, where the Great Plains meet the Rocky Mountains. The cooperative is bioregional. The communities and ventures it holds reach further, but the cooperative itself is rooted here.</p>
+    </div>
+  </details>
+
+  <!-- ============ 05 ============ -->
+  <details class="section" id="bodies-of-work">
+    <summary>
+      <span class="section-marker">05</span>
+      <span class="section-head">
+        <span class="section-title">Bodies of work</span>
+        <span class="section-essence">Communities of practice, ventures, and programs nest inside Techne — each with its own relationship to the cooperative.</span>
+      </span>
+      <span class="section-chev" aria-hidden="true"></span>
+    </summary>
+    <div class="section-body">
+      <p>Not every body of work nested inside Techne has the same relationship to the cooperative. Three patterns are emerging.</p>
+
+      <div class="pattern-card">
+        <p class="pattern-label">Pattern 1</p>
+        <h4>Owned and incubated</h4>
+        <p>Ventures and programs the cooperative holds equity or patronage interest in. Surplus flows back through the cooperative's patronage system. Members who built the body of work are recognized in proportion to what they contributed.</p>
+        <p class="examples">Examples · Learn Vibe Build · parachute.computer · co-emerging ventures from the membership</p>
+      </div>
+
+      <div class="pattern-card">
+        <p class="pattern-label">Pattern 2</p>
+        <h4>Fiscally sponsored</h4>
+        <p>Nonprofit-shaped bodies of work that need a charitable home. The Institute (once formed) hosts the legal and financial layer; the body of work operates with mission alignment but its own internal direction.</p>
+        <p class="examples">Examples · Coordination Games · future programs that don't fit a cooperative or venture form</p>
+      </div>
+
+      <div class="pattern-card">
+        <p class="pattern-label">Pattern 3</p>
+        <h4>Aligned peers</h4>
+        <p>Independent organizations with shared inquiry. They are not owned, not sponsored — they are <em>in relationship</em> with the cooperative. They share substrate where it makes sense to share. Their members can become Techne members through bridge programs, and Techne members can participate in their work.</p>
+        <p class="examples">Examples · Neighborhood Village Project · Open Civics</p>
+      </div>
+
+      <p>These three patterns are not a hierarchy. They are different kinds of alignment, each appropriate for different bodies of work. A body of work can also move between patterns over time — what begins as an aligned peer relationship may, with shared work, become something more deeply integrated. What begins inside the cooperative may spin out into independence.</p>
+    </div>
+  </details>
+
+  <!-- ============ 06 ============ -->
+  <details class="section" id="membership">
+    <summary>
+      <span class="section-marker">06</span>
+      <span class="section-head">
+        <span class="section-title">Membership pathways</span>
+        <span class="section-essence">Two memberships. Communities of practice as pathways. Partner events as convergence points.</span>
+      </span>
+      <span class="section-chev" aria-hidden="true"></span>
+    </summary>
+    <div class="section-body">
+      <p>There are two kinds of membership in Techne Cooperative:</p>
+
+      <h3>Core cooperative membership</h3>
+      <p>Patron members of the cooperative, with full governance rights — the people building and stewarding the bodies of work the cooperative holds. This is the membership the bylaws describe. The path in is relational: showing up, contributing, being invited.</p>
+
+      <h3>Techne membership</h3>
+      <p>A class of membership oriented around participation in Techne's broader programs — the bodies of work, the inquiry, the substrate. Designed for people active in Techne-aligned communities of practice who are not (yet) holding the responsibilities of core cooperative membership.</p>
+
+      <h3>Bridge programs — the pathway in</h3>
+      <p>Bridge programs are the sustained-participation pathway into Techne membership. They are <strong>communities of practice</strong> — places where people return, develop, contribute, and form relationships over time. Sustained participation is the key: events bring people into proximity once; bridge programs hold people in inquiry over months and years.</p>
+      <p>Examples:</p>
+      <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 1.85; color: var(--text-body);">
+        <li><strong>Learn Vibe Build</strong> — an owned, cohort-based AI learning practice with an alumni community.</li>
+        <li><strong>Neighborhood Village Project</strong> — an aligned-peer practice of place; a community of practice around neighborhood-scale civic recovery.</li>
+        <li><strong>Open Civics</strong> — an aligned-peer network of civic innovators with its own bi-weekly assemblies and grant rounds.</li>
+      </ul>
+      <p>A bridge program does not need to be Techne-owned. What it needs is shared character: an inquiry into right relationship with tools, a community of practice forming around it, alignment with the cooperative's purpose. Through these communities, people develop the standing relationship that can lead to Techne membership.</p>
+
+      <h3>Partner events — convergence points</h3>
+      <p>Distinct from bridge programs. Partner events are gatherings where the cooperative meets and works alongside aligned communities. They are <em>convergence points</em>, not pathways — moments where new relationships can form, but not in themselves a sustained practice that confers membership.</p>
+      <p>Examples:</p>
+      <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 1.85; color: var(--text-body);">
+        <li><strong>Boulder Startup Week</strong> — the city's annual convergence of founders, builders, and supporters; a partnership Techne participates in and may grow involvement with.</li>
+        <li><strong>Cohere Boulder</strong> — a Boulder gathering currently fiscally sponsored by Woven Web; another convergence point Techne helps shape.</li>
+      </ul>
+      <p>The distinction matters. A bridge program is something you can <em>belong to</em>. A partner event is something you can <em>show up at</em>. Both serve the cooperative — they do different work.</p>
+
+      <p style="margin-top: 1.5rem; color: var(--text-faint); font-size: 0.92rem;"><em>Coordination Games is currently taking shape as a venture; it may grow a community-of-practice layer that becomes a bridge program in time. The boundary between shapes is permeable.</em></p>
+    </div>
+  </details>
+
+  <!-- ============ 07 ============ -->
+  <details class="section" id="substrate">
+    <summary>
+      <span class="section-marker">07</span>
+      <span class="section-head">
+        <span class="section-title">The substrate</span>
+        <span class="section-essence">A common information system. Four primitives. Same pattern, different bodies of work.</span>
+      </span>
+      <span class="section-chev" aria-hidden="true"></span>
+    </summary>
+    <div class="section-body">
+      <p>Across every body of work, a common information system holds the practical layer:</p>
+
+      <div class="primitives">
+        <div class="primitive">
+          <p class="name">Directory</p>
+          <p class="what">Members, roles, and the labor records that feed patronage.</p>
+        </div>
+        <div class="primitive">
+          <p class="name">Treasury</p>
+          <p class="what">Real-time visibility into shared accounts and the flows between them.</p>
+        </div>
+        <div class="primitive">
+          <p class="name">Inventory</p>
+          <p class="what">Resources, instruments, and the bodies of work each community keeps in circulation.</p>
+        </div>
+        <div class="primitive">
+          <p class="name">Governance</p>
+          <p class="what">Operating agreements, member commitments, and the proposals that move them.</p>
+        </div>
+      </div>
+
+      <p>Each body of work uses these primitives on its own terms. Together they make the cooperative legible to itself — and they let work, value, and recognition flow between bodies of work without losing their distinctness.</p>
+
+      <h3>Why these four?</h3>
+      <p>They are the four faculties through which any organized body perceives itself: <em>who is here</em> (directory), <em>what we hold</em> (inventory), <em>what is flowing, and where</em> (treasury), <em>under what agreements</em> (governance). Less than four and the cooperative cannot see itself clearly. What a cooperative cannot see, it cannot recognize, coordinate, or distribute fairly.</p>
+
+      <p>In a patronage-based cooperative this becomes concrete. To distribute surplus by contribution, the cooperative has to know <em>who</em> contributed (directory + labor records), <em>what surplus</em> flowed from where (treasury), <em>which bodies of work</em> were involved (inventory), and <em>under what agreements</em> distribution happens (governance). All four, integrated. Less than four and patronage becomes approximation — or wishful thinking.</p>
+
+      <p>In a cooperative holding heterogeneous bodies of work — some owned, some fiscally sponsored, some aligned peers — the four primitives become a lingua franca. Each body of work runs its own directory, treasury, inventory, and governance on its own terms. Because the pattern is shared, work and value and recognition can flow between bodies of work without each having to reinvent the operating layer.</p>
+
+      <p>This is what makes <em>"the cooperative as an intelligence"</em> an operating claim rather than a metaphor. Intelligence requires sensory apparatus. The four primitives are the apparatus. Cultivating scenius, in practical terms, is the long work of giving the scene a way to see itself — so that contribution can be recognized, surplus can be distributed honestly, and the accumulated context that makes a scene generative can be held in common rather than lost to memory.</p>
+
+      <p>This substrate is what is actively being built. It is one of the central reasons the cooperative exists: to develop the tools that aligned communities and cooperatives everywhere will need, by using them in our own work first. Parachute is the venture most directly oriented around this work.</p>
+    </div>
+  </details>
+
+  <!-- ============ 08 ============ -->
+  <details class="section" id="cybernetic">
+    <summary>
+      <span class="section-marker">08</span>
+      <span class="section-head">
+        <span class="section-title">A cybernetic inheritance</span>
+        <span class="section-essence">Intelligence that embodies wisdom — not intelligence for its own sake.</span>
+      </span>
+      <span class="section-chev" aria-hidden="true"></span>
+    </summary>
+    <div class="section-body">
+      <p>A note on lineage, because it matters.</p>
+      <p>Techne does not pursue intelligence for its own sake — neither human intelligence concentrated in a few minds, nor machine intelligence concentrated in a few platforms. The inheritance we are claiming is older and stranger: a cybernetic, humanitarian tradition that asks intelligence to embody wisdom. Intelligence that helps us understand and apply our tools toward the protection of human life, of habitat, of the living planet that holds both.</p>
+      <p>Brian Eno's word <em>scenius</em> — collective intelligence emerging from sustained proximity of culturally aligned people — is the public benefit purpose we filed under. Todd has named the same thing in another register: <em>the cooperative as an intelligence that embodies wisdom</em>. These are the same claim. One speaks from a creative tradition; the other from a cybernetic one. Both describe what the cooperative is for.</p>
+    </div>
+  </details>
+
+  <!-- ============ 09 ============ -->
+  <details class="section" id="continuity">
+    <summary>
+      <span class="section-marker">09</span>
+      <span class="section-head">
+        <span class="section-title">What stays the same</span>
+        <span class="section-essence">Most things. If adopted, the rename is the paper catching up to the practice.</span>
+      </span>
+      <span class="section-chev" aria-hidden="true"></span>
+    </summary>
+    <div class="section-body">
+      <p>Many things.</p>
+      <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 1.85; color: var(--text-body);">
+        <li>The legal entity, its filing, its public benefit designation.</li>
+        <li>The eight organizers who signed on in February.</li>
+        <li>The capital accounts, member agreements (in development), patronage architecture.</li>
+        <li>The lease at 1515 Walnut. The Friday meetings. The room.</li>
+        <li>The commitment to soil-not-enterprise: the cooperative provides the conditions; the bodies of work are not its to own.</li>
+        <li>The principle that members are recognized for what they contribute — labor, revenue, capital, community — not just for capital alone.</li>
+        <li>The discipline of the substrate test: <em>does this regenerate or extract?</em></li>
+      </ul>
+      <p>If the proposal advances: the articles would be amended to register the name; a DBA filing would preserve RegenHub; the bylaws would accommodate Techne membership and the heterogeneous-bodies-of-work pattern. None of these are pivots. They are the legal and operational steps that would bring the paper into alignment with the practice — if the membership chooses them.</p>
+    </div>
+  </details>
+
+  <!-- ============ 10 ============ -->
+  <details class="section" id="next">
+    <summary>
+      <span class="section-marker">10</span>
+      <span class="section-head">
+        <span class="section-title">Where this goes next</span>
+        <span class="section-essence">What would unfold if the proposal advances.</span>
+      </span>
+      <span class="section-chev" aria-hidden="true"></span>
+    </summary>
+    <div class="section-body">
+      <p>Some of what comes next:</p>
+      <div class="def-list">
+        <div class="def-item">
+          <span class="def-term">Rename</span>
+          <span class="def-body">Articles amendment, DBA filing, member-agreement updates.</span>
+        </div>
+        <div class="def-item">
+          <span class="def-term">Institute</span>
+          <span class="def-body">Drafting the 501(c)(3) application; identifying initial board.</span>
+        </div>
+        <div class="def-item">
+          <span class="def-term">Substrate</span>
+          <span class="def-body">Building directory · treasury · inventory · governance primitives the bodies of work can adopt. Parachute is positioned to do much of this work.</span>
+        </div>
+        <div class="def-item">
+          <span class="def-term">Bridges</span>
+          <span class="def-body">Naming the bridge programs we already have, articulating the membership pathway through them.</span>
+        </div>
+        <div class="def-item">
+          <span class="def-term">Public</span>
+          <span class="def-body">Updating techne.coop and techne.institute to reflect what is now coming clear.</span>
+        </div>
+      </div>
+      <p>We will move at the pace the substrate test allows — strengthening relationships, skills, agency, and economic capacity for the people in the room before we expand the room.</p>
+    </div>
+  </details>
+
+  <div class="invitation">
+    <p>If you are reading this, you are one of those people. We would like to know what lands, what doesn't, and what is missing.</p>
+    <p class="draft-mark">Proposal · for members and close parties · May 2026</p>
+  </div>
+
+  <footer class="page-footer">
+    <p>Techne Cooperative · DBA RegenHub · 1515 Walnut St, Suite 200, Boulder, CO 80302</p>
+    <p>Colorado Public Benefit Limited Cooperative Association · SOS Document #20261163853</p>
+  </footer>
+
+</div>
+</main>
+
+<script>
+  (function() {
+    var sections = document.querySelectorAll('details.section');
+    var expandBtn = document.getElementById('expandAll');
+    var collapseBtn = document.getElementById('collapseAll');
+
+    function setAll(open) {
+      sections.forEach(function(d) { d.open = open; });
+    }
+
+    if (expandBtn) expandBtn.addEventListener('click', function() { setAll(true); });
+    if (collapseBtn) collapseBtn.addEventListener('click', function() { setAll(false); });
+
+    // Open the section when arriving via hash link
+    function openFromHash() {
+      var hash = window.location.hash;
+      if (!hash) return;
+      var el = document.querySelector(hash);
+      if (el && el.tagName === 'DETAILS') {
+        el.open = true;
+        setTimeout(function() { el.scrollIntoView({behavior: 'smooth', block: 'start'}); }, 50);
+      }
+    }
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
+  })();
+</script>
+
+</body>
+</html>
