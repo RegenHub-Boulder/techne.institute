@@ -286,6 +286,40 @@
     display: block;
   }
 
+  /* Facilitators */
+  .facilitators {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-dim);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  @media (max-width: 600px) {
+    .facilitators { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
+  .facilitator-name {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--warm);
+    margin-bottom: 0.25rem;
+  }
+  .facilitator-role {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .facilitator-bio {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
   /* Light Mode */
   [data-theme="light"] {
     --void: #f5f3f0;
@@ -453,6 +487,19 @@
 
   <div class="colophon">
     Edited transcript &middot; Session 2 of 4 &middot; Parnassus House at RegenHub
+  </div>
+
+  <div class="facilitators">
+    <div>
+      <div class="facilitator-name">Paul Diduch</div>
+      <div class="facilitator-role">Co-facilitator</div>
+      <p class="facilitator-bio">Teaching Associate Professor in the Herbst Program for Engineering, Ethics &amp; Society at CU Boulder. Holds an MA in Political Science/Political Theory from the University of Alberta and a PhD from the Institute of Philosophic Studies at the University of Dallas, where his doctoral work focused on Plato's ethics and moral psychology. Teaching interests include leadership, ancient philosophy, the history of philosophy, moral psychology, and the history and philosophy of science and technology.</p>
+    </div>
+    <div>
+      <div class="facilitator-name">Niko Kovacevic</div>
+      <div class="facilitator-role">Co-facilitator</div>
+      <p class="facilitator-bio">Holds a BS in Mathematics from Pennsylvania State University. Has been studying and leading seminars on philosophic texts for several years, with a particular interest in ancient political philosophy and technology. Founder or founding member of multiple successful companies; currently works as a software engineer.</p>
+    </div>
   </div>
 
   <div class="series-nav">
