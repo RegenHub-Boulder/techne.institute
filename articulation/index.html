@@ -341,6 +341,254 @@
       margin-top: 1rem;
     }
 
+    /* ─── Visualizations ─── */
+
+    figure.viz {
+      margin: 2.5rem 0 3rem;
+      padding: 0;
+    }
+    figure.viz .viz-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.85rem;
+      text-align: center;
+    }
+    figure.viz svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+    }
+    figure.viz figcaption {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-style: italic;
+      color: var(--text-faint);
+      text-align: center;
+      margin-top: 0.85rem;
+      max-width: 36em;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.55;
+    }
+
+    /* ─── Constellation visual ─── */
+    .constellation .ring {
+      fill: none;
+      stroke: var(--rule);
+      stroke-width: 1;
+      opacity: 0.5;
+    }
+    .constellation .ring--inner { stroke-dasharray: 2,4; }
+    .constellation .ring--outer { stroke-dasharray: 3,6; }
+    .constellation .center-circle {
+      fill: var(--bg-card);
+      stroke: var(--accent);
+      stroke-width: 1.5;
+    }
+    .constellation .center-halo {
+      fill: var(--accent);
+      opacity: 0.04;
+    }
+    .constellation .label-center {
+      font-family: var(--font-display);
+      font-weight: 400;
+      fill: var(--text-primary);
+    }
+    .constellation .label-place {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      fill: var(--accent);
+    }
+    .constellation .node-owned {
+      fill: var(--accent);
+    }
+    .constellation .node-peer {
+      fill: var(--bg);
+      stroke: var(--accent);
+      stroke-width: 1.5;
+    }
+    .constellation .node-cop-ring {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 0.8;
+      opacity: 0.35;
+    }
+    .constellation .label-body {
+      font-family: var(--font-display);
+      font-size: 13px;
+      fill: var(--text-primary);
+    }
+    .constellation .label-event {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      fill: var(--text-faint);
+      text-transform: uppercase;
+    }
+    .constellation .line-owned {
+      stroke: var(--accent);
+      stroke-width: 1;
+      opacity: 0.5;
+    }
+    .constellation .line-peer {
+      stroke: var(--accent);
+      stroke-width: 1;
+      stroke-dasharray: 4,3;
+      opacity: 0.4;
+    }
+    .constellation .line-event {
+      stroke: var(--accent);
+      stroke-width: 1;
+      stroke-dasharray: 1,4;
+      opacity: 0.3;
+    }
+    .constellation-legend {
+      display: flex;
+      justify-content: center;
+      gap: 1.75rem;
+      flex-wrap: wrap;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      color: var(--text-faint);
+      margin: 0.75rem 0 0;
+    }
+    .constellation-legend .item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .constellation-legend .marker {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .constellation-legend .marker--owned { background: var(--accent); }
+    .constellation-legend .marker--peer {
+      background: var(--bg);
+      border: 1.5px solid var(--accent);
+    }
+    .constellation-legend .marker--event {
+      width: 18px;
+      height: 0;
+      border-radius: 0;
+      border-top: 1.5px dotted var(--accent);
+      background: transparent;
+      align-self: center;
+    }
+
+    /* ─── Substrate visual ─── */
+    .substrate-viz .body-card-rect {
+      fill: var(--bg-card);
+      stroke: var(--rule);
+      stroke-width: 1;
+    }
+    .substrate-viz .body-card-label {
+      font-family: var(--font-display);
+      font-size: 12px;
+      fill: var(--text-primary);
+    }
+    .substrate-viz .body-card-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      fill: var(--text-faint);
+      text-transform: uppercase;
+    }
+    .substrate-viz .stem {
+      stroke: var(--accent);
+      stroke-width: 1;
+      opacity: 0.4;
+      stroke-dasharray: 2,3;
+    }
+    .substrate-viz .substrate-bar {
+      fill: var(--accent-glow);
+      stroke: var(--accent);
+      stroke-width: 1.2;
+    }
+    .substrate-viz .substrate-divider {
+      stroke: var(--accent);
+      stroke-width: 0.8;
+      opacity: 0.4;
+      stroke-dasharray: 2,3;
+    }
+    .substrate-viz .primitive-name {
+      font-family: var(--font-display);
+      font-size: 14px;
+      fill: var(--text-primary);
+      font-weight: 500;
+    }
+    .substrate-viz .primitive-desc {
+      font-family: var(--font-body);
+      font-size: 10px;
+      fill: var(--text-body);
+    }
+    .substrate-viz .substrate-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      fill: var(--accent);
+    }
+
+    /* ─── Pathway visual ─── */
+    .pathway-viz .stage-circle {
+      fill: var(--bg-card);
+      stroke: var(--accent);
+      stroke-width: 1.5;
+    }
+    .pathway-viz .stage-circle--active {
+      fill: var(--accent);
+      stroke: var(--accent);
+    }
+    .pathway-viz .stage-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      fill: var(--accent);
+    }
+    .pathway-viz .stage-num--active { fill: var(--bg); }
+    .pathway-viz .stage-name {
+      font-family: var(--font-display);
+      font-size: 13px;
+      fill: var(--text-primary);
+    }
+    .pathway-viz .stage-class {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      fill: var(--text-faint);
+      text-transform: uppercase;
+    }
+    .pathway-viz .stage-arrow {
+      stroke: var(--accent);
+      stroke-width: 1.2;
+      fill: none;
+      opacity: 0.55;
+    }
+    .pathway-viz .transition-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      fill: var(--text-body);
+      font-style: italic;
+    }
+    .pathway-viz .stage-detail {
+      font-family: var(--font-body);
+      font-size: 10px;
+      fill: var(--text-faint);
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      figure.viz { margin: 1.75rem 0 2.5rem; }
+      .constellation-legend { gap: 1rem; font-size: 0.62rem; }
+    }
+
     /* Lead paragraphs in opening framing */
     .opening p {
       font-size: 1.05rem;
@@ -379,11 +627,101 @@
     <p style="font-size: 0.92rem; color: var(--text-faint); font-style: italic;">A note on scope: this proposal focuses on landing the cooperative. Related questions about charitable and educational work belong in a separate conversation that follows.</p>
   </section>
 
+  <figure class="viz">
+    <p class="viz-label">The shape of it</p>
+    <svg class="constellation" viewBox="0 0 760 510" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="A constellation showing Techne Cooperative at the center, with bodies of work nesting in concentric rings: owned ventures close in, aligned peer organizations further out, and partner events at the edge.">
+      <defs>
+        <radialGradient id="scenius-wash" cx="50%" cy="50%" r="42%">
+          <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.06"/>
+          <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <rect width="760" height="510" fill="url(#scenius-wash)"/>
+
+      <!-- Subtle rings -->
+      <circle class="ring ring--outer" cx="380" cy="255" r="210"/>
+      <circle class="ring ring--inner" cx="380" cy="255" r="135"/>
+
+      <!-- Connecting lines: owned -->
+      <line class="line-owned" x1="380" y1="255" x2="380" y2="125"/>
+      <line class="line-owned" x1="380" y1="255" x2="510" y2="255"/>
+      <line class="line-owned" x1="380" y1="255" x2="250" y2="255"/>
+
+      <!-- Connecting lines: peers -->
+      <line class="line-peer" x1="380" y1="255" x2="245" y2="385"/>
+      <line class="line-peer" x1="380" y1="255" x2="515" y2="385"/>
+
+      <!-- Connecting lines: events (faint, longer) -->
+      <line class="line-event" x1="380" y1="255" x2="640" y2="120"/>
+      <line class="line-event" x1="380" y1="255" x2="120" y2="120"/>
+
+      <!-- Center halo -->
+      <circle class="center-halo" cx="380" cy="255" r="78"/>
+
+      <!-- Center: Techne Cooperative -->
+      <circle class="center-circle" cx="380" cy="255" r="68"/>
+      <text class="label-center" x="380" y="248" text-anchor="middle" font-size="18">Techne</text>
+      <text class="label-center" x="380" y="270" text-anchor="middle" font-size="18">Cooperative</text>
+      <text class="label-place" x="380" y="295" text-anchor="middle">RegenHub · 1515 Walnut</text>
+
+      <!-- Owned bodies of work — small rings indicate internal CoP governance -->
+      <g>
+        <circle class="node-cop-ring" cx="380" cy="125" r="11"/>
+        <circle class="node-owned" cx="380" cy="125" r="6"/>
+        <text class="label-body" x="380" y="103" text-anchor="middle">Learn Vibe Build</text>
+      </g>
+      <g>
+        <circle class="node-cop-ring" cx="510" cy="255" r="11"/>
+        <circle class="node-owned" cx="510" cy="255" r="6"/>
+        <text class="label-body" x="528" y="259">Parachute</text>
+      </g>
+      <g>
+        <circle class="node-cop-ring" cx="250" cy="255" r="11"/>
+        <circle class="node-owned" cx="250" cy="255" r="6"/>
+        <text class="label-body" x="232" y="259" text-anchor="end">Postage</text>
+      </g>
+
+      <!-- Aligned peers — small rings indicate internal CoP governance -->
+      <g>
+        <circle class="node-cop-ring" cx="245" cy="385" r="11"/>
+        <circle class="node-peer" cx="245" cy="385" r="6"/>
+        <text class="label-body" x="225" y="383" text-anchor="end">Neighborhood</text>
+        <text class="label-body" x="225" y="399" text-anchor="end">Village Project</text>
+      </g>
+      <g>
+        <circle class="node-cop-ring" cx="515" cy="385" r="11"/>
+        <circle class="node-peer" cx="515" cy="385" r="6"/>
+        <text class="label-body" x="535" y="389">Open Civics</text>
+      </g>
+
+      <!-- Partner events — at the edge, no node circle -->
+      <g>
+        <text class="label-event" x="640" y="116" text-anchor="middle">Boulder</text>
+        <text class="label-event" x="640" y="132" text-anchor="middle">Startup Week</text>
+      </g>
+      <g>
+        <text class="label-event" x="120" y="116" text-anchor="middle">Cohere</text>
+        <text class="label-event" x="120" y="132" text-anchor="middle">Boulder</text>
+      </g>
+    </svg>
+
+    <div class="constellation-legend" aria-label="Legend">
+      <span class="item"><span class="marker marker--owned"></span>Owned · patronage</span>
+      <span class="item"><span class="marker marker--peer"></span>Aligned peer · independent</span>
+      <span class="item"><span class="marker marker--event"></span>Partner event · convergence</span>
+    </div>
+
+    <figcaption>Techne Cooperative at the center, with RegenHub as its headquarters. Owned bodies of work close in. Aligned peer organizations further out — sharing inquiry, governing themselves. Partner events at the edge as convergence points. Each ringed node carries its own internal member governance.</figcaption>
+  </figure>
+
   <aside class="tldr" aria-label="In brief">
     <p class="tldr-label">In brief</p>
     <ul>
       <li><strong>Proposal:</strong> rename the cooperative to <strong>Techne Cooperative</strong>, with RegenHub continuing as a DBA — the name of the headquarters at 1515 Walnut.</li>
       <li>Multiple <strong>bodies of work</strong> nest inside Techne — communities of practice, ventures, programs — each with its own relationship to the cooperative.</li>
+      <li><strong>Federated governance</strong>: Techne Coop Members govern cooperative-scale matters; each community of practice (RegenHub, LVB, etc.) governs its own internal affairs. Memberships layer.</li>
       <li><strong>Communities of practice</strong> (Learn Vibe Build, Neighborhood Village Project, Open Civics) function as pathways into membership. <strong>Partner events</strong> (Boulder Startup Week, Cohere Boulder) serve as convergence points — distinct from membership pathways.</li>
       <li>A shared <strong>information substrate</strong> — directory, treasury, inventory, governance — would align the bodies of work without homogenizing them.</li>
       <li>The legal entity, the public benefit purpose, the eight organizers, the lease, the patronage architecture — all preserved regardless of how the proposal lands.</li>
@@ -508,31 +846,79 @@
       <span class="section-marker">05</span>
       <span class="section-head">
         <span class="section-title">Membership pathways</span>
-        <span class="section-essence">Two memberships. Communities of practice as pathways. Partner events as convergence points.</span>
+        <span class="section-essence">One cooperative membership. Each community governs its own. Bridge programs as pathways.</span>
       </span>
       <span class="section-chev" aria-hidden="true"></span>
     </summary>
     <div class="section-body">
-      <p>There are two kinds of membership in Techne Cooperative:</p>
+      <h3>Federated, not centralized</h3>
+      <p>Membership lives at two layers. <strong>Techne Cooperative Member</strong> is the membership at the cooperative level — described by the existing bylaws (Cooperative Member, Co-working Member, Community Participant, Investor Member). The cooperative governs cooperative-scale matters: shared infrastructure, the lease, patronage architecture, the public benefit purpose.</p>
+      <p>Each <strong>community of practice</strong> within Techne — RegenHub at 1515 Walnut, Learn Vibe Build, and others as they form — has its <em>own</em> internal member governance over its <em>own</em> affairs. RegenHub members make RegenHub decisions; LVB cohort members shape LVB programming; aligned peers like NVP and Open Civics are already self-governing at their own level.</p>
+      <p>A single person can be a member at multiple layers — a Techne Cooperative Member, a RegenHub member, a LVB cohort alum — each with its own scope. The layers nest; they don't replace each other.</p>
 
-      <h3>Core cooperative membership</h3>
-      <p>Patron members of the cooperative, with full governance rights — the people building and stewarding the bodies of work the cooperative holds. This is the membership the bylaws describe. The path in is relational: showing up, contributing, being invited.</p>
+      <figure class="viz pathway-viz">
+        <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="The path from first encounter to cooperative membership: visitor, community participant (Class 3), co-working member (Class 2), cooperative member (Class 1).">
+          <!-- Stage names -->
+          <text class="stage-name" x="90" y="55" text-anchor="middle">Visitor</text>
+          <text class="stage-class" x="90" y="73" text-anchor="middle">FIRST ENCOUNTER</text>
 
-      <h3>Techne membership</h3>
-      <p>A class of membership oriented around participation in Techne's broader programs — the bodies of work, the inquiry, the substrate. Designed for people active in Techne-aligned communities of practice who are not (yet) holding the responsibilities of core cooperative membership.</p>
+          <text class="stage-name" x="285" y="48" text-anchor="middle">Community</text>
+          <text class="stage-name" x="285" y="64" text-anchor="middle">Participant</text>
+          <text class="stage-class" x="285" y="84" text-anchor="middle">CLASS 3</text>
+
+          <text class="stage-name" x="475" y="48" text-anchor="middle">Co-working</text>
+          <text class="stage-name" x="475" y="64" text-anchor="middle">Member</text>
+          <text class="stage-class" x="475" y="84" text-anchor="middle">CLASS 2</text>
+
+          <text class="stage-name" x="650" y="48" text-anchor="middle">Cooperative</text>
+          <text class="stage-name" x="650" y="64" text-anchor="middle">Member</text>
+          <text class="stage-class" x="650" y="84" text-anchor="middle">CLASS 1 · GOVERNANCE</text>
+
+          <!-- Stage circles -->
+          <circle class="stage-circle" cx="90" cy="120" r="22"/>
+          <text class="stage-num" x="90" y="124" text-anchor="middle">01</text>
+
+          <circle class="stage-circle" cx="285" cy="120" r="22"/>
+          <text class="stage-num" x="285" y="124" text-anchor="middle">02</text>
+
+          <circle class="stage-circle" cx="475" cy="120" r="22"/>
+          <text class="stage-num" x="475" y="124" text-anchor="middle">03</text>
+
+          <circle class="stage-circle stage-circle--active" cx="650" cy="120" r="22"/>
+          <text class="stage-num stage-num--active" x="650" y="124" text-anchor="middle">04</text>
+
+          <!-- Connecting arrows -->
+          <path class="stage-arrow" d="M 115 120 L 258 120 M 252 116 L 263 120 L 252 124"/>
+          <path class="stage-arrow" d="M 310 120 L 448 120 M 442 116 L 453 120 L 442 124"/>
+          <path class="stage-arrow" d="M 500 120 L 623 120 M 617 116 L 628 120 L 617 124"/>
+
+          <!-- Transition labels below -->
+          <text class="transition-label" x="187" y="155" text-anchor="middle">events &amp;</text>
+          <text class="transition-label" x="187" y="170" text-anchor="middle">programming</text>
+
+          <text class="transition-label" x="380" y="155" text-anchor="middle">bridge programs ·</text>
+          <text class="transition-label" x="380" y="170" text-anchor="middle">sustained engagement</text>
+
+          <text class="transition-label" x="562" y="155" text-anchor="middle">invitation ·</text>
+          <text class="transition-label" x="562" y="170" text-anchor="middle">deep relationship</text>
+        </svg>
+        <figcaption>The pathway is relational, not transactional. Most people enter through events; sustained participation in a community of practice is what carries someone toward deeper engagement.</figcaption>
+      </figure>
 
       <h3>Bridge programs — the pathway in</h3>
-      <p>Bridge programs are the sustained-participation pathway into Techne membership. They are <strong>communities of practice</strong> — places where people return, develop, contribute, and form relationships over time. Sustained participation is the key: events bring people into proximity once; bridge programs hold people in inquiry over months and years.</p>
+      <p>Bridge programs are <strong>communities of practice</strong>. Places where people return, develop, contribute, and form relationships over time. Sustained participation is the key: events bring people into proximity once; bridge programs hold people in inquiry over months and years.</p>
+      <p>Through sustained participation, people develop the standing relationship that can lead to deeper engagement with the cooperative — Class 3 by default, Class 2 if they want a desk, eventually Class 1 by invitation when the relationship is deep enough.</p>
       <p>Examples:</p>
       <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 1.85; color: var(--text-body);">
         <li><strong>Learn Vibe Build</strong> — an owned, cohort-based AI learning practice with an alumni community.</li>
         <li><strong>Neighborhood Village Project</strong> — an aligned-peer practice of place; a community of practice around neighborhood-scale civic recovery.</li>
         <li><strong>Open Civics</strong> — an aligned-peer network of civic innovators with its own bi-weekly assemblies and grant rounds.</li>
       </ul>
-      <p>A bridge program does not need to be Techne-owned. What it needs is shared character: an inquiry into right relationship with tools, a community of practice forming around it, alignment with the cooperative's purpose. Through these communities, people develop the standing relationship that can lead to Techne membership.</p>
+      <p>A bridge program does not need to be Techne-owned. What it needs is shared character: an inquiry into right relationship with tools, a community of practice forming around it, alignment with the cooperative's purpose.</p>
 
       <h3>Partner events — convergence points</h3>
-      <p>Distinct from bridge programs. Partner events are gatherings where the cooperative meets and works alongside aligned communities. They are <em>convergence points</em>, not pathways — moments where new relationships can form, but not in themselves a sustained practice that confers membership.</p>
+      <p>Distinct from bridge programs. Partner events are gatherings where the cooperative meets and works alongside aligned communities. They are <em>convergence points</em>, not pathways — moments where new relationships can form, but not in themselves a sustained practice.</p>
       <p>Examples:</p>
       <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 1.85; color: var(--text-body);">
         <li><strong>Boulder Startup Week</strong> — the city's annual convergence of founders, builders, and supporters; a partnership Techne participates in and may grow involvement with.</li>
@@ -556,6 +942,69 @@
     </summary>
     <div class="section-body">
       <p>Across every body of work, a common information system holds the practical layer:</p>
+
+      <figure class="viz substrate-viz">
+        <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Bodies of work draw from a shared substrate of four primitives: directory, treasury, inventory, and governance.">
+          <!-- Bodies of work cards -->
+          <g>
+            <rect class="body-card-rect" x="30" y="25" width="145" height="65" rx="4"/>
+            <text class="body-card-tag" x="102" y="48" text-anchor="middle">Owned</text>
+            <text class="body-card-label" x="102" y="68" text-anchor="middle">Learn Vibe</text>
+            <text class="body-card-label" x="102" y="83" text-anchor="middle">Build</text>
+          </g>
+          <g>
+            <rect class="body-card-rect" x="200" y="25" width="145" height="65" rx="4"/>
+            <text class="body-card-tag" x="272" y="48" text-anchor="middle">Owned</text>
+            <text class="body-card-label" x="272" y="71" text-anchor="middle">Parachute</text>
+          </g>
+          <g>
+            <rect class="body-card-rect" x="370" y="25" width="145" height="65" rx="4"/>
+            <text class="body-card-tag" x="442" y="48" text-anchor="middle">Aligned peer</text>
+            <text class="body-card-label" x="442" y="68" text-anchor="middle">Neighborhood</text>
+            <text class="body-card-label" x="442" y="83" text-anchor="middle">Village Project</text>
+          </g>
+          <g>
+            <rect class="body-card-rect" x="540" y="25" width="145" height="65" rx="4"/>
+            <text class="body-card-tag" x="612" y="48" text-anchor="middle">Aligned peer</text>
+            <text class="body-card-label" x="612" y="71" text-anchor="middle">Open Civics</text>
+          </g>
+
+          <!-- Stems connecting bodies to substrate -->
+          <line class="stem" x1="102" y1="90" x2="102" y2="180"/>
+          <line class="stem" x1="272" y1="90" x2="272" y2="180"/>
+          <line class="stem" x1="442" y1="90" x2="442" y2="180"/>
+          <line class="stem" x1="612" y1="90" x2="612" y2="180"/>
+
+          <!-- Substrate label above bar -->
+          <text class="substrate-label" x="360" y="172" text-anchor="middle">SHARED SUBSTRATE</text>
+
+          <!-- Substrate bar -->
+          <rect class="substrate-bar" x="15" y="180" width="690" height="115" rx="6"/>
+
+          <!-- Dividers between primitives -->
+          <line class="substrate-divider" x1="187.5" y1="200" x2="187.5" y2="275"/>
+          <line class="substrate-divider" x1="360" y1="200" x2="360" y2="275"/>
+          <line class="substrate-divider" x1="532.5" y1="200" x2="532.5" y2="275"/>
+
+          <!-- Primitives -->
+          <text class="primitive-name" x="101" y="225" text-anchor="middle">Directory</text>
+          <text class="primitive-desc" x="101" y="248" text-anchor="middle">who is here</text>
+
+          <text class="primitive-name" x="273" y="225" text-anchor="middle">Treasury</text>
+          <text class="primitive-desc" x="273" y="248" text-anchor="middle">what is flowing</text>
+
+          <text class="primitive-name" x="446" y="225" text-anchor="middle">Inventory</text>
+          <text class="primitive-desc" x="446" y="248" text-anchor="middle">what we hold</text>
+
+          <text class="primitive-name" x="619" y="225" text-anchor="middle">Governance</text>
+          <text class="primitive-desc" x="619" y="248" text-anchor="middle">under what agreements</text>
+
+          <!-- "more bodies of work…" indicator -->
+          <text x="700" y="60" font-family="var(--font-mono)" font-size="22" fill="var(--text-faint)" opacity="0.5">…</text>
+        </svg>
+        <figcaption>Each body of work uses the same four primitives on its own terms. The substrate is what makes work, value, and recognition legible across them.</figcaption>
+      </figure>
 
       <div class="primitives">
         <div class="primitive">
@@ -583,7 +1032,7 @@
 
       <p>In a patronage-based cooperative this becomes concrete. To distribute surplus by contribution, the cooperative has to know <em>who</em> contributed (directory + labor records), <em>what surplus</em> flowed from where (treasury), <em>which bodies of work</em> were involved (inventory), and <em>under what agreements</em> distribution happens (governance). All four, integrated. Less than four and patronage becomes approximation — or wishful thinking.</p>
 
-      <p>In a cooperative holding heterogeneous bodies of work — some owned, some fiscally sponsored, some aligned peers — the four primitives become a lingua franca. Each body of work runs its own directory, treasury, inventory, and governance on its own terms. Because the pattern is shared, work and value and recognition can flow between bodies of work without each having to reinvent the operating layer.</p>
+      <p>In a cooperative holding heterogeneous bodies of work — some owned, some aligned peers, others as new patterns emerge — the four primitives become a lingua franca. Each body of work runs its own directory, treasury, inventory, and governance on its own terms. Because the pattern is shared, work and value and recognition can flow between bodies of work without each having to reinvent the operating layer.</p>
 
       <p>This is what makes <em>"the cooperative as an intelligence"</em> an operating claim rather than a metaphor. Intelligence requires sensory apparatus. The four primitives are the apparatus. Cultivating scenius, in practical terms, is the long work of giving the scene a way to see itself — so that contribution can be recognized, surplus can be distributed honestly, and the accumulated context that makes a scene generative can be held in common rather than lost to memory.</p>
 
