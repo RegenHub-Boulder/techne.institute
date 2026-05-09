@@ -258,6 +258,34 @@
   .series-nav-label { color: var(--ghost); letter-spacing: 0.1em; text-transform: uppercase; }
   .series-nav-link { color: var(--gold); }
 
+  /* Audio player */
+  .audio-player {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    padding: 1.1rem 1.4rem;
+    margin-bottom: 2.5rem;
+  }
+  .audio-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 0.3rem;
+  }
+  .audio-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  .audio-player audio {
+    width: 100%;
+    accent-color: var(--gold);
+    display: block;
+  }
+
   /* Light Mode */
   [data-theme="light"] {
     --void: #f5f3f0;
@@ -313,6 +341,14 @@
 
   <div class="editor-note">
     <p>This is a thematic edit of the seminar transcript. The conversation moved quickly across many voices, often overlapping; rather than attribute lines to participants, the edit preserves the substance of the inquiry as it unfolded. Passages read aloud from Kingsnorth and Mumford are paraphrased; brief references to Land use his own section numbering. Paul Diduch and Nico co-facilitated.</p>
+  </div>
+
+  <div class="audio-player">
+    <div class="audio-label">AI-Generated Podcast</div>
+    <div class="audio-title">The Machine &#8212; Kingsnorth, Land, and the Question of the Runaway System</div>
+    <audio controls preload="none">
+      <source src="/seminars/the-machine/session2.m4a" type="audio/mp4">
+    </audio>
   </div>
 
   <h2>Opening the second session</h2>
