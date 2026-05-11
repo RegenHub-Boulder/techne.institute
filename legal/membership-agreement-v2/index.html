@@ -11,7 +11,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Membership Agreement v.2 — RegenHub, LCA</title>
-  <meta name="description" content="Class A Patron Member Membership Agreement for RegenHub, LCA — Draft v.2.0, May 2026. For review by outside counsel.">
+  <meta name="description" content="Class A Patron Member Membership Agreement for RegenHub, LCA — Draft v.2.0, May 2026.">
   <link rel="stylesheet" href="/assets/tokens.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -36,6 +36,10 @@
       --moss:       #6a8a5e;
       --rust:       #9a5a5a;
       --sky:        #5a7a9a;
+      --mark-revised-bg:  rgba(196,149,106,0.14);
+      --mark-revised-line: #c4956a;
+      --mark-new-bg:      rgba(106,138,94,0.13);
+      --mark-new-line:    #6a8a5e;
     }
 
     [data-theme="light"] {
@@ -52,6 +56,10 @@
       --moss:       #4a6a3a;
       --rust:       #8a3a3a;
       --sky:        #3a5a7a;
+      --mark-revised-bg:  rgba(196,149,106,0.18);
+      --mark-revised-line: #8a6a3a;
+      --mark-new-bg:      rgba(74,106,58,0.12);
+      --mark-new-line:    #4a6a3a;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,11 +72,56 @@
       line-height: 1.7;
     }
 
-    /* ── LAYOUT ── */
     .wrap {
       max-width: 780px;
       margin: 0 auto;
       padding: 3rem 2rem 6rem;
+    }
+
+    /* ── CHANGE LEGEND ── */
+    .change-legend {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .legend-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-right: 0.5rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--text-muted);
+    }
+
+    .legend-swatch {
+      width: 1.2rem;
+      height: 0.9rem;
+      border-radius: 2px;
+    }
+
+    .legend-swatch.revised {
+      background: var(--mark-revised-bg);
+      border-bottom: 2px solid var(--mark-revised-line);
+    }
+
+    .legend-swatch.new {
+      background: var(--mark-new-bg);
+      border-bottom: 2px solid var(--mark-new-line);
     }
 
     /* ── DRAFT BANNER ── */
@@ -82,7 +135,7 @@
       letter-spacing: 0.12em;
       color: var(--rust);
       text-align: center;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.5rem;
     }
 
     /* ── DOCUMENT HEADER ── */
@@ -124,12 +177,10 @@
       border-top: 1px solid var(--border-dim);
       border-bottom: 1px solid var(--border-dim);
       margin: 1.5rem 0 2.5rem;
+      flex-wrap: wrap;
     }
 
-    .doc-meta-bar .m-item {
-      text-align: center;
-    }
-
+    .doc-meta-bar .m-item { text-align: center; }
     .doc-meta-bar .m-label {
       font-family: var(--mono);
       font-size: 0.54rem;
@@ -138,17 +189,9 @@
       color: var(--text-dim);
       margin-bottom: 0.15rem;
     }
+    .doc-meta-bar .m-val { font-size: 0.78rem; color: var(--text-muted); }
 
-    .doc-meta-bar .m-val {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    /* ── PARTIES BLOCK ── */
-    .parties-block {
-      margin-bottom: 2rem;
-    }
-
+    /* ── PARTIES / RECITALS ── */
     .parties-intro {
       font-size: 0.88rem;
       color: var(--text-warm);
@@ -156,7 +199,6 @@
       margin-bottom: 1.5rem;
     }
 
-    /* ── RECITALS ── */
     .recitals {
       margin-bottom: 2.5rem;
       padding: 1.25rem 1.5rem;
@@ -191,10 +233,8 @@
       border-top: 1px solid var(--border-dim);
     }
 
-    /* ── SECTION STRUCTURE ── */
-    .article {
-      margin-bottom: 3rem;
-    }
+    /* ── ARTICLE / SECTION STRUCTURE ── */
+    .article { margin-bottom: 3rem; }
 
     .article-heading {
       display: flex;
@@ -223,10 +263,7 @@
       letter-spacing: 0.04em;
     }
 
-    /* sections within articles */
-    .sec {
-      margin-bottom: 1.5rem;
-    }
+    .sec { margin-bottom: 1.5rem; }
 
     .sec-head {
       font-weight: 700;
@@ -251,7 +288,6 @@
 
     .sec p:last-child { margin-bottom: 0; }
 
-    /* sub-items (a), (b), (c) */
     .sub-list {
       list-style: none;
       margin: 0.6rem 0 0.6rem 1.5rem;
@@ -276,60 +312,98 @@
       color: var(--text-dim);
     }
 
-    /* definition terms */
-    .def-term {
-      font-weight: 700;
-      color: var(--text);
-    }
+    .def-term { font-weight: 700; color: var(--text); }
 
-    /* new / changed flag */
-    .tag-new {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 0.52rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--moss);
-      background: rgba(106,138,94,0.10);
-      border: 1px solid rgba(106,138,94,0.22);
-      padding: 0.1rem 0.45rem;
-      border-radius: 2px;
-      margin-left: 0.5rem;
-      vertical-align: middle;
-      position: relative;
-      top: -1px;
-    }
-
-    .tag-revised {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 0.52rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--sky);
-      background: rgba(90,122,154,0.10);
-      border: 1px solid rgba(90,122,154,0.22);
-      padding: 0.1rem 0.45rem;
-      border-radius: 2px;
-      margin-left: 0.5rem;
-      vertical-align: middle;
-      position: relative;
-      top: -1px;
-    }
-
-    /* all-caps sections (liability) */
-    .allcaps-block {
-      font-size: 0.80rem;
-      color: var(--text-muted);
-      line-height: 1.65;
-    }
-
-    /* divider between articles */
     .article-div {
       border: none;
       border-top: 1px solid var(--border-dim);
       margin: 0 0 3rem;
     }
+
+    /* ── NEW SECTION BAND ── */
+    .new-section-band {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.45rem 0.75rem;
+      background: var(--mark-new-bg);
+      border: 1px solid rgba(106,138,94,0.22);
+      border-radius: 3px;
+      margin-bottom: 0.9rem;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--moss);
+    }
+
+    /* ── CHANGE HIGHLIGHTS ── */
+
+    /* Revised: had original text, now different */
+    .mark-revised {
+      background: var(--mark-revised-bg);
+      border-bottom: 1.5px solid var(--mark-revised-line);
+      cursor: help;
+      border-radius: 1px;
+    }
+
+    /* New: added text, no prior equivalent */
+    .mark-new {
+      background: var(--mark-new-bg);
+      border-bottom: 1.5px solid var(--mark-new-line);
+      cursor: help;
+      border-radius: 1px;
+    }
+
+    /* ── TOOLTIP ── */
+    #tt {
+      position: fixed;
+      z-index: 9999;
+      max-width: 440px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.12s;
+    }
+
+    #tt.visible { opacity: 1; }
+
+    #tt-inner {
+      background: #1a1a1f;
+      border: 1px solid rgba(196,149,106,0.30);
+      border-radius: 4px;
+      padding: 0.75rem 0.9rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    }
+
+    [data-theme="light"] #tt-inner {
+      background: #ffffff;
+      border-color: rgba(138,106,58,0.30);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    }
+
+    #tt-kind {
+      font-family: var(--mono);
+      font-size: 0.54rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.4rem;
+    }
+
+    #tt-kind.revised { color: #c4956a; }
+    #tt-kind.new     { color: #6a8a5e; }
+
+    [data-theme="light"] #tt-kind.revised { color: #8a6a3a; }
+    [data-theme="light"] #tt-kind.new     { color: #4a6a3a; }
+
+    #tt-body {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: rgba(200,188,168,0.85);
+      font-style: italic;
+    }
+
+    [data-theme="light"] #tt-body { color: rgba(60,48,36,0.70); }
 
     /* signature block */
     .sig-block {
@@ -362,10 +436,7 @@
       margin-bottom: 1.25rem;
     }
 
-    .sig-field {
-      margin-bottom: 1rem;
-    }
-
+    .sig-field { margin-bottom: 1rem; }
     .sig-field .field-label {
       font-family: var(--mono);
       font-size: 0.56rem;
@@ -394,33 +465,51 @@
       text-align: center;
     }
 
+    /* allcaps legal */
+    .allcaps-block {
+      font-size: 0.80rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
     /* ── PRINT ── */
     @media print {
       body { background: white; color: black; font-size: 11pt; }
       .draft-banner { background: #fee; border-color: #c00; color: #c00; }
       .wrap { padding: 0.5in; max-width: none; }
-      techne-nav { display: none; }
-      [data-theme="dark"] {
-        --bg: white; --surface: #f5f5f5; --raised: white;
-        --text: black; --text-warm: #222; --text-muted: #555; --text-dim: #888;
-        --gold: #7a5a2a; --border: rgba(0,0,0,0.15); --border-dim: rgba(0,0,0,0.08);
-        --moss: #3a5a2a; --sky: #2a4a6a; --rust: #6a2a2a;
-      }
+      techne-nav, .change-legend, #tt { display: none; }
+      .mark-revised { background: #fff8e8; border-bottom: 1px solid #c8962a; }
+      .mark-new { background: #f0f8ec; border-bottom: 1px solid #4a7a3a; }
     }
 
     @media (max-width: 640px) {
-      .doc-meta-bar { flex-wrap: wrap; gap: 1.25rem; }
+      .doc-meta-bar { gap: 1rem; }
       .sig-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
+<!-- TOOLTIP ELEMENT -->
+<div id="tt">
+  <div id="tt-inner">
+    <div id="tt-kind"></div>
+    <div id="tt-body"></div>
+  </div>
+</div>
+
 <techne-nav mode="public"></techne-nav>
 
 <div class="wrap">
 
   <div class="draft-banner">Draft v.2.0 — May 11, 2026 — For Review by Outside Counsel — Not Executed — Not Legal Advice</div>
+
+  <!-- CHANGE LEGEND -->
+  <div class="change-legend">
+    <span class="legend-label">Changes from v.1:</span>
+    <span class="legend-item"><span class="legend-swatch revised"></span>Revised — hover to see original</span>
+    <span class="legend-item"><span class="legend-swatch new"></span>New — no prior text in v.1</span>
+  </div>
 
   <!-- DOCUMENT HEADER -->
   <header class="doc-header">
@@ -448,16 +537,15 @@
     </div>
   </div>
 
-
   <!-- PARTIES -->
-  <div class="parties-block">
-    <p class="parties-intro">THIS MEMBERSHIP AGREEMENT (this <span class="def-term">"Agreement"</span>) is entered into by and between the individual or entity identified on the signature page below (<span class="def-term">"Applicant"</span>) and <span class="def-term">RegenHub, LCA</span>, a Colorado Public Benefit Limited Cooperative Association (<span class="def-term">"Cooperative"</span> or <span class="def-term">"RegenHub"</span>). Applicant and the Cooperative are each referred to herein individually as a <span class="def-term">"Party"</span> and collectively as the <span class="def-term">"Parties."</span></p>
-  </div>
+  <p class="parties-intro">THIS MEMBERSHIP AGREEMENT (this <span class="def-term">"Agreement"</span>) is entered into by and between the individual or entity identified on the signature page below (<span class="def-term">"Applicant"</span>) and <span class="def-term">RegenHub, LCA</span>, a Colorado Public Benefit Limited Cooperative Association (<span class="def-term">"Cooperative"</span> or <span class="def-term">"RegenHub"</span>). Applicant and the Cooperative are each referred to individually as a <span class="def-term">"Party"</span> and collectively as the <span class="def-term">"Parties."</span></p>
 
   <!-- RECITALS -->
   <div class="recitals">
-    <div class="rec-heading">Recitals <span class="tag-revised">Revised</span></div>
-    <p>RegenHub, LCA ("Cooperative") is a Colorado Public Benefit Limited Cooperative Association organized to cultivate collective intelligence and scenius — the intelligence that arises from communities of practice — through right relationship between tools and the people who use them. The Cooperative serves patron members who are practitioners, builders, and thinkers operating across Boulder, Colorado and aligned virtual and regional communities. The Cooperative may operate physical gathering space, digital infrastructure, programs, and services in furtherance of this public benefit purpose.</p>
+    <div class="rec-heading">Recitals</div>
+    <p><span class="mark-revised"
+        data-original="RegenHub is a coworking space and community venue in Boulder, Colorado, providing affordable workspace and event infrastructure for technologies, creatives, and changemakers building towards regenerative futures."
+      >RegenHub, LCA ("Cooperative") is a Colorado Public Benefit Limited Cooperative Association organized to cultivate collective intelligence and scenius — the intelligence that arises from communities of practice — through right relationship between tools and the people who use them. The Cooperative serves patron members who are practitioners, builders, and thinkers operating across Boulder, Colorado and aligned virtual and regional communities. The Cooperative may operate physical gathering space, digital infrastructure, programs, and services in furtherance of this public benefit purpose.</span></p>
     <p>Applicant desires to become a Class A patron member of the Cooperative and to enjoy the rights and assume the obligations of membership as set forth in this Agreement and the Governing Documents (as defined below).</p>
     <p>The Cooperative desires to admit Applicant as a patron member upon the terms set forth herein.</p>
   </div>
@@ -465,9 +553,7 @@
   <p class="consideration">NOW, THEREFORE, in consideration of the mutual covenants and agreements contained herein, and for other good and valuable consideration, the receipt and sufficiency of which are hereby acknowledged, the Parties agree as follows:</p>
 
 
-  <!-- ══════════════════════════════════════════════════
-       SECTION 1 — MEMBERSHIP
-  ══════════════════════════════════════════════════ -->
+  <!-- ═══════════ SECTION 1 — MEMBERSHIP ═══════════ -->
   <div class="article">
     <div class="article-heading">
       <span class="article-num">Section 1</span>
@@ -475,19 +561,20 @@
     </div>
 
     <div class="sec">
-      <div class="sec-head"><span class="sec-num">1.0</span>Scope of Agreement <span class="tag-new">New</span></div>
-      <p>This Agreement governs <span class="def-term">Class A patron membership</span> in RegenHub, LCA. It does not govern investor membership or any other membership class established by the Board after the date of this Agreement. To the extent the Cooperative establishes additional membership classes, membership in each such class shall be governed by a separate membership agreement or addendum specific to that class.</p>
+      <div class="new-section-band">New § 1.0 — no equivalent in v.1</div>
+      <div class="sec-head"><span class="sec-num">1.0</span>Scope of Agreement</div>
+      <p><span class="mark-new" data-original="">This Agreement governs <span class="def-term">Class A patron membership</span> in RegenHub, LCA. It does not govern investor membership or any other membership class established by the Board after the date of this Agreement. To the extent the Cooperative establishes additional membership classes, membership in each such class shall be governed by a separate membership agreement or addendum specific to that class.</span></p>
     </div>
 
     <div class="sec">
-      <div class="sec-head"><span class="sec-num">1.1</span>Class A Patron Membership <span class="tag-revised">Revised</span></div>
+      <div class="sec-head"><span class="sec-num">1.1</span>Class A Patron Membership</div>
       <p>Subject to the terms and conditions of this Agreement and the Governing Documents, upon Applicant's execution of this Agreement and payment of the Stock Price set forth in Section 1.4, the Cooperative shall issue to Applicant one (1) share of Class A voting common stock representing Applicant's membership interest in the Cooperative (<span class="def-term">"Membership Interest"</span>). Each patron member shall hold one (1) share of Class A common stock. The Cooperative shall not admit Applicant as a member until the Stock Price, or an acceptable promissory note, has been received.</p>
-      <p>The Board may establish additional membership classes with different financial rights, governance rights, and stock prices. Membership in any such additional class shall be governed by a separate membership agreement or addendum specific to that class.</p>
+      <p><span class="mark-new" data-original="">The Board may establish additional membership classes with different financial rights, governance rights, and stock prices. Membership in any such additional class shall be governed by a separate membership agreement or addendum specific to that class.</span></p>
     </div>
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">1.2</span>Governing Documents</div>
-      <p>Applicant's membership is subject to and governed by the Articles of Organization, Bylaws, Policies, and any resolutions of the Board of Directors (collectively, <span class="def-term">"Governing Documents"</span>), as each may be amended from time to time in accordance with their terms and applicable law. Applicant acknowledges receipt of the Governing Documents in effect as of the Effective Date. In the event of conflict between this Agreement and the Governing Documents, the Governing Documents shall control, except as otherwise required by applicable law.</p>
+      <p>Applicant's membership is subject to and governed by the Articles of Organization, Bylaws, Policies, and any resolutions of the Board of Directors (collectively, <span class="def-term">"Governing Documents"</span>), as each may be amended from time to time. Applicant acknowledges receipt of the Governing Documents in effect as of the Effective Date. In the event of conflict between this Agreement and the Governing Documents, the Governing Documents shall control, except as otherwise required by applicable law.</p>
     </div>
 
     <div class="sec">
@@ -497,26 +584,19 @@
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">1.4</span>Stock Price</div>
-      <p>The purchase price for Applicant's Membership Interest is one hundred dollars (<span class="def-term">$100.00</span>) per share (<span class="def-term">"Stock Price"</span>). The Stock Price shall be paid in one of the following forms, at the Cooperative's discretion:</p>
-      <ul class="sub-list">
-        <li><span class="sub-label">(a)</span>lump sum payment upon execution of this Agreement;</li>
-        <li><span class="sub-label">(b)</span>a promissory note on terms approved by the Board; or</li>
-        <li><span class="sub-label">(c)</span>a combination of both (a) and (b).</li>
-      </ul>
+      <p>The purchase price for Applicant's Membership Interest is one hundred dollars (<span class="def-term">$100.00</span>) per share (<span class="def-term">"Stock Price"</span>). The Stock Price shall be paid in one of the following forms, at the Cooperative's discretion: (a) lump sum payment upon execution; (b) a promissory note on terms approved by the Board; or (c) a combination of both.</p>
     </div>
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">1.5</span>Membership Dues</div>
-      <p>The Board may, in its discretion, establish membership dues payable by patron members. The Board may change the amount, frequency, or structure of membership dues, provided that any increase in dues shall take effect no sooner than thirty (30) days after written notice to all affected patron members.</p>
+      <p>The Board may, in its discretion, establish membership dues payable by patron members. The Board may change the amount, frequency, or structure of membership dues, <span class="mark-new" data-original="">provided that any increase in dues shall take effect no sooner than thirty (30) days after written notice to all affected patron members.</span></p>
     </div>
   </div>
 
   <hr class="article-div">
 
 
-  <!-- ══════════════════════════════════════════════════
-       SECTION 2 — MEMBER BENEFITS
-  ══════════════════════════════════════════════════ -->
+  <!-- ═══════════ SECTION 2 — MEMBER BENEFITS ═══════════ -->
   <div class="article">
     <div class="article-heading">
       <span class="article-num">Section 2</span>
@@ -530,41 +610,27 @@
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">2.2</span>Member Benefits</div>
-      <p>Upon admission as a patron member, Applicant shall be entitled to the following benefits, subject to the Governing Documents and Policies:</p>
-      <ul class="sub-list">
-        <li><span class="sub-label">(a)</span>ownership of one (1) share of Class A voting common stock;</li>
-        <li><span class="sub-label">(b)</span>access to Cooperative coworking facilities, programs, and services as established by the Board from time to time;</li>
-        <li><span class="sub-label">(c)</span>participation in governance, including the right to vote on matters submitted to patron members in accordance with the Bylaws;</li>
-        <li><span class="sub-label">(d)</span>a share of the Cooperative's net profits allocated pursuant to Sections 2.3 and 2.4; and</li>
-        <li><span class="sub-label">(e)</span>such additional benefits as the Board may establish from time to time.</li>
-      </ul>
+      <p>Upon admission as a patron member, Applicant shall be entitled to the following benefits, subject to the Governing Documents and Policies: (a) ownership of one (1) share of Class A voting common stock; (b) access to Cooperative coworking facilities, programs, and services as established by the Board; (c) participation in governance, including the right to vote on matters submitted to patron members in accordance with the Bylaws; (d) a share of the Cooperative's net profits allocated pursuant to Sections 2.3 and 2.4; and (e) such additional benefits as the Board may establish from time to time.</p>
     </div>
 
     <div class="sec">
-      <div class="sec-head"><span class="sec-num">2.3</span>Profit Share <span class="tag-revised">Revised</span></div>
-      <p>Subject to the Patronage Plan adopted pursuant to Section 2.4 and C.R.S. § 7-58-1004, patron members shall receive allocations of net profits in proportion to their patronage of the Cooperative during each fiscal year, after the Board's establishment of any reserves, unallocated surplus, or other set-asides authorized by the Governing Documents. The Board shall establish the methodology for calculating patronage consistent with the Patronage Plan.</p>
+      <div class="sec-head"><span class="sec-num">2.3</span>Profit Share</div>
+      <p><span class="mark-revised"
+          data-original="The Board establishes the formula for profit share and may change the formula at the Board's discretion."
+        >Subject to the Patronage Plan adopted pursuant to Section 2.4 and C.R.S. § 7-58-1004, patron members shall receive allocations of net profits in proportion to their patronage of the Cooperative during each fiscal year, after the Board's establishment of any reserves, unallocated surplus, or other set-asides authorized by the Governing Documents. The Board shall establish the methodology for calculating patronage consistent with the Patronage Plan.</span></p>
     </div>
 
     <div class="sec">
-      <div class="sec-head"><span class="sec-num">2.4</span>Patronage Plan <span class="tag-new">New</span></div>
-      <p>The Board shall adopt a written <span class="def-term">Patronage Plan</span> within ninety (90) days of the Cooperative's admission of its first patron member. The Patronage Plan shall specify:</p>
-      <ul class="sub-list">
-        <li><span class="sub-label">(a)</span>the method for calculating each patron member's patronage for each fiscal year;</li>
-        <li><span class="sub-label">(b)</span>the basis for allocating net margins among patron members in proportion to their patronage, consistent with C.R.S. § 7-58-1004;</li>
-        <li><span class="sub-label">(c)</span>the form and timing of patronage dividends, including the minimum percentage to be paid in cash;</li>
-        <li><span class="sub-label">(d)</span>the procedures for issuing written notices of allocation to each patron member; and</li>
-        <li><span class="sub-label">(e)</span>the procedures for maintaining and adjusting patron capital accounts.</li>
-      </ul>
-      <p>The Board may amend the Patronage Plan; provided that any amendment reducing the cash component of patronage dividends or changing the patronage allocation basis shall require approval by a majority of patron members entitled to vote at a duly noticed meeting.</p>
+      <div class="new-section-band">New § 2.4 — no equivalent in v.1</div>
+      <div class="sec-head"><span class="sec-num">2.4</span>Patronage Plan</div>
+      <p><span class="mark-new" data-original="">The Board shall adopt a written <span class="def-term">Patronage Plan</span> within ninety (90) days of the Cooperative's admission of its first patron member. The Patronage Plan shall specify: (a) the method for calculating each patron member's patronage for each fiscal year; (b) the basis for allocating net margins among patron members in proportion to their patronage, consistent with C.R.S. § 7-58-1004; (c) the form and timing of patronage dividends, including the minimum percentage to be paid in cash; (d) the procedures for issuing written notices of allocation to each patron member; and (e) the procedures for maintaining and adjusting patron capital accounts. The Board may amend the Patronage Plan, provided that any amendment reducing the cash component of patronage dividends or changing the patronage allocation basis shall require approval by a majority of patron members entitled to vote at a duly noticed meeting.</span></p>
     </div>
   </div>
 
   <hr class="article-div">
 
 
-  <!-- ══════════════════════════════════════════════════
-       SECTION 3 — MEMBER OBLIGATIONS
-  ══════════════════════════════════════════════════ -->
+  <!-- ═══════════ SECTION 3 — MEMBER OBLIGATIONS ═══════════ -->
   <div class="article">
     <div class="article-heading">
       <span class="article-num">Section 3</span>
@@ -573,13 +639,7 @@
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">3.1</span>Membership Obligations</div>
-      <p>As a condition of membership, Applicant agrees to:</p>
-      <ul class="sub-list">
-        <li><span class="sub-label">(a)</span>pay the Stock Price and any applicable membership dues as they become due;</li>
-        <li><span class="sub-label">(b)</span>comply with all Governing Documents and Policies, as amended from time to time;</li>
-        <li><span class="sub-label">(c)</span>participate in the Cooperative's governance in good faith; and</li>
-        <li><span class="sub-label">(d)</span>conduct Applicant's activities as a member consistent with the Cooperative's public benefit purpose and the terms of this Agreement.</li>
-      </ul>
+      <p>As a condition of membership, Applicant agrees to: (a) pay the Stock Price and any applicable membership dues as they become due; (b) comply with all Governing Documents and Policies, as amended from time to time; (c) participate in the Cooperative's governance in good faith; and (d) conduct Applicant's activities as a member consistent with the Cooperative's public benefit purpose and the terms of this Agreement.</p>
     </div>
 
     <div class="sec">
@@ -588,39 +648,41 @@
     </div>
 
     <div class="sec">
-      <div class="sec-head"><span class="sec-num">3.3</span>Consent to Tax Treatment <span class="tag-revised">Revised</span></div>
+      <div class="sec-head"><span class="sec-num">3.3</span>Consent to Tax Treatment</div>
       <p>By becoming a member of the Cooperative and having received a copy of this Agreement, Applicant consents that the amount of any allocations of net profits or losses (as defined by the Bylaws and the Patronage Plan) shall be taken into account on Applicant's income tax return at their stated dollar amounts in the taxable year in which they were received by Applicant.</p>
-      <p>Applicant further acknowledges that:</p>
-      <ul class="sub-list">
-        <li><span class="sub-label">(a)</span>the Cooperative intends to maintain capital accounts for patron members in accordance with Treasury Regulation § 1.704-1(b)(2)(iv);</li>
-        <li><span class="sub-label">(b)</span>the Cooperative will provide Applicant with annual written notices of allocation reflecting Applicant's distributive share of net income or loss for each fiscal year; and</li>
-        <li><span class="sub-label">(c)</span>such allocations are intended to have substantial economic effect within the meaning of IRC § 704(b).</li>
-      </ul>
+      <p><span class="mark-new" data-original="">Applicant further acknowledges that: (a) the Cooperative intends to maintain capital accounts for patron members in accordance with Treasury Regulation § 1.704-1(b)(2)(iv); (b) the Cooperative will provide Applicant with annual written notices of allocation reflecting Applicant's distributive share of net income or loss for each fiscal year; and (c) such allocations are intended to have substantial economic effect within the meaning of IRC § 704(b).</span></p>
     </div>
 
     <div class="sec">
-      <div class="sec-head"><span class="sec-num">3.4</span>Intellectual Property <span class="tag-revised">Revised</span></div>
+      <div class="sec-head"><span class="sec-num">3.4</span>Intellectual Property</div>
 
-      <p><strong>3.4.1 Definitions.</strong> For purposes of this Section 3.4:</p>
-      <p><span class="def-term">"Cooperative-Commissioned Work"</span> means Intellectual Property developed by Applicant pursuant to a written task assignment, statement of work, or engagement letter executed by an authorized officer of the Cooperative, expressly identifying the deliverable as a work-made-for-hire for the Cooperative, and for which Applicant has received or is entitled to receive compensation from the Cooperative beyond the standard member share and any patronage allocation.</p>
+      <p><strong>3.4.1 Definitions.</strong> <span class="mark-new" data-original="">For purposes of this Section 3.4:</span></p>
+
+      <p><span class="mark-new" data-original=""><span class="def-term">"Cooperative-Commissioned Work"</span> means Intellectual Property developed by Applicant pursuant to a written task assignment, statement of work, or engagement letter executed by an authorized officer of the Cooperative, expressly identifying the deliverable as a work-made-for-hire for the Cooperative, and for which Applicant has received or is entitled to receive compensation from the Cooperative beyond the standard member share and any patronage allocation.</span></p>
+
       <p><span class="def-term">"Intellectual Property"</span> means (a) all inventions (whether patentable or unpatentable), all improvements thereto, and all patents, patent applications, and patent disclosures; (b) all trademarks, service marks, trade dress, logos, and trade names, together with all goodwill associated therewith; (c) all copyrightable works, all copyrights, and all registrations and renewals in connection therewith; (d) all trade secrets and confidential business information; (e) all computer software, including data and related documentation; and (f) all other proprietary rights and copies and embodiments thereof.</p>
-      <p><span class="def-term">"Applicant IP"</span> means Intellectual Property (i) developed by Applicant prior to the Effective Date; (ii) developed by Applicant entirely outside the scope of any Cooperative-Commissioned Work and without use of Cooperative resources or Confidential Information; or (iii) developed as part of Applicant's independent professional practice unrelated to any Cooperative-Commissioned Work.</p>
 
-      <p style="margin-top:1rem;"><strong>3.4.2 Works Made for Hire; Assignment.</strong> The Cooperative shall have title to, ownership of, and all proprietary rights in and to any Intellectual Property constituting <span class="def-term">Cooperative-Commissioned Work</span>. All such Cooperative-Commissioned Work shall be considered "works made for hire" as defined by 17 U.S.C. §§ 101 and 201(b). To the extent any Cooperative-Commissioned Work is not deemed a work made for hire, Applicant hereby assigns and agrees to assign all right, title, and interest therein to the Cooperative, including all copyrights, patent rights, and other proprietary rights worldwide. <strong>Intellectual Property developed by Applicant that is not Cooperative-Commissioned Work — including Applicant IP, Applicant's independent professional practice, open-source contributions, and prior work — remains Applicant's property and is not affected by this Agreement.</strong></p>
-      <p>Subject to the foregoing, at the Cooperative's request, Applicant shall execute all documents necessary to effectuate or demonstrate such assignment and to protect the Cooperative's rights in Cooperative-Commissioned Work.</p>
+      <p><span class="mark-new" data-original=""><span class="def-term">"Applicant IP"</span> means Intellectual Property (i) developed by Applicant prior to the Effective Date; (ii) developed by Applicant entirely outside the scope of any Cooperative-Commissioned Work and without use of Cooperative resources or Confidential Information; or (iii) developed as part of Applicant's independent professional practice unrelated to any Cooperative-Commissioned Work.</span></p>
 
-      <p style="margin-top:1rem;"><strong>3.4.3 Moral Rights Waiver.</strong> With respect to Cooperative-Commissioned Work only, Applicant hereby waives any and all moral rights arising under any federal or state law or the law of any other country in and to such Cooperative-Commissioned Work, and agrees that the Cooperative shall have all rights flowing from this waiver, including the right to modify the Cooperative-Commissioned Work for any past, present, or future uses. Applicant agrees to execute all documentation necessary to implement or reflect this waiver.</p>
+      <p style="margin-top:1rem;"><strong>3.4.2 Works Made for Hire; Assignment.</strong> <span class="mark-revised"
+          data-original="The Parties agree, and Applicant acknowledges, that, except for previously developed Intellectual Property proprietary to Applicant (Applicant IP), the Cooperative shall have title to, ownership of, and all proprietary rights in and to any Intellectual Property, including all works-in-progress, developed or created within Applicant's scope of their service (if any) to the Cooperative, all of which shall be considered 'works made for hire,' as defined by the copyright laws of the United States, including 17 U.S.C. §§ 101 and 201(b). Except to the extent that any such Intellectual Property is or constitutes Applicant IP, if any Intellectual Property is not deemed a 'work made for hire,' then Applicant shall assign all right, title, and interest in and to such material to the Cooperative, including all copyrights and copyright registrations worldwide."
+        >The Cooperative shall have title to, ownership of, and all proprietary rights in and to any Intellectual Property constituting <span class="def-term">Cooperative-Commissioned Work</span>. All such Cooperative-Commissioned Work shall be considered "works made for hire" as defined by 17 U.S.C. §§ 101 and 201(b). To the extent any Cooperative-Commissioned Work is not deemed a work made for hire, Applicant hereby assigns all right, title, and interest therein to the Cooperative, including all copyrights, patent rights, and other proprietary rights worldwide. <strong>Intellectual Property developed by Applicant that is not Cooperative-Commissioned Work — including Applicant IP, Applicant's independent professional practice, open-source contributions, and prior work — remains Applicant's property and is not affected by this Agreement.</strong></span></p>
+      <p>At the Cooperative's request, Applicant shall execute all documents necessary to effectuate or demonstrate such assignment and to protect the Cooperative's rights in Cooperative-Commissioned Work.</p>
 
-      <p style="margin-top:1rem;"><strong>3.4.4 Portfolio License.</strong> <span class="tag-revised">Revised</span> The Cooperative grants Applicant a perpetual, royalty-free, non-exclusive license to display Cooperative-Commissioned Work in Applicant's professional portfolio and in the marketing, advertising, or promotion of Applicant's services. Before any such display on each occasion, Applicant shall provide the Cooperative written notice identifying the specific work and proposed use. The Cooperative may, within <strong>ten (10) business days</strong> of receipt of such notice, provide written objection based solely on a specific, then-existing client confidentiality obligation binding on the Cooperative. Absent a timely written objection, Applicant may proceed with the proposed display.</p>
+      <p style="margin-top:1rem;"><strong>3.4.3 Moral Rights Waiver.</strong> <span class="mark-revised"
+          data-original="Except to the extent that any Intellectual Property is or constitutes Applicant IP, Applicant hereby waives any and all moral rights arising under any federal or state law or the law of any other country in and to such Intellectual Property, and any contribution thereto."
+        >With respect to Cooperative-Commissioned Work only, Applicant hereby waives any and all moral rights arising under any federal or state law or the law of any other country in and to such Cooperative-Commissioned Work,</span> and agrees that the Cooperative shall have all rights flowing from this waiver. Applicant agrees to execute all documentation necessary to implement or reflect this waiver.</p>
+
+      <p style="margin-top:1rem;"><strong>3.4.4 Portfolio License.</strong> <span class="mark-revised"
+          data-original="Subject to the terms and conditions of any agreement between the Cooperative and any third party, the Cooperative grants to Applicant a worldwide, perpetual, royalty-free, and non-exclusive limited license to access, display, reproduce, transmit, and use any Cooperative Intellectual Property created or developed (in whole or in part) by Applicant in and only in Applicant's portfolio of work or the marketing, advertising or promotion of Applicant's services; provided that (a) prior to any such use on each occasion Applicant shall inquire from the Cooperative, and the Cooperative shall timely respond to such inquiry, whether any of the Cooperative's agreements restrict or limit Applicant's use of any such Intellectual Property and (b) Applicant shall not have any right to use any such Intellectual Property pursuant to this Section unless the Cooperative has informed the Applicant in writing that such use is permitted."
+        >The Cooperative grants Applicant a perpetual, royalty-free, non-exclusive license to display Cooperative-Commissioned Work in Applicant's professional portfolio and in the marketing, advertising, or promotion of Applicant's services. Before any such display on each occasion, Applicant shall provide the Cooperative written notice identifying the specific work and proposed use. The Cooperative may, within <strong>ten (10) business days</strong> of receipt of such notice, provide written objection based solely on a specific, then-existing client confidentiality obligation binding on the Cooperative. Absent a timely written objection, Applicant may proceed with the proposed display.</span></p>
     </div>
   </div>
 
   <hr class="article-div">
 
 
-  <!-- ══════════════════════════════════════════════════
-       SECTION 4 — CONFIDENTIALITY
-  ══════════════════════════════════════════════════ -->
+  <!-- ═══════════ SECTION 4 — CONFIDENTIALITY ═══════════ -->
   <div class="article">
     <div class="article-heading">
       <span class="article-num">Section 4</span>
@@ -639,18 +701,12 @@
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">4.3</span>Standard of Care</div>
-      <p>Each Party will use the same degree of care to protect the other Party's Confidential Information as it uses to safeguard its own Confidential Information, but in no event less than a reasonable standard of care. Each Party will implement appropriate technical and organizational measures intended to prevent the compromise or unauthorized disclosure of Confidential Information.</p>
+      <p>Each Party will use the same degree of care to protect the other Party's Confidential Information as it uses to safeguard its own Confidential Information, but in no event less than a reasonable standard of care. Each Party will implement appropriate technical and organizational measures intended to prevent unauthorized disclosure of Confidential Information.</p>
     </div>
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">4.4</span>Exclusions</div>
-      <p>Confidential Information does not include information that:</p>
-      <ul class="sub-list">
-        <li><span class="sub-label">(i)</span>is or becomes available to the public through no wrongful action of the receiving Party;</li>
-        <li><span class="sub-label">(ii)</span>is already in the receiving Party's possession and not subject to an existing confidentiality obligation;</li>
-        <li><span class="sub-label">(iii)</span>is received from a third party with no obligation of confidentiality owed to the disclosing Party; or</li>
-        <li><span class="sub-label">(iv)</span>is independently developed by the receiving Party without access to or use of the disclosing Party's Confidential Information.</li>
-      </ul>
+      <p>Confidential Information does not include information that (i) is or becomes available to the public through no wrongful action of the receiving Party; (ii) is already in the receiving Party's possession and not subject to an existing confidentiality obligation; (iii) is received from a third party with no obligation of confidentiality owed to the disclosing Party; or (iv) is independently developed by the receiving Party without access to or use of the disclosing Party's Confidential Information.</p>
     </div>
 
     <div class="sec">
@@ -660,12 +716,12 @@
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">4.6</span>Access Restrictions</div>
-      <p>Each Party will restrict access to the other Party's Confidential Information to personnel with a need to know in order to perform obligations under this Agreement. Such personnel shall be bound by confidentiality obligations no less protective than those set forth herein.</p>
+      <p>Each Party will restrict access to the other Party's Confidential Information to personnel with a need to know. Such personnel shall be bound by confidentiality obligations no less protective than those set forth herein.</p>
     </div>
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">4.7</span>Return or Destruction</div>
-      <p>Upon termination or withdrawal of Applicant's membership, Applicant will securely destroy or, at the Cooperative's written request and expense, return all Confidential Information belonging to the Cooperative. Any Confidential Information that cannot reasonably be returned or destroyed will remain protected under this Section 4 until return or destruction is possible. Upon the Cooperative's request, Applicant will certify in writing compliance with this subsection.</p>
+      <p>Upon termination or voluntary withdrawal of Applicant's membership, Applicant will securely destroy or, at the Cooperative's written request and expense, return all Confidential Information belonging to the Cooperative. Any Confidential Information that cannot reasonably be returned or destroyed will remain protected under this Section 4 until possible. Upon request, Applicant will certify in writing compliance with this subsection.</p>
     </div>
 
     <div class="sec">
@@ -677,13 +733,11 @@
   <hr class="article-div">
 
 
-  <!-- ══════════════════════════════════════════════════
-       SECTION 5 — TERMINATION AND WITHDRAWAL
-  ══════════════════════════════════════════════════ -->
+  <!-- ═══════════ SECTION 5 — TERMINATION AND WITHDRAWAL ═══════════ -->
   <div class="article">
     <div class="article-heading">
       <span class="article-num">Section 5</span>
-      <span class="article-title">Termination and Withdrawal <span class="tag-revised">Revised</span></span>
+      <span class="article-title">Termination and Withdrawal</span>
     </div>
 
     <div class="sec">
@@ -693,20 +747,20 @@
         <li><span class="sub-label">(a)</span>Applicant fails to comply with any material term or provision of this Agreement, the Bylaws, or the Policies of the Cooperative;</li>
         <li><span class="sub-label">(b)</span>Applicant fails to pay any obligation payable to the Cooperative within thirty (30) days of Applicant's receipt of written notice that such obligation is owed;</li>
         <li><span class="sub-label">(c)</span>Applicant makes a false statement concerning a representation or warranty made in this Agreement;</li>
-        <li><span class="sub-label">(d)</span>the Cooperative, in its reasonable business judgment based on specific facts, determines that Applicant's conduct is materially detrimental to the operations and/or reputation of the Cooperative;</li>
-        <li><span class="sub-label">(e)</span>the Cooperative determines, based on a good faith belief supported by specific facts, that Applicant has inaccurately reported information material to Applicant's membership or patronage; or</li>
+        <li><span class="sub-label">(d)</span><span class="mark-revised"
+            data-original="RegenHub, in its reasonable business judgment, determines that Applicant's conduct is detrimental to the operations and/or reputation of RegenHub"
+          >the Cooperative, in its reasonable business judgment based on specific, articulable facts, determines that Applicant's conduct is <strong>materially</strong> detrimental to the operations and/or reputation of the Cooperative</span>;</li>
+        <li><span class="sub-label">(e)</span><span class="mark-revised"
+            data-original="RegenHub determines, based on a good faith belief, that Applicant has inaccurately reported information"
+          >the Cooperative determines, based on a good faith belief <strong>supported by specific facts</strong>, that Applicant has inaccurately reported information <strong>material to Applicant's membership or patronage</strong></span>; or</li>
         <li><span class="sub-label">(f)</span>the Cooperative determines, pursuant to the dispute resolution process defined in the Bylaws, that Applicant's conduct has materially inhibited the ability of other members or applicants to participate in the Cooperative.</li>
       </ul>
     </div>
 
     <div class="sec">
-      <div class="sec-head"><span class="sec-num">5.2</span>Notice and Cure <span class="tag-new">New</span></div>
-      <p>Before exercising any termination right under Section 5.1 (other than Section 5.1(b) [non-payment] or Section 5.1(c) [false statement], which may proceed directly following the specified period or occurrence), the Cooperative shall:</p>
-      <ul class="sub-list">
-        <li><span class="sub-label">(a)</span>provide Applicant with written notice specifying the ground(s) for the proposed termination and identifying the conduct or omission at issue; and</li>
-        <li><span class="sub-label">(b)</span>afford Applicant a period of thirty (30) days to cure the breach, where the breach is reasonably capable of cure.</li>
-      </ul>
-      <p>Prior to any final termination determination, Applicant shall have the right to submit a written response to the Board or its designated committee. Termination shall be carried out in accordance with the dispute resolution procedures in the Bylaws.</p>
+      <div class="new-section-band">New § 5.2 — no equivalent in v.1</div>
+      <div class="sec-head"><span class="sec-num">5.2</span>Notice and Cure</div>
+      <p><span class="mark-new" data-original="">Before exercising any termination right under Section 5.1 (other than Section 5.1(b) [non-payment] or Section 5.1(c) [false statement], which may proceed directly following the specified period or occurrence), the Cooperative shall: (a) provide Applicant with written notice specifying the ground(s) for the proposed termination and identifying the conduct or omission at issue; and (b) afford Applicant a period of thirty (30) days to cure the breach, where the breach is reasonably capable of cure. Prior to any final termination determination, Applicant shall have the right to submit a written response to the Board or its designated committee. Termination shall be carried out in accordance with the dispute resolution procedures in the Bylaws.</span></p>
     </div>
 
     <div class="sec">
@@ -715,32 +769,25 @@
     </div>
 
     <div class="sec">
-      <div class="sec-head"><span class="sec-num">5.4</span>Voluntary Withdrawal <span class="tag-new">New</span></div>
-      <p>Applicant may voluntarily withdraw from membership at any time by providing written notice to the Cooperative, consistent with Applicant's statutory right of dissociation under C.R.S. § 7-58-1101(1). Withdrawal is effective upon the date the Cooperative receives such notice, unless Applicant specifies a later effective date in the notice.</p>
-      <p>Upon the effective withdrawal date:</p>
-      <ul class="sub-list">
-        <li><span class="sub-label">(a)</span>Applicant's right to access Cooperative services, participate in governance, and receive future profit allocations shall terminate; and</li>
-        <li><span class="sub-label">(b)</span>the Cooperative shall redeem Applicant's Class A stock at its original purchase price ($100.00 per share) within ninety (90) days of the effective date, subject to (i) the limitations on distributions under C.R.S. § 7-58-1007, (ii) any outstanding financial obligations of Applicant to the Cooperative as of the withdrawal date, and (iii) Board authorization as required by C.R.S. § 7-58-1006.</li>
-      </ul>
-      <p>Any patronage credits formally noticed and allocated to Applicant's capital account but not yet distributed as of the withdrawal date shall be redeemed in accordance with the Cooperative's then-current patronage redemption schedule. Applicant's obligations under Sections 3.4 (Intellectual Property), 4 (Confidentiality), 6 (Limitation of Liability), 7 (Indemnification), and 9 (General Provisions) survive voluntary withdrawal.</p>
+      <div class="new-section-band">New § 5.4 — no equivalent in v.1</div>
+      <div class="sec-head"><span class="sec-num">5.4</span>Voluntary Withdrawal</div>
+      <p><span class="mark-new" data-original="">Applicant may voluntarily withdraw from membership at any time by providing written notice to the Cooperative, consistent with Applicant's statutory right of dissociation under C.R.S. § 7-58-1101(1). Withdrawal is effective upon the date the Cooperative receives such notice, unless Applicant specifies a later effective date.</span></p>
+      <p><span class="mark-new" data-original="">Upon the effective withdrawal date: (a) Applicant's right to access Cooperative services, participate in governance, and receive future profit allocations shall terminate; and (b) the Cooperative shall redeem Applicant's Class A stock at its original purchase price ($100.00 per share) within ninety (90) days of the effective date, subject to (i) the limitations on distributions under C.R.S. § 7-58-1007, (ii) any outstanding financial obligations of Applicant to the Cooperative as of the withdrawal date, and (iii) Board authorization as required by C.R.S. § 7-58-1006. Any patronage credits formally noticed and allocated to Applicant's capital account but not yet distributed as of the withdrawal date shall be redeemed in accordance with the Cooperative's then-current patronage redemption schedule. Applicant's obligations under Sections 3.4, 4, 6, 7, and 9 survive voluntary withdrawal.</span></p>
     </div>
   </div>
 
   <hr class="article-div">
 
 
-  <!-- ══════════════════════════════════════════════════
-       SECTION 6 — LIMITATION OF LIABILITY
-  ══════════════════════════════════════════════════ -->
+  <!-- ═══════════ SECTION 6 — LIMITATION OF LIABILITY ═══════════ -->
   <div class="article">
     <div class="article-heading">
       <span class="article-num">Section 6</span>
       <span class="article-title">Limitation of Liability</span>
     </div>
-
     <div class="sec">
       <p class="allcaps-block">NEITHER REGENHUB NOR ITS LICENSORS, EMPLOYEES, CONSULTANTS, DIRECTORS, OFFICERS, MEMBERS, REPRESENTATIVES, OR AGENTS MAKE ANY WARRANTIES OR REPRESENTATIONS REGARDING THE PRODUCTS OR THE SERVICES PROVIDED TO APPLICANT, ANY AND ALL OF WHICH ARE EXPRESSLY PROVIDED "AS IS" AND "AS AVAILABLE." FURTHERMORE, REGENHUB AND ITS LICENSORS AND PROVIDERS HEREBY DISCLAIM ANY AND ALL WARRANTIES, EXPRESS AND/OR IMPLIED BY LAW OR OTHERWISE, REGARDING THE FITNESS OR USABILITY OF ANY OF ITS PRODUCTS OR SERVICES FOR ANY PARTICULAR USE OR PURPOSE.</p>
-      <p class="allcaps-block" style="margin-top:0.75rem;">UNDER NO CIRCUMSTANCES SHALL REGENHUB, AND/OR ITS OFFICERS, DIRECTORS, MEMBERS, MANAGERS, EMPLOYEES, LICENSORS, PROVIDERS, REPRESENTATIVES, OR AGENTS BE LIABLE TO APPLICANT OR ANY OTHER PERSON FOR ANY CONSEQUENTIAL, INCIDENTAL, INDIRECT, SPECIAL DAMAGES, LOSS OF PROFITS, LOSSES, EXPENSES, INTEREST, DEBTS, DUES, TAXES, FINES, INJURIES, LIABILITIES, ASSESSMENTS, COSTS, EVENTS, CLAIMS, ACTIONS, LAWSUITS, ATTORNEYS' FEES, OR ANY OTHER LOSS OR DAMAGE ARISING DIRECTLY OR INDIRECTLY FROM THE PRODUCTS OR SERVICES PROVIDED TO APPLICANT BY REGENHUB OR ITS LICENSORS, PROVIDERS, REPRESENTATIVES, OR AGENTS. IN NO EVENT WILL THE AGGREGATE LIABILITY OF REGENHUB TO APPLICANT EXCEED THE GREATER OF THE AMOUNT PAID OR PAYABLE BY APPLICANT TO REGENHUB FOR THE PREVIOUS SIX (6) MONTH PERIOD OR ONE THOUSAND DOLLARS ($1,000.00).</p>
+      <p class="allcaps-block" style="margin-top:0.75rem;">UNDER NO CIRCUMSTANCES SHALL REGENHUB, AND/OR ITS OFFICERS, DIRECTORS, MEMBERS, MANAGERS, EMPLOYEES, LICENSORS, PROVIDERS, REPRESENTATIVES, OR AGENTS BE LIABLE TO APPLICANT OR ANY OTHER PERSON FOR ANY CONSEQUENTIAL, INCIDENTAL, INDIRECT, OR SPECIAL DAMAGES, LOSS OF PROFITS, LOSSES, EXPENSES, INTEREST, DEBTS, DUES, TAXES, FINES, INJURIES, LIABILITIES, ASSESSMENTS, COSTS, EVENTS, CLAIMS, ACTIONS, LAWSUITS, ATTORNEYS' FEES, OR ANY OTHER LOSS OR DAMAGE ARISING DIRECTLY OR INDIRECTLY FROM THE PRODUCTS OR SERVICES PROVIDED TO APPLICANT BY REGENHUB OR ITS LICENSORS, PROVIDERS, REPRESENTATIVES, OR AGENTS. IN NO EVENT WILL THE AGGREGATE LIABILITY OF REGENHUB TO APPLICANT EXCEED THE GREATER OF THE AMOUNT PAID OR PAYABLE BY APPLICANT TO REGENHUB FOR THE PREVIOUS SIX (6) MONTH PERIOD OR ONE THOUSAND DOLLARS ($1,000.00).</p>
       <p class="allcaps-block" style="margin-top:0.75rem;">THIS DIRECT DAMAGES LIMITATION SHALL NOT APPLY TO DAMAGES ARISING FROM OR RELATING TO (I) BREACHES OF CONFIDENTIALITY OR OWNERSHIP OR LICENSURE OF INTELLECTUAL PROPERTY OR (II) A PARTY'S WILLFUL MISCONDUCT.</p>
       <p style="margin-top:0.75rem;">The limitations set forth in this Section 6 are an essential part of the benefit of the bargain between the Parties and shall survive the expiration or termination of this Agreement.</p>
     </div>
@@ -749,23 +796,14 @@
   <hr class="article-div">
 
 
-  <!-- ══════════════════════════════════════════════════
-       SECTION 7 — INDEMNIFICATION
-  ══════════════════════════════════════════════════ -->
+  <!-- ═══════════ SECTION 7 — INDEMNIFICATION ═══════════ -->
   <div class="article">
     <div class="article-heading">
       <span class="article-num">Section 7</span>
       <span class="article-title">Indemnification</span>
     </div>
-
     <div class="sec">
-      <p>Applicant hereby releases, and agrees to indemnify, defend, and hold harmless, RegenHub and its licensors, directors, members, officers, managers, employees, agents, and representatives from and against any and all loss, cost, damages, and/or expenses (including court costs and attorneys' fees) incurred as a result of:</p>
-      <ul class="sub-list">
-        <li><span class="sub-label">(a)</span>any negligence or misconduct of Applicant;</li>
-        <li><span class="sub-label">(b)</span>any breach of or inaccuracy in Applicant's representations and warranties;</li>
-        <li><span class="sub-label">(c)</span>any breach of this Agreement or failure to perform any obligation hereunder by Applicant; or</li>
-        <li><span class="sub-label">(d)</span>any termination of Applicant's rights under this Agreement due to Applicant's failure to comply with the terms of this Agreement or the Governing Documents.</li>
-      </ul>
+      <p>Applicant hereby releases, and agrees to indemnify, defend, and hold harmless, RegenHub and its licensors, directors, members, officers, managers, employees, agents, and representatives from and against any and all loss, cost, damages, and/or expenses (including court costs and attorneys' fees) incurred as a result of: (a) any negligence or misconduct of Applicant; (b) any breach of or inaccuracy in Applicant's representations and warranties; (c) any breach of this Agreement or failure to perform any obligation hereunder by Applicant; or (d) any termination of Applicant's rights under this Agreement due to Applicant's failure to comply with the terms of this Agreement or the Governing Documents.</p>
       <p>Notwithstanding the foregoing, indemnification shall not apply when a claim or expense is found to be directly caused by such person's gross negligence or willful misconduct.</p>
     </div>
   </div>
@@ -773,9 +811,7 @@
   <hr class="article-div">
 
 
-  <!-- ══════════════════════════════════════════════════
-       SECTION 8 — REPRESENTATIONS AND WARRANTIES
-  ══════════════════════════════════════════════════ -->
+  <!-- ═══════════ SECTION 8 — REPRESENTATIONS AND WARRANTIES ═══════════ -->
   <div class="article">
     <div class="article-heading">
       <span class="article-num">Section 8</span>
@@ -784,32 +820,19 @@
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">8.1</span>Representations and Warranties of Each Party</div>
-      <p>Each Party represents and warrants to the other that:</p>
-      <ul class="sub-list">
-        <li><span class="sub-label">(a)</span>such Party has the right and ability to enter into this Agreement and to grant the rights granted herein, and is not party to any agreement that would prohibit entry into or full performance of this Agreement; and</li>
-        <li><span class="sub-label">(b)</span>there is no outstanding or threatened litigation, arbitration, or other dispute to which such Party is a party that would reasonably be expected to have a material adverse effect on such Party's ability to fulfill its obligations hereunder.</li>
-      </ul>
+      <p>Each Party represents and warrants to the other that: (a) such Party has the right and ability to enter into this Agreement and to grant the rights granted herein, and is not party to any agreement that would prohibit entry into or full performance of this Agreement; and (b) there is no outstanding or threatened litigation, arbitration, or other dispute to which such Party is a party that would reasonably be expected to have a material adverse effect on such Party's ability to fulfill its obligations hereunder.</p>
     </div>
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">8.2</span>Applicant's Additional Representations and Warranties</div>
-      <p>Applicant further represents, warrants, and covenants that:</p>
-      <ul class="sub-list">
-        <li><span class="sub-label">(a)</span>any services Applicant performs for the Cooperative will be performed in a professional, ethical, and efficient manner, using due care, skill, and diligence;</li>
-        <li><span class="sub-label">(b)</span>Applicant shall maintain any professional qualifications and/or certifications applicable to Applicant's services and shall abide by the standards of ethical conduct relevant to any field in which Applicant provides services to the Cooperative;</li>
-        <li><span class="sub-label">(c)</span>Applicant's services and any resulting Cooperative-Commissioned Work will not infringe any third-party patent, copyright, trademark, trade secret, or other proprietary right;</li>
-        <li><span class="sub-label">(d)</span>Applicant will abide by all applicable laws, regulations, codes, and rules in the course of performing any services for the Cooperative; and</li>
-        <li><span class="sub-label">(e)</span>Applicant will maintain appropriate technical and physical safeguards to protect the security, confidentiality, and integrity of all Confidential Information in Applicant's possession.</li>
-      </ul>
+      <p>Applicant further represents, warrants, and covenants that: (a) any services Applicant performs for the Cooperative will be performed in a professional, ethical, and efficient manner, using due care, skill, and diligence; (b) Applicant shall maintain any professional qualifications and/or certifications applicable to Applicant's services and shall abide by applicable standards of ethical conduct; (c) Applicant's services and any resulting Cooperative-Commissioned Work will not infringe any third-party patent, copyright, trademark, trade secret, or other proprietary right; (d) Applicant will abide by all applicable laws, regulations, codes, and rules in the course of performing any services for the Cooperative; and (e) Applicant will maintain appropriate technical and physical safeguards to protect the security, confidentiality, and integrity of all Confidential Information in Applicant's possession.</p>
     </div>
   </div>
 
   <hr class="article-div">
 
 
-  <!-- ══════════════════════════════════════════════════
-       SECTION 9 — GENERAL PROVISIONS
-  ══════════════════════════════════════════════════ -->
+  <!-- ═══════════ SECTION 9 — GENERAL PROVISIONS ═══════════ -->
   <div class="article">
     <div class="article-heading">
       <span class="article-num">Section 9</span>
@@ -818,18 +841,12 @@
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">9.1</span>Assignment; Binding Effect</div>
-      <p>No part of this Agreement may be assigned, subcontracted, sublicensed, pledged, or transferred by Applicant without the prior written consent of the Cooperative. Any attempted assignment without such consent shall be null and void. The Cooperative may assign this Agreement and its rights and/or obligations as part of a merger, conversion, equity sale, or sale of substantially all of its assets. Each covenant and provision shall be binding upon and inure to the benefit of the Parties and their permitted successors and assigns.</p>
+      <p>No part of this Agreement may be assigned, subcontracted, sublicensed, pledged, or transferred by Applicant without the prior written consent of the Cooperative. Any attempted assignment without such consent shall be null and void. The Cooperative may assign this Agreement as part of a merger, conversion, or sale of substantially all assets. Each covenant and provision shall be binding upon and inure to the benefit of the Parties and their permitted successors and assigns.</p>
     </div>
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">9.2</span>Notices</div>
-      <p>All notices and other communications pursuant to this Agreement shall be in writing and shall be deemed effectively given:</p>
-      <ul class="sub-list">
-        <li><span class="sub-label">(a)</span>upon personal delivery to the party to be notified;</li>
-        <li><span class="sub-label">(b)</span>when sent by confirmed electronic mail during normal business hours of the recipient (or the next business day if not during normal hours);</li>
-        <li><span class="sub-label">(c)</span>five (5) days after having been sent by registered or certified mail, return receipt requested, postage prepaid; or</li>
-        <li><span class="sub-label">(d)</span>one (1) day after deposit with a nationally recognized overnight courier, specifying next-day delivery, with written verification of receipt.</li>
-      </ul>
+      <p>All notices pursuant to this Agreement shall be in writing and shall be deemed effectively given: (a) upon personal delivery; (b) when sent by confirmed electronic mail during normal business hours (or the next business day if not during normal hours); (c) five (5) days after having been sent by registered or certified mail, return receipt requested, postage prepaid; or (d) one (1) day after deposit with a nationally recognized overnight courier, with written verification of receipt.</p>
     </div>
 
     <div class="sec">
@@ -838,8 +855,8 @@
     </div>
 
     <div class="sec">
-      <div class="sec-head"><span class="sec-num">9.4</span>Status of Parties <span class="tag-revised">Revised</span></div>
-      <p>The relationship created by this Agreement shall not be construed as an agency, partnership (including a limited partnership), joint venture, franchise, employer-employee, or employment contract, and no member of the Cooperative shall be a partner or joint venturer of any other member by virtue of this Agreement. <strong>Applicant is an owner-member of the Cooperative with the rights and obligations set forth in this Agreement and the Governing Documents.</strong></p>
+      <div class="sec-head"><span class="sec-num">9.4</span>Status of Parties</div>
+      <p>The relationship created by this Agreement shall not be construed as an agency, partnership (including a limited partnership), joint venture, franchise, employer-employee, or employment contract, and no member of the Cooperative shall be a partner or joint venturer of any other member by virtue of this Agreement. <span class="mark-new" data-original="">Applicant is an owner-member of the Cooperative with the rights and obligations set forth in this Agreement and the Governing Documents.</span></p>
     </div>
 
     <div class="sec">
@@ -869,12 +886,12 @@
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">9.10</span>Remedies Cumulative</div>
-      <p>The rights and remedies provided in this Agreement in case of default or breach are cumulative and shall not affect in any manner any other remedies available to either Party. The exercise of any right or remedy herein provided will be without prejudice to the right to exercise any other right or remedy provided herein, at law, or in equity.</p>
+      <p>The rights and remedies provided in this Agreement in case of default or breach are cumulative and shall not affect any other remedies available to either Party. The exercise of any right or remedy will be without prejudice to the right to exercise any other right or remedy provided herein, at law, or in equity.</p>
     </div>
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">9.11</span>Attorneys' Fees and Costs</div>
-      <p>Should either Party retain counsel to enforce or prevent breach of any provision of this Agreement, the prevailing party in any resulting arbitral or judicial proceeding (whether at arbitration, at trial, or on appeal) shall be entitled, in addition to other relief granted, to reimbursement of all reasonable costs and expenses, including attorneys' fees, incurred in connection with such proceeding. If both parties are entitled to judgments or awards, the party with the larger judgment or award shall be deemed the prevailing party.</p>
+      <p>Should either Party retain counsel to enforce or prevent breach of any provision of this Agreement, the prevailing party in any resulting arbitral or judicial proceeding shall be entitled, in addition to other relief granted, to reimbursement of all reasonable costs and expenses, including attorneys' fees. If both parties are entitled to judgments or awards, the party with the larger judgment or award shall be deemed the prevailing party.</p>
     </div>
 
     <div class="sec">
@@ -909,61 +926,26 @@
   <!-- SIGNATURE BLOCK -->
   <div class="sig-block">
     <div class="sig-heading">In Witness Whereof, the Parties, intending to be bound, have executed this Agreement effective as of the Effective Date set forth below.</div>
-
     <div class="sig-grid">
       <div class="sig-party">
         <div class="party-label">Applicant</div>
-        <div class="sig-field">
-          <div class="field-label">Signature</div>
-          <div class="sig-line"></div>
-        </div>
-        <div class="sig-field">
-          <div class="field-label">Printed Name</div>
-          <div class="sig-line"></div>
-        </div>
-        <div class="sig-field">
-          <div class="field-label">Title (if entity member)</div>
-          <div class="sig-line"></div>
-        </div>
-        <div class="sig-field">
-          <div class="field-label">Date</div>
-          <div class="sig-line"></div>
-        </div>
-        <div class="sig-field">
-          <div class="field-label">Email</div>
-          <div class="sig-line"></div>
-        </div>
-        <div class="sig-field">
-          <div class="field-label">Address</div>
-          <div class="sig-line"></div>
-          <div class="sig-line" style="margin-top:0.5rem;"></div>
-        </div>
+        <div class="sig-field"><div class="field-label">Signature</div><div class="sig-line"></div></div>
+        <div class="sig-field"><div class="field-label">Printed Name</div><div class="sig-line"></div></div>
+        <div class="sig-field"><div class="field-label">Title (if entity member)</div><div class="sig-line"></div></div>
+        <div class="sig-field"><div class="field-label">Date</div><div class="sig-line"></div></div>
+        <div class="sig-field"><div class="field-label">Email</div><div class="sig-line"></div></div>
+        <div class="sig-field"><div class="field-label">Address</div><div class="sig-line"></div><div class="sig-line" style="margin-top:0.5rem;"></div></div>
       </div>
-
       <div class="sig-party">
         <div class="party-label">RegenHub, LCA</div>
-        <div class="sig-field">
-          <div class="field-label">Signature</div>
-          <div class="sig-line"></div>
-        </div>
-        <div class="sig-field">
-          <div class="field-label">Printed Name</div>
-          <div class="sig-line"></div>
-        </div>
-        <div class="sig-field">
-          <div class="field-label">Title</div>
-          <div class="sig-line"></div>
-        </div>
-        <div class="sig-field">
-          <div class="field-label">Date (Effective Date)</div>
-          <div class="sig-line"></div>
-        </div>
+        <div class="sig-field"><div class="field-label">Signature</div><div class="sig-line"></div></div>
+        <div class="sig-field"><div class="field-label">Printed Name</div><div class="sig-line"></div></div>
+        <div class="sig-field"><div class="field-label">Title</div><div class="sig-line"></div></div>
+        <div class="sig-field"><div class="field-label">Date (Effective Date)</div><div class="sig-line"></div></div>
       </div>
     </div>
   </div>
 
-
-  <!-- DOCUMENT FOOTER -->
   <footer class="doc-footer">
     RegenHub, LCA · Colorado Public Benefit Limited Cooperative Association<br>
     Membership Agreement v.2.0 · Draft · May 11, 2026<br>
@@ -971,6 +953,92 @@
     <strong>Draft for review by outside counsel — not executed — not legal advice</strong>
   </footer>
 
-</div>
+</div><!-- /wrap -->
+
+<!-- TOOLTIP SCRIPT -->
+<script>
+(function() {
+  var tt     = document.getElementById('tt');
+  var ttKind = document.getElementById('tt-kind');
+  var ttBody = document.getElementById('tt-body');
+  var PAD    = 14;
+  var current = null;
+
+  function show(el, e) {
+    var isRevised = el.classList.contains('mark-revised');
+    var orig = el.getAttribute('data-original') || '';
+
+    ttKind.className = isRevised ? 'revised' : 'new';
+    ttKind.textContent = isRevised ? 'Original (v.1):' : 'New in v.2 — no prior text:';
+    ttBody.textContent = isRevised
+      ? (orig || '(no original text recorded)')
+      : 'This passage was added in v.2. There is no corresponding text in v.1 of the agreement.';
+
+    tt.classList.add('visible');
+    position(e);
+  }
+
+  function position(e) {
+    var x = e.clientX;
+    var y = e.clientY;
+    var w = tt.offsetWidth  || 360;
+    var h = tt.offsetHeight || 100;
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+
+    // prefer above cursor
+    var top = y - h - PAD;
+    if (top < 8) top = y + PAD + 20;
+
+    // keep within viewport horizontally
+    var left = x - w / 2;
+    if (left < 8) left = 8;
+    if (left + w > vw - 8) left = vw - w - 8;
+
+    tt.style.left = left + 'px';
+    tt.style.top  = top  + 'px';
+  }
+
+  function hide() {
+    tt.classList.remove('visible');
+    current = null;
+  }
+
+  document.addEventListener('mouseover', function(e) {
+    var el = e.target.closest('.mark-revised, .mark-new');
+    if (el && el !== current) {
+      current = el;
+      show(el, e);
+    }
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (current) position(e);
+  });
+
+  document.addEventListener('mouseout', function(e) {
+    var el = e.target.closest('.mark-revised, .mark-new');
+    if (el) {
+      var to = e.relatedTarget;
+      if (!to || !el.contains(to)) hide();
+    }
+  });
+
+  // touch: tap to show/hide
+  document.addEventListener('touchstart', function(e) {
+    var el = e.target.closest('.mark-revised, .mark-new');
+    if (el) {
+      e.preventDefault();
+      if (el === current) { hide(); return; }
+      current = el;
+      var touch = e.touches[0];
+      show(el, { clientX: touch.clientX, clientY: touch.clientY });
+    } else {
+      hide();
+    }
+  }, { passive: false });
+})();
+</script>
+
 </body>
 </html>
