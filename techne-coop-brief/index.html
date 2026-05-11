@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function() {
+      var s = localStorage.getItem('techne-theme');
+      if (s === 'light' || s === 'dark') {
+        document.documentElement.setAttribute('data-theme', s);
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Techne — Brand Brief</title>
+  <meta name="description" content="Single-page brand brief for Techne (techne.coop) — for Octavian. Audience, positioning, personality, deliverables, constraints, and references.">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="/assets/nav.js" defer></script>
+  <style>
+    /* ── BRIEF-SPECIFIC ── */
+    :root {
+      --font-serif: 'Libre Baskerville', Georgia, serif;
+      --font-mono:  'IBM Plex Mono', 'Courier New', monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg:         #08080a;
+      --surface:    #111114;
+      --raised:     #1a1a1f;
+      --border:     rgba(196,149,106,0.12);
+      --border-dim: rgba(255,255,255,0.06);
+      --text-body:  #e0d8cc;
+      --text-warm:  #c8bca8;
+      --text-muted: rgba(200,188,168,0.55);
+      --text-dim:   rgba(200,188,168,0.28);
+      --gold:       #c4956a;
+      --moss:       #6a8a5e;
+      --red-soft:   #9a5a5a;
+    }
+
+    [data-theme="light"] {
+      --bg:         #f7f5f0;
+      --surface:    #ebe7df;
+      --raised:     #ffffff;
+      --border:     rgba(196,149,106,0.20);
+      --border-dim: rgba(0,0,0,0.08);
+      --text-body:  #2a2520;
+      --text-warm:  #3a3028;
+      --text-muted: rgba(60,48,36,0.60);
+      --text-dim:   rgba(60,48,36,0.30);
+      --gold:       #8a6a3a;
+      --moss:       #4a6a3a;
+      --red-soft:   #8a3a3a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-body);
+      font-family: var(--font-serif);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    /* ── OUTER WRAPPER ── */
+    .brief-wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 3rem;
+    }
+
+    /* ── HEADER BAND ── */
+    .brief-header {
+      border-top: 2px solid var(--gold);
+      border-bottom: 1px solid var(--border);
+      padding: 1.75rem 0 1.75rem;
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .brief-header .wordmark {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: -0.01em;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .brief-header .doc-meta {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+    }
+
+    .field-label {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      margin-bottom: 0.3rem;
+    }
+
+    .field-body {
+      font-size: 0.83rem;
+      line-height: 1.5;
+      color: var(--text-warm);
+      margin-bottom: 1rem;
+    }
+
+    /* ── BODY GRID ── */
+    .brief-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 1fr;
+      gap: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .col { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    /* ── ZONE ── */
+    .zone { display: flex; flex-direction: column; gap: 0.6rem; }
+
+    .zone-title {
+      font-family: var(--font-mono);
+      font-size: 0.60rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    .zone p {
+      font-size: 0.80rem;
+      line-height: 1.55;
+      color: var(--text-warm);
+    }
+
+    .zone p.note {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.74rem;
+    }
+
+    .zone ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .zone ul li {
+      font-size: 0.80rem;
+      line-height: 1.5;
+      color: var(--text-warm);
+      padding-left: 1.2rem;
+      position: relative;
+    }
+
+    .zone ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    /* positioning */
+    .pos-row { margin-bottom: 0.75rem; }
+    .pos-yes {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-body);
+      margin-bottom: 0.15rem;
+    }
+    .pos-not {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* personality */
+    .personality-pair {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-body);
+      margin-bottom: 0.3rem;
+    }
+    .personality-pair .but {
+      font-weight: 400;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* constraints */
+    .constraint-head {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      margin-top: 0.75rem;
+      margin-bottom: 0.4rem;
+    }
+    .constraint-head.haves { color: var(--moss); }
+    .constraint-head.avoids { color: var(--red-soft); }
+
+    /* references */
+    .ref-item { margin-bottom: 0.65rem; }
+    .ref-name {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--gold);
+    }
+    .ref-name.anti {
+      color: var(--text-dim);
+      text-decoration: line-through;
+      text-decoration-color: var(--red-soft);
+    }
+    .ref-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+      line-height: 1.45;
+    }
+
+    /* zone divider */
+    .zone-div {
+      border: none;
+      border-top: 1px solid var(--border-dim);
+    }
+
+    /* ── CTA ZONE ── */
+    .cta-zone {
+      background: var(--raised);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1rem 1.1rem;
+    }
+    .cta-zone .zone-title { color: var(--gold); }
+    .cta-step {
+      display: flex;
+      gap: 0.75rem;
+      align-items: baseline;
+      margin-bottom: 0.5rem;
+    }
+    .cta-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .cta-text {
+      font-size: 0.80rem;
+      color: var(--text-warm);
+    }
+
+    /* ── FOOTER BAND ── */
+    .brief-footer {
+      border-top: 1px solid var(--border);
+      border-bottom: 2px solid var(--gold);
+      padding: 1.25rem 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .footer-field .field-label { margin-bottom: 0.25rem; }
+    .footer-field .field-val {
+      font-size: 0.82rem;
+      color: var(--text-warm);
+      font-family: var(--font-serif);
+    }
+    .footer-field .field-val.tbd {
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 760px) {
+      .brief-header { grid-template-columns: 1fr; }
+      .brief-grid   { grid-template-columns: 1fr; }
+      .brief-footer { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media print {
+      body { background: white; color: black; }
+      .brief-wrap { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<techne-nav mode="public"></techne-nav>
+
+<div class="brief-wrap">
+
+  <!-- HEADER BAND -->
+  <header class="brief-header">
+    <div>
+      <div class="wordmark">Techne</div>
+      <div class="doc-meta">Brand Brief · May 2026 · For Octavian</div>
+    </div>
+    <div>
+      <div class="field-label">Project</div>
+      <div class="field-body">Brand identity system for Techne (techne.coop) — a new cooperative program and membership class of RegenHub, LCA — launching to support member recruitment across Boulder-Denver and aligned virtual communities.</div>
+      <div class="field-label">Organization</div>
+      <div class="field-body" style="margin-bottom:0">Techne is a cooperative program of RegenHub, LCA — a Colorado Public Benefit Limited Cooperative Association — cultivating collective intelligence through right relationship between tools and the people who use them. Distinctive because it roots economic membership in a body of work, not just a fee.</div>
+    </div>
+  </header>
+
+  <!-- BODY GRID -->
+  <div class="brief-grid">
+
+    <!-- COL 1: Audience + Positioning -->
+    <div class="col">
+
+      <div class="zone">
+        <div class="zone-title">Audience</div>
+        <p>The practitioner who builds things and thinks about <em>how</em>. Already embedded in some community of practice — a design studio, a civic tech project, a learning cohort. Has looked at both startup culture and cooperative culture and found each half-right.</p>
+        <p>Drawn to Boulder because place still matters, or connected to that scene virtually. Reads intentionally. Notices craft. Bristles at extraction. Would pay $25 for a relationship, not a subscription.</p>
+        <p class="note">Not demographics — sensibilities. Illich on convivial tools. Alexander on pattern languages. Eno on scenius.</p>
+      </div>
+
+      <hr class="zone-div">
+
+      <div class="zone">
+        <div class="zone-title">Positioning</div>
+
+        <div class="pos-row">
+          <div class="pos-yes">Cooperative, not accelerator.</div>
+          <div class="pos-not">Members share in what they build together — not in what they pitch to investors.</div>
+        </div>
+
+        <div class="pos-row">
+          <div class="pos-yes">Inquiry, not platform.</div>
+          <div class="pos-not">The question of right relationship with tools is held open. Techne provides conditions, not answers.</div>
+        </div>
+
+        <div class="pos-row">
+          <div class="pos-yes">Rooted, not distributed.</div>
+          <div class="pos-not">Boulder-based and virtually extended. Place is a feature, not a limitation.</div>
+        </div>
+      </div>
+
+      <hr class="zone-div">
+
+      <div class="zone cta-zone">
+        <div class="zone-title">Call to Action</div>
+        <div class="cta-step">
+          <span class="cta-num">01</span>
+          <span class="cta-text">Explore — learn what Techne is and how it works</span>
+        </div>
+        <div class="cta-step">
+          <span class="cta-num">02</span>
+          <span class="cta-text">Join — $25 one-time member share</span>
+        </div>
+        <div class="cta-step">
+          <span class="cta-num">03</span>
+          <span class="cta-text">Connect — schedule an onboarding call with an existing member</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- COL 2: Personality + Constraints -->
+    <div class="col">
+
+      <div class="zone">
+        <div class="zone-title">Personality</div>
+        <div class="personality-pair">Technical <span class="but">but</span> humane.</div>
+        <div class="personality-pair">Grounded <span class="but">but</span> generative.</div>
+        <div class="personality-pair">Precise <span class="but">but</span> open-handed.</div>
+        <p class="note">The Techne signature: lead with the word before asking people to live inside it. Etymology as method. Confidence without enclosure.</p>
+      </div>
+
+      <hr class="zone-div">
+
+      <div class="zone">
+        <div class="zone-title">Constraints</div>
+
+        <div class="constraint-head haves">Must-haves</div>
+        <ul>
+          <li>Works in single color — stamp, letterhead, small format.</li>
+          <li>Holds at favicon and 16px icon scale.</li>
+          <li>Reads cooperative and craft-rooted, not startup or NGO.</li>
+          <li>Carries forward the techne.institute typographic register: serif authority + mono precision.</li>
+        </ul>
+
+        <div class="constraint-head avoids">Must-avoids</div>
+        <ul>
+          <li>Leaf, sprout, mycelium, network-node imagery — overused in the regen space.</li>
+          <li>Gradient, glow, or neon platform aesthetic.</li>
+          <li>"Impact," "ecosystem," "scale" as primary language.</li>
+          <li>Generic DAO or Web3 visual codes.</li>
+          <li>Accelerator orange, Helvetica, growth-mindset energy.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- COL 3: Deliverables + References -->
+    <div class="col">
+
+      <div class="zone">
+        <div class="zone-title">Deliverables</div>
+        <ul>
+          <li>Wordmark — Techne + techne.coop lockup</li>
+          <li>Color system + typography, extending from techne.institute baseline</li>
+          <li>techne.coop homepage</li>
+          <li>Membership class landing — what Techne membership is, $25 registration</li>
+          <li>Onboarding flow — confirmation email + schedule-a-call template</li>
+          <li>One-page membership overview (print + digital)</li>
+        </ul>
+      </div>
+
+      <hr class="zone-div">
+
+      <div class="zone">
+        <div class="zone-title">References</div>
+
+        <div class="ref-item">
+          <div class="ref-name">Stripe Press — stripepress.com</div>
+          <div class="ref-note">Typographic seriousness, editorial weight. Take: how it makes a product feel like scholarship.</div>
+        </div>
+
+        <div class="ref-item">
+          <div class="ref-name">techne.institute (existing)</div>
+          <div class="ref-note">Void/gold/parchment palette, Libre Baskerville + IBM Plex Mono. Carry this forward. Techne.coop should feel like a family member.</div>
+        </div>
+
+        <div class="ref-item">
+          <div class="ref-name">Mondragon Corporación Cooperativa</div>
+          <div class="ref-note">Institutional weight without corporate coldness. Take: looks like it will still exist in 60 years.</div>
+        </div>
+
+        <div class="ref-item">
+          <div class="ref-name anti">Gitcoin / Giveth</div>
+          <div class="ref-note">Dark purple, glowing nodes, "public goods" in Grotesk. Not this.</div>
+        </div>
+
+        <div class="ref-item">
+          <div class="ref-name anti">YCombinator / accelerator aesthetic</div>
+          <div class="ref-note">Orange, Helvetica, growth language. Not this.</div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /brief-grid -->
+
+  <!-- FOOTER BAND -->
+  <footer class="brief-footer">
+    <div class="footer-field">
+      <div class="field-label">Timeline</div>
+      <div class="field-val tbd">Kickoff / concepts / final — TBD</div>
+    </div>
+    <div class="footer-field">
+      <div class="field-label">Decision-maker</div>
+      <div class="field-val">Todd Youngblood</div>
+    </div>
+    <div class="footer-field">
+      <div class="field-label">Budget</div>
+      <div class="field-val tbd">TBD</div>
+    </div>
+    <div class="footer-field">
+      <div class="field-label">Rights</div>
+      <div class="field-val tbd">TBD — assignment, license, or work-for-hire</div>
+    </div>
+  </footer>
+
+</div><!-- /brief-wrap -->
+</body>
+</html>
