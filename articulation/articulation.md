@@ -45,10 +45,10 @@ When we incorporated, RegenHub was the cooperative *and* the co-working space *a
 
 That is no longer accurate. The cooperative now holds:
 
-- The **co-working community** at 1515 Walnut — the founding body of work, the place, the room where this began.
-- An **educational current** — Learn Vibe Build, the pedagogy that has formed around AI tools and right use of them.
-- A **set of ventures and inquiries** — Parachute, Postage, Habitat, and others — building tools and infrastructure that ventures elsewhere can also use.
-- An **expanding constellation of communities** — Neighborhood Village Project, Open Civics, the Coordination Games — each pursuing right relationship with technology in their own domain.
+- The **co-working community** at 1515 Walnut — where this began.
+- An **educational current** — Learn Vibe Build, the pedagogy forming around AI tools.
+- A **set of ventures** — Parachute, Postage, Habitat — building tools other ventures can use.
+- An **expanding constellation of communities** — NVP, Open Civics, Coordination Games — each pursuing right relationship with tools in their own domain.
 
 The cooperative is the underlying body that holds all of this. RegenHub is one of the things it holds — specifically, the co-working community of practice in Boulder. We're keeping the name because it has earned it, because the people who showed up at 1515 Walnut showed up under that name, and because the place itself wants to be called what it is.
 
@@ -93,14 +93,6 @@ Cultivating scenius — collective intelligence emerging from culturally aligned
 ### The cooperative
 
 The cooperative is the holder — and structurally, **a worker-owned venture studio** rooted in the cooperative form. Not because the cooperative *owns* every body of work — it does not — but because the cooperative is the membership container through which people stand in relationship to the inquiry, to one another, and to the ventures they help cultivate. To be a member of Techne is to be standing in this question with others. (Section 08 describes how capital fits.)
-
-### Bodies of work
-
-Bodies of work are the operable units. Some are communities of practice. Some are ventures. Some are programs. Some are inquiries that haven't yet decided what they are. The cooperative provides the conditions — legal, economic, infrastructural, cultural — under which bodies of work can form, grow, and recognize one another.
-
-### The shared substrate
-
-What aligns the bodies of work without homogenizing them. A common pattern of directory, treasury, inventory, and governance — offered to each, adopted on its own terms.
 
 ### The place
 
@@ -279,33 +271,21 @@ Two structural protections accompany this:
 
 The result: **capital can enter the cooperative without acquiring the right to direct it.**
 
+Capital that wants direct exposure to a specific venture takes a different route: it invests in that venture, at that venture's terms. If Parachute is raising a SAFE, the investor goes through Parachute — accepting Parachute's risk for Parachute's upside. The patronage path is different: patient capital contributed to the cooperative, redeemable later for whatever venture equity the cooperative has available to sell. Diversified, less direct upside, less direct risk. Two shapes for two appetites.
+
 ### Distribution is governed by labor patrons
 
 Patronage dividends are determined by the Cooperative Members. Investor Members, *qua* investors, do not vote on dividend distribution. **Labor patronage is structurally senior to capital patronage** in distribution priority.
 
 This is the structural answer to *who decides how surplus flows?* — the people who built the scene decide, not the people who funded it. Capital is in service of the work, not the other way around.
 
-### Patronage credit is redeemable for venture equity
+### Liquidity and patience
 
-The cooperative accumulates a basket of equity in held ventures (via the give-first lineage in section 07). From time to time the cooperative will sell portions of its equity holdings — a normal venture studio activity. When it does, patrons can redeem patronage credit for venture equity in those sales.
+The cooperative accumulates a basket of equity in held ventures (via the give-first lineage in section 07). From time to time it will sell portions of its equity holdings — a normal venture studio activity — and patrons can redeem patronage credit for venture equity in those sales. Both labor and capital patrons participate the same way: the mechanism is identical; the underlying patronage is what differs.
 
-Both labor and capital patrons participate the same way. A labor patron who has built infrastructure for the cooperative, and a capital patron who has contributed funds, can each redeem patronage credit for equity in available ventures, at the cooperative's discretion. The mechanism is the same; the underlying patronage is what differs.
+This gives patronage credit a liquidity path: work and capital that built the cooperative find their way back to contributors, denominated in the equity of the ventures the cooperative helped grow.
 
-This gives patronage credit a liquidity path. Without it, credits accumulate on the books with no clear realization. With it, the work and the capital that built the cooperative find their way back to the people who contributed — denominated in the equity of the ventures the cooperative helped grow.
-
-### Patronage credit accrues simple interest
-
-Unredeemed patronage credit accrues a modest simple interest over time. This is an incentive to be patient — to allow the cooperative the use of accumulated credit while waiting for the right redemption opportunity, and to align the patron's interest with the cooperative's long arc.
-
-The rate is modest by design. Cooperative law and the Rochdale principles underneath it limit return on capital because the cooperative form is structurally for the benefit of patronage activity, not capital itself. A modest rate honors this; an aggressive one would erode the form.
-
-### Direct venture investment is a separate path
-
-Capital that wants direct exposure to a specific venture takes a different route: it invests in that venture, at that venture's terms. If Parachute is raising a friends-and-family SAFE, an investor who wants Parachute SAFE goes through Parachute — accepting Parachute's risk for Parachute's potential upside.
-
-The patronage path is a different proposition: patient capital contributed to the cooperative, accruing modest interest, redeemable later for whatever venture equity the cooperative has available to sell. Diversified across the portfolio. Less direct upside than a successful early SAFE; less direct risk too.
-
-These are two shapes serving two appetites. Keeping them distinct protects both.
+Until redemption, unredeemed credit accrues a modest simple interest — an incentive to be patient, aligning the patron's interest with the cooperative's long arc. The rate is modest by design: cooperative law and the Rochdale principles limit return on capital because the cooperative form is for the benefit of patronage activity, not capital itself.
 
 ### What we will watch — soft drift, not formal capture
 
@@ -323,9 +303,7 @@ The substrate is what makes it possible to see; the membership is what does the 
 
 The flywheel is the structural argument. Beneath it sits a deeper one — about what kind of intelligence the cooperative is trying to be.
 
-Techne does not pursue intelligence for its own sake — neither human intelligence concentrated in a few minds, nor machine intelligence concentrated in a few platforms. The inheritance we are claiming is older and stranger: a cybernetic, humanitarian tradition that asks intelligence to embody wisdom. Intelligence that helps us understand and apply our tools toward the protection of human life, of habitat, of the living planet that holds both.
-
-Brian Eno's word *scenius* — collective intelligence emerging from sustained proximity of culturally aligned people — is the public benefit purpose we filed under. Todd has named the same thing in another register: *the cooperative as an intelligence that embodies wisdom*. These are the same claim. One speaks from a creative tradition; the other from a cybernetic one. Both describe what the cooperative is for.
+Techne does not pursue intelligence for its own sake, neither human intelligence concentrated in a few minds nor machine intelligence concentrated in a few platforms. The inheritance is older and stranger: a cybernetic, humanitarian tradition that asks intelligence to embody wisdom — intelligence that helps us understand and apply our tools toward the protection of human life, of habitat, of the living planet that holds both. This is what *scenius*, the public benefit purpose we filed under, means in lineage rather than in mechanism.
 
 ---
 
@@ -337,10 +315,9 @@ Many things.
 
 - The legal entity, its filing, its public benefit designation.
 - The eight organizers who signed on in February.
-- The capital accounts, member agreements (in development), patronage architecture.
+- The capital accounts, member agreements (in development), and patronage architecture — recognizing what members contribute across labor, revenue, capital, and community, not just capital alone.
 - The lease at 1515 Walnut. The Friday meetings. The room.
 - The commitment to soil-not-enterprise: the cooperative provides the conditions; the bodies of work are not its to own.
-- The principle that members are recognized for what they contribute — labor, revenue, capital, community — not just for capital alone.
 - The discipline of the substrate test: *does this regenerate or extract?*
 
 If the proposal advances: a DBA filing would adopt Techne as the public-facing name; the legal entity remains RegenHub, LCA in the immediate term; the bylaws would accommodate the heterogeneous-bodies-of-work pattern and the capital architecture in section 08. A future articles amendment could eventually flip the legal name itself — but that is a separate decision, taken when the timing and the cost make sense. None of these are pivots. They are the legal and operational steps that would bring the paper into alignment with the practice — if the membership chooses them.
