@@ -31,6 +31,7 @@ What follows is **a proposal, not a decision**. Whether to rename, how membershi
 - Communities of practice (LVB, NVP, Open Civics) are **pathways** into membership. Partner events (Boulder Startup Week, Cohere Boulder) are **convergence points**, not pathways.
 - A shared **information substrate** — directory, treasury, inventory, governance — would align the bodies of work without homogenizing them.
 - **The flywheel**: scene-building cultivates ventures; ventures voluntarily commit equity to the cooperative (give-first lineage); the basket compounds; capital flows back to the scene, to new ventures, and to members. Scene-builders share in what they help create.
+- **Capital architecture**: Techne is a worker-owned venture studio. Patronage is the unified accounting layer — time and money are commensurable as contribution. Investor Members are patrons, not equity holders; capital admission is relational, not transactional, and confers no governance. Labor patronage is structurally senior to capital in distribution.
 - **Starting point**: RegenHub members are the seeds of this new chapter; 1515 Walnut remains the headquarters. Membership broadens outward over time, at the pace deep trust allows.
 - The legal entity, the public benefit purpose, the eight organizers, the lease, the patronage architecture — all preserved regardless of how the proposal lands.
 
@@ -85,7 +86,7 @@ Cultivating scenius — collective intelligence emerging from culturally aligned
 
 ### The cooperative
 
-The cooperative is the holder. Not because the cooperative *owns* every body of work — it does not — but because the cooperative is the membership container through which people stand in relationship to the inquiry and to one another. To be a member of Techne is to be standing in this question with others.
+The cooperative is the holder — and structurally, **a worker-owned venture studio** rooted in the cooperative form. Not because the cooperative *owns* every body of work — it does not — but because the cooperative is the membership container through which people stand in relationship to the inquiry, to one another, and to the ventures they help cultivate. To be a member of Techne is to be standing in this question with others. (Section 08 describes how capital fits.)
 
 ### Bodies of work
 
@@ -136,6 +137,8 @@ Membership lives at two layers. **Techne Cooperative Member** is the membership 
 Each **community of practice** within Techne — RegenHub at 1515 Walnut, Learn Vibe Build, and others as they form — has its *own* internal member governance over its *own* affairs. RegenHub members make RegenHub decisions; LVB cohort members shape LVB programming; aligned peers like NVP and Open Civics are already self-governing at their own level.
 
 A single person can be a member at multiple layers — a Techne Cooperative Member, a RegenHub member, a LVB cohort alum — each with its own scope. The layers nest; they don't replace each other.
+
+*A note on Investor Members: capital admission is relational, not transactional, and confers no governance rights. Investor Members are patrons of the cooperative, not equity holders in it. Section 08 describes the capital architecture in full.*
 
 > *A pathway diagram on the [live page](https://techne.institute/articulation/#membership) traces the journey: Visitor → Community Participant (Class 3) → Co-working Member (Class 2) → Cooperative Member (Class 1, governance). The transitions are activated by events & programming, bridge programs, and eventually invitation through deep relationship.*
 
@@ -221,6 +224,8 @@ When ventures form within the cooperative, they voluntarily commit equity back t
 
 The cooperative holds equity stakes across the ventures it has incubated. As ventures grow, the cooperative's basket compounds in value. Imagine a venture giving 10% at a $5M valuation: a $500K stake. If that venture grows to $100M, the stake is worth $10M. Multiplied across many ventures over many years — at varying give-percentages — the basket can become substantial without ever extracting from any single venture. (Worked figures are illustration, not promise; actual equity stakes and trajectories vary.)
 
+From time to time the cooperative sells portions of its equity holdings — a normal venture studio activity — providing the liquidity that makes patronage credit redeemable. Section 08 describes how patronage credit converts to venture equity at these moments.
+
 ### Capital flows back, three ways
 
 The basket does not sit in an account. The cooperative deploys it, with member governance, in three primary streams:
@@ -245,7 +250,68 @@ None of this is automatic. Each turn of the cycle is real work the cooperative h
 
 ---
 
-## 08. A cybernetic inheritance
+## 08. Capital and patronage
+
+*Patronage is the unified accounting layer. Capital enters as a patron, not an owner. Labor patronage is structurally senior to capital patronage.*
+
+Techne Cooperative is a worker-owned venture studio. Section 07 named the flywheel that fills the basket; this section names how capital enters, accumulates, circulates, and stays structurally subordinate to the work it serves.
+
+### Patronage as a unified accounting unit
+
+Across every kind of contribution — time, money, revenue, community work — the cooperative uses a single accounting layer: **patronage**. Time contributed is valued at fair market rate and accrues patronage credit dollar-for-dollar against capital contributions. An hour valued at $80 and a check for $80 produce identical patronage credit. The denomination differs; the unit is the same.
+
+This is what makes labor and capital commensurable. Every class of member contributes to patronage; what varies is the form of contribution.
+
+### Investor Members are patrons, not equity holders
+
+When an Investor Member contributes capital, they receive *patronage credit* — not equity in the cooperative. They are not buying ownership. They are contributing to a member capital account that participates in patronage by the same logic as every other class of patron.
+
+Two structural protections accompany this:
+
+- **Admission is relational, not transactional.** A check does not buy entry. The cooperative chooses whom to accept as an Investor Member — based on the depth of trust and alignment already present. *We accept money from people we already trust.*
+- **Capital admission is not governance admission.** Becoming an Investor Member does not confer cooperative governance rights. Governance is held by Cooperative Members, earned through sustained participation and the depth of relationship section 05 describes. An Investor Member can walk the path to Cooperative Membership; they cannot purchase that standing.
+
+The result: **capital can enter the cooperative without acquiring the right to direct it.**
+
+### Distribution is governed by labor patrons
+
+Patronage dividends are determined by the Cooperative Members. Investor Members, *qua* investors, do not vote on dividend distribution. **Labor patronage is structurally senior to capital patronage** in distribution priority.
+
+This is the structural answer to *who decides how surplus flows?* — the people who built the scene decide, not the people who funded it. Capital is in service of the work, not the other way around.
+
+### Patronage credit is redeemable for venture equity
+
+The cooperative accumulates a basket of equity in held ventures (via the give-first lineage in section 07). From time to time the cooperative will sell portions of its equity holdings — a normal venture studio activity. When it does, patrons can redeem patronage credit for venture equity in those sales.
+
+Both labor and capital patrons participate the same way. A labor patron who has built infrastructure for the cooperative, and a capital patron who has contributed funds, can each redeem patronage credit for equity in available ventures, at the cooperative's discretion. The mechanism is the same; the underlying patronage is what differs.
+
+This gives patronage credit a liquidity path. Without it, credits accumulate on the books with no clear realization. With it, the work and the capital that built the cooperative find their way back to the people who contributed — denominated in the equity of the ventures the cooperative helped grow.
+
+### Patronage credit accrues simple interest
+
+Unredeemed patronage credit accrues a modest simple interest over time. This is an incentive to be patient — to allow the cooperative the use of accumulated credit while waiting for the right redemption opportunity, and to align the patron's interest with the cooperative's long arc.
+
+The rate is modest by design. Cooperative law and the Rochdale principles underneath it limit return on capital because the cooperative form is structurally for the benefit of patronage activity, not capital itself. A modest rate honors this; an aggressive one would erode the form.
+
+### Direct venture investment is a separate path
+
+Capital that wants direct exposure to a specific venture takes a different route: it invests in that venture, at that venture's terms. If Parachute is raising a friends-and-family SAFE, an investor who wants Parachute SAFE goes through Parachute — accepting Parachute's risk for Parachute's potential upside.
+
+The patronage path is a different proposition: patient capital contributed to the cooperative, accruing modest interest, redeemable later for whatever venture equity the cooperative has available to sell. Diversified across the portfolio. Less direct upside than a successful early SAFE; less direct risk too.
+
+These are two shapes serving two appetites. Keeping them distinct protects both.
+
+### What we will watch — soft drift, not formal capture
+
+Formal protections are necessary but not sufficient. The failure mode for a structure like this is not formal capture — it is **soft drift**. Even without governance votes, capital patrons exert relational pressure: *we accepted their money; we don't want them to feel ill-used; we make small accommodations that compound.* Over years, decisions can quietly orient toward keeping investor patrons comfortable, even when the formal architecture forbids them from directing the work.
+
+The relational filter on admission helps — accepting money only from people we already trust limits who can exert this pressure. The labor-senior dividend structure helps. The governance separation helps. None of them, alone or together, eliminate the drift. What eliminates the drift is the cooperative's continued discipline in noticing it and correcting it — being honest with itself, year after year, about whose comfort decisions are quietly serving.
+
+The substrate is what makes it possible to see; the membership is what does the seeing.
+
+---
+
+## 09. A cybernetic inheritance
 
 *Intelligence that embodies wisdom — not intelligence for its own sake.*
 
@@ -257,7 +323,7 @@ Brian Eno's word *scenius* — collective intelligence emerging from sustained p
 
 ---
 
-## 09. What stays the same
+## 10. What stays the same
 
 *Most things. If adopted, the rename is the paper catching up to the practice.*
 
@@ -275,7 +341,7 @@ If the proposal advances: the articles would be amended to register the name; a 
 
 ---
 
-## 10. Where this goes next
+## 11. Where this goes next
 
 *What would unfold if the proposal advances.*
 
