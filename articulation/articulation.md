@@ -21,7 +21,7 @@ What follows is **a proposal, not a decision**. Whether to rename, how membershi
 ### In brief
 
 - **Proposal**: adopt **Techne** as the public-facing name now via a DBA filing — *RegenHub, LCA · DBA Techne*. A future articles amendment can flip the legal name itself (to *Techne Cooperative · DBA RegenHub*) when timing makes sense.
-- **The shape**: Techne is a worker-owned venture studio + cooperative of scene-builders. Bodies of work nest in two patterns — *held* (incubated, vested-in) and *aligned peer* (independent, in relationship).
+- **The shape**: Techne is a worker-owned venture studio + cooperative of scene-builders. Within it, the **Techne Institute** is the school + incubator layer (Learn Vibe Build is the flagship program). Bodies of work nest in two patterns — *held* (incubated, vested-in) and *aligned peer* (independent, in relationship).
 - **Federated membership**: Techne Coop Members govern at the cooperative scale; each community (RegenHub, LVB, etc.) governs its own. Communities of practice (LVB, NVP, Open Civics) are pathways into membership; partner events (BSW, Cohere Boulder) are convergence points.
 - **The flywheel**: scene-building cultivates ventures; ventures voluntarily commit equity to the cooperative (give-first lineage); the basket compounds; capital flows back to the scene, to new ventures, and to members. Scene-builders share in what they help create.
 - **Capital architecture**: patronage is the unified accounting layer — time and money are commensurable. Investor Members are patrons, not equity holders; admission is relational, not transactional, and confers no governance. Labor patronage is structurally senior to capital in distribution.
@@ -69,11 +69,15 @@ Cultivating scenius — collective intelligence emerging from culturally aligned
 
 Structurally, **a worker-owned venture studio rooted in the cooperative form.** The cooperative is the holder — not because it owns every body of work (it does not), but because it is the membership container through which people stand in relationship to the inquiry, to one another, and to the ventures they help cultivate. Section 05 describes how capital fits.
 
+### The Institute
+
+**Techne Institute** is the cooperative's school + incubator layer — a brand and program layer within Techne, not a separate legal entity. Its programs bring people into Techne's way of thinking and develop their skill at AI and other tools in right relationship. **Learn Vibe Build** is the flagship; others may form as the work grows. The Institute is the most legible front door into Techne's orbit, woven with the cooperative's venture studio function — the Institute develops people; the studio supports the ventures that emerge.
+
 ### Bodies of work — two patterns
 
 Not every body of work nested inside Techne has the same relationship to the cooperative.
 
-**Pattern 1: Held and incubated.** Ventures and programs the cooperative holds equity or patronage interest in — incubated by the cooperative, vested in by it, but not necessarily owned outright. Surplus flows back through the cooperative's patronage system. *Examples: Learn Vibe Build · parachute.computer · co-emerging ventures from the membership*
+**Pattern 1: Held and incubated.** Ventures and programs the cooperative holds equity or patronage interest in — incubated by the cooperative, vested in by it, but not necessarily owned outright. Surplus flows back through the cooperative's patronage system. *Examples: Techne Institute (Learn Vibe Build flagship) · parachute.computer · Postage · co-emerging ventures from the membership*
 
 **Pattern 2: Aligned peers.** Independent organizations with shared inquiry. Not owned by the cooperative — in relationship with it. They share substrate where it makes sense; their members can become Techne members through bridge programs. *Examples: Neighborhood Village Project · Open Civics*
 
@@ -105,7 +109,7 @@ Bridge programs are **communities of practice**. Places where people return, dev
 
 Examples:
 
-- **Learn Vibe Build** — a cohort-based AI learning practice, incubated within the cooperative.
+- **Learn Vibe Build** — the Techne Institute's flagship program; cohort-based AI learning.
 - **Neighborhood Village Project** — an aligned-peer practice of place.
 - **Open Civics** — an aligned-peer network of civic innovators.
 
@@ -142,7 +146,7 @@ The cooperative accumulates a basket of equity in held ventures. As ventures gro
 ### Capital flows back, three ways
 
 - **Recognition** — patronage to the people building the scene. Meetup organizers, breathwork leaders, gardeners, civic stewards, infrastructure-builders.
-- **New ventures** — the cooperative as venture studio, incubator, accelerator, and school all in one. Resourcing the next generation.
+- **New ventures + the Institute** — the venture studio supports ventures emerging from the scene; the Techne Institute (school + incubator) develops the people who build them. Together: the next generation of bodies of work.
 - **Member benefit** — dividends to members and governance over allocation.
 
 ### Where we are starting
