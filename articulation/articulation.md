@@ -8,6 +8,16 @@
 
 ---
 
+> **TL;DR**
+>
+> Proposing RegenHub evolves into **Techne Cooperative** — a worker-owned venture studio combining our coworking space, our school (Techne Institute, with Learn Vibe Build as flagship), partner communities, and partner ventures.
+>
+> Ventures within the cooperative voluntarily give equity through a "give first" principle. Patronage is the unified accounting unit: $50k of capital and $50k of time produce the same patronage credit. Periodic equity sales let members redeem patronage credit for venture equity.
+>
+> First step is just a DBA filing — *RegenHub, LCA · DBA Techne*. The ask: feedback now, and approval for Aaron and Todd to begin executing if there's clear resonance.
+
+---
+
 Our cooperative has existed as a legal entity for 3 months now, and our co-working space has existed for almost 2 years. Right now the cooperative exists for the purpose of governing the co-working space. A question we might be asking is whether this much governance is really needed for the simple task of tending to a co-working space. Another question is whether there is a larger mission that we are oriented towards, that this co-working space is part of. Our public benefit mission has been the cultivation of scenius — so much of what we're doing here is about building a scene in Boulder and supporting collective intelligence emerging.
 
 ## The proposal
@@ -38,9 +48,13 @@ The school we are growing fits in here too. We are currently running our second 
 
 We keep the same cooperative and board members. The bylaws are largely already in the right shape. The legal entity, the public benefit purpose, the eight organizers, the lease at 1515 Walnut, the patronage architecture — all preserved.
 
-## An open question
+## Open questions
 
-Do labor patronage and capital patronage exist at the same class, or is labor structurally senior in distribution priority? One shape worth considering: equal class, with equal access to equity at the time of structured sales. Worth deciding together.
+A few worth deciding together:
+
+1. **Labor patronage vs. capital patronage: same class, or labor structurally senior?** One shape worth considering: equal class, with equal access to equity at the time of structured sales.
+2. **What counts as patronage, and how do we measure it?** We need simple-enough shapes for tracking fair market value of contributions — events hosted, classes taught, businesses grown — without making this bureaucratic.
+3. **How do partner-community members become Techne members?** When work in partner communities counts as patronage, what's the process for recognition and invitation? Foundational for the wider-community vision, even if some aspects take time to grow into.
 
 ## The ask
 

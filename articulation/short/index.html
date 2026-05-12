@@ -147,6 +147,31 @@
       font-size: clamp(2rem, 4.5vw, 2.6rem);
     }
 
+    /* ─── TLDR callout ─── */
+    .tldr-callout {
+      margin: 2rem 0 2rem;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--accent-dim);
+      border-radius: 6px;
+      background: var(--accent-glow);
+    }
+    .tldr-callout-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.85rem;
+    }
+    .tldr-callout p {
+      font-size: 1rem;
+      line-height: 1.65;
+      margin-bottom: 0.85rem;
+      color: var(--text-primary);
+    }
+    .tldr-callout p:last-child { margin-bottom: 0; }
+    .tldr-callout p strong { color: var(--text-primary); }
+
     @media (max-width: 640px) {
       .container--reading { padding: 0 1.25rem; }
       .opening-paragraph { padding-top: 1.75rem; }
@@ -180,6 +205,13 @@
     </div>
   </div>
 
+  <aside class="tldr-callout" aria-label="TL;DR">
+    <p class="tldr-callout-label">TL;DR</p>
+    <p>Proposing RegenHub evolves into <strong>Techne Cooperative</strong> — a worker-owned venture studio combining our coworking space, our school (Techne Institute, with Learn Vibe Build as flagship), partner communities, and partner ventures.</p>
+    <p>Ventures within the cooperative voluntarily give equity through a "give first" principle. Patronage is the unified accounting unit: $50k of capital and $50k of time produce the same patronage credit. Periodic equity sales let members redeem patronage credit for venture equity.</p>
+    <p>First step is just a DBA filing — <em>RegenHub, LCA · DBA Techne</em>. The ask: feedback now, and approval for Aaron and Todd to begin executing if there's clear resonance.</p>
+  </aside>
+
   <div class="content">
 
     <p class="opening-paragraph">Our cooperative has existed as a legal entity for 3 months now, and our co-working space for almost 2 years. Right now the cooperative exists to govern the co-working space. A larger mission is becoming clear: our public benefit purpose has been the cultivation of scenius, and what we're really doing here is building a scene in Boulder and supporting the collective intelligence emerging.</p>
@@ -196,8 +228,13 @@
 
     <p><strong>The school:</strong> We're running our second Learn Vibe Build cohort. I see this in the context of a larger school — <strong>Techne Institute</strong> — in alignment with our seminars on Technology &amp; The Human Future. The Institute generates revenue through educational programs and grows the next generation of people building ventures.</p>
 
-    <h2>An open question</h2>
-    <p>Do labor patronage and capital patronage exist at the same class, or is labor structurally senior in distribution priority? One shape worth considering: equal class, with equal access to equity at the time of structured sales. Worth deciding together.</p>
+    <h2>Open questions</h2>
+    <p>A few worth deciding together:</p>
+    <ol>
+      <li><strong>Labor patronage vs. capital patronage: same class, or labor structurally senior?</strong> One shape worth considering: equal class, with equal access to equity at the time of structured sales.</li>
+      <li><strong>What counts as patronage, and how do we measure it?</strong> Simple-enough shapes for tracking fair market value of contributions — events hosted, classes taught, businesses grown — without making it bureaucratic.</li>
+      <li><strong>How do partner-community members become Techne members?</strong> Foundational for the wider-community vision, even if it takes time to grow into.</li>
+    </ol>
 
     <div class="ask">
       <h2>The ask</h2>
