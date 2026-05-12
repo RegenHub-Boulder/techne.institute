@@ -26,7 +26,7 @@ What follows is **a proposal, not a decision**. Whether to rename, how membershi
 
 ### In brief
 
-- **Proposal**: rename the cooperative to **Techne Cooperative**, with RegenHub continuing as a DBA — the name of the headquarters at 1515 Walnut.
+- **Proposal**: adopt **Techne** as the public-facing name now via a DBA filing — *RegenHub, LCA · DBA Techne*. A future articles amendment can flip the legal name itself (to *Techne Cooperative · DBA RegenHub*) when timing makes sense.
 - Multiple **bodies of work** nest inside Techne. Each community (RegenHub, LVB, etc.) governs its own internal affairs; Techne Coop Members govern at the cooperative scale. Memberships layer.
 - Communities of practice (LVB, NVP, Open Civics) are **pathways** into membership. Partner events (Boulder Startup Week, Cohere Boulder) are **convergence points**, not pathways.
 - A shared **information substrate** — directory, treasury, inventory, governance — would align the bodies of work without homogenizing them.
@@ -64,9 +64,15 @@ Techne — *τέχνη* — is the Greek word for productive knowledge: the craf
 
 It names what the cooperative is actually about: the recovery of craft in an age that has tried to separate the maker from the making, the tool from the wisdom of its use, the community from the technologies that mediate it.
 
-If the proposal advances, **RegenHub** would continue as a doing-business-as name. The legal entity would remain the same, the SOS filing carries forward, the public benefit purpose preserved. RegenHub would become the name of the headquarters: the co-working space at 1515 Walnut, second floor, where the cooperative gathers and where its first community of practice still meets.
+The naming is staged. **Today, if this proposal advances:** a simple doing-business-as filing makes Techne the public-facing name. The legal entity remains *RegenHub, LCA* — the SOS filing, the articles, the public benefit purpose all carry forward unchanged. Cost is low; the move is reversible.
 
-Two names doing two jobs.
+> **RegenHub, LCA · DBA Techne**
+
+**Eventually**, when the cooperative is operating fluently under the Techne name and there's reason to invest in the legal change, the articles can be amended to flip the names. Techne Cooperative becomes the legal entity; RegenHub remains as a DBA for the headquarters at 1515 Walnut.
+
+> **Techne Cooperative · DBA RegenHub**
+
+Two names doing two jobs. The order of primacy is the only thing that changes — and only when it's worth changing.
 
 ---
 
@@ -337,7 +343,7 @@ Many things.
 - The principle that members are recognized for what they contribute — labor, revenue, capital, community — not just for capital alone.
 - The discipline of the substrate test: *does this regenerate or extract?*
 
-If the proposal advances: the articles would be amended to register the name; a DBA filing would preserve RegenHub; the bylaws would accommodate Techne membership and the heterogeneous-bodies-of-work pattern. None of these are pivots. They are the legal and operational steps that would bring the paper into alignment with the practice — if the membership chooses them.
+If the proposal advances: a DBA filing would adopt Techne as the public-facing name; the legal entity remains RegenHub, LCA in the immediate term; the bylaws would accommodate the heterogeneous-bodies-of-work pattern and the capital architecture in section 08. A future articles amendment could eventually flip the legal name itself — but that is a separate decision, taken when the timing and the cost make sense. None of these are pivots. They are the legal and operational steps that would bring the paper into alignment with the practice — if the membership chooses them.
 
 ---
 
@@ -347,7 +353,7 @@ If the proposal advances: the articles would be amended to register the name; a 
 
 Some of what comes next:
 
-- **Rename** — Articles amendment, DBA filing, member-agreement updates.
+- **Rename (staged)** — DBA filing to adopt Techne as the public name now; member-agreement updates; a future articles amendment to flip the legal name when timing is right.
 - **Substrate** — Building directory · treasury · inventory · governance primitives the bodies of work can adopt. Parachute is positioned to do much of this work.
 - **Bridges** — Naming the bridge programs we already have, articulating the membership pathway through them.
 - **Public** — Updating techne.coop and the cooperative's other public surfaces to reflect what is now coming clear.
@@ -362,5 +368,5 @@ If you're reading this, you're one of the people this is for. The rename is one 
 
 ---
 
-*Techne Cooperative · DBA RegenHub · 1515 Walnut St, Suite 200, Boulder, CO 80302*
+*RegenHub, LCA · DBA Techne · 1515 Walnut St, Suite 200, Boulder, CO 80302*
 *Colorado Public Benefit Limited Cooperative Association · SOS Document #20261163853*
