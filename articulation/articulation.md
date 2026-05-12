@@ -21,8 +21,8 @@ What follows is **a proposal, not a decision**. Whether to rename, how membershi
 ### In brief
 
 - **Proposal**: adopt **Techne** as the public-facing name now via a DBA filing — *RegenHub, LCA · DBA Techne*. A future articles amendment can flip the legal name itself (to *Techne Cooperative · DBA RegenHub*) when timing makes sense.
-- **The shape**: Techne is a worker-owned venture studio + cooperative of scene-builders. Within it, the **Techne Institute** is the school + incubator layer (Learn Vibe Build is the flagship program). Bodies of work nest in two patterns — *held* (incubated, vested-in) and *aligned peer* (independent, in relationship).
-- **Federated membership**: Techne Coop Members govern at the cooperative scale; each body of work within (RegenHub, the Techne Institute, held ventures) governs its own affairs. Bridge programs — the Institute's programs (LVB) and aligned peer communities (NVP, Open Civics) — are pathways into membership; partner events (BSW, Cohere Boulder) are convergence points.
+- **The shape**: Techne Cooperative is an integrated whole — the **Techne Institute** (school + incubator, with Learn Vibe Build as flagship) + **RegenHub** (co-working space at 1515 Walnut). In relationship: **partner communities** (NVP, Open Civics, Boulder Startup Week, Boulder New Tech, and more) and **partner ventures** (Gitcoin, Parachute, Postage), where the cooperative holds equity.
+- **Federated membership**: Techne Coop Members govern cooperative-scale matters; within Techne, RegenHub members shape the co-working space and the Institute governs its programs. Partner communities and partner ventures are external and self-governing.
 - **The flywheel**: scene-building cultivates ventures; ventures voluntarily commit equity to the cooperative (give-first lineage); the basket compounds; capital flows back to the scene, to new ventures, and to members. Scene-builders share in what they help create.
 - **Capital architecture**: patronage is the unified accounting layer — time and money are commensurable. Investor Members are patrons, not equity holders; admission is relational, not transactional, and confers no governance. Labor patronage is structurally senior to capital in distribution.
 - **Continuity**: the legal entity, the public benefit purpose, the eight organizers, the lease, and the patronage architecture — all preserved. RegenHub members are the seeds of this new chapter; membership broadens outward over time, at the pace deep trust allows.
@@ -35,7 +35,7 @@ What follows is **a proposal, not a decision**. Whether to rename, how membershi
 
 In February we filed under the name **RegenHub, LCA**. Six months later, the thing the LCA holds has continued to grow — and the name no longer quite contains it. *Techne* (τέχνη, productive knowledge, the craft of making) names what the cooperative is actually about: the recovery of craft in an age that has tried to separate the maker from the making, the tool from the wisdom of its use.
 
-The cooperative now holds a co-working community at 1515 Walnut, an educational current (Learn Vibe Build), a set of ventures (Parachute, Postage, Habitat), and an expanding constellation of aligned communities (Neighborhood Village Project, Open Civics, Coordination Games). RegenHub is one of the things it holds — the co-working community of practice. The cooperative needs a name that reflects the whole.
+The cooperative is now an integrated whole — with two parts inside it (the **Techne Institute** as school + incubator, **RegenHub** as the co-working space at 1515 Walnut) and active relationships with **partner communities** (Neighborhood Village Project, Open Civics, Boulder Startup Week, Boulder New Tech, and more) and **partner ventures** (Gitcoin, Parachute, Postage, others where the cooperative holds equity). RegenHub is where this began. The cooperative needs a name that reflects the whole.
 
 ### The staged rename
 
@@ -73,15 +73,20 @@ Structurally, **a worker-owned venture studio rooted in the cooperative form.** 
 
 **Techne Institute** is the cooperative's school + incubator layer — a brand and program layer within Techne, not a separate legal entity. Its programs bring people into Techne's way of thinking and develop their skill at AI and other tools in right relationship. **Learn Vibe Build** is the flagship; others may form as the work grows. The Institute is the most legible front door into Techne's orbit, woven with the cooperative's venture studio function — the Institute develops people; the studio supports the ventures that emerge.
 
-### Bodies of work — two patterns
+### Inside Techne
 
-Not every body of work nested inside Techne has the same relationship to the cooperative.
+The cooperative has two integrated parts:
 
-**Pattern 1: Held and incubated.** Ventures and programs the cooperative holds equity or patronage interest in — incubated by the cooperative, vested in by it, but not necessarily owned outright. Surplus flows back through the cooperative's patronage system. *Examples: Techne Institute (Learn Vibe Build flagship) · parachute.computer · Postage · co-emerging ventures from the membership*
+- **The Techne Institute** — the school + incubator. A brand and program layer within Techne, not a separate legal entity. Its programs bring people into Techne's way of thinking and develop their skill at AI and other tools in right relationship. **Learn Vibe Build** is the flagship; others will form as the work grows.
+- **RegenHub** — the co-working space at 1515 Walnut. The headquarters, the room where this began.
 
-**Pattern 2: Aligned peers.** Independent organizations with shared inquiry. Not owned by the cooperative — in relationship with it. They share substrate where it makes sense; their members can become Techne members through bridge programs. *Examples: Neighborhood Village Project · Open Civics*
+### In relationship with Techne
 
-These patterns are not a hierarchy. They are different kinds of alignment, each appropriate for different bodies of work. A body of work can move between patterns over time. As the cooperative grows, additional patterns may take shape.
+Outside the cooperative but in active relationship:
+
+**Partner communities.** External organizations doing scene-building work alongside Techne. The cooperative shares inquiry and substrate with them where it makes sense; their members can come into Techne through sustained engagement; Techne members can participate in their work. *Examples: Neighborhood Village Project · Open Civics · Boulder Startup Week · Boulder New Tech · and more as the relationships form*
+
+**Partner ventures.** External companies in which the cooperative holds equity stakes — via the give-first lineage (see section 04). As these ventures grow and the cooperative periodically sells portions of its holdings, capital flows back to fund the cooperative's work and support future ventures. *Examples: Gitcoin · Parachute · Postage · and future ventures*
 
 ### The place
 
@@ -91,35 +96,31 @@ Boulder, Colorado, at 1515 Walnut Street. The cooperative is bioregional — the
 
 ## 03. Membership
 
-*Federated. Communities of practice as pathways. Partner events as convergence.*
+*Federated. People come in through the Institute, through partner communities, and through showing up.*
 
 ### Federated, not centralized
 
-Membership lives at two principal scales — the cooperative, and the bodies of work and communities within it. **Techne Cooperative Member** is the membership at the cooperative level (the existing bylaws describe four classes: Cooperative Member, Co-working Member, Community Participant, Investor Member). The cooperative governs cooperative-scale matters: shared infrastructure, the lease, patronage architecture, the public benefit purpose.
+Membership lives at two principal scales — the cooperative, and the parts within it that govern themselves. **Techne Cooperative Member** is the membership at the cooperative level (the existing bylaws describe four classes: Cooperative Member, Co-working Member, Community Participant, Investor Member). The cooperative governs cooperative-scale matters: shared infrastructure, the lease, patronage architecture, the public benefit purpose.
 
-Within Techne, each body of work governs its own affairs. **RegenHub** members shape decisions about the co-working space at 1515 Walnut. The **Techne Institute** governs its programs (Learn Vibe Build and others as they form). Each held venture runs its own operations. **Aligned peer communities** like Neighborhood Village Project and Open Civics are already self-governing at their own level. A single person can be a member at multiple scales — a Techne Coop Member, a RegenHub member, an LVB cohort alum — each with its own scope. The layers nest.
+Within Techne, **RegenHub** members shape decisions about the co-working space at 1515 Walnut; the **Techne Institute** governs its programs (Learn Vibe Build and others as they form). A single person can be a member at multiple scales — a Techne Coop Member, a RegenHub member, an LVB cohort alum — each with its own scope.
+
+**Partner communities** (NVP, Open Civics, Boulder Startup Week, Boulder New Tech, and more) and **partner ventures** (Gitcoin, Parachute, Postage) are in relationship with Techne but not within it; they govern themselves at their own level.
 
 *A note on Investor Members: capital admission is relational, not transactional, and confers no governance rights. Section 05 describes the capital architecture in full.*
 
 > *A pathway diagram on the [live page](https://techne.institute/articulation/#membership) traces the journey: Visitor → Community Participant (Class 3) → Co-working Member (Class 2) → Cooperative Member (Class 1, governance). The transitions are activated by events & programming, bridge programs, and eventually invitation through deep relationship.*
 
-### Bridge programs — the pathway in
+### Pathways in
 
-Bridge programs are **communities of practice**. Places where people return, develop, contribute, and form relationships over time. Sustained participation is the key. Through it, people develop the standing relationship that can lead to deeper engagement with the cooperative — Class 3 by default, Class 2 if they want a desk, eventually Class 1 by invitation.
+People come into Techne through several pathways:
 
-Examples:
+- **Institute programs** — Learn Vibe Build is the flagship; future programs may follow.
+- **Partner communities** — sustained engagement with NVP, Open Civics, Boulder Startup Week, Boulder New Tech, and others builds standing relationship that can lead into Techne.
+- **Showing up at 1515 Walnut** — presence at the co-working space opens the path.
 
-- **Learn Vibe Build** — the Techne Institute's flagship program; cohort-based AI learning.
-- **Neighborhood Village Project** — an aligned-peer practice of place.
-- **Open Civics** — an aligned-peer network of civic innovators.
+Through sustained participation in any of these, people develop the relationship that can lead to deeper engagement — Class 3 by default, Class 2 if they want a desk, Class 1 by invitation when the relationship is deep enough.
 
-A bridge program does not need to be held by the cooperative. What it needs is shared character: an inquiry into right relationship with tools, a community of practice forming around it, alignment with the cooperative's purpose.
-
-### Partner events — convergence points
-
-Distinct from bridge programs. Partner events are gatherings where the cooperative meets and works alongside aligned communities — convergence points, not pathways. **Boulder Startup Week**, **Cohere Boulder**. A bridge program is something you can *belong to*; a partner event is something you can *show up at*.
-
-*Who decides who counts? Existing cooperative members, by invitation. That judgment will sharpen as the substrate matures. Until then, membership extends through relationship — recognized by people already in it, extended to people whose work has become visible to them.*
+*Who decides who counts? Existing cooperative members, by invitation. Until the substrate matures, membership extends through relationship — recognized by people already in it, extended to people whose work has become visible to them.*
 
 ---
 
@@ -141,7 +142,7 @@ When ventures form within the cooperative, they voluntarily commit equity back t
 
 ### The basket compounds
 
-The cooperative accumulates a basket of equity in held ventures. As ventures grow, the basket compounds. From time to time the cooperative sells portions of its equity holdings — providing the liquidity that makes patronage credit redeemable (section 05).
+The cooperative accumulates a basket of equity in partner ventures. As ventures grow, the basket compounds. From time to time the cooperative sells portions of its equity holdings — providing the liquidity that makes patronage credit redeemable (section 05).
 
 ### Capital flows back, three ways
 
@@ -190,7 +191,7 @@ This is the structural answer to *who decides how surplus flows?* — the people
 
 ### Liquidity and patience
 
-The cooperative accumulates a basket of equity in held ventures (via the give-first lineage in section 04). From time to time it will sell portions of its equity holdings — a normal venture studio activity — and patrons can redeem patronage credit for venture equity in those sales. Both labor and capital patrons participate the same way: the mechanism is identical; the underlying patronage is what differs.
+The cooperative accumulates a basket of equity in partner ventures (via the give-first lineage in section 04). From time to time it will sell portions of its equity holdings — a normal venture studio activity — and patrons can redeem patronage credit for venture equity in those sales. Both labor and capital patrons participate the same way: the mechanism is identical; the underlying patronage is what differs.
 
 This gives patronage credit a liquidity path: work and capital that built the cooperative find their way back to contributors, denominated in the equity of the ventures the cooperative helped grow.
 
