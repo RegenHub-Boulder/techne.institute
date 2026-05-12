@@ -27,12 +27,33 @@
   <style>
     /* ─── One-pager layout ─── */
 
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: 1rem 0 0;
+    }
+    .comment-link {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      border-radius: 3px;
+      padding: 0.45rem 0.95rem;
+      transition: background 150ms, color 150ms;
+    }
+    .comment-link:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
     .version-link {
       display: flex;
-      justify-content: flex-end;
       align-items: center;
-      gap: 0.75rem;
-      padding: 1rem 0 0;
+      gap: 0.6rem;
       font-family: var(--font-mono);
       font-size: 0.7rem;
       letter-spacing: 0.08em;
@@ -163,13 +184,15 @@
 <main id="main">
 <div class="container--reading">
 
-  <div class="version-link">
-    <span>Versions:</span>
-    <span style="color: var(--text-primary);">Long</span>
-    <span style="opacity: 0.4;">·</span>
-    <a href="/articulation/short/">Short</a>
-    <span style="opacity: 0.4;">·</span>
-    <a href="/articulation/articulation.md">Markdown</a>
+  <div class="top-actions">
+    <a class="comment-link" href="https://docs.google.com/document/d/1oVqqPerNRySUNddH79WOzpd-ZrXGSeVrb9BUIyjGPn0/edit" target="_blank" rel="noopener">Comment in Google Doc →</a>
+    <div class="version-link">
+      <span style="color: var(--text-primary);">Long</span>
+      <span style="opacity: 0.4;">·</span>
+      <a href="/articulation/short/">Short</a>
+      <span style="opacity: 0.4;">·</span>
+      <a href="/articulation/articulation.md">Markdown</a>
+    </div>
   </div>
 
   <div class="content">
@@ -214,7 +237,6 @@
   <footer class="page-footer">
     <p>RegenHub, LCA · DBA Techne · 1515 Walnut St, Suite 200, Boulder, CO 80302</p>
     <p>Colorado Public Benefit Limited Cooperative Association · SOS Document #20261163853</p>
-    <p style="margin-top: 1rem;"><a href="/articulation/plain/" style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); text-decoration: none; border-bottom: 1px solid var(--rule);">Plain text version (for Google Docs)</a></p>
   </footer>
 
 </div>
