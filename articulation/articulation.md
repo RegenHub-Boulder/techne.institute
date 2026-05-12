@@ -22,7 +22,7 @@ What follows is **a proposal, not a decision**. Whether to rename, how membershi
 
 - **Proposal**: adopt **Techne** as the public-facing name now via a DBA filing — *RegenHub, LCA · DBA Techne*. A future articles amendment can flip the legal name itself (to *Techne Cooperative · DBA RegenHub*) when timing makes sense.
 - **The shape**: Techne is a worker-owned venture studio + cooperative of scene-builders. Within it, the **Techne Institute** is the school + incubator layer (Learn Vibe Build is the flagship program). Bodies of work nest in two patterns — *held* (incubated, vested-in) and *aligned peer* (independent, in relationship).
-- **Federated membership**: Techne Coop Members govern at the cooperative scale; each community (RegenHub, LVB, etc.) governs its own. Communities of practice (LVB, NVP, Open Civics) are pathways into membership; partner events (BSW, Cohere Boulder) are convergence points.
+- **Federated membership**: Techne Coop Members govern at the cooperative scale; each body of work within (RegenHub, the Techne Institute, held ventures) governs its own affairs. Bridge programs — the Institute's programs (LVB) and aligned peer communities (NVP, Open Civics) — are pathways into membership; partner events (BSW, Cohere Boulder) are convergence points.
 - **The flywheel**: scene-building cultivates ventures; ventures voluntarily commit equity to the cooperative (give-first lineage); the basket compounds; capital flows back to the scene, to new ventures, and to members. Scene-builders share in what they help create.
 - **Capital architecture**: patronage is the unified accounting layer — time and money are commensurable. Investor Members are patrons, not equity holders; admission is relational, not transactional, and confers no governance. Labor patronage is structurally senior to capital in distribution.
 - **Continuity**: the legal entity, the public benefit purpose, the eight organizers, the lease, and the patronage architecture — all preserved. RegenHub members are the seeds of this new chapter; membership broadens outward over time, at the pace deep trust allows.
@@ -95,9 +95,9 @@ Boulder, Colorado, at 1515 Walnut Street. The cooperative is bioregional — the
 
 ### Federated, not centralized
 
-Membership lives at two layers. **Techne Cooperative Member** is the membership at the cooperative level — described by the existing bylaws (Cooperative Member, Co-working Member, Community Participant, Investor Member). The cooperative governs cooperative-scale matters: shared infrastructure, the lease, patronage architecture, the public benefit purpose.
+Membership lives at two principal scales — the cooperative, and the bodies of work and communities within it. **Techne Cooperative Member** is the membership at the cooperative level (the existing bylaws describe four classes: Cooperative Member, Co-working Member, Community Participant, Investor Member). The cooperative governs cooperative-scale matters: shared infrastructure, the lease, patronage architecture, the public benefit purpose.
 
-Each **community of practice** within Techne — RegenHub at 1515 Walnut, Learn Vibe Build, and others as they form — has its own internal member governance over its own affairs. A single person can be a member at multiple layers; the layers nest.
+Within Techne, each body of work governs its own affairs. **RegenHub** members shape decisions about the co-working space at 1515 Walnut. The **Techne Institute** governs its programs (Learn Vibe Build and others as they form). Each held venture runs its own operations. **Aligned peer communities** like Neighborhood Village Project and Open Civics are already self-governing at their own level. A single person can be a member at multiple scales — a Techne Coop Member, a RegenHub member, an LVB cohort alum — each with its own scope. The layers nest.
 
 *A note on Investor Members: capital admission is relational, not transactional, and confers no governance rights. Section 05 describes the capital architecture in full.*
 
