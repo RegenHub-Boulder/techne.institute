@@ -1,219 +1,51 @@
-# Techne Cooperative
+# A Proposal
 
-**An articulation, for members and close parties**
+**Our cooperative coworking space evolving into a worker-owned venture studio.**
 
-*A proposal for member consideration · Boulder, Colorado · May 2026*
+*Pre-read for the next board meeting · Boulder, Colorado · May 2026*
 
-*Live page with diagrams: [techne.institute/articulation/](https://techne.institute/articulation/)*
-
----
-
-**TL;DR**
-
-Techne is a proposed evolution of **RegenHub** into a Boulder-based cooperative that combines coworking, education/incubation (Learn Vibe Build), community-building, and venture creation under one umbrella.
-
-The model is: build strong communities → incubate ventures → ventures give equity back to the cooperative → value flows back to members, new ventures, and the broader scene.
-
-Governance is designed so labor and trusted relationships matter more than capital: investors can contribute funds but do not control the cooperative, while long-term contributors govern it.
-
-> *A proposal for the cooperative membership to consider. The legal entity (RegenHub, LCA, filed February 2026) and the public benefit purpose (cultivating scenius) carry forward. This articulation focuses on landing the cooperative; related questions about charitable and educational work belong in a separate conversation that follows.*
+*Live version: [techne.institute/articulation/](https://techne.institute/articulation/)*
 
 ---
 
-### In brief
+Our cooperative has existed as a legal entity for 3 months now, and our co-working space has existed for almost 2 years. Right now the cooperative exists for the purpose of governing the co-working space. A question we might be asking is whether this much governance is really needed for the simple task of tending to a co-working space. Another question is whether there is a larger mission that we are oriented towards, that this co-working space is part of. Our public benefit mission has been the cultivation of scenius — so much of what we're doing here is about building a scene in Boulder and supporting collective intelligence emerging.
 
-- **Proposal**: adopt **Techne** as the public-facing name now via a DBA filing — *RegenHub, LCA · DBA Techne*. A future articles amendment can flip the legal name itself (to *Techne Cooperative · DBA RegenHub*) when timing makes sense.
-- **The shape**: Techne Cooperative is an integrated whole — the **Techne Institute** (school + incubator, with Learn Vibe Build as flagship) + **RegenHub** (co-working space at 1515 Walnut). In relationship: **partner communities** (NVP, Open Civics, Boulder Startup Week, Cohere Boulder, Boulder New Tech, and more) and **partner ventures** (Gitcoin, Parachute, Postage), where the cooperative holds equity.
-- **Federated membership**: Techne Coop Members govern cooperative-scale matters; within Techne, RegenHub members shape the co-working space and the Institute governs its programs. Partner communities and partner ventures are external and self-governing.
-- **The flywheel**: scene-building cultivates ventures; ventures voluntarily commit equity to the cooperative (give-first lineage); the basket compounds; capital flows back to the scene, to new ventures, and to members. Scene-builders share in what they help create.
-- **Capital architecture**: patronage is the unified accounting layer — time and money are commensurable. Investor Members are patrons, not equity holders; admission is relational, not transactional, and confers no governance. Labor patronage is structurally senior to capital in distribution.
-- **Continuity**: the legal entity, the public benefit purpose, the eight organizers, the lease, and the patronage architecture — all preserved. RegenHub members are the seeds of this new chapter; membership broadens outward over time, at the pace deep trust allows.
+## The proposal
 
----
+I am proposing a transformation of RegenHub into **Techne Cooperative**, while still keeping RegenHub as our co-working space and as the base of operations for the cooperative. This starts as a simple DBA filing — *RegenHub, LCA · DBA Techne*. The articles can be amended later, when it's worth the cost. As we evolve, RegenHub could have its own governance focused on the space, while the cooperative board focuses on the long-term business of the cooperative and its growth.
 
-## 01. What's changing
+## The vision
 
-*The cooperative outgrew its name. Adopting Techne in two stages.*
+We want to grow a beautiful and connected scene in Boulder. We want to help ensure an abundant network grows in the scene, with growing influence and financial resources. We want to ensure that those who help grow the scene are able to benefit from the success within the scene while also being able to continue to influence its ongoing direction. And we want this scene — and what emerges from it — to be of benefit to the world and to support a more harmonious relationship, with technology, with each other, and with this wider world.
 
-In February we filed under the name **RegenHub, LCA**. Six months later, the thing the LCA holds has continued to grow — and the name no longer quite contains it. *Techne* (τέχνη, productive knowledge, the craft of making) names what the cooperative is actually about: the recovery of craft in an age that has tried to separate the maker from the making, the tool from the wisdom of its use.
+## How it works
 
-The cooperative is now an integrated whole — with two parts inside it (the **Techne Institute** as school + incubator, **RegenHub** as the co-working space at 1515 Walnut) and active relationships with **partner communities** (Neighborhood Village Project, Open Civics, Boulder Startup Week, Cohere Boulder, Boulder New Tech, and more) and **partner ventures** (Gitcoin, Parachute, Postage, others where the cooperative holds equity). RegenHub is where this began. The cooperative needs a name that reflects the whole.
+**Equity from ventures.** We grow the cooperative's holdings through voluntary equity contributions from ventures. **Parachute** will start by offering 10% of its equity to the cooperative. Our goal is to raise a friends-and-family round at a $3M valuation (SAFE cap), then move to at least $10M (SAFE cap) by end of 2026 — putting Techne's holdings at $1M+ soft value as a starting point. **Postage** and **Gitcoin** are also potential equity givers. This is the same "give first" principle that has shaped Boulder's tech culture through TechStars.
 
-### The staged rename
+**Patronage as the unified unit.** I propose we raise money and relate to it as patronage contributions. If someone like Kevin or Jeremy puts $50k in, it would be seen as $50k of value into the cooperative — the same shape as a member putting in $50k of time. We will land simple enough shapes to begin to measure the fair market value each of us offers to the cooperative: hosting events, teaching classes, growing cooperative businesses, and more.
 
-**Today, if this proposal advances:** a simple doing-business-as filing makes Techne the public-facing name. The legal entity remains *RegenHub, LCA* — the SOS filing, the articles, the public benefit purpose all carry forward unchanged. Cost is low; the move is reversible.
+**Liquidity through equity sales.** As a cooperative, we will have a regular practice of selling equity in the ventures we hold — to fundraise for the cooperative and to enable cooperative members to directly benefit from the growth of these ventures. Patronage shares can be redeemed for venture equity at the time of these structured sales.
 
-> **RegenHub, LCA · DBA Techne**
+## Membership extends to partner communities
 
-**Eventually**, when the cooperative is operating fluently under the Techne name and there's reason to invest in the legal change, the articles can be amended to flip the names. Techne Cooperative becomes the legal entity; RegenHub remains as a DBA for the headquarters.
+As the cooperative grows, we begin to offer membership to people in our wider community — **partner communities** — so activities such as volunteering to organize Boulder Startup Week, Boulder New Tech, or Women in AI; or running Neighborhood Village Project or Climatique; can all be seen as patronage activities. This helps set the foundation for a cooperative that is truly able to introduce novel ideas to rewarding various good works in the community. Some of this takes time to grow into; it's worth naming the potential early.
 
-> **Techne Cooperative · DBA RegenHub**
+## Techne Institute — the school
 
-Two names doing two jobs. The order of primacy is the only thing that changes — and only when it's worth changing.
+The school we are growing fits in here too. We are currently running our second Learn Vibe Build cohort, and I see all of this in the context of a larger school vision — **Techne Institute**. In alignment with our recent seminars on Technology & The Human Future in which we explore Techne from a philosophical angle, we can cultivate a school that helps people not only become builders of technology (LVB and related programs), but also infuses a technology telos through our education programs that supports a harmonious relationship to technology as we develop it. Techne Institute serves both as one of the first primary business lines of the cooperative (revenue through educational programs) and as an engine for growing more ventures within the cooperative.
 
----
+## What stays the same
 
-## 02. What Techne is
+We keep the same cooperative and board members. The bylaws are largely already in the right shape. The legal entity, the public benefit purpose, the eight organizers, the lease at 1515 Walnut, the patronage architecture — all preserved.
 
-*A worker-owned venture studio + cooperative of scene-builders.*
+## An open question
 
-Techne the word holds an inquiry — right relationship between tools and the people who use them. Techne Cooperative is the people doing that inquiry together: the cooperative of those building Boulder's tech, civic, and community scene. Structurally, **a worker-owned venture studio** rooted in the cooperative form — bioregional, rooted at 1515 Walnut Street.
+Do labor patronage and capital patronage exist at the same class, or is labor structurally senior in distribution priority? One shape worth considering: equal class, with equal access to equity at the time of structured sales. Worth deciding together.
 
-### The inquiry
+## The ask
 
-The same question — *what does it mean to use this tool well, in service of life rather than at its expense?* — runs through every body of work the cooperative holds. AI in Learn Vibe Build. Civic infrastructure in Open Civics. Mutual obligation in Neighborhood Village Project. Co-working in RegenHub. Computing-as-soft-landing in Parachute. The tools differ. The question is the same.
-
-### The mission
-
-Cultivating scenius — collective intelligence emerging from culturally aligned people in sustained proximity — which in practice means cultivating Boulder's scene. The cooperative is made of the people doing that work. The deeper inheritance is older than intelligence for its own sake: a cybernetic, humanitarian tradition that asks intelligence to embody wisdom — to protect human life, habitat, and the living planet that holds both.
-
-### Inside Techne
-
-The cooperative has two integrated parts:
-
-- **The Techne Institute** — the school + incubator. A brand and program layer within Techne, not a separate legal entity. Its programs bring people into Techne's way of thinking and develop their skill at AI and other tools in right relationship. **Learn Vibe Build** is the flagship; others will form as the work grows.
-- **RegenHub** — the co-working space at 1515 Walnut. The headquarters, the room where this began.
-
-### In relationship with Techne
-
-Outside the cooperative but in active relationship:
-
-**Partner communities.** External organizations doing scene-building work alongside Techne. The cooperative shares inquiry and substrate with them where it makes sense; their members can come into Techne through sustained engagement; Techne members can participate in their work. *Examples: Neighborhood Village Project · Open Civics · Boulder Startup Week · Cohere Boulder · Boulder New Tech · and more as the relationships form*
-
-**Partner ventures.** External companies in which the cooperative holds equity stakes — via the give-first lineage (see section 04). As these ventures grow and the cooperative periodically sells portions of its holdings, capital flows back to fund the cooperative's work and support future ventures. *Examples: Gitcoin · Parachute · Postage · and future ventures*
-
----
-
-## 03. Membership
-
-*Federated. People come in through the Institute, through partner communities, and through showing up.*
-
-### Federated, not centralized
-
-Membership lives at two principal scales — the cooperative, and the parts within it that govern themselves. **Techne Cooperative Member** is the membership at the cooperative level (the existing bylaws describe four classes: Cooperative Member, Co-working Member, Community Participant, Investor Member). The cooperative governs cooperative-scale matters: shared infrastructure, the lease, patronage architecture, the public benefit purpose.
-
-Within Techne, **RegenHub** members shape decisions about the co-working space at 1515 Walnut; the **Techne Institute** governs its programs (Learn Vibe Build and others as they form). A single person can be a member at multiple scales — a Techne Coop Member, a RegenHub member, an LVB cohort alum — each with its own scope.
-
-**Partner communities** (NVP, Open Civics, Boulder Startup Week, Cohere Boulder, Boulder New Tech, and more) and **partner ventures** (Gitcoin, Parachute, Postage) are in relationship with Techne but not within it; they govern themselves at their own level.
-
-*A note on Investor Members: capital admission is relational, not transactional, and confers no governance rights. Section 05 describes the capital architecture in full.*
-
-> *A pathway diagram on the [live page](https://techne.institute/articulation/#membership) traces the journey: Visitor → Community Participant (Class 3) → Co-working Member (Class 2) → Cooperative Member (Class 1, governance). The transitions are activated by events & programming, bridge programs, and eventually invitation through deep relationship.*
-
-### Pathways in
-
-People come into Techne through several pathways:
-
-- **Institute programs** — Learn Vibe Build is the flagship; future programs may follow.
-- **Partner communities** — sustained engagement with NVP, Open Civics, Boulder Startup Week, Cohere Boulder, Boulder New Tech, and others builds standing relationship that can lead into Techne.
-- **Showing up at 1515 Walnut** — presence at the co-working space opens the path.
-
-Through sustained participation in any of these, people develop the relationship that can lead to deeper engagement — Class 3 by default, Class 2 if they want a desk, Class 1 by invitation when the relationship is deep enough.
-
-*Who decides who counts? Existing cooperative members, by invitation. Until the substrate matures, membership extends through relationship — recognized by people already in it, extended to people whose work has become visible to them.*
-
----
-
-## 04. How this grows
-
-*Scene-building cultivates ventures. Ventures give equity. Capital flows back.*
-
-If the cooperative is the basket, the flywheel is what fills it.
-
-> *A flywheel diagram on the [live page](https://techne.institute/articulation/#flywheel) traces the cycle: scene-building (cultivating the conditions) → ventures emerge (give-first equity to the basket) → cooperative basket (value compounds across ventures) → capital flows back to three streams (Recognition · New ventures · Member benefit) → scene strengthens → more ventures emerge → cycle compounds.*
-
-### Ventures give equity, in the give-first lineage
-
-Scene-building — running meetups, hosting gatherings, stewarding communities, holding space for breathwork and yoga, supporting newcomers — creates the conditions in which ventures emerge. When ventures form within the cooperative, they voluntarily commit equity back to it, out of the same *"give first"* principle that has shaped Boulder's tech culture through TechStars. The amount varies with the depth of the relationship: 1% for a lightly connected venture, 5% for one growing with cooperative support, 10–20% for one deeply incubated. Parachute, for instance, plans to give 10%. The give is structural and proportional, not a fixed tax. The cooperative accumulates the basket of equity; as ventures grow, it compounds. From time to time the cooperative sells portions of its holdings, providing the liquidity that makes patronage credit redeemable (section 05).
-
-### Capital flows back, three ways
-
-- **Recognition** — patronage to the people building the scene. Meetup organizers, breathwork leaders, gardeners, civic stewards, infrastructure-builders.
-- **New ventures + the Institute** — the venture studio supports ventures emerging from the scene; the Techne Institute (school + incubator) develops the people who build them. Together: the next generation of bodies of work.
-- **Member benefit** — dividends to members and governance over allocation.
-
-### Where we are starting
-
-RegenHub is where this begins. Current RegenHub members are the seeds; 1515 Walnut remains the headquarters. Membership extends outward over time toward other scene-builders, at the pace deep trust allows. None of this is automatic — each turn of the cycle is real work the cooperative has to actually do, and many similar attempts have stumbled. We are committed to this as a long practice, not a guaranteed pattern.
-
----
-
-## 05. Capital and patronage
-
-*Patronage is the unified accounting layer. Capital enters as a patron, not an owner. Labor patronage is structurally senior to capital patronage.*
-
-Section 04 named the flywheel that fills the basket; this section names how capital enters, accumulates, circulates, and stays structurally subordinate to the work it serves.
-
-### Patronage as a unified accounting unit
-
-Across every kind of contribution — time, money, revenue, community work — the cooperative uses a single accounting layer: **patronage**. Time contributed is valued at fair market rate and accrues patronage credit dollar-for-dollar against capital contributions. An hour valued at $80 and a check for $80 produce identical patronage credit. The denomination differs; the unit is the same.
-
-This is what makes labor and capital commensurable. Every class of member contributes to patronage; what varies is the form of contribution.
-
-### Investor Members are patrons, not equity holders
-
-When an Investor Member contributes capital, they receive *patronage credit* — not equity in the cooperative. They are not buying ownership. They are contributing to a member capital account that participates in patronage by the same logic as every other class of patron.
-
-Two structural protections accompany this:
-
-- **Admission is relational, not transactional.** A check does not buy entry. The cooperative chooses whom to accept as an Investor Member — based on the depth of trust and alignment already present. *We accept money from people we already trust.*
-- **Capital admission is not governance admission.** Becoming an Investor Member does not confer cooperative governance rights. Governance is held by Cooperative Members, earned through sustained participation and the depth of relationship section 03 describes. An Investor Member can walk the path to Cooperative Membership; they cannot purchase that standing.
-
-The result: **capital can enter the cooperative without acquiring the right to direct it.**
-
-Capital that wants direct exposure to a specific venture takes a different route: it invests in that venture, at that venture's terms. If Parachute is raising a SAFE, the investor goes through Parachute — accepting Parachute's risk for Parachute's upside. The patronage path is different: patient capital contributed to the cooperative, redeemable later for whatever venture equity the cooperative has available to sell. Diversified, less direct upside, less direct risk. Two shapes for two appetites.
-
-### Distribution is governed by labor patrons
-
-Patronage dividends are determined by the Cooperative Members. Investor Members, *qua* investors, do not vote on dividend distribution. **Labor patronage is structurally senior to capital patronage** in distribution priority — the people who built the scene decide how surplus flows, not the people who funded it.
-
-### Liquidity and patience
-
-The cooperative accumulates a basket of equity in partner ventures. From time to time it sells portions of these holdings — a normal venture studio activity — and patrons can redeem patronage credit for venture equity in those sales. Both labor and capital patrons participate the same way. This gives patronage credit a liquidity path: work and capital that built the cooperative find their way back to contributors, denominated in the equity of the ventures the cooperative helped grow.
-
-Until redemption, unredeemed credit accrues a modest simple interest — modest by design, since cooperative law and the Rochdale principles limit return on capital. The cooperative form is for the benefit of patronage activity, not capital itself.
-
-### What we will watch — soft drift, not formal capture
-
-Formal protections are necessary but not sufficient. The failure mode for a structure like this is not formal capture — it is **soft drift**. Even without governance votes, capital patrons exert relational pressure: *we accepted their money; we make small accommodations that compound.* What eliminates the drift is the cooperative's continued discipline in noticing it and correcting it — being honest with itself, year after year, about whose comfort decisions are quietly serving. The substrate is what makes it possible to see; the membership is what does the seeing.
-
----
-
-## 06. Continuity and what's next
-
-*The substrate. What stays. What unfolds if the proposal advances.*
-
-### The substrate
-
-Across every body of work, a common information system — **directory, treasury, inventory, governance** — provides a shared pattern that lets work, value, and recognition flow between bodies of work without each having to reinvent the operating layer. These are the four faculties through which any organized body perceives itself: *who is here, what we hold, what is flowing, under what agreements.* The substrate is what makes patronage operable rather than approximate, and what makes "the cooperative as an intelligence" an operating claim rather than a metaphor. Parachute is the venture most directly oriented around building it.
-
-> *A substrate diagram on the [live page](https://techne.institute/articulation/#continuity) shows bodies of work (LVB, Parachute, NVP, Open Civics) connected by stems to one shared substrate bar split into the four primitives.*
-
-### What stays the same
-
-- The legal entity, its filing, its public benefit designation.
-- The eight organizers who signed on in February.
-- The capital accounts, member agreements (in development), and patronage architecture — recognizing what members contribute across labor, revenue, capital, and community.
-- The lease at 1515 Walnut. The Friday meetings. The room.
-- The commitment to soil-not-enterprise.
-- The discipline of the substrate test: *does this regenerate or extract?*
-
-If the proposal advances: a DBA filing adopts Techne as the public-facing name; the legal entity remains RegenHub, LCA in the immediate term; the bylaws accommodate the heterogeneous-bodies-of-work pattern and the capital architecture in section 05. A future articles amendment could eventually flip the legal name itself — but that is a separate decision, taken when the timing and the cost make sense.
-
-### What's next
-
-- **Rename (staged)** — DBA filing to adopt Techne as the public name now; member-agreement updates; a future articles amendment to flip the legal name when timing is right.
-- **Substrate** — Building directory · treasury · inventory · governance primitives the bodies of work can adopt. Parachute is positioned to do much of this work.
-- **Bridges** — Naming the bridge programs we already have, articulating the membership pathway through them.
-- **Public** — Updating techne.coop and the cooperative's other public surfaces to reflect what is now coming clear.
-
-We will move at the pace the substrate test allows — strengthening relationships, skills, agency, and economic capacity for the people in the room before we expand the room.
-
----
-
-If you're reading this, you're one of the people this is for. The rename is one decision; the work of building what the rename points at is the longer one. We'd value your read of this — what lands, what doesn't, what's missing — and the conversation that follows.
-
-*Proposal · for members and close parties · May 2026*
+1. **Feedback** on this proposed direction.
+2. If there is clear resonance, **approval** for Todd and me to begin executing — starting with a DBA filing for Techne, member-agreement updates, and continued development of patronage accounting and Techne Institute programming.
 
 ---
 

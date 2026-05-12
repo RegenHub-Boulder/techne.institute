@@ -14,10 +14,10 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Techne Cooperative — An Articulation</title>
-  <meta name="description" content="A working articulation of Techne Cooperative — what it is, what RegenHub becomes, how bodies of work nest inside, and how the cooperative is coming into itself. For members and close parties.">
-  <meta property="og:title" content="Techne Cooperative — An Articulation">
-  <meta property="og:description" content="The cooperative formerly known as RegenHub, LCA — and the wider thing it has become. A working articulation for members and close parties.">
+  <title>A Proposal — Techne Cooperative</title>
+  <meta name="description" content="A proposal for our cooperative coworking space evolving into a worker-owned venture studio. Pre-read for the next board meeting.">
+  <meta property="og:title" content="A Proposal — Techne Cooperative">
+  <meta property="og:description" content="Our cooperative coworking space evolving into a worker-owned venture studio.">
   <meta property="og:url" content="https://techne.institute/articulation/">
   <meta property="og:site_name" content="Techne Institute">
   <link rel="canonical" href="https://techne.institute/articulation/">
@@ -25,7 +25,29 @@
   <link rel="stylesheet" href="/assets/public.css">
   <script src="/assets/nav.js" defer></script>
   <style>
-    /* ─── Articulation-specific ─── */
+    /* ─── One-pager layout ─── */
+
+    .version-link {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 0 0;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: var(--text-faint);
+    }
+    .version-link a {
+      color: var(--text-faint);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+      transition: color 150ms, border-color 150ms;
+    }
+    .version-link a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
 
     .container--reading {
       max-width: 720px;
@@ -33,668 +55,98 @@
       padding: 0 2rem;
     }
 
-    /* TLDR callout (top of page) */
-    .tldr-callout {
-      margin: 3rem 0 2.5rem;
-      padding: 0;
-    }
-    .tldr-callout-label {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.1rem;
-    }
-    .tldr-callout p {
+    main { padding-bottom: 4rem; }
+
+    .opening-paragraph {
+      padding-top: 3rem;
       font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: 1.25rem;
+    }
+    .opening-paragraph::first-letter {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      float: left;
+      line-height: 0.85;
+      padding: 0.35rem 0.45rem 0 0;
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    .content h2 {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin: 2.5rem 0 0.75rem;
+      letter-spacing: -0.005em;
+    }
+    .content h2:first-of-type { margin-top: 2rem; }
+
+    .content p {
+      margin-bottom: 1.1rem;
       line-height: 1.7;
-      margin-bottom: 1rem;
+    }
+
+    .content p.run-on {
+      margin-bottom: 1.5rem;
+    }
+
+    /* Inline labeled paragraphs (How it works) */
+    .content p.labeled strong:first-child {
       color: var(--text-primary);
     }
-    .tldr-callout p:last-child { margin-bottom: 0; }
-    .tldr-callout p strong { color: var(--text-primary); }
 
-    /* TL;DR callout */
-    .tldr {
+    /* The ask callout */
+    .ask {
       background: var(--accent-glow);
       border-left: 3px solid var(--accent);
       border-radius: 0 6px 6px 0;
       padding: 1.5rem 1.75rem;
-      margin: 2.5rem 0 3rem;
+      margin: 2.5rem 0 2rem;
     }
-    .tldr-label {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.85rem;
+    .ask h2 {
+      margin-top: 0;
+      margin-bottom: 0.6rem;
     }
-    .tldr ul {
-      list-style: none;
-      margin: 0;
+    .ask ol {
+      margin: 0.75rem 0 0 1.25rem;
       padding: 0;
+      counter-reset: ask-counter;
+      list-style: none;
     }
-    .tldr li {
-      font-size: 0.95rem;
-      line-height: 1.6;
-      color: var(--text-body);
-      padding: 0.45rem 0 0.45rem 1.5rem;
+    .ask ol li {
       position: relative;
-    }
-    .tldr li::before {
-      content: '·';
-      position: absolute;
-      left: 0.5rem;
-      top: 0.4rem;
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-    .tldr li strong { color: var(--text-primary); }
-
-    /* Toggle controls */
-    .toc-controls {
-      display: flex;
-      gap: 0.6rem;
-      align-items: center;
-      margin: 1.75rem 0 0.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-faint);
-    }
-    .toc-controls button {
-      font-family: inherit;
-      font-size: inherit;
-      letter-spacing: inherit;
-      text-transform: inherit;
-      color: var(--text-faint);
-      background: transparent;
-      border: 1px solid var(--rule);
-      border-radius: 3px;
-      padding: 0.3rem 0.75rem;
-      cursor: pointer;
-      transition: color 150ms, border-color 150ms, background 150ms;
-    }
-    .toc-controls button:hover {
-      color: var(--accent);
-      border-color: var(--accent-dim);
-    }
-    .toc-controls .sep {
-      color: var(--text-faint);
-      opacity: 0.5;
-    }
-
-    /* Collapsible sections */
-    details.section {
-      border-top: 1px solid var(--rule);
-      padding: 0;
-      margin: 0;
-    }
-    details.section:last-of-type {
-      border-bottom: 1px solid var(--rule);
-    }
-
-    details.section > summary {
-      list-style: none;
-      cursor: pointer;
-      padding: 1.6rem 0;
-      display: grid;
-      grid-template-columns: 2.5rem 1fr 1.25rem;
-      gap: 1rem;
-      align-items: baseline;
-      transition: background 150ms;
-    }
-    details.section > summary::-webkit-details-marker { display: none; }
-    details.section > summary::marker { display: none; }
-    details.section > summary:hover .section-title { color: var(--accent); }
-
-    .section-marker {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--text-faint);
-      letter-spacing: 0.05em;
-      align-self: start;
-      padding-top: 0.3rem;
-    }
-    .section-head {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-    .section-title {
-      font-family: var(--font-display);
-      font-size: 1.45rem;
-      font-weight: 400;
-      color: var(--text-primary);
-      line-height: 1.25;
-      transition: color 150ms;
-    }
-    .section-essence {
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      font-style: italic;
-      color: var(--text-dim);
-      line-height: 1.5;
-    }
-    .section-chev {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: var(--text-faint);
-      align-self: start;
-      padding-top: 0.45rem;
-      transition: transform 200ms var(--ease-out), color 150ms;
-      transform-origin: center;
-      user-select: none;
-    }
-    .section-chev::before { content: '+'; }
-    details.section[open] > summary .section-chev::before { content: '−'; }
-    details.section[open] > summary .section-chev { color: var(--accent); }
-
-    .section-body {
-      padding: 0 0 2rem 3.5rem;
-      animation: section-fade 250ms ease-out;
-    }
-    @keyframes section-fade {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .section-body p { margin-bottom: 1rem; }
-    .section-body p.lead {
-      font-size: 1.05rem;
-      font-style: italic;
-      color: var(--text-primary);
-      margin-bottom: 1.25rem;
-    }
-    .section-body h3 {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin: 1.75rem 0 0.6rem;
-    }
-
-    /* Mobile: pull section body inline with marker */
-    @media (max-width: 640px) {
-      details.section > summary {
-        grid-template-columns: 1.75rem 1fr 1rem;
-        gap: 0.75rem;
-        padding: 1.25rem 0;
-      }
-      .section-title { font-size: 1.2rem; }
-      .section-essence { font-size: 0.9rem; }
-      .section-body { padding-left: 0; }
-    }
-
-    /* Two-entity comparison */
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin: 1.5rem 0 1.75rem;
-    }
-    .two-col .col {
-      background: var(--bg-card);
-      border: 1px solid var(--rule);
-      border-radius: 8px;
-      padding: 1.25rem 1.4rem;
-    }
-    .two-col .col-label {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-    .two-col h4 {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      color: var(--text-primary);
-      font-weight: 500;
-      margin: 0 0 0.5rem;
-      letter-spacing: 0;
-      text-transform: none;
-    }
-    .two-col dl { margin: 0.5rem 0 0; }
-    .two-col dt {
-      font-family: var(--font-mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-faint);
-      margin-top: 0.65rem;
-    }
-    .two-col dd {
-      font-size: 0.88rem;
-      color: var(--text-body);
-      margin: 0.15rem 0 0;
-      line-height: 1.5;
-    }
-    @media (max-width: 640px) {
-      .two-col { grid-template-columns: 1fr; }
-    }
-
-    /* CoP relationship cards */
-    .pattern-card {
-      background: var(--bg-card);
-      border: 1px solid var(--rule);
-      border-radius: 8px;
-      padding: 1.25rem 1.4rem;
-      margin: 1rem 0;
-    }
-    .pattern-card .pattern-label {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.4rem;
-    }
-    .pattern-card h4 {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin: 0 0 0.5rem;
-      letter-spacing: 0;
-      text-transform: none;
-    }
-    .pattern-card .examples {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--text-faint);
-      letter-spacing: 0.04em;
-      margin-top: 0.6rem;
-    }
-
-    /* Substrate primitives grid */
-    .primitives {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 0.75rem;
-      margin: 1.25rem 0 1.5rem;
-    }
-    .primitive {
-      border: 1px solid var(--rule);
-      border-radius: 6px;
-      padding: 0.85rem 1rem;
-      background: var(--bg-card);
-    }
-    .primitive .name {
-      font-family: var(--font-display);
-      font-size: 1rem;
-      color: var(--text-primary);
-      margin-bottom: 0.2rem;
-    }
-    .primitive .what {
-      font-family: var(--font-body);
-      font-size: 0.82rem;
-      color: var(--text-body);
-      line-height: 1.5;
-    }
-
-    /* Closing invitation */
-    .invitation {
-      margin: 4rem 0 0;
-      padding: 2rem 0 1.5rem;
-      border-top: 1px solid var(--rule);
-      text-align: center;
-    }
-    .invitation p {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-style: italic;
-      color: var(--text-primary);
-      max-width: 32em;
-      margin: 0 auto 0.75rem;
-      line-height: 1.55;
-    }
-    .invitation .draft-mark {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-faint);
-      margin-top: 1rem;
-    }
-
-    /* ─── Visualizations ─── */
-
-    figure.viz {
-      margin: 2.5rem 0 3rem;
-      padding: 0;
-    }
-    figure.viz .viz-label {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
+      padding-left: 2rem;
       margin-bottom: 0.85rem;
-      text-align: center;
+      line-height: 1.6;
+      counter-increment: ask-counter;
     }
-    figure.viz svg {
-      display: block;
-      width: 100%;
-      height: auto;
-      max-width: 100%;
-    }
-    figure.viz figcaption {
-      font-family: var(--font-body);
-      font-size: 0.88rem;
-      font-style: italic;
-      color: var(--text-faint);
-      text-align: center;
-      margin-top: 0.85rem;
-      max-width: 36em;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.55;
-    }
-
-    /* ─── Constellation visual ─── */
-    .constellation .ring {
-      fill: none;
-      stroke: var(--rule);
-      stroke-width: 1;
-      opacity: 0.5;
-    }
-    .constellation .ring--inner { stroke-dasharray: 2,4; }
-    .constellation .ring--outer { stroke-dasharray: 3,6; }
-    .constellation .center-circle {
-      fill: var(--bg-card);
-      stroke: var(--accent);
-      stroke-width: 1.5;
-    }
-    .constellation .center-halo {
-      fill: var(--accent);
-      opacity: 0.04;
-    }
-    .constellation .label-center {
-      font-family: var(--font-display);
-      font-weight: 400;
-      fill: var(--text-primary);
-    }
-    .constellation .label-place {
+    .ask ol li::before {
+      content: counter(ask-counter) ".";
+      position: absolute;
+      left: 0;
+      top: 0;
       font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.08em;
-      fill: var(--accent);
-    }
-    .constellation .node-owned {
-      fill: var(--accent);
-    }
-    .constellation .node-peer {
-      fill: var(--bg);
-      stroke: var(--accent);
-      stroke-width: 1.5;
-    }
-    .constellation .node-cop-ring {
-      fill: none;
-      stroke: var(--accent);
-      stroke-width: 0.8;
-      opacity: 0.35;
-    }
-    .constellation .label-body {
-      font-family: var(--font-display);
-      font-size: 13px;
-      fill: var(--text-primary);
-    }
-    .constellation .label-event {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      fill: var(--text-faint);
-      text-transform: uppercase;
-    }
-    .constellation .line-owned {
-      stroke: var(--accent);
-      stroke-width: 1;
-      opacity: 0.5;
-    }
-    .constellation .line-peer {
-      stroke: var(--accent);
-      stroke-width: 1;
-      stroke-dasharray: 4,3;
-      opacity: 0.4;
-    }
-    .constellation .line-event {
-      stroke: var(--accent);
-      stroke-width: 1;
-      stroke-dasharray: 1,4;
-      opacity: 0.3;
-    }
-    .constellation-legend {
-      display: flex;
-      justify-content: center;
-      gap: 1.75rem;
-      flex-wrap: wrap;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.06em;
-      color: var(--text-faint);
-      margin: 0.75rem 0 0;
-    }
-    .constellation-legend .item {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .constellation-legend .marker {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-    .constellation-legend .marker--owned { background: var(--accent); }
-    .constellation-legend .marker--peer {
-      background: var(--bg);
-      border: 1.5px solid var(--accent);
-    }
-    .constellation-legend .marker--event {
-      width: 18px;
-      height: 0;
-      border-radius: 0;
-      border-top: 1.5px dotted var(--accent);
-      background: transparent;
-      align-self: center;
-    }
-
-    /* ─── Substrate visual ─── */
-    .substrate-viz .body-card-rect {
-      fill: var(--bg-card);
-      stroke: var(--rule);
-      stroke-width: 1;
-    }
-    .substrate-viz .body-card-label {
-      font-family: var(--font-display);
-      font-size: 12px;
-      fill: var(--text-primary);
-    }
-    .substrate-viz .body-card-tag {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.08em;
-      fill: var(--text-faint);
-      text-transform: uppercase;
-    }
-    .substrate-viz .stem {
-      stroke: var(--accent);
-      stroke-width: 1;
-      opacity: 0.4;
-      stroke-dasharray: 2,3;
-    }
-    .substrate-viz .substrate-bar {
-      fill: var(--accent-glow);
-      stroke: var(--accent);
-      stroke-width: 1.2;
-    }
-    .substrate-viz .substrate-divider {
-      stroke: var(--accent);
-      stroke-width: 0.8;
-      opacity: 0.4;
-      stroke-dasharray: 2,3;
-    }
-    .substrate-viz .primitive-name {
-      font-family: var(--font-display);
-      font-size: 14px;
-      fill: var(--text-primary);
+      font-size: 0.8rem;
+      color: var(--accent);
       font-weight: 500;
+      letter-spacing: 0.04em;
     }
-    .substrate-viz .primitive-desc {
-      font-family: var(--font-body);
-      font-size: 10px;
-      fill: var(--text-body);
-    }
-    .substrate-viz .substrate-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      fill: var(--accent);
-    }
+    .ask ol li:last-child { margin-bottom: 0; }
 
-    /* ─── Pathway visual ─── */
-    .pathway-viz .stage-circle {
-      fill: var(--bg-card);
-      stroke: var(--accent);
-      stroke-width: 1.5;
-    }
-    .pathway-viz .stage-circle--active {
-      fill: var(--accent);
-      stroke: var(--accent);
-    }
-    .pathway-viz .stage-num {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      fill: var(--accent);
-    }
-    .pathway-viz .stage-num--active { fill: var(--bg); }
-    .pathway-viz .stage-name {
-      font-family: var(--font-display);
-      font-size: 13px;
-      fill: var(--text-primary);
-    }
-    .pathway-viz .stage-class {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      fill: var(--text-faint);
-      text-transform: uppercase;
-    }
-    .pathway-viz .stage-arrow {
-      stroke: var(--accent);
-      stroke-width: 1.2;
-      fill: none;
-      opacity: 0.55;
-    }
-    .pathway-viz .transition-label {
-      font-family: var(--font-body);
-      font-size: 11px;
-      fill: var(--text-body);
-      font-style: italic;
-    }
-    .pathway-viz .stage-detail {
-      font-family: var(--font-body);
-      font-size: 10px;
-      fill: var(--text-faint);
-    }
-
-    /* ─── Flywheel visual ─── */
-    .flywheel-viz .stage-box {
-      fill: var(--bg-card);
-      stroke: var(--accent);
-      stroke-width: 1.2;
-    }
-    .flywheel-viz .stage-box--basket {
-      fill: var(--accent-glow);
-      stroke: var(--accent);
-      stroke-width: 1.6;
-    }
-    .flywheel-viz .stage-num {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      fill: var(--accent);
-    }
-    .flywheel-viz .stage-name {
-      font-family: var(--font-display);
-      font-size: 14px;
-      fill: var(--text-primary);
-      font-weight: 500;
-    }
-    .flywheel-viz .stage-detail {
-      font-family: var(--font-body);
-      font-size: 10px;
-      font-style: italic;
-      fill: var(--text-body);
-    }
-    .flywheel-viz .flow-arrow {
-      stroke: var(--accent);
-      stroke-width: 1.4;
-      fill: none;
-      opacity: 0.7;
-    }
-    .flywheel-viz .flow-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      fill: var(--accent);
-    }
-    .flywheel-viz .dest-box {
-      fill: var(--bg);
-      stroke: var(--rule);
-      stroke-width: 1;
-    }
-    .flywheel-viz .dest-name {
-      font-family: var(--font-display);
-      font-size: 13px;
-      fill: var(--text-primary);
-      font-weight: 500;
-    }
-    .flywheel-viz .dest-detail {
-      font-family: var(--font-body);
-      font-size: 10px;
-      fill: var(--text-body);
-    }
-    .flywheel-viz .dist-line {
-      stroke: var(--accent);
-      stroke-width: 1;
-      opacity: 0.4;
-      stroke-dasharray: 2,3;
-    }
-    .flywheel-viz .loop-label {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      fill: var(--accent);
-    }
-    .flywheel-viz .loop-arrow {
-      stroke: var(--accent);
-      stroke-width: 1;
-      fill: none;
-      stroke-dasharray: 3,4;
-      opacity: 0.45;
-    }
-    .arrow-marker {
-      fill: var(--accent);
+    /* Page hero adjustments */
+    .page-hero h1 {
+      font-size: clamp(2rem, 4.5vw, 2.6rem);
     }
 
     /* Mobile */
     @media (max-width: 640px) {
-      figure.viz { margin: 1.75rem 0 2.5rem; }
-      .constellation-legend { gap: 1rem; font-size: 0.62rem; }
+      .container--reading { padding: 0 1.25rem; }
+      .opening-paragraph { padding-top: 2rem; }
+      .opening-paragraph::first-letter { font-size: 2.75rem; }
+      .content h2 { font-size: 1.35rem; }
     }
-
-    /* Opening scope note */
-    .opening { margin-bottom: 1rem; }
   </style>
 </head>
 <body>
@@ -702,494 +154,71 @@
 <techne-nav mode="public" active-section="about"></techne-nav>
 
 <div class="page-hero">
-  <p class="eyebrow">Articulation · May 2026</p>
-  <h1>Techne Cooperative</h1>
-  <p class="deck">An articulation, for members and close parties.</p>
-  <p class="meta"><span>A proposal for member consideration</span><span>Boulder, Colorado</span><span>2026</span></p>
+  <p class="eyebrow">A Proposal · May 2026</p>
+  <h1>A Proposal</h1>
+  <p class="deck">Our cooperative coworking space evolving into a worker-owned venture studio.</p>
+  <p class="meta"><span>Pre-read for the next board meeting</span><span>Boulder, Colorado</span><span>2026</span></p>
 </div>
 
 <main id="main">
 <div class="container--reading">
 
-  <section class="tldr-callout">
-    <p class="tldr-callout-label">TL;DR</p>
-    <p>Techne is a proposed evolution of <strong>RegenHub</strong> into a Boulder-based cooperative that combines coworking, education/incubation (Learn Vibe Build), community-building, and venture creation under one umbrella.</p>
-    <p>The model is: build strong communities → incubate ventures → ventures give equity back to the cooperative → value flows back to members, new ventures, and the broader scene.</p>
-    <p>Governance is designed so labor and trusted relationships matter more than capital: investors can contribute funds but do not control the cooperative, while long-term contributors govern it.</p>
-  </section>
-
-  <section class="opening">
-    <p style="font-size: 0.92rem; color: var(--text-faint); font-style: italic;">A proposal for the cooperative membership to consider. The legal entity (RegenHub, LCA, filed February 2026) and the public benefit purpose (<em>cultivating scenius</em>) carry forward. This articulation focuses on landing the cooperative; related questions about charitable and educational work belong in a separate conversation that follows.</p>
-  </section>
-  <aside class="tldr" aria-label="In brief">
-    <p class="tldr-label">In brief</p>
-    <ul>
-      <li><strong>Proposal:</strong> adopt <strong>Techne</strong> as the public-facing name now via a DBA filing — <em>RegenHub, LCA · DBA Techne</em>. A future articles amendment can flip the legal name itself (to <em>Techne Cooperative · DBA RegenHub</em>) when timing makes sense.</li>
-      <li><strong>The shape</strong>: Techne Cooperative is an integrated whole — the <strong>Techne Institute</strong> (school + incubator, with Learn Vibe Build as flagship) + <strong>RegenHub</strong> (co-working space at 1515 Walnut). In relationship: <strong>partner communities</strong> (NVP, Open Civics, Boulder Startup Week, Cohere Boulder, Boulder New Tech, and more) and <strong>partner ventures</strong> (Gitcoin, Parachute, Postage), where the cooperative holds equity.</li>
-      <li><strong>Federated membership</strong>: Techne Coop Members govern cooperative-scale matters; within Techne, RegenHub members shape the co-working space and the Institute governs its programs. Partner communities and partner ventures are external and self-governing.</li>
-      <li><strong>The flywheel</strong>: scene-building cultivates ventures; ventures voluntarily commit equity to the cooperative (give-first lineage); the basket compounds; capital flows back to the scene, to new ventures, and to members. Scene-builders share in what they help create.</li>
-      <li><strong>Capital architecture</strong>: patronage is the unified accounting layer — time and money are commensurable. Investor Members are patrons, not equity holders; admission is relational, not transactional, and confers no governance. Labor patronage is structurally senior to capital in distribution.</li>
-      <li><strong>Continuity</strong>: the legal entity, the public benefit purpose, the eight organizers, the lease, and the patronage architecture — all preserved. RegenHub members are the seeds of this new chapter; membership broadens outward over time, at the pace deep trust allows.</li>
-    </ul>
-  </aside>
-
-  <div class="toc-controls" aria-label="Section controls">
-    <button type="button" id="expandAll">Expand all</button>
-    <button type="button" id="collapseAll">Collapse all</button>
-    <span class="sep">·</span>
-    <span>Six sections</span>
+  <div class="version-link">
+    <span>Versions:</span>
+    <span style="color: var(--text-primary);">Long</span>
+    <span style="opacity: 0.4;">·</span>
+    <a href="/articulation/short/">Short</a>
+    <span style="opacity: 0.4;">·</span>
+    <a href="/articulation/articulation.md">Markdown</a>
   </div>
 
-  <!-- ============ 01 ============ -->
-  <details class="section" id="changing">
-    <summary>
-      <span class="section-marker">01</span>
-      <span class="section-head">
-        <span class="section-title">What's changing</span>
-        <span class="section-essence">The cooperative outgrew its name. Adopting Techne in two stages.</span>
-      </span>
-      <span class="section-chev" aria-hidden="true"></span>
-    </summary>
-    <div class="section-body">
-      <p>In February we filed under the name <strong>RegenHub, LCA</strong>. Six months later, the thing the LCA holds has continued to grow — and the name no longer quite contains it. <em>Techne</em> (τέχνη, productive knowledge, the craft of making) names what the cooperative is actually about: the recovery of craft in an age that has tried to separate the maker from the making, the tool from the wisdom of its use.</p>
-      <p>The cooperative is now an integrated whole — with two parts inside it (the <strong>Techne Institute</strong> as school + incubator, <strong>RegenHub</strong> as the co-working space at 1515 Walnut) and active relationships with <strong>partner communities</strong> (Neighborhood Village Project, Open Civics, Boulder Startup Week, Cohere Boulder, Boulder New Tech, and more) and <strong>partner ventures</strong> (Gitcoin, Parachute, Postage, others where the cooperative holds equity). RegenHub is where this began. The cooperative needs a name that reflects the whole.</p>
+  <div class="content">
 
-      <h3>The staged rename</h3>
-      <p><strong>Today, if this proposal advances:</strong> a simple doing-business-as filing makes Techne the public-facing name. The legal entity remains <em>RegenHub, LCA</em> — the SOS filing, the articles, the public benefit purpose all carry forward unchanged. Cost is low; the move is reversible.</p>
-      <p style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); margin: 0.75rem 0 1.5rem;">RegenHub, LCA · DBA Techne</p>
-      <p><strong>Eventually</strong>, when the cooperative is operating fluently under the Techne name and there's reason to invest in the legal change, the articles can be amended to flip the names. Techne Cooperative becomes the legal entity; RegenHub remains as a DBA for the headquarters.</p>
-      <p style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); margin: 0.75rem 0 1.5rem;">Techne Cooperative · DBA RegenHub</p>
-      <p>Two names doing two jobs. The order of primacy is the only thing that changes — and only when it's worth changing.</p>
+    <p class="opening-paragraph">Our cooperative has existed as a legal entity for 3 months now, and our co-working space has existed for almost 2 years. Right now the cooperative exists for the purpose of governing the co-working space. A question we might be asking is whether this much governance is really needed for the simple task of tending to a co-working space. Another question is whether there is a larger mission that we are oriented towards, that this co-working space is part of. Our public benefit mission has been the cultivation of scenius — so much of what we're doing here is about building a scene in Boulder and supporting collective intelligence emerging.</p>
+
+    <h2>The proposal</h2>
+    <p>I am proposing a transformation of RegenHub into <strong>Techne Cooperative</strong>, while still keeping RegenHub as our co-working space and as the base of operations for the cooperative. This starts as a simple DBA filing — <em>RegenHub, LCA · DBA Techne</em>. The articles can be amended later, when it's worth the cost. As we evolve, RegenHub could have its own governance focused on the space, while the cooperative board focuses on the long-term business of the cooperative and its growth.</p>
+
+    <h2>The vision</h2>
+    <p>We want to grow a beautiful and connected scene in Boulder. We want to help ensure an abundant network grows in the scene, with growing influence and financial resources. We want to ensure that those who help grow the scene are able to benefit from the success within the scene while also being able to continue to influence its ongoing direction. And we want this scene — and what emerges from it — to be of benefit to the world and to support a more harmonious relationship, with technology, with each other, and with this wider world.</p>
+
+    <h2>How it works</h2>
+    <p class="labeled"><strong>Equity from ventures.</strong> We grow the cooperative's holdings through voluntary equity contributions from ventures. <strong>Parachute</strong> will start by offering 10% of its equity to the cooperative. Our goal is to raise a friends-and-family round at a $3M valuation (SAFE cap), then move to at least $10M (SAFE cap) by end of 2026 — putting Techne's holdings at $1M+ soft value as a starting point. <strong>Postage</strong> and <strong>Gitcoin</strong> are also potential equity givers. This is the same "give first" principle that has shaped Boulder's tech culture through TechStars.</p>
+
+    <p class="labeled"><strong>Patronage as the unified unit.</strong> I propose we raise money and relate to it as patronage contributions. If someone like Kevin or Jeremy puts $50k in, it would be seen as $50k of value into the cooperative — the same shape as a member putting in $50k of time. We will land simple enough shapes to begin to measure the fair market value each of us offers to the cooperative: hosting events, teaching classes, growing cooperative businesses, and more.</p>
+
+    <p class="labeled"><strong>Liquidity through equity sales.</strong> As a cooperative, we will have a regular practice of selling equity in the ventures we hold — to fundraise for the cooperative and to enable cooperative members to directly benefit from the growth of these ventures. Patronage shares can be redeemed for venture equity at the time of these structured sales.</p>
+
+    <h2>Membership extends to partner communities</h2>
+    <p>As the cooperative grows, we begin to offer membership to people in our wider community — <strong>partner communities</strong> — so activities such as volunteering to organize Boulder Startup Week, Boulder New Tech, or Women in AI; or running Neighborhood Village Project or Climatique; can all be seen as patronage activities. This helps set the foundation for a cooperative that is truly able to introduce novel ideas to rewarding various good works in the community. Some of this takes time to grow into; it's worth naming the potential early.</p>
+
+    <h2>Techne Institute — the school</h2>
+    <p>The school we are growing fits in here too. We are currently running our second Learn Vibe Build cohort, and I see all of this in the context of a larger school vision — <strong>Techne Institute</strong>. In alignment with our recent seminars on Technology &amp; The Human Future in which we explore Techne from a philosophical angle, we can cultivate a school that helps people not only become builders of technology (LVB and related programs), but also infuses a technology telos through our education programs that supports a harmonious relationship to technology as we develop it. Techne Institute serves both as one of the first primary business lines of the cooperative (revenue through educational programs) and as an engine for growing more ventures within the cooperative.</p>
+
+    <h2>What stays the same</h2>
+    <p>We keep the same cooperative and board members. The bylaws are largely already in the right shape. The legal entity, the public benefit purpose, the eight organizers, the lease at 1515 Walnut, the patronage architecture — all preserved.</p>
+
+    <h2>An open question</h2>
+    <p>Do labor patronage and capital patronage exist at the same class, or is labor structurally senior in distribution priority? One shape worth considering: equal class, with equal access to equity at the time of structured sales. Worth deciding together.</p>
+
+    <div class="ask">
+      <h2>The ask</h2>
+      <ol>
+        <li><strong>Feedback</strong> on this proposed direction.</li>
+        <li>If there is clear resonance, <strong>approval</strong> for Todd and me to begin executing — starting with a DBA filing for Techne, member-agreement updates, and continued development of patronage accounting and Techne Institute programming.</li>
+      </ol>
     </div>
-  </details>
 
-  <!-- ============ 02 ============ -->
-  <details class="section" id="techne">
-    <summary>
-      <span class="section-marker">02</span>
-      <span class="section-head">
-        <span class="section-title">What Techne is</span>
-        <span class="section-essence">A worker-owned venture studio + cooperative of scene-builders.</span>
-      </span>
-      <span class="section-chev" aria-hidden="true"></span>
-    </summary>
-    <div class="section-body">
-      <p class="lead">Techne the word holds an inquiry — right relationship between tools and the people who use them. Techne Cooperative is the people doing that inquiry together: the cooperative of those building Boulder's tech, civic, and community scene. Structurally, <strong>a worker-owned venture studio</strong> rooted in the cooperative form — bioregional, rooted at 1515 Walnut Street.</p>
-
-      <h3>The inquiry</h3>
-      <p>The same question — <em>what does it mean to use this tool well, in service of life rather than at its expense?</em> — runs through every body of work the cooperative holds. AI in Learn Vibe Build. Civic infrastructure in Open Civics. Mutual obligation in Neighborhood Village Project. Co-working in RegenHub. Computing-as-soft-landing in Parachute. The tools differ. The question is the same.</p>
-
-      <h3>The mission</h3>
-      <p>Cultivating scenius — collective intelligence emerging from culturally aligned people in sustained proximity — which in practice means cultivating Boulder's scene. The cooperative is made of the people doing that work. The deeper inheritance is older than intelligence for its own sake: a cybernetic, humanitarian tradition that asks intelligence to embody wisdom — to protect human life, habitat, and the living planet that holds both.</p>
-
-      <h3>Inside Techne</h3>
-      <p>The cooperative has two integrated parts:</p>
-      <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 1.85; color: var(--text-body);">
-        <li><strong>The Techne Institute</strong> — the school + incubator. A brand and program layer within Techne, not a separate legal entity. Its programs bring people into Techne's way of thinking and develop their skill at AI and other tools in right relationship. <strong>Learn Vibe Build</strong> is the flagship; others will form as the work grows.</li>
-        <li><strong>RegenHub</strong> — the co-working space at 1515 Walnut. The headquarters, the room where this began.</li>
-      </ul>
-
-      <h3>In relationship with Techne</h3>
-      <p>Outside the cooperative but in active relationship:</p>
-
-      <div class="pattern-card">
-        <h4>Partner communities</h4>
-        <p>External organizations doing scene-building work alongside Techne. The cooperative shares inquiry and substrate with them where it makes sense; their members can come into Techne through sustained engagement; Techne members can participate in their work.</p>
-        <p class="examples">Examples · Neighborhood Village Project · Open Civics · Boulder Startup Week · Cohere Boulder · Boulder New Tech · and more as the relationships form</p>
-      </div>
-
-      <div class="pattern-card">
-        <h4>Partner ventures</h4>
-        <p>External companies in which the cooperative holds equity stakes — via the give-first lineage (see <a href="#flywheel" style="border-bottom: none; text-decoration: underline;">section 04</a>). As these ventures grow and the cooperative periodically sells portions of its holdings, capital flows back to fund the cooperative's work and support future ventures.</p>
-        <p class="examples">Examples · Gitcoin · Parachute · Postage · and future ventures</p>
-      </div>
-
-    </div>
-  </details>
-
-  <!-- ============ 03 ============ -->
-  <details class="section" id="membership">
-    <summary>
-      <span class="section-marker">03</span>
-      <span class="section-head">
-        <span class="section-title">Membership</span>
-        <span class="section-essence">Federated. People come in through the Institute, through partner communities, and through showing up.</span>
-      </span>
-      <span class="section-chev" aria-hidden="true"></span>
-    </summary>
-    <div class="section-body">
-      <h3>Federated, not centralized</h3>
-      <p>Membership lives at two principal scales — the cooperative, and the parts within it that govern themselves. <strong>Techne Cooperative Member</strong> is the membership at the cooperative level (the existing bylaws describe four classes: Cooperative Member, Co-working Member, Community Participant, Investor Member). The cooperative governs cooperative-scale matters: shared infrastructure, the lease, patronage architecture, the public benefit purpose.</p>
-      <p>Within Techne, <strong>RegenHub</strong> members shape decisions about the co-working space at 1515 Walnut; the <strong>Techne Institute</strong> governs its programs (Learn Vibe Build and others as they form). A single person can be a member at multiple scales — a Techne Coop Member, a RegenHub member, an LVB cohort alum — each with its own scope.</p>
-      <p><strong>Partner communities</strong> (NVP, Open Civics, Boulder Startup Week, Cohere Boulder, Boulder New Tech, and more) and <strong>partner ventures</strong> (Gitcoin, Parachute, Postage) are in relationship with Techne but not within it; they govern themselves at their own level.</p>
-      <p style="font-size: 0.95rem; color: var(--text-body);"><em>A note on Investor Members</em>: capital admission is relational, not transactional, and confers no governance rights. <a href="#capital" style="border-bottom: none; text-decoration: underline;">Section 05</a> describes the capital architecture in full.</p>
-
-      <figure class="viz pathway-viz">
-        <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img"
-             aria-label="The path from first encounter to cooperative membership: visitor, community participant (Class 3), co-working member (Class 2), cooperative member (Class 1).">
-          <!-- Stage names -->
-          <text class="stage-name" x="90" y="55" text-anchor="middle">Visitor</text>
-          <text class="stage-class" x="90" y="73" text-anchor="middle">FIRST ENCOUNTER</text>
-
-          <text class="stage-name" x="285" y="48" text-anchor="middle">Community</text>
-          <text class="stage-name" x="285" y="64" text-anchor="middle">Participant</text>
-          <text class="stage-class" x="285" y="84" text-anchor="middle">CLASS 3</text>
-
-          <text class="stage-name" x="475" y="48" text-anchor="middle">Co-working</text>
-          <text class="stage-name" x="475" y="64" text-anchor="middle">Member</text>
-          <text class="stage-class" x="475" y="84" text-anchor="middle">CLASS 2</text>
-
-          <text class="stage-name" x="650" y="48" text-anchor="middle">Cooperative</text>
-          <text class="stage-name" x="650" y="64" text-anchor="middle">Member</text>
-          <text class="stage-class" x="650" y="84" text-anchor="middle">CLASS 1 · GOVERNANCE</text>
-
-          <!-- Stage circles -->
-          <circle class="stage-circle" cx="90" cy="120" r="22"/>
-          <text class="stage-num" x="90" y="124" text-anchor="middle">01</text>
-
-          <circle class="stage-circle" cx="285" cy="120" r="22"/>
-          <text class="stage-num" x="285" y="124" text-anchor="middle">02</text>
-
-          <circle class="stage-circle" cx="475" cy="120" r="22"/>
-          <text class="stage-num" x="475" y="124" text-anchor="middle">03</text>
-
-          <circle class="stage-circle stage-circle--active" cx="650" cy="120" r="22"/>
-          <text class="stage-num stage-num--active" x="650" y="124" text-anchor="middle">04</text>
-
-          <!-- Connecting arrows -->
-          <path class="stage-arrow" d="M 115 120 L 258 120 M 252 116 L 263 120 L 252 124"/>
-          <path class="stage-arrow" d="M 310 120 L 448 120 M 442 116 L 453 120 L 442 124"/>
-          <path class="stage-arrow" d="M 500 120 L 623 120 M 617 116 L 628 120 L 617 124"/>
-
-          <!-- Transition labels below -->
-          <text class="transition-label" x="187" y="155" text-anchor="middle">events &amp;</text>
-          <text class="transition-label" x="187" y="170" text-anchor="middle">programming</text>
-
-          <text class="transition-label" x="380" y="155" text-anchor="middle">bridge programs ·</text>
-          <text class="transition-label" x="380" y="170" text-anchor="middle">sustained engagement</text>
-
-          <text class="transition-label" x="562" y="155" text-anchor="middle">invitation ·</text>
-          <text class="transition-label" x="562" y="170" text-anchor="middle">deep relationship</text>
-        </svg>
-        <figcaption>The pathway is relational, not transactional. Most people enter through events; sustained participation in a community of practice is what carries someone toward deeper engagement.</figcaption>
-      </figure>
-
-      <h3>Pathways in</h3>
-      <p>People come into Techne through several pathways:</p>
-      <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 1.85; color: var(--text-body);">
-        <li><strong>Institute programs</strong> — Learn Vibe Build is the flagship; future programs may follow.</li>
-        <li><strong>Partner communities</strong> — sustained engagement with NVP, Open Civics, Boulder Startup Week, Cohere Boulder, Boulder New Tech, and others builds standing relationship that can lead into Techne.</li>
-        <li><strong>Showing up at 1515 Walnut</strong> — presence at the co-working space opens the path.</li>
-      </ul>
-      <p>Through sustained participation in any of these, people develop the relationship that can lead to deeper engagement — Class 3 by default, Class 2 if they want a desk, Class 1 by invitation when the relationship is deep enough.</p>
-      <p style="font-size: 0.92rem; color: var(--text-faint);"><em>Who decides who counts? Existing cooperative members, by invitation. Until the substrate matures, membership extends through relationship — recognized by people already in it, extended to people whose work has become visible to them.</em></p>
-    </div>
-  </details>
-
-  <!-- ============ 04 ============ -->
-  <details class="section" id="flywheel">
-    <summary>
-      <span class="section-marker">04</span>
-      <span class="section-head">
-        <span class="section-title">How this grows</span>
-        <span class="section-essence">Scene-building cultivates ventures. Ventures give equity. Capital flows back.</span>
-      </span>
-      <span class="section-chev" aria-hidden="true"></span>
-    </summary>
-    <div class="section-body">
-      <p class="lead">If the cooperative is the basket, the flywheel is what fills it.</p>
-
-      <figure class="viz flywheel-viz">
-        <svg viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" role="img"
-             aria-label="A flywheel showing scene-building leading to ventures emerging, ventures giving equity to the cooperative, and capital flowing back into recognition, new ventures, and member benefit — strengthening the scene further.">
-          <defs>
-            <marker id="fw-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-              <path d="M 0 0 L 10 5 L 0 10 z" class="arrow-marker"/>
-            </marker>
-            <marker id="fw-arrow-faint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)" opacity="0.5"/>
-            </marker>
-          </defs>
-
-          <!-- Top row: 3 main flywheel stages -->
-          <g>
-            <rect class="stage-box" x="35" y="50" width="190" height="85" rx="6"/>
-            <text class="stage-num" x="55" y="75">01</text>
-            <text class="stage-name" x="130" y="92" text-anchor="middle">Scene-building</text>
-            <text class="stage-detail" x="130" y="113" text-anchor="middle">cultivating</text>
-            <text class="stage-detail" x="130" y="127" text-anchor="middle">the conditions</text>
-          </g>
-
-          <g>
-            <rect class="stage-box" x="265" y="50" width="190" height="85" rx="6"/>
-            <text class="stage-num" x="285" y="75">02</text>
-            <text class="stage-name" x="360" y="92" text-anchor="middle">Ventures emerge</text>
-            <text class="stage-detail" x="360" y="113" text-anchor="middle">give-first ·</text>
-            <text class="stage-detail" x="360" y="127" text-anchor="middle">equity to the basket</text>
-          </g>
-
-          <g>
-            <rect class="stage-box stage-box--basket" x="495" y="50" width="190" height="85" rx="6"/>
-            <text class="stage-num" x="515" y="75">03</text>
-            <text class="stage-name" x="590" y="92" text-anchor="middle">Cooperative basket</text>
-            <text class="stage-detail" x="590" y="113" text-anchor="middle">value compounds</text>
-            <text class="stage-detail" x="590" y="127" text-anchor="middle">across ventures</text>
-          </g>
-
-          <!-- Horizontal arrows between top stages -->
-          <line class="flow-arrow" x1="225" y1="92" x2="261" y2="92" marker-end="url(#fw-arrow)"/>
-          <line class="flow-arrow" x1="455" y1="92" x2="491" y2="92" marker-end="url(#fw-arrow)"/>
-
-          <!-- Down arrow from basket -->
-          <line class="flow-arrow" x1="590" y1="135" x2="590" y2="180" marker-end="url(#fw-arrow)"/>
-
-          <!-- Distribution label -->
-          <text class="flow-label" x="590" y="200" text-anchor="middle">CAPITAL FLOWS BACK TO</text>
-
-          <!-- 3 destination boxes -->
-          <g>
-            <rect class="dest-box" x="35" y="225" width="200" height="100" rx="6"/>
-            <text class="dest-name" x="135" y="252" text-anchor="middle">Recognition</text>
-            <text class="dest-detail" x="135" y="275" text-anchor="middle">patronage to those</text>
-            <text class="dest-detail" x="135" y="290" text-anchor="middle">building the scene —</text>
-            <text class="dest-detail" x="135" y="305" text-anchor="middle">naming, valuing, rewarding</text>
-          </g>
-
-          <g>
-            <rect class="dest-box" x="260" y="225" width="200" height="100" rx="6"/>
-            <text class="dest-name" x="360" y="252" text-anchor="middle">New ventures</text>
-            <text class="dest-detail" x="360" y="275" text-anchor="middle">studio · incubator ·</text>
-            <text class="dest-detail" x="360" y="290" text-anchor="middle">accelerator · school</text>
-            <text class="dest-detail" x="360" y="305" text-anchor="middle">all in one</text>
-          </g>
-
-          <g>
-            <rect class="dest-box" x="485" y="225" width="200" height="100" rx="6"/>
-            <text class="dest-name" x="585" y="252" text-anchor="middle">Member benefit</text>
-            <text class="dest-detail" x="585" y="275" text-anchor="middle">dividends + governance</text>
-            <text class="dest-detail" x="585" y="290" text-anchor="middle">over how the basket</text>
-            <text class="dest-detail" x="585" y="305" text-anchor="middle">is allocated</text>
-          </g>
-
-          <!-- Distribution lines from basket area down to each destination -->
-          <line class="dist-line" x1="540" y1="200" x2="180" y2="225"/>
-          <line class="dist-line" x1="590" y1="200" x2="360" y2="225"/>
-          <line class="dist-line" x1="640" y1="200" x2="540" y2="225"/>
-
-          <!-- Loop-back arc: from destinations area returning up to scene-building -->
-          <path class="loop-arrow" d="M 130 325 Q 130 410 280 410 L 600 410 Q 695 410 695 270 L 695 110 Q 695 25 580 25 L 230 25" marker-end="url(#fw-arrow-faint)"/>
-
-          <!-- Loop label -->
-          <text class="loop-label" x="360" y="445" text-anchor="middle">SCENE STRENGTHENS · MORE VENTURES EMERGE · CYCLE COMPOUNDS</text>
-        </svg>
-        <figcaption>Each turn of the flywheel strengthens what comes next. The substrate test still holds — every deployment is evaluated by whether it regenerates the conditions it arose from, or extracts from them.</figcaption>
-      </figure>
-
-      <h3>Ventures give equity, in the give-first lineage</h3>
-      <p>Scene-building — running meetups, hosting gatherings, stewarding communities, holding space for breathwork and yoga, supporting newcomers — creates the conditions in which ventures emerge. When ventures form within the cooperative, they voluntarily commit equity back to it, out of the same <em>"give first"</em> principle that has shaped Boulder's tech culture through TechStars. The amount varies with the depth of the relationship: 1% for a lightly connected venture, 5% for one growing with cooperative support, 10–20% for one deeply incubated. Parachute, for instance, plans to give 10%. The give is structural and proportional, not a fixed tax. The cooperative accumulates the basket of equity; as ventures grow, it compounds. From time to time the cooperative sells portions of its holdings, providing the liquidity that makes patronage credit redeemable (<a href="#capital" style="border-bottom: none; text-decoration: underline;">section 05</a>).</p>
-
-      <h3>Capital flows back, three ways</h3>
-      <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 1.85; color: var(--text-body);">
-        <li><strong>Recognition</strong> — patronage to the people building the scene. Meetup organizers, breathwork leaders, gardeners, civic stewards, infrastructure-builders.</li>
-        <li><strong>New ventures + the Institute</strong> — the venture studio supports ventures emerging from the scene; the Techne Institute (school + incubator) develops the people who build them. Together: the next generation of bodies of work.</li>
-        <li><strong>Member benefit</strong> — dividends to members and governance over allocation.</li>
-      </ul>
-
-      <h3>Where we are starting</h3>
-      <p>RegenHub is where this begins. Current RegenHub members are the seeds; 1515 Walnut remains the headquarters. Membership extends outward over time toward other scene-builders, at the pace deep trust allows. None of this is automatic — each turn of the cycle is real work the cooperative has to actually do, and many similar attempts have stumbled. We are committed to this as a long practice, not a guaranteed pattern.</p>
-    </div>
-  </details>
-
-  <!-- ============ 05 ============ -->
-  <details class="section" id="capital">
-    <summary>
-      <span class="section-marker">05</span>
-      <span class="section-head">
-        <span class="section-title">Capital and patronage</span>
-        <span class="section-essence">Patronage is the unified accounting layer. Capital enters as a patron, not an owner. Labor patronage is structurally senior to capital patronage.</span>
-      </span>
-      <span class="section-chev" aria-hidden="true"></span>
-    </summary>
-    <div class="section-body">
-      <p class="lead">Section 04 named the flywheel that fills the basket; this section names how capital enters, accumulates, circulates, and stays structurally subordinate to the work it serves.</p>
-
-      <h3>Patronage as a unified accounting unit</h3>
-      <p>Across every kind of contribution — time, money, revenue, community work — the cooperative uses a single accounting layer: <strong>patronage</strong>. Time contributed is valued at fair market rate and accrues patronage credit dollar-for-dollar against capital contributions. An hour valued at $80 and a check for $80 produce identical patronage credit. The denomination differs; the unit is the same.</p>
-      <p>This is what makes labor and capital commensurable. Every class of member contributes to patronage; what varies is the form of contribution.</p>
-
-      <h3>Investor Members are patrons, not equity holders</h3>
-      <p>When an Investor Member contributes capital, they receive <em>patronage credit</em> — not equity in the cooperative. They are not buying ownership. They are contributing to a member capital account that participates in patronage by the same logic as every other class of patron.</p>
-      <p>Two structural protections accompany this:</p>
-      <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 1.85; color: var(--text-body);">
-        <li><strong>Admission is relational, not transactional.</strong> A check does not buy entry. The cooperative chooses whom to accept as an Investor Member — based on the depth of trust and alignment already present. <em>We accept money from people we already trust.</em></li>
-        <li><strong>Capital admission is not governance admission.</strong> Becoming an Investor Member does not confer cooperative governance rights. Governance is held by Cooperative Members, earned through sustained participation and the depth of relationship section 03 describes. An Investor Member can walk the path to Cooperative Membership; they cannot purchase that standing.</li>
-      </ul>
-      <p>The result: <strong>capital can enter the cooperative without acquiring the right to direct it.</strong></p>
-      <p>Capital that wants direct exposure to a specific venture takes a different route: it invests in that venture, at that venture's terms. If Parachute is raising a SAFE, the investor goes through Parachute — accepting Parachute's risk for Parachute's upside. The patronage path is different: patient capital contributed to the cooperative, redeemable later for whatever venture equity the cooperative has available to sell. Diversified, less direct upside, less direct risk. Two shapes for two appetites.</p>
-
-      <h3>Distribution is governed by labor patrons</h3>
-      <p>Patronage dividends are determined by the Cooperative Members. Investor Members, <em>qua</em> investors, do not vote on dividend distribution. <strong>Labor patronage is structurally senior to capital patronage</strong> in distribution priority — the people who built the scene decide how surplus flows, not the people who funded it.</p>
-
-      <h3>Liquidity and patience</h3>
-      <p>The cooperative accumulates a basket of equity in partner ventures. From time to time it sells portions of these holdings — a normal venture studio activity — and patrons can redeem patronage credit for venture equity in those sales. Both labor and capital patrons participate the same way. This gives patronage credit a liquidity path: work and capital that built the cooperative find their way back to contributors, denominated in the equity of the ventures the cooperative helped grow.</p>
-      <p>Until redemption, unredeemed credit accrues a modest simple interest — modest by design, since cooperative law and the Rochdale principles limit return on capital. The cooperative form is for the benefit of patronage activity, not capital itself.</p>
-
-      <h3>What we will watch — soft drift, not formal capture</h3>
-      <p>Formal protections are necessary but not sufficient. The failure mode for a structure like this is not formal capture — it is <strong>soft drift</strong>. Even without governance votes, capital patrons exert relational pressure: <em>we accepted their money; we make small accommodations that compound.</em> What eliminates the drift is the cooperative's continued discipline in noticing it and correcting it — being honest with itself, year after year, about whose comfort decisions are quietly serving. The substrate is what makes it possible to see; the membership is what does the seeing.</p>
-    </div>
-  </details>
-
-  <!-- ============ 06 ============ -->
-  <details class="section" id="continuity">
-    <summary>
-      <span class="section-marker">06</span>
-      <span class="section-head">
-        <span class="section-title">Continuity and what's next</span>
-        <span class="section-essence">The substrate. What stays. What unfolds if the proposal advances.</span>
-      </span>
-      <span class="section-chev" aria-hidden="true"></span>
-    </summary>
-    <div class="section-body">
-      <h3>The substrate</h3>
-      <p>Across every body of work, a common information system — <strong>directory, treasury, inventory, governance</strong> — provides a shared pattern that lets work, value, and recognition flow between bodies of work without each having to reinvent the operating layer. These are the four faculties through which any organized body perceives itself: <em>who is here, what we hold, what is flowing, under what agreements.</em> The substrate is what makes patronage operable rather than approximate, and what makes "the cooperative as an intelligence" an operating claim rather than a metaphor. Parachute is the venture most directly oriented around building it.</p>
-
-      <figure class="viz substrate-viz">
-        <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img"
-             aria-label="Bodies of work draw from a shared substrate of four primitives: directory, treasury, inventory, and governance.">
-          <!-- Bodies of work cards -->
-          <g>
-            <rect class="body-card-rect" x="30" y="25" width="145" height="65" rx="4"/>
-            <text class="body-card-tag" x="102" y="48" text-anchor="middle">Internal</text>
-            <text class="body-card-label" x="102" y="68" text-anchor="middle">Techne</text>
-            <text class="body-card-label" x="102" y="83" text-anchor="middle">Institute</text>
-          </g>
-          <g>
-            <rect class="body-card-rect" x="200" y="25" width="145" height="65" rx="4"/>
-            <text class="body-card-tag" x="272" y="48" text-anchor="middle">Partner venture</text>
-            <text class="body-card-label" x="272" y="71" text-anchor="middle">Parachute</text>
-          </g>
-          <g>
-            <rect class="body-card-rect" x="370" y="25" width="145" height="65" rx="4"/>
-            <text class="body-card-tag" x="442" y="48" text-anchor="middle">Partner community</text>
-            <text class="body-card-label" x="442" y="68" text-anchor="middle">Neighborhood</text>
-            <text class="body-card-label" x="442" y="83" text-anchor="middle">Village Project</text>
-          </g>
-          <g>
-            <rect class="body-card-rect" x="540" y="25" width="145" height="65" rx="4"/>
-            <text class="body-card-tag" x="612" y="48" text-anchor="middle">Partner community</text>
-            <text class="body-card-label" x="612" y="71" text-anchor="middle">Open Civics</text>
-          </g>
-
-          <!-- Stems connecting bodies to substrate -->
-          <line class="stem" x1="102" y1="90" x2="102" y2="180"/>
-          <line class="stem" x1="272" y1="90" x2="272" y2="180"/>
-          <line class="stem" x1="442" y1="90" x2="442" y2="180"/>
-          <line class="stem" x1="612" y1="90" x2="612" y2="180"/>
-
-          <!-- Substrate label above bar -->
-          <text class="substrate-label" x="360" y="172" text-anchor="middle">SHARED SUBSTRATE</text>
-
-          <!-- Substrate bar -->
-          <rect class="substrate-bar" x="15" y="180" width="690" height="115" rx="6"/>
-
-          <!-- Dividers between primitives -->
-          <line class="substrate-divider" x1="187.5" y1="200" x2="187.5" y2="275"/>
-          <line class="substrate-divider" x1="360" y1="200" x2="360" y2="275"/>
-          <line class="substrate-divider" x1="532.5" y1="200" x2="532.5" y2="275"/>
-
-          <!-- Primitives -->
-          <text class="primitive-name" x="101" y="225" text-anchor="middle">Directory</text>
-          <text class="primitive-desc" x="101" y="248" text-anchor="middle">who is here</text>
-
-          <text class="primitive-name" x="273" y="225" text-anchor="middle">Treasury</text>
-          <text class="primitive-desc" x="273" y="248" text-anchor="middle">what is flowing</text>
-
-          <text class="primitive-name" x="446" y="225" text-anchor="middle">Inventory</text>
-          <text class="primitive-desc" x="446" y="248" text-anchor="middle">what we hold</text>
-
-          <text class="primitive-name" x="619" y="225" text-anchor="middle">Governance</text>
-          <text class="primitive-desc" x="619" y="248" text-anchor="middle">under what agreements</text>
-
-          <!-- "more bodies of work…" indicator -->
-          <text x="700" y="60" font-family="var(--font-mono)" font-size="22" fill="var(--text-faint)" opacity="0.5">…</text>
-        </svg>
-        <figcaption>Each body of work uses the same four primitives on its own terms. The substrate is what makes work, value, and recognition legible across them.</figcaption>
-      </figure>
-
-      <h3>What stays the same</h3>
-      <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 1.85; color: var(--text-body);">
-        <li>The legal entity, its filing, its public benefit designation.</li>
-        <li>The eight organizers who signed on in February.</li>
-        <li>The capital accounts, member agreements (in development), and patronage architecture — recognizing what members contribute across labor, revenue, capital, and community.</li>
-        <li>The lease at 1515 Walnut. The Friday meetings. The room.</li>
-        <li>The commitment to soil-not-enterprise.</li>
-        <li>The discipline of the substrate test: <em>does this regenerate or extract?</em></li>
-      </ul>
-      <p>If the proposal advances: a DBA filing adopts Techne as the public-facing name; the legal entity remains RegenHub, LCA in the immediate term; the bylaws accommodate the heterogeneous-bodies-of-work pattern and the capital architecture in section 05. A future articles amendment could eventually flip the legal name itself — but that is a separate decision, taken when the timing and the cost make sense.</p>
-
-      <h3>What's next</h3>
-      <div class="def-list">
-        <div class="def-item">
-          <span class="def-term">Rename (staged)</span>
-          <span class="def-body">DBA filing to adopt Techne as the public name now; member-agreement updates; a future articles amendment to flip the legal name when timing is right.</span>
-        </div>
-        <div class="def-item">
-          <span class="def-term">Substrate</span>
-          <span class="def-body">Building directory · treasury · inventory · governance primitives the bodies of work can adopt. Parachute is positioned to do much of this work.</span>
-        </div>
-        <div class="def-item">
-          <span class="def-term">Bridges</span>
-          <span class="def-body">Naming the bridge programs we already have, articulating the membership pathway through them.</span>
-        </div>
-        <div class="def-item">
-          <span class="def-term">Public</span>
-          <span class="def-body">Updating techne.coop and the cooperative's other public surfaces to reflect what is now coming clear.</span>
-        </div>
-      </div>
-      <p>We will move at the pace the substrate test allows — strengthening relationships, skills, agency, and economic capacity for the people in the room before we expand the room.</p>
-    </div>
-  </details>
-
-  <div class="invitation">
-    <p>If you're reading this, you're one of the people this is for. The rename is one decision; the work of building what the rename points at is the longer one. We'd value your read of this — what lands, what doesn't, what's missing — and the conversation that follows.</p>
-    <p class="draft-mark">Proposal · for members and close parties · May 2026</p>
   </div>
 
   <footer class="page-footer">
     <p>RegenHub, LCA · DBA Techne · 1515 Walnut St, Suite 200, Boulder, CO 80302</p>
     <p>Colorado Public Benefit Limited Cooperative Association · SOS Document #20261163853</p>
+    <p style="margin-top: 1rem;"><a href="/articulation/plain/" style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); text-decoration: none; border-bottom: 1px solid var(--rule);">Plain text version (for Google Docs)</a></p>
   </footer>
 
 </div>
 </main>
-
-<script>
-  (function() {
-    var sections = document.querySelectorAll('details.section');
-    var expandBtn = document.getElementById('expandAll');
-    var collapseBtn = document.getElementById('collapseAll');
-
-    function setAll(open) {
-      sections.forEach(function(d) { d.open = open; });
-    }
-
-    if (expandBtn) expandBtn.addEventListener('click', function() { setAll(true); });
-    if (collapseBtn) collapseBtn.addEventListener('click', function() { setAll(false); });
-
-    // Open the section when arriving via hash link
-    function openFromHash() {
-      var hash = window.location.hash;
-      if (!hash) return;
-      var el = document.querySelector(hash);
-      if (el && el.tagName === 'DETAILS') {
-        el.open = true;
-        setTimeout(function() { el.scrollIntoView({behavior: 'smooth', block: 'start'}); }, 50);
-      }
-    }
-    openFromHash();
-    window.addEventListener('hashchange', openFromHash);
-  })();
-</script>
 
 </body>
 </html>

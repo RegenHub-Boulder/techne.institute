@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>
+    (function() {
+      var s = localStorage.getItem('techne-theme');
+      if (s === 'light' || s === 'dark') {
+        document.documentElement.setAttribute('data-theme', s);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Proposal (short) — Techne Cooperative</title>
+  <meta name="description" content="A proposal for our cooperative coworking space evolving into a worker-owned venture studio — short version.">
+  <meta property="og:title" content="A Proposal — Techne Cooperative">
+  <meta property="og:description" content="Our cooperative coworking space evolving into a worker-owned venture studio. Short version.">
+  <meta property="og:url" content="https://techne.institute/articulation/short/">
+  <meta property="og:site_name" content="Techne Institute">
+  <link rel="canonical" href="https://techne.institute/articulation/short/">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="stylesheet" href="/assets/public.css">
+  <script src="/assets/nav.js" defer></script>
+  <style>
+    .container--reading {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    main { padding-bottom: 4rem; }
+
+    .version-link {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 0 0;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: var(--text-faint);
+    }
+    .version-link a {
+      color: var(--text-faint);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+      transition: color 150ms, border-color 150ms;
+    }
+    .version-link a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .opening-paragraph {
+      padding-top: 2.5rem;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: 1.25rem;
+    }
+    .opening-paragraph::first-letter {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      float: left;
+      line-height: 0.85;
+      padding: 0.35rem 0.45rem 0 0;
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    .content h2 {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin: 2.5rem 0 0.75rem;
+      letter-spacing: -0.005em;
+    }
+    .content h2:first-of-type { margin-top: 2rem; }
+
+    .content p {
+      margin-bottom: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .ask {
+      background: var(--accent-glow);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 1.5rem 1.75rem;
+      margin: 2.5rem 0 2rem;
+    }
+    .ask h2 {
+      margin-top: 0;
+      margin-bottom: 0.6rem;
+    }
+    .ask ol {
+      margin: 0.75rem 0 0 1.25rem;
+      padding: 0;
+      counter-reset: ask-counter;
+      list-style: none;
+    }
+    .ask ol li {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 0.85rem;
+      line-height: 1.6;
+      counter-increment: ask-counter;
+    }
+    .ask ol li::before {
+      content: counter(ask-counter) ".";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .ask ol li:last-child { margin-bottom: 0; }
+
+    .page-hero h1 {
+      font-size: clamp(2rem, 4.5vw, 2.6rem);
+    }
+
+    @media (max-width: 640px) {
+      .container--reading { padding: 0 1.25rem; }
+      .opening-paragraph { padding-top: 1.75rem; }
+      .opening-paragraph::first-letter { font-size: 2.75rem; }
+      .content h2 { font-size: 1.35rem; }
+    }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<techne-nav mode="public" active-section="about"></techne-nav>
+
+<div class="page-hero">
+  <p class="eyebrow">A Proposal · Short version · May 2026</p>
+  <h1>A Proposal</h1>
+  <p class="deck">Our cooperative coworking space evolving into a worker-owned venture studio.</p>
+  <p class="meta"><span>Pre-read for the next board meeting</span><span>Boulder, Colorado</span><span>2026</span></p>
+</div>
+
+<main id="main">
+<div class="container--reading">
+
+  <div class="version-link">
+    <span>Versions:</span>
+    <span style="color: var(--text-primary);">Short</span>
+    <span style="opacity: 0.4;">·</span>
+    <a href="/articulation/">Long</a>
+    <span style="opacity: 0.4;">·</span>
+    <a href="/articulation/short.md">Markdown</a>
+  </div>
+
+  <div class="content">
+
+    <p class="opening-paragraph">Our cooperative has existed as a legal entity for 3 months now, and our co-working space for almost 2 years. Right now the cooperative exists to govern the co-working space. A larger mission is becoming clear: our public benefit purpose has been the cultivation of scenius, and what we're really doing here is building a scene in Boulder and supporting the collective intelligence emerging.</p>
+
+    <h2>What we're proposing</h2>
+    <p>I am proposing a transformation of RegenHub into <strong>Techne Cooperative</strong>, while keeping RegenHub as our co-working space and base of operations for the cooperative. This starts as a simple DBA filing — <em>RegenHub, LCA · DBA Techne</em>. The articles can be amended later, when it's worth the cost. The legal entity, the public benefit purpose, the eight organizers, the lease at 1515 Walnut, the bylaws, and the board — all preserved.</p>
+
+    <h2>What it enables</h2>
+    <p>We want to grow a beautiful and connected scene in Boulder, with growing influence and financial resources, where those who help grow the scene benefit from its success and continue to influence its direction.</p>
+
+    <p><strong>How:</strong> Ventures within the cooperative voluntarily commit equity. <strong>Parachute</strong> will start by offering 10% (targeting a friends-and-family round at $3M valuation, then $10M by end of 2026 — putting Techne's holdings at $1M+ soft value). <strong>Postage</strong> and <strong>Gitcoin</strong> are also potential equity givers. This is the same "give first" principle that has shaped Boulder's tech culture through TechStars. Patronage is the unified accounting unit: $50k of capital and $50k of time produce the same patronage credit. From time to time the cooperative sells equity in held ventures, and patrons can redeem their patronage credit for that equity.</p>
+
+    <p><strong>Wider membership:</strong> As we grow, we offer membership to people in <strong>partner communities</strong> — Boulder Startup Week, Boulder New Tech, Women in AI, Neighborhood Village Project, Climatique — so their scene-building work counts as patronage too.</p>
+
+    <p><strong>The school:</strong> We're running our second Learn Vibe Build cohort. I see this in the context of a larger school — <strong>Techne Institute</strong> — in alignment with our seminars on Technology &amp; The Human Future. The Institute generates revenue through educational programs and grows the next generation of people building ventures.</p>
+
+    <h2>An open question</h2>
+    <p>Do labor patronage and capital patronage exist at the same class, or is labor structurally senior in distribution priority? One shape worth considering: equal class, with equal access to equity at the time of structured sales. Worth deciding together.</p>
+
+    <div class="ask">
+      <h2>The ask</h2>
+      <ol>
+        <li><strong>Feedback</strong> on this proposed direction.</li>
+        <li>If there is clear resonance, <strong>approval</strong> for Todd and me to begin executing — starting with a DBA filing for Techne, member-agreement updates, and continued development of patronage accounting and Techne Institute programming.</li>
+      </ol>
+    </div>
+
+  </div>
+
+  <footer class="page-footer">
+    <p>RegenHub, LCA · DBA Techne · 1515 Walnut St, Suite 200, Boulder, CO 80302</p>
+    <p>Colorado Public Benefit Limited Cooperative Association · SOS Document #20261163853</p>
+  </footer>
+
+</div>
+</main>
+
+</body>
+</html>
