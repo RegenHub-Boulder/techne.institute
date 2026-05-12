@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>
+    (function() {
+      var s = localStorage.getItem('techne-theme');
+      if (s === 'light' || s === 'dark') {
+        document.documentElement.setAttribute('data-theme', s);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plain — A Proposal · Techne Cooperative</title>
+  <meta name="description" content="Plain rendered version of the Techne Cooperative proposal for copying into Google Docs.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://techne.institute/articulation/plain/">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500&family=IBM+Plex+Mono:wght@400&display=swap');
+
+    :root {
+      --bg: var(--parchment, #f7f5f0);
+      --text-primary: var(--charcoal, #1a1a1f);
+      --text-body: #3a3530;
+      --text-dim: var(--stone, #9a958a);
+      --accent: var(--ember, #c4956a);
+      --accent-glow: rgba(196, 149, 106, 0.08);
+      --rule: var(--bone, #d8d3c8);
+    }
+
+    [data-theme="dark"] {
+      --bg: var(--parchment, #0f0f12);
+      --text-primary: var(--charcoal, #e8e4df);
+      --text-body: #c8c2ba;
+      --text-dim: #9a958a;
+      --rule: var(--bone, #2a2a30);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 17px; scroll-behavior: smooth; background: var(--bg); }
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      color: var(--text-body);
+      line-height: 1.7;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem 6rem;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--rule);
+      padding: 0.85rem 0;
+      margin: -1.5rem -2rem 2rem;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .toolbar .label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .toolbar button {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 3px;
+      padding: 0.5rem 0.9rem;
+      cursor: pointer;
+      transition: opacity 150ms;
+    }
+    .toolbar button:hover { opacity: 0.85; }
+    .toolbar button:disabled { opacity: 0.5; cursor: default; }
+    .toolbar button.success { background: #6a9a6a; }
+    .toolbar button.secondary {
+      background: transparent;
+      color: var(--text-dim);
+      border: 1px solid var(--rule);
+    }
+    .toolbar button.secondary:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .toolbar .toggle {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .toolbar .toggle button {
+      border-radius: 0;
+      background: transparent;
+      color: var(--text-dim);
+      padding: 0.5rem 0.85rem;
+    }
+    .toolbar .toggle button.active {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .toolbar .spacer { flex: 1; }
+    .toolbar .toolbar-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 150ms, border-color 150ms;
+    }
+    .toolbar .toolbar-link:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    #content { padding-top: 1rem; }
+
+    h1 {
+      font-family: 'Cormorant', Georgia, serif;
+      font-size: 2.5rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin: 0 0 1rem;
+    }
+    h2 {
+      font-family: 'Cormorant', Georgia, serif;
+      font-size: 1.65rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.25;
+      margin: 3rem 0 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+    }
+    h2:first-of-type { border-top: none; padding-top: 0; }
+    h3 {
+      font-family: 'Cormorant', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin: 1.75rem 0 0.6rem;
+    }
+
+    p { margin-bottom: 1rem; color: var(--text-body); }
+    p em { color: var(--text-primary); }
+    strong { font-weight: 600; color: var(--text-primary); }
+    a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+    ul, ol { margin: 0.5rem 0 1.25rem 1.75rem; line-height: 1.75; }
+    li { margin-bottom: 0.4rem; color: var(--text-body); }
+    li strong { color: var(--text-primary); }
+
+    blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 0 0.5rem 1.5rem;
+      margin: 1.5rem 0;
+      background: var(--accent-glow);
+      font-style: italic;
+      color: var(--text-body);
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+
+    hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+
+    .loading, .error {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      padding: 3rem 0;
+      text-align: center;
+    }
+    .error { color: #c46a6a; }
+
+    @media (max-width: 640px) {
+      body { padding: 1rem 1.25rem 4rem; }
+      .toolbar { margin: -1rem -1.25rem 1.5rem; padding: 0.75rem 1.25rem; gap: 0.6rem; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <span class="label">Plain · for Google Docs</span>
+    <div class="toggle">
+      <button type="button" id="versionLong" class="active">Long</button>
+      <button type="button" id="versionShort">Short</button>
+    </div>
+    <button type="button" id="copyBtn">Copy formatted text</button>
+    <button type="button" id="copyMdBtn" class="secondary">Copy raw markdown</button>
+    <span class="spacer"></span>
+    <a class="toolbar-link" href="/articulation/">← Page</a>
+  </div>
+
+  <div id="content"><p class="loading">Loading…</p></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+  <script>
+    (function() {
+      var contentEl = document.getElementById('content');
+      var copyBtn = document.getElementById('copyBtn');
+      var copyMdBtn = document.getElementById('copyMdBtn');
+      var longBtn = document.getElementById('versionLong');
+      var shortBtn = document.getElementById('versionShort');
+      var rawMarkdown = '';
+      var currentVersion = 'long';
+
+      if (typeof marked !== 'undefined') {
+        marked.setOptions({ gfm: true, breaks: false });
+      }
+
+      function loadVersion(version) {
+        currentVersion = version;
+        longBtn.classList.toggle('active', version === 'long');
+        shortBtn.classList.toggle('active', version === 'short');
+        contentEl.innerHTML = '<p class="loading">Loading…</p>';
+
+        var url = version === 'short'
+          ? '/articulation/short.md'
+          : '/articulation/articulation.md';
+
+        fetch(url, { cache: 'no-cache' })
+          .then(function(r) {
+            if (!r.ok) throw new Error('Failed to load: ' + r.status);
+            return r.text();
+          })
+          .then(function(md) {
+            rawMarkdown = md;
+            if (typeof marked === 'undefined') {
+              contentEl.innerHTML = '<p class="error">Markdown renderer failed to load. <a href="' + url + '">View raw markdown</a>.</p>';
+              return;
+            }
+            contentEl.innerHTML = marked.parse(md);
+          })
+          .catch(function(err) {
+            contentEl.innerHTML = '<p class="error">Couldn\'t load: ' + err.message + '. <a href="' + url + '">View raw markdown</a>.</p>';
+          });
+      }
+
+      longBtn.addEventListener('click', function() { loadVersion('long'); });
+      shortBtn.addEventListener('click', function() { loadVersion('short'); });
+
+      function flashSuccess(btn, msg) {
+        var original = btn.textContent;
+        btn.textContent = msg || 'Copied!';
+        btn.classList.add('success');
+        btn.disabled = true;
+        setTimeout(function() {
+          btn.textContent = original;
+          btn.classList.remove('success');
+          btn.disabled = false;
+        }, 1800);
+      }
+      function flashError(btn, msg) {
+        var original = btn.textContent;
+        btn.textContent = msg || 'Copy failed';
+        setTimeout(function() { btn.textContent = original; }, 2200);
+      }
+
+      copyBtn.addEventListener('click', async function() {
+        try {
+          var html = contentEl.innerHTML;
+          var text = contentEl.innerText;
+          if (navigator.clipboard && window.ClipboardItem) {
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                'text/html': new Blob([html], { type: 'text/html' }),
+                'text/plain': new Blob([text], { type: 'text/plain' })
+              })
+            ]);
+            flashSuccess(copyBtn, 'Copied · paste into Google Docs');
+          } else if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+            flashSuccess(copyBtn, 'Copied (plain text)');
+          } else {
+            var range = document.createRange();
+            range.selectNode(contentEl);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+            var ok = document.execCommand('copy');
+            sel.removeAllRanges();
+            if (ok) flashSuccess(copyBtn); else flashError(copyBtn);
+          }
+        } catch (e) {
+          console.error(e);
+          flashError(copyBtn);
+        }
+      });
+
+      copyMdBtn.addEventListener('click', async function() {
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(rawMarkdown);
+            flashSuccess(copyMdBtn, 'Markdown copied');
+          } else {
+            flashError(copyMdBtn);
+          }
+        } catch (e) {
+          console.error(e);
+          flashError(copyMdBtn);
+        }
+      });
+
+      // Load long version on initial page load
+      loadVersion('long');
+    })();
+  </script>
+</body>
+</html>
