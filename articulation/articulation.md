@@ -8,9 +8,15 @@
 
 ---
 
-In February we filed a Colorado Limited Cooperative Association under the name **RegenHub, LCA**. Six months later, the thing it holds has grown beyond the name. What follows is **a proposal, not a decision** — an articulation of where we are, what we're calling it, and where the cooperative might go. The public benefit purpose remains *cultivating scenius*; what might change is that the name catches up to the shape. These are choices for the cooperative membership to make together.
+**TL;DR**
 
-> *A note on scope: this proposal focuses on landing the cooperative. Related questions about charitable and educational work belong in a separate conversation that follows.*
+Techne is a proposed evolution of **RegenHub** into a Boulder-based cooperative that combines coworking, education/incubation (Learn Vibe Build), community-building, and venture creation under one umbrella.
+
+The model is: build strong communities → incubate ventures → ventures give equity back to the cooperative → value flows back to members, new ventures, and the broader scene.
+
+Governance is designed so labor and trusted relationships matter more than capital: investors can contribute funds but do not control the cooperative, while long-term contributors govern it.
+
+> *A proposal for the cooperative membership to consider. The legal entity (RegenHub, LCA, filed February 2026) and the public benefit purpose (cultivating scenius) carry forward. This articulation focuses on landing the cooperative; related questions about charitable and educational work belong in a separate conversation that follows.*
 
 ---
 

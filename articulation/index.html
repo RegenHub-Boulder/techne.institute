@@ -33,6 +33,28 @@
       padding: 0 2rem;
     }
 
+    /* TLDR callout (top of page) */
+    .tldr-callout {
+      margin: 3rem 0 2.5rem;
+      padding: 0;
+    }
+    .tldr-callout-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.1rem;
+    }
+    .tldr-callout p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+    .tldr-callout p:last-child { margin-bottom: 0; }
+    .tldr-callout p strong { color: var(--text-primary); }
+
     /* TL;DR callout */
     .tldr {
       background: var(--accent-glow);
@@ -671,21 +693,8 @@
       .constellation-legend { gap: 1rem; font-size: 0.62rem; }
     }
 
-    /* Lead paragraphs in opening framing */
-    .opening p {
-      font-size: 1.05rem;
-      line-height: 1.8;
-      margin-bottom: 1.1rem;
-    }
-    .opening p:first-child::first-letter {
-      font-family: var(--font-display);
-      font-size: 3.5rem;
-      float: left;
-      line-height: 0.85;
-      padding: 0.35rem 0.45rem 0 0;
-      color: var(--accent);
-      font-weight: 400;
-    }
+    /* Opening scope note */
+    .opening { margin-bottom: 1rem; }
   </style>
 </head>
 <body>
@@ -702,9 +711,15 @@
 <main id="main">
 <div class="container--reading">
 
-  <section class="opening" style="padding-top: 3rem;">
-    <p>In February we filed a Colorado Limited Cooperative Association under the name <strong>RegenHub, LCA</strong>. Six months later, the thing it holds has grown beyond the name. What follows is <strong>a proposal, not a decision</strong> — an articulation of where we are, what we're calling it, and where the cooperative might go. The public benefit purpose remains <em>cultivating scenius</em>; what might change is that the name catches up to the shape. These are choices for the cooperative membership to make together.</p>
-    <p style="font-size: 0.92rem; color: var(--text-faint); font-style: italic;">A note on scope: this proposal focuses on landing the cooperative. Related questions about charitable and educational work belong in a separate conversation that follows.</p>
+  <section class="tldr-callout">
+    <p class="tldr-callout-label">TL;DR</p>
+    <p>Techne is a proposed evolution of <strong>RegenHub</strong> into a Boulder-based cooperative that combines coworking, education/incubation (Learn Vibe Build), community-building, and venture creation under one umbrella.</p>
+    <p>The model is: build strong communities → incubate ventures → ventures give equity back to the cooperative → value flows back to members, new ventures, and the broader scene.</p>
+    <p>Governance is designed so labor and trusted relationships matter more than capital: investors can contribute funds but do not control the cooperative, while long-term contributors govern it.</p>
+  </section>
+
+  <section class="opening">
+    <p style="font-size: 0.92rem; color: var(--text-faint); font-style: italic;">A proposal for the cooperative membership to consider. The legal entity (RegenHub, LCA, filed February 2026) and the public benefit purpose (<em>cultivating scenius</em>) carry forward. This articulation focuses on landing the cooperative; related questions about charitable and educational work belong in a separate conversation that follows.</p>
   </section>
   <aside class="tldr" aria-label="In brief">
     <p class="tldr-label">In brief</p>
