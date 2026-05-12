@@ -40,20 +40,33 @@
       flex-wrap: wrap;
       padding: 1rem 0 0;
     }
-    .comment-link {
+    .comment-link, .copy-link {
       font-family: var(--font-mono);
       font-size: 0.75rem;
       letter-spacing: 0.05em;
       color: var(--accent);
       text-decoration: none;
+      background: transparent;
       border: 1px solid var(--accent);
       border-radius: 3px;
       padding: 0.45rem 0.95rem;
       transition: background 150ms, color 150ms;
+      cursor: pointer;
+      font-weight: 400;
     }
-    .comment-link:hover {
+    .comment-link:hover, .copy-link:hover {
       background: var(--accent);
       color: var(--bg);
+    }
+    .copy-link.success {
+      background: #6a9a6a;
+      border-color: #6a9a6a;
+      color: white;
+    }
+    .actions-left {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
     }
     .version-link {
       display: flex;
@@ -195,13 +208,14 @@
 <div class="container--reading">
 
   <div class="top-actions">
-    <a class="comment-link" href="https://docs.google.com/document/d/1oVqqPerNRySUNddH79WOzpd-ZrXGSeVrb9BUIyjGPn0/edit" target="_blank" rel="noopener">Comment in Google Doc →</a>
+    <div class="actions-left">
+      <a class="comment-link" href="https://docs.google.com/document/d/1oVqqPerNRySUNddH79WOzpd-ZrXGSeVrb9BUIyjGPn0/edit" target="_blank" rel="noopener">Comment in Google Doc →</a>
+      <button class="copy-link" id="copyBtn" data-md-url="/articulation/short.md">Copy formatted text</button>
+    </div>
     <div class="version-link">
       <a href="/articulation/">Long</a>
       <span style="opacity: 0.4;">·</span>
       <span style="color: var(--text-primary);">Short</span>
-      <span style="opacity: 0.4;">·</span>
-      <a href="/articulation/plain/">Plain (for copying)</a>
     </div>
   </div>
 
@@ -253,6 +267,64 @@
 
 </div>
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js" defer></script>
+<script>
+  (function() {
+    var copyBtn = document.getElementById('copyBtn');
+    if (!copyBtn) return;
+
+    function flash(btn, msg, isError) {
+      var original = btn.dataset.originalText || btn.textContent;
+      btn.dataset.originalText = original;
+      btn.textContent = msg;
+      if (!isError) btn.classList.add('success');
+      btn.disabled = true;
+      setTimeout(function() {
+        btn.textContent = original;
+        btn.classList.remove('success');
+        btn.disabled = false;
+      }, 2000);
+    }
+
+    copyBtn.addEventListener('click', async function() {
+      try {
+        var url = copyBtn.dataset.mdUrl;
+        var resp = await fetch(url, { cache: 'no-cache' });
+        if (!resp.ok) throw new Error('Failed to load markdown');
+        var md = await resp.text();
+
+        if (typeof marked === 'undefined') {
+          throw new Error('Markdown renderer not loaded');
+        }
+        marked.setOptions({ gfm: true, breaks: false });
+        var html = marked.parse(md);
+
+        var temp = document.createElement('div');
+        temp.innerHTML = html;
+        var text = temp.innerText;
+
+        if (navigator.clipboard && window.ClipboardItem) {
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              'text/html': new Blob([html], { type: 'text/html' }),
+              'text/plain': new Blob([text], { type: 'text/plain' })
+            })
+          ]);
+          flash(copyBtn, 'Copied · paste into Google Docs');
+        } else if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+          flash(copyBtn, 'Copied (plain text)');
+        } else {
+          throw new Error('Clipboard API unavailable');
+        }
+      } catch (e) {
+        console.error(e);
+        flash(copyBtn, 'Copy failed', true);
+      }
+    });
+  })();
+</script>
 
 </body>
 </html>
