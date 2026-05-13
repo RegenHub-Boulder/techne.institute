@@ -30,7 +30,7 @@ We want to grow a beautiful and connected scene in Boulder. We want to help ensu
 
 ## How it works
 
-**Equity from ventures.** We grow the cooperative's holdings through voluntary equity contributions from ventures. **Parachute** will start by offering 10% of its equity to the cooperative. Our goal is to raise a friends-and-family round at a $3M valuation (SAFE cap), then move to at least $10M (SAFE cap) by end of 2026 — putting Techne's holdings at ~$1M illiquid pre-seed value as a starting point. **Postage** and **Gitcoin** are also potential equity givers. This is the same "give first" principle that has shaped Boulder's tech culture through TechStars.
+**Equity from ventures.** We grow the cooperative's holdings through voluntary equity contributions from ventures. **Parachute** will start by offering 10% of its equity to the cooperative. Our goal is to raise a friends-and-family round at a $3M valuation (SAFE cap), then move to at least $10M (SAFE cap) by end of 2026 — putting Techne's holdings at ~$1M illiquid pre-seed value as a starting point. **Postage** (Lucian has agreed in principle) and **Gitcoin** (in conversation) are also poised to give equity — this isn't a theoretical pattern. The "give first" principle that has shaped Boulder's tech culture through TechStars is the cultural ground.
 
 **Patronage as the unified unit.** I propose we raise money and relate to it as patronage contributions. If someone like Kevin or Jeremy puts $50k in, it would be seen as $50k of value into the cooperative — the same shape as a member putting in $50k of time. We will land simple enough shapes to begin to measure the fair market value each of us offers to the cooperative: hosting events, teaching classes, growing cooperative businesses, and more.
 
@@ -67,6 +67,17 @@ A few worth deciding together:
 1. **Labor patronage vs. capital patronage: same class, or labor structurally senior?** One shape worth considering: equal class, with equal access to equity at the time of structured sales.
 2. **What counts as patronage, and how do we measure it?** We need simple-enough shapes for tracking fair market value of contributions — events hosted, classes taught, businesses grown — without making this bureaucratic.
 3. **How do partner-community members become Techne members?** When work in partner communities counts as patronage, what's the process for recognition and invitation? Foundational for the wider-community vision, even if some aspects take time to grow into.
+4. **Retroactive patronage — how far back?** Some retroactive recognition of contributions is valuable, but we'd want to be conservative to avoid creating more patronage shares than we have venture equity to redeem against. Worth deciding the scope and start date.
+
+## Some operational work ahead
+
+Beyond this proposal, work to land soon:
+
+- A **financial model** for Techne — modeling revenue and reinvestment.
+- A **spreadsheet of initial patronage shares** — who gets what, with what reasoning.
+- Clarifying our **revenue streams** (current: co-working, classes, sponsorships; new: future share sales) and how we allocate effort and ownership across them.
+
+Not blockers to the proposal; the work that follows it.
 
 ## The ask
 
