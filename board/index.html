@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Board HUD — RegenHub, LCA</title>
+  <!-- Theme detection before paint -->
+  <script>(function(){document.documentElement.setAttribute('data-theme','dark');})()</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <!-- Supabase JS v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --void:        #080806;
+      --surface:     #0e0e0c;
+      --panel:       #131311;
+      --raised:      #1a1a18;
+      --border:      rgba(255,255,255,0.055);
+      --border-hi:   rgba(255,255,255,0.10);
+      --text:        #e8e4df;
+      --text-dim:    #9a9590;
+      --text-faint:  #5a5550;
+      --gold:        #c4956a;
+      --gold-dim:    rgba(196,149,106,0.45);
+      --moss:        #6a8a5e;
+      --sky:         #5a7a9a;
+      --ember:       #c45a3a;
+      --green:       #4a7a5a;
+      --mono:        'IBM Plex Mono', monospace;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: var(--void);
+      color: var(--text);
+      font-family: var(--mono);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Scrollbars (panel scroll) ───────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 2px; }
+
+    /* ════════════════════════════════════════════════════════════════
+       AUTH SCREEN
+    ════════════════════════════════════════════════════════════════ */
+    #auth-screen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--void);
+      z-index: 100;
+    }
+    #auth-screen.hidden { display: none; }
+
+    .auth-card {
+      width: 100%;
+      max-width: 340px;
+      border: 1px solid var(--border-hi);
+      background: var(--panel);
+      padding: 2rem 1.75rem;
+    }
+
+    .auth-eyebrow {
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.1rem;
+    }
+
+    .auth-title {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+      letter-spacing: 0.01em;
+    }
+
+    .auth-sub {
+      font-size: 0.72rem;
+      color: var(--text-faint);
+      margin-bottom: 1.6rem;
+      line-height: 1.55;
+      font-weight: 300;
+    }
+
+    .auth-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border-hi);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      padding: 0.6rem 0.8rem;
+      outline: none;
+      margin-bottom: 0.75rem;
+      transition: border-color 0.15s;
+    }
+    .auth-input:focus { border-color: var(--gold-dim); }
+    .auth-input::placeholder { color: var(--text-faint); }
+
+    .auth-btn {
+      width: 100%;
+      background: var(--raised);
+      border: 1px solid var(--border-hi);
+      color: var(--gold);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.6rem;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .auth-btn:hover { background: #222220; border-color: var(--gold-dim); }
+    .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .auth-status {
+      margin-top: 0.9rem;
+      font-size: 0.68rem;
+      color: var(--text-faint);
+      min-height: 1rem;
+      text-align: center;
+      font-weight: 300;
+    }
+    .auth-status.ok { color: var(--moss); }
+    .auth-status.err { color: var(--ember); }
+
+    .auth-entity {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.6rem;
+      color: var(--text-faint);
+      letter-spacing: 0.06em;
+      text-align: center;
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       HUD SHELL
+    ════════════════════════════════════════════════════════════════ */
+    #hud-screen {
+      height: 100vh;
+      display: grid;
+      grid-template-rows: 44px 1fr 34px;
+      overflow: hidden;
+    }
+    #hud-screen.hidden { display: none; }
+
+    /* ── Top bar ─────────────────────────────────────────────────── */
+    .hud-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .hud-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .hud-brand-name { color: var(--text); font-weight: 500; }
+    .hud-brand-sep { color: var(--text-faint); }
+    .hud-brand-sub { color: var(--text-faint); font-weight: 300; }
+
+    .hud-status-center {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .hud-live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    .hud-live-dot.connecting { background: var(--gold); animation: pulse-dot 0.7s ease-in-out infinite; }
+    .hud-live-dot.error { background: var(--ember); animation: none; }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hud-live-label { color: var(--green); }
+    .hud-live-label.connecting { color: var(--gold); }
+    .hud-live-label.error { color: var(--ember); }
+
+    .hud-time-block {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.6rem;
+      color: var(--text-faint);
+    }
+    #hud-clock { color: var(--text-dim); font-weight: 400; }
+    #hud-user-info { color: var(--text-faint); font-weight: 300; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* ── Panel grid ──────────────────────────────────────────────── */
+    .hud-panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    .hud-panel {
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .hud-panel:last-child { border-right: none; }
+
+    .panel-header {
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      background: var(--surface);
+    }
+
+    .panel-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      font-weight: 500;
+    }
+
+    .panel-count {
+      font-size: 0.6rem;
+      color: var(--gold);
+      font-weight: 500;
+      min-width: 1.5rem;
+      text-align: right;
+    }
+
+    .panel-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.65rem 0.85rem;
+    }
+
+    /* ── Metric row ──────────────────────────────────────────────── */
+    .metric {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .metric:last-child { border-bottom: none; }
+    .metric-key {
+      font-size: 0.6rem;
+      color: var(--text-faint);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+    .metric-val {
+      font-size: 0.72rem;
+      color: var(--text);
+      font-weight: 500;
+      text-align: right;
+    }
+    .metric-val.gold { color: var(--gold); }
+    .metric-val.green { color: var(--green); }
+    .metric-val.sky { color: var(--sky); }
+    .metric-val.dim { color: var(--text-dim); }
+
+    /* ── Member row ──────────────────────────────────────────────── */
+    .member-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .member-row:last-child { border-bottom: none; }
+    .member-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--raised);
+      border: 1px solid var(--border-hi);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.55rem;
+      color: var(--gold);
+      flex-shrink: 0;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+    .member-info { flex: 1; min-width: 0; }
+    .member-name {
+      font-size: 0.65rem;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 400;
+    }
+    .member-role {
+      font-size: 0.52rem;
+      color: var(--text-faint);
+      letter-spacing: 0.04em;
+      font-weight: 300;
+    }
+
+    /* ── Project row ─────────────────────────────────────────────── */
+    .project-row {
+      padding: 0.45rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .project-row:last-child { border-bottom: none; }
+    .project-name {
+      font-size: 0.67rem;
+      color: var(--text);
+      margin-bottom: 0.18rem;
+      font-weight: 400;
+    }
+    .project-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .project-type {
+      font-size: 0.5rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sky);
+      font-weight: 500;
+    }
+    .project-status {
+      font-size: 0.5rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      font-weight: 300;
+    }
+    .project-status.active { color: var(--green); }
+    .project-status.completed { color: var(--text-faint); }
+
+    /* ── Signal row ──────────────────────────────────────────────── */
+    .signal-row {
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .signal-row:last-child { border-bottom: none; }
+    .signal-type {
+      font-size: 0.5rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.15rem;
+      font-weight: 500;
+    }
+    .signal-target {
+      font-size: 0.63rem;
+      color: var(--text-dim);
+      margin-bottom: 0.1rem;
+    }
+    .signal-time {
+      font-size: 0.5rem;
+      color: var(--text-faint);
+      font-weight: 300;
+    }
+
+    /* ── Section divider inside panel ───────────────────────────── */
+    .panel-section-head {
+      font-size: 0.5rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      padding: 0.5rem 0 0.3rem;
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.2rem;
+    }
+
+    /* ── State panel (formation, decisions) ─────────────────────── */
+    .state-item {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .state-item:last-child { border-bottom: none; }
+    .state-tag {
+      font-size: 0.48rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.35rem;
+      border-radius: 2px;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+      font-weight: 500;
+    }
+    .state-tag.forming  { background: rgba(196,149,106,0.12); color: var(--gold); border: 1px solid rgba(196,149,106,0.25); }
+    .state-tag.blocker  { background: rgba(196,90,58,0.12); color: var(--ember); border: 1px solid rgba(196,90,58,0.25); }
+    .state-tag.active   { background: rgba(74,122,90,0.12); color: var(--green); border: 1px solid rgba(74,122,90,0.25); }
+    .state-tag.pending  { background: rgba(90,122,154,0.10); color: var(--sky); border: 1px solid rgba(90,122,154,0.22); }
+    .state-title { font-size: 0.63rem; color: var(--text); font-weight: 400; line-height: 1.35; }
+    .state-desc { font-size: 0.58rem; color: var(--text-faint); line-height: 1.4; margin-top: 0.12rem; font-weight: 300; }
+
+    /* ── Loading placeholder ─────────────────────────────────────── */
+    .loading-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+    }
+    .loading-row {
+      height: 28px;
+      background: var(--raised);
+      border-radius: 2px;
+      animation: shimmer 1.5s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
+    }
+
+    /* ── Footer bar ──────────────────────────────────────────────── */
+    .hud-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .hud-footer-left, .hud-footer-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.54rem;
+      color: var(--text-faint);
+      letter-spacing: 0.06em;
+    }
+
+    .hud-rt-status {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .hud-rt-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse-dot 2.5s ease-in-out infinite;
+    }
+
+    .hud-signout-btn {
+      background: none;
+      border: none;
+      font-family: var(--mono);
+      font-size: 0.54rem;
+      color: var(--text-faint);
+      cursor: pointer;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0;
+      transition: color 0.15s;
+    }
+    .hud-signout-btn:hover { color: var(--ember); }
+
+    /* ── Empty state ─────────────────────────────────────────────── */
+    .empty-state {
+      font-size: 0.62rem;
+      color: var(--text-faint);
+      padding: 0.5rem 0;
+      font-style: italic;
+      font-weight: 300;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════
+     AUTH SCREEN
+════════════════════════════════════════════════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-eyebrow">RegenHub, LCA &middot; Board Access</div>
+    <div class="auth-title">Secure Sign In</div>
+    <div class="auth-sub">Enter your organizer email. A magic link will be sent — no password required.</div>
+    <input class="auth-input" type="email" id="auth-email" placeholder="you@example.com" autocomplete="email">
+    <button class="auth-btn" id="auth-btn" onclick="sendMagicLink()">Send Magic Link</button>
+    <div class="auth-status" id="auth-status"></div>
+    <div class="auth-entity">RegenHub, LCA &middot; Colorado Public Benefit LCA<br>SOS 20261163853 &middot; Filed Feb 6, 2026</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     HUD SCREEN
+════════════════════════════════════════════════════════════════ -->
+<div id="hud-screen" class="hidden">
+
+  <!-- Top bar -->
+  <div class="hud-topbar">
+    <div class="hud-brand">
+      <span class="hud-brand-name">RegenHub, LCA</span>
+      <span class="hud-brand-sep">/</span>
+      <span class="hud-brand-sub">Board HUD</span>
+    </div>
+    <div class="hud-status-center">
+      <div class="hud-live-dot connecting" id="rt-dot"></div>
+      <span class="hud-live-label connecting" id="rt-label">Connecting</span>
+    </div>
+    <div class="hud-time-block">
+      <span id="hud-user-info">—</span>
+      <span id="hud-clock">—</span>
+    </div>
+  </div>
+
+  <!-- Panel grid -->
+  <div class="hud-panels">
+
+    <!-- Panel 1: Organizers -->
+    <div class="hud-panel">
+      <div class="panel-header">
+        <span class="panel-label">Organizers</span>
+        <span class="panel-count" id="org-count">—</span>
+      </div>
+      <div class="panel-body" id="organizers-body">
+        <div class="loading-rows">
+          <div class="loading-row"></div>
+          <div class="loading-row" style="width:85%"></div>
+          <div class="loading-row" style="width:70%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 2: Capital & Treasury -->
+    <div class="hud-panel">
+      <div class="panel-header">
+        <span class="panel-label">Treasury</span>
+        <span class="panel-count gold" id="treasury-total">—</span>
+      </div>
+      <div class="panel-body">
+        <div class="panel-section-head">Live Capital Accounts</div>
+        <div id="capital-body">
+          <div class="loading-rows">
+            <div class="loading-row"></div>
+            <div class="loading-row" style="width:80%"></div>
+          </div>
+        </div>
+        <div class="panel-section-head" style="margin-top:0.5rem;">Q1 Snapshot</div>
+        <div class="metric"><span class="metric-key">Onchain (Safe)</span><span class="metric-val gold">$9,753</span></div>
+        <div class="metric"><span class="metric-key">Mercury (WSS)</span><span class="metric-val dim">$17,739</span></div>
+        <div class="metric"><span class="metric-key">Q1 Revenue</span><span class="metric-val dim">$6,683</span></div>
+        <div class="metric"><span class="metric-key">MRR (est.)</span><span class="metric-val green">~$5K</span></div>
+        <div class="metric"><span class="metric-key">Capital committed</span><span class="metric-val sky">$120–130K</span></div>
+        <div class="metric"><span class="metric-key">Target MRR</span><span class="metric-val dim">$10–11K</span></div>
+        <div class="metric"><span class="metric-key">Runway</span><span class="metric-val dim">~12 mo</span></div>
+      </div>
+    </div>
+
+    <!-- Panel 3: Projects -->
+    <div class="hud-panel">
+      <div class="panel-header">
+        <span class="panel-label">Projects</span>
+        <span class="panel-count" id="project-count">—</span>
+      </div>
+      <div class="panel-body" id="projects-body">
+        <div class="loading-rows">
+          <div class="loading-row"></div>
+          <div class="loading-row" style="width:90%"></div>
+          <div class="loading-row" style="width:75%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 4: Governance State -->
+    <div class="hud-panel" style="border-right:none;">
+      <div class="panel-header">
+        <span class="panel-label">Governance</span>
+        <span class="panel-count sky" id="signal-count">—</span>
+      </div>
+      <div class="panel-body">
+        <div class="panel-section-head">Board Status</div>
+        <div class="state-item">
+          <span class="state-tag forming">Forming</span>
+          <div>
+            <div class="state-title">Board convening</div>
+            <div class="state-desc">Transition from formation to active governance. Board selection in progress from 8 organizers.</div>
+          </div>
+        </div>
+
+        <div class="panel-section-head" style="margin-top:0.5rem;">Open Blockers</div>
+        <div class="state-item">
+          <span class="state-tag blocker">Blocker</span>
+          <div>
+            <div class="state-title">Schedule A</div>
+            <div class="state-desc">Share prices + dues undefined. Required for member admission.</div>
+          </div>
+        </div>
+        <div class="state-item">
+          <span class="state-tag blocker">Blocker</span>
+          <div>
+            <div class="state-title">83(b) Window</div>
+            <div class="state-desc">30-day election window from property transfer. Timing pending.</div>
+          </div>
+        </div>
+        <div class="state-item">
+          <span class="state-tag pending">High</span>
+          <div>
+            <div class="state-title">Voting rights</div>
+            <div class="state-desc">Class-1-only decision vs. bylaws draft. Reconciliation needed.</div>
+          </div>
+        </div>
+        <div class="state-item">
+          <span class="state-tag pending">High</span>
+          <div>
+            <div class="state-title">Investor return terms</div>
+            <div class="state-desc">$100K committed, terms undefined. FSC to determine.</div>
+          </div>
+        </div>
+
+        <div class="panel-section-head" style="margin-top:0.5rem;">Live Signals</div>
+        <div id="signals-body">
+          <div class="loading-rows">
+            <div class="loading-row"></div>
+            <div class="loading-row" style="width:80%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /hud-panels -->
+
+  <!-- Footer bar -->
+  <div class="hud-footer">
+    <div class="hud-footer-left">
+      <div class="hud-rt-status">
+        <div class="hud-rt-dot" id="footer-rt-dot"></div>
+        <span id="footer-rt-label">Supabase Realtime</span>
+      </div>
+      <span id="last-updated">—</span>
+    </div>
+    <div class="hud-footer-right">
+      <span>Boulder, CO &middot; MT</span>
+      <button class="hud-signout-btn" onclick="signOut()">Sign Out</button>
+    </div>
+  </div>
+
+</div><!-- /hud-screen -->
+
+<script>
+  // ════════════════════════════════════════════════════════════════
+  // CONFIG
+  // ════════════════════════════════════════════════════════════════
+  //
+  // SETUP REQUIRED:
+  // Replace SUPABASE_ANON_KEY with the publishable (sb_publishable_...)
+  // key from: https://supabase.com/dashboard/project/gxyeobogqfubgzklmxwt/settings/api
+  //
+  const SUPABASE_URL      = 'https://gxyeobogqfubgzklmxwt.supabase.co'
+  const SUPABASE_ANON_KEY = 'REPLACE_WITH_PUBLISHABLE_KEY'
+  const REDIRECT_URL      = 'https://techne.institute/board/'
+
+  // ════════════════════════════════════════════════════════════════
+  // INIT
+  // ════════════════════════════════════════════════════════════════
+  let sb
+  try {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  } catch (e) {
+    showAuthStatus('Configuration error — key not set', 'err')
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  // CLOCK
+  // ════════════════════════════════════════════════════════════════
+  function updateClock() {
+    const now = new Date()
+    const opts = {
+      timeZone: 'America/Denver',
+      month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hour12: false
+    }
+    document.getElementById('hud-clock').textContent =
+      now.toLocaleString('en-US', opts).replace(',', '') + ' MT'
+  }
+  setInterval(updateClock, 1000)
+  updateClock()
+
+  // ════════════════════════════════════════════════════════════════
+  // AUTH
+  // ════════════════════════════════════════════════════════════════
+  async function sendMagicLink() {
+    if (!sb) return
+    const email = document.getElementById('auth-email').value.trim()
+    if (!email) { showAuthStatus('Enter your email address', 'err'); return }
+
+    const btn = document.getElementById('auth-btn')
+    btn.disabled = true
+    showAuthStatus('Sending…', '')
+
+    const { error } = await sb.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: REDIRECT_URL }
+    })
+
+    if (error) {
+      showAuthStatus('Error: ' + error.message, 'err')
+      btn.disabled = false
+    } else {
+      showAuthStatus('Link sent — check your inbox (' + email + ')', 'ok')
+    }
+  }
+
+  function showAuthStatus(msg, type) {
+    const el = document.getElementById('auth-status')
+    el.textContent = msg
+    el.className = 'auth-status' + (type ? ' ' + type : '')
+  }
+
+  // Allow Enter key to submit
+  document.getElementById('auth-email').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMagicLink()
+  })
+
+  async function signOut() {
+    if (sb) await sb.auth.signOut()
+    document.getElementById('hud-screen').classList.add('hidden')
+    document.getElementById('auth-screen').classList.remove('hidden')
+    document.getElementById('auth-btn').disabled = false
+    document.getElementById('auth-status').textContent = ''
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  // AUTH STATE
+  // ════════════════════════════════════════════════════════════════
+  if (sb) {
+    sb.auth.onAuthStateChange(async (event, session) => {
+      if (session) {
+        // Show user info
+        const email = session.user?.email || ''
+        document.getElementById('hud-user-info').textContent = email
+        // Switch screens
+        document.getElementById('auth-screen').classList.add('hidden')
+        document.getElementById('hud-screen').classList.remove('hidden')
+        // Load data
+        await loadAll()
+        setupRealtime()
+      } else if (event === 'SIGNED_OUT') {
+        document.getElementById('hud-screen').classList.add('hidden')
+        document.getElementById('auth-screen').classList.remove('hidden')
+      }
+    })
+
+    // Check existing session on load
+    sb.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        document.getElementById('auth-screen').classList.remove('hidden')
+      }
+      // onAuthStateChange will fire if session exists
+    })
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  // DATA LOADING
+  // ════════════════════════════════════════════════════════════════
+  async function loadAll() {
+    setRealtimeStatus('connecting')
+    await Promise.all([
+      loadOrganizers(),
+      loadCapitalAccounts(),
+      loadProjects(),
+      loadSignals()
+    ])
+    setLastUpdated()
+  }
+
+  // ── Organizers ────────────────────────────────────────────────
+  async function loadOrganizers() {
+    const { data, error } = await sb
+      .from('profiles')
+      .select('id, full_name, email, declared_role, created_at')
+      .order('created_at', { ascending: true })
+
+    const el = document.getElementById('organizers-body')
+    const countEl = document.getElementById('org-count')
+
+    if (error || !data) {
+      el.innerHTML = '<div class="empty-state">Could not load organizers</div>'
+      return
+    }
+
+    countEl.textContent = data.length
+
+    if (!data.length) {
+      el.innerHTML = '<div class="empty-state">No profiles yet</div>'
+      return
+    }
+
+    el.innerHTML = data.map(p => {
+      const initials = (p.full_name || p.email || '?')
+        .split(/[\s.@]/).filter(Boolean).slice(0, 2)
+        .map(w => w[0].toUpperCase()).join('')
+      const role = p.declared_role || 'organizer'
+      return `<div class="member-row">
+        <div class="member-avatar">${initials}</div>
+        <div class="member-info">
+          <div class="member-name">${esc(p.full_name || p.email || '—')}</div>
+          <div class="member-role">${esc(role)}</div>
+        </div>
+      </div>`
+    }).join('')
+  }
+
+  // ── Capital Accounts ──────────────────────────────────────────
+  async function loadCapitalAccounts() {
+    const { data, error } = await sb
+      .from('capital_accounts')
+      .select('id, account_type, balance, currency, profile_id')
+
+    const el = document.getElementById('capital-body')
+    const totalEl = document.getElementById('treasury-total')
+
+    if (error || !data) {
+      el.innerHTML = '<div class="empty-state">Could not load accounts</div>'
+      return
+    }
+
+    // Also load profiles for name matching
+    const { data: profiles } = await sb.from('profiles').select('id, full_name, email')
+    const profileMap = {}
+    if (profiles) profiles.forEach(p => { profileMap[p.id] = p.full_name || p.email })
+
+    let total = 0
+    data.forEach(a => { total += parseFloat(a.balance || 0) })
+    totalEl.textContent = '$' + total.toLocaleString('en-US', { minimumFractionDigits: 0 })
+
+    if (!data.length) {
+      el.innerHTML = '<div class="empty-state">No accounts yet</div>'
+      return
+    }
+
+    el.innerHTML = data.map(a => {
+      const name = profileMap[a.profile_id] || a.profile_id?.slice(0,8) + '…' || '—'
+      const bal = parseFloat(a.balance || 0).toLocaleString('en-US', {
+        style: 'currency', currency: a.currency || 'USD', minimumFractionDigits: 0
+      })
+      const type = a.account_type || 'capital'
+      return `<div class="metric">
+        <span class="metric-key">${esc(name)} · ${esc(type)}</span>
+        <span class="metric-val ${parseFloat(a.balance)>0?'gold':'dim'}">${bal}</span>
+      </div>`
+    }).join('')
+  }
+
+  // ── Projects ──────────────────────────────────────────────────
+  async function loadProjects() {
+    const { data, error } = await sb
+      .from('projects')
+      .select('id, name, description, status, type, created_at')
+      .order('created_at', { ascending: false })
+
+    const el = document.getElementById('projects-body')
+    const countEl = document.getElementById('project-count')
+
+    if (error || !data) {
+      el.innerHTML = '<div class="empty-state">Could not load projects</div>'
+      return
+    }
+
+    const active = data.filter(p => p.status === 'active' || p.status === 'in_progress')
+    countEl.textContent = active.length + ' active'
+
+    if (!data.length) {
+      el.innerHTML = '<div class="empty-state">No projects yet</div>'
+      return
+    }
+
+    el.innerHTML = data.map(p => {
+      const statusClass = (p.status === 'active' || p.status === 'in_progress') ? 'active' :
+                          p.status === 'completed' ? 'completed' : ''
+      return `<div class="project-row">
+        <div class="project-name">${esc(p.name || '—')}</div>
+        <div class="project-meta">
+          <span class="project-type">${esc(p.type || 'project')}</span>
+          <span class="project-status ${statusClass}">${esc(p.status || '—')}</span>
+        </div>
+      </div>`
+    }).join('')
+  }
+
+  // ── Signals ───────────────────────────────────────────────────
+  async function loadSignals() {
+    const { data, error } = await sb
+      .from('signals')
+      .select('id, signal_type, target_type, target_id, value, created_at, profile_id')
+      .order('created_at', { ascending: false })
+      .limit(10)
+
+    const el = document.getElementById('signals-body')
+    const countEl = document.getElementById('signal-count')
+
+    if (error || !data) {
+      el.innerHTML = '<div class="empty-state">Could not load signals</div>'
+      return
+    }
+
+    countEl.textContent = data.length
+
+    if (!data.length) {
+      el.innerHTML = '<div class="empty-state">No signals recorded</div>'
+      return
+    }
+
+    el.innerHTML = data.map(s => {
+      const when = relativeTime(s.created_at)
+      const val = s.value ? ` · ${esc(String(s.value).slice(0,40))}` : ''
+      return `<div class="signal-row">
+        <div class="signal-type">${esc(s.signal_type || '—')}</div>
+        <div class="signal-target">${esc(s.target_type || '—')} ${esc(s.target_id?.slice(0,12) || '')}${val}</div>
+        <div class="signal-time">${when}</div>
+      </div>`
+    }).join('')
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  // REALTIME SUBSCRIPTIONS
+  // ════════════════════════════════════════════════════════════════
+  function setupRealtime() {
+    const channel = sb.channel('board-hud')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' },
+        () => { loadOrganizers(); setLastUpdated() })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'capital_accounts' },
+        () => { loadCapitalAccounts(); setLastUpdated() })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'projects' },
+        () => { loadProjects(); setLastUpdated() })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'signals' },
+        () => { loadSignals(); setLastUpdated() })
+      .subscribe(status => {
+        if (status === 'SUBSCRIBED') setRealtimeStatus('live')
+        else if (status === 'CHANNEL_ERROR') setRealtimeStatus('error')
+        else setRealtimeStatus('connecting')
+      })
+  }
+
+  function setRealtimeStatus(state) {
+    const dot   = document.getElementById('rt-dot')
+    const label = document.getElementById('rt-label')
+    const fDot  = document.getElementById('footer-rt-dot')
+    const fLabel = document.getElementById('footer-rt-label')
+
+    if (state === 'live') {
+      dot.className   = 'hud-live-dot'
+      label.className = 'hud-live-label'
+      label.textContent = 'Live'
+      if (fDot) fDot.style.background = 'var(--green)'
+      if (fLabel) fLabel.textContent = 'Realtime: Connected'
+    } else if (state === 'error') {
+      dot.className   = 'hud-live-dot error'
+      label.className = 'hud-live-label error'
+      label.textContent = 'Disconnected'
+      if (fDot) fDot.style.background = 'var(--ember)'
+      if (fLabel) fLabel.textContent = 'Realtime: Error'
+    } else {
+      dot.className   = 'hud-live-dot connecting'
+      label.className = 'hud-live-label connecting'
+      label.textContent = 'Connecting'
+    }
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  // UTILITIES
+  // ════════════════════════════════════════════════════════════════
+  function esc(s) {
+    if (s == null) return ''
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+  }
+
+  function relativeTime(iso) {
+    if (!iso) return '—'
+    const diff = Date.now() - new Date(iso).getTime()
+    const m = Math.floor(diff / 60000)
+    if (m < 1)  return 'just now'
+    if (m < 60) return m + 'm ago'
+    const h = Math.floor(m / 60)
+    if (h < 24) return h + 'h ago'
+    return Math.floor(h / 24) + 'd ago'
+  }
+
+  function setLastUpdated() {
+    const now = new Date().toLocaleString('en-US', {
+      timeZone: 'America/Denver',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hour12: false
+    })
+    const el = document.getElementById('last-updated')
+    if (el) el.textContent = 'Updated ' + now + ' MT'
+  }
+</script>
+
+</body>
+</html>
