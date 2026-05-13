@@ -30,7 +30,7 @@ We want to grow a beautiful and connected scene in Boulder. We want to help ensu
 
 ## How it works
 
-**Equity from ventures.** We grow the cooperative's holdings through voluntary equity contributions from ventures. **Parachute** will start by offering 10% of its equity to the cooperative. Our goal is to raise a friends-and-family round at a $3M valuation (SAFE cap), then move to at least $10M (SAFE cap) by end of 2026 — putting Techne's holdings at $1M+ soft value as a starting point. **Postage** and **Gitcoin** are also potential equity givers. This is the same "give first" principle that has shaped Boulder's tech culture through TechStars.
+**Equity from ventures.** We grow the cooperative's holdings through voluntary equity contributions from ventures. **Parachute** will start by offering 10% of its equity to the cooperative. Our goal is to raise a friends-and-family round at a $3M valuation (SAFE cap), then move to at least $10M (SAFE cap) by end of 2026 — putting Techne's holdings at ~$1M illiquid pre-seed value as a starting point. **Postage** and **Gitcoin** are also potential equity givers. This is the same "give first" principle that has shaped Boulder's tech culture through TechStars.
 
 **Patronage as the unified unit.** I propose we raise money and relate to it as patronage contributions. If someone like Kevin or Jeremy puts $50k in, it would be seen as $50k of value into the cooperative — the same shape as a member putting in $50k of time. We will land simple enough shapes to begin to measure the fair market value each of us offers to the cooperative: hosting events, teaching classes, growing cooperative businesses, and more.
 
@@ -43,6 +43,18 @@ As the cooperative grows, we begin to offer membership to people in our wider co
 ## Techne Institute — the school
 
 The school we are growing fits in here too. We are currently running our second Learn Vibe Build cohort, and I see all of this in the context of a larger school vision — **Techne Institute**. In alignment with our recent seminars on Technology & The Human Future in which we explore Techne from a philosophical angle, we can cultivate a school that helps people not only become builders of technology (LVB and related programs), but also infuses a technology telos through our education programs that supports a harmonious relationship to technology as we develop it. Techne Institute serves both as one of the first primary business lines of the cooperative (revenue through educational programs) and as an engine for growing more ventures within the cooperative.
+
+## V2 — City Schelling Point
+
+**Goal:** Become the place in Boulder. Expand beyond coworking into a third space.
+
+- **Programming** — weekly talks (AI, economy, future of work), classes (vibe coding, permaculture, etc.), cultural events (music, salons, demos), hosting meetups.
+- **Local discovery layer** — a "what's happening in Boulder" hub.
+- **Light economic layer** — showcase local builders and projects, early experiments with local funding, venture studio (RegenHub.xyz Fund I, revenue-based finance).
+
+**Success metric:** *"What should I do tonight?"* → RegenHub. Demand exceeds capacity for events.
+
+**Risk:** Fragmentation, low signal.
 
 ## What stays the same
 

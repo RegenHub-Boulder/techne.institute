@@ -28,11 +28,17 @@ I am proposing a transformation of RegenHub into **Techne Cooperative**, while k
 
 We want to grow a beautiful and connected scene in Boulder, with growing influence and financial resources, where those who help grow the scene benefit from its success and continue to influence its direction.
 
-**How:** Ventures within the cooperative voluntarily commit equity. **Parachute** will start by offering 10% (targeting a friends-and-family round at $3M valuation, then $10M by end of 2026 — putting Techne's holdings at $1M+ soft value). **Postage** and **Gitcoin** are also potential equity givers. This is the same "give first" principle that has shaped Boulder's tech culture through TechStars. Patronage is the unified accounting unit: $50k of capital and $50k of time produce the same patronage credit. From time to time the cooperative sells equity in held ventures, and patrons can redeem their patronage credit for that equity.
+**How:** Ventures within the cooperative voluntarily commit equity. **Parachute** will start by offering 10% (targeting a friends-and-family round at $3M valuation, then $10M by end of 2026 — putting Techne's holdings at ~$1M illiquid pre-seed value). **Postage** and **Gitcoin** are also potential equity givers. This is the same "give first" principle that has shaped Boulder's tech culture through TechStars. Patronage is the unified accounting unit: $50k of capital and $50k of time produce the same patronage credit. From time to time the cooperative sells equity in held ventures, and patrons can redeem their patronage credit for that equity.
 
 **Wider membership:** As we grow, we offer membership to people in **partner communities** — Boulder Startup Week, Boulder New Tech, Women in AI, Neighborhood Village Project, Climatique — so their scene-building work counts as patronage too.
 
 **The school:** We're running our second Learn Vibe Build cohort. I see this in the context of a larger school — **Techne Institute** — in alignment with our seminars on Technology & The Human Future. The Institute generates revenue through educational programs and grows the next generation of people building ventures.
+
+## V2 — City Schelling Point
+
+**Goal:** Become the place in Boulder. Expand beyond coworking into a third space with consistent programming (weekly talks, classes, cultural events, meetups), a "what's happening in Boulder" discovery layer, and a light economic layer (showcase local builders, early local funding experiments, venture studio / revenue-based finance).
+
+**Success metric:** *"What should I do tonight?"* → RegenHub. Demand exceeds capacity for events. **Risk:** Fragmentation, low signal.
 
 ## Open questions
 
