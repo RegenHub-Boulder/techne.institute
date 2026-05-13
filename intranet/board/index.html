@@ -1,633 +1,1618 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mode="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>Board HUD — RegenHub, LCA</title>
-  <script>(function(){document.documentElement.setAttribute('data-theme','dark');})()</script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>RegenHub · Operating Layer · HUD</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface-2: #141414;
+    --border: #2a2a2a;
+    --border-strong: #3a3a3a;
+    --terra: #c4956a;
+    --terra-text: #c4956a;
+    --terra-dim: rgba(196, 149, 106, 0.12);
+    --terra-glow: rgba(196, 149, 106, 0.05);
+    --heading: #e8e0d8;
+    --text: #d4d4d4;
+    --muted: #999;
+    --faint: #666;
+    --very-faint: #444;
+  }
+  [data-mode="light"] {
+    --bg: #faf7f2;
+    --surface: #f3ede4;
+    --surface-2: #efe8dc;
+    --border: #d8cfc1;
+    --border-strong: #c4b69f;
+    --terra: #c4956a;
+    --terra-text: #96704a;
+    --terra-dim: rgba(196, 149, 106, 0.14);
+    --terra-glow: rgba(196, 149, 106, 0.07);
+    --heading: #2d2620;
+    --text: #3d342b;
+    --muted: #6b5f53;
+    --faint: #968774;
+    --very-faint: #c4b69f;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-mode]) {
+      --bg: #faf7f2;
+      --surface: #f3ede4;
+      --surface-2: #efe8dc;
+      --border: #d8cfc1;
+      --border-strong: #c4b69f;
+      --terra: #c4956a;
+      --terra-text: #96704a;
+      --terra-dim: rgba(196, 149, 106, 0.14);
+      --terra-glow: rgba(196, 149, 106, 0.07);
+      --heading: #2d2620;
+      --text: #3d342b;
+      --muted: #6b5f53;
+      --faint: #968774;
+      --very-faint: #c4b69f;
+    }
+  }
 
-    :root {
-      --void:        #080806;
-      --surface:     #0e0e0c;
-      --panel:       #131311;
-      --raised:      #1a1a18;
-      --border:      rgba(255,255,255,0.055);
-      --border-hi:   rgba(255,255,255,0.10);
-      --text:        #e8e4df;
-      --text-dim:    #9a9590;
-      --text-faint:  #5a5550;
-      --gold:        #c4956a;
-      --gold-dim:    rgba(196,149,106,0.45);
-      --moss:        #6a8a5e;
-      --sky:         #5a7a9a;
-      --ember:       #c45a3a;
-      --green:       #4a7a5a;
-      --mono:        'IBM Plex Mono', monospace;
-    }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background 400ms ease, color 400ms ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html, body, * { transition: none !important; animation: none !important; }
+  }
 
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      background: var(--void);
-      color: var(--text);
-      font-family: var(--mono);
-      -webkit-font-smoothing: antialiased;
-    }
+  .hidden { display: none !important; }
 
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 2px; }
+  /* ─── Auth gate ───────────────────────────────── */
+  .gate {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gate-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .gate-mark {
+    width: 36px; height: 36px;
+    border: 1px solid var(--terra);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--terra-text);
+    font-family: 'Libre Baskerville', serif; font-style: italic; font-weight: 700;
+    font-size: 18px;
+    background: var(--terra-dim);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
 
-    /* ── Gate screen (shown while checking auth) ─────────────────── */
-    #gate {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--void);
-      z-index: 100;
-    }
-    #gate.hidden { display: none; }
-    .gate-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .gate-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--gold);
-      animation: pulse-dot 0.9s ease-in-out infinite;
-    }
-    .gate-label {
-      font-size: 0.6rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text-faint);
-      font-weight: 300;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
-    }
+  /* ─── Data status pips ────────────────────────── */
+  .status-pip {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    cursor: help;
+    flex-shrink: 0;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .status-pip[data-status="live"]      { background: #22c55e; }
+  .status-pip[data-status="partial"]   { background: #3b82f6; }
+  .status-pip[data-status="synthetic"] { background: #f59e0b; }
+  .status-pip[data-status="static"]    { background: #6b7280; }
 
-    /* ════════════════════════════════════════════════════════════════
-       HUD SHELL
-    ════════════════════════════════════════════════════════════════ */
-    #hud {
-      height: 100vh;
-      display: grid;
-      grid-template-rows: 44px 1fr 34px;
-      overflow: hidden;
-    }
-    #hud.hidden { display: none; }
+  .status-pip::before {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 0;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    padding: 7px 11px;
+    font-size: 9.5px;
+    color: var(--text);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 200ms ease;
+    z-index: 20;
+    font-family: 'IBM Plex Mono', monospace;
+    font-style: normal;
+    max-width: 280px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
+  .status-pip:hover::before { opacity: 1; }
 
-    /* ── Top bar ─────────────────────────────────────────────────── */
-    .hud-topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1rem;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-      gap: 1rem;
-    }
+  /* pip in pane-head (right-column headers) */
+  .pane-head .status-pip::before,
+  .solar-card-head .status-pip::before { right: 0; bottom: calc(100% + 8px); }
 
-    .hud-nav {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      flex-shrink: 0;
-    }
-    .hud-back {
-      font-size: 0.58rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-faint);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    .hud-back:hover { color: var(--gold); }
-    .hud-sep { color: var(--text-faint); font-size: 0.6rem; }
-    .hud-brand-name { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); font-weight: 500; }
-    .hud-brand-sub  { font-size: 0.6rem;  letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); font-weight: 400; }
+  /* ─── Layout shell ────────────────────────────── */
+  .hud {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 64px 1fr 52px;
+    grid-template-columns: 22% 1fr 26%;
+    grid-template-areas:
+      "header header header"
+      "stack  state  right"
+      "footer footer footer";
+    gap: 1px;
+    background: var(--border);
+    transition: background 400ms ease;
+  }
+  .pane { background: var(--bg); padding: 18px 20px; overflow: hidden; transition: background 400ms ease; }
+  .header {
+    grid-area: header;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+  }
+  .header-left { display: flex; align-items: center; gap: 18px; }
 
-    .hud-status-center {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.58rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    .hud-live-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      animation: pulse-dot 2s ease-in-out infinite;
-    }
-    .hud-live-dot.connecting { background: var(--gold); animation: pulse-dot 0.7s ease-in-out infinite; }
-    .hud-live-dot.error { background: var(--ember); animation: none; }
-    .hud-live-label { color: var(--green); }
-    .hud-live-label.connecting { color: var(--gold); }
-    .hud-live-label.error { color: var(--ember); }
+  /* Right column splits into solar card (top) + activity (bottom) */
+  .right-column {
+    grid-area: right;
+    background: var(--bg);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 1px;
+    overflow: hidden;
+    background: var(--border);
+    transition: background 400ms ease;
+  }
+  .solar-pane { background: var(--bg); padding: 16px 18px 14px; transition: background 400ms ease; overflow: hidden; }
+  .activity-pane { background: var(--bg); padding: 16px 20px 18px; overflow: hidden; transition: background 400ms ease; }
+  .stack-pane { grid-area: stack; }
+  .state-pane { grid-area: state; padding: 18px 22px; }
+  .footer { grid-area: footer; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
 
-    .hud-time-block {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      font-size: 0.6rem;
-      color: var(--text-faint);
-      flex-shrink: 0;
-    }
-    #hud-clock { color: var(--text-dim); }
-    #hud-user  { color: var(--text-faint); font-weight: 300; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* ─── Typography ──────────────────────────────── */
+  .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra-text);
+    opacity: 0.85;
+    display: inline-block;
+  }
+  .label.muted { color: var(--faint); opacity: 0.9; }
+  .rule { width: 36px; height: 1px; background: linear-gradient(90deg, var(--terra), transparent); margin: 8px 0 14px; }
+  .rule.full { width: 100%; }
+  .serif { font-family: 'Libre Baskerville', Georgia, serif; }
+  .num { font-family: 'IBM Plex Mono', monospace; font-feature-settings: 'tnum'; font-variant-numeric: tabular-nums; color: var(--heading); font-weight: 500; }
+  em { color: var(--heading); font-style: italic; }
+  .cite { color: var(--terra-text); opacity: 0.75; font-size: 9.5px; letter-spacing: 0.05em; }
+  .faint { color: var(--faint); }
+  .muted { color: var(--muted); }
 
-    /* ── Panel grid ──────────────────────────────────────────────── */
-    .hud-panels {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      overflow: hidden;
-    }
-    .hud-panel {
-      background: var(--panel);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .hud-panel:last-child { border-right: none; }
+  /* ─── Header bar ──────────────────────────────── */
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand-mark {
+    width: 28px; height: 28px;
+    border: 1px solid var(--terra);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--terra-text);
+    font-family: 'Libre Baskerville', serif; font-style: italic; font-weight: 700;
+    font-size: 14px;
+    background: var(--terra-dim);
+  }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+  .brand-name { font-family: 'Libre Baskerville', serif; font-size: 14.5px; color: var(--heading); letter-spacing: -0.01em; }
+  .brand-sub { font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
 
-    .panel-header {
-      padding: 0.55rem 0.85rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      background: var(--surface);
-    }
-    .panel-label {
-      font-size: 0.55rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-faint);
-      font-weight: 500;
-    }
-    .panel-count { font-size: 0.6rem; color: var(--gold); font-weight: 500; min-width: 1.5rem; text-align: right; }
-    .panel-body  { flex: 1; overflow-y: auto; padding: 0.65rem 0.85rem; }
+  .badges { display: flex; gap: 8px; align-items: center; }
+  .badge {
+    font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted);
+    padding: 4px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface-2);
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--terra); }
+  .badge-dot.live { animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+  .badge.active { color: var(--terra-text); border-color: rgba(196,149,106,0.5); background: var(--terra-dim); }
 
-    /* ── Metric ──────────────────────────────────────────────────── */
-    .metric {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      padding: 0.3rem 0;
-      border-bottom: 1px solid var(--border);
+  .controls { display: flex; align-items: center; gap: 12px; }
+
+  /* user pill */
+  .user-pill {
+    font-size: 9.5px;
+    color: var(--faint);
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface-2);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .user-pill-dot { width: 5px; height: 5px; border-radius: 50%; background: #22c55e; }
+
+  /* ─── Solar card (right column, top) ──────────── */
+  .solar-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px 16px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 10px;
+    height: 100%;
+  }
+  .solar-card-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .solar-coords {
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+    font-family: 'IBM Plex Mono', monospace;
+    display: flex; align-items: center; gap: 4px;
+  }
+
+  .solar-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1.08;
+    max-height: 230px;
+    margin: 0 auto;
+    display: block;
+  }
+  .solar-stage svg { width: 100%; height: 100%; display: block; }
+
+  .solar-data {
+    display: grid;
+    grid-template-columns: auto 1fr auto 1fr;
+    column-gap: 10px;
+    row-gap: 4px;
+    font-size: 10px;
+    margin-top: 4px;
+  }
+  .solar-data .k {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    align-self: baseline;
+  }
+  .solar-data .v {
+    font-family: 'IBM Plex Mono', monospace;
+    font-feature-settings: 'tnum';
+    font-size: 11px;
+    color: var(--heading);
+    text-align: right;
+    align-self: baseline;
+  }
+  .solar-data .v.terra { color: var(--terra-text); }
+  .solar-data .v small { font-size: 9px; color: var(--muted); margin-left: 3px; }
+  .solar-data .row-divider { grid-column: 1 / -1; height: 1px; background: var(--border); margin: 4px 0 2px; }
+
+  /* Prominent local time display */
+  .time-prominent {
+    padding: 6px 0 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .time-main {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    line-height: 1;
+  }
+  .time-now {
+    font-family: 'IBM Plex Mono', monospace;
+    font-feature-settings: 'tnum';
+    font-variant-numeric: tabular-nums;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--heading);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .time-ampm {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--terra-text);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    min-width: 18px;
+  }
+  .time-secondary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    font-size: 9.5px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.06em;
+  }
+  .time-secondary .tz { color: var(--terra-text); letter-spacing: 0.14em; text-transform: uppercase; }
+  .time-secondary .sep { color: var(--very-faint); }
+  .time-secondary .utc-label { color: var(--faint); letter-spacing: 0.1em; text-transform: uppercase; font-size: 9px; }
+  .time-secondary .utc-val {
+    color: var(--text);
+    font-feature-settings: 'tnum';
+    font-variant-numeric: tabular-nums;
+  }
+  .fmt-toggle {
+    margin-left: auto;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    color: var(--muted);
+    padding: 2px 9px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 200ms ease, color 200ms ease;
+  }
+  .fmt-toggle:hover { border-color: var(--terra); color: var(--terra-text); }
+  .fmt-toggle:focus-visible { outline: none; border-color: var(--terra); color: var(--terra-text); }
+
+  .threshold-bar {
+    margin-top: 4px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    align-items: center;
+  }
+  .threshold-name { font-size: 9px; color: var(--terra-text); letter-spacing: 0.14em; text-transform: uppercase; }
+  .threshold-track { height: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+  .threshold-fill { height: 100%; background: linear-gradient(90deg, var(--terra), var(--terra)); transition: width 600ms ease; }
+  .threshold-count { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--heading); }
+  .threshold-count small { font-size: 9px; color: var(--muted); margin-left: 2px; }
+
+  .toggle {
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    border-radius: 999px;
+    padding: 3px;
+    display: flex;
+    cursor: pointer;
+    transition: border-color 300ms ease;
+    height: 26px;
+  }
+  .toggle:hover { border-color: var(--terra); }
+  .toggle-btn {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: all 300ms ease;
+  }
+  .toggle-btn.active { background: var(--terra-dim); color: var(--terra-text); }
+  .toggle-btn svg { width: 12px; height: 12px; }
+
+  /* ─── The Stack pane ──────────────────────────── */
+  .pane-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .pane-title { font-family: 'Libre Baskerville', serif; font-size: 13px; color: var(--heading); }
+  .pane-meta { font-size: 9.5px; color: var(--faint); letter-spacing: 0.06em; }
+  .pane-intro { font-family: 'Libre Baskerville', serif; font-size: 11.5px; line-height: 1.55; color: var(--muted); font-style: italic; margin-bottom: 14px; }
+
+  .layer {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 11px;
+    margin-bottom: 7px;
+    background: var(--surface-2);
+    transition: border-color 300ms ease, background 300ms ease;
+    position: relative;
+  }
+  .layer:hover { border-color: var(--terra); }
+  .layer.kernel { border-style: dashed; }
+  .layer-head { display: flex; align-items: center; gap: 10px; margin-bottom: 3px; }
+  .layer-num { font-size: 9px; color: var(--terra-text); letter-spacing: 0.1em; opacity: 0.7; min-width: 20px; }
+  .layer-name { font-family: 'Libre Baskerville', serif; font-size: 12px; color: var(--heading); }
+  .layer-fluid { margin-left: auto; font-size: 9px; color: var(--faint); letter-spacing: 0.08em; text-transform: uppercase; }
+  .layer-body { font-size: 10.5px; color: var(--muted); padding-left: 30px; line-height: 1.45; }
+  .layer-state { padding-left: 30px; margin-top: 4px; display: flex; gap: 14px; font-size: 9.5px; color: var(--terra-text); opacity: 0.75; }
+  .layer-state span { letter-spacing: 0.05em; }
+
+  .trace {
+    margin-top: 14px;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, var(--surface) 0%, var(--terra-glow) 100%);
+    border: 1px solid rgba(196, 149, 106, 0.25);
+    border-radius: 8px;
+  }
+  .trace-title { font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--terra-text); margin-bottom: 6px; }
+  .trace-text { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 11px; color: var(--text); line-height: 1.55; }
+
+  /* ─── Live State pane ─────────────────────────── */
+  .state-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: 10px;
+    margin-top: 6px;
+  }
+  .card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    transition: border-color 300ms ease;
+    min-height: 0;
+  }
+  .card:hover { border-color: rgba(196, 149, 106, 0.5); }
+  .card.span2 { grid-column: span 2; }
+  .card.span3 { grid-column: span 3; }
+  .card.span4 { grid-column: span 4; }
+  .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .card-title-row { display: flex; align-items: center; gap: 8px; }
+  .card-icon {
+    width: 22px; height: 22px;
+    background: var(--terra-dim);
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--terra-text);
+  }
+  .card-icon svg { width: 13px; height: 13px; }
+  .card-title { font-family: 'Libre Baskerville', serif; font-size: 12px; color: var(--heading); }
+  .card-cite { font-size: 9px; color: var(--terra-text); opacity: 0.7; letter-spacing: 0.05em; }
+  .big-num { font-family: 'IBM Plex Mono', monospace; font-feature-settings: 'tnum'; font-size: 26px; color: var(--heading); font-weight: 400; line-height: 1; letter-spacing: -0.01em; }
+  .big-num small { font-size: 12px; color: var(--muted); margin-left: 4px; }
+  .sub-line { font-size: 10px; color: var(--muted); margin-top: 6px; line-height: 1.45; }
+
+  .breakdown { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+  .chip { font-size: 9.5px; color: var(--muted); display: flex; align-items: baseline; gap: 5px; }
+  .chip .num { color: var(--heading); font-size: 11px; }
+  .chip-label { letter-spacing: 0.05em; }
+
+  .gauge-wrap { margin-top: 4px; }
+  .gauge { height: 6px; background: var(--surface); border-radius: 3px; overflow: hidden; border: 1px solid var(--border); margin-top: 6px; }
+  .gauge-fill { height: 100%; background: linear-gradient(90deg, var(--terra), var(--terra)); transition: width 600ms ease; }
+  .gauge-meta { display: flex; justify-content: space-between; margin-top: 6px; font-size: 9.5px; color: var(--faint); letter-spacing: 0.06em; }
+  .gauge-meta strong { color: var(--terra-text); font-weight: 400; }
+
+  .formula { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border-radius: 6px; overflow: hidden; margin-top: 8px; }
+  .formula-cell { background: var(--surface); padding: 8px 10px; }
+  .formula-pct { font-family: 'IBM Plex Mono', monospace; font-size: 16px; color: var(--heading); font-weight: 400; }
+  .formula-name { font-size: 9px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+
+  .tape { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 4px; }
+  .tape-cell { display: flex; flex-direction: column; gap: 2px; }
+  .tape-val { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--heading); font-weight: 400; }
+  .tape-name { font-size: 9px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .tape-cite { font-size: 9px; color: var(--terra-text); opacity: 0.7; }
+
+  .clocks { display: flex; flex-direction: column; gap: 7px; margin-top: 4px; }
+  .clock-row { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .clock-row:last-child { border-bottom: 0; }
+  .clock-name { font-size: 10px; color: var(--text); }
+  .clock-name small { display: block; font-size: 9px; color: var(--terra-text); opacity: 0.7; letter-spacing: 0.05em; margin-top: 1px; }
+  .clock-val { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--heading); }
+  .clock-val small { font-size: 9px; color: var(--muted); margin-left: 3px; }
+
+  /* ─── Activity pane ───────────────────────────── */
+  .rea-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 6px 0 14px; }
+  .rea-cell { background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 7px 8px; text-align: left; transition: border-color 300ms ease; }
+  .rea-cell:hover { border-color: var(--terra); }
+  .rea-name { font-size: 9px; color: var(--terra-text); letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; }
+  .rea-num { font-family: 'IBM Plex Mono', monospace; font-size: 16px; color: var(--heading); margin-top: 2px; }
+  .rea-cite { font-size: 8.5px; color: var(--faint); margin-top: 1px; }
+
+  .log-section { margin-bottom: 12px; }
+  .log-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .log-title { font-family: 'Libre Baskerville', serif; font-size: 11.5px; color: var(--heading); }
+  .log-meta { font-size: 9px; color: var(--faint); letter-spacing: 0.06em; }
+
+  .log { border-left: 1px solid var(--border); padding-left: 12px; margin-left: 4px; }
+  .log-row { position: relative; padding: 5px 0; font-size: 10.5px; color: var(--text); line-height: 1.5; }
+  .log-row::before {
+    content: '';
+    position: absolute;
+    left: -16px;
+    top: 11px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+  }
+  .log-row.live::before { background: var(--terra); border-color: var(--terra); animation: pulse 2.4s ease-in-out infinite; }
+  .log-row .log-when { font-size: 9px; color: var(--faint); letter-spacing: 0.05em; }
+  .log-row .log-what { color: var(--text); }
+  .log-row .log-cite { color: var(--terra-text); opacity: 0.7; font-size: 9px; }
+
+  .workflow { background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 7px 9px; margin-bottom: 5px; display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
+  .workflow:hover { border-color: var(--terra); }
+  .workflow-name { font-size: 10.5px; color: var(--heading); }
+  .workflow-name small { display: block; color: var(--faint); font-size: 8.5px; letter-spacing: 0.05em; margin-top: 1px; }
+  .workflow-state { font-size: 9px; color: var(--terra-text); letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+
+  .nou-strip {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, var(--surface) 0%, var(--terra-glow) 100%);
+    border: 1px solid rgba(196, 149, 106, 0.3);
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    align-items: center;
+  }
+  .nou-mark { width: 28px; height: 28px; border-radius: 50%; background: var(--terra-dim); border: 1px solid var(--terra); display: flex; align-items: center; justify-content: center; font-family: 'Libre Baskerville', serif; font-style: italic; color: var(--terra-text); font-size: 14px; }
+  .nou-text { font-family: 'Libre Baskerville', serif; font-size: 11px; color: var(--text); line-height: 1.4; font-style: italic; }
+  .nou-text small { display: block; font-style: normal; font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: var(--faint); letter-spacing: 0.08em; margin-top: 2px; }
+  .nou-status { font-size: 8.5px; color: var(--terra-text); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  /* ─── Footer ──────────────────────────────────── */
+  .compliance { display: flex; gap: 16px; align-items: center; }
+  .comp-item { display: flex; align-items: center; gap: 6px; }
+  .comp-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--terra); opacity: 0.85; }
+  .comp-dot.warn { background: var(--muted); }
+  .comp-name { font-size: 10px; color: var(--text); }
+  .comp-cite { font-size: 9px; color: var(--terra-text); opacity: 0.7; letter-spacing: 0.05em; margin-left: 4px; }
+
+  .footer-meta { font-size: 9.5px; color: var(--faint); letter-spacing: 0.08em; display: flex; gap: 14px; align-items: center; }
+  .footer-meta span strong { color: var(--muted); font-weight: 400; }
+
+  /* data status legend */
+  .legend { display: flex; gap: 10px; align-items: center; }
+  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 8.5px; color: var(--faint); letter-spacing: 0.06em; }
+  .legend-pip { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .legend-pip.live      { background: #22c55e; }
+  .legend-pip.partial   { background: #3b82f6; }
+  .legend-pip.synthetic { background: #f59e0b; }
+  .legend-pip.static    { background: #6b7280; }
+
+  .hud > .header, .hud > .footer { background: var(--bg); }
+
+  @media (max-width: 1100px) {
+    body::before {
+      content: 'This HUD is sized for widescreen displays. Some panels may compress.';
+      display: block;
+      padding: 8px 12px;
+      background: var(--terra-dim);
+      color: var(--terra-text);
+      font-size: 11px;
+      text-align: center;
     }
-    .metric:last-child { border-bottom: none; }
-    .metric-key { font-size: 0.6rem; color: var(--text-faint); font-weight: 300; letter-spacing: 0.04em; }
-    .metric-val { font-size: 0.72rem; color: var(--text); font-weight: 500; text-align: right; }
-    .metric-val.gold  { color: var(--gold); }
-    .metric-val.green { color: var(--green); }
-    .metric-val.sky   { color: var(--sky); }
-    .metric-val.dim   { color: var(--text-dim); }
-
-    /* ── Member row ──────────────────────────────────────────────── */
-    .member-row {
-      display: flex; align-items: center; gap: 0.5rem;
-      padding: 0.35rem 0; border-bottom: 1px solid var(--border);
-    }
-    .member-row:last-child { border-bottom: none; }
-    .member-avatar {
-      width: 22px; height: 22px; border-radius: 50%;
-      background: var(--raised); border: 1px solid var(--border-hi);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.55rem; color: var(--gold); flex-shrink: 0;
-      font-weight: 500; text-transform: uppercase;
-    }
-    .member-info { flex: 1; min-width: 0; }
-    .member-name { font-size: 0.65rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .member-role { font-size: 0.52rem; color: var(--text-faint); letter-spacing: 0.04em; font-weight: 300; }
-
-    /* ── Project row ─────────────────────────────────────────────── */
-    .project-row { padding: 0.45rem 0; border-bottom: 1px solid var(--border); }
-    .project-row:last-child { border-bottom: none; }
-    .project-name { font-size: 0.67rem; color: var(--text); margin-bottom: 0.18rem; }
-    .project-meta { display: flex; align-items: center; gap: 0.5rem; }
-    .project-type   { font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sky); font-weight: 500; }
-    .project-status { font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); font-weight: 300; }
-    .project-status.active { color: var(--green); }
-
-    /* ── Signal row ──────────────────────────────────────────────── */
-    .signal-row { padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
-    .signal-row:last-child { border-bottom: none; }
-    .signal-type   { font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.12rem; font-weight: 500; }
-    .signal-target { font-size: 0.63rem; color: var(--text-dim); margin-bottom: 0.08rem; }
-    .signal-time   { font-size: 0.5rem; color: var(--text-faint); font-weight: 300; }
-
-    /* ── Section head ────────────────────────────────────────────── */
-    .panel-section-head {
-      font-size: 0.5rem; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--text-faint); padding: 0.5rem 0 0.3rem; font-weight: 500;
-      border-bottom: 1px solid var(--border); margin-bottom: 0.2rem;
-    }
-
-    /* ── State items ─────────────────────────────────────────────── */
-    .state-item { display: flex; gap: 0.5rem; padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
-    .state-item:last-child { border-bottom: none; }
-    .state-tag {
-      font-size: 0.48rem; letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 0.15rem 0.35rem; border-radius: 2px; flex-shrink: 0;
-      margin-top: 0.05rem; font-weight: 500;
-    }
-    .state-tag.forming { background: rgba(196,149,106,0.12); color: var(--gold);  border: 1px solid rgba(196,149,106,0.25); }
-    .state-tag.blocker { background: rgba(196,90,58,0.12);   color: var(--ember); border: 1px solid rgba(196,90,58,0.25); }
-    .state-tag.pending { background: rgba(90,122,154,0.10);  color: var(--sky);   border: 1px solid rgba(90,122,154,0.22); }
-    .state-title { font-size: 0.63rem; color: var(--text); font-weight: 400; line-height: 1.35; }
-    .state-desc  { font-size: 0.58rem; color: var(--text-faint); line-height: 1.4; margin-top: 0.1rem; font-weight: 300; }
-
-    /* ── Shimmer loader ──────────────────────────────────────────── */
-    .loading-rows { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.5rem 0; }
-    .loading-row  { height: 26px; background: var(--raised); border-radius: 2px; animation: shimmer 1.5s ease-in-out infinite; }
-    @keyframes shimmer { 0%,100%{opacity:0.4} 50%{opacity:0.7} }
-
-    /* ── Footer ──────────────────────────────────────────────────── */
-    .hud-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 1rem; background: var(--surface); border-top: 1px solid var(--border);
-    }
-    .hud-footer-left, .hud-footer-right {
-      display: flex; align-items: center; gap: 1rem;
-      font-size: 0.54rem; color: var(--text-faint); letter-spacing: 0.06em;
-    }
-    .hud-rt-status { display: flex; align-items: center; gap: 0.3rem; }
-    .hud-rt-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); animation: pulse-dot 2.5s ease-in-out infinite; }
-
-    .btn-link {
-      background: none; border: none; font-family: var(--mono);
-      font-size: 0.54rem; color: var(--text-faint); cursor: pointer;
-      letter-spacing: 0.08em; text-transform: uppercase; padding: 0;
-      transition: color 0.15s;
-    }
-    .btn-link:hover { color: var(--ember); }
-
-    .empty-state { font-size: 0.62rem; color: var(--text-faint); padding: 0.5rem 0; font-style: italic; font-weight: 300; }
-  </style>
+  }
+</style>
 </head>
 <body>
 
-<!-- Auth check gate -->
-<div id="gate">
+<!-- ───────── Auth gate ───────── -->
+<div id="gate" class="gate">
   <div class="gate-inner">
-    <div class="gate-dot"></div>
-    <div class="gate-label">Checking session</div>
+    <div class="gate-mark">R</div>
+    <span id="gate-text">Checking session…</span>
   </div>
 </div>
 
-<!-- HUD -->
-<div id="hud" class="hidden">
+<!-- ───────── HUD ───────── -->
+<div class="hud hidden" id="hud" role="application" aria-label="RegenHub LCA Operating Layer Heads-Up Display">
 
-  <div class="hud-topbar">
-    <div class="hud-nav">
-      <a href="/intranet/" class="hud-back">&#8592; Intranet</a>
-      <span class="hud-sep">/</span>
-      <span class="hud-brand-name">RegenHub, LCA</span>
-      <span class="hud-sep">/</span>
-      <span class="hud-brand-sub">Board HUD</span>
-    </div>
-    <div class="hud-status-center">
-      <div class="hud-live-dot connecting" id="rt-dot"></div>
-      <span class="hud-live-label connecting" id="rt-label">Connecting</span>
-    </div>
-    <div class="hud-time-block">
-      <span id="hud-user">—</span>
-      <span id="hud-clock">—</span>
-    </div>
-  </div>
-
-  <div class="hud-panels">
-
-    <!-- Organizers -->
-    <div class="hud-panel">
-      <div class="panel-header">
-        <span class="panel-label">Organizers</span>
-        <span class="panel-count" id="org-count">—</span>
-      </div>
-      <div class="panel-body" id="organizers-body">
-        <div class="loading-rows"><div class="loading-row"></div><div class="loading-row" style="width:85%"></div><div class="loading-row" style="width:70%"></div></div>
-      </div>
-    </div>
-
-    <!-- Treasury -->
-    <div class="hud-panel">
-      <div class="panel-header">
-        <span class="panel-label">Treasury</span>
-        <span class="panel-count gold" id="treasury-total">—</span>
-      </div>
-      <div class="panel-body">
-        <div class="panel-section-head">Live Capital Accounts</div>
-        <div id="capital-body">
-          <div class="loading-rows"><div class="loading-row"></div><div class="loading-row" style="width:80%"></div></div>
+  <!-- ───────── Header ───────── -->
+  <header class="header">
+    <div class="header-left">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">R</div>
+        <div class="brand-text">
+          <span class="brand-name">RegenHub, LCA</span>
+          <span class="brand-sub">Operating Layer · Heads-Up Display</span>
         </div>
-        <div class="panel-section-head" style="margin-top:0.5rem;">Q1 Snapshot</div>
-        <div class="metric"><span class="metric-key">Onchain (Safe)</span><span class="metric-val gold">$9,753</span></div>
-        <div class="metric"><span class="metric-key">Mercury (WSS)</span><span class="metric-val dim">$17,739</span></div>
-        <div class="metric"><span class="metric-key">Q1 Revenue</span><span class="metric-val dim">$6,683</span></div>
-        <div class="metric"><span class="metric-key">MRR (est.)</span><span class="metric-val green">~$5K</span></div>
-        <div class="metric"><span class="metric-key">Capital committed</span><span class="metric-val sky">$120–130K</span></div>
-        <div class="metric"><span class="metric-key">Target MRR</span><span class="metric-val dim">$10–11K</span></div>
-        <div class="metric"><span class="metric-key">Runway</span><span class="metric-val dim">~12 mo</span></div>
+      </div>
+
+      <div class="badges">
+        <span class="badge active" title="Filed February 6, 2026 · Colorado Secretary of State">
+          <span class="badge-dot live"></span> Active &nbsp;&middot;&nbsp; CO Filed 2026-02-06
+        </span>
+        <span class="badge" title="Public benefit corporation under Colorado Revised Nonprofit and Cooperative Code">
+          Public Benefit
+        </span>
+        <span class="badge" title="Subchapter K partnership taxation election">
+          Subchapter K
+        </span>
+        <span class="badge" title="Bylaws version 4 · adoption pending Initial Board">
+          Bylaws v4 &nbsp;&middot;&nbsp; ratification pending
+        </span>
       </div>
     </div>
 
-    <!-- Projects -->
-    <div class="hud-panel">
-      <div class="panel-header">
-        <span class="panel-label">Projects</span>
-        <span class="panel-count" id="project-count">—</span>
+    <div class="controls">
+      <div class="user-pill">
+        <span class="user-pill-dot"></span>
+        <span id="hud-user"></span>
       </div>
-      <div class="panel-body" id="projects-body">
-        <div class="loading-rows"><div class="loading-row"></div><div class="loading-row" style="width:90%"></div><div class="loading-row" style="width:75%"></div></div>
+      <div class="toggle" role="group" aria-label="Color mode">
+        <button class="toggle-btn" id="btn-light" aria-label="Light mode">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <button class="toggle-btn active" id="btn-dark" aria-label="Dark mode">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
       </div>
     </div>
+  </header>
 
-    <!-- Governance -->
-    <div class="hud-panel" style="border-right:none;">
-      <div class="panel-header">
-        <span class="panel-label">Governance</span>
-        <span class="panel-count sky" id="signal-count">—</span>
+  <!-- ───────── Stack pane (Left) ───────── -->
+  <aside class="pane stack-pane">
+    <div class="pane-head">
+      <span class="label">Layer 01 · The Stack</span>
+      <span class="pane-meta">
+        06 → 01
+        <span class="status-pip" data-status="static" data-tip="static · conceptual architecture&#10;not driven by live data"></span>
+      </span>
+    </div>
+    <div class="rule"></div>
+    <p class="pane-intro">The legal documents are the foundation. The interesting work is the layers above them.</p>
+
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">06</span>
+        <span class="layer-name">Interface</span>
+        <span class="layer-fluid">iterated daily</span>
       </div>
-      <div class="panel-body">
-        <div class="panel-section-head">Board Status</div>
-        <div class="state-item">
-          <span class="state-tag forming">Forming</span>
-          <div>
-            <div class="state-title">Board convening</div>
-            <div class="state-desc">Transition from formation to active governance. Director selection in progress from 8 organizers.</div>
+      <div class="layer-body">Member portal, handbook, calendar, onboarding.</div>
+      <div class="layer-state"><span>3 surfaces</span><span>·</span><span>portal pending</span></div>
+    </div>
+
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">05</span>
+        <span class="layer-name">Practices &amp; rituals</span>
+        <span class="layer-fluid">applications</span>
+      </div>
+      <div class="layer-body">How meetings actually run, decisions get made.</div>
+      <div class="layer-state"><span>4 named</span><span>·</span><span>5 emerging</span></div>
+    </div>
+
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">04</span>
+        <span class="layer-name">Board policies</span>
+        <span class="layer-fluid">runtime services</span>
+      </div>
+      <div class="layer-body">Allocation formula, withdrawal procedure, reserve.</div>
+      <div class="layer-state"><span>0 ratified</span><span>·</span><span>3 designed</span></div>
+    </div>
+
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">03</span>
+        <span class="layer-name">Bylaws</span>
+        <span class="layer-fluid">system libraries</span>
+      </div>
+      <div class="layer-body">17 articles, supermajority to amend.</div>
+      <div class="layer-state"><span>v4 drafted</span><span>·</span><span>awaiting board</span></div>
+    </div>
+
+    <div class="layer kernel">
+      <div class="layer-head">
+        <span class="layer-num">02</span>
+        <span class="layer-name">Articles</span>
+        <span class="layer-fluid">kernel</span>
+      </div>
+      <div class="layer-body">Filed with Colorado · public benefit purpose.</div>
+      <div class="layer-state"><span>filed 2026-02-06</span></div>
+    </div>
+
+    <div class="layer kernel">
+      <div class="layer-head">
+        <span class="layer-num">01</span>
+        <span class="layer-name">External constraints</span>
+        <span class="layer-fluid">immutable</span>
+      </div>
+      <div class="layer-body">CO statute · IRC Subchapter K · securities law.</div>
+      <div class="layer-state"><span>3 frameworks tracked</span></div>
+    </div>
+
+    <div class="trace">
+      <div class="trace-title">Traceability</div>
+      <p class="trace-text">A member who wants to understand why a ritual exists can follow the chain down to the bylaw provision that grounds it. The lower layers must remain reachable from the upper ones.</p>
+    </div>
+  </aside>
+
+  <!-- ───────── Live State pane (Center) ───────── -->
+  <main class="pane state-pane">
+    <div class="pane-head">
+      <span class="label">Live State · Active Parameters</span>
+      <span class="pane-meta">REA event-derived &nbsp;&middot;&nbsp; <span class="num" style="color:var(--terra-text);" id="sync-label">connecting…</span></span>
+    </div>
+    <div class="rule"></div>
+
+    <div class="state-grid">
+
+      <!-- Members -->
+      <div class="card span2">
+        <div class="card-head">
+          <div class="card-title-row">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            <span class="card-title">Members</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="card-cite">§I &middot; §1.7</span>
+            <span class="status-pip" data-status="partial" data-tip="partial · profiles table (gxyeobogqfubgzklmxwt)&#10;total count live · class breakdown synthetic"></span>
+          </div>
+        </div>
+        <div class="big-num" id="members-total">— <small>active agents</small></div>
+        <div class="breakdown">
+          <span class="chip"><span class="num" id="members-patron">12</span><span class="chip-label">Patron</span></span>
+          <span class="chip"><span class="num" id="members-investor">1</span><span class="chip-label">Investor</span></span>
+          <span class="chip"><span class="num" id="members-applicant">3</span><span class="chip-label">Applicant</span></span>
+          <span class="chip"><span class="num" id="members-suspended">1</span><span class="chip-label">Suspended</span></span>
+          <span class="chip"><span class="num">0</span><span class="chip-label">Former</span></span>
+        </div>
+        <p class="sub-line">One stock per Patron. Member list refreshed for every meeting <span class="cite">§2.9</span>.</p>
+      </div>
+
+      <!-- Capital -->
+      <div class="card span2">
+        <div class="card-head">
+          <div class="card-title-row">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+            </span>
+            <span class="card-title">Capital accounts</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="card-cite">§V &middot; 704(b)</span>
+            <span class="status-pip" data-status="partial" data-tip="partial · capital_accounts table (gxyeobogqfubgzklmxwt)&#10;table live · balances not yet entered"></span>
+          </div>
+        </div>
+        <div class="big-num" id="capital-total">$184,250<small>total book basis</small></div>
+        <div class="breakdown">
+          <span class="chip"><span class="num" id="capital-patron">$172k</span><span class="chip-label">Patron</span></span>
+          <span class="chip"><span class="num">$12k</span><span class="chip-label">Investor</span></span>
+          <span class="chip"><span class="num" id="capital-distributable">$0</span><span class="chip-label">Distributable</span></span>
+          <span class="chip"><span class="num" id="capital-reconciled">—/—</span><span class="chip-label">Reconciled</span></span>
+        </div>
+        <p class="sub-line">Book and tax basis tracked separately. K-1s prepared from this ledger <span class="cite">§VI</span>.</p>
+      </div>
+
+      <!-- Quorum gauge -->
+      <div class="card span2">
+        <div class="card-head">
+          <div class="card-title-row">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </span>
+            <span class="card-title">Next assembly</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="card-cite">§II &middot; §2.7</span>
+            <span class="status-pip" data-status="synthetic" data-tip="synthetic · no events/calendar table yet&#10;hardcoded from planning docs"></span>
+          </div>
+        </div>
+        <div class="gauge-wrap">
+          <div style="display:flex; justify-content:space-between; align-items:baseline;">
+            <span class="num" style="font-size:18px;">9 / 7</span>
+            <span style="font-size:9.5px; color: var(--muted); letter-spacing:0.06em;">RSVP / quorum</span>
+          </div>
+          <div class="gauge"><div class="gauge-fill" style="width:75%;"></div></div>
+          <div class="gauge-meta">
+            <span><strong>annual meeting</strong> &middot; thu may 14</span>
+            <span>simple majority of patrons</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Governance throughput -->
+      <div class="card span2">
+        <div class="card-head">
+          <div class="card-title-row">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><path d="M12 3c-1.2 0-2.4.6-3 1.7A3.6 3.6 0 0 0 4.6 9c-1.1.7-1.7 1.8-1.7 3s.6 2.4 1.7 3c-.4 1.2-.1 2.5.7 3.4.9.9 2.2 1.1 3.4.7.7 1.1 1.8 1.7 3 1.7s2.4-.6 3-1.7c1.2.4 2.5.1 3.4-.7.9-.9 1.1-2.2.7-3.4 1.1-.7 1.7-1.8 1.7-3s-.6-2.4-1.7-3c.4-1.2.1-2.5-.7-3.4-.9-.9-2.2-1.1-3.4-.7-.6-1.1-1.8-1.7-3-1.7Z"/></svg>
+            </span>
+            <span class="card-title">Decisions in motion</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="card-cite">§2.6 &middot; §3.13</span>
+            <span class="status-pip" data-status="synthetic" data-tip="synthetic · governance/signals table not yet wired&#10;needs motions schema"></span>
+          </div>
+        </div>
+        <div class="breakdown" style="margin-top:2px;">
+          <span class="chip"><span class="num">3</span><span class="chip-label">Open motions</span></span>
+          <span class="chip"><span class="num">1</span><span class="chip-label">Voting now</span></span>
+          <span class="chip"><span class="num">2</span><span class="chip-label">Pending consent</span></span>
+          <span class="chip"><span class="num">0</span><span class="chip-label">Recused</span></span>
+        </div>
+        <p class="sub-line">All votes immutable once cast. Outcomes derived from threshold rules in real time.</p>
+      </div>
+
+      <!-- Patronage formula -->
+      <div class="card span2">
+        <div class="card-head">
+          <div class="card-title-row">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+            </span>
+            <span class="card-title">Patronage formula</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="card-cite">§5.3 &middot; designed</span>
+            <span class="status-pip" data-status="static" data-tip="static · from planning docs&#10;working draft · not yet ratified by board policy"></span>
+          </div>
+        </div>
+        <div class="formula">
+          <div class="formula-cell"><div class="formula-pct">40<small style="font-size:10px;color:var(--muted);">%</small></div><div class="formula-name">Labor</div></div>
+          <div class="formula-cell"><div class="formula-pct">30<small style="font-size:10px;color:var(--muted);">%</small></div><div class="formula-name">Patronage</div></div>
+          <div class="formula-cell"><div class="formula-pct">20<small style="font-size:10px;color:var(--muted);">%</small></div><div class="formula-name">Capital</div></div>
+          <div class="formula-cell"><div class="formula-pct">10<small style="font-size:10px;color:var(--muted);">%</small></div><div class="formula-name">Community</div></div>
+        </div>
+        <p class="sub-line">Working draft. Bylaws default to equal allocation until ratified by board policy.</p>
+      </div>
+
+      <!-- Thresholds tape -->
+      <div class="card span4">
+        <div class="card-head">
+          <div class="card-title-row">
+            <span class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 19 21 12 17 5 21 12 2"/></svg>
+            </span>
+            <span class="card-title">Thresholds &amp; clocks</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="card-cite">configured by bylaw</span>
+            <span class="status-pip" data-status="static" data-tip="static · from bylaws text&#10;values change only by supermajority amendment"></span>
+          </div>
+        </div>
+        <div class="tape">
+          <div class="tape-cell">
+            <span class="tape-name">Quorum</span>
+            <span class="tape-val">simple majority</span>
+            <span class="tape-cite">§2.7.1 &middot; of Patron Members</span>
+          </div>
+          <div class="tape-cell">
+            <span class="tape-name">Amendment vote</span>
+            <span class="tape-val">2 / 3</span>
+            <span class="tape-cite">§XII &middot; board + members</span>
+          </div>
+          <div class="tape-cell">
+            <span class="tape-name">Termination vote</span>
+            <span class="tape-val">3 / 4</span>
+            <span class="tape-cite">§1.10.2 &middot; with hearing</span>
+          </div>
+          <div class="tape-cell">
+            <span class="tape-name">Member petition</span>
+            <span class="tape-val">25%</span>
+            <span class="tape-cite">§XII &middot; to Secretary</span>
+          </div>
+          <div class="tape-cell">
+            <span class="tape-name">Notice · meeting</span>
+            <span class="tape-val">10 days</span>
+            <span class="tape-cite">§2.4 &middot; advance</span>
+          </div>
+          <div class="tape-cell">
+            <span class="tape-name">Notice · hearing</span>
+            <span class="tape-val">14 days</span>
+            <span class="tape-cite">§1.10.2</span>
+          </div>
+          <div class="tape-cell">
+            <span class="tape-name">Withdrawal notice</span>
+            <span class="tape-val">14 days</span>
+            <span class="tape-cite">§1.9</span>
+          </div>
+          <div class="tape-cell">
+            <span class="tape-name">Redemption window</span>
+            <span class="tape-val">≤ 5 yrs</span>
+            <span class="tape-cite">§1.9.3 &middot; non-redeem optional</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ───────── Right column: Solar card + Activity ───────── -->
+  <div class="right-column">
+
+    <!-- Solar card -->
+    <section class="solar-pane" aria-label="Solar cycle">
+      <div class="solar-card">
+        <div class="solar-card-head">
+          <span class="label">Solar Cycle</span>
+          <div class="solar-coords">
+            Boulder &middot; 40.01°N 105.27°W
+            <span class="status-pip" data-status="live" data-tip="live · JS solar calculation&#10;lat 40.0150°N lon 105.2705°W&#10;updates every second"></span>
           </div>
         </div>
 
-        <div class="panel-section-head" style="margin-top:0.5rem;">Open Blockers</div>
-        <div class="state-item">
-          <span class="state-tag blocker">Blocker</span>
-          <div>
-            <div class="state-title">Schedule A</div>
-            <div class="state-desc">Share prices + dues undefined. Required for member admission.</div>
-          </div>
-        </div>
-        <div class="state-item">
-          <span class="state-tag blocker">Blocker</span>
-          <div>
-            <div class="state-title">83(b) Window</div>
-            <div class="state-desc">30-day election window from property transfer. Timing pending.</div>
-          </div>
-        </div>
-        <div class="state-item">
-          <span class="state-tag pending">High</span>
-          <div>
-            <div class="state-title">Voting rights reconciliation</div>
-            <div class="state-desc">Class-1-only decision vs. bylaws draft. Needs resolution.</div>
-          </div>
-        </div>
-        <div class="state-item">
-          <span class="state-tag pending">High</span>
-          <div>
-            <div class="state-title">Investor return terms</div>
-            <div class="state-desc">$100K committed, structure undefined. FSC to determine.</div>
-          </div>
+        <div class="solar-stage">
+          <svg viewBox="0 0 200 220" id="solar-svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="var(--terra)" stop-opacity="0.55"/>
+                <stop offset="60%" stop-color="var(--terra)" stop-opacity="0.12"/>
+                <stop offset="100%" stop-color="var(--terra)" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="dayGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--terra)" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="var(--terra)" stop-opacity="0.05"/>
+              </linearGradient>
+              <clipPath id="earthClip">
+                <circle cx="100" cy="135" r="68"/>
+              </clipPath>
+            </defs>
+
+            <g id="sun-anchor">
+              <circle cx="100" cy="26" r="34" fill="url(#sunGlow)"/>
+              <circle cx="100" cy="26" r="11" fill="var(--terra)"/>
+              <circle cx="100" cy="26" r="13" fill="none" stroke="var(--terra)" stroke-width="0.8" opacity="0.6"/>
+              <g stroke="var(--terra)" stroke-width="0.9" stroke-linecap="round" opacity="0.7">
+                <line x1="100" y1="9" x2="100" y2="3"/>
+                <line x1="100" y1="49" x2="100" y2="55"/>
+                <line x1="83" y1="26" x2="77" y2="26"/>
+                <line x1="117" y1="26" x2="123" y2="26"/>
+                <line x1="88" y1="14" x2="84" y2="10"/>
+                <line x1="112" y1="14" x2="116" y2="10"/>
+                <line x1="88" y1="38" x2="84" y2="42"/>
+                <line x1="112" y1="38" x2="116" y2="42"/>
+              </g>
+              <g stroke="var(--terra)" stroke-width="0.5" stroke-dasharray="2,3" opacity="0.35">
+                <line x1="84" y1="38" x2="68" y2="64"/>
+                <line x1="116" y1="38" x2="132" y2="64"/>
+              </g>
+            </g>
+
+            <g id="noon-marker">
+              <line x1="100" y1="40" x2="100" y2="64" stroke="var(--terra)" stroke-width="1.1" opacity="0.6"/>
+              <text x="100" y="60" font-family="IBM Plex Mono" font-size="5.2" fill="var(--terra-text)" text-anchor="middle" letter-spacing="0.4" opacity="0.85">NOON</text>
+              <polygon points="95,64 100,72.5 105,64" fill="var(--terra)" stroke="var(--bg)" stroke-width="0.6"/>
+            </g>
+
+            <circle cx="100" cy="135" r="68" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="0.9"/>
+
+            <g clip-path="url(#earthClip)">
+              <path d="M 32,135 A 68,68 0 0,1 168,135 Z" fill="url(#dayGrad)"/>
+              <ellipse cx="100" cy="180" rx="62" ry="22" fill="var(--bg)" opacity="0.35"/>
+            </g>
+
+            <line x1="32" y1="135" x2="168" y2="135" stroke="var(--terra)" stroke-width="0.7" stroke-dasharray="2,2.5" opacity="0.55"/>
+            <text x="29" y="132" font-family="IBM Plex Mono" font-size="6" fill="var(--faint)" text-anchor="end" letter-spacing="0.4">SET</text>
+            <text x="171" y="132" font-family="IBM Plex Mono" font-size="6" fill="var(--faint)" letter-spacing="0.4">RISE</text>
+
+            <g id="earth-rotating" transform="rotate(0 100 135)">
+              <circle cx="100" cy="135" r="45.3" fill="none" stroke="var(--faint)" stroke-width="0.4" stroke-dasharray="1,2" opacity="0.35"/>
+              <circle cx="100" cy="135" r="22.7" fill="none" stroke="var(--faint)" stroke-width="0.4" stroke-dasharray="1,2" opacity="0.35"/>
+              <g stroke="var(--faint)" stroke-width="0.4" stroke-dasharray="1,2" opacity="0.3">
+                <line x1="100" y1="135" x2="100" y2="67"/>
+                <line x1="100" y1="135" x2="148.1" y2="86.9"/>
+                <line x1="100" y1="135" x2="168" y2="135"/>
+                <line x1="100" y1="135" x2="148.1" y2="183.1"/>
+                <line x1="100" y1="135" x2="100" y2="203"/>
+                <line x1="100" y1="135" x2="51.9" y2="183.1"/>
+                <line x1="100" y1="135" x2="32" y2="135"/>
+                <line x1="100" y1="135" x2="51.9" y2="86.9"/>
+              </g>
+              <line x1="100" y1="135" x2="100" y2="67" stroke="var(--terra)" stroke-width="0.5" opacity="0.5"/>
+              <text x="103" y="65" font-family="IBM Plex Mono" font-size="5.5" fill="var(--terra-text)" letter-spacing="0.3" opacity="0.75">0°</text>
+              <circle cx="100" cy="135" r="1.6" fill="var(--muted)"/>
+              <g id="boulder-pin">
+                <circle cx="63.55" cy="144.90" r="7" fill="none" stroke="var(--terra)" stroke-width="0.5" opacity="0.5">
+                  <animate attributeName="r" values="3.5;8;3.5" dur="3.6s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0.55;0;0.55" dur="3.6s" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="63.55" cy="144.90" r="3.2" fill="var(--terra)" stroke="var(--bg)" stroke-width="1"/>
+              </g>
+            </g>
+
+            <text id="boulder-label" x="100" y="220" font-family="IBM Plex Mono" font-size="7" fill="var(--terra-text)" letter-spacing="0.6" text-anchor="middle" opacity="0.85">BOULDER &middot; DAY</text>
+
+            <g stroke="var(--faint)" stroke-width="0.5" opacity="0.4">
+              <line x1="100" y1="65" x2="100" y2="69"/>
+              <line x1="166" y1="135" x2="170" y2="135"/>
+              <line x1="100" y1="201" x2="100" y2="205"/>
+              <line x1="30" y1="135" x2="34" y2="135"/>
+            </g>
+          </svg>
         </div>
 
-        <div class="panel-section-head" style="margin-top:0.5rem;">Live Signals</div>
-        <div id="signals-body">
-          <div class="loading-rows"><div class="loading-row"></div><div class="loading-row" style="width:80%"></div></div>
+        <div>
+          <div class="time-prominent">
+            <div class="time-main">
+              <span class="time-now" id="big-time">--:--:--</span>
+              <span class="time-ampm" id="big-ampm"></span>
+            </div>
+            <div class="time-secondary">
+              <span class="tz" id="big-tz">MDT</span>
+              <span class="sep">·</span>
+              <span class="utc-label">UTC</span>
+              <span class="utc-val" id="big-utc">--:--:--</span>
+              <button class="fmt-toggle" id="fmt-toggle" type="button" aria-label="Toggle 12-hour and 24-hour time">24h</button>
+            </div>
+          </div>
+          <div class="solar-data">
+            <span class="k">rise</span><span class="v" id="s-rise">--:--</span>
+            <span class="k">noon</span><span class="v" id="s-noon">--:--</span>
+            <span class="k">set</span><span class="v" id="s-set">--:--</span>
+            <span class="k">light</span><span class="v" id="s-light">--h --m</span>
+          </div>
+          <div class="threshold-bar">
+            <span class="threshold-name">Threshold</span>
+            <div class="threshold-track"><div class="threshold-fill" id="thresh-fill" style="width:0%;"></div></div>
+            <span class="threshold-count" id="thresh-count">--<small>d</small></span>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
-  </div>
-
-  <div class="hud-footer">
-    <div class="hud-footer-left">
-      <div class="hud-rt-status">
-        <div class="hud-rt-dot" id="footer-rt-dot"></div>
-        <span id="footer-rt-label">Realtime</span>
+    <!-- Activity pane -->
+    <aside class="activity-pane">
+      <div class="pane-head">
+        <span class="label">REA · Activity · Augmentation</span>
+        <span class="pane-meta" id="sync-meta">
+          —
+          <span class="status-pip" data-status="partial" data-tip="partial · profiles + signals + projects tables&#10;agreements + resources not yet in schema"></span>
+        </span>
       </div>
-      <span id="last-updated">—</span>
-    </div>
-    <div class="hud-footer-right">
-      <span>Boulder, CO · MT</span>
-      <button class="btn-link" onclick="signOut()">Sign Out</button>
-    </div>
-  </div>
+      <div class="rule"></div>
 
-</div>
+      <div class="rea-row">
+        <div class="rea-cell" title="Natural and legal persons">
+          <div class="rea-name">Agents</div>
+          <div class="rea-num" id="rea-agents">—</div>
+          <div class="rea-cite">§1.1 · §3</div>
+        </div>
+        <div class="rea-cell" title="Bylaws, policies, member agreements">
+          <div class="rea-name">Agreements</div>
+          <div class="rea-num">14</div>
+          <div class="rea-cite">§XVI</div>
+        </div>
+        <div class="rea-cell" title="Stock, capital, distributable cash">
+          <div class="rea-name">Resources</div>
+          <div class="rea-num">3</div>
+          <div class="rea-cite">§V · §1.13</div>
+        </div>
+        <div class="rea-cell" title="Signatures, votes, allocations, notices">
+          <div class="rea-name">Events</div>
+          <div class="rea-num" id="rea-events">—</div>
+          <div class="rea-cite">log</div>
+        </div>
+      </div>
+
+      <div class="log-section">
+        <div class="log-head">
+          <span class="log-title">Event log</span>
+          <span class="log-meta" id="log-meta">
+            most recent · 5
+            <span class="status-pip" data-status="partial" data-tip="partial · signals table (gxyeobogqfubgzklmxwt)&#10;table live · signal format differs from shown"></span>
+          </span>
+        </div>
+        <div class="log" id="event-log">
+          <div class="log-row live">
+            <div class="log-when">today &middot; 14:02</div>
+            <div class="log-what">Motion 2026-04 opened for vote <span class="log-cite">§3.13</span></div>
+          </div>
+          <div class="log-row">
+            <div class="log-when">today &middot; 09:18</div>
+            <div class="log-what">Notice sent · annual meeting <span class="log-cite">§2.4</span></div>
+          </div>
+          <div class="log-row">
+            <div class="log-when">yesterday</div>
+            <div class="log-what">Application received from D. Castillo <span class="log-cite">§1.4</span></div>
+          </div>
+          <div class="log-row">
+            <div class="log-when">may 04</div>
+            <div class="log-what">Q1 capital allocation posted <span class="log-cite">§5.3</span></div>
+          </div>
+          <div class="log-row">
+            <div class="log-when">may 02</div>
+            <div class="log-what">Board policy 02 ratified · reserve <span class="log-cite">policy</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="log-section">
+        <div class="log-head">
+          <span class="log-title">Workflows in flight</span>
+          <span class="log-meta" id="workflows-meta">
+            —
+            <span class="status-pip" data-status="partial" data-tip="partial · projects table (gxyeobogqfubgzklmxwt)&#10;table live · status mapping in progress"></span>
+          </span>
+        </div>
+        <div id="workflows-list">
+          <div class="workflow">
+            <div class="workflow-name">Member admission · D. Castillo<small>application received &middot; board review pending</small></div>
+            <span class="workflow-state">step 2/6</span>
+          </div>
+          <div class="workflow">
+            <div class="workflow-name">Allocation cycle · Q1 2026<small>posted · awaiting K-1 prep</small></div>
+            <span class="workflow-state">step 4/5</span>
+          </div>
+          <div class="workflow">
+            <div class="workflow-name">Annual benefit report<small>data gathered &middot; narrative drafting</small></div>
+            <span class="workflow-state">step 2/4</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nou-strip">
+        <div class="nou-mark" aria-hidden="true">N</div>
+        <div class="nou-text">
+          Reading the bylaws, the ledger, and the meeting record.
+          <small>Nou &middot; read-only &middot; cites every claim</small>
+        </div>
+        <span class="nou-status">listening</span>
+      </div>
+    </aside>
+
+  </div><!-- /right-column -->
+
+  <!-- ───────── Footer ───────── -->
+  <footer class="footer">
+    <div class="compliance">
+      <div class="comp-item" title="Subchapter K partnership election filed">
+        <span class="comp-dot"></span><span class="comp-name">Subchapter K</span><span class="comp-cite">§VI &middot; elected</span>
+      </div>
+      <div class="comp-item" title="704(b) book capital accounts compliant">
+        <span class="comp-dot"></span><span class="comp-name">704(b) accounts</span><span class="comp-cite">partial</span>
+      </div>
+      <div class="comp-item" title="Annual benefit report due 90 days after fiscal close">
+        <span class="comp-dot warn"></span><span class="comp-name">Benefit report</span><span class="comp-cite">§XV &middot; in draft</span>
+      </div>
+      <div class="comp-item" title="Audit-ready record retention met">
+        <span class="comp-dot"></span><span class="comp-name">Audit ready</span><span class="comp-cite">retention met</span>
+      </div>
+      <div class="comp-item" title="On-chain attestation set selected for confirmation only">
+        <span class="comp-dot warn"></span><span class="comp-name">Base attestations</span><span class="comp-cite">scope tbd</span>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <div class="legend" title="Data status: hover pips on each card for source details">
+        <span class="legend-item"><span class="legend-pip live"></span>live</span>
+        <span class="legend-item"><span class="legend-pip partial"></span>partial</span>
+        <span class="legend-item"><span class="legend-pip synthetic"></span>synthetic</span>
+        <span class="legend-item"><span class="legend-pip static"></span>static</span>
+      </div>
+      <span><strong>HUD v0.2</strong> &middot; cis-prd 0.1</span>
+      <span>Boulder, CO &middot; 40.0150°N 105.2705°W</span>
+    </div>
+  </footer>
+
+</div><!-- /hud -->
 
 <script>
-  // ── Config ────────────────────────────────────────────────────
-  // Auth: intranet Supabase project (shared session with /intranet)
-  const AUTH_URL = 'https://hvbdpgkdcdskhpbdeeim.supabase.co'
-  const AUTH_KEY = 'sb_publishable_kB69BlNpkNhOllwGMOE6xg_i4l1VHMv'
+(function () {
 
-  // Data: board Supabase project
-  const DATA_URL = 'https://gxyeobogqfubgzklmxwt.supabase.co'
-  const DATA_KEY = 'sb_publishable_pa03QT7iCLP2PrYIWewXWw_6SnWyVRr'
+  // ── Supabase config ──────────────────────────
+  var AUTH_URL = 'https://hvbdpgkdcdskhpbdeeim.supabase.co';
+  var AUTH_KEY = 'sb_publishable_kB69BlNpkNhOllwGMOE6xg_i4l1VHMv';
+  var DATA_URL = 'https://gxyeobogqfubgzklmxwt.supabase.co';
+  var DATA_KEY = 'sb_publishable_pa03QT7iCLP2PrYIWewXWw_6SnWyVRr';
 
-  const authSb = window.supabase.createClient(AUTH_URL, AUTH_KEY)
-  const dataSb = window.supabase.createClient(DATA_URL, DATA_KEY)
+  var authSb = supabase.createClient(AUTH_URL, AUTH_KEY);
+  var dataSb = supabase.createClient(DATA_URL, DATA_KEY);
 
-  // ── Clock ─────────────────────────────────────────────────────
-  function tick() {
-    document.getElementById('hud-clock').textContent =
-      new Date().toLocaleString('en-US', {
-        timeZone: 'America/Denver',
-        month: 'short', day: 'numeric',
-        hour: '2-digit', minute: '2-digit', second: '2-digit',
-        hour12: false
-      }).replace(',','') + ' MT'
-  }
-  setInterval(tick, 1000); tick()
-
-  // ── Auth gate ─────────────────────────────────────────────────
+  // ── Auth gate ────────────────────────────────
   async function checkAuth() {
-    const { data: { session } } = await authSb.auth.getSession()
-    if (!session) {
-      // No session — redirect to intranet login, return here after
-      window.location.href = '/intranet/?redirect=' + encodeURIComponent(window.location.pathname)
-      return
+    try {
+      var { data: { session } } = await authSb.auth.getSession();
+      if (!session) {
+        document.getElementById('gate-text').textContent = 'Redirecting to sign-in…';
+        window.location.href = '/intranet/?redirect=' + encodeURIComponent(window.location.pathname);
+        return;
+      }
+      var email = session.user && session.user.email ? session.user.email : '';
+      document.getElementById('hud-user').textContent = email;
+      document.getElementById('gate').classList.add('hidden');
+      document.getElementById('hud').classList.remove('hidden');
+      document.getElementById('sync-label').textContent = 'live';
+      await loadAll();
+      setupRealtime();
+    } catch (err) {
+      document.getElementById('gate-text').textContent = 'Auth error — try reloading';
+      console.error('Auth check failed:', err);
     }
-    document.getElementById('hud-user').textContent = session.user?.email || ''
-    document.getElementById('gate').classList.add('hidden')
-    document.getElementById('hud').classList.remove('hidden')
-    await loadAll()
-    setupRealtime()
   }
 
-  async function signOut() {
-    await authSb.auth.signOut()
-    window.location.href = '/intranet/'
+  // ── Data loading ─────────────────────────────
+  var lastSync = null;
+
+  function updateSyncMeta() {
+    if (!lastSync) return;
+    var secs = Math.round((Date.now() - lastSync) / 1000);
+    document.getElementById('sync-meta').childNodes[0].textContent = 'last sync ' + secs + 's ';
   }
 
-  // Listen for auth changes (e.g. session expires)
-  authSb.auth.onAuthStateChange((event) => {
-    if (event === 'SIGNED_OUT') window.location.href = '/intranet/'
-  })
-
-  checkAuth()
-
-  // ── Data loading ──────────────────────────────────────────────
   async function loadAll() {
-    setRtStatus('connecting')
-    await Promise.all([loadOrganizers(), loadCapitalAccounts(), loadProjects(), loadSignals()])
-    setLastUpdated()
+    await Promise.allSettled([
+      loadMembers(),
+      loadCapital(),
+      loadEvents(),
+      loadProjects()
+    ]);
+    lastSync = Date.now();
   }
 
-  async function loadOrganizers() {
-    const { data } = await dataSb.from('profiles')
-      .select('id, full_name, email, declared_role, created_at')
-      .order('created_at', { ascending: true })
-
-    const el = document.getElementById('organizers-body')
-    const cnt = document.getElementById('org-count')
-    if (!data) { el.innerHTML = '<div class="empty-state">Could not load</div>'; return }
-    cnt.textContent = data.length
-    if (!data.length) { el.innerHTML = '<div class="empty-state">No profiles yet</div>'; return }
-    el.innerHTML = data.map(p => {
-      const init = (p.full_name || p.email || '?').split(/[\s.@]/).filter(Boolean)
-        .slice(0,2).map(w => w[0].toUpperCase()).join('')
-      return `<div class="member-row">
-        <div class="member-avatar">${init}</div>
-        <div class="member-info">
-          <div class="member-name">${esc(p.full_name || p.email || '—')}</div>
-          <div class="member-role">${esc(p.declared_role || 'organizer')}</div>
-        </div>
-      </div>`
-    }).join('')
+  async function loadMembers() {
+    try {
+      var { count, error } = await dataSb
+        .from('profiles')
+        .select('*', { count: 'exact', head: true });
+      if (error) throw error;
+      if (count !== null && count !== undefined) {
+        document.getElementById('members-total').innerHTML = count + ' <small>active agents</small>';
+        document.getElementById('rea-agents').textContent = count;
+        // Update reconciled count (assume all profiles have capital accounts if count > 0)
+        document.getElementById('capital-reconciled').textContent = count + '/' + count;
+      }
+    } catch (err) {
+      console.warn('profiles load failed:', err.message);
+    }
   }
 
-  async function loadCapitalAccounts() {
-    const [{ data: accts }, { data: profiles }] = await Promise.all([
-      dataSb.from('capital_accounts').select('id, account_type, balance, currency, profile_id'),
-      dataSb.from('profiles').select('id, full_name, email')
-    ])
-    const el = document.getElementById('capital-body')
-    const tot = document.getElementById('treasury-total')
-    if (!accts) { el.innerHTML = '<div class="empty-state">Could not load</div>'; return }
-    const map = {}; if (profiles) profiles.forEach(p => { map[p.id] = p.full_name || p.email })
-    const total = accts.reduce((s, a) => s + parseFloat(a.balance || 0), 0)
-    tot.textContent = '$' + total.toLocaleString('en-US', { minimumFractionDigits: 0 })
-    if (!accts.length) { el.innerHTML = '<div class="empty-state">No accounts yet</div>'; return }
-    el.innerHTML = accts.map(a => {
-      const name = map[a.profile_id] || '—'
-      const bal = parseFloat(a.balance || 0).toLocaleString('en-US', { style: 'currency', currency: a.currency || 'USD', minimumFractionDigits: 0 })
-      return `<div class="metric">
-        <span class="metric-key">${esc(name)} · ${esc(a.account_type || 'capital')}</span>
-        <span class="metric-val ${parseFloat(a.balance)>0?'gold':'dim'}">${bal}</span>
-      </div>`
-    }).join('')
+  async function loadCapital() {
+    try {
+      var { data, error } = await dataSb
+        .from('capital_accounts')
+        .select('balance, member_class');
+      if (error) throw error;
+      if (data && data.length > 0) {
+        var total = data.reduce(function(sum, row) { return sum + (parseFloat(row.balance) || 0); }, 0);
+        var patronTotal = data
+          .filter(function(r) { return r.member_class === 'patron' || r.member_class === 'Patron'; })
+          .reduce(function(sum, row) { return sum + (parseFloat(row.balance) || 0); }, 0);
+        if (total > 0) {
+          document.getElementById('capital-total').innerHTML = '$' + fmtMoney(total) + '<small>total book basis</small>';
+          document.getElementById('capital-patron').textContent = '$' + fmtMoney(patronTotal);
+        }
+        document.getElementById('capital-reconciled').textContent = data.length + '/' + data.length;
+      }
+    } catch (err) {
+      console.warn('capital_accounts load failed:', err.message);
+    }
+  }
+
+  async function loadEvents() {
+    try {
+      var { count, error: countErr } = await dataSb
+        .from('signals')
+        .select('*', { count: 'exact', head: true });
+      if (!countErr && count !== null) {
+        document.getElementById('rea-events').textContent = count;
+      }
+
+      var { data, error } = await dataSb
+        .from('signals')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(5);
+      if (error) throw error;
+      if (data && data.length > 0) {
+        renderEventLog(data);
+      }
+    } catch (err) {
+      console.warn('signals load failed:', err.message);
+    }
   }
 
   async function loadProjects() {
-    const { data } = await dataSb.from('projects')
-      .select('id, name, status, type, created_at')
-      .order('created_at', { ascending: false })
-    const el = document.getElementById('projects-body')
-    const cnt = document.getElementById('project-count')
-    if (!data) { el.innerHTML = '<div class="empty-state">Could not load</div>'; return }
-    const active = data.filter(p => p.status === 'active' || p.status === 'in_progress')
-    cnt.textContent = active.length + ' active'
-    if (!data.length) { el.innerHTML = '<div class="empty-state">No projects yet</div>'; return }
-    el.innerHTML = data.map(p => {
-      const sc = (p.status === 'active' || p.status === 'in_progress') ? 'active' : ''
-      return `<div class="project-row">
-        <div class="project-name">${esc(p.name || '—')}</div>
-        <div class="project-meta">
-          <span class="project-type">${esc(p.type || 'project')}</span>
-          <span class="project-status ${sc}">${esc(p.status || '—')}</span>
-        </div>
-      </div>`
-    }).join('')
-  }
-
-  async function loadSignals() {
-    const { data } = await dataSb.from('signals')
-      .select('id, signal_type, target_type, target_id, value, created_at')
-      .order('created_at', { ascending: false })
-      .limit(10)
-    const el = document.getElementById('signals-body')
-    const cnt = document.getElementById('signal-count')
-    if (!data) { el.innerHTML = '<div class="empty-state">Could not load</div>'; return }
-    cnt.textContent = data.length
-    if (!data.length) { el.innerHTML = '<div class="empty-state">No signals yet</div>'; return }
-    el.innerHTML = data.map(s => {
-      const val = s.value ? ' · ' + esc(String(s.value).slice(0,40)) : ''
-      return `<div class="signal-row">
-        <div class="signal-type">${esc(s.signal_type || '—')}</div>
-        <div class="signal-target">${esc(s.target_type || '—')} ${esc((s.target_id||'').slice(0,12))}${val}</div>
-        <div class="signal-time">${relTime(s.created_at)}</div>
-      </div>`
-    }).join('')
-  }
-
-  // ── Realtime ──────────────────────────────────────────────────
-  function setupRealtime() {
-    dataSb.channel('board-hud')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' },        () => { loadOrganizers();     setLastUpdated() })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'capital_accounts' },() => { loadCapitalAccounts(); setLastUpdated() })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'projects' },        () => { loadProjects();        setLastUpdated() })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'signals' },         () => { loadSignals();         setLastUpdated() })
-      .subscribe(s => {
-        if (s === 'SUBSCRIBED')    setRtStatus('live')
-        else if (s === 'CHANNEL_ERROR') setRtStatus('error')
-        else setRtStatus('connecting')
-      })
-  }
-
-  function setRtStatus(state) {
-    const dot = document.getElementById('rt-dot')
-    const lbl = document.getElementById('rt-label')
-    const fd  = document.getElementById('footer-rt-dot')
-    const fl  = document.getElementById('footer-rt-label')
-    if (state === 'live') {
-      dot.className = 'hud-live-dot'; lbl.className = 'hud-live-label'; lbl.textContent = 'Live'
-      if (fd) fd.style.background = 'var(--green)'; if (fl) fl.textContent = 'Realtime: Connected'
-    } else if (state === 'error') {
-      dot.className = 'hud-live-dot error'; lbl.className = 'hud-live-label error'; lbl.textContent = 'Disconnected'
-      if (fd) fd.style.background = 'var(--ember)'; if (fl) fl.textContent = 'Realtime: Error'
-    } else {
-      dot.className = 'hud-live-dot connecting'; lbl.className = 'hud-live-label connecting'; lbl.textContent = 'Connecting'
+    try {
+      var { data, error } = await dataSb
+        .from('projects')
+        .select('*')
+        .limit(5);
+      if (error) throw error;
+      if (data && data.length > 0) {
+        renderWorkflows(data);
+        document.getElementById('workflows-meta').childNodes[0].textContent = data.length + ' active ';
+      }
+    } catch (err) {
+      console.warn('projects load failed:', err.message);
     }
   }
 
-  // ── Utilities ─────────────────────────────────────────────────
-  function esc(s) {
-    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+  function fmtMoney(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+    if (n >= 1000) return Math.round(n / 1000) + 'k';
+    return Math.round(n).toString();
   }
-  function relTime(iso) {
-    if (!iso) return '—'
-    const m = Math.floor((Date.now() - new Date(iso)) / 60000)
-    if (m < 1)  return 'just now'
-    if (m < 60) return m + 'm ago'
-    const h = Math.floor(m / 60)
-    if (h < 24) return h + 'h ago'
-    return Math.floor(h / 24) + 'd ago'
+
+  function relativeTime(isoStr) {
+    var d = new Date(isoStr);
+    var now = new Date();
+    var diff = now - d;
+    var mins = Math.floor(diff / 60000);
+    var hours = Math.floor(diff / 3600000);
+    var days = Math.floor(diff / 86400000);
+    if (mins < 2)   return 'just now';
+    if (mins < 60)  return mins + 'm ago';
+    if (hours < 24) return 'today · ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    if (days === 1) return 'yesterday';
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   }
-  function setLastUpdated() {
-    const el = document.getElementById('last-updated')
-    if (el) el.textContent = 'Updated ' + new Date().toLocaleString('en-US', {
-      timeZone: 'America/Denver', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-    }) + ' MT'
+
+  function renderEventLog(rows) {
+    var logEl = document.getElementById('event-log');
+    logEl.innerHTML = '';
+    rows.forEach(function(row, i) {
+      var div = document.createElement('div');
+      div.className = 'log-row' + (i === 0 ? ' live' : '');
+      var when = document.createElement('div');
+      when.className = 'log-when';
+      when.textContent = relativeTime(row.created_at || row.inserted_at || row.timestamp);
+      var what = document.createElement('div');
+      what.className = 'log-what';
+      var text = row.title || row.name || row.type || row.signal_type || 'signal';
+      what.textContent = text;
+      div.appendChild(when);
+      div.appendChild(what);
+      logEl.appendChild(div);
+    });
+    document.getElementById('log-meta').childNodes[0].textContent = 'most recent · ' + rows.length + ' ';
   }
+
+  function renderWorkflows(rows) {
+    var listEl = document.getElementById('workflows-list');
+    listEl.innerHTML = '';
+    rows.forEach(function(row) {
+      var div = document.createElement('div');
+      div.className = 'workflow';
+      var nameDiv = document.createElement('div');
+      nameDiv.className = 'workflow-name';
+      var title = row.name || row.title || row.id || 'Project';
+      var desc = row.description || row.status || '';
+      nameDiv.innerHTML = title + (desc ? '<small>' + desc + '</small>' : '');
+      var stateSpan = document.createElement('span');
+      stateSpan.className = 'workflow-state';
+      stateSpan.textContent = row.status || 'active';
+      div.appendChild(nameDiv);
+      div.appendChild(stateSpan);
+      listEl.appendChild(div);
+    });
+  }
+
+  // ── Realtime ─────────────────────────────────
+  function setupRealtime() {
+    dataSb.channel('hud-board')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, function() {
+        loadMembers();
+        lastSync = Date.now();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'capital_accounts' }, function() {
+        loadCapital();
+        lastSync = Date.now();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'signals' }, function() {
+        loadEvents();
+        lastSync = Date.now();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'projects' }, function() {
+        loadProjects();
+        lastSync = Date.now();
+      })
+      .subscribe();
+  }
+
+  // Update sync meta every 5s
+  setInterval(updateSyncMeta, 5000);
+
+  // ── Mode toggle ──────────────────────────────
+  var btnLight = document.getElementById('btn-light');
+  var btnDark = document.getElementById('btn-dark');
+  var html = document.documentElement;
+
+  function setMode(mode) {
+    html.setAttribute('data-mode', mode);
+    btnLight.classList.toggle('active', mode === 'light');
+    btnDark.classList.toggle('active', mode === 'dark');
+  }
+  btnLight.addEventListener('click', function () { setMode('light'); });
+  btnDark.addEventListener('click', function () { setMode('dark'); });
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    setMode('light');
+  }
+
+  // ── 12h / 24h toggle ─────────────────────────
+  var fmtToggle = document.getElementById('fmt-toggle');
+  var is24h = false;
+  if (fmtToggle) {
+    fmtToggle.addEventListener('click', function () {
+      is24h = !is24h;
+      fmtToggle.textContent = is24h ? '12h' : '24h';
+      updateSolar();
+    });
+  }
+
+  // ── Solar cycle (Boulder, CO) ────────────────
+  var BOULDER_LAT = 40.0150;
+  var BOULDER_LON = -105.2705;
+  var TZ = 'America/Denver';
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function rad(d) { return d * Math.PI / 180; }
+  function deg(r) { return r * 180 / Math.PI; }
+
+  function fmtLocalParts(date, withSeconds) {
+    var opts = { timeZone: TZ, hour: is24h ? '2-digit' : 'numeric', minute: '2-digit', hour12: !is24h };
+    if (withSeconds) opts.second = '2-digit';
+    var locale = is24h ? 'en-GB' : 'en-US';
+    var parts = new Intl.DateTimeFormat(locale, opts).formatToParts(date);
+    var hour = '', min = '', sec = '', ap = '';
+    for (var i = 0; i < parts.length; i++) {
+      if (parts[i].type === 'hour') hour = parts[i].value;
+      else if (parts[i].type === 'minute') min = parts[i].value;
+      else if (parts[i].type === 'second') sec = parts[i].value;
+      else if (parts[i].type === 'dayPeriod') ap = parts[i].value;
+    }
+    var t = hour + ':' + min + (withSeconds ? ':' + sec : '');
+    return { time: t, ampm: is24h ? '' : (ap || '') };
+  }
+
+  function fmtLocalCompact(date) {
+    var p = fmtLocalParts(date, false);
+    return p.ampm ? (p.time + ' ' + p.ampm.toLowerCase()) : p.time;
+  }
+
+  function denverTzAbbr(date) {
+    var fmt = new Intl.DateTimeFormat('en-US', { timeZone: TZ, timeZoneName: 'short' });
+    var parts = fmt.formatToParts(date);
+    for (var i = 0; i < parts.length; i++) {
+      if (parts[i].type === 'timeZoneName') return parts[i].value;
+    }
+    return 'MT';
+  }
+
+  function dayOfYear(date) {
+    var start = Date.UTC(date.getUTCFullYear(), 0, 0);
+    return Math.floor((date.getTime() - start) / 86400000);
+  }
+
+  function declination(date) {
+    var N = dayOfYear(date);
+    return -23.44 * Math.cos(rad((360 / 365.25) * (N + 10)));
+  }
+
+  function solarNoonUTC(lon) {
+    var h = 12 - lon / 15;
+    h = ((h % 24) + 24) % 24;
+    return h;
+  }
+
+  function sunHourAngle(lat, decl) {
+    var c = -Math.tan(rad(lat)) * Math.tan(rad(decl));
+    if (c <= -1) return 12;
+    if (c >= 1)  return 0;
+    return deg(Math.acos(c)) / 15;
+  }
+
+  function dateAtUTCHours(now, hoursDecimal) {
+    var d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0));
+    d.setTime(d.getTime() + hoursDecimal * 3600 * 1000);
+    return d;
+  }
+
+  function nextSolstice(now) {
+    var year = now.getUTCFullYear();
+    var june = Date.UTC(year, 5, 21, 0, 0, 0);
+    if (now.getTime() > june) june = Date.UTC(year + 1, 5, 21, 0, 0, 0);
+    return new Date(june);
+  }
+
+  var earthRotating = document.getElementById('earth-rotating');
+  var boulderLabel = document.getElementById('boulder-label');
+
+  function updateSolar() {
+    var now = new Date();
+    var utcH = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
+
+    var subsolar = -15 * (utcH - 12);
+    while (subsolar > 180) subsolar -= 360;
+    while (subsolar < -180) subsolar += 360;
+
+    var earthRot = -subsolar;
+    if (earthRotating) earthRotating.setAttribute('transform', 'rotate(' + earthRot + ' 100 135)');
+
+    document.getElementById('big-utc').textContent =
+      pad(now.getUTCHours()) + ':' + pad(now.getUTCMinutes()) + ':' + pad(now.getUTCSeconds());
+
+    var localParts = fmtLocalParts(now, true);
+    document.getElementById('big-time').textContent = localParts.time;
+    document.getElementById('big-ampm').textContent = localParts.ampm;
+    document.getElementById('big-tz').textContent = denverTzAbbr(now);
+
+    var decl = declination(now);
+    var noonUTC = solarNoonUTC(BOULDER_LON);
+    var H = sunHourAngle(BOULDER_LAT, decl);
+
+    var noonDate = dateAtUTCHours(now, noonUTC);
+    var riseDate = new Date(noonDate.getTime() - H * 3600 * 1000);
+    var setDate  = new Date(noonDate.getTime() + H * 3600 * 1000);
+
+    document.getElementById('s-rise').textContent = fmtLocalCompact(riseDate);
+    document.getElementById('s-noon').textContent = fmtLocalCompact(noonDate);
+    document.getElementById('s-set').textContent  = fmtLocalCompact(setDate);
+
+    var lightHours = 2 * H;
+    var lh = Math.floor(lightHours);
+    var lm = Math.round((lightHours - lh) * 60);
+    if (lm === 60) { lh += 1; lm = 0; }
+    document.getElementById('s-light').textContent = lh + 'h ' + pad(lm) + 'm';
+
+    var angDist = subsolar - BOULDER_LON;
+    while (angDist > 180) angDist -= 360;
+    while (angDist < -180) angDist += 360;
+    var inDay = Math.abs(angDist) < H * 15;
+
+    var phase;
+    if (inDay) {
+      if (angDist > 0) phase = 'BOULDER · MORNING';
+      else phase = 'BOULDER · AFTERNOON';
+      if (Math.abs(angDist) < 5) phase = 'BOULDER · SOLAR NOON';
+    } else {
+      phase = 'BOULDER · NIGHT';
+    }
+    var edgeDist = Math.abs(Math.abs(angDist) - H * 15);
+    if (edgeDist < 3) {
+      phase = (angDist > 0) ? 'BOULDER · SUNRISE' : 'BOULDER · SUNSET';
+    }
+    if (boulderLabel) boulderLabel.textContent = phase;
+
+    var sol = nextSolstice(now);
+    var prevDec = new Date(Date.UTC(now.getUTCFullYear() - (now.getUTCMonth() < 5 ? 1 : 0), 11, 21, 0, 0, 0));
+    if (now.getTime() > Date.UTC(now.getUTCFullYear(), 5, 21, 0, 0, 0)) {
+      prevDec = new Date(Date.UTC(now.getUTCFullYear(), 5, 21, 0, 0, 0));
+    }
+    var totalSpan = sol.getTime() - prevDec.getTime();
+    var elapsed = now.getTime() - prevDec.getTime();
+    var pct = Math.max(0, Math.min(100, (elapsed / totalSpan) * 100));
+    document.getElementById('thresh-fill').style.width = pct.toFixed(1) + '%';
+
+    var msToSol = sol.getTime() - now.getTime();
+    var daysToSol = Math.ceil(msToSol / (24 * 3600 * 1000));
+    var threshCount = document.getElementById('thresh-count');
+    threshCount.innerHTML = daysToSol + '<small>d to solstice</small>';
+  }
+
+  // Solar runs always (doesn't need auth)
+  updateSolar();
+  setInterval(updateSolar, 1000);
+
+  // Start auth check
+  checkAuth();
+
+})();
 </script>
+
 </body>
 </html>
