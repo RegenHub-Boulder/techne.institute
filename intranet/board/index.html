@@ -603,16 +603,100 @@
 
   .hud > .header, .hud > .footer { background: var(--bg); }
 
-  @media (max-width: 1100px) {
-    body::before {
-      content: 'This HUD is sized for widescreen displays. Some panels may compress.';
-      display: block;
-      padding: 8px 12px;
-      background: var(--terra-dim);
-      color: var(--terra-text);
-      font-size: 11px;
-      text-align: center;
+  /* ─── Collapse controls ──────────────────────── */
+  .collapse-btn {
+    width: 22px; height: 22px;
+    border: 0; background: transparent; cursor: pointer;
+    color: var(--faint);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 4px; padding: 0;
+    transition: color 200ms ease, background 200ms ease;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .collapse-btn:hover { color: var(--terra-text); background: var(--terra-dim); }
+  .collapse-btn:focus-visible { outline: 1px solid var(--terra); }
+  .collapse-btn svg { width: 13px; height: 13px; transition: transform 220ms ease; }
+  .is-collapsed .collapse-btn svg { transform: rotate(-90deg); }
+
+  /* Collapsed card: hide body, keep header */
+  [data-card-id].is-collapsed > *:not(.card-head) { display: none !important; }
+  [data-card-id].is-collapsed { padding-bottom: 10px; }
+  /* Collapsed pane: keep pane-head + rule */
+  .pane[data-collapse-id].is-collapsed > *:not(.pane-head):not(.rule) { display: none !important; }
+  /* Collapsed log-section */
+  .log-section.is-collapsed > *:not(.log-head) { display: none !important; }
+
+  /* Panes scroll when content overflows */
+  .pane { overflow-y: auto; }
+  .activity-pane { overflow-y: auto; }
+  .solar-pane { overflow-y: auto; }
+
+  /* ─── Responsive: tablet (≤1099px) ───────────── */
+  @media (max-width: 1099px) {
+    html, body { height: auto; overflow: auto; }
+    .hud {
+      height: auto; min-height: 100vh;
+      grid-template-rows: auto auto auto auto;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "header header"
+        "state  state"
+        "stack  right"
+        "footer footer";
     }
+    .right-column { grid-template-rows: auto auto; overflow: visible; height: auto; }
+    .state-grid { grid-template-columns: 1fr 1fr; }
+    .card.span4 { grid-column: span 2; }
+    .card.span3 { grid-column: span 2; }
+    .tape { grid-template-columns: repeat(2, 1fr); }
+    .formula { grid-template-columns: repeat(2, 1fr); }
+    .solar-stage { max-height: 200px; }
+    .pane, .solar-pane, .activity-pane { overflow: visible; min-height: 0; }
+  }
+
+  /* ─── Responsive: mobile (≤699px) ────────────── */
+  @media (max-width: 699px) {
+    html, body { height: auto; overflow: auto; font-size: 13px; }
+    .hud {
+      height: auto; min-height: 100dvh;
+      grid-template-rows: auto auto auto auto auto;
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "header"
+        "state"
+        "right"
+        "stack"
+        "footer";
+    }
+    .right-column { grid-template-rows: auto auto; overflow: visible; height: auto; }
+    .header {
+      flex-wrap: wrap; height: auto;
+      padding: 14px 16px; gap: 12px;
+    }
+    .header-left { flex-wrap: wrap; gap: 10px; }
+    .badges { flex-wrap: wrap; }
+    .badge:nth-child(n+3) { display: none; }
+    .pane, .solar-pane, .activity-pane { overflow: visible; }
+    .state-pane { padding: 14px 16px; }
+    .state-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .card.span4 { grid-column: span 2; }
+    .card.span3 { grid-column: span 2; }
+    .tape { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .formula { grid-template-columns: repeat(2, 1fr); }
+    .rea-row { grid-template-columns: 1fr 1fr; }
+    .solar-stage { max-height: 160px; }
+    .solar-pane { padding: 12px; }
+    .time-now { font-size: 24px; }
+    .footer {
+      flex-direction: column; align-items: flex-start;
+      padding: 12px 16px; height: auto; gap: 10px;
+    }
+    .compliance { flex-wrap: wrap; gap: 10px; }
+    .footer-meta { flex-wrap: wrap; gap: 8px; }
+    .brand-sub { display: none; }
+    .big-num { font-size: 22px; }
   }
 </style>
 </head>
@@ -673,13 +757,13 @@
   </header>
 
   <!-- ───────── Stack pane (Left) ───────── -->
-  <aside class="pane stack-pane">
+  <aside class="pane stack-pane" data-collapse-id="pane-stack">
     <div class="pane-head">
       <span class="label">Layer 01 · The Stack</span>
-      <span class="pane-meta">
-        06 → 01
-        <span class="status-pip" data-status="static" data-tip="static · conceptual architecture&#10;not driven by live data"></span>
-      </span>
+      <div style="display:flex;align-items:center;gap:4px;">
+        <span class="pane-meta">06 → 01 <span class="status-pip" data-status="static" data-tip="static · conceptual architecture&#10;not driven by live data"></span></span>
+        <button class="collapse-btn" aria-label="Collapse stack pane" onclick="toggleCollapse(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+      </div>
     </div>
     <div class="rule"></div>
     <p class="pane-intro">The legal documents are the foundation. The interesting work is the layers above them.</p>
@@ -761,7 +845,7 @@
     <div class="state-grid">
 
       <!-- Members -->
-      <div class="card span2">
+      <div class="card span2" data-card-id="card-members">
         <div class="card-head">
           <div class="card-title-row">
             <span class="card-icon" aria-hidden="true">
@@ -769,9 +853,10 @@
             </span>
             <span class="card-title">Members</span>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;">
+          <div style="display:flex;align-items:center;gap:4px;">
             <span class="card-cite">§I &middot; §1.7</span>
             <span class="status-pip" data-status="partial" data-tip="partial · profiles table (gxyeobogqfubgzklmxwt)&#10;total count live · class breakdown synthetic"></span>
+            <button class="collapse-btn" aria-label="Collapse card" onclick="toggleCollapse(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
           </div>
         </div>
         <div class="big-num" id="members-total">— <small>active agents</small></div>
@@ -786,7 +871,7 @@
       </div>
 
       <!-- Capital -->
-      <div class="card span2">
+      <div class="card span2" data-card-id="card-capital">
         <div class="card-head">
           <div class="card-title-row">
             <span class="card-icon" aria-hidden="true">
@@ -794,9 +879,10 @@
             </span>
             <span class="card-title">Capital accounts</span>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;">
+          <div style="display:flex;align-items:center;gap:4px;">
             <span class="card-cite">§V &middot; 704(b)</span>
             <span class="status-pip" data-status="partial" data-tip="partial · capital_accounts table (gxyeobogqfubgzklmxwt)&#10;table live · balances not yet entered"></span>
+            <button class="collapse-btn" aria-label="Collapse card" onclick="toggleCollapse(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
           </div>
         </div>
         <div class="big-num" id="capital-total">$184,250<small>total book basis</small></div>
@@ -810,7 +896,7 @@
       </div>
 
       <!-- Quorum gauge -->
-      <div class="card span2">
+      <div class="card span2" data-card-id="card-assembly">
         <div class="card-head">
           <div class="card-title-row">
             <span class="card-icon" aria-hidden="true">
@@ -818,9 +904,10 @@
             </span>
             <span class="card-title">Next assembly</span>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;">
+          <div style="display:flex;align-items:center;gap:4px;">
             <span class="card-cite">§II &middot; §2.7</span>
             <span class="status-pip" data-status="synthetic" data-tip="synthetic · no events/calendar table yet&#10;hardcoded from planning docs"></span>
+            <button class="collapse-btn" aria-label="Collapse card" onclick="toggleCollapse(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
           </div>
         </div>
         <div class="gauge-wrap">
@@ -837,7 +924,7 @@
       </div>
 
       <!-- Governance throughput -->
-      <div class="card span2">
+      <div class="card span2" data-card-id="card-decisions">
         <div class="card-head">
           <div class="card-title-row">
             <span class="card-icon" aria-hidden="true">
@@ -845,9 +932,10 @@
             </span>
             <span class="card-title">Decisions in motion</span>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;">
+          <div style="display:flex;align-items:center;gap:4px;">
             <span class="card-cite">§2.6 &middot; §3.13</span>
             <span class="status-pip" data-status="synthetic" data-tip="synthetic · governance/signals table not yet wired&#10;needs motions schema"></span>
+            <button class="collapse-btn" aria-label="Collapse card" onclick="toggleCollapse(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
           </div>
         </div>
         <div class="breakdown" style="margin-top:2px;">
@@ -860,7 +948,7 @@
       </div>
 
       <!-- Patronage formula -->
-      <div class="card span2">
+      <div class="card span2" data-card-id="card-patronage">
         <div class="card-head">
           <div class="card-title-row">
             <span class="card-icon" aria-hidden="true">
@@ -868,9 +956,10 @@
             </span>
             <span class="card-title">Patronage formula</span>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;">
+          <div style="display:flex;align-items:center;gap:4px;">
             <span class="card-cite">§5.3 &middot; designed</span>
             <span class="status-pip" data-status="static" data-tip="static · from planning docs&#10;working draft · not yet ratified by board policy"></span>
+            <button class="collapse-btn" aria-label="Collapse card" onclick="toggleCollapse(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
           </div>
         </div>
         <div class="formula">
@@ -883,7 +972,7 @@
       </div>
 
       <!-- Thresholds tape -->
-      <div class="card span4">
+      <div class="card span4" data-card-id="card-thresholds">
         <div class="card-head">
           <div class="card-title-row">
             <span class="card-icon" aria-hidden="true">
@@ -891,9 +980,10 @@
             </span>
             <span class="card-title">Thresholds &amp; clocks</span>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;">
+          <div style="display:flex;align-items:center;gap:4px;">
             <span class="card-cite">configured by bylaw</span>
             <span class="status-pip" data-status="static" data-tip="static · from bylaws text&#10;values change only by supermajority amendment"></span>
+            <button class="collapse-btn" aria-label="Collapse card" onclick="toggleCollapse(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
           </div>
         </div>
         <div class="tape">
@@ -1110,13 +1200,13 @@
         </div>
       </div>
 
-      <div class="log-section">
+      <div class="log-section" data-collapse-id="log-events">
         <div class="log-head">
           <span class="log-title">Event log</span>
-          <span class="log-meta" id="log-meta">
-            most recent · 5
-            <span class="status-pip" data-status="partial" data-tip="partial · signals table (gxyeobogqfubgzklmxwt)&#10;table live · signal format differs from shown"></span>
-          </span>
+          <div style="display:flex;align-items:center;gap:4px;">
+            <span class="log-meta" id="log-meta">most recent · 5 <span class="status-pip" data-status="partial" data-tip="partial · signals table (gxyeobogqfubgzklmxwt)&#10;table live · signal format differs from shown"></span></span>
+            <button class="collapse-btn" aria-label="Collapse section" onclick="toggleCollapse(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+          </div>
         </div>
         <div class="log" id="event-log">
           <div class="log-row live">
@@ -1142,13 +1232,13 @@
         </div>
       </div>
 
-      <div class="log-section">
+      <div class="log-section" data-collapse-id="log-workflows">
         <div class="log-head">
           <span class="log-title">Workflows in flight</span>
-          <span class="log-meta" id="workflows-meta">
-            —
-            <span class="status-pip" data-status="partial" data-tip="partial · projects table (gxyeobogqfubgzklmxwt)&#10;table live · status mapping in progress"></span>
-          </span>
+          <div style="display:flex;align-items:center;gap:4px;">
+            <span class="log-meta" id="workflows-meta">— <span class="status-pip" data-status="partial" data-tip="partial · projects table (gxyeobogqfubgzklmxwt)&#10;table live · status mapping in progress"></span></span>
+            <button class="collapse-btn" aria-label="Collapse section" onclick="toggleCollapse(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+          </div>
         </div>
         <div id="workflows-list">
           <div class="workflow">
@@ -1236,6 +1326,7 @@
       document.getElementById('hud-user').textContent = email;
       document.getElementById('gate').classList.add('hidden');
       document.getElementById('hud').classList.remove('hidden');
+      restoreCollapseState();
       document.getElementById('sync-label').textContent = 'live';
       await loadAll();
       setupRealtime();
@@ -1610,6 +1701,39 @@
 
   // Start auth check
   checkAuth();
+
+  // ── Collapse / expand ────────────────────────
+  // Expose globally so onclick="" can call it
+  window.toggleCollapse = function(btn) {
+    var el = btn.closest('[data-card-id], [data-collapse-id]');
+    if (!el) return;
+    var isNowCollapsed = el.classList.toggle('is-collapsed');
+    btn.setAttribute('aria-expanded', isNowCollapsed ? 'false' : 'true');
+    saveCollapseState();
+  };
+
+  function getCollapseKey(el) {
+    return el.dataset.cardId || el.dataset.collapseId || null;
+  }
+
+  function saveCollapseState() {
+    var state = {};
+    document.querySelectorAll('[data-card-id].is-collapsed, [data-collapse-id].is-collapsed').forEach(function(el) {
+      var k = getCollapseKey(el);
+      if (k) state[k] = true;
+    });
+    try { localStorage.setItem('hud-collapse-v1', JSON.stringify(state)); } catch(e) {}
+  }
+
+  function restoreCollapseState() {
+    try {
+      var stored = JSON.parse(localStorage.getItem('hud-collapse-v1') || '{}');
+      Object.keys(stored).forEach(function(id) {
+        var el = document.querySelector('[data-card-id="' + id + '"], [data-collapse-id="' + id + '"]');
+        if (el) el.classList.add('is-collapsed');
+      });
+    } catch(e) {}
+  }
 
 })();
 </script>
