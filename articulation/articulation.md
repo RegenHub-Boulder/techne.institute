@@ -4,7 +4,7 @@
 
 *Pre-read for the next board meeting · Boulder, Colorado · May 2026*
 
-*Comment inline in [Google Doc](https://docs.google.com/document/d/1oVqqPerNRySUNddH79WOzpd-ZrXGSeVrb9BUIyjGPn0/edit) · Live: [techne.institute/articulation/](https://techne.institute/articulation/) · Short version: [techne.institute/articulation/short/](https://techne.institute/articulation/short/)*
+*Live: [techne.institute/articulation/](https://techne.institute/articulation/) · Short version: [techne.institute/articulation/short/](https://techne.institute/articulation/short/)*
 
 ---
 
