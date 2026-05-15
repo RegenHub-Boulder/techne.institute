@@ -27,6 +27,8 @@
     --red-dim: rgba(196,106,106,0.10);
     --blue: #6a8ec4;
     --blue-dim: rgba(106,142,196,0.12);
+    --purple: #9b8ec4;
+    --purple-dim: rgba(155,142,196,0.12);
   }
   [data-mode="light"] {
     --bg: #faf7f2;
@@ -132,7 +134,7 @@
   .sum-value.negative { color: var(--red); }
   .sum-divider { width: 1px; background: var(--border); align-self: stretch; flex-shrink: 0; }
 
-  /* ── Transaction table ── */
+  /* ── Transaction table (shared) ── */
   .txn-controls {
     display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;
   }
@@ -154,7 +156,7 @@
   .txn-search:focus { border-color: var(--terra); }
   .txn-search::placeholder { color: var(--faint); }
 
-  .txn-table-wrap { overflow-x: auto; }
+  .txn-table-wrap { overflow-x: auto; margin-bottom: 4px; }
   table { width: 100%; border-collapse: collapse; }
   thead th {
     font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
@@ -176,9 +178,9 @@
   td.acct-col { color: var(--muted); font-size: 10px; white-space: nowrap; }
 
   .txn-empty { padding: 32px; text-align: center; color: var(--faint); font-size: 11px; }
-  .txn-footer { font-size: 10px; color: var(--faint); padding: 10px 0; text-align: right; letter-spacing: 0.04em; }
+  .txn-footer { font-size: 10px; color: var(--faint); padding: 10px 0 28px; text-align: right; letter-spacing: 0.04em; }
 
-  /* ── Safe multi-sig section ── */
+  /* ── SAFE multi-sig section ── */
   .multisig-row {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 12px; margin-bottom: 36px;
@@ -189,19 +191,80 @@
   }
   .multisig-name { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
   .multisig-addr { font-size: 9px; color: var(--faint); margin-bottom: 10px; font-variant-numeric: tabular-nums; }
-  .multisig-assets { display: flex; flex-direction: column; gap: 5px; }
+  .multisig-assets { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
   .asset-row { display: flex; justify-content: space-between; font-size: 11px; }
   .asset-label { color: var(--muted); }
   .asset-val { color: var(--heading); font-variant-numeric: tabular-nums; }
-  .multisig-total { display: flex; justify-content: space-between; font-size: 12px; font-weight: 500; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .multisig-total { display: flex; justify-content: space-between; font-size: 12px; font-weight: 500; margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--border); }
+
+  /* ── General Journal ── */
+  .journal-note {
+    font-size: 10px; color: var(--muted); margin-bottom: 12px;
+    letter-spacing: 0.03em;
+  }
+  tr.je-opening { background: var(--terra-dim); }
+  tr.je-opening td { color: var(--terra-text); }
+  tr.je-opening td.date { color: var(--terra-text); opacity: 0.7; }
+  td.je-dr { color: var(--blue); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+  td.je-cr { color: var(--green); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; padding-left: 20px; }
+  td.je-cr::before { content: '↳ '; opacity: 0.5; }
+  td.je-amt { text-align: right; font-size: 11px; font-variant-numeric: tabular-nums; color: var(--text); white-space: nowrap; }
+  td.je-ref { font-size: 9px; color: var(--faint); white-space: nowrap; letter-spacing: 0.04em; }
+
+  /* ── General Ledger ── */
+  .ledger-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .ledger-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 14px 16px;
+  }
+  .ledger-card-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .ledger-acct-name {
+    font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--muted); line-height: 1.4; max-width: 160px;
+  }
+  .ledger-type {
+    font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 2px 6px; border-radius: 3px; white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .ledger-type.asset   { background: var(--blue-dim);   color: var(--blue); }
+  .ledger-type.revenue { background: var(--green-dim);  color: var(--green); }
+  .ledger-type.equity  { background: var(--terra-dim);  color: var(--terra-text); }
+  .ledger-type.expense { background: var(--red-dim);    color: var(--red); }
+  .ledger-stats {
+    display: flex; gap: 16px; font-size: 10px; color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .ledger-stat { display: flex; flex-direction: column; gap: 2px; }
+  .ledger-stat-val { color: var(--text); font-size: 11px; font-variant-numeric: tabular-nums; }
+  .ledger-balance {
+    font-size: 20px; font-weight: 400; letter-spacing: -0.02em;
+    color: var(--heading); line-height: 1;
+    padding-top: 8px; border-top: 1px solid var(--border);
+  }
+  .ledger-balance-label {
+    font-size: 9px; color: var(--muted); letter-spacing: 0.06em;
+    text-transform: uppercase; margin-top: 3px;
+  }
+  .ledger-balance.debit-bal { color: var(--blue); }
+  .ledger-balance.credit-bal { color: var(--green); }
 
   /* ── Responsive ── */
   @media (max-width: 600px) {
     .page { padding: 0 14px 60px; }
     .summary-bar { gap: 14px; }
     .sum-divider { display: none; }
-    td.cat, td.acct-col { display: none; }
+    td.cat, td.acct-col, td.je-ref { display: none; }
     .acct-balance { font-size: 22px; }
+    td.je-cr, td.je-dr { max-width: 120px; }
   }
 </style>
 </head>
@@ -243,7 +306,7 @@
     </div>
     <div class="sum-divider"></div>
     <div class="sum-item">
-      <div class="sum-label">Digital Assets</div>
+      <div class="sum-label">Digital Assets (SAFE)</div>
       <div class="sum-value" id="sum-digital">–</div>
     </div>
     <div class="sum-divider"></div>
@@ -269,28 +332,48 @@
   <!-- SAFE multi-sig -->
   <div class="section-label">SAFE Multi-Sig Treasury</div>
   <div class="multisig-row" id="multisig-row">
-    <div class="multisig-card">
-      <div class="multisig-name">RegenHub Multi-Sig · Optimism + Mainnet</div>
-      <div class="multisig-addr">0xa594…7782</div>
-      <div class="multisig-assets">
-        <div class="asset-row"><span class="asset-label">USDC</span><span class="asset-val" id="ms-usdc">$9,792.54</span></div>
-        <div class="asset-row"><span class="asset-label">DAI</span><span class="asset-val" id="ms-dai">$998.89</span></div>
-        <div class="asset-row"><span class="asset-label">ETH (0.022)</span><span class="asset-val" id="ms-eth">$51.87</span></div>
-      </div>
-      <div class="multisig-total">
-        <span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:0.06em">Total NAV</span>
-        <span id="ms-total">$10,843.30</span>
-      </div>
+    <div class="multisig-card" style="opacity:0.4">
+      <div class="multisig-name">Loading…</div>
     </div>
   </div>
 
-  <!-- Transactions -->
-  <div class="section-label">Transaction Ledger</div>
+  <!-- General Journal -->
+  <div class="section-label">General Journal</div>
+  <div class="journal-note">Double-entry · from formation 2026-02-06 · all amounts USD</div>
+  <div class="txn-table-wrap">
+    <table id="journal-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Memo</th>
+          <th>Debit Account</th>
+          <th>Credit Account</th>
+          <th class="num">Amount</th>
+          <th>Ref</th>
+        </tr>
+      </thead>
+      <tbody id="journal-body">
+        <tr><td colspan="6" class="txn-empty">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="txn-footer" id="journal-footer"></div>
+
+  <!-- General Ledger -->
+  <div class="section-label">General Ledger</div>
+  <div class="ledger-grid" id="ledger-grid">
+    <div class="ledger-card" style="opacity:0.4"><div class="ledger-acct-name">Loading…</div></div>
+  </div>
+
+  <!-- Transaction Activity -->
+  <div class="section-label">Transaction Activity</div>
 
   <div class="txn-controls">
-    <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">All</button>
-    <button class="filter-btn" data-filter="credit" onclick="setFilter('credit', this)">Credits</button>
-    <button class="filter-btn" data-filter="debit" onclick="setFilter('debit', this)">Debits</button>
+    <button class="filter-btn active" data-filter="all"    onclick="setFilter('all',    this)">All</button>
+    <button class="filter-btn"        data-filter="credit" onclick="setFilter('credit', this)">Credits</button>
+    <button class="filter-btn"        data-filter="debit"  onclick="setFilter('debit',  this)">Debits</button>
+    <button class="filter-btn"        data-filter="mercury" onclick="setFilter('mercury',this)">Mercury</button>
+    <button class="filter-btn"        data-filter="safe"   onclick="setFilter('safe',   this)">SAFE</button>
     <input class="txn-search" id="txn-search" placeholder="Search…" oninput="renderTxns()" type="search">
   </div>
 
@@ -327,9 +410,135 @@
   var authSb = supabase.createClient(AUTH_URL, AUTH_KEY);
   var dataSb = supabase.createClient(DATA_URL, DATA_KEY);
 
-  var allTxns = [];
-  var allAccounts = [];
-  var activeFilter = 'all';
+  var allMercuryAccounts = [];
+  var allSafeAccounts    = [];
+  var allTxns            = [];
+  var activeFilter       = 'all';
+
+  // ── Known account IDs ──────────────────────────────────
+  var SAFE_OETH_ID = '6cbda084-bb6a-43b8-9da9-78ad9347620c'; // Optimism
+  var SAFE_ETH_ID  = '3448faff-1c2a-410f-8ff9-ecf4b5be2e3b'; // Mainnet
+
+  // ── Opening / manual journal entries (hardcoded) ───────
+  var OPENING_ENTRIES = [
+    {
+      date: '2026-02-06',
+      memo: 'Formation — West Software pre-formation SAFE balance conveyed to cooperative',
+      dr:   'Digital Assets – SAFE',
+      cr:   "Members' Equity – West Software Contribution",
+      amount: 13214.22,
+      ref:  'FORM-001',
+      isOpening: true
+    }
+  ];
+
+  // ── Account type map ───────────────────────────────────
+  var ACCT_TYPES = {
+    'Cash – Mercury':                               'asset',
+    'Digital Assets – SAFE':                        'asset',
+    'Digital Assets – USDC (Optimism)':             'asset',
+    'Digital Assets – USDC (Mainnet)':              'asset',
+    "Members' Equity – West Software Contribution": 'equity',
+    "Members' Equity – Capital Contributions":      'equity',
+    'Revenue – Lease Collections':                  'revenue',
+    'Revenue – Other Income':                       'revenue',
+    'Expenses – Office Lease':                      'expense',
+    'Expenses – Reimbursements':                    'expense',
+    'Expenses – Office Supplies':                   'expense',
+    'Expenses – Software & Services':               'expense',
+    'Expenses – Government Fees':                   'expense',
+    'Expenses – General & Admin':                   'expense'
+  };
+
+  // ── Account helpers ────────────────────────────────────
+  function getAssetAcct(txn) {
+    if (txn.external_provider === 'mercury') return 'Cash – Mercury';
+    if (txn.account_id === SAFE_OETH_ID) return 'Digital Assets – USDC (Optimism)';
+    return 'Digital Assets – USDC (Mainnet)';
+  }
+
+  function getCreditAcct(txn) {
+    var cat  = (txn.category    || '').toLowerCase();
+    var desc = (txn.description || '').toLowerCase();
+    if (txn.external_provider === 'mercury') {
+      if (cat === 'transfer' && (desc.includes('youngblood') || desc.includes('todd')))
+        return "Members' Equity – Capital Contributions";
+      return 'Revenue – Other Income';
+    }
+    // SAFE inflows
+    if (cat.includes('lease revenue') || cat.includes('lease income'))
+      return 'Revenue – Lease Collections';
+    return 'Revenue – Other Income';
+  }
+
+  function getDebitAcct(txn) {
+    var cat = (txn.category || '').toLowerCase();
+    if (txn.external_provider === 'mercury') {
+      if (cat === 'software' || cat.includes('saas')) return 'Expenses – Software & Services';
+      if (cat === 'governmentservices')               return 'Expenses – Government Fees';
+      return 'Expenses – General & Admin';
+    }
+    // SAFE outflows
+    if (cat.includes('lease expense'))         return 'Expenses – Office Lease';
+    if (cat.includes('hub supplies'))          return 'Expenses – Office Supplies';
+    if (cat.includes('expense reimb') || cat.includes('reimburs')) return 'Expenses – Reimbursements';
+    return 'Expenses – General & Admin';
+  }
+
+  // ── Build journal entries array ────────────────────────
+  function buildJournalEntries() {
+    var entries = OPENING_ENTRIES.slice();
+    var sorted  = allTxns.slice().sort(function(a, b) {
+      return a.date.localeCompare(b.date);
+    });
+    sorted.forEach(function(txn) {
+      var amt      = Math.abs(Number(txn.amount));
+      var isInflow = Number(txn.amount) > 0;
+      var asset    = getAssetAcct(txn);
+      entries.push({
+        date:   txn.date,
+        memo:   txn.description,
+        dr:     isInflow ? asset : getDebitAcct(txn),
+        cr:     isInflow ? getCreditAcct(txn) : asset,
+        amount: amt,
+        ref:    txn.external_provider === 'mercury' ? 'MERC' : 'SAFE',
+        isOpening: false
+      });
+    });
+    return entries;
+  }
+
+  // ── Build ledger from journal entries ──────────────────
+  function buildLedger(journalEntries) {
+    var ledger = {};
+    function getAcct(name) {
+      if (!ledger[name]) {
+        ledger[name] = {
+          name:    name,
+          type:    ACCT_TYPES[name] || 'asset',
+          totalDR: 0,
+          totalCR: 0,
+          count:   0
+        };
+      }
+      return ledger[name];
+    }
+    journalEntries.forEach(function(je) {
+      var dr = getAcct(je.dr);
+      var cr = getAcct(je.cr);
+      dr.totalDR += je.amount;
+      dr.count++;
+      cr.totalCR += je.amount;
+      cr.count++;
+    });
+    Object.values(ledger).forEach(function(a) {
+      var normalDebit = (a.type === 'asset' || a.type === 'expense');
+      a.balance = normalDebit
+        ? a.totalDR - a.totalCR
+        : a.totalCR - a.totalDR;
+    });
+    return ledger;
+  }
 
   // ── Auth ───────────────────────────────────────────────
   async function checkAuth() {
@@ -353,69 +562,183 @@
   async function loadAll() {
     setSyncState('loading');
     try {
-      await Promise.all([loadAccounts(), loadTransactions()]);
-      setSyncState('live');
+      // Mercury accounts
+      var { data: mAccts, error: mErr } = await dataSb
+        .from('bank_accounts')
+        .select('*')
+        .eq('external_provider', 'mercury')
+        .order('account_type');
+      if (mErr) throw mErr;
+      allMercuryAccounts = mAccts || [];
+
+      // SAFE accounts
+      var { data: sAccts, error: sErr } = await dataSb
+        .from('bank_accounts')
+        .select('*')
+        .eq('external_provider', 'safe')
+        .order('account_name');
+      if (sErr) throw sErr;
+      allSafeAccounts = sAccts || [];
+
+      // All transactions (Mercury + SAFE), ascending for journal
+      var { data: txns, error: tErr } = await dataSb
+        .from('transactions')
+        .select('*')
+        .in('external_provider', ['mercury', 'safe'])
+        .order('date', { ascending: false })
+        .limit(500);
+      if (tErr) throw tErr;
+      allTxns = txns || [];
+
+      renderAccounts();
+      renderSafe();
+      renderTxns();
+
+      var journalEntries = buildJournalEntries();
+      renderJournal(journalEntries);
+
+      var ledger = buildLedger(journalEntries);
+      renderLedger(ledger);
+
       updateSummary();
+      setSyncState('live');
     } catch (err) {
       setSyncState('error');
       console.error(err);
     }
   }
 
-  async function loadAccounts() {
-    var { data, error } = await dataSb
-      .from('bank_accounts')
-      .select('*')
-      .eq('institution', 'Mercury')
-      .order('account_type');
-    if (error) throw error;
-    allAccounts = data || [];
-    renderAccounts();
-  }
-
-  async function loadTransactions() {
-    // Get all Mercury account IDs
-    var mercuryIds = allAccounts.length
-      ? allAccounts.map(function(a) { return a.id; })
-      : [];
-
-    var query = dataSb
-      .from('transactions')
-      .select('*')
-      .eq('external_provider', 'mercury')
-      .order('date', { ascending: false })
-      .limit(200);
-
-    var { data, error } = await query;
-    if (error) throw error;
-    allTxns = data || [];
-    renderTxns();
-  }
-
-  // ── Render accounts ────────────────────────────────────
+  // ── Render Mercury account cards ───────────────────────
   function renderAccounts() {
     var grid = document.getElementById('accounts-grid');
-    if (!allAccounts.length) {
+    if (!allMercuryAccounts.length) {
       grid.innerHTML = '<div class="txn-empty">No Mercury accounts found.</div>';
       return;
     }
-    grid.innerHTML = allAccounts.map(function(a) {
-      var bal = Number(a.balance) || 0;
+    grid.innerHTML = allMercuryAccounts.map(function(a) {
+      var bal    = Number(a.balance) || 0;
       var balFmt = '$' + bal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      var last4 = a.external_account_id ? '••' + a.external_account_id.slice(-4) : '';
+      var last4  = a.external_account_id ? '••' + a.external_account_id.slice(-4) : '';
       return '<div class="acct-card">' +
         '<div class="acct-card-head">' +
           '<div class="acct-name">' + esc(a.account_name) + '</div>' +
-          '<div class="acct-tag">' + esc(a.account_type) + '</div>' +
+          '<div class="acct-tag">'  + esc(a.account_type) + '</div>' +
         '</div>' +
         '<div class="acct-balance' + (bal === 0 ? ' zero' : '') + '">' + balFmt + '</div>' +
-        '<div class="acct-meta">' + (last4 || '') + '</div>' +
+        '<div class="acct-meta">'  + (last4 || '') + '</div>' +
         '<div class="acct-institution">Mercury Bank</div>' +
       '</div>';
     }).join('');
   }
 
-  // ── Render transactions ────────────────────────────────
+  // ── Render SAFE multi-sig cards ────────────────────────
+  function renderSafe() {
+    var row = document.getElementById('multisig-row');
+    if (!allSafeAccounts.length) {
+      row.innerHTML = '<div class="txn-empty">No SAFE accounts found.</div>';
+      return;
+    }
+    var fmt = function(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+    var totalNav = allSafeAccounts.reduce(function(s, a) { return s + (Number(a.balance) || 0); }, 0);
+
+    var cards = allSafeAccounts.map(function(a) {
+      var bal = Number(a.balance) || 0;
+      var network = a.account_name.includes('Optimism') ? 'Optimism' : 'Mainnet';
+      return '<div class="multisig-card">' +
+        '<div class="multisig-name">' + esc(a.account_name) + '</div>' +
+        '<div class="multisig-addr">0xa594…7782 · ' + network + '</div>' +
+        '<div class="multisig-total">' +
+          '<span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:0.06em">Balance (USD)</span>' +
+          '<span>' + fmt(bal) + '</span>' +
+        '</div>' +
+      '</div>';
+    });
+
+    // Combined NAV card
+    cards.push(
+      '<div class="multisig-card" style="border-color:var(--border-strong)">' +
+        '<div class="multisig-name">Combined NAV</div>' +
+        '<div class="multisig-addr">Optimism + Mainnet</div>' +
+        '<div class="multisig-total">' +
+          '<span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:0.06em">Total</span>' +
+          '<span style="font-size:15px;color:var(--heading)">' + fmt(totalNav) + '</span>' +
+        '</div>' +
+      '</div>'
+    );
+
+    row.innerHTML = cards.join('');
+  }
+
+  // ── Render General Journal ─────────────────────────────
+  function renderJournal(entries) {
+    var body   = document.getElementById('journal-body');
+    var footer = document.getElementById('journal-footer');
+    var fmt    = function(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+
+    if (!entries.length) {
+      body.innerHTML = '<tr><td colspan="6" class="txn-empty">No entries.</td></tr>';
+      footer.textContent = '';
+      return;
+    }
+
+    body.innerHTML = entries.map(function(je) {
+      var rowClass = je.isOpening ? ' class="je-opening"' : '';
+      return '<tr' + rowClass + '>' +
+        '<td class="date">'    + esc(je.date)   + '</td>' +
+        '<td class="desc" title="' + esc(je.memo) + '">' + esc(je.memo) + '</td>' +
+        '<td class="je-dr" title="' + esc(je.dr) + '">' + esc(je.dr) + '</td>' +
+        '<td class="je-cr" title="' + esc(je.cr) + '">' + esc(je.cr) + '</td>' +
+        '<td class="je-amt">'  + fmt(je.amount) + '</td>' +
+        '<td class="je-ref">'  + esc(je.ref)    + '</td>' +
+      '</tr>';
+    }).join('');
+
+    var total = entries.reduce(function(s, je) { return s + je.amount; }, 0);
+    footer.textContent = entries.length + ' entries · total debits / credits ' + fmt(total);
+  }
+
+  // ── Render General Ledger ──────────────────────────────
+  function renderLedger(ledger) {
+    var grid = document.getElementById('ledger-grid');
+    var fmt  = function(n) { return '$' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+
+    // Sort order: assets first, then equity, revenue, expense
+    var typeOrder = { asset: 0, equity: 1, revenue: 2, expense: 3 };
+    var accts = Object.values(ledger).sort(function(a, b) {
+      var ta = typeOrder[a.type] !== undefined ? typeOrder[a.type] : 4;
+      var tb = typeOrder[b.type] !== undefined ? typeOrder[b.type] : 4;
+      if (ta !== tb) return ta - tb;
+      return a.name.localeCompare(b.name);
+    });
+
+    if (!accts.length) {
+      grid.innerHTML = '<div class="txn-empty">No ledger data.</div>';
+      return;
+    }
+
+    grid.innerHTML = accts.map(function(a) {
+      var isNormalDebit  = (a.type === 'asset' || a.type === 'expense');
+      var balClass = isNormalDebit ? 'debit-bal' : 'credit-bal';
+      var balLabel = isNormalDebit ? 'Debit Balance' : 'Credit Balance';
+      if (a.balance < 0) { balClass = 'debit-bal'; balLabel = 'Abnormal Balance'; }
+
+      return '<div class="ledger-card">' +
+        '<div class="ledger-card-head">' +
+          '<div class="ledger-acct-name">' + esc(a.name) + '</div>' +
+          '<div class="ledger-type ' + a.type + '">' + a.type + '</div>' +
+        '</div>' +
+        '<div class="ledger-stats">' +
+          '<div class="ledger-stat"><span class="sum-label">Debits</span><span class="ledger-stat-val">' + fmt(a.totalDR) + '</span></div>' +
+          '<div class="ledger-stat"><span class="sum-label">Credits</span><span class="ledger-stat-val">' + fmt(a.totalCR) + '</span></div>' +
+          '<div class="ledger-stat"><span class="sum-label">Entries</span><span class="ledger-stat-val">' + a.count + '</span></div>' +
+        '</div>' +
+        '<div class="ledger-balance ' + balClass + '">' + fmt(a.balance) + '</div>' +
+        '<div class="ledger-balance-label">' + balLabel + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // ── Render Transaction Activity ────────────────────────
   window.setFilter = function(f, btn) {
     activeFilter = f;
     document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -424,16 +747,22 @@
   };
 
   window.renderTxns = function() {
-    var q = (document.getElementById('txn-search').value || '').toLowerCase();
+    var q    = (document.getElementById('txn-search').value || '').toLowerCase();
     var rows = allTxns.filter(function(t) {
-      if (activeFilter === 'credit' && t.amount <= 0) return false;
-      if (activeFilter === 'debit'  && t.amount >= 0) return false;
+      if (activeFilter === 'credit'  && t.amount <= 0)               return false;
+      if (activeFilter === 'debit'   && t.amount >= 0)               return false;
+      if (activeFilter === 'mercury' && t.external_provider !== 'mercury') return false;
+      if (activeFilter === 'safe'    && t.external_provider !== 'safe')    return false;
       if (q) {
-        var hay = ((t.description || '') + ' ' + (t.category || '')).toLowerCase();
+        var hay = ((t.description || '') + ' ' + (t.category || '') + ' ' + (t.external_provider || '')).toLowerCase();
         if (hay.indexOf(q) === -1) return false;
       }
       return true;
     });
+
+    // Build account map (all accounts)
+    var acctMap = {};
+    allMercuryAccounts.concat(allSafeAccounts).forEach(function(a) { acctMap[a.id] = a.account_name; });
 
     var body = document.getElementById('txn-body');
     if (!rows.length) {
@@ -442,20 +771,17 @@
       return;
     }
 
-    var acctMap = {};
-    allAccounts.forEach(function(a) { acctMap[a.id] = a.account_name; });
-
     body.innerHTML = rows.map(function(t) {
-      var amt = Number(t.amount);
+      var amt      = Number(t.amount);
       var isCredit = amt > 0;
-      var amtFmt = (isCredit ? '+' : '') + '$' + Math.abs(amt).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      var amtFmt   = (isCredit ? '+' : '') + '$' + Math.abs(amt).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       var acctName = acctMap[t.account_id] || '–';
-      // Shorten account name for display
-      var acctShort = acctName.replace('Mercury ', '').replace('••', '••');
+      var acctShort = acctName.replace('RegenHub Multi-sig ', '').replace('Mercury ', '');
+      var providerTag = t.external_provider === 'safe' ? ' <span style="font-size:9px;color:var(--blue);margin-left:4px">SAFE</span>' : '';
       return '<tr>' +
         '<td class="date">' + esc(t.date) + '</td>' +
-        '<td class="desc" title="' + esc(t.description) + '">' + esc(t.description) + '</td>' +
-        '<td class="cat">' + esc(t.category || '–') + '</td>' +
+        '<td class="desc" title="' + esc(t.description) + '">' + esc(t.description) + providerTag + '</td>' +
+        '<td class="cat">'  + esc(t.category || '–') + '</td>' +
         '<td class="acct-col">' + esc(acctShort) + '</td>' +
         '<td class="amt ' + (isCredit ? 'credit' : 'debit') + '">' + amtFmt + '</td>' +
       '</tr>';
@@ -469,18 +795,18 @@
 
   // ── Summary bar ────────────────────────────────────────
   function updateSummary() {
-    var cash = allAccounts.reduce(function(s, a) { return s + (Number(a.balance) || 0); }, 0);
-    var digital = 10843.30; // SAFE NAV — static until on-chain sync
-    var total = cash + digital;
+    var cash    = allMercuryAccounts.reduce(function(s, a) { return s + (Number(a.balance) || 0); }, 0);
+    var digital = allSafeAccounts.reduce(function(s, a)   { return s + (Number(a.balance) || 0); }, 0);
+    var total   = cash + digital;
     var fmt = function(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
-    document.getElementById('sum-cash').textContent = fmt(cash);
+    document.getElementById('sum-cash').textContent    = fmt(cash);
     document.getElementById('sum-digital').textContent = fmt(digital);
-    document.getElementById('sum-total').textContent = fmt(total);
+    document.getElementById('sum-total').textContent   = fmt(total);
   }
 
   // ── UI helpers ─────────────────────────────────────────
   function setSyncState(state) {
-    var dot = document.getElementById('sync-dot');
+    var dot   = document.getElementById('sync-dot');
     var label = document.getElementById('sync-label');
     if (state === 'live') {
       dot.style.background = 'var(--green)';
@@ -506,7 +832,7 @@
     try { localStorage.setItem('treasury-mode', next); } catch(e) {}
   };
 
-  // Restore mode
+  // Restore mode preference
   try {
     var saved = localStorage.getItem('treasury-mode');
     if (saved) {
