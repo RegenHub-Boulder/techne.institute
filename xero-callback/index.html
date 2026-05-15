@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Xero · Authorization</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f0f0f; color: #d4d4d4;
+    font-family: 'IBM Plex Mono', monospace; font-size: 13px;
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    background: #1a1a1a; border: 1px solid #2a2a2a;
+    border-radius: 8px; padding: 36px 40px; max-width: 540px; width: 100%;
+  }
+  .logo {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: #c4956a; margin-bottom: 28px;
+  }
+  .state { margin-bottom: 20px; }
+  h2 { font-size: 15px; font-weight: 500; color: #e8e0d8; margin-bottom: 8px; letter-spacing: 0.04em; }
+  p  { font-size: 11px; color: #999; line-height: 1.6; }
+  .code-block {
+    background: #0f0f0f; border: 1px solid #3a3a3a; border-radius: 4px;
+    padding: 14px 16px; margin: 20px 0; word-break: break-all;
+    font-size: 11px; color: #c4956a; letter-spacing: 0.03em; line-height: 1.5;
+    cursor: pointer; user-select: all;
+  }
+  .copy-hint { font-size: 10px; color: #666; margin-top: -12px; margin-bottom: 20px; }
+  .instruction {
+    background: #141414; border-left: 2px solid #c4956a;
+    padding: 12px 16px; border-radius: 0 4px 4px 0;
+    font-size: 11px; color: #999; line-height: 1.7;
+  }
+  .instruction strong { color: #e8e0d8; }
+  .error-state { color: #c46a6a; }
+  .ok-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #5a9e6f; margin-right: 6px; }
+  .warn-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #c4956a; margin-right: 6px; }
+  .err-dot  { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #c46a6a; margin-right: 6px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">RegenHub, LCA · Co-op Accounting Engine · Xero Connect</div>
+  <div id="content">
+    <p style="color:#666">Reading authorization response…</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var code    = params.get('code');
+  var state   = params.get('state');
+  var error   = params.get('error');
+  var errDesc = params.get('error_description');
+  var el = document.getElementById('content');
+
+  if (error) {
+    el.innerHTML =
+      '<div class="state"><span class="err-dot"></span><h2 class="error-state">Authorization declined</h2></div>' +
+      '<p>Xero returned: <strong>' + esc(error) + '</strong>' +
+        (errDesc ? ' — ' + esc(errDesc) : '') + '</p>' +
+      '<p style="margin-top:12px">You can close this tab and try again.</p>';
+    return;
+  }
+
+  if (!code) {
+    el.innerHTML =
+      '<div class="state"><span class="warn-dot"></span><h2>No authorization code</h2></div>' +
+      '<p>This page is the Xero OAuth callback. It should only be reached by following the Xero authorization link.</p>';
+    return;
+  }
+
+  el.innerHTML =
+    '<div class="state"><span class="ok-dot"></span><h2>Xero authorized</h2></div>' +
+    '<p>Copy the authorization code below and paste it to Nou in the chat. The code is single-use and expires in 60 seconds — do this promptly.</p>' +
+    '<div class="code-block" id="code-display" title="Click to select all">' + esc(code) + '</div>' +
+    '<p class="copy-hint">Click the box above to select, then Cmd/Ctrl+C to copy.</p>' +
+    '<div class="instruction">' +
+      '<strong>Next step:</strong> paste this code to Nou (in Telegram or your current session) and say<br>"Here is my Xero auth code: [paste]"<br><br>' +
+      'Nou will exchange it for tokens server-side. You can close this tab after copying.' +
+    '</div>';
+
+  // Auto-select on click
+  document.getElementById('code-display').addEventListener('click', function() {
+    var range = document.createRange();
+    range.selectNodeContents(this);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    try { document.execCommand('copy'); } catch(e) {}
+  });
+
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+})();
+</script>
+</body>
+</html>
