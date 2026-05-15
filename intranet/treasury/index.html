@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>RegenHub · Treasury</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface-2: #141414;
+    --border: #2a2a2a;
+    --border-strong: #3a3a3a;
+    --terra: #c4956a;
+    --terra-text: #c4956a;
+    --terra-dim: rgba(196, 149, 106, 0.12);
+    --heading: #e8e0d8;
+    --text: #d4d4d4;
+    --muted: #999;
+    --faint: #666;
+    --green: #5a9e6f;
+    --green-dim: rgba(90,158,111,0.12);
+    --red: #c46a6a;
+    --red-dim: rgba(196,106,106,0.10);
+    --blue: #6a8ec4;
+    --blue-dim: rgba(106,142,196,0.12);
+  }
+  [data-mode="light"] {
+    --bg: #faf7f2;
+    --surface: #f3ede4;
+    --surface-2: #efe8dc;
+    --border: #ddd5c8;
+    --border-strong: #c8bfb0;
+    --heading: #1a1a1a;
+    --text: #2a2a2a;
+    --muted: #666;
+    --faint: #999;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+
+  /* ── Auth gate ── */
+  #gate {
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100; flex-direction: column; gap: 12px;
+  }
+  #gate-text { font-size: 12px; color: var(--muted); letter-spacing: 0.08em; }
+  #gate.hidden { display: none; }
+  #treasury { opacity: 0; transition: opacity 300ms ease; }
+  #treasury.visible { opacity: 1; }
+
+  /* ── Layout ── */
+  .page { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* ── Header ── */
+  .page-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 0 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .page-head-left { display: flex; align-items: center; gap: 16px; }
+  .back-link {
+    font-size: 10px; letter-spacing: 0.1em; color: var(--muted);
+    text-decoration: none; text-transform: uppercase;
+    display: flex; align-items: center; gap: 4px;
+    transition: color 150ms;
+  }
+  .back-link:hover { color: var(--terra-text); }
+  .page-title { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--heading); font-weight: 500; }
+  .page-sub { font-size: 10px; color: var(--muted); letter-spacing: 0.06em; }
+  .head-right { display: flex; align-items: center; gap: 12px; }
+  .sync-badge {
+    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); display: flex; align-items: center; gap: 5px;
+  }
+  .sync-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+  .mode-btn {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); padding: 4px 10px; border-radius: 4px;
+    font-family: inherit; font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; cursor: pointer; transition: color 150ms, border-color 150ms;
+  }
+  .mode-btn:hover { color: var(--terra-text); border-color: var(--terra); }
+
+  /* ── Section labels ── */
+  .section-label {
+    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--terra-text); margin-bottom: 12px; display: flex;
+    align-items: center; gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* ── Account cards ── */
+  .accounts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .acct-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 16px 18px;
+  }
+  .acct-card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .acct-name { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .acct-tag {
+    font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 2px 6px; border-radius: 3px; background: var(--blue-dim); color: var(--blue);
+  }
+  .acct-balance { font-size: 26px; font-weight: 400; color: var(--heading); letter-spacing: -0.02em; line-height: 1; margin-bottom: 6px; }
+  .acct-balance.zero { color: var(--faint); }
+  .acct-meta { font-size: 10px; color: var(--faint); }
+  .acct-institution { font-size: 9px; color: var(--terra-text); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+
+  /* ── Summary bar ── */
+  .summary-bar {
+    display: flex; gap: 24px; flex-wrap: wrap;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 14px 18px;
+    margin-bottom: 36px; align-items: center;
+  }
+  .sum-item { display: flex; flex-direction: column; gap: 3px; }
+  .sum-label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .sum-value { font-size: 16px; font-weight: 500; color: var(--heading); letter-spacing: -0.01em; }
+  .sum-value.positive { color: var(--green); }
+  .sum-value.negative { color: var(--red); }
+  .sum-divider { width: 1px; background: var(--border); align-self: stretch; flex-shrink: 0; }
+
+  /* ── Transaction table ── */
+  .txn-controls {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .filter-btn {
+    font-family: inherit; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 4px; cursor: pointer;
+    border: 1px solid var(--border); background: transparent; color: var(--muted);
+    transition: all 150ms;
+  }
+  .filter-btn.active { background: var(--terra-dim); border-color: var(--terra); color: var(--terra-text); }
+  .filter-btn:hover:not(.active) { border-color: var(--border-strong); color: var(--text); }
+  .txn-search {
+    flex: 1; min-width: 160px; max-width: 260px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 5px 10px;
+    font-family: inherit; font-size: 11px; color: var(--text); outline: none;
+    transition: border-color 150ms;
+  }
+  .txn-search:focus { border-color: var(--terra); }
+  .txn-search::placeholder { color: var(--faint); }
+
+  .txn-table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--faint); font-weight: 400; padding: 8px 10px;
+    text-align: left; border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  thead th.num { text-align: right; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 100ms; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface); }
+  td { padding: 9px 10px; font-size: 12px; color: var(--text); vertical-align: middle; }
+  td.date { color: var(--faint); font-size: 11px; white-space: nowrap; min-width: 90px; }
+  td.desc { color: var(--heading); max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  td.cat { color: var(--muted); font-size: 10px; letter-spacing: 0.04em; white-space: nowrap; }
+  td.amt { text-align: right; font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td.amt.credit { color: var(--green); }
+  td.amt.debit { color: var(--red); }
+  td.acct-col { color: var(--muted); font-size: 10px; white-space: nowrap; }
+
+  .txn-empty { padding: 32px; text-align: center; color: var(--faint); font-size: 11px; }
+  .txn-footer { font-size: 10px; color: var(--faint); padding: 10px 0; text-align: right; letter-spacing: 0.04em; }
+
+  /* ── Safe multi-sig section ── */
+  .multisig-row {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px; margin-bottom: 36px;
+  }
+  .multisig-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 14px 16px;
+  }
+  .multisig-name { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .multisig-addr { font-size: 9px; color: var(--faint); margin-bottom: 10px; font-variant-numeric: tabular-nums; }
+  .multisig-assets { display: flex; flex-direction: column; gap: 5px; }
+  .asset-row { display: flex; justify-content: space-between; font-size: 11px; }
+  .asset-label { color: var(--muted); }
+  .asset-val { color: var(--heading); font-variant-numeric: tabular-nums; }
+  .multisig-total { display: flex; justify-content: space-between; font-size: 12px; font-weight: 500; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .page { padding: 0 14px 60px; }
+    .summary-bar { gap: 14px; }
+    .sum-divider { display: none; }
+    td.cat, td.acct-col { display: none; }
+    .acct-balance { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c4956a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+  <span id="gate-text" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#666;letter-spacing:0.1em;">CHECKING SESSION…</span>
+</div>
+
+<div id="treasury">
+<div class="page">
+
+  <header class="page-head">
+    <div class="page-head-left">
+      <a class="back-link" href="/intranet/">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Intranet
+      </a>
+      <div>
+        <div class="page-title">Treasury</div>
+        <div class="page-sub">RegenHub, LCA · Financial Position</div>
+      </div>
+    </div>
+    <div class="head-right">
+      <div class="sync-badge">
+        <div class="sync-dot" id="sync-dot"></div>
+        <span id="sync-label">–</span>
+      </div>
+      <button class="mode-btn" id="mode-btn" onclick="toggleMode()">Light</button>
+    </div>
+  </header>
+
+  <!-- Summary bar -->
+  <div class="summary-bar" id="summary-bar">
+    <div class="sum-item">
+      <div class="sum-label">Cash (Mercury)</div>
+      <div class="sum-value" id="sum-cash">–</div>
+    </div>
+    <div class="sum-divider"></div>
+    <div class="sum-item">
+      <div class="sum-label">Digital Assets</div>
+      <div class="sum-value" id="sum-digital">–</div>
+    </div>
+    <div class="sum-divider"></div>
+    <div class="sum-item">
+      <div class="sum-label">Total Assets</div>
+      <div class="sum-value" id="sum-total">–</div>
+    </div>
+    <div class="sum-divider"></div>
+    <div class="sum-item">
+      <div class="sum-label">Committed (off-sheet)</div>
+      <div class="sum-value" style="color:var(--muted)">$120,000</div>
+    </div>
+  </div>
+
+  <!-- Bank accounts -->
+  <div class="section-label">Mercury Bank Accounts</div>
+  <div class="accounts-grid" id="accounts-grid">
+    <div class="acct-card" style="opacity:0.4">
+      <div class="acct-name">Loading…</div>
+    </div>
+  </div>
+
+  <!-- SAFE multi-sig -->
+  <div class="section-label">SAFE Multi-Sig Treasury</div>
+  <div class="multisig-row" id="multisig-row">
+    <div class="multisig-card">
+      <div class="multisig-name">RegenHub Multi-Sig · Optimism + Mainnet</div>
+      <div class="multisig-addr">0xa594…7782</div>
+      <div class="multisig-assets">
+        <div class="asset-row"><span class="asset-label">USDC</span><span class="asset-val" id="ms-usdc">$9,792.54</span></div>
+        <div class="asset-row"><span class="asset-label">DAI</span><span class="asset-val" id="ms-dai">$998.89</span></div>
+        <div class="asset-row"><span class="asset-label">ETH (0.022)</span><span class="asset-val" id="ms-eth">$51.87</span></div>
+      </div>
+      <div class="multisig-total">
+        <span style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:0.06em">Total NAV</span>
+        <span id="ms-total">$10,843.30</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transactions -->
+  <div class="section-label">Transaction Ledger</div>
+
+  <div class="txn-controls">
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" data-filter="credit" onclick="setFilter('credit', this)">Credits</button>
+    <button class="filter-btn" data-filter="debit" onclick="setFilter('debit', this)">Debits</button>
+    <input class="txn-search" id="txn-search" placeholder="Search…" oninput="renderTxns()" type="search">
+  </div>
+
+  <div class="txn-table-wrap">
+    <table id="txn-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Account</th>
+          <th class="num">Amount</th>
+        </tr>
+      </thead>
+      <tbody id="txn-body">
+        <tr><td colspan="5" class="txn-empty">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="txn-footer" id="txn-footer"></div>
+
+</div><!-- .page -->
+</div><!-- #treasury -->
+
+<script>
+(function () {
+  'use strict';
+
+  var AUTH_URL = 'https://hvbdpgkdcdskhpbdeeim.supabase.co';
+  var AUTH_KEY = 'sb_publishable_kB69BlNpkNhOllwGMOE6xg_i4l1VHMv';
+  var DATA_URL = 'https://gxyeobogqfubgzklmxwt.supabase.co';
+  var DATA_KEY = 'sb_publishable_pa03QT7iCLP2PrYIWewXWw_6SnWyVRr';
+
+  var authSb = supabase.createClient(AUTH_URL, AUTH_KEY);
+  var dataSb = supabase.createClient(DATA_URL, DATA_KEY);
+
+  var allTxns = [];
+  var allAccounts = [];
+  var activeFilter = 'all';
+
+  // ── Auth ───────────────────────────────────────────────
+  async function checkAuth() {
+    try {
+      var { data: { session } } = await authSb.auth.getSession();
+      if (!session) {
+        document.getElementById('gate-text').textContent = 'REDIRECTING TO SIGN-IN…';
+        window.location.href = '/intranet/?redirect=' + encodeURIComponent(window.location.pathname);
+        return;
+      }
+      document.getElementById('gate').classList.add('hidden');
+      document.getElementById('treasury').classList.add('visible');
+      await loadAll();
+    } catch (err) {
+      document.getElementById('gate-text').textContent = 'AUTH ERROR — TRY RELOADING';
+      console.error(err);
+    }
+  }
+
+  // ── Data loading ───────────────────────────────────────
+  async function loadAll() {
+    setSyncState('loading');
+    try {
+      await Promise.all([loadAccounts(), loadTransactions()]);
+      setSyncState('live');
+      updateSummary();
+    } catch (err) {
+      setSyncState('error');
+      console.error(err);
+    }
+  }
+
+  async function loadAccounts() {
+    var { data, error } = await dataSb
+      .from('bank_accounts')
+      .select('*')
+      .eq('institution', 'Mercury')
+      .order('account_type');
+    if (error) throw error;
+    allAccounts = data || [];
+    renderAccounts();
+  }
+
+  async function loadTransactions() {
+    // Get all Mercury account IDs
+    var mercuryIds = allAccounts.length
+      ? allAccounts.map(function(a) { return a.id; })
+      : [];
+
+    var query = dataSb
+      .from('transactions')
+      .select('*')
+      .eq('external_provider', 'mercury')
+      .order('date', { ascending: false })
+      .limit(200);
+
+    var { data, error } = await query;
+    if (error) throw error;
+    allTxns = data || [];
+    renderTxns();
+  }
+
+  // ── Render accounts ────────────────────────────────────
+  function renderAccounts() {
+    var grid = document.getElementById('accounts-grid');
+    if (!allAccounts.length) {
+      grid.innerHTML = '<div class="txn-empty">No Mercury accounts found.</div>';
+      return;
+    }
+    grid.innerHTML = allAccounts.map(function(a) {
+      var bal = Number(a.balance) || 0;
+      var balFmt = '$' + bal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      var last4 = a.external_account_id ? '••' + a.external_account_id.slice(-4) : '';
+      return '<div class="acct-card">' +
+        '<div class="acct-card-head">' +
+          '<div class="acct-name">' + esc(a.account_name) + '</div>' +
+          '<div class="acct-tag">' + esc(a.account_type) + '</div>' +
+        '</div>' +
+        '<div class="acct-balance' + (bal === 0 ? ' zero' : '') + '">' + balFmt + '</div>' +
+        '<div class="acct-meta">' + (last4 || '') + '</div>' +
+        '<div class="acct-institution">Mercury Bank</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // ── Render transactions ────────────────────────────────
+  window.setFilter = function(f, btn) {
+    activeFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    renderTxns();
+  };
+
+  window.renderTxns = function() {
+    var q = (document.getElementById('txn-search').value || '').toLowerCase();
+    var rows = allTxns.filter(function(t) {
+      if (activeFilter === 'credit' && t.amount <= 0) return false;
+      if (activeFilter === 'debit'  && t.amount >= 0) return false;
+      if (q) {
+        var hay = ((t.description || '') + ' ' + (t.category || '')).toLowerCase();
+        if (hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+
+    var body = document.getElementById('txn-body');
+    if (!rows.length) {
+      body.innerHTML = '<tr><td colspan="5" class="txn-empty">No transactions match.</td></tr>';
+      document.getElementById('txn-footer').textContent = '';
+      return;
+    }
+
+    var acctMap = {};
+    allAccounts.forEach(function(a) { acctMap[a.id] = a.account_name; });
+
+    body.innerHTML = rows.map(function(t) {
+      var amt = Number(t.amount);
+      var isCredit = amt > 0;
+      var amtFmt = (isCredit ? '+' : '') + '$' + Math.abs(amt).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      var acctName = acctMap[t.account_id] || '–';
+      // Shorten account name for display
+      var acctShort = acctName.replace('Mercury ', '').replace('••', '••');
+      return '<tr>' +
+        '<td class="date">' + esc(t.date) + '</td>' +
+        '<td class="desc" title="' + esc(t.description) + '">' + esc(t.description) + '</td>' +
+        '<td class="cat">' + esc(t.category || '–') + '</td>' +
+        '<td class="acct-col">' + esc(acctShort) + '</td>' +
+        '<td class="amt ' + (isCredit ? 'credit' : 'debit') + '">' + amtFmt + '</td>' +
+      '</tr>';
+    }).join('');
+
+    var netAmt = rows.reduce(function(s, t) { return s + Number(t.amount); }, 0);
+    var netFmt = (netAmt >= 0 ? '+' : '') + '$' + Math.abs(netAmt).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.getElementById('txn-footer').textContent =
+      rows.length + ' transaction' + (rows.length === 1 ? '' : 's') + ' · net ' + netFmt;
+  };
+
+  // ── Summary bar ────────────────────────────────────────
+  function updateSummary() {
+    var cash = allAccounts.reduce(function(s, a) { return s + (Number(a.balance) || 0); }, 0);
+    var digital = 10843.30; // SAFE NAV — static until on-chain sync
+    var total = cash + digital;
+    var fmt = function(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+    document.getElementById('sum-cash').textContent = fmt(cash);
+    document.getElementById('sum-digital').textContent = fmt(digital);
+    document.getElementById('sum-total').textContent = fmt(total);
+  }
+
+  // ── UI helpers ─────────────────────────────────────────
+  function setSyncState(state) {
+    var dot = document.getElementById('sync-dot');
+    var label = document.getElementById('sync-label');
+    if (state === 'live') {
+      dot.style.background = 'var(--green)';
+      label.textContent = 'live · ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    } else if (state === 'loading') {
+      dot.style.background = 'var(--blue)';
+      label.textContent = 'syncing…';
+    } else {
+      dot.style.background = 'var(--red)';
+      label.textContent = 'error';
+    }
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  window.toggleMode = function() {
+    var html = document.documentElement;
+    var next = html.getAttribute('data-mode') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-mode', next);
+    document.getElementById('mode-btn').textContent = next === 'dark' ? 'Light' : 'Dark';
+    try { localStorage.setItem('treasury-mode', next); } catch(e) {}
+  };
+
+  // Restore mode
+  try {
+    var saved = localStorage.getItem('treasury-mode');
+    if (saved) {
+      document.documentElement.setAttribute('data-mode', saved);
+      document.getElementById('mode-btn').textContent = saved === 'dark' ? 'Light' : 'Dark';
+    }
+  } catch(e) {}
+
+  checkAuth();
+})();
+</script>
+</body>
+</html>
