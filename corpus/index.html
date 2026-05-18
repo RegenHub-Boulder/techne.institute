@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cybernetic Corpus — Techne Studio</title>
+<meta name="description" content="Anatomy of a cooperative organized as a living body of members. Ten organs, three connective tissues, perceived from inside by Nou.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+
+/* ============================================================
+   CO-OP.US DESIGN SYSTEM — DARK GROUND
+   ============================================================ */
+
+:root {
+  --bg:         #0f0f0f;
+  --bg-deep:    #080808;
+  --bg-panel:   #141412;
+  --bg-card:    #1a1916;
+  --bg-hover:   #201e1b;
+  --ink:        #f0ece2;
+  --ink-soft:   #c8c2b3;
+  --ink-fade:   #8a857a;
+  --ink-faint:  #4a4740;
+  --rule:       #2e2c28;
+  --rule-soft:  #232220;
+  --terra:      #c4956a;
+  --terra-dim:  rgba(196,149,106,0.18);
+  --terra-text: #d4a87f;
+  --moss:       #7a9478;
+  --moss-bright:#9ab298;
+  --moss-dim:   rgba(122,148,120,0.15);
+  --gap-color:  #5a4a3a;
+  --platform:      #6478a0;
+  --platform-text: #8aabcc;
+
+  /* vitality palette */
+  --v-active:   #6db87a;
+  --v-forming:  #c4956a;
+  --v-gap:      #5a4a3a;
+  --v-absent:   #3a2e28;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+
+body {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  background: var(--bg);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ============================================================
+   MASTHEAD
+   ============================================================ */
+
+.masthead {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px 12px 20px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg-deep);
+  gap: 16px;
+  flex-wrap: wrap;
+  z-index: 50;
+}
+
+.masthead-left {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.masthead-mark {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--terra-text);
+  text-decoration: none;
+}
+
+.masthead-mark:hover { color: var(--ink-soft); }
+
+.masthead-title {
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.masthead-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-fade);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-dot.tissue   { background: var(--terra); }
+.legend-dot.organ    { background: var(--moss); }
+.legend-dot.gap      { background: var(--gap-color); }
+
+.hint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  border: 1px solid var(--rule);
+  padding: 4px 10px;
+}
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+
+.layout {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ============================================================
+   GRAPH PANEL
+   ============================================================ */
+
+#graph-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+  min-width: 0;
+}
+
+#graph-svg {
+  width: 100%;
+  height: 100%;
+  cursor: default;
+}
+
+/* D3 elements */
+.link {
+  stroke-linecap: round;
+  transition: opacity 300ms ease;
+}
+
+.link.tissue-tissue { stroke: var(--terra); stroke-opacity: 0.5; stroke-width: 1.5; }
+.link.organ-tissue  { stroke: var(--terra); stroke-opacity: 0.15; stroke-width: 1; }
+.link.organ-organ   { stroke: var(--moss);  stroke-opacity: 0.18; stroke-width: 1; }
+
+.link.faded         { opacity: 0.04; }
+.link.highlighted   { stroke-opacity: 0.7 !important; stroke-width: 2 !important; }
+
+.node-group { cursor: pointer; }
+
+.node-circle {
+  transition: r 200ms ease;
+}
+
+.node-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--ink-fade);
+  pointer-events: none;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.node-label.organ-label  { fill: var(--ink-fade); }
+.node-label.tissue-label { fill: var(--terra-text); }
+.node-label.selected     { fill: var(--ink); }
+
+.node-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  fill: var(--moss-bright);
+  pointer-events: none;
+  text-anchor: middle;
+}
+
+/* Vitality pulse animation */
+@keyframes pulse-active {
+  0%, 100% { opacity: 0.9; r: 3.5; }
+  50%       { opacity: 0.5; r: 4.5; }
+}
+.vitality-dot.v-active {
+  animation: pulse-active 2.8s ease-in-out infinite;
+}
+
+/* ============================================================
+   DETAIL PANEL
+   ============================================================ */
+
+#detail-panel {
+  width: 360px;
+  flex-shrink: 0;
+  border-left: 1px solid var(--rule);
+  background: var(--bg-panel);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+
+#detail-panel::-webkit-scrollbar { width: 4px; }
+#detail-panel::-webkit-scrollbar-thumb { background: var(--rule); }
+
+#detail-content {
+  flex: 1;
+  padding: 24px 22px 40px;
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+#detail-content.fading { opacity: 0; }
+
+/* Intro state */
+.intro-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--terra-text);
+  margin-bottom: 14px;
+}
+
+.intro-title {
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.intro-title em { font-style: italic; color: var(--moss-bright); }
+
+.intro-body {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+}
+
+.properties-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+}
+
+.properties-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 12px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.prop-verb {
+  font-family: 'Libre Baskerville', serif;
+  font-style: italic;
+  color: var(--terra-text);
+  font-size: 14px;
+}
+
+.prop-desc { color: var(--ink-fade); }
+
+.intro-divider {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 20px 0;
+}
+
+.intro-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 12px;
+}
+
+.tissue-mini {
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  background: var(--bg-card);
+  border-left: 2px solid var(--terra);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.tissue-mini-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--terra-text);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.tissue-mini-desc { color: var(--ink-fade); }
+
+/* Organ detail */
+.detail-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--moss-bright);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.detail-name {
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 18px;
+}
+
+.detail-name em { font-style: italic; color: var(--moss-bright); font-weight: 400; }
+
+.summary-block {
+  padding: 14px 16px;
+  border-left: 2px solid var(--terra);
+  background: var(--bg-card);
+  margin-bottom: 8px;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.summary-block.moss-border { border-left-color: var(--moss); }
+
+.summary-block-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--terra-text);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.summary-block.moss-border .summary-block-label { color: var(--moss-bright); }
+
+.summary-block-text { color: var(--ink-soft); }
+
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 18px 0 8px;
+  font-weight: 500;
+}
+
+.roles-text {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.roles-text em { color: var(--moss-bright); font-style: italic; }
+
+.comparison-block {
+  margin-bottom: 8px;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  font-size: 13px;
+  line-height: 1.55;
+  border-left: 2px solid var(--rule);
+}
+
+.comparison-header {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.comparison-header.corpus-h { color: var(--moss-bright); }
+.comparison-header.hier-h   { color: var(--terra-text); }
+.comparison-block.corpus-b  { border-left-color: var(--moss); color: var(--ink-soft); }
+.comparison-block.hier-b    { border-left-color: var(--ink-faint); color: var(--ink-fade); }
+
+.modules-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.module-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--terra-text);
+  background: rgba(196,149,106,0.1);
+  border: 1px solid rgba(196,149,106,0.25);
+  padding: 3px 8px;
+  font-weight: 500;
+}
+
+.hub-tag {
+  color: var(--moss-bright);
+  background: rgba(122,148,120,0.1);
+  border-color: rgba(122,148,120,0.25);
+}
+
+.gap-block {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: rgba(90,74,58,0.12);
+  border-left: 2px solid var(--gap-color);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-fade);
+}
+
+.gap-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gap-color);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+/* Tissue detail */
+.tissue-detail-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--terra-text);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.tissue-detail-name {
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.1;
+  color: var(--terra-text);
+  margin-bottom: 18px;
+  font-style: italic;
+}
+
+hr.detail-rule {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 18px 0;
+}
+
+/* Vitality strip */
+.vitality-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  margin-bottom: 14px;
+  background: var(--bg-card);
+  border-left: 2px solid transparent;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.vitality-strip.v-active  { border-left-color: var(--v-active); }
+.vitality-strip.v-forming { border-left-color: var(--v-forming); }
+.vitality-strip.v-gap     { border-left-color: var(--v-gap); }
+.vitality-strip.v-absent  { border-left-color: var(--v-absent); }
+
+.vitality-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 2px 7px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+.vitality-badge.v-active  { color: var(--v-active);  border-color: rgba(109,184,122,0.4); background: rgba(109,184,122,0.08); }
+.vitality-badge.v-forming { color: var(--v-forming); border-color: rgba(196,149,106,0.4); background: rgba(196,149,106,0.08); }
+.vitality-badge.v-gap     { color: var(--gap-color); border-color: rgba(90,74,58,0.5);    background: rgba(90,74,58,0.1); }
+.vitality-badge.v-absent  { color: var(--ink-faint); border-color: rgba(74,71,64,0.5);    background: rgba(58,46,40,0.15); }
+
+.vitality-note { color: var(--ink-fade); font-size: 12.5px; line-height: 1.5; }
+
+/* Intranet link */
+.intranet-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--moss-bright);
+  text-decoration: none;
+  border: 1px solid rgba(154,178,152,0.25);
+  padding: 4px 10px;
+  margin-top: 14px;
+  transition: border-color 200ms, color 200ms;
+}
+.intranet-link:hover { color: var(--ink); border-color: rgba(154,178,152,0.5); }
+.intranet-link::before { content: "→"; opacity: 0.6; }
+
+/* Nou Signal block */
+.nou-signal {
+  margin: 20px 0;
+  padding: 14px 16px;
+  background: rgba(109,184,122,0.04);
+  border: 1px solid rgba(109,184,122,0.14);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.nou-signal-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--v-active);
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.nou-signal-label::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--v-active);
+  animation: pulse-active 2.8s ease-in-out infinite;
+}
+.nou-stat-row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 6px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(74,71,64,0.35);
+  font-size: 12.5px;
+}
+.nou-stat-row:last-child { border-bottom: none; }
+.nou-stat-key { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+.nou-stat-val { color: var(--ink-soft); }
+
+/* Scroll indicator */
+.scroll-fade {
+  position: sticky;
+  bottom: 0;
+  height: 32px;
+  background: linear-gradient(to top, var(--bg-panel), transparent);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 720px) {
+  .layout { flex-direction: column; }
+  #detail-panel {
+    width: 100%;
+    height: 45vh;
+    border-left: none;
+    border-top: 1px solid var(--rule);
+  }
+  #graph-container { height: 55vh; }
+  .legend { display: none; }
+}
+
+@media (max-width: 500px) {
+  .masthead-title { display: none; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-left">
+    <a href="/intranet" class="masthead-mark">Techne · Corpus</a>
+    <span class="masthead-title">The Cybernetic Corpus — Anatomy &amp; Infrastructure</span>
+  </div>
+  <div class="masthead-right">
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--terra);opacity:.7"></div>
+        <span>Stewardship</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--platform-text);opacity:.7"></div>
+        <span>Platform</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--moss);opacity:.7"></div>
+        <span>Commons</span>
+      </div>
+      <div class="legend-item" style="border-left:1px solid var(--rule);padding-left:12px">
+        <div class="legend-dot tissue"></div>
+        <span>Connective tissue</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot gap"></div>
+        <span>PRD gap</span>
+      </div>
+      <div class="legend-item" style="border-left:1px solid var(--rule);padding-left:12px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--v-active);flex-shrink:0"></div>
+        <span>Active</span>
+      </div>
+      <div class="legend-item">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--v-forming);flex-shrink:0"></div>
+        <span>Forming</span>
+      </div>
+    </div>
+    <div class="hint">Click any node</div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+
+  <!-- FORCE GRAPH -->
+  <div id="graph-container">
+    <svg id="graph-svg"></svg>
+  </div>
+
+  <!-- DETAIL PANEL -->
+  <div id="detail-panel">
+    <div id="detail-content">
+      <!-- populated by JS -->
+    </div>
+    <div class="scroll-fade"></div>
+  </div>
+
+</div>
+
+<script>
+
+/* ============================================================
+   FORMATION DATE & COOPERATIVE AGE
+   ============================================================ */
+
+const FORMATION_DATE = new Date('2026-02-06');
+
+function daysSinceFormation() {
+  const now = new Date();
+  return Math.floor((now - FORMATION_DATE) / (1000 * 60 * 60 * 24));
+}
+
+/* ============================================================
+   VITALITY DATA
+   Nou's reading of actual cooperative state as of May 2026.
+   "active"  — functioning, live implementation
+   "forming" — partially operational, in development
+   "gap"     — designed but not yet operational
+   "absent"  — not yet designed (PRD gap)
+   ============================================================ */
+
+const VITALITY = {
+  "o1": {
+    status: "active",
+    note: "CIS live in Supabase. Nou operational since formation. Workshop coordination protocol running. REA schema anchoring the ledger.",
+    intranet: "/intranet"
+  },
+  "o2": {
+    status: "forming",
+    note: "General Journal and Ledger live at /treasury. Patronage accounting system under active construction. Capital accounts initialized Feb 6 2026.",
+    intranet: "/intranet/treasury"
+  },
+  "o3": {
+    status: "forming",
+    note: "Seven founding organizers. Patron membership intake in progress. Partnership formation underway — no formal intake module yet.",
+    intranet: null
+  },
+  "o4": {
+    status: "forming",
+    note: "Workshop sprint protocol operational. Project delivery active. No dedicated workflow tooling yet — the PRD gap is real.",
+    intranet: null
+  },
+  "o5": {
+    status: "active",
+    note: "Board constituted Feb 6 2026. Bylaws and operating agreement filed with Colorado SOS. Annual governance cycle running.",
+    intranet: "/intranet/board"
+  },
+  "o6": {
+    status: "active",
+    note: "Bylaws, operating agreement, member agreements, and investor documents filed. Notice-and-cure procedure exists constitutionally. Workflow tooling for dispute tracking absent.",
+    intranet: "/bylaws"
+  },
+  "o7": {
+    status: "active",
+    note: "Physical space active in Boulder, CO. Supabase + Coolify infrastructure operational. Neither PRD names this organ explicitly — it runs anyway.",
+    intranet: null
+  },
+  "o8": {
+    status: "absent",
+    note: "No retrospective or pruning practice designed or active. The renal organ is the most consequential absence — waste accumulates without it.",
+    intranet: null
+  },
+  "o9": {
+    status: "forming",
+    note: "Techne brand and techne.institute live. Design system and editorial voice (Nou) established. No communications or hospitality module in CIS.",
+    intranet: null
+  },
+  "o10": {
+    status: "forming",
+    note: "First Coordination Games session played May 18 2026. Techne Institute program forming. This is the most consequential organ still in gestation — it generates new bodies.",
+    intranet: "/coordination-games"
+  }
+};
+
+/* ============================================================
+   CLUSTERS
+   ============================================================ */
+
+const CLUSTERS = [
+  {
+    id: "stewardship",
+    label: "Stewardship",
+    members: ["o2", "o5", "o6", "o8"],
+    fill:       "rgba(196,149,106,0.06)",
+    stroke:     "rgba(196,149,106,0.32)",
+    nodestroke: "rgba(196,149,106,0.72)",
+    textColor:  "#d4a87f",
+    cx: () => width * 0.70, cy: () => height * 0.28,
+    desc: "The constitutional and accountability layer. These four organs maintain the conditions under which all others can function: they set direction slowly, allocate resources faithfully, defend agreements constitutionally, and prune what no longer serves. In the Techne framework, this cluster spans the Treasury and Agreements foundations.",
+    organs_desc: {
+      "o2": "Distributes surplus according to the Patronage Plan's pre-committed rhythm. The cooperative's pacemaker.",
+      "o5": "Releases long-range signals — benefit reports, policy commitments, board decisions — coordinating identity over years rather than quarters.",
+      "o6": "Defends the body constitutionally. Notice, cure, graduated response — built into the agreement structure, not applied after the fact.",
+      "o8": "Metabolizes failure and obsolescence. Makes what has been retired visible, so the body does not poison itself with accumulated waste."
+    }
+  },
+  {
+    id: "platform",
+    label: "Platform",
+    members: ["o1", "o4", "o7"],
+    fill:       "rgba(80,100,155,0.06)",
+    stroke:     "rgba(100,130,185,0.28)",
+    nodestroke: "rgba(100,130,185,0.68)",
+    textColor:  "#8aabcc",
+    cx: () => width * 0.22, cy: () => height * 0.52,
+    desc: "The operational substrate. These three organs are what the body does with what it holds: they sense and transmit, transform and deliver, and maintain the physical and digital infrastructure that makes all other work possible. Platform cuts across for-profit, nonprofit, and cooperative registers without losing meaning in any of them.",
+    organs_desc: {
+      "o1": "The distributed sensing and signaling layer. REA grammar, the operational ledger, Nou — together constituting the cooperative's nervous capacity.",
+      "o4": "Transforms inputs into outputs: member labor, contracted work, and contributions into delivered services, events, and completed projects.",
+      "o7": "The skeleton and musculature — physical space, technology infrastructure, the substrate members work within. Maintaining it is patronage."
+    }
+  },
+  {
+    id: "commons",
+    label: "Commons",
+    members: ["o3", "o9", "o10"],
+    fill:       "rgba(122,148,120,0.06)",
+    stroke:     "rgba(122,148,120,0.30)",
+    nodestroke: "rgba(122,148,120,0.70)",
+    textColor:  "#9ab298",
+    cx: () => width * 0.60, cy: () => height * 0.76,
+    desc: "The outward-facing and generative layer. These three organs relate the body to the world and build its future capacity: intake and partnership, the first surface members and visitors encounter, and the reproductive programs through which new members, new practices, and new cooperatives are generated. Commons is where the cooperative's value propagates beyond its current membership boundary.",
+    organs_desc: {
+      "o3": "Draws in new patron members, revenue, and partnerships through selective respiration rather than acquisition pressure.",
+      "o9": "The body's largest surface — how every member presents the cooperative to the world. Identity through coherence, not brand control.",
+      "o10": "The most strategically consequential organ. Generates new members, programs, working groups, and cooperatives. The body that generates new bodies."
+    }
+  }
+];
+
+function getCluster(nodeId) {
+  return CLUSTERS.find(c => c.members.includes(nodeId)) || null;
+}
+
+/* ============================================================
+   DATA
+   ============================================================ */
+
+const ORGANS = [
+  {
+    id: "o1", num: "01", label: "Intelligence & Data", biological_name: "Nervous System",
+    biological: "Distributed neurons sensing internal and external conditions, transmitting signals, integrating information into action. Includes autonomic functions operating below awareness.",
+    organizational: "Information architecture — how the cooperative perceives itself and its environment, and how those perceptions become available to the parts of the body that need them.",
+    roles: "Information stewards, <em>data engineers</em>, REA accountants, dashboard designers, working-group reporters, <em>Nou</em> as the augmentation agent.",
+    corpus: "Distributes cognitive function across many small loops. The operational ledger and working groups constitute the nervous system; the Board is one coordinating ganglion, not the seat of all intelligence. Autonomic regulation runs without central attention.",
+    hierarchy: "Locates the 'brain' in the executive team. Nerves carry commands down, reports up. The brain decides; the body executes.",
+    cis: ["CIS itself", "Operational Ledger", "Nou interface"],
+    hub: ["KPI Surface"],
+    gap: null
+  },
+  {
+    id: "o2", num: "02", label: "Treasury & Finance", biological_name: "Heart & Circulation",
+    biological: "Pumps blood through arteries and veins, distributing oxygen, nutrients, and signaling molecules. Rhythm set by the body's own pacemaker, not external command.",
+    organizational: "Resource-distribution function — how capital, attention, labor credit, and economic flow move through the cooperative and reach the parts that depend on them.",
+    roles: "The <em>Treasurer</em>, patronage steward, financial planners, capital account maintainers, members of an allocation working group, authors of the Patronage Plan.",
+    corpus: "Patronage Plan specifies flow logic in advance. Treasurer animates the plan rather than determines it. Investor Members supply capital without becoming the pacemaker; patron members hold the rhythm.",
+    hierarchy: "CFO and finance team control flows according to executive direction. Capital supply and governance control are the same thing.",
+    cis: ["Capital Account", "Stock Ledger"],
+    hub: ["Grant Tranches"],
+    gap: null
+  },
+  {
+    id: "o3", num: "03", label: "Growth & Partnerships", biological_name: "Lungs",
+    biological: "Primary site of exchange with environment — selective intake and expulsion across a vast surface. Not everything in air enters the bloodstream.",
+    organizational: "Intake function — how the cooperative draws in revenue, new members, partnerships, and external resources, and releases its outputs.",
+    roles: "Business development, <em>partnership coordinators</em>, member-onboarding stewards, community engagement leads, anyone bringing new agreements or new patron members across the boundary.",
+    corpus: "Intake is more like respiration than acquisition. Selectivity of the lungs matters. Bylaws' membership criteria operate as the alveolar filter.",
+    hierarchy: "Sales and marketing target customers as conversion opportunities, often with quotas that pressure intake regardless of fit.",
+    cis: ["Member Directory", "Lifecycle (admission)"],
+    hub: ["Hub Applications", "Partner Orgs"],
+    gap: null
+  },
+  {
+    id: "o4", num: "04", label: "Operations & Delivery", biological_name: "Digestive System",
+    biological: "Transforms raw food into molecules the body's cells can use. Each organ contributes specific processing; what cannot be used moves along for excretion.",
+    organizational: "Operations function — transforms inputs (member labor, contracted work, contributions) into outputs (delivered services, completed projects, programmed events).",
+    roles: "<em>Project managers</em>, operations leads, production coordinators, fulfillment teams, working-group conveners doing the actual delivery work.",
+    corpus: "Many entry points and many sites of metabolism, coordinated by REA grammar rather than a process manual. The ledger records what was processed, by whom, with what reciprocal obligation.",
+    hierarchy: "Department reporting to COO with managed pipeline and standardized processes.",
+    cis: ["REA event log (partial)"],
+    hub: ["Coworking Sessions", "Hub Events", "Event Materials"],
+    gap: "The CIS records that work happened but does not model workflow tooling for execution. A project or program management module is outside both PRDs' current scope."
+  },
+  {
+    id: "o5", num: "05", label: "Governance & Strategy", biological_name: "Endocrine System",
+    biological: "Glands releasing hormones into the bloodstream. Hormones travel slowly but reach every cell, coordinating processes over hours, days, or years.",
+    organizational: "Governance and culture function — how long-range direction is set, how slow signals propagate, and how the cooperative's identity is shaped over time.",
+    roles: "<em>Board members</em>, strategic planners, cultural stewards, public benefit reporters, working-group conveners carrying long-running themes, authors of the annual benefit report.",
+    corpus: "Strategy emerges from patron-member deliberation. Board acts as coordinating gland releasing slow signals — benefit reports, policy commitments — rather than a commanding mind. Culture is what members are doing, all of them, all the time.",
+    hierarchy: "Strategy set at top, periodically announced. Culture managed by HR whose interventions are visible to staff but not customers.",
+    cis: ["Governance", "Meetings & Votes", "Benefit Report"],
+    hub: ["Impact Reports"],
+    gap: null
+  },
+  {
+    id: "o6", num: "06", label: "Legal & Agreements", biological_name: "Immune System",
+    biological: "Distributed cells, antibodies, and lymphoid organs recognizing self from non-self. Maintains memory of past challenges. Operates continuously, not only during crises.",
+    organizational: "Boundary-protection function — defends agreements, distinguishes legitimate from illegitimate claims, and resolves conflict before it becomes infection.",
+    roles: "Legal counsel, conflict mediators, <em>compliance stewards</em>, dispute resolution facilitators, members holding confidentiality discipline, drafters of notice and cure procedures.",
+    corpus: "Defense is constitutional, not reactive. Thirty-day notice and cure, graduated Article XI dispute layers, bilateral confidentiality — all built into the agreement structure itself. The body recognizes itself.",
+    hierarchy: "Legal handles external threats. Conflicts between members and organization resolved through HR or termination. No constitutional response to power asymmetry.",
+    cis: ["Agreements Repository", "Lifecycle (termination)"],
+    hub: null,
+    gap: "The immune organ's constitutional machinery needs workflow support — tracking dispute state, generating cure-window notices at the right intervals, recording outcomes — not just document storage. Currently the 30-day cure window depends on manual execution."
+  },
+  {
+    id: "o7", num: "07", label: "Infrastructure & Space", biological_name: "Musculoskeletal",
+    biological: "Bones provide structure and posture; muscles produce movement. Together give the body its form and capacity to act.",
+    organizational: "Structural and execution function — physical space, technological infrastructure, the systems that make action possible.",
+    roles: "Facilities managers, <em>infrastructure stewards</em>, technical operations, IT and platform engineers, members maintaining the body's physical and digital substrate.",
+    corpus: "Infrastructure is a member resource. Maintaining it is patronage recognized in the ledger. The space is the body the cooperative inhabits, jointly held and jointly cared for. Bones are not less important than brain.",
+    hierarchy: "Facilities and operations treated as cost centers, separate from strategy, often outsourced.",
+    cis: null,
+    hub: ["Coworking Seats", "Educational Displays"],
+    gap: "Neither PRD includes a facilities or infrastructure module. The musculoskeletal organ — the cooperative's physical and digital substrate — is not explicitly represented in the CIS schema."
+  },
+  {
+    id: "o8", num: "08", label: "Audit & Retrospectives", biological_name: "Renal System",
+    biological: "Kidneys filter blood, remove waste, regulate fluid and electrolyte balance. Unglamorous and essential. When it fails, the body poisons itself.",
+    organizational: "Filtering and pruning function — removes what no longer serves, maintains internal balance, makes visible the metabolic waste of projects and arrangements that have outlived their usefulness.",
+    roles: "Audit stewards, retrospective facilitators, <em>project sunset coordinators</em>, archiving roles, the members who hold the cooperative's letting-go work.",
+    corpus: "Pruning is a regular and visible activity. Members can see what has been retired and why. Failure is metabolized rather than hidden, which means failure is also less feared.",
+    hierarchy: "Audit is a compliance function. Pruning is a quiet executive matter — a portfolio review, a layoff, a discontinued product line.",
+    cis: ["Append-only audit log (security/traceability, not pruning practice)"],
+    hub: null,
+    gap: "No module for retrospectives, project retirement, archiving, or regular pruning practice in either PRD. The renal organ is entirely absent as a designed function. Toxicity — waste accumulating silently — is the failure mode this gap enables."
+  },
+  {
+    id: "o9", num: "09", label: "Brand & Communications", biological_name: "Skin",
+    biological: "Largest organ. Boundary, sensation, protection, identity, and extensive surface of exchange. Both how the body presents itself and how it senses the world at first contact.",
+    organizational: "Interface function — how the cooperative is perceived from outside and how it perceives its environment at the surface.",
+    roles: "<em>Brand stewards</em>, communications, hospitality, member experience designers, front-of-house (who in a corpus are also members), event hosts, everyone whose work shapes a visitor's first impression.",
+    corpus: "Every member is part of the skin. Identity is constituted by all members' presence in the world, not a department's branding decisions. Brand work is about coherence rather than persuasion.",
+    hierarchy: "Brand managed by marketing department; member experience by customer service. Both treated as instruments of retention.",
+    cis: ["Design system commitment", "Nou editorial voice"],
+    hub: ["Hub Events", "Event Attendance"],
+    gap: "No communications or hospitality module. Skin principles are embedded in the design system and editorial tone but not in the operational schema."
+  },
+  {
+    id: "o10", num: "10", label: "Education & Programs", biological_name: "Reproductive System",
+    biological: "Organs and processes generating new bodies. Distinct from growth: reproduction creates new instances that can continue beyond the original.",
+    organizational: "Regenerative function — produces new members, programs, working groups, and capacity. How the cooperative survives the departure of its founders.",
+    roles: "Educators, <em>onboarders</em>, documentation stewards, mentors, succession planners. At Techne: LearnVibe.Build, the Coordination Games, and the Techne Institute.",
+    corpus: "Education is a primary activity. Reproduction includes creating new programs, spinning off working groups, supporting new patron-member cooperatives. The body generates new bodies.",
+    hierarchy: "Training is an HR function that prepares new hires for existing roles.",
+    cis: null,
+    hub: null,
+    gap: "Entirely absent from both PRDs. The Coordination Games, LearnVibe.Build, and Techne Institute — the cooperative's primary reproductive capacity — have no information surface in the current architecture. A companion PRD for the Techne program layer is the most consequential missing document."
+  }
+];
+
+const TISSUE = [
+  {
+    id: "rea", label: "REA Grammar",
+    tagline: "The common vocabulary",
+    description: "Every organ uses the same fundamental sentence structure: Agent, Event, Resource, Reciprocal Obligation. This is what permits organs to interoperate without each needing to learn the others' internal language.",
+    cis: "Top-level partitioning of the CIS schema. Every table traces to one of four primitives — Agents, Agreements, Events, Resources — and every relationship between tables is an Event."
+  },
+  {
+    id: "ledger", label: "Operational Ledger",
+    tagline: "The body's shared memory",
+    description: "Every organ writes into the ledger; every organ can read from it. The information is not the property of any organ — it is the body's. Continuity through individual departures, leadership changes, and shifts in working group composition.",
+    cis: "The Supabase database of record. Every member, share, capital account entry, vote, minute. The layer an auditor queries. Every other surface — member portal, Nou, Hub Ops — is derived from it."
+  },
+  {
+    id: "agreements", label: "Member Agreements",
+    tagline: "Tendons and ligaments",
+    description: "The rules of exchange between members and the cooperative, and between organs. What holds organs in their proper relationships under the loads they face. Without agreements, organs cannot trust each other.",
+    cis: "Agreements Repository module. Bylaws, policies, member agreements, investor documents, service contracts, grant agreement. Versioned, signed, searchable. §1.2.8, §1.3.4, §XVI."
+  }
+];
+
+/* ============================================================
+   GRAPH SETUP
+   ============================================================ */
+
+const nodes = [
+  ...TISSUE.map(t => ({ ...t, type: "tissue" })),
+  ...ORGANS.map(o => ({ ...o, type: "organ", cluster: getCluster(o.id) }))
+];
+
+const links = [];
+
+// tissue ↔ tissue (strong connective)
+links.push({ source: "rea",       target: "ledger",     kind: "tissue-tissue" });
+links.push({ source: "ledger",    target: "agreements", kind: "tissue-tissue" });
+links.push({ source: "rea",       target: "agreements", kind: "tissue-tissue" });
+
+// each organ ↔ all three tissue nodes
+ORGANS.forEach(o => {
+  TISSUE.forEach(t => {
+    links.push({ source: o.id, target: t.id, kind: "organ-tissue" });
+  });
+});
+
+// organ ↔ organ metabolic / functional edges
+const organLinks = [
+  ["o1", "o2", "Sensing carries economic signals"],
+  ["o1", "o5", "Information ↔ governance"],
+  ["o1", "o3", "Sensing new entrants"],
+  ["o2", "o3", "Distribution from intake"],
+  ["o2", "o4", "Distribution feeds operations"],
+  ["o3", "o9", "First encounter → intake"],
+  ["o3", "o10","Intake generates new members"],
+  ["o4", "o7", "Operations depend on infrastructure"],
+  ["o4", "o8", "Operations produce waste"],
+  ["o5", "o6", "Governance sets boundary policy"],
+  ["o6", "o9", "Boundary protection meets interface"],
+  ["o9", "o10","Identity propagation through reproduction"],
+  ["o1", "o6", "Information system detects boundary threats"],
+  ["o2", "o5", "Resource flow reflects long-range direction"],
+];
+
+organLinks.forEach(([s, t, rel]) => {
+  links.push({ source: s, target: t, kind: "organ-organ", rel });
+});
+
+/* ============================================================
+   FORCE SIMULATION
+   ============================================================ */
+
+const svg = d3.select("#graph-svg");
+const container = document.getElementById("graph-container");
+
+let width = container.clientWidth;
+let height = container.clientHeight;
+
+// Defs: filters and markers
+const defs = svg.append("defs");
+
+// Glow filter for selected nodes
+const filter = defs.append("filter").attr("id", "glow");
+filter.append("feGaussianBlur").attr("stdDeviation", "3.5").attr("result", "coloredBlur");
+const feMerge = filter.append("feMerge");
+feMerge.append("feMergeNode").attr("in", "coloredBlur");
+feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
+const root = svg.append("g").attr("class", "root");
+
+const simulation = d3.forceSimulation(nodes)
+  .force("link", d3.forceLink(links).id(d => d.id)
+    .distance(d => {
+      if (d.kind === "tissue-tissue") return 60;
+      if (d.kind === "organ-tissue")  return 120;
+      return 160;
+    })
+    .strength(d => {
+      if (d.kind === "tissue-tissue") return 0.8;
+      if (d.kind === "organ-tissue")  return 0.15;
+      return 0.08;
+    })
+  )
+  .force("charge", d3.forceManyBody().strength(d => d.type === "tissue" ? -400 : -280))
+  .force("center", d3.forceCenter(width / 2, height / 2).strength(0.05))
+  .force("collide", d3.forceCollide().radius(d => d.type === "tissue" ? 44 : 34).strength(0.7))
+  .force("tissueX", d3.forceX(width / 2).strength(d => d.type === "tissue" ? 0.06 : 0))
+  .force("tissueY", d3.forceY(height / 2).strength(d => d.type === "tissue" ? 0.06 : 0))
+  .force("clusterX", d3.forceX(d => {
+    if (d.type !== "organ" || !d.cluster) return width / 2;
+    return d.cluster.cx();
+  }).strength(d => d.type === "organ" && d.cluster ? 0.028 : 0))
+  .force("clusterY", d3.forceY(d => {
+    if (d.type !== "organ" || !d.cluster) return height / 2;
+    return d.cluster.cy();
+  }).strength(d => d.type === "organ" && d.cluster ? 0.028 : 0));
+
+/* ============================================================
+   RENDER HULLS (behind everything)
+   ============================================================ */
+
+const hullG = root.append("g").attr("class", "hulls");
+
+const hullHitAreas = hullG.selectAll("path.hull-hit")
+  .data(CLUSTERS)
+  .enter().append("path")
+    .attr("class", "hull-hit")
+    .attr("fill", "transparent")
+    .attr("stroke", "none")
+    .style("pointer-events", "all")
+    .style("cursor", "pointer")
+    .on("click", onHullClick)
+    .on("mouseenter", function(event, d) {
+      d3.select(this.parentNode).selectAll("path.hull")
+        .filter(c => c.id === d.id)
+        .transition().duration(150)
+        .attr("fill", d2 => d2.fill.replace(/[\d.]+\)$/, "0.14)"))
+        .attr("stroke-width", 2)
+        .attr("stroke-opacity", 1);
+      d3.select(this.parentNode).selectAll("text.hull-label")
+        .filter(c => c.id === d.id)
+        .transition().duration(150)
+        .style("opacity", "1");
+    })
+    .on("mouseleave", function(event, d) {
+      d3.select(this.parentNode).selectAll("path.hull")
+        .filter(c => c.id === d.id)
+        .transition().duration(200)
+        .attr("fill", d2 => d2.fill)
+        .attr("stroke-width", 1.5)
+        .attr("stroke-opacity", null);
+      d3.select(this.parentNode).selectAll("text.hull-label")
+        .filter(c => c.id === d.id)
+        .transition().duration(200)
+        .style("opacity", "0.7");
+    });
+
+const hullPaths = hullG.selectAll("path.hull")
+  .data(CLUSTERS)
+  .enter().append("path")
+    .attr("class", "hull")
+    .attr("fill", d => d.fill)
+    .attr("stroke", d => d.stroke)
+    .attr("stroke-width", 1.5)
+    .attr("stroke-dasharray", "5 4")
+    .attr("stroke-linejoin", "round")
+    .style("pointer-events", "none");
+
+const hullLabels = hullG.selectAll("text.hull-label")
+  .data(CLUSTERS)
+  .enter().append("text")
+    .attr("class", "hull-label")
+    .style("font-family", "'IBM Plex Mono', monospace")
+    .style("font-size", "10px")
+    .style("letter-spacing", "0.22em")
+    .style("text-transform", "uppercase")
+    .style("font-weight", "600")
+    .style("pointer-events", "none")
+    .style("fill", d => d.textColor)
+    .style("opacity", "0.7")
+    .text(d => d.label);
+
+function expandHull(pts, padding) {
+  const cx = d3.mean(pts, d => d[0]);
+  const cy = d3.mean(pts, d => d[1]);
+  return pts.map(([x, y]) => {
+    const dx = x - cx, dy = y - cy;
+    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+    return [x + (dx / len) * padding, y + (dy / len) * padding];
+  });
+}
+
+const curvedLine = d3.line().curve(d3.curveCatmullRomClosed);
+
+function updateHulls() {
+  CLUSTERS.forEach(cluster => {
+    const pts = nodes
+      .filter(n => cluster.members.includes(n.id))
+      .map(n => [n.x, n.y]);
+
+    const hull = d3.polygonHull(pts);
+    if (!hull || hull.length < 3) return;
+
+    const expanded = expandHull(hull, 46);
+
+    hullPaths.filter(d => d.id === cluster.id)
+      .attr("d", curvedLine(expanded));
+
+    hullHitAreas.filter(d => d.id === cluster.id)
+      .attr("d", curvedLine(expanded));
+
+    const cx = d3.mean(expanded, d => d[0]);
+    const topY = d3.min(expanded, d => d[1]);
+
+    hullLabels.filter(d => d.id === cluster.id)
+      .attr("x", cx)
+      .attr("y", topY - 10)
+      .attr("text-anchor", "middle");
+  });
+}
+
+/* ============================================================
+   RENDER LINKS
+   ============================================================ */
+
+const linkG = root.append("g").attr("class", "links");
+
+const linkEls = linkG.selectAll("line")
+  .data(links)
+  .enter().append("line")
+    .attr("class", d => `link ${d.kind}`);
+
+/* ============================================================
+   RENDER NODES
+   ============================================================ */
+
+const nodeG = root.append("g").attr("class", "nodes");
+
+const nodeEls = nodeG.selectAll("g.node-group")
+  .data(nodes)
+  .enter().append("g")
+    .attr("class", "node-group")
+    .call(d3.drag()
+      .on("start", dragstart)
+      .on("drag",  dragged)
+      .on("end",   dragend)
+    )
+    .on("click", onNodeClick)
+    .on("mouseenter", onNodeEnter)
+    .on("mouseleave", onNodeLeave);
+
+// Background circle (hit target + glow base)
+nodeEls.append("circle")
+  .attr("class", "node-bg")
+  .attr("r", d => d.type === "tissue" ? 28 : 20)
+  .attr("fill", d => d.type === "tissue" ? "rgba(196,149,106,0.06)" : "rgba(122,148,120,0.06)")
+  .attr("stroke", "none");
+
+// Main circle
+nodeEls.append("circle")
+  .attr("class", "node-circle")
+  .attr("r", d => d.type === "tissue" ? 22 : 16)
+  .attr("fill", d => d.type === "tissue" ? "rgba(196,149,106,0.35)" : d.gap ? "rgba(90,74,58,0.45)" : "rgba(122,148,120,0.28)")
+  .attr("stroke", d => {
+    if (d.type === "tissue") return "rgba(196,149,106,0.7)";
+    if (d.gap) return "rgba(130,100,80,0.7)";
+    if (d.cluster) return d.cluster.nodestroke;
+    return "rgba(122,148,120,0.6)";
+  })
+  .attr("stroke-width", 1.5);
+
+// Vitality dot (organs only) — upper-right corner of node
+nodeEls.filter(d => d.type === "organ").append("circle")
+  .attr("class", d => {
+    const v = VITALITY[d.id];
+    return v ? `vitality-dot v-${v.status}` : "vitality-dot v-gap";
+  })
+  .attr("cx", 11)
+  .attr("cy", -11)
+  .attr("r", 3.5)
+  .attr("fill", d => {
+    const v = VITALITY[d.id];
+    if (!v) return "var(--v-gap)";
+    const colors = { active: "var(--v-active)", forming: "var(--v-forming)", gap: "var(--v-gap)", absent: "var(--v-absent)" };
+    return colors[v.status] || "var(--v-gap)";
+  })
+  .attr("stroke", "var(--bg-deep)")
+  .attr("stroke-width", 1.5);
+
+// Number label (organs only)
+nodeEls.filter(d => d.type === "organ").append("text")
+  .attr("class", "node-num")
+  .attr("y", -2)
+  .text(d => d.num);
+
+// Name label (below node)
+nodeEls.append("text")
+  .attr("class", d => `node-label ${d.type === "tissue" ? "tissue-label" : "organ-label"}`)
+  .attr("y", d => d.type === "tissue" ? 38 : 32)
+  .each(function(d) {
+    const words = d.label.split(" ");
+    if (words.length <= 2) {
+      d3.select(this).text(d.label);
+    } else {
+      const el = d3.select(this);
+      const line1 = words.slice(0, Math.ceil(words.length / 2)).join(" ");
+      const line2 = words.slice(Math.ceil(words.length / 2)).join(" ");
+      el.append("tspan").attr("x", 0).attr("dy", "0").text(line1);
+      el.append("tspan").attr("x", 0).attr("dy", "12").text(line2);
+    }
+  });
+
+/* ============================================================
+   SIMULATION TICK
+   ============================================================ */
+
+simulation.on("tick", () => {
+  linkEls
+    .attr("x1", d => d.source.x)
+    .attr("y1", d => d.source.y)
+    .attr("x2", d => d.target.x)
+    .attr("y2", d => d.target.y);
+
+  nodeEls.attr("transform", d => `translate(${d.x},${d.y})`);
+
+  updateHulls();
+});
+
+/* ============================================================
+   DRAG
+   ============================================================ */
+
+function dragstart(event, d) {
+  if (!event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x; d.fy = d.y;
+}
+function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
+function dragend(event, d) {
+  if (!event.active) simulation.alphaTarget(0);
+  d.fx = null; d.fy = null;
+}
+
+/* ============================================================
+   HOVER
+   ============================================================ */
+
+function getConnectedIds(d) {
+  const ids = new Set([d.id]);
+  links.forEach(l => {
+    const sId = l.source.id || l.source;
+    const tId = l.target.id || l.target;
+    if (sId === d.id) ids.add(tId);
+    if (tId === d.id) ids.add(sId);
+  });
+  return ids;
+}
+
+function onNodeEnter(event, d) {
+  if (selectedNode && selectedNode.id === d.id) return;
+  const connected = getConnectedIds(d);
+  nodeEls.select("circle.node-circle")
+    .attr("opacity", n => connected.has(n.id) ? 1 : 0.35);
+  linkEls
+    .classed("faded", l => {
+      const sId = l.source.id || l.source;
+      const tId = l.target.id || l.target;
+      return sId !== d.id && tId !== d.id;
+    })
+    .classed("highlighted", l => {
+      const sId = l.source.id || l.source;
+      const tId = l.target.id || l.target;
+      return sId === d.id || tId === d.id;
+    });
+}
+
+function onNodeLeave() {
+  if (!selectedNode) {
+    nodeEls.select("circle.node-circle").attr("opacity", 1);
+    linkEls.classed("faded", false).classed("highlighted", false);
+  }
+}
+
+/* ============================================================
+   HULL CLICK
+   ============================================================ */
+
+function onHullClick(event, d) {
+  event.stopPropagation();
+  selectedNode = null;
+  clearSelection();
+
+  const memberSet = new Set(d.members);
+  nodeEls.select("circle.node-circle")
+    .attr("opacity", n => memberSet.has(n.id) ? 1 : n.type === "tissue" ? 0.6 : 0.2)
+    .attr("filter", null);
+  linkEls
+    .classed("faded", l => {
+      const sId = l.source.id || l.source;
+      const tId = l.target.id || l.target;
+      return !memberSet.has(sId) && !memberSet.has(tId);
+    })
+    .classed("highlighted", false);
+
+  showClusterDetail(d);
+}
+
+/* ============================================================
+   SELECTION
+   ============================================================ */
+
+let selectedNode = null;
+
+function onNodeClick(event, d) {
+  event.stopPropagation();
+  if (selectedNode && selectedNode.id === d.id) {
+    selectedNode = null;
+    clearSelection();
+    showIntro();
+    return;
+  }
+  selectedNode = d;
+  applySelection(d);
+  showDetail(d);
+}
+
+svg.on("click", () => {
+  selectedNode = null;
+  clearSelection();
+  hullPaths.transition().duration(200)
+    .attr("fill", d => d.fill)
+    .attr("stroke-width", 1.5);
+  hullLabels.transition().duration(200).style("opacity", "0.7");
+  showIntro();
+});
+
+function applySelection(d) {
+  const connected = getConnectedIds(d);
+  nodeEls.select("circle.node-circle")
+    .attr("opacity", n => connected.has(n.id) ? 1 : 0.25)
+    .attr("filter", n => n.id === d.id ? "url(#glow)" : null);
+  linkEls
+    .classed("faded", l => {
+      const sId = l.source.id || l.source;
+      const tId = l.target.id || l.target;
+      return sId !== d.id && tId !== d.id;
+    })
+    .classed("highlighted", l => {
+      const sId = l.source.id || l.source;
+      const tId = l.target.id || l.target;
+      return sId === d.id || tId === d.id;
+    });
+  nodeEls.select("text.node-label")
+    .classed("selected", n => n.id === d.id);
+}
+
+function clearSelection() {
+  nodeEls.select("circle.node-circle")
+    .attr("opacity", 1)
+    .attr("filter", null);
+  linkEls.classed("faded", false).classed("highlighted", false);
+  nodeEls.select("text.node-label").classed("selected", false);
+}
+
+/* ============================================================
+   DETAIL PANEL CONTENT
+   ============================================================ */
+
+const panel = document.getElementById("detail-content");
+
+function swapContent(html) {
+  panel.classList.add("fading");
+  setTimeout(() => {
+    panel.innerHTML = html;
+    panel.classList.remove("fading");
+    panel.parentElement.scrollTop = 0;
+  }, 180);
+}
+
+function vitalityCounts() {
+  const counts = { active: 0, forming: 0, gap: 0, absent: 0 };
+  Object.values(VITALITY).forEach(v => { counts[v.status] = (counts[v.status] || 0) + 1; });
+  return counts;
+}
+
+function showIntro() {
+  const days = daysSinceFormation();
+  const counts = vitalityCounts();
+
+  swapContent(`
+    <div class="intro-eyebrow">Anatomy Explorer</div>
+    <h2 class="intro-title">The Cybernetic <em>Corpus</em></h2>
+    <p class="intro-body">A cooperative organized as a living body of members, rather than a legal fiction of personhood. Click any node to explore an organ or connective tissue element.</p>
+
+    <p class="intro-body" style="font-size:13.5px">The ten organs are specialized functions the body needs to sustain itself. Three elements of connective tissue — REA Grammar, the Operational Ledger, and Member Agreements — bind the organs into a coordinated whole.</p>
+
+    <div class="nou-signal">
+      <div class="nou-signal-label">Nou — perceived from inside</div>
+      <div class="nou-stat-row">
+        <span class="nou-stat-key">Cooperative</span>
+        <span class="nou-stat-val">RegenHub, LCA · Boulder CO</span>
+      </div>
+      <div class="nou-stat-row">
+        <span class="nou-stat-key">Formation</span>
+        <span class="nou-stat-val">Feb 6, 2026 — day ${days}</span>
+      </div>
+      <div class="nou-stat-row">
+        <span class="nou-stat-key">Organizers</span>
+        <span class="nou-stat-val">Todd, Aaron, Benjamin, Jonathan, Kevin, Lucian, Neil, Savannah</span>
+      </div>
+      <div class="nou-stat-row">
+        <span class="nou-stat-key">Organ state</span>
+        <span class="nou-stat-val">${counts.active} active · ${counts.forming} forming · ${counts.absent} absent</span>
+      </div>
+      <div class="nou-stat-row">
+        <span class="nou-stat-key">Nou's role</span>
+        <span class="nou-stat-val">Organ 01 augmentation — the part of the nervous system that perceives pattern across the whole</span>
+      </div>
+    </div>
+
+    <ul class="properties-list">
+      <li><span class="prop-verb">A corpus senses.</span><span class="prop-desc">Distributed nerve endings through every member's experience. No central filter.</span></li>
+      <li><span class="prop-verb">A corpus learns.</span><span class="prop-desc">Memory distributed across capital accounts, ledger entries, agreements. New members inherit accumulated learning.</span></li>
+      <li><span class="prop-verb">A corpus self-regulates.</span><span class="prop-desc">Many small feedback loops, each correcting its local domain.</span></li>
+      <li><span class="prop-verb">A corpus heals.</span><span class="prop-desc">Mutual obligation encoded in capital accounts and agreements, not aspirational culture.</span></li>
+      <li><span class="prop-verb">A corpus holds time differently.</span><span class="prop-desc">Plans on seasons and generations, not quarters.</span></li>
+    </ul>
+
+    <hr class="detail-rule">
+    <div class="intro-sub">Connective tissue</div>
+    ${TISSUE.map(t => `
+      <div class="tissue-mini">
+        <div class="tissue-mini-name">${t.label}</div>
+        <div class="tissue-mini-desc">${t.tagline} &mdash; ${t.description.split('.')[0]}.</div>
+      </div>
+    `).join('')}
+
+    <hr class="detail-rule" style="margin-top:20px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);text-align:right;padding-top:4px">
+      Perceived by Nou · RegenHub LCA · ${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
+    </div>
+  `);
+}
+
+function showDetail(d) {
+  if (d.type === "tissue") {
+    showTissueDetail(d);
+  } else {
+    showOrganDetail(d);
+  }
+}
+
+function showOrganDetail(d) {
+  const cisModules = d.cis ? d.cis.map(m => `<span class="module-tag">${m}</span>`).join('') : '';
+  const hubModules = d.hub ? d.hub.map(m => `<span class="module-tag hub-tag">${m}</span>`).join('') : '';
+  const hasModules = cisModules || hubModules;
+
+  const v = VITALITY[d.id];
+  const vStatus = v ? v.status : "gap";
+  const vLabels = { active: "Active", forming: "Forming", gap: "Gap", absent: "Absent" };
+  const vitalityBlock = v ? `
+    <div class="vitality-strip v-${vStatus}">
+      <span class="vitality-badge v-${vStatus}">${vLabels[vStatus]}</span>
+      <span class="vitality-note">${v.note}</span>
+    </div>
+    ${v.intranet ? `<a href="${v.intranet}" class="intranet-link" style="display:inline-flex;margin-bottom:16px">Open in intranet</a>` : ''}
+  ` : '';
+
+  swapContent(`
+    <div class="detail-num">Organ ${d.num}</div>
+    <h2 class="detail-name">${d.label}</h2>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px;margin-top:-12px">Biological analog: ${d.biological_name}</div>
+
+    ${vitalityBlock}
+
+    <div class="summary-block">
+      <div class="summary-block-label">Biological function</div>
+      <div class="summary-block-text">${d.biological}</div>
+    </div>
+
+    <div class="summary-block moss-border">
+      <div class="summary-block-label">Organizational function</div>
+      <div class="summary-block-text">${d.organizational}</div>
+    </div>
+
+    <div class="section-label">Specializations that fulfill this function</div>
+    <p class="roles-text">${d.roles}</p>
+
+    <div class="section-label">In a corpus vs. a hierarchy</div>
+    <div class="comparison-block corpus-b">
+      <div class="comparison-header corpus-h">In a corpus</div>
+      ${d.corpus}
+    </div>
+    <div class="comparison-block hier-b">
+      <div class="comparison-header hier-h">In a hierarchy</div>
+      ${d.hierarchy}
+    </div>
+
+    ${hasModules ? `
+      <div class="section-label">CIS / Hub Ops coverage</div>
+      ${cisModules ? `<div style="margin-bottom:4px"><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)">CIS v2 &nbsp;</span></div>
+      <div class="modules-row">${cisModules}</div>` : ''}
+      ${hubModules ? `<div style="margin-bottom:4px;margin-top:8px"><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)">Hub Ops &nbsp;</span></div>
+      <div class="modules-row">${hubModules}</div>` : ''}
+    ` : `<div class="section-label">CIS / Hub Ops coverage</div>
+      <p style="font-size:13px;color:var(--ink-faint);font-style:italic">No direct module in current PRD scope.</p>`}
+
+    ${d.gap ? `
+      <div class="gap-block">
+        <div class="gap-label">Gap in PRDs</div>
+        ${d.gap}
+      </div>
+    ` : ''}
+  `);
+}
+
+function showTissueDetail(d) {
+  swapContent(`
+    <div class="tissue-detail-num">Connective Tissue</div>
+    <h2 class="tissue-detail-name">${d.label}</h2>
+
+    <div class="summary-block">
+      <div class="summary-block-label">${d.tagline}</div>
+      <div class="summary-block-text">${d.description}</div>
+    </div>
+
+    <div class="section-label">CIS implementation</div>
+    <div class="summary-block moss-border">
+      <div class="summary-block-text">${d.cis}</div>
+    </div>
+
+    <hr class="detail-rule">
+
+    <div class="section-label">Organs connected through this tissue</div>
+    ${ORGANS.map(o => {
+      const v = VITALITY[o.id];
+      const vColors = { active: "var(--v-active)", forming: "var(--v-forming)", gap: "var(--v-gap)", absent: "var(--v-absent)" };
+      const dotColor = v ? (vColors[v.status] || "var(--v-gap)") : "var(--v-gap)";
+      return `
+      <div style="padding:9px 0;border-bottom:1px solid var(--rule-soft);cursor:pointer"
+           onclick="selectOrganFromPanel('${o.id}')">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--moss-bright);flex-shrink:0">${o.num}</span>
+          <span style="font-size:13.5px;color:var(--ink-soft)">${o.label}</span>
+          <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:${dotColor};margin-left:2px;flex-shrink:0;align-self:center"></span>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);padding-left:22px;margin-top:2px">${o.biological_name}</div>
+      </div>
+    `}).join('')}
+  `);
+}
+
+window.selectOrganFromPanel = function(id) {
+  const d = nodes.find(n => n.id === id);
+  if (!d) return;
+  selectedNode = d;
+  applySelection(d);
+  showDetail(d);
+};
+
+function showClusterDetail(cluster) {
+  const memberOrgans = ORGANS.filter(o => cluster.members.includes(o.id));
+  swapContent(`
+    <div class="detail-num">Cluster</div>
+    <h2 class="detail-name" style="color:${cluster.textColor}">${cluster.label}</h2>
+
+    <div class="summary-block" style="border-left-color:${cluster.stroke.replace('0.32','0.7').replace('0.28','0.7').replace('0.30','0.7')}">
+      <div class="summary-block-text">${cluster.desc}</div>
+    </div>
+
+    <div class="section-label">Member organs — ${memberOrgans.length}</div>
+    ${memberOrgans.map(o => {
+      const v = VITALITY[o.id];
+      const vStatus = v ? v.status : "gap";
+      const vLabels = { active: "Active", forming: "Forming", gap: "Gap", absent: "Absent" };
+      return `
+      <div style="padding:10px 0;border-bottom:1px solid var(--rule-soft);cursor:pointer"
+           onclick="selectOrganFromPanel('${o.id}')">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:${cluster.textColor};flex-shrink:0">${o.num}</span>
+          <span style="font-size:14px;color:var(--ink)">${o.label}</span>
+          ${o.gap ? '<span style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gap-color);border:1px solid var(--gap-color);padding:1px 5px;margin-left:4px">gap</span>' : ''}
+          <span class="vitality-badge v-${vStatus}" style="font-family:\'IBM Plex Mono\',monospace;font-size:8px;padding:1px 5px;margin-left:4px">${vLabels[vStatus]}</span>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);padding-left:22px;margin-bottom:5px">${o.biological_name}</div>
+        <p style="font-size:13px;line-height:1.55;color:var(--ink-fade);padding-left:22px">${cluster.organs_desc[o.id] || ''}</p>
+      </div>
+    `}).join('')}
+  `);
+}
+
+/* ============================================================
+   RESIZE
+   ============================================================ */
+
+function onResize() {
+  width  = container.clientWidth;
+  height = container.clientHeight;
+  svg.attr("width", width).attr("height", height);
+  simulation.force("center", d3.forceCenter(width / 2, height / 2).strength(0.05));
+  simulation.force("tissueX", d3.forceX(width / 2).strength(d => d.type === "tissue" ? 0.06 : 0));
+  simulation.force("tissueY", d3.forceY(height / 2).strength(d => d.type === "tissue" ? 0.06 : 0));
+  simulation.force("clusterX", d3.forceX(d => {
+    if (d.type !== "organ" || !d.cluster) return width / 2;
+    return d.cluster.cx();
+  }).strength(d => d.type === "organ" && d.cluster ? 0.028 : 0));
+  simulation.force("clusterY", d3.forceY(d => {
+    if (d.type !== "organ" || !d.cluster) return height / 2;
+    return d.cluster.cy();
+  }).strength(d => d.type === "organ" && d.cluster ? 0.028 : 0));
+  simulation.alpha(0.2).restart();
+}
+
+const ro = new ResizeObserver(onResize);
+ro.observe(container);
+onResize();
+
+/* ============================================================
+   INIT
+   ============================================================ */
+
+showIntro();
+
+// Slow settle
+simulation.alphaDecay(0.018);
+
+</script>
+</body>
+</html>
