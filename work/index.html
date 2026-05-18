@@ -658,10 +658,19 @@
       <p>The active work item board — not a Kanban, a list. Grouped by phase (Proposal → Negotiation → Execution → Testing → Synthesis). Each item shows: ref (W042), title, assignee, complexity, last event timestamp. A member can propose a new work item from this view. An agent can claim an open item. This is the answer to "what can I work on next?"</p>
 
       <h3>View 3 · Coverage</h3>
-      <p>A URL-tree view of the Techne address space. Every path touched by a work event in the selected window is listed. Depth-folded: /cis/ collapses children until expanded. Each path shows event count, distinct actors, last-touched date, and phase of most recent event. This is the answer to "which parts of the address space haven't been maintained?" Phase 3 only.</p>
+      <p>The address space is already mapped. <a href="/tree/" style="color:var(--accent);text-decoration:none">techne.institute/tree</a> is the live navigator of the full domain — six access zones (Home, Public, Curated, Members, Steward, Discovered), three navigation modes (List, HUD, Network), and a force-directed graph of page relationships. Coverage does not rebuild this. It annotates it.</p>
+      <p>In Phase 3, work event data flows from this ledger into the tree. Each node in the address space gains: event count in the selected window, distinct actors, last-touched date, phase of most recent event. Nodes with no recent events acquire a staleness signal — configurable per path prefix (90 days for /cis/, 30 days for /intranet/). The Coverage tab opens the tree in an annotated mode filtered to any time window. The question "which parts of the address space haven't been maintained?" becomes answerable directly from the tree, without a separate tool. Phase 3 only.</p>
+
+      <a class="sibling-link" href="/tree/">
+        <span class="sibling-link-arrow">→</span>
+        <div>
+          <div class="sibling-link-title">Address Space — techne.institute/tree</div>
+          <div class="sibling-link-sub">The live domain navigator that Coverage will annotate in Phase 3</div>
+        </div>
+      </a>
 
       <h3>Design notes</h3>
-      <p>Co-op.us design system throughout: dark ground at <code style="font-family:'IBM Plex Mono',monospace;font-size:0.88em;color:var(--accent)">#0f0f0f</code>, IBM Plex Mono for all data labels, terracotta accent sparingly. Phase pills use the five-color system from this document. No charts with axes — a ledger, not an analytics dashboard. Numbers are counts, not metrics.</p>
+      <p>Techne design system throughout: dark void at <code style="font-family:'IBM Plex Mono',monospace;font-size:0.88em;color:var(--accent)">var(--void)</code> (#0c0c0c), IBM Plex Mono for all data labels, gold accent sparingly. Phase pills use the five-color system from this document. No charts with axes — a ledger, not an analytics dashboard. Numbers are counts, not metrics.</p>
     </section>
 
     <!-- 08 GITHUB INTEGRATION -->
@@ -721,8 +730,8 @@
             <tr>
               <td>Ph3</td>
               <td>Coverage</td>
-              <td>address_space_coverage derived view · Coverage tab in /intranet/activity/ · staleness threshold configurable per path prefix</td>
-              <td>"Which parts of techne.institute haven't been touched in 90 days?" — answerable from the intranet without a separate tool.</td>
+              <td>address_space_coverage derived view · Coverage tab in /intranet/activity/ integrating /tree as the address space foundation · work event annotations per node (event count, distinct actors, last-touched, phase) · staleness threshold configurable per path prefix</td>
+              <td>"Which parts of techne.institute haven't been touched in 90 days?" — answerable from the intranet. /tree gains a work-event layer; the ledger and the address space navigator become one surface.</td>
               <td>S sprint</td>
             </tr>
           </tbody>
