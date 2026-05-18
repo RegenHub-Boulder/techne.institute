@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Activity — RegenHub, LCA</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #0f0f0f;
+    --surface:      #1a1a1a;
+    --surface-2:    #141414;
+    --border:       #2a2a2a;
+    --border-hover: #3a3a3a;
+    --terra:        #c4956a;
+    --terra-dim:    rgba(196, 149, 106, 0.10);
+    --terra-border: rgba(196, 149, 106, 0.30);
+    --heading:      #e8e0d8;
+    --text:         #d4d4d4;
+    --muted:        #999;
+    --faint:        #666;
+    --very-faint:   #3a3a3a;
+    --green:        #a0c46a;
+    --blue:         #6ab0c4;
+    --purple:       #c46ab0;
+    --phase-proposal:    #6a8fc4;
+    --phase-negotiation: #c4956a;
+    --phase-execution:   #a0c46a;
+    --phase-synthesis:   #c46ab0;
+    --phase-discovery:   #8fc46a;
+  }
+
+  [data-mode="light"] {
+    --bg:           #faf7f2;
+    --surface:      #f3ede4;
+    --surface-2:    #efe8dc;
+    --border:       #d8cfc1;
+    --border-hover: #c4b69f;
+    --terra-dim:    rgba(196, 149, 106, 0.12);
+    --terra-border: rgba(196, 149, 106, 0.40);
+    --heading:      #2d2620;
+    --text:         #3d342b;
+    --muted:        #6b5f53;
+    --faint:        #968774;
+    --very-faint:   #d8cfc1;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Nav ── */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 24px;
+    height: 52px;
+  }
+  .nav-brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--terra);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    margin-right: 24px;
+    flex-shrink: 0;
+  }
+  .nav-links {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: color 0.15s, background 0.15s;
+  }
+  .nav-link:hover { color: var(--text); background: var(--border); }
+  .nav-link.active { color: var(--terra); }
+  .nav-actions { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+  .theme-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .theme-btn:hover { border-color: var(--terra); color: var(--terra); }
+
+  /* ── Layout ── */
+  .page-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* ── Header ── */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .page-title-group { flex: 1; }
+  .page-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--terra);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .page-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--heading);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .page-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* ── Tabs ── */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+  .tab-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--terra); border-bottom-color: var(--terra); }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .toolbar-left { display: flex; gap: 8px; flex: 1; flex-wrap: wrap; }
+  .filter-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    min-height: 32px;
+  }
+  .filter-btn:hover, .filter-btn.active { border-color: var(--terra); color: var(--terra); background: var(--terra-dim); }
+  .btn-primary {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid var(--terra-border);
+    background: var(--terra-dim);
+    color: var(--terra);
+    cursor: pointer;
+    transition: all 0.15s;
+    min-height: 36px;
+  }
+  .btn-primary:hover { background: rgba(196, 149, 106, 0.20); border-color: var(--terra); }
+
+  /* ── Feed ── */
+  #feed-view, #items-view { display: none; }
+  #feed-view.active, #items-view.active { display: block; }
+
+  .feed-list { display: flex; flex-direction: column; gap: 2px; }
+
+  .event-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 12px 16px;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid transparent;
+    transition: border-color 0.15s;
+    position: relative;
+  }
+  .event-row:hover { border-color: var(--border-hover); }
+
+  .event-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .event-avatar.agent { background: rgba(160, 196, 106, 0.15); color: var(--green); }
+  .event-avatar.system { background: rgba(106, 176, 196, 0.15); color: var(--blue); }
+
+  .event-body { flex: 1; min-width: 0; }
+  .event-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .event-actor { color: var(--text); }
+  .event-type-badge {
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .badge-proposed  { background: rgba(106,143,196,0.15); color: #6a8fc4; }
+  .badge-claimed   { background: rgba(196,149,106,0.15); color: #c4956a; }
+  .badge-progress  { background: rgba(160,196,106,0.15); color: #a0c46a; }
+  .badge-completed { background: rgba(196,106,176,0.15); color: #c46ab0; }
+  .badge-synthesized { background: rgba(160,196,106,0.20); color: #a0c46a; }
+  .badge-returned  { background: rgba(196,106,106,0.15); color: #c46a6a; }
+  .badge-git_push  { background: rgba(106,176,196,0.15); color: #6ab0c4; }
+  .badge-pr_merged { background: rgba(160,196,106,0.15); color: #a0c46a; }
+  .badge-default   { background: var(--border); color: var(--muted); }
+
+  .event-title {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .event-title a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+  .event-title a:hover { text-decoration: underline; }
+  .event-ref {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--terra);
+    text-decoration: none;
+  }
+  .event-ref:hover { text-decoration: underline; }
+  .event-body-text {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.5;
+    font-family: 'IBM Plex Mono', monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .event-time {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--faint);
+    margin-left: auto;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  /* ── Work Items ── */
+  .items-grid { display: flex; flex-direction: column; gap: 8px; }
+
+  .work-item-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    transition: border-color 0.15s;
+    cursor: pointer;
+  }
+  .work-item-card:hover { border-color: var(--border-hover); }
+  .work-item-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .work-ref {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--terra);
+    flex-shrink: 0;
+    margin-top: 2px;
+    min-width: 36px;
+  }
+  .work-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--heading);
+    flex: 1;
+    line-height: 1.3;
+  }
+  .work-complexity {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--border);
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .work-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .phase-pill {
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .phase-discovery   { background: rgba(143,196,106,0.12); color: #8fc46a; }
+  .phase-proposal    { background: rgba(106,143,196,0.12); color: #6a8fc4; }
+  .phase-negotiation { background: rgba(196,149,106,0.12); color: #c4956a; }
+  .phase-execution   { background: rgba(160,196,106,0.12); color: #a0c46a; }
+  .phase-synthesis   { background: rgba(196,106,176,0.12); color: #c46ab0; }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .dot-open        { background: var(--faint); }
+  .dot-claimed     { background: #c4956a; }
+  .dot-in_progress { background: #a0c46a; }
+  .dot-testing     { background: #c46ab0; }
+  .dot-completed   { background: #6ab0c4; }
+  .dot-archived    { background: var(--very-faint); }
+
+  .work-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 8px;
+    margin-left: 48px;
+  }
+
+  /* ── Propose Modal ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 28px 24px;
+    width: 100%;
+    max-width: 540px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 20px;
+  }
+  .form-group {
+    margin-bottom: 16px;
+  }
+  .form-label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .form-label span { color: var(--terra); }
+  .form-input, .form-textarea, .form-select {
+    width: 100%;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color 0.15s;
+    min-height: 38px;
+  }
+  .form-textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
+  .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--terra); }
+  .form-select { appearance: none; cursor: pointer; }
+  .form-row { display: flex; gap: 12px; }
+  .form-row .form-group { flex: 1; }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .btn-cancel {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    min-height: 36px;
+  }
+  .btn-cancel:hover { color: var(--text); border-color: var(--border-hover); }
+
+  /* ── State messages ── */
+  .state-msg {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--faint);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+  }
+  .state-msg.error { color: #c46a6a; }
+
+  /* ── Count badge ── */
+  .count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    background: var(--border);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 0 5px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .page-wrap { padding: 20px 16px 48px; }
+    .site-nav { padding: 0 16px; }
+    .page-title { font-size: 20px; }
+    .tab-btn { padding: 8px 12px; font-size: 11px; }
+    .work-item-card { padding: 14px 16px; }
+    .work-desc { margin-left: 0; }
+    .work-item-top { flex-wrap: wrap; }
+    .form-row { flex-direction: column; }
+    .modal { padding: 20px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-brand" href="/intranet/">CIS</a>
+  <div class="nav-links">
+    <a class="nav-link" href="/intranet/treasury/">Treasury</a>
+    <a class="nav-link active" href="/intranet/activity/">Activity</a>
+    <a class="nav-link" href="/intranet/people/">People</a>
+    <a class="nav-link" href="/intranet/agreements/">Agreements</a>
+    <a class="nav-link" href="/intranet/signals/">Signals</a>
+    <a class="nav-link" href="/intranet/intelligence/">Intelligence</a>
+  </div>
+  <div class="nav-actions">
+    <button class="theme-btn" id="themeToggle" title="Toggle theme">◑</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-header">
+    <div class="page-title-group">
+      <div class="page-eyebrow">Event · REA</div>
+      <h1 class="page-title">Activity</h1>
+      <div class="page-subtitle">Coordination ledger — human and agent work, made legible</div>
+    </div>
+    <button class="btn-primary" id="proposeBtn">+ Propose work</button>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="feed">
+      Feed <span class="count-badge" id="feedCount">—</span>
+    </button>
+    <button class="tab-btn" data-tab="items">
+      Work Items <span class="count-badge" id="itemsCount">—</span>
+    </button>
+  </div>
+
+  <!-- Feed view -->
+  <div id="feed-view" class="active">
+    <div class="toolbar">
+      <div class="toolbar-left" id="feedFilters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="proposed">Proposed</button>
+        <button class="filter-btn" data-filter="progress">Progress</button>
+        <button class="filter-btn" data-filter="completed">Completed</button>
+        <button class="filter-btn" data-filter="git">Git</button>
+      </div>
+    </div>
+    <div class="feed-list" id="feedList">
+      <div class="state-msg" id="feedState">Loading...</div>
+    </div>
+  </div>
+
+  <!-- Work Items view -->
+  <div id="items-view">
+    <div class="toolbar">
+      <div class="toolbar-left" id="statusFilters">
+        <button class="filter-btn active" data-status="all">All</button>
+        <button class="filter-btn" data-status="open">Open</button>
+        <button class="filter-btn" data-status="in_progress">In progress</button>
+        <button class="filter-btn" data-status="testing">Testing</button>
+        <button class="filter-btn" data-status="completed">Completed</button>
+      </div>
+    </div>
+    <div class="items-grid" id="itemsList">
+      <div class="state-msg" id="itemsState">Loading...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Propose Modal -->
+<div class="modal-overlay" id="proposeModal">
+  <div class="modal">
+    <div class="modal-title">Propose work</div>
+    <div class="form-group">
+      <label class="form-label" for="prop-title">Title <span>*</span></label>
+      <input class="form-input" id="prop-title" type="text" placeholder="What needs to happen?">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="prop-desc">Description</label>
+      <textarea class="form-textarea" id="prop-desc" placeholder="Context, motivation, constraints..."></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="prop-complexity">Complexity</label>
+        <select class="form-select" id="prop-complexity">
+          <option value="">—</option>
+          <option value="S">S — hours</option>
+          <option value="M">M — a day</option>
+          <option value="L">L — a week</option>
+          <option value="XL">XL — multi-week</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="prop-subject">Subject type</label>
+        <select class="form-select" id="prop-subject">
+          <option value="">—</option>
+          <option value="url">URL</option>
+          <option value="github_repo">GitHub repo</option>
+          <option value="github_issue">GitHub issue</option>
+          <option value="github_pr">GitHub PR</option>
+          <option value="file">File</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="prop-ref">Subject ref (URL or identifier)</label>
+      <input class="form-input" id="prop-ref" type="text" placeholder="https://...">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="prop-name">Your name</label>
+      <input class="form-input" id="prop-name" type="text" placeholder="Optional — who's proposing?">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="cancelModal">Cancel</button>
+      <button class="btn-primary" id="submitProposal">Submit proposal</button>
+    </div>
+    <div id="proposeResult" style="margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;"></div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://gxyeobogqfubgzklmxwt.supabase.co'
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4eWVvYm9ncWZ1Ymd6a2xteHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMjM0NjcsImV4cCI6MjA4NzY5OTQ2N30.0kc5nw4YwpoqyykDkeGZuyQKbdEKnXnEIP8Nzwr0nPQ'
+const FUNCTIONS_URL = `${SUPABASE_URL}/functions/v1`
+
+const hdrs = {
+  'apikey': SUPABASE_ANON,
+  'Authorization': `Bearer ${SUPABASE_ANON}`,
+  'Content-Type': 'application/json',
+}
+
+// ── State ──
+let allEvents = []
+let allItems = []
+let feedFilter = 'all'
+let statusFilter = 'all'
+
+// ── Theme ──
+const html = document.documentElement
+const themeBtn = document.getElementById('themeToggle')
+const saved = localStorage.getItem('cis-theme')
+if (saved) html.setAttribute('data-mode', saved)
+themeBtn.addEventListener('click', () => {
+  const next = html.getAttribute('data-mode') === 'dark' ? 'light' : 'dark'
+  html.setAttribute('data-mode', next)
+  localStorage.setItem('cis-theme', next)
+})
+
+// ── Tabs ──
+const tabBtns = document.querySelectorAll('.tab-btn')
+const feedView = document.getElementById('feed-view')
+const itemsView = document.getElementById('items-view')
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabBtns.forEach(b => b.classList.remove('active'))
+    btn.classList.add('active')
+    const tab = btn.dataset.tab
+    feedView.classList.toggle('active', tab === 'feed')
+    itemsView.classList.toggle('active', tab === 'items')
+  })
+})
+
+// ── Feed Filters ──
+document.getElementById('feedFilters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn')
+  if (!btn) return
+  document.querySelectorAll('#feedFilters .filter-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  feedFilter = btn.dataset.filter
+  renderFeed()
+})
+
+// ── Status Filters ──
+document.getElementById('statusFilters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn')
+  if (!btn) return
+  document.querySelectorAll('#statusFilters .filter-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  statusFilter = btn.dataset.status
+  renderItems()
+})
+
+// ── Data ──
+async function loadFeed() {
+  const el = document.getElementById('feedList')
+  const state = document.getElementById('feedState')
+  state.textContent = 'Loading...'
+  state.className = 'state-msg'
+  el.innerHTML = ''
+  el.appendChild(state)
+
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/work_events?order=created_at.desc&limit=100&select=*,work_items(ref,title)`,
+      { headers: hdrs }
+    )
+    if (!res.ok) throw new Error(await res.text())
+    allEvents = await res.json()
+    document.getElementById('feedCount').textContent = allEvents.length
+    renderFeed()
+  } catch (err) {
+    state.textContent = `Error: ${err.message}`
+    state.className = 'state-msg error'
+  }
+}
+
+async function loadItems() {
+  const el = document.getElementById('itemsList')
+  const state = document.getElementById('itemsState')
+  state.textContent = 'Loading...'
+  state.className = 'state-msg'
+  el.innerHTML = ''
+  el.appendChild(state)
+
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/work_items?order=created_at.desc&limit=200`,
+      { headers: hdrs }
+    )
+    if (!res.ok) throw new Error(await res.text())
+    allItems = await res.json()
+    document.getElementById('itemsCount').textContent = allItems.length
+    renderItems()
+  } catch (err) {
+    state.textContent = `Error: ${err.message}`
+    state.className = 'state-msg error'
+  }
+}
+
+// ── Render Feed ──
+function renderFeed() {
+  const el = document.getElementById('feedList')
+  const state = document.getElementById('feedState')
+
+  const GIT_TYPES = ['git_push', 'pr_merged', 'issue_closed']
+  const filtered = feedFilter === 'all' ? allEvents
+    : feedFilter === 'git' ? allEvents.filter(e => GIT_TYPES.includes(e.event_type))
+    : feedFilter === 'progress' ? allEvents.filter(e => e.event_type === 'progress')
+    : allEvents.filter(e => e.event_type === feedFilter)
+
+  el.innerHTML = ''
+  if (!filtered.length) {
+    state.textContent = allEvents.length === 0 ? 'No events yet.' : 'No events match this filter.'
+    state.className = 'state-msg'
+    el.appendChild(state)
+    return
+  }
+
+  filtered.forEach(ev => {
+    const row = document.createElement('div')
+    row.className = 'event-row'
+    const initials = (ev.actor_name || '?').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()
+    const avatarClass = ev.actor_type === 'agent' ? 'agent' : ev.actor_type === 'system' ? 'system' : ''
+
+    const badge = badgeHTML(ev.event_type)
+    const timeStr = relativeTime(ev.created_at)
+    const item = ev.work_items
+
+    let titleHTML = ''
+    if (ev.title) {
+      titleHTML = `<div class="event-title">${escHtml(ev.title)}`
+      if (item?.ref) {
+        titleHTML += ` <a class="event-ref" href="#${item.ref}" title="${escHtml(item.title || '')}">${item.ref}</a>`
+      }
+      if (ev.subject_url) {
+        titleHTML += ` <a href="${escHtml(ev.subject_url)}" target="_blank" rel="noopener" class="event-title a">[↗]</a>`
+      }
+      titleHTML += `</div>`
+    }
+
+    row.innerHTML = `
+      <div class="event-avatar ${avatarClass}">${initials}</div>
+      <div class="event-body">
+        <div class="event-meta">
+          <span class="event-actor">${escHtml(ev.actor_name || 'unknown')}</span>
+          ${badge}
+          <span>${escHtml(ev.source || 'manual')}</span>
+        </div>
+        ${titleHTML}
+        ${ev.body ? `<div class="event-body-text">${escHtml(ev.body.slice(0, 200))}${ev.body.length > 200 ? '…' : ''}</div>` : ''}
+      </div>
+      <div class="event-time">${timeStr}</div>
+    `
+    el.appendChild(row)
+  })
+}
+
+// ── Render Items ──
+function renderItems() {
+  const el = document.getElementById('itemsList')
+  const state = document.getElementById('itemsState')
+
+  const filtered = statusFilter === 'all' ? allItems
+    : allItems.filter(i => i.status === statusFilter)
+
+  el.innerHTML = ''
+  if (!filtered.length) {
+    state.textContent = allItems.length === 0 ? 'No work items yet. Propose one.' : 'No items match this filter.'
+    state.className = 'state-msg'
+    el.appendChild(state)
+    return
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement('div')
+    card.className = 'work-item-card'
+    card.innerHTML = `
+      <div class="work-item-top">
+        <span class="work-ref">${escHtml(item.ref || '—')}</span>
+        <span class="work-title">${escHtml(item.title)}</span>
+        ${item.complexity ? `<span class="work-complexity">${item.complexity}</span>` : ''}
+      </div>
+      <div class="work-meta">
+        <span class="status-dot dot-${item.status}"></span>
+        <span>${statusLabel(item.status)}</span>
+        <span class="phase-pill phase-${item.phase}">${item.phase}</span>
+        ${item.subject_ref ? `<a href="${escHtml(item.subject_ref)}" target="_blank" rel="noopener" style="color:var(--blue);font-size:11px;font-family:'IBM Plex Mono',monospace;text-decoration:none;">${truncate(item.subject_ref, 50)}↗</a>` : ''}
+        <span style="margin-left:auto;">${relativeTime(item.created_at)}</span>
+      </div>
+      ${item.description ? `<div class="work-desc">${escHtml(item.description.slice(0, 200))}${item.description.length > 200 ? '…' : ''}</div>` : ''}
+    `
+    el.appendChild(card)
+  })
+}
+
+// ── Propose Modal ──
+const modal = document.getElementById('proposeModal')
+document.getElementById('proposeBtn').addEventListener('click', () => {
+  modal.classList.add('open')
+})
+document.getElementById('cancelModal').addEventListener('click', closeModal)
+modal.addEventListener('click', e => { if (e.target === modal) closeModal() })
+function closeModal() {
+  modal.classList.remove('open')
+  document.getElementById('proposeResult').textContent = ''
+}
+
+document.getElementById('submitProposal').addEventListener('click', async () => {
+  const title = document.getElementById('prop-title').value.trim()
+  if (!title) {
+    document.getElementById('proposeResult').textContent = 'Title is required.'
+    document.getElementById('proposeResult').style.color = '#c46a6a'
+    return
+  }
+
+  const btn = document.getElementById('submitProposal')
+  btn.textContent = 'Submitting...'
+  btn.disabled = true
+
+  const payload = {
+    title,
+    description: document.getElementById('prop-desc').value.trim() || undefined,
+    complexity: document.getElementById('prop-complexity').value || undefined,
+    subject_type: document.getElementById('prop-subject').value || undefined,
+    subject_ref: document.getElementById('prop-ref').value.trim() || undefined,
+    proposer_name: document.getElementById('prop-name').value.trim() || undefined,
+  }
+
+  try {
+    const res = await fetch(`${FUNCTIONS_URL}/work-propose`, {
+      method: 'POST',
+      headers: hdrs,
+      body: JSON.stringify(payload),
+    })
+    const data = await res.json()
+    if (data.ok) {
+      const el = document.getElementById('proposeResult')
+      el.textContent = `✓ Created ${data.data.ref}`
+      el.style.color = '#a0c46a'
+      setTimeout(() => {
+        closeModal()
+        loadFeed()
+        loadItems()
+      }, 1200)
+    } else {
+      document.getElementById('proposeResult').textContent = `Error: ${data.error}`
+      document.getElementById('proposeResult').style.color = '#c46a6a'
+    }
+  } catch (err) {
+    document.getElementById('proposeResult').textContent = `Error: ${err.message}`
+    document.getElementById('proposeResult').style.color = '#c46a6a'
+  } finally {
+    btn.textContent = 'Submit proposal'
+    btn.disabled = false
+  }
+})
+
+// ── Utilities ──
+function escHtml(str) {
+  if (!str) return ''
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+}
+
+function truncate(str, n) {
+  return str.length > n ? str.slice(0, n) + '…' : str
+}
+
+function relativeTime(iso) {
+  if (!iso) return ''
+  const diff = (Date.now() - new Date(iso).getTime()) / 1000
+  if (diff < 60) return 'just now'
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`
+  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`
+  if (diff < 86400*7) return `${Math.floor(diff/86400)}d ago`
+  return new Date(iso).toLocaleDateString('en-US', { month:'short', day:'numeric' })
+}
+
+function statusLabel(s) {
+  const map = { open:'open', claimed:'claimed', in_progress:'in progress', testing:'testing', completed:'completed', archived:'archived' }
+  return map[s] || s
+}
+
+function badgeHTML(type) {
+  const classes = {
+    proposed: 'badge-proposed',
+    claimed: 'badge-claimed',
+    progress: 'badge-progress',
+    completed: 'badge-completed',
+    synthesized: 'badge-synthesized',
+    returned: 'badge-returned',
+    git_push: 'badge-git_push',
+    pr_merged: 'badge-pr_merged',
+  }
+  const cls = classes[type] || 'badge-default'
+  return `<span class="event-type-badge ${cls}">${escHtml(type)}</span>`
+}
+
+// ── Init ──
+loadFeed()
+loadItems()
+
+// Refresh every 30s
+setInterval(() => {
+  loadFeed()
+  loadItems()
+}, 30000)
+</script>
+</body>
+</html>
