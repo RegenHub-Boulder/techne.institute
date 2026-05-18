@@ -114,6 +114,7 @@
     font-size: 11px;
     letter-spacing: 0.08em;
     padding: 4px 8px;
+    min-height: 44px;
     transition: color 0.15s;
   }
   .theme-btn:hover { color: var(--terra); }
@@ -315,6 +316,12 @@
     .site-nav { padding: 0 1rem; }
     .nav-grid { grid-template-columns: 1fr; }
     .page-title { font-size: 1.5rem; }
+  }
+  @media (max-width: 480px) {
+    .page-title { font-size: 1.35rem; }
+    .site-nav { padding: 0 1rem; }
+    .nav-badge { display: none; }
+    .card-desc { font-size: 11px; }
   }
 </style>
 </head>

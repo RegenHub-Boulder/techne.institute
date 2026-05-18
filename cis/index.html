@@ -109,8 +109,8 @@
       border: 1px solid var(--border);
       color: var(--text-muted);
       font-size: 13px;
-      width: 30px;
-      height: 30px;
+      width: 44px;
+      height: 44px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -319,7 +319,7 @@
       gap: 1rem;
       margin-top: 1.5rem;
     }
-    @media (max-width: 600px) { .crops-grid { grid-template-columns: 1fr; } }
+
     .crops-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -376,6 +376,15 @@
       display: inline-block;
     }
 
+    /* ── TABLE WRAPPER (overflow scroll on mobile) ── */
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 1.5rem;
+      border-radius: 1px;
+    }
+    .table-wrap > table { margin-top: 0; }
+
     /* ── PATHWAY TABLE ── */
     .pathway-table {
       width: 100%;
@@ -428,7 +437,7 @@
       gap: 1rem;
       margin-top: 1.5rem;
     }
-    @media (max-width: 600px) { .face-grid { grid-template-columns: 1fr; } }
+
     .face-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -647,7 +656,7 @@
     footer a:hover { color: var(--accent); }
 
     /* ── ANCHOR OFFSET ── */
-    [id] { scroll-margin-top: 70px; }
+    [id] { scroll-margin-top: 52px; }
 
     /* ── MODULE GRID ── */
     .module-grid {
@@ -754,7 +763,7 @@
       gap: 0.75rem;
       margin-top: 1.5rem;
     }
-    @media (max-width: 600px) { .nfr-grid { grid-template-columns: 1fr; } }
+
     .nfr-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -851,6 +860,37 @@
       font-size: 11px;
       color: var(--accent);
       flex-shrink: 0;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 820px) {
+      .face-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      body { font-size: 15px; line-height: 1.7; }
+      .page { padding: 0 1rem 5rem; }
+      .site-nav { padding: 0 1rem; }
+      .nav-left { gap: 0.75rem; }
+      .nav-title { display: none; }
+      .cover { padding: 2.5rem 0 2.5rem; margin-bottom: 2.5rem; }
+      .cover h1 { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+      .cover-sub { font-size: 1rem; }
+      .toc { margin-bottom: 2.5rem; }
+      .toc a { padding: 0.75rem 1.25rem; }
+      .toc-leader { display: none; }
+      .section { margin: 3rem 0; }
+      .card { padding: 1.2rem 1.25rem; }
+      .crops-card { padding: 1.2rem 1.25rem; }
+      .heart-block { padding: 1.75rem 1.25rem; }
+      .crops-grid { grid-template-columns: 1fr; }
+      .face-grid { grid-template-columns: 1fr; }
+      .nfr-grid { grid-template-columns: 1fr; }
+      .integration-item { flex-direction: column; gap: 0.4rem; }
+      .integration-item .int-tag { min-width: unset; }
+      .workflow-item { flex-direction: column; gap: 0.4rem; }
+      .workflow-item .wf-anchor { min-width: unset; }
+      .module-header { flex-wrap: wrap; gap: 0.4rem; }
+      .example-block { padding: 1rem 1.25rem; }
     }
   </style>
 </head>
@@ -1020,6 +1060,7 @@
       <h2>How each property matures over the build.</h2>
       <p>The four properties do not advance at the same rate, and the CIS does not need to drag them in lockstep. Open source is the property most readily defaulted to and most quickly read from outside; it is likely to reach Stage 04 first. Privacy requires the most deliberate architectural work and is slowest to reach Stage 03. Security needs continuous attention to avoid oscillating back to Stage 01 under deadline pressure. Censorship resistance is most contingent on early infrastructure choices and hardest to retrofit, which is why several of its commitments must hold at Phase 01 even though the property as a whole reaches its full Stage 03 pattern only at Phase 04.</p>
       <p>The table below shows the highest stage reached for each property at each phase end. Cells marked with a raised value are phase-end targets. The pathway is a commitment: a phase that ships without meeting its CROPS targets has not actually shipped — it has shipped a regression.</p>
+      <div class="table-wrap">
       <table class="pathway-table">
         <thead>
           <tr>
@@ -1086,6 +1127,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
       <p class="pathway-note">Stage 01 = filter at boundary · Stage 02 = operating assumption · Stage 03 = system pattern in architecture · Stage 04 = embodied practice in the membership. Phase 06 is not a development phase — it is the cultural and operational work to migrate architecture into membership practice.</p>
 
       <h3>Horizon statements</h3>
@@ -1126,6 +1168,7 @@
       <p>The system's information model follows the REA ontology (McCarthy 1982): Agents, Agreements, Events, Resources. Every table traces to one of the four primitives, and every relationship between tables is an Event. This is not a decorative choice. It is the property that keeps the accounting layer and the governance layer in the same vocabulary, and it is the structural basis for the security and audit posture defined in the CROPS pathway.</p>
 
       <h3>Cooperative core tables</h3>
+      <div class="table-wrap">
       <table class="data-table">
         <thead>
           <tr><th>Table</th><th>Primitive</th><th>Anchor</th></tr>
@@ -1152,9 +1195,11 @@
           <tr><td>benefit_reports</td><td><span class="pill">Agreement</span></td><td>§XV</td></tr>
         </tbody>
       </table>
+      </div>
 
       <h3>Hub Operations extension tables</h3>
       <p>Hub Operations extends the model with entities specific to the hospitality surface the cooperative hosts under the Ethereum Everywhere grant. Extensions integrate through shared agent records; a hub applicant who later becomes a Patron Member is the same agent across both surfaces.</p>
+      <div class="table-wrap">
       <table class="data-table">
         <thead>
           <tr><th>Table</th><th>Primitive</th><th>Source</th></tr>
@@ -1173,6 +1218,7 @@
           <tr><td>grant_tranches</td><td><span class="pill">Event · Agreement</span></td><td>EE grant §6</td></tr>
         </tbody>
       </table>
+      </div>
 
       <p style="margin-top:1.2rem;">Derived views sit above the core tables: <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">active_members</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">current_board</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">capital_balances_as_of</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">quorum_for_meeting</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">vote_outcome</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">monthly_kpi_status</code>, <code style="font-family:'IBM Plex Mono',monospace;font-size:0.85em;color:var(--accent)">seat_utilization_as_of</code>. These are pure functions of the event log, which is what makes the ledger auditable, the dashboards consistent, and the security posture defensible.</p>
     </section>
@@ -1185,6 +1231,7 @@
       <p>A member cannot be granted visibility they are not entitled to by reason of convenience, and cannot be denied visibility the bylaws guarantee. The default position is disclosure to members, with specific constraints for tax identifiers, personal contact details, and sensitive deliberations covered by §18.2. The Hub Member and Patron Member roles are deliberately distinct; some agents will hold both, but the rights they confer are non-overlapping and held against separate agreements.</p>
 
       <h3>Cooperative roles</h3>
+      <div class="table-wrap">
       <table class="data-table">
         <thead>
           <tr><th>Role</th><th>Scope</th><th>Source</th></tr>
@@ -1203,9 +1250,11 @@
           <tr><td>Agent (Nou)</td><td>Scoped impersonation: inherits the permissions of the user who invoked it, never more. All actions logged.</td><td>Principle 01</td></tr>
         </tbody>
       </table>
+      </div>
 
       <h3>Hub Operations roles</h3>
-      <table class="data-table" style="margin-top:0.75rem;">
+      <div class="table-wrap" style="margin-top:0.75rem;">
+      <table class="data-table">
         <thead>
           <tr><th>Role</th><th>Scope</th><th>Source</th></tr>
         </thead>
@@ -1216,6 +1265,7 @@
           <tr><td>EE Liaison</td><td>Read access to KPI dashboard, monthly reports, aggregate utilization. No individual applicant or attendee records without justification.</td><td>EE grant §3</td></tr>
         </tbody>
       </table>
+      </div>
     </section>
 
     <!-- 08 CORE MODULES -->
@@ -1372,7 +1422,8 @@
 
       <h3>Primary navigation</h3>
       <p>The top-level navigation mirrors the REA primitives where that serves the member, and departs from them where it does not. Treasury collects financial state. People collects the directory, the board, and committees. Agreements collects documents and policies. Activity surfaces recent events and items needing attention. A Hub surface appears for users with Hub roles and integrates without conflating the two memberships.</p>
-      <table class="data-table" style="margin-top:1rem;">
+      <div class="table-wrap" style="margin-top:1rem;">
+      <table class="data-table">
         <thead>
           <tr><th>Navigation</th><th>Contains</th><th>REA</th></tr>
         </thead>
@@ -1385,6 +1436,7 @@
           <tr><td>Hub</td><td>Co-working sessions, event calendar, application status, KPI dashboard.</td><td>role-conditional</td></tr>
         </tbody>
       </table>
+      </div>
 
       <h3>Interaction patterns</h3>
       <p>Every record detail view shows three things: the record, the governing authority (which bylaw section, policy, or grant section justifies this being a record at all), and the history of changes. This is the traceability principle made visible. A member looking at their capital account can see the balance, the clause that defines capital accounts, and every event that changed their balance.</p>
@@ -1534,6 +1586,7 @@
       <span class="section-label">13 · Integration &amp; Stack</span>
       <h2>How the pieces fit.</h2>
       <p>The stack is deliberately composed of tools chosen for their fit to cooperative-scale operations: accessible to non-developers, portable in their data, interoperable through standard protocols. Each layer has a specific role and a principle governing its authority. CROPS commitments shape the choice; vendor selection at Phase 01 records the chokepoint analysis as a design artifact.</p>
+      <div class="table-wrap">
       <table class="stack-table">
         <thead>
           <tr><th>Layer</th><th>Role</th><th>Principle</th></tr>
@@ -1576,6 +1629,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
       <p style="margin-top:1.2rem;">On-chain records do not replace the off-chain ledger. The Subchapter K election under Article VI requires that the tax and accounting records remain under standard bookkeeping. Where Base or another chain carries attestations, those are confirmations of off-chain events, not substitutes for them. This positions on-chain attestations as the censorship-resistance integrity layer named in the CR pathway, without conflating it with the security pathway, where the off-chain audit trail remains structural.</p>
     </section>
 
@@ -1688,6 +1742,7 @@
       <span class="section-label">16 · Roadmap</span>
       <h2>Phased delivery, with CROPS targets at each phase.</h2>
       <p>The roadmap extends the phased build with the CROPS target stages from the pathway, so that each phase is evaluated not only against feature completion but against design-discipline advancement. The system is usable at every intermediate state; capability grows rather than arriving whole. Phase 06 is deliberately not a development phase — it is the cultural and operational work to migrate the four properties from architecture into membership practice.</p>
+      <div class="table-wrap">
       <table class="roadmap-table">
         <thead>
           <tr><th>Phase</th><th>Surface</th><th>C·R·O·P·S</th></tr>
@@ -1725,6 +1780,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
     </section>
 
     <!-- 17 OPEN QUESTIONS -->
