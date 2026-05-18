@@ -1,66 +1,479 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mode="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Intranet — RegenHub, LCA</title>
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="refresh" content="0;url=/intranet/board/">
+<title>Common Information System — RegenHub, LCA</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg:           #0f0f0f;
+    --surface:      #1a1a1a;
+    --surface-2:    #141414;
+    --border:       #2a2a2a;
+    --border-hover: #3a3a3a;
+    --terra:        #c4956a;
+    --terra-dim:    rgba(196, 149, 106, 0.10);
+    --terra-border: rgba(196, 149, 106, 0.30);
+    --heading:      #e8e0d8;
+    --text:         #d4d4d4;
+    --muted:        #999;
+    --faint:        #666;
+    --very-faint:   #3a3a3a;
+
+    /* REA type colors */
+    --rea-resource:   #6ab0c4;
+    --rea-agent:      #a0c46a;
+    --rea-agreement:  #c4956a;
+    --rea-event:      #c46ab0;
+    --rea-hub:        #6a8fc4;
+
+    --rea-resource-dim:  rgba(106, 176, 196, 0.10);
+    --rea-agent-dim:     rgba(160, 196, 106, 0.10);
+    --rea-agreement-dim: rgba(196, 149, 106, 0.10);
+    --rea-event-dim:     rgba(196, 106, 176, 0.10);
+    --rea-hub-dim:       rgba(106, 143, 196, 0.10);
+  }
+
+  [data-mode="light"] {
+    --bg:           #faf7f2;
+    --surface:      #f3ede4;
+    --surface-2:    #efe8dc;
+    --border:       #d8cfc1;
+    --border-hover: #c4b69f;
+    --terra-dim:    rgba(196, 149, 106, 0.12);
+    --terra-border: rgba(196, 149, 106, 0.40);
+    --heading:      #2d2620;
+    --text:         #3d342b;
+    --muted:        #6b5f53;
+    --faint:        #968774;
+    --very-faint:   #d8cfc1;
+  }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'IBM Plex Mono', 'Courier New', monospace;
-    background: #0c0c0c;
-    color: #c8c8c8;
-    min-height: 100vh;
+
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Top nav ───────────────────────────── */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 2rem;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 44px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
   }
-  .wrap {
-    max-width: 480px;
-    width: 100%;
-    text-align: center;
-  }
-  .org { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #888; margin-bottom: 28px; }
-  .heading { font-size: 15px; color: #e8e0d8; margin-bottom: 12px; }
-  .sub { font-size: 12px; color: #666; line-height: 1.6; margin-bottom: 32px; }
-  .links { display: flex; flex-direction: column; gap: 10px; align-items: center; }
-  .link-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 24px;
-    border: 1px solid #2a2a2a;
-    border-radius: 4px;
-    color: #c4956a;
+  .nav-left { display: flex; align-items: center; gap: 10px; }
+  .nav-home {
+    color: var(--muted);
     text-decoration: none;
-    font-family: inherit;
-    font-size: 12px;
-    letter-spacing: 0.06em;
-    transition: border-color 0.15s, background 0.15s;
-    min-width: 220px;
-    justify-content: center;
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
   }
-  .link-btn:hover { border-color: #c4956a; background: rgba(196,149,106,0.06); }
-  .link-btn.primary { border-color: rgba(196,149,106,0.4); }
-  .notice { margin-top: 40px; font-size: 11px; color: #444; line-height: 1.6; }
+  .nav-home:hover { color: var(--terra); }
+  .nav-divider { color: var(--faint); font-size: 12px; }
+  .nav-title {
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--heading);
+  }
+  .nav-badge {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border: 1px solid var(--terra-border);
+    color: var(--terra);
+    border-radius: 2px;
+  }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .theme-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--faint);
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 4px 8px;
+    transition: color 0.15s;
+  }
+  .theme-btn:hover { color: var(--terra); }
+
+  /* ── Page layout ───────────────────────── */
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  /* ── Header ─────────────────────────────── */
+  .page-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .page-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--heading);
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+  .page-sub {
+    font-size: 12px;
+    color: var(--faint);
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  /* ── Section heading ─────────────────────── */
+  .section-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 1.25rem;
+    margin-top: 2.5rem;
+  }
+  .section-heading:first-of-type { margin-top: 0; }
+  .section-heading h2 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .section-heading-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Nav grid ────────────────────────────── */
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1px;
+  }
+
+  .nav-card {
+    background: var(--surface);
+    padding: 1.5rem;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    transition: background 0.15s;
+    border-left: 3px solid transparent;
+  }
+  .nav-card:hover { background: var(--surface-2); }
+  .nav-card.active { border-left-color: var(--rea-color, var(--terra)); }
+  .nav-card.draft { opacity: 0.55; cursor: default; pointer-events: none; }
+
+  .nav-card[data-rea="resource"] { --rea-color: var(--rea-resource); --rea-dim: var(--rea-resource-dim); }
+  .nav-card[data-rea="agent"]    { --rea-color: var(--rea-agent);    --rea-dim: var(--rea-agent-dim); }
+  .nav-card[data-rea="agreement"]{ --rea-color: var(--rea-agreement);--rea-dim: var(--rea-agreement-dim); }
+  .nav-card[data-rea="event"]    { --rea-color: var(--rea-event);    --rea-dim: var(--rea-event-dim); }
+  .nav-card[data-rea="hub"]      { --rea-color: var(--rea-hub);      --rea-dim: var(--rea-hub-dim); }
+
+  .nav-card.active:hover { background: var(--rea-dim, var(--terra-dim)); }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+  }
+  .card-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--heading);
+    letter-spacing: 0.02em;
+  }
+  .card-tag {
+    font-size: 9px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 2px;
+    border: 1px solid;
+    flex-shrink: 0;
+  }
+  .tag-live {
+    color: var(--rea-color, var(--terra));
+    border-color: var(--rea-color, var(--terra));
+    background: var(--rea-dim, var(--terra-dim));
+  }
+  .tag-draft {
+    color: var(--faint);
+    border-color: var(--very-faint);
+    background: transparent;
+  }
+  .tag-conditional {
+    color: var(--rea-hub);
+    border-color: rgba(106,143,196,0.4);
+    background: var(--rea-hub-dim);
+  }
+
+  .card-rea {
+    font-size: 10px;
+    color: var(--rea-color, var(--faint));
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .card-desc {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .card-sub-links {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .sub-link {
+    font-size: 10.5px;
+    color: var(--terra);
+    text-decoration: none;
+    padding: 2px 8px;
+    border: 1px solid var(--terra-border);
+    border-radius: 2px;
+    transition: background 0.12s;
+    pointer-events: auto;
+  }
+  .sub-link:hover { background: var(--terra-dim); }
+  .sub-link.secondary {
+    color: var(--muted);
+    border-color: var(--border);
+  }
+  .sub-link.secondary:hover { background: var(--surface-2); color: var(--text); }
+
+  /* ── Footer ─────────────────────────────── */
+  .page-footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .footer-left {
+    font-size: 10px;
+    color: var(--very-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .footer-right {
+    font-size: 10px;
+    color: var(--very-faint);
+  }
+  .footer-right a {
+    color: var(--faint);
+    text-decoration: none;
+  }
+  .footer-right a:hover { color: var(--terra); }
+
+  @media (max-width: 600px) {
+    .page { padding: 2rem 1rem 4rem; }
+    .site-nav { padding: 0 1rem; }
+    .nav-grid { grid-template-columns: 1fr; }
+    .page-title { font-size: 1.5rem; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="org">RegenHub, LCA · Member Intranet</div>
-  <div class="heading">This section is being reorganized.</div>
-  <div class="sub">Active intranet pages are linked below.<br>You are being redirected to the Board interface.</div>
-  <div class="links">
-    <a class="link-btn primary" href="/intranet/board/">Board Interface →</a>
-    <a class="link-btn" href="/intranet/treasury/">Treasury →</a>
-    <a class="link-btn" href="/public/treasury/">Public Treasury →</a>
+
+<nav class="site-nav">
+  <div class="nav-left">
+    <a href="/" class="nav-home">Techne</a>
+    <span class="nav-divider">/</span>
+    <span class="nav-title">Intranet</span>
+    <span class="nav-badge">CIS v0.2</span>
   </div>
-  <div class="notice">
-    If you are not redirected automatically, <a href="/intranet/board/" style="color:#888">click here</a>.
+  <div class="nav-right">
+    <button class="theme-btn" id="theme-toggle">light</button>
   </div>
-</div>
+</nav>
+
+<main class="page">
+
+  <header class="page-header">
+    <div class="page-eyebrow">RegenHub, LCA · Member Intranet</div>
+    <h1 class="page-title">Common Information System</h1>
+    <p class="page-sub">The authoritative state of the cooperative and the interfaces through which it operates itself. Navigation follows the REA ontology: Resources, Events, Agents, Agreements — each surface a distinct view onto shared underlying ledger.</p>
+  </header>
+
+  <div class="section-heading">
+    <h2>Primary navigation</h2>
+    <div class="section-heading-line"></div>
+  </div>
+
+  <div class="nav-grid">
+
+    <!-- Home / Dashboard — cross-cutting -->
+    <a class="nav-card draft" href="/intranet/home/" data-rea="resource">
+      <div class="card-top">
+        <span class="card-name">Home</span>
+        <span class="card-tag tag-draft">Forthcoming</span>
+      </div>
+      <div class="card-rea">cross-cutting</div>
+      <div class="card-desc">Personal dashboard, action items, upcoming meetings, recent notices. The surface you land on when you open the intranet.</div>
+    </a>
+
+    <!-- Treasury — Resource -->
+    <a class="nav-card active" href="/intranet/treasury/" data-rea="resource">
+      <div class="card-top">
+        <span class="card-name">Treasury</span>
+        <span class="card-tag tag-live">Live</span>
+      </div>
+      <div class="card-rea">Resource</div>
+      <div class="card-desc">Capital account, stock ledger, distributions, tax summary. The cooperative's financial state held against the bylaws.</div>
+      <div class="card-sub-links">
+        <a class="sub-link secondary" href="/public/treasury/">Public Treasury ↗</a>
+      </div>
+    </a>
+
+    <!-- People — Agent -->
+    <a class="nav-card active" href="/intranet/board/" data-rea="agent">
+      <div class="card-top">
+        <span class="card-name">People</span>
+        <span class="card-tag tag-live">Partial</span>
+      </div>
+      <div class="card-rea">Agent</div>
+      <div class="card-desc">Member directory, board, committees, Nou. The cooperative's agent layer — who holds standing, what capacity, under what agreement.</div>
+      <div class="card-sub-links">
+        <a class="sub-link" href="/intranet/board/">Board HUD →</a>
+      </div>
+    </a>
+
+    <!-- Agreements — Agreement -->
+    <a class="nav-card draft" href="/intranet/agreements/" data-rea="agreement">
+      <div class="card-top">
+        <span class="card-name">Agreements</span>
+        <span class="card-tag tag-draft">Forthcoming</span>
+      </div>
+      <div class="card-rea">Agreement</div>
+      <div class="card-desc">Bylaws, board policies, member agreements, minutes, benefit reports, the EE grant. Versioned, signed, searchable.</div>
+    </a>
+
+    <!-- Activity — Event -->
+    <a class="nav-card draft" href="/intranet/activity/" data-rea="event">
+      <div class="card-top">
+        <span class="card-name">Activity</span>
+        <span class="card-tag tag-draft">Forthcoming</span>
+      </div>
+      <div class="card-rea">Event</div>
+      <div class="card-desc">Meetings, votes, notices, consent requests, state changes. Every event that changes the cooperative's state, logged and citable.</div>
+    </a>
+
+    <!-- Hub — role-conditional -->
+    <a class="nav-card draft" href="/intranet/hub/" data-rea="hub">
+      <div class="card-top">
+        <span class="card-name">Hub</span>
+        <span class="card-tag tag-conditional">Role-conditional</span>
+      </div>
+      <div class="card-rea">Hub Operations · EE Grant</div>
+      <div class="card-desc">Co-working sessions, event calendar, application status, KPI dashboard. Visible to Hub Members, Hub Visitors, and EE Liaisons.</div>
+      <div class="card-sub-links">
+        <a class="sub-link secondary" href="/cis/ops/" style="pointer-events:auto">Hub Ops PRD ↗</a>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Reference section -->
+  <div class="section-heading" style="margin-top:3rem;">
+    <h2>Reference</h2>
+    <div class="section-heading-line"></div>
+  </div>
+
+  <div class="nav-grid">
+
+    <a class="nav-card active" href="/cis/" data-rea="resource">
+      <div class="card-top">
+        <span class="card-name">CIS PRD</span>
+        <span class="card-tag tag-live">v0.2</span>
+      </div>
+      <div class="card-rea">Product Requirements Document</div>
+      <div class="card-desc">The specification this navigation implements. 17 sections covering principles, CROPS pathway, information model, identity, modules, roadmap.</div>
+    </a>
+
+    <a class="nav-card active" href="/cis/ops/" data-rea="hub">
+      <div class="card-top">
+        <span class="card-name">Hub Operations PRD</span>
+        <span class="card-tag tag-live">v0.1</span>
+      </div>
+      <div class="card-rea">Sibling Document · EE Grant</div>
+      <div class="card-desc">Operational surface for the Boulder Ethereum Community Hub. KPI obligations, grant milestones, CROPS Stage 02→03 targets.</div>
+    </a>
+
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-left">RegenHub, LCA · Boulder, Colorado · LCA #20261215588</div>
+    <div class="footer-right">
+      <a href="/cis/">CIS PRD v0.2</a> · <a href="/tree/">Site index</a>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // Theme toggle
+  const root = document.documentElement;
+  const btn = document.getElementById('theme-toggle');
+  const stored = localStorage.getItem('theme');
+  if (stored) root.setAttribute('data-mode', stored);
+  btn.textContent = root.getAttribute('data-mode') === 'light' ? 'dark' : 'light';
+  btn.addEventListener('click', () => {
+    const next = root.getAttribute('data-mode') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-mode', next);
+    localStorage.setItem('theme', next);
+    btn.textContent = next === 'light' ? 'dark' : 'light';
+  });
+
+  // Draft cards: suppress pointer on the anchor but allow sub-links
+  document.querySelectorAll('.nav-card.draft .sub-link').forEach(el => {
+    el.addEventListener('click', e => e.stopPropagation());
+  });
+</script>
+
 </body>
 </html>
