@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work Ledger — RegenHub, LCA</title>
+  <meta name="description" content="Product Requirements Document for the Work Ledger — a coordination-legibility tool for tracking collective work across GitHub, Workshop, and the Techne address space.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    (function() {
+      var stored = localStorage.getItem('theme');
+      var preferred = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', preferred);
+    })();
+  </script>
+  <style>
+    :root {
+      --ground:        #0f0f0f;
+      --surface:       #1a1a1a;
+      --surface-2:     #222220;
+      --border:        #2e2c29;
+      --text:          #e8e4dd;
+      --text-muted:    #7a756c;
+      --text-faint:    #4a4540;
+      --accent:        #c4956a;
+      --accent-dim:    rgba(196, 149, 106, 0.15);
+      --accent-border: rgba(196, 149, 106, 0.3);
+      --phase-d:       #6ab0c4;  /* Discovery */
+      --phase-p:       #a0c46a;  /* Proposal  */
+      --phase-n:       #c4c46a;  /* Negotiation */
+      --phase-e:       #c4956a;  /* Execution  */
+      --phase-s:       #c46ab0;  /* Synthesis  */
+      --phase-d-dim:   rgba(106, 176, 196, 0.10);
+      --phase-p-dim:   rgba(160, 196, 106, 0.10);
+      --phase-e-dim:   rgba(196, 149, 106, 0.10);
+      --phase-s-dim:   rgba(196, 106, 176, 0.10);
+    }
+    [data-theme="light"] {
+      --ground:        #f5f2ee;
+      --surface:       #ffffff;
+      --surface-2:     #f0ece6;
+      --border:        #ddd8d0;
+      --text:          #1c1917;
+      --text-muted:    #6b6560;
+      --text-faint:    #b0aa9f;
+      --accent:        #a8753e;
+      --accent-dim:    rgba(168, 117, 62, 0.1);
+      --accent-border: rgba(168, 117, 62, 0.25);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ground);
+      color: var(--text);
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--ground);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-left { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-home {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      color: var(--text-muted); text-decoration: none;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .nav-home:hover { color: var(--accent); }
+    .nav-divider { color: var(--text-faint); font-size: 12px; }
+    .nav-title {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .nav-badge {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      padding: 2px 7px; background: var(--accent-dim);
+      border: 1px solid var(--accent-border); color: var(--accent); letter-spacing: 0.04em;
+    }
+    .theme-toggle {
+      background: none; border: 1px solid var(--border); color: var(--text-muted);
+      font-size: 13px; width: 44px; height: 44px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 780px; margin: 0 auto; padding: 0 2rem 8rem; }
+
+    /* ── COVER ── */
+    .cover {
+      padding: 5rem 0 4rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4rem;
+    }
+    .cover-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .cover h1 {
+      font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 700;
+      line-height: 1.15; color: var(--text); margin-bottom: 1.2rem;
+    }
+    .cover-sub {
+      font-size: 1.15rem; font-style: italic;
+      color: var(--text-muted); line-height: 1.6;
+      margin-bottom: 2rem; max-width: 520px;
+    }
+    .cover-meta {
+      font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+      color: var(--text-faint); letter-spacing: 0.06em;
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem 0;
+      margin-bottom: 4rem;
+    }
+    .toc-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--accent); padding: 0 2rem 1.2rem;
+      display: block; border-bottom: 1px solid var(--border);
+    }
+    .toc ol { list-style: none; }
+    .toc li { border-bottom: 1px solid var(--border); }
+    .toc li:last-child { border-bottom: none; }
+    .toc a {
+      display: flex; align-items: baseline; gap: 0;
+      padding: 0.6rem 2rem; text-decoration: none;
+      transition: background 0.12s;
+    }
+    .toc a:hover { background: var(--surface-2); }
+    .toc a:hover .toc-num { color: var(--accent); }
+    .toc a:hover .toc-title { color: var(--text); }
+    .toc-num {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      color: var(--text-faint); letter-spacing: 0.08em; min-width: 2.5rem;
+    }
+    .toc-title {
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+      color: var(--text-muted); letter-spacing: 0.04em; flex: 1;
+    }
+    .toc-leader { flex: 1; border-bottom: 1px dotted var(--border); margin: 0 0.8rem 0.2rem; opacity: 0.4; min-width: 1rem; }
+    .toc-arrow { font-size: 11px; color: var(--text-faint); }
+    .toc a:hover .toc-arrow { color: var(--accent); }
+    .toc a.active { background: var(--surface-2); }
+    .toc a.active .toc-num { opacity: 1; color: var(--accent); }
+    .toc a.active .toc-title { color: var(--text); }
+    .toc a.active .toc-arrow { color: var(--accent); }
+
+    /* ── SECTIONS ── */
+    .section {
+      margin: 5rem 0;
+      padding-bottom: 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section:last-of-type { border-bottom: none; }
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-faint); margin-bottom: 1rem; display: block;
+    }
+    .section h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700;
+      line-height: 1.25; color: var(--text); margin-bottom: 1.5rem;
+    }
+    .section h3 {
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--accent); margin: 2.5rem 0 1rem;
+    }
+    .section p {
+      color: var(--text-muted); margin-bottom: 1.2rem; max-width: 640px;
+    }
+
+    /* ── PHASE LEGEND ── */
+    .phase-arc {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin: 1.5rem 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      flex-wrap: wrap;
+    }
+    .phase-step {
+      display: flex; align-items: center; gap: 0;
+    }
+    .phase-pill {
+      padding: 4px 12px;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+    .phase-pill.d { color: var(--phase-d); border-color: rgba(106,176,196,0.35); background: var(--phase-d-dim); }
+    .phase-pill.p { color: var(--phase-p); border-color: rgba(160,196,106,0.35); background: var(--phase-p-dim); }
+    .phase-pill.n { color: var(--phase-n); border-color: rgba(196,196,106,0.35); background: rgba(196,196,106,0.08); }
+    .phase-pill.e { color: var(--phase-e); border-color: rgba(196,149,106,0.35); background: var(--phase-e-dim); }
+    .phase-pill.s { color: var(--phase-s); border-color: rgba(196,106,176,0.35); background: var(--phase-s-dim); }
+    .phase-arrow {
+      font-size: 12px; color: var(--text-faint); padding: 0 4px;
+    }
+
+    /* ── CARDS ── */
+    .card-grid { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.5rem 1.75rem;
+    }
+    .card-num {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      color: var(--accent); margin-bottom: 0.5rem; display: block;
+    }
+    .card h4 {
+      font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem;
+    }
+    .card p {
+      font-size: 0.88rem; color: var(--text-muted);
+      line-height: 1.65; font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* ── TABLE WRAPPER ── */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 1.5rem; }
+    .table-wrap > table { margin-top: 0; }
+
+    /* ── DATA TABLE ── */
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 1.5rem;
+    }
+    .data-table thead th {
+      font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); text-align: left;
+      padding: 0.6rem 1rem; border-bottom: 1px solid var(--accent-border);
+      background: var(--surface);
+    }
+    .data-table tbody td {
+      padding: 0.7rem 1rem; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-muted); line-height: 1.5;
+    }
+    .data-table tbody td:first-child {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--text);
+    }
+    .data-table tbody tr:hover td { background: var(--surface-2); }
+
+    /* ── PHASE TABLE (roadmap) ── */
+    .roadmap-table {
+      width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 1.5rem;
+    }
+    .roadmap-table th {
+      font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); text-align: left;
+      padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--accent-border);
+      background: var(--surface);
+    }
+    .roadmap-table td {
+      padding: 0.8rem 0.8rem; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-muted);
+      line-height: 1.5; font-family: 'IBM Plex Mono', monospace;
+    }
+    .roadmap-table td:first-child { color: var(--text); white-space: nowrap; }
+    .roadmap-table tr:hover td { background: var(--surface-2); }
+
+    /* ── CODE BLOCK ── */
+    .code-block {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 1.25rem 1.5rem; margin: 1.5rem 0; overflow-x: auto;
+    }
+    .code-block pre {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem;
+      color: var(--text-muted); line-height: 1.6; white-space: pre;
+    }
+    .code-block .cm { color: var(--text-faint); font-style: italic; }
+    .code-block .kw { color: var(--accent); }
+    .code-block .ty { color: var(--phase-d); }
+    .code-block .st { color: var(--phase-p); }
+
+    /* ── SIBLING LINK ── */
+    .sibling-link {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.5rem; margin-top: 1.5rem;
+      background: var(--surface); border: 1px solid var(--accent-border);
+      text-decoration: none; transition: background 0.15s;
+    }
+    .sibling-link:hover { background: var(--accent-dim); }
+    .sibling-link-arrow { color: var(--accent); font-size: 1.1rem; }
+    .sibling-link-title {
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+      color: var(--text); letter-spacing: 0.04em;
+    }
+    .sibling-link-sub {
+      font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+      color: var(--text-muted); margin-top: 2px;
+    }
+
+    /* ── HEART BLOCK ── */
+    .heart-block {
+      background: var(--surface); border: 1px solid var(--accent-border);
+      padding: 2.5rem; margin-top: 2rem;
+    }
+    .heart-block p {
+      font-size: 1rem; font-style: italic;
+      color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem; max-width: 580px;
+    }
+    .heart-block p:last-child { margin-bottom: 0; }
+    .heart-block strong { color: var(--text); font-style: normal; }
+
+    [id] { scroll-margin-top: 52px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      body { font-size: 15px; line-height: 1.7; }
+      .page { padding: 0 1rem 5rem; }
+      .site-nav { padding: 0 1rem; }
+      .nav-left { gap: 0.75rem; }
+      .nav-title { display: none; }
+      .cover { padding: 2.5rem 0 2.5rem; margin-bottom: 2.5rem; }
+      .cover h1 { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+      .cover-sub { font-size: 1rem; }
+      .toc { margin-bottom: 2.5rem; }
+      .toc a { padding: 0.75rem 1.25rem; }
+      .toc-leader { display: none; }
+      .section { margin: 3rem 0; }
+      .card { padding: 1.2rem 1.25rem; }
+      .heart-block { padding: 1.75rem 1.25rem; }
+      .phase-arc { gap: 2px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="nav-left">
+      <a href="/" class="nav-home">Techne</a>
+      <span class="nav-divider">/</span>
+      <span class="nav-title">Work Ledger</span>
+      <span class="nav-badge">PRD v0.1</span>
+    </div>
+    <button class="theme-toggle" onclick="(function(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);})()" aria-label="Toggle theme">◐</button>
+  </nav>
+
+  <main class="page">
+
+    <header class="cover">
+      <p class="cover-label">RegenHub, LCA · Product Requirements Document</p>
+      <h1>Work Ledger</h1>
+      <p class="cover-sub">A coordination-legibility tool. Surfaces collective work across GitHub, the Workshop, and the Techne address space in a single queryable record.</p>
+      <p class="cover-meta">VERSION 0.1 · DRAFT · MAY 2026 · INTRANET TOOL</p>
+    </header>
+
+    <nav class="toc" aria-label="Contents">
+      <span class="toc-label">Contents</span>
+      <ol>
+        <li><a href="#preamble"><span class="toc-num">01</span><span class="toc-title">Preamble</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#learning"><span class="toc-num">02</span><span class="toc-title">Learning from the Workshop</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#principles"><span class="toc-num">03</span><span class="toc-title">Principles</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#system-definition"><span class="toc-num">04</span><span class="toc-title">System Definition</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#information-model"><span class="toc-num">05</span><span class="toc-title">Information Model</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#interface"><span class="toc-num">06</span><span class="toc-title">Interface</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#integration"><span class="toc-num">07</span><span class="toc-title">Integration Points</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#roadmap"><span class="toc-num">08</span><span class="toc-title">Roadmap</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+        <li><a href="#open-questions"><span class="toc-num">09</span><span class="toc-title">Open Questions</span><span class="toc-leader"></span><span class="toc-arrow">↓</span></a></li>
+      </ol>
+    </nav>
+
+    <!-- 01 PREAMBLE -->
+    <section class="section" id="preamble">
+      <span class="section-label">01 · Preamble</span>
+      <h2>What gets tracked gets real.</h2>
+      <p>The Work Ledger is a coordination-legibility tool. Its purpose is to surface collective work — across GitHub repositories, Workshop sprints, and the Techne address space — in a single queryable record, held in Supabase and readable at <code style="font-family:'IBM Plex Mono',monospace;font-size:0.88em;color:var(--accent)">/intranet/activity/</code>.</p>
+      <p>It is not a project management system. It does not assign work, set deadlines, or rank priorities. It does not replace GitHub, the Workshop, or any existing surface. It is a ledger: an append-only record of what happened, who did it, in what phase, against which artifact.</p>
+      <p>The tool implements the Activity surface defined in the CIS PRD v0.2 (section 10). It is the Event primitive in the REA ontology made navigable: every row is an event, every event has an agent, every agent is traceable back to the cooperative's identity layer.</p>
+
+      <a class="sibling-link" href="/cis/">
+        <span class="sibling-link-arrow">↑</span>
+        <div>
+          <div class="sibling-link-title">Common Information System PRD v0.2</div>
+          <div class="sibling-link-sub">Parent document · Activity is Section 10 of the CIS primary navigation</div>
+        </div>
+      </a>
+    </section>
+
+    <!-- 02 LEARNING FROM THE WORKSHOP -->
+    <section class="section" id="learning">
+      <span class="section-label">02 · Learning from the Workshop</span>
+      <h2>The Workshop as systems teacher.</h2>
+      <p>The Workshop — co-op.us/app/coordinate — has been the coordination surface for Nou, Dianoia, and human members of Techne since early 2026. It runs the Clawsmos five-phase protocol: Discovery → Proposal → Negotiation → Execution → Synthesis. Every sprint passes through these phases in the database before it can be closed.</p>
+
+      <div class="phase-arc">
+        <div class="phase-step"><span class="phase-pill d">Discovery</span><span class="phase-arrow">→</span></div>
+        <div class="phase-step"><span class="phase-pill p">Proposal</span><span class="phase-arrow">→</span></div>
+        <div class="phase-step"><span class="phase-pill n">Negotiation</span><span class="phase-arrow">→</span></div>
+        <div class="phase-step"><span class="phase-pill e">Execution</span><span class="phase-arrow">→</span></div>
+        <div class="phase-step"><span class="phase-pill s">Synthesis</span></div>
+      </div>
+
+      <h3>What the Workshop taught us</h3>
+      <p>The Workshop's most durable contribution is not the sprint protocol itself — it is the anti-pattern documentation embedded in the SKILL.md. Each anti-pattern names a real failure mode and reveals something that a coordination-legibility tool must solve:</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <span class="card-num">Anti-pattern: Ghost Execution</span>
+          <h4>Work without a coordination record is invisible</h4>
+          <p>An agent writes code, commits to GitHub, reports completion — but never calls the Workshop API. The sprints remain in proposed status. The Protocol Stream shows no activity. Other participants have no evidence the work happened. The fix is not retroactive: you cannot meaningfully back-date protocol events.<br><br>The Work Ledger is the fix made structural. Every completed sprint completion_proof (a GitHub URL) creates a work_event. The ledger is the bridge between the artifact store (git) and the coordination layer (Workshop).</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Anti-pattern: Git Archaeology</span>
+          <h4>Sprints live in the database, not in git</h4>
+          <p>Looking in the wrong place wastes cycles and produces false negatives. The correct answer is always: query the API. The Work Ledger makes this true from the other direction: a member should never need to search multiple systems to answer "what has been happening?" — one surface, one query, one record.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Principle: Transparent Agency</span>
+          <h4>No private channels, no invisible work</h4>
+          <p>The Clawsmos founding principle: all coordination is legible. The Work Ledger applies this principle across the full address space — not only to Workshop sprints but to GitHub commits, PR merges, page updates, and document changes. If it happened under the Techne identity layer, it should be findable.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Pattern: Phase is more than status</span>
+          <h4>Coordination has arc, not just state</h4>
+          <p>A sprint is not just "open" or "closed." It is somewhere in a five-phase arc, and where it sits matters for what actions are appropriate. The Work Ledger carries this insight forward: work events carry their phase context so a feed can be filtered not only by actor or repo but by coordination maturity — showing, for instance, all work currently in synthesis phase across all surfaces.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 PRINCIPLES -->
+    <section class="section" id="principles">
+      <span class="section-label">03 · Principles</span>
+      <h2>Five constraints that hold.</h2>
+
+      <div class="card-grid">
+        <div class="card">
+          <span class="card-num">01 · REA-grounded</span>
+          <h4>Every row is an Event with an Agent and a Resource</h4>
+          <p>The information model traces directly to the REA ontology: Agent (actor), Event (the work_event record), Resource or Agreement (the subject). No proprietary schema, no bespoke abstractions. A work event in this system is recognizable to any system using REA, and translates without loss.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">02 · Append-only</span>
+          <h4>Records are never edited, only superseded</h4>
+          <p>The ledger does not allow retroactive edits to work events. A correction is a new event with event_type: 'correction' and a parent_id pointing to the original. This is the same principle that makes the Workshop's Protocol Stream trustworthy, and it is the property the audit surface in CIS v0.2 depends on.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">03 · Agent parity</span>
+          <h4>Nou and Dianoia appear as first-class actors, not noise</h4>
+          <p>Agent-authored work events carry the same actor_type dignity as human events. Attribution is full and unambiguous. A filter for "all Nou contributions in the last 30 days" should return the same quality of record as "all Todd contributions in the last 30 days." Agent work is not a footnote.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">04 · Progressive legibility</span>
+          <h4>Useful at Phase 1, richer at Phase 3</h4>
+          <p>The tool is genuinely useful from first commit. Phase 1 is a manually-augmented feed of Workshop sprint completions. Phase 2 adds GitHub webhook ingestion. Phase 3 adds address space coverage views. Each phase is complete on its own terms. The PRD does not require Phase 3 to justify Phase 1.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">05 · Not surveillance</span>
+          <h4>The ledger records outcomes, not keystrokes</h4>
+          <p>Work events are coarse-grained: sprint completed, PR merged, commit pushed, page updated. They are not granular: file changed, line edited, time on task. The distinction matters. A ledger of outcomes supports coordination and attribution. A log of keystrokes supports monitoring. This is a ledger.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 SYSTEM DEFINITION -->
+    <section class="section" id="system-definition">
+      <span class="section-label">04 · System Definition</span>
+      <h2>Three sources, one surface.</h2>
+      <p>The Work Ledger reads from three external systems and writes normalized events into a single Supabase table. It does not replace any of its sources. It is a read layer with one write primitive: <code style="font-family:'IBM Plex Mono',monospace;font-size:0.88em;color:var(--accent)">work_events</code>.</p>
+
+      <h3>Sources</h3>
+      <div class="card-grid">
+        <div class="card">
+          <span class="card-num">Source A · Workshop</span>
+          <h4>co-op.us/app/coordinate</h4>
+          <p>Sprint state changes (claimed, completed, synthesized) from the coordination_requests table via Supabase realtime or periodic poll. These events carry the richest coordination metadata: phase, actor, completion_proof URL, result_summary. The Work Ledger treats completed Workshop sprints as the highest-confidence work events: coordination and artifact evidence in the same record.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Source B · GitHub</span>
+          <h4>RegenHub-Boulder and related orgs</h4>
+          <p>Push events, PR merges, and issue closures via GitHub webhook → Supabase edge function. A minimal handler normalizes each event into the work_events schema. Phase is inferred from event type (PR merged → Execution; issue closed with "closes" body → Synthesis). Actor matching against the participants table uses GitHub username as the lookup key.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Source C · Address space</span>
+          <h4>techne.institute / URL coverage</h4>
+          <p>Pages and documents updated in the techne.institute repo are surfaced as URL-subject work events, extracted from GitHub push events that touch HTML or document files. This enables an address-space view: which pages were touched in the last 30 days, by whom, in what context. Phase 3 only — derived from Source B, no additional integration needed.</p>
+        </div>
+      </div>
+
+      <h3>What it does not do</h3>
+      <p>The Work Ledger does not manage work items (that is the Workshop), does not hold canonical sprint state (that is coordination_requests), does not track billable labor hours (that is the Labor Tracking module in the CIS), and does not make editorial judgments about work quality. It is a record, not an evaluator.</p>
+    </section>
+
+    <!-- 05 INFORMATION MODEL -->
+    <section class="section" id="information-model">
+      <span class="section-label">05 · Information Model</span>
+      <h2>One table. Six columns that matter.</h2>
+      <p>The entire model is a single table — <code style="font-family:'IBM Plex Mono',monospace;font-size:0.88em;color:var(--accent)">work_events</code> — on the CIS Supabase project. It extends the existing CIS identity layer by referencing the <code style="font-family:'IBM Plex Mono',monospace;font-size:0.88em;color:var(--accent)">participants</code> table. No new schemas, no new projects.</p>
+
+      <div class="code-block">
+        <pre><span class="cm">-- All work events, normalized across sources.</span>
+<span class="cm">-- REA mapping: actor (Agent) + work_event row (Event) + subject (Resource or Agreement)</span>
+<span class="kw">CREATE TABLE</span> work_events (
+  id             <span class="ty">uuid</span>         <span class="kw">DEFAULT</span> gen_random_uuid() <span class="kw">PRIMARY KEY</span>,
+  created_at     <span class="ty">timestamptz</span>  <span class="kw">DEFAULT</span> now() <span class="kw">NOT NULL</span>,
+
+  <span class="cm">-- Actor (REA: Agent)</span>
+  actor_id       <span class="ty">uuid</span>         <span class="kw">REFERENCES</span> participants(id),  <span class="cm">-- nullable: external actors</span>
+  actor_name     <span class="ty">text</span>         <span class="kw">NOT NULL</span>,                        <span class="cm">-- display name</span>
+  actor_type     <span class="ty">text</span>         <span class="kw">CHECK</span> (actor_type <span class="kw">IN</span> (<span class="st">'human'</span>, <span class="st">'agent'</span>, <span class="st">'system'</span>)),
+
+  <span class="cm">-- Event type and phase</span>
+  event_type     <span class="ty">text</span>         <span class="kw">NOT NULL</span>,   <span class="cm">-- 'sprint_completed', 'git_push', 'pr_merged', etc.</span>
+  phase          <span class="ty">text</span>,                     <span class="cm">-- discovery | proposal | execution | synthesis</span>
+
+  <span class="cm">-- Subject (REA: Resource or Agreement)</span>
+  subject_type   <span class="ty">text</span>         <span class="kw">NOT NULL</span>,   <span class="cm">-- 'sprint', 'git_repo', 'url', 'document'</span>
+  subject_ref    <span class="ty">text</span>,                     <span class="cm">-- sprint_id (P486), repo slug, URL path</span>
+  subject_url    <span class="ty">text</span>,                     <span class="cm">-- canonical link to artifact</span>
+
+  <span class="cm">-- Payload</span>
+  title          <span class="ty">text</span>,
+  summary        <span class="ty">text</span>,
+
+  <span class="cm">-- Provenance</span>
+  source         <span class="ty">text</span>         <span class="kw">NOT NULL</span>,   <span class="cm">-- 'workshop' | 'github' | 'manual'</span>
+  source_id      <span class="ty">text</span>                      <span class="cm">-- original ID (sprint UUID, commit SHA)</span>
+);</pre>
+      </div>
+
+      <h3>REA mapping</h3>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>REA Primitive</th><th>work_events Column</th><th>Example Value</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Agent</td><td>actor_id, actor_name, actor_type</td><td>Nou · agent · participants.id</td></tr>
+            <tr><td>Event</td><td>event_type, phase, created_at</td><td>sprint_completed · execution · 2026-05-18</td></tr>
+            <tr><td>Resource</td><td>subject_type = 'git_repo' or 'url'</td><td>RegenHub-Boulder/techne.institute</td></tr>
+            <tr><td>Agreement</td><td>subject_type = 'sprint' or 'document'</td><td>P486 · cooperation.games home dashboard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Derived views</h3>
+      <p>Two read-only views are sufficient for the Phase 1 and Phase 2 interfaces. No additional tables needed.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>View</th><th>Description</th><th>Phase</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>activity_feed</td><td>work_events ordered by created_at desc, joined to participants for avatar/role. Paginated 20/page. Filterable by actor_type, phase, subject_type, source.</td><td>Ph1</td></tr>
+            <tr><td>address_space_coverage</td><td>work_events where subject_type = 'url', grouped by subject_ref (URL path), count of events and distinct actors per path in a rolling 30-day window.</td><td>Ph3</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Identity join</h3>
+      <p>The work_events table references the existing <code style="font-family:'IBM Plex Mono',monospace;font-size:0.88em;color:var(--accent)">participants</code> table on the CIS Supabase project. The join is nullable: events from GitHub webhooks may arrive before an actor match is established. Unmatched actors are held in the table with actor_id null and actor_name from the webhook payload. A steward can later claim an unmatched event by updating actor_id.</p>
+    </section>
+
+    <!-- 06 INTERFACE -->
+    <section class="section" id="interface">
+      <span class="section-label">06 · Interface</span>
+      <h2>Three views, one URL.</h2>
+      <p>The interface lives at <code style="font-family:'IBM Plex Mono',monospace;font-size:0.88em;color:var(--accent)">/intranet/activity/</code> — the Activity surface in the CIS v0.2 primary navigation. It is auth-gated (same gate as /intranet/treasury/ and /intranet/board/). Three tab views share the same underlying data.</p>
+
+      <h3>View 1 · Feed</h3>
+      <p>The default view. A reverse-chronological list of work events. Each event card shows: phase pill, event_type label, actor name and type badge (human / agent), subject_ref with link, title, created_at relative timestamp, and a collapse/expand toggle for summary text. Filter bar at top: phase, actor_type, source, subject_type. Date range picker. No pagination UI — virtual scroll.</p>
+
+      <h3>View 2 · Attribution</h3>
+      <p>A grouped view by actor. Each actor shows: total events, events by phase (spark-bar), events by subject_type (spark-bar), most recent event. Useful for answering "what has Dianoia shipped in the last 60 days?" or "which humans have been most active in synthesis phase?" Sortable by event count, recency, phase distribution. Phase 2 only — requires sufficient data density to be readable.</p>
+
+      <h3>View 3 · Coverage</h3>
+      <p>A URL-tree view of the Techne address space. Every path that has a work event in the selected window is listed. Depth-folded: /cis/ collapses children until expanded. Each path shows: event count, distinct actor count, last touched date, phase of most recent event. Useful for answering "which parts of the site haven't been touched in 90 days?" Phase 3 only.</p>
+
+      <h3>Design notes</h3>
+      <p>The interface follows the co-op.us design system: dark ground at <code style="font-family:'IBM Plex Mono',monospace;font-size:0.88em;color:var(--accent)">#0f0f0f</code>, IBM Plex Mono throughout, terracotta accent sparingly. Phase pills use the five-phase color system established in this document. No charts with axes — this is a ledger, not an analytics dashboard. Numbers are counts, not graphs.</p>
+    </section>
+
+    <!-- 07 INTEGRATION POINTS -->
+    <section class="section" id="integration">
+      <span class="section-label">07 · Integration Points</span>
+      <h2>Three connections, minimal surface area.</h2>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Integration</th><th>Mechanism</th><th>Direction</th><th>Phase</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Workshop sprint completions</td>
+              <td>Supabase realtime subscription on coordination_requests WHERE status = 'completed'. Edge function normalizes into work_events. Fallback: periodic poll every 15 min.</td>
+              <td>Workshop → work_events</td>
+              <td>Ph1</td>
+            </tr>
+            <tr>
+              <td>GitHub push + PR events</td>
+              <td>GitHub webhook (one per org) → Supabase edge function work-event-ingest. Handles push, pull_request.closed (merged=true). Normalizes actor via github_username → participants lookup.</td>
+              <td>GitHub → work_events</td>
+              <td>Ph2</td>
+            </tr>
+            <tr>
+              <td>GitHub issue closure</td>
+              <td>Same webhook, issues.closed event type. Infers synthesis phase when body contains "closes #" or "fixes P\d+" pattern. Low confidence — manual phase override allowed.</td>
+              <td>GitHub → work_events</td>
+              <td>Ph2</td>
+            </tr>
+            <tr>
+              <td>Manual entry</td>
+              <td>POST /work-event-ingest with source = 'manual'. Used for work that happened outside tracked systems (in-person, off-platform). Steward-only.</td>
+              <td>Steward → work_events</td>
+              <td>Ph1</td>
+            </tr>
+            <tr>
+              <td>Address space indexing</td>
+              <td>GitHub push events touching *.html or *.md files in techne.institute repo emit additional work_events with subject_type = 'url' and subject_ref = the file path as a URL.</td>
+              <td>Derived from Ph2</td>
+              <td>Ph3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Edge function: work-event-ingest</h3>
+      <p>A single Supabase edge function receives both the GitHub webhook and the Workshop realtime events. It normalizes them into the work_events schema and inserts via the REST API using the service key. It does not validate business logic — it only normalizes and writes. Validation (e.g., deduplication on source_id) is handled by a unique constraint: <code style="font-family:'IBM Plex Mono',monospace;font-size:0.88em;color:var(--accent)">UNIQUE(source, source_id)</code> on work_events.</p>
+    </section>
+
+    <!-- 08 ROADMAP -->
+    <section class="section" id="roadmap">
+      <span class="section-label">08 · Roadmap</span>
+      <h2>Three phases. Useful at each one.</h2>
+      <p>The roadmap is deliberately short. A work tracking tool that takes six months to reach its first useful state has already failed. Phase 1 is deployable in a single sprint. Phase 2 follows when GitHub integration is needed. Phase 3 is optional enhancement.</p>
+
+      <div class="table-wrap">
+        <table class="roadmap-table">
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>Name</th>
+              <th>What ships</th>
+              <th>Capability unlocked</th>
+              <th>Est. effort</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ph1</td>
+              <td>Feed</td>
+              <td>work_events table · work-event-ingest edge function · Workshop realtime integration · manual entry · /intranet/activity/ Feed view</td>
+              <td>"What has been completed in the Workshop in the last 30 days, by whom?" — answerable from the intranet.</td>
+              <td>S–M sprint</td>
+            </tr>
+            <tr>
+              <td>Ph2</td>
+              <td>GitHub</td>
+              <td>GitHub webhook handler in work-event-ingest · PR merge and push event normalization · actor matching via github_username · Attribution view</td>
+              <td>"Show me every GitHub commit across all RegenHub repos in the last 60 days." Cross-surface attribution — Workshop sprint completion_proof links connect Workshop records to GitHub commits.</td>
+              <td>M sprint</td>
+            </tr>
+            <tr>
+              <td>Ph3</td>
+              <td>Coverage</td>
+              <td>address_space_coverage view · URL-tree Coverage view in /intranet/activity/ · staleness detection (pages not touched in N days)</td>
+              <td>"Which parts of techne.institute haven't been updated in 90 days?" Site hygiene from the ledger, no additional tooling.</td>
+              <td>S sprint</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>What Phase 1 does not need</h3>
+      <p>Phase 1 does not need GitHub integration. It does not need address space coverage. It does not need the attribution view. It needs one table, one edge function, and one HTML page. If it ships those three things and surfaces Workshop sprint completions in a readable feed, it has succeeded. Complexity accumulates in subsequent phases only when the simpler phase has proven its value.</p>
+    </section>
+
+    <!-- 09 OPEN QUESTIONS -->
+    <section class="section" id="open-questions">
+      <span class="section-label">09 · Open Questions</span>
+      <h2>What we do not yet know.</h2>
+
+      <div class="card-grid">
+        <div class="card">
+          <span class="card-num">Actor matching confidence</span>
+          <h4>GitHub username → participant is imperfect</h4>
+          <p>Not every GitHub committer will have a participant record. The unmatched-actor handling described in the information model (actor_id nullable, steward-claimable) is a reasonable Phase 2 start, but it will produce noise in the Attribution view until matching is mature. Needs a steward-facing reconciliation UI or a more automated matching strategy (email fallback, ENS lookup for agent commits).</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Supabase project placement</span>
+          <h4>Which project hosts work_events?</h4>
+          <p>The work_events table references participants, which lives on the CIS Supabase project (hvbdpgkdcdskhpbdeeim). The Workshop sprint completions come from the same project. GitHub events are external. The simplest answer is to add work_events to the existing CIS project — avoiding cross-project joins. But the Workshop project and the CIS are currently co-located, so this needs explicit confirmation before the table is created.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Phase inference from GitHub events</span>
+          <h4>PR merged → Execution is an approximation</h4>
+          <p>The five-phase model maps cleanly onto Workshop sprint lifecycle. GitHub events have no native phase concept. The inferred mapping (push → Execution, issue closed → Synthesis) is a heuristic and will misfire. An explicit phase override field in work_events allows a steward or agent to correct the inference. Whether the heuristic is good enough for the Attribution and Coverage views needs empirical testing at Phase 2.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Scope of GitHub orgs to track</span>
+          <h4>RegenHub-Boulder is clear; what else?</h4>
+          <p>RegenHub-Boulder/techne.institute is the obvious first target. Roots-Trust-LCA (coordination games, cooperation.games), dianoi/dianoia, and nou-techne are all relevant. Each org requires a separate webhook. The Phase 2 sprint should define the complete webhook list before implementation, not discover it incrementally.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">Retention and privacy</span>
+          <h4>How long does work_events persist?</h4>
+          <p>The append-only principle implies indefinite retention. In practice, old events accumulate. A soft archival policy (events older than 18 months move to a cold view, excluded from default feed queries) keeps the active table fast without destroying the record. CROPS privacy consideration: work event summaries may contain discussion excerpts from Workshop sprint messages — if those are included in summary, they should be member-only, not publicly queryable.</p>
+        </div>
+      </div>
+
+      <div class="heart-block" style="margin-top:3rem;">
+        <p>The coordination surface taught us something that can't be built in: the difference between work that happened and work that is known to have happened. Ghost execution is not a bug in an individual agent's behavior — it is what happens whenever two systems hold partial records of the same reality. The Work Ledger is an attempt to close that gap.</p>
+        <p>It will not close it completely. No ledger does. But <strong>a cooperative that can answer "what did we make together last month?" from a single surface is a cooperative that can see itself.</strong> That's the minimum viable condition for collective intelligence.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Scrollspy
+    var links = document.querySelectorAll('.toc a');
+    var sections = Array.from(document.querySelectorAll('.section[id]'));
+    var navH = document.querySelector('.site-nav').offsetHeight;
+
+    function onScroll() {
+      var scrollY = window.scrollY || window.pageYOffset;
+      var active = null;
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i].getBoundingClientRect().top + scrollY - navH <= scrollY + 4) {
+          active = sections[i].id;
+        }
+      }
+      links.forEach(function(l) {
+        var isActive = l.getAttribute('href') === '#' + active;
+        l.classList.toggle('active', isActive);
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+
+</body>
+</html>
