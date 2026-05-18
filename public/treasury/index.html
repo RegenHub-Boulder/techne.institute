@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RegenHub, LCA open accounting statement — live treasury holdings and period financial summary, published in accordance with cooperative transparency principles.">
+<title>RegenHub · Open Treasury</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  :root {
+    --bg:          #0f0f0f;
+    --surface:     #1a1a1a;
+    --surface-2:   #141414;
+    --border:      #2a2a2a;
+    --border-strong: #3a3a3a;
+    --terra:       #c4956a;
+    --terra-dim:   rgba(196,149,106,0.10);
+    --terra-mid:   rgba(196,149,106,0.22);
+    --heading:     #e8e0d8;
+    --text:        #c8c8c8;
+    --muted:       #888;
+    --faint:       #555;
+    --green:       #5a9e6f;
+    --green-dim:   rgba(90,158,111,0.12);
+    --green-mid:   rgba(90,158,111,0.22);
+    --blue:        #6a8ec4;
+    --blue-dim:    rgba(106,142,196,0.12);
+    --red:         #c46a6a;
+    --serif:       'Libre Baskerville', Georgia, serif;
+    --mono:        'IBM Plex Mono', 'Courier New', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--terra); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Layout ── */
+  .page-wrap {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 0 18px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .site-name {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--heading);
+    letter-spacing: 0.01em;
+  }
+
+  .site-tagline {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .badge-public {
+    margin-left: auto;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    border: 1px solid var(--green);
+    padding: 3px 8px;
+    border-radius: 2px;
+    opacity: 0.85;
+  }
+
+  /* ── Page title ── */
+  .page-head {
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--heading);
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+
+  .page-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .page-subtitle strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ── Section ── */
+  .section {
+    padding: 36px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 14px;
+  }
+
+  .section-heading {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 8px;
+  }
+
+  .prose {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.75;
+    max-width: 640px;
+  }
+
+  .prose + .prose { margin-top: 12px; }
+
+  /* ── Live status ── */
+  .live-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  .live-dot.stale { background: var(--terra); animation: none; }
+
+  /* ── Summary cards ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px 20px;
+  }
+
+  .card-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .card-value {
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--heading);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .card-value.positive { color: var(--green); }
+  .card-value.loading  { color: var(--faint); font-size: 14px; }
+
+  .card-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+  }
+
+  /* ── Line items ── */
+  .line-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+
+  .line-table td {
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .line-table tr:last-child td { border-bottom: none; }
+
+  .line-table .lbl {
+    color: var(--text);
+    padding-right: 20px;
+    width: 100%;
+  }
+
+  .line-table .lbl small {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-weight: 400;
+  }
+
+  .line-table .amt {
+    text-align: right;
+    white-space: nowrap;
+    color: var(--heading);
+    font-weight: 500;
+  }
+
+  .line-table .amt.positive { color: var(--green); }
+  .line-table .amt.negative { color: var(--red); }
+  .line-table .amt.muted    { color: var(--muted); }
+
+  .line-table .total td {
+    border-top: 1px solid var(--border-strong);
+    border-bottom: none;
+    padding-top: 10px;
+    font-weight: 500;
+    color: var(--heading);
+  }
+
+  .line-table .loading-row td { color: var(--faint); font-size: 12px; }
+
+  /* ── Principle blocks ── */
+  .principle-grid {
+    display: grid;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .principle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--terra);
+    border-radius: 0 4px 4px 0;
+    padding: 14px 16px;
+  }
+
+  .principle-num {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 4px;
+  }
+
+  .principle-name {
+    font-weight: 500;
+    color: var(--heading);
+    margin-bottom: 6px;
+  }
+
+  .principle-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── Commitment block ── */
+  .commitment {
+    background: var(--terra-dim);
+    border: 1px solid var(--terra-mid);
+    border-radius: 4px;
+    padding: 18px 20px;
+    margin-top: 16px;
+  }
+
+  .commitment-heading {
+    font-weight: 500;
+    color: var(--terra);
+    margin-bottom: 8px;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .commitment ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .commitment li {
+    padding: 4px 0;
+    font-size: 12px;
+    color: var(--text);
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .commitment li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--terra);
+  }
+
+  /* ── Methodology ── */
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .method-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 16px;
+  }
+
+  .method-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .method-value {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* ── Footer ── */
+  .page-footer {
+    padding: 32px 0 0;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--faint);
+    line-height: 1.8;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .footer-links a { color: var(--muted); font-size: 11px; }
+
+  /* ── Responsive ── */
+  @media (max-width: 540px) {
+    .page-wrap { padding: 0 16px 60px; }
+    .cards { grid-template-columns: 1fr 1fr; }
+    .site-header { gap: 10px; }
+    .badge-public { margin-left: 0; }
+    .page-title { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- Header -->
+  <header class="site-header">
+    <span class="site-name">RegenHub, LCA</span>
+    <span class="site-tagline">Colorado Limited Cooperative Association · Boulder</span>
+    <span class="badge-public">Public</span>
+  </header>
+
+  <!-- Page title -->
+  <div class="page-head">
+    <h1 class="page-title">Open Treasury Statement</h1>
+    <p class="page-subtitle">
+      Live treasury holdings and opening period financials, published under the cooperative's commitment to
+      <strong>open accounting</strong> in accordance with
+      <a href="https://www.ica.coop/en/cooperatives/cooperative-identity" target="_blank" rel="noopener">ICA Cooperative Principles</a>
+      (Principles 3 &amp; 5). This page is updated continuously from live sources.
+    </p>
+  </div>
+
+  <!-- Live Treasury -->
+  <section class="section" id="live">
+    <div class="section-label">Live · Current Holdings</div>
+    <h2 class="section-heading">Treasury Holdings</h2>
+    <p class="prose">
+      Assets currently held on behalf of cooperative members.
+      Bank balances are sourced directly from Mercury Bank via API.
+      Digital assets are held in a multi-signature wallet requiring member consensus to move funds.
+    </p>
+
+    <div class="live-bar" id="live-bar">
+      <div class="live-dot" id="live-dot"></div>
+      <span id="live-status">Loading live data…</span>
+    </div>
+
+    <table class="line-table" id="holdings-table">
+      <tbody id="holdings-body">
+        <tr class="loading-row">
+          <td class="lbl">Loading…</td>
+          <td class="amt">—</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="total" id="holdings-total" style="display:none">
+          <td class="lbl">Total Live Holdings</td>
+          <td class="amt" id="holdings-total-amt">—</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- Opening Statement Summary -->
+  <section class="section" id="period">
+    <div class="section-label">Period Statement · Feb 6 – May 6, 2026</div>
+    <h2 class="section-heading">Opening Financial Statement</h2>
+    <p class="prose">
+      Inception-to-board-initialization period. The cooperative was filed February 6, 2026;
+      the board was formally initialized May 6, 2026. These are the opening financial statements
+      of record, prepared in accordance with GAAP for a Colorado LCA.
+    </p>
+
+    <div class="cards" style="margin-top:20px">
+      <div class="card">
+        <div class="card-label">Total Assets</div>
+        <div class="card-value">$16,624.65</div>
+        <div class="card-sub">As of May 6, 2026</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Members' Equity</div>
+        <div class="card-value">$16,573.35</div>
+        <div class="card-sub">Net of $51.30 liabilities</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Net Operating Result</div>
+        <div class="card-value positive">+$3,059.13</div>
+        <div class="card-sub">Feb 6 – May 6, 2026</div>
+      </div>
+    </div>
+
+    <table class="line-table" style="margin-top:20px">
+      <tbody>
+        <tr>
+          <td class="lbl">
+            Cash — bank
+            <small>Mercury Bank checking account</small>
+          </td>
+          <td class="amt">$95.04</td>
+        </tr>
+        <tr>
+          <td class="lbl">
+            Digital assets — multi-sig treasury
+            <small>USDC, DAI, ETH held in Gnosis Safe; multi-chain</small>
+          </td>
+          <td class="amt">$10,843.30</td>
+        </tr>
+        <tr>
+          <td class="lbl">
+            Member receivables
+            <small>Hub membership invoices issued, not yet collected</small>
+          </td>
+          <td class="amt">$5,686.31</td>
+        </tr>
+        <tr>
+          <td class="lbl">
+            Accrued liabilities
+            <small>VOIP service accrual (Feb–Apr 2026)</small>
+          </td>
+          <td class="amt negative">($51.30)</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="total">
+          <td class="lbl">Members' Equity</td>
+          <td class="amt">$16,573.35</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- Revenue & Expenses -->
+  <section class="section" id="operations">
+    <div class="section-label">Period Statement · Operations</div>
+    <h2 class="section-heading">Revenue &amp; Expenses</h2>
+    <p class="prose">
+      All revenue originates from member activity — either direct member contributions or
+      cost-sharing arrangements. No outside investment or debt is included in operations.
+    </p>
+
+    <table class="line-table" style="margin-top:20px">
+      <thead>
+        <tr>
+          <td class="lbl" style="color:var(--muted);font-size:11px;padding-bottom:10px">Revenue</td>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="lbl">
+            Lease expense share collections
+            <small>Member cost-sharing for building lease (via SAFE multi-sig)</small>
+          </td>
+          <td class="amt">$5,545.00</td>
+        </tr>
+        <tr>
+          <td class="lbl">
+            Hub membership invoices
+            <small>Monthly hub memberships issued via Xero; not yet collected</small>
+          </td>
+          <td class="amt">$5,686.31</td>
+        </tr>
+        <tr class="total">
+          <td class="lbl">Total Revenue</td>
+          <td class="amt">$11,231.31</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="line-table" style="margin-top:20px">
+      <thead>
+        <tr>
+          <td class="lbl" style="color:var(--muted);font-size:11px;padding-bottom:10px">Expenses</td>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="lbl">
+            Lease — West Software, LLC
+            <small>Pass-through for co-working space lease share</small>
+          </td>
+          <td class="amt muted">$4,773.56</td>
+        </tr>
+        <tr>
+          <td class="lbl">
+            Expense reimbursements
+            <small>Formation and operational costs reimbursed to members</small>
+          </td>
+          <td class="amt muted">$2,063.00</td>
+        </tr>
+        <tr>
+          <td class="lbl">
+            Hub supplies &amp; infrastructure
+            <small>Physical and digital tooling for the shared space</small>
+          </td>
+          <td class="amt muted">$1,079.36</td>
+        </tr>
+        <tr>
+          <td class="lbl">
+            Software &amp; services
+          </td>
+          <td class="amt muted">$194.74</td>
+        </tr>
+        <tr>
+          <td class="lbl">
+            Government fees
+            <small>State filing, registration</small>
+          </td>
+          <td class="amt muted">$20.00</td>
+        </tr>
+        <tr>
+          <td class="lbl">
+            VOIP service (accrued)
+            <small>Feb–Apr 2026; not yet paid</small>
+          </td>
+          <td class="amt muted">$41.52</td>
+        </tr>
+        <tr class="total">
+          <td class="lbl">Total Expenses</td>
+          <td class="amt">$8,172.18</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="line-table" style="margin-top:4px">
+      <tfoot>
+        <tr class="total">
+          <td class="lbl">Net Operating Result</td>
+          <td class="amt positive">+$3,059.13</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- Member Capital -->
+  <section class="section" id="capital">
+    <div class="section-label">Member Capital · IRC 704(b) Basis</div>
+    <h2 class="section-heading">How Capital Is Held</h2>
+    <p class="prose">
+      As a Limited Cooperative Association, member capital is tracked in individual capital accounts
+      rather than shares. Surplus is allocated to members in proportion to their patronage —
+      that is, in proportion to how much they use the cooperative's services.
+      This is the foundational accounting structure of cooperative enterprise.
+    </p>
+    <p class="prose" style="margin-top:12px">
+      Founding contributions represent pre-formation operational support converted to
+      member equity at board initialization. The cooperative currently has two working members
+      with capital accounts on record.
+    </p>
+
+    <table class="line-table" style="margin-top:20px">
+      <tbody>
+        <tr>
+          <td class="lbl">
+            Founding contributions — working members
+            <small>Pre-formation operational support converted to member equity</small>
+          </td>
+          <td class="amt">$13,514.22</td>
+        </tr>
+        <tr>
+          <td class="lbl">
+            2026 operating result allocated to members
+            <small>Feb 6 – May 6; patronage allocation formula pending board adoption</small>
+          </td>
+          <td class="amt positive">+$3,059.13</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="total">
+          <td class="lbl">Total Members' Equity</td>
+          <td class="amt">$16,573.35</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <p class="prose" style="margin-top:16px; font-size:12px; color:var(--muted)">
+      Note: Committed capital totaling $120,000 from investor-member commitments recorded at formation
+      is under active review following changes in the third-floor lease arrangement. No committed capital
+      has been received. This note will be updated upon resolution.
+    </p>
+  </section>
+
+  <!-- ICA Principles -->
+  <section class="section" id="principles">
+    <div class="section-label">Cooperative Identity</div>
+    <h2 class="section-heading">Why We Publish This</h2>
+    <p class="prose">
+      The International Co-operative Alliance defines cooperatives by seven principles.
+      This public treasury statement is a direct expression of three of them.
+    </p>
+
+    <div class="principle-grid" style="margin-top:20px">
+      <div class="principle">
+        <div class="principle-num">ICA Principle 3</div>
+        <div class="principle-name">Member Economic Participation</div>
+        <div class="principle-desc">
+          Members contribute equitably to, and democratically control, the capital of their cooperative.
+          Publishing capital account structure makes this democratic control visible and legible
+          — to members, prospective members, and the public.
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">ICA Principle 5</div>
+        <div class="principle-name">Education, Training, and Information</div>
+        <div class="principle-desc">
+          Cooperatives inform the general public about the nature and benefits of cooperation.
+          Open accounting is a form of this education — demonstrating through live data
+          that a cooperative can operate transparently without sacrificing member privacy.
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">ICA Principle 7</div>
+        <div class="principle-name">Concern for Community</div>
+        <div class="principle-desc">
+          Cooperatives work for the sustainable development of their communities.
+          Financial transparency builds the trust that makes community-rooted institutions viable.
+          We treat our balance sheet as a public record, not a private asset.
+        </div>
+      </div>
+    </div>
+
+    <div class="commitment">
+      <div class="commitment-heading">Our open accounting commitment</div>
+      <ul>
+        <li>Aggregate financial position published continuously from live sources</li>
+        <li>Revenue and expense categories disclosed without individual member identification</li>
+        <li>Capital account structure and surplus allocation method disclosed publicly</li>
+        <li>Material notes and contingencies disclosed as they arise</li>
+        <li>Full opening financial statements available to members and the board of directors</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Data Methodology -->
+  <section class="section" id="methodology">
+    <div class="section-label">Data Methodology</div>
+    <h2 class="section-heading">Sources &amp; Currency</h2>
+
+    <div class="method-grid">
+      <div class="method-item">
+        <div class="method-label">Bank data</div>
+        <div class="method-value">Mercury Bank API · synced hourly · amounts in USD</div>
+      </div>
+      <div class="method-item">
+        <div class="method-label">Digital assets</div>
+        <div class="method-value">Gnosis Safe multi-sig · Optimism &amp; Ethereum Mainnet · priced in USD at sync time</div>
+      </div>
+      <div class="method-item">
+        <div class="method-label">Period statement</div>
+        <div class="method-value">Feb 6 – May 6, 2026 · prepared under GAAP · reviewed by board</div>
+      </div>
+      <div class="method-item">
+        <div class="method-label">Privacy</div>
+        <div class="method-value">Individual member financial data is not published · aggregate figures only</div>
+      </div>
+      <div class="method-item">
+        <div class="method-label">Wallet</div>
+        <div class="method-value">Multi-sig address available on request · requires 2-of-3 member signatures to move funds</div>
+      </div>
+      <div class="method-item">
+        <div class="method-label">Questions</div>
+        <div class="method-value"><a href="mailto:stewards@techne.institute">stewards@techne.institute</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <div>RegenHub, LCA · Colorado Limited Cooperative Association · Filed Feb 6, 2026 · Boulder, CO</div>
+    <div>DBA Techne Studio · Public Benefit: "Cultivating scenius."</div>
+    <div class="footer-links">
+      <a href="https://www.ica.coop/en/cooperatives/cooperative-identity" target="_blank" rel="noopener">ICA Cooperative Principles</a>
+      <a href="https://techne.institute/" target="_blank">Techne Institute</a>
+      <a href="https://techne.institute/bylaws/" target="_blank">Bylaws</a>
+      <a href="https://techne.institute/formation/" target="_blank">Formation Documents</a>
+    </div>
+    <div style="margin-top:10px">
+      This statement is prepared by Nou, collective intelligence agent of RegenHub, LCA.
+      Data is provided for informational purposes. For official financial records, contact the board of directors.
+    </div>
+  </footer>
+
+</div><!-- /page-wrap -->
+
+<script>
+(function() {
+  'use strict';
+
+  var DATA_URL = 'https://gxyeobogqfubgzklmxwt.supabase.co';
+  var DATA_KEY = 'sb_publishable_pa03QT7iCLP2PrYIWewXWw_6SnWyVRr';
+
+  var db = supabase.createClient(DATA_URL, DATA_KEY);
+
+  function fmt(n) {
+    if (n == null || isNaN(n)) return '—';
+    return '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+
+  async function loadHoldings() {
+    var dot    = document.getElementById('live-dot');
+    var status = document.getElementById('live-status');
+    var body   = document.getElementById('holdings-body');
+    var totRow = document.getElementById('holdings-total');
+    var totAmt = document.getElementById('holdings-total-amt');
+
+    try {
+      var { data, error } = await db
+        .from('bank_accounts')
+        .select('account_name,balance,external_provider,last_updated,external_account_id')
+        .order('external_provider', { ascending: false });
+
+      if (error) throw error;
+
+      // Group: mercury first, then safe
+      var mercury = (data || []).filter(function(a) { return a.external_provider === 'mercury'; });
+      var safe    = (data || []).filter(function(a) { return a.external_provider === 'safe'; });
+
+      var rows = '';
+
+      // Mercury accounts
+      if (mercury.length) {
+        rows += '<tr><td class="lbl" colspan="2" style="color:var(--muted);font-size:11px;padding-top:12px;padding-bottom:4px;border-bottom:none">Cash — Mercury Bank</td></tr>';
+        mercury.forEach(function(a) {
+          rows += '<tr>' +
+            '<td class="lbl">' + esc(a.account_name) +
+              '<small>Last synced: ' + fmtDate(a.last_updated) + '</small></td>' +
+            '<td class="amt">' + fmt(a.balance) + '</td>' +
+          '</tr>';
+        });
+      }
+
+      // SAFE accounts
+      if (safe.length) {
+        rows += '<tr><td class="lbl" colspan="2" style="color:var(--muted);font-size:11px;padding-top:14px;padding-bottom:4px;border-bottom:none">Digital Assets — Multi-Sig Treasury (Gnosis Safe)</td></tr>';
+        safe.forEach(function(a) {
+          var chain = a.account_name.toLowerCase().indexOf('optimism') >= 0 ? 'Optimism' :
+                     a.account_name.toLowerCase().indexOf('mainnet') >= 0  ? 'Ethereum Mainnet' : '';
+          rows += '<tr>' +
+            '<td class="lbl">' + (chain || esc(a.account_name)) +
+              '<small>Last synced: ' + fmtDate(a.last_updated) + '</small></td>' +
+            '<td class="amt">' + fmt(a.balance) + '</td>' +
+          '</tr>';
+        });
+      }
+
+      body.innerHTML = rows || '<tr><td class="lbl" colspan="2" style="color:var(--muted)">No data available.</td></tr>';
+
+      // Total
+      var total = (data || []).reduce(function(s, a) { return s + (Number(a.balance) || 0); }, 0);
+      totAmt.textContent = fmt(total);
+      totRow.style.display = '';
+
+      // Find most recent update
+      var latest = (data || []).reduce(function(best, a) {
+        return (!best || a.last_updated > best) ? a.last_updated : best;
+      }, null);
+
+      dot.className = 'live-dot' + (isStale(latest) ? ' stale' : '');
+      status.textContent = latest
+        ? 'Live data · last synced ' + fmtDate(latest)
+        : 'Live data loaded';
+
+    } catch (err) {
+      dot.className = 'live-dot stale';
+      status.textContent = 'Could not load live data';
+      body.innerHTML = '<tr><td class="lbl" colspan="2" style="color:var(--muted)">Unable to load treasury holdings.</td></tr>';
+      console.error(err);
+    }
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return 'unknown';
+    var d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function isStale(iso) {
+    if (!iso) return true;
+    var d = new Date(iso);
+    return (Date.now() - d.getTime()) > 3 * 24 * 60 * 60 * 1000; // >3 days = stale
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  loadHoldings();
+})();
+</script>
+</body>
+</html>
