@@ -214,42 +214,41 @@
   .section-label-line { flex: 1; height: 1px; background: var(--border); }
 
   /* ── Module list ── */
-  /* Uses border-as-background with 1px gaps — same HUD pattern */
   .module-list {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .module-row {
-    background: var(--bg);
-    display: grid;
-    grid-template-columns: 3px 1fr auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: stretch;
     text-decoration: none;
     color: inherit;
-    transition: background 0.15s;
-    min-height: 80px;
-    position: relative;
+    transition: border-color 0.15s, background 0.15s;
+    min-height: 76px;
+    overflow: hidden;
   }
-  .module-row:hover { background: var(--surface); }
+  .module-row:hover { border-color: var(--border-strong); background: var(--surface-2); }
   .module-row.draft { opacity: 0.45; pointer-events: none; }
 
   .module-accent {
     width: 3px;
-    background: var(--row-color, var(--border-strong));
     flex-shrink: 0;
+    background: var(--row-color, var(--border-strong));
+    border-radius: 0;
   }
 
   .module-body {
-    padding: 16px 20px;
+    padding: 14px 18px;
     display: flex;
     flex-direction: column;
     gap: 4px;
     min-width: 0;
+    flex: 1;
   }
 
   .module-top {
@@ -302,7 +301,7 @@
   .module-link.sec:hover { background: var(--surface-2); color: var(--text); }
 
   .module-side {
-    padding: 16px 20px 16px 0;
+    padding: 14px 18px 14px 0;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -339,19 +338,17 @@
   .two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
+    gap: 16px;
   }
-  .two-col > * { background: var(--bg); }
 
   .ref-pane {
     padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
   }
 
   .ref-item {
@@ -381,6 +378,9 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
   }
 
   .state-row {
