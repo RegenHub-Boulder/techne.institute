@@ -926,6 +926,12 @@
       <div class="legend-item" role="listitem"><span class="legend-dot" style="background:var(--z1)"></span><span>public — open to all</span></div>
       <div class="legend-item" role="listitem"><span class="legend-dot" style="background:var(--z2)"></span><span>curated — linked or shared</span></div>
       <div class="legend-item" role="listitem"><span class="legend-dot" style="background:var(--z3)"></span><span>members — sign-in required</span></div>
+      <div class="legend-item" role="listitem" style="margin-left:auto;gap:0.5rem">
+        <span style="font-size:0.7rem;color:var(--fg-secondary,#9a9a9a);letter-spacing:0.05em;text-transform:uppercase;font-family:var(--font-mono,'IBM Plex Mono',monospace)">Status:</span>
+        <button id="filter-all" class="mode-btn active" style="font-size:0.65rem;padding:0.2rem 0.55rem" onclick="setStatusFilter('all')">All</button>
+        <button id="filter-production" class="mode-btn" style="font-size:0.65rem;padding:0.2rem 0.55rem;border-color:rgba(74,222,128,0.4);color:#4ade80" onclick="setStatusFilter('production')">Production</button>
+        <button id="filter-draft" class="mode-btn" style="font-size:0.65rem;padding:0.2rem 0.55rem" onclick="setStatusFilter('draft')">Draft</button>
+      </div>
     </div>
   </div>
 
@@ -1065,7 +1071,9 @@
         <li><strong><a href="/tree/">Site Map</a></strong> — This page</li>
         <li><strong><a href="/formation/">Formation</a></strong> — Legal documents</li>
         <li><strong><a href="/ecosystem/">Ecosystem</a></strong> — Tools and partners</li>
-        <li><strong><a href="/intranet/">Member Intranet</a></strong> — Private member portal (sign-in required)</li>
+        <li><strong><a href="/intranet/board/">Board</a></strong> — Governance and board coordination (members)</li>
+        <li><strong><a href="/intranet/treasury/">Treasury</a></strong> — Live financial position (members)</li>
+        <li><strong><a href="/public/treasury/">Open Treasury</a></strong> — Public financial statement</li>
       </ul>
     </main>
   </noscript>
@@ -1232,55 +1240,15 @@
     { id:'corpus', path:'/corpus/', title:'Cybernetic Corpus', zone:2, authLevel:'curated', parent:'home',
       description:'Anatomy of the cooperative as a living body — ten organs, three connective tissues, force-directed graph. Perceived from inside by Nou with live organ vitality indicators.' },
 
-    // ── Zone 3: Members ───────────────────────────────────────
-    { id:'intranet', path:'/intranet/', title:'Member Intranet', zone:3, authLevel:'members', parent:'home',
-      description:'Private member portal — cooperative operations, capital accounts, and internal coordination.' },
-    { id:'intranet-account', path:'/intranet/account/', title:'Account', zone:3, authLevel:'members', parent:'intranet',
-      description:'Your capital account, equity balance, and patronage summary.' },
-    { id:'intranet-capital', path:'/intranet/capital/', title:'Capital', zone:3, authLevel:'members', parent:'intranet',
-      description:'Cooperative capital structure — member equity contributions and allocations.' },
-    { id:'intranet-labor', path:'/intranet/labor/', title:'Labor', zone:3, authLevel:'members', parent:'intranet',
-      description:'Log and review contributed labor — time, type, and patronage value.' },
-    { id:'intranet-patronage', path:'/intranet/patronage/', title:'Patronage', zone:3, authLevel:'members', parent:'intranet',
-      description:'Patronage allocation records and IRC 704(b) capital account detail.' },
-    { id:'intranet-ventures', path:'/intranet/ventures/', title:'Ventures', zone:3, authLevel:'members', parent:'intranet',
-      description:'Cooperative ventures dashboard — project status, labor tracking, and milestones.' },
-    { id:'intranet-projects', path:'/intranet/projects/', title:'Projects', zone:3, authLevel:'members', parent:'intranet',
-      description:'Active and archived cooperative projects — status, contributors, and deliverables.' },
-    { id:'intranet-directory', path:'/intranet/directory/', title:'Directory', zone:3, authLevel:'members', parent:'intranet',
-      description:'Member directory — contact info and roles within the cooperative.' },
-    { id:'intranet-governance', path:'/intranet/governance/', title:'Governance', zone:3, authLevel:'members', parent:'intranet',
-      description:'Proposals, votes, and governance records for cooperative decisions.' },
-    { id:'intranet-journal', path:'/intranet/journal/', title:'Journal', zone:3, authLevel:'members', parent:'intranet',
-      description:'General ledger journal — double-entry accounting entries for the cooperative.' },
-    { id:'intranet-ledger', path:'/intranet/ledger/', title:'Ledger', zone:3, authLevel:'members', parent:'intranet',
-      description:'Account ledger view — balances and running totals by account.' },
-    { id:'intranet-treasury', path:'/intranet/treasury/', title:'Treasury', zone:3, authLevel:'members', parent:'intranet',
-      description:'Treasury overview — cash, reserves, and cooperative financial position.' },
-    { id:'intranet-messages', path:'/intranet/messages/', title:'Messages', zone:3, authLevel:'members', parent:'intranet',
-      description:'Direct messages between members and cooperative agents.' },
-    { id:'intranet-profile', path:'/intranet/profile/', title:'Profile', zone:3, authLevel:'members', parent:'intranet',
-      description:'Your member profile — contact information, preferences, and linked accounts.' },
-    { id:'intranet-cloud', path:'/intranet/cloud/', title:'Cloud', zone:3, authLevel:'members', parent:'intranet',
-      description:'Your cloud credit balance, usage history, and compute allocations.' },
-    { id:'intranet-guide', path:'/intranet/guide/', title:'Guide', zone:3, authLevel:'members', parent:'intranet',
-      description:'Member reference guide — how to use the intranet and cooperative tools.' },
-    { id:'intranet-documents', path:'/intranet/documents/', title:'Documents', zone:3, authLevel:'members', parent:'intranet',
-      description:'Cooperative documents, agreements, and shared reference materials.' },
-    { id:'intranet-roadmap', path:'/intranet/roadmap/', title:'Roadmap', zone:3, authLevel:'members', parent:'intranet',
-      description:'Product and organizational roadmap for Techne Studio and the cooperative.' },
+    // ── Zone 1: Public treasury ───────────────────────────────
+    { id:'public-treasury', path:'/public/treasury/', title:'Open Treasury', zone:1, authLevel:'public', parent:'home', status:'production',
+      description:'Live treasury holdings and opening period financials — published under ICA Cooperative Principles 3, 5, and 7. Dual report and HUD view.' },
 
-    // Intranet long-form pages
-    { id:'intranet-design-gateway', path:'/intranet/design-science-gateway.html', title:'Design Science Gateway', zone:3, authLevel:'members', parent:'intranet',
-      description:'The Design Science Gateway — Techne\'s framework for applying design science principles to cooperative infrastructure.' },
-    { id:'intranet-rea', path:'/intranet/rea-specification.html', title:'REA Specification', zone:3, authLevel:'members', parent:'intranet',
-      description:'The REA (Resource–Event–Agent) specification for the Techne Stack — semantic accounting foundations.' },
-    { id:'intranet-speak-ledger', path:'/intranet/speak-the-ledger.html', title:'Speak the Ledger', zone:3, authLevel:'members', parent:'intranet',
-      description:'Speak the Ledger — voice-first HCI concept for cooperative accounting and natural language ledger interaction.' },
-    { id:'intranet-toolbox', path:'/intranet/techne-toolbox.html', title:'Techne Toolbox', zone:3, authLevel:'members', parent:'intranet',
-      description:'The Techne Toolbox — curated set of tools, protocols, and practices used by the cooperative.' },
-    { id:'intranet-third-floor', path:'/intranet/the-third-floor.html', title:'The Third Floor', zone:3, authLevel:'members', parent:'intranet',
-      description:'The Third Floor — a Techne scenario document exploring the next phase of cooperative space and programming.' },
+    // ── Zone 3: Members — active production pages ─────────────
+    { id:'intranet-board', path:'/intranet/board/', title:'Board', zone:3, authLevel:'members', parent:'home', status:'production',
+      description:'Board interface — meeting documents, governance records, and steward-level coordination tools.' },
+    { id:'intranet-treasury', path:'/intranet/treasury/', title:'Treasury', zone:3, authLevel:'members', parent:'home', status:'production',
+      description:'Member treasury view — live bank balances, transaction history, and cooperative financial position.' },
 
   ]
 
@@ -1344,40 +1312,15 @@
     { from:'cis', to:'bylaws' }, { from:'cis', to:'formation' }, { from:'cis', to:'design-system' },
     { from:'cooperative', to:'cis' }, { from:'learn', to:'cis' },
 
-    // Cloud / bylaws → intranet bridges
-    { from:'bylaws', to:'intranet-governance' }, { from:'intranet-governance', to:'bylaws' },
-    { from:'cloud-doc', to:'intranet-cloud' }, { from:'intranet-cloud', to:'cloud-doc' },
-    { from:'cloud-doc', to:'intranet-account' },
-    { from:'membership', to:'intranet' },
     { from:'pre-read', to:'about' }, { from:'pre-read', to:'formation' },
 
-    // Design system
-    { from:'design-system', to:'intranet' },
-
-    // Intranet accounting cluster
-    { from:'intranet-account', to:'intranet-capital' }, { from:'intranet-account', to:'intranet-labor' },
-    { from:'intranet-account', to:'intranet-patronage' },
-    { from:'intranet-capital', to:'intranet-labor' }, { from:'intranet-capital', to:'intranet-patronage' },
-    { from:'intranet-journal', to:'intranet-ledger' }, { from:'intranet-journal', to:'intranet-treasury' },
-    { from:'intranet-ledger', to:'intranet-treasury' }, { from:'intranet-treasury', to:'intranet-capital' },
-
-    // Intranet operations cluster
-    { from:'intranet-ventures', to:'intranet-projects' }, { from:'intranet-projects', to:'intranet-ventures' },
-    { from:'intranet-roadmap', to:'intranet-projects' }, { from:'intranet-roadmap', to:'intranet-ventures' },
-
-    // Intranet reference cluster
-    { from:'intranet-guide', to:'intranet-account' }, { from:'intranet-guide', to:'intranet-labor' },
-    { from:'intranet-messages', to:'intranet-directory' },
-    { from:'intranet-documents', to:'bylaws' }, { from:'intranet-documents', to:'intranet-governance' },
-    { from:'intranet-patronage', to:'intranet-account' },
-
-    // Intranet long-form docs
-    { from:'intranet-rea', to:'intranet-journal' }, { from:'intranet-rea', to:'intranet-ledger' },
-    { from:'intranet-design-gateway', to:'design-system' },
-    { from:'intranet-speak-ledger', to:'intranet-journal' },
+    // Active intranet pages
+    { from:'membership', to:'intranet-board' },
+    { from:'intranet-treasury', to:'public-treasury' }, { from:'public-treasury', to:'intranet-treasury' },
+    { from:'formation-financial', to:'intranet-treasury' },
 
     // Corpus connections
-    { from:'corpus', to:'cis' }, { from:'corpus', to:'intranet' },
+    { from:'corpus', to:'cis' },
     { from:'corpus', to:'writing-collective-intelligence' },
 
   ]
@@ -1417,9 +1360,13 @@
     a.target = '_blank'; a.rel = 'noopener'
     a.setAttribute('data-zone', page.zone)
     a.setAttribute('aria-label', `${page.title} — ${page.authLevel} page at ${page.path}`)
+    const statusChip = page.status === 'production'
+      ? `<span style="font-size:0.62rem;font-family:var(--font-mono,'IBM Plex Mono',monospace);padding:0.15rem 0.45rem;border-radius:3px;border:1px solid rgba(74,222,128,0.3);background:rgba(74,222,128,0.08);color:#4ade80;letter-spacing:0.04em;flex-shrink:0" aria-label="production">live</span>`
+      : ''
     a.innerHTML = `
       <div class="card-top">
         <span class="card-title">${page.title}</span>
+        ${statusChip}
         <span class="auth-badge ${page.authLevel}" aria-hidden="true">${page.authLevel}</span>
         <span class="sr-only">(${page.authLevel} access)</span>
       </div>
@@ -1441,7 +1388,7 @@
     main.appendChild(homeWrapper)
 
     for (const zone of [1,2,3,4,5].filter(z => PAGES.some(p => p.zone === z))) {
-      const pages = PAGES.filter(p => p.zone === zone)
+      const pages = filterByStatus(PAGES.filter(p => p.zone === zone))
       if (!pages.length) continue
       const meta = ZONE_META[zone]
       const section = document.createElement('section')
@@ -1469,7 +1416,7 @@
   // ══════════════════════════════════════════════
 
   // Collapse state: false = collapsed, true/undefined = expanded
-  const hudExpandState = { intranet: false }  // intranet collapsed by default (15 children)
+  const hudExpandState = {}
 
   // Build a single HUD row anchor
   function makeHudRow(page, zone) {
@@ -1845,8 +1792,27 @@
   // MODE SWITCHING
   // ══════════════════════════════════════════════
   let currentMode = 'hud'
+  let currentStatusFilter = 'all'
   const SUBTITLE_EL = document.getElementById('tree-subtitle')
   const LEGEND_EL   = document.getElementById('page-legend')
+
+  // Status filter (for list mode)
+  function setStatusFilter(f) {
+    currentStatusFilter = f
+    ;['all','production','draft'].forEach(id => {
+      const btn = document.getElementById('filter-' + id)
+      if (btn) btn.classList.toggle('active', id === f)
+    })
+    if (currentMode === 'list') renderGrid()
+  }
+  window.setStatusFilter = setStatusFilter  // referenced inline from HTML buttons
+
+  function filterByStatus(pages) {
+    if (currentStatusFilter === 'all') return pages
+    if (currentStatusFilter === 'production') return pages.filter(p => p.status === 'production')
+    if (currentStatusFilter === 'draft') return pages.filter(p => p.status === 'draft' || (!p.status && p.zone > 0))
+    return pages
+  }
 
   function switchMode(mode) {
     currentMode = mode

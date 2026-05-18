@@ -1,182 +1,66 @@
-<!doctype html>
-<html lang="en" data-theme="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Techne Intranet</title>
-    <meta name="robots" content="noindex,nofollow" />
-    <link rel="stylesheet" href="/assets/tokens.css" />
-    <!-- Theme detection: runs before paint to prevent flash -->
-    <script>
-      (function() {
-        var s = localStorage.getItem('techne-theme');
-        if (s === 'light' || s === 'dark') {
-          document.documentElement.setAttribute('data-theme', s);
-        } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-          document.documentElement.setAttribute('data-theme', 'light');
-        }
-      })();
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <style>
-      /* ── HUD design tokens — co-op.us coordinate palette ────────────── */
-      :root {
-        /* ── App shell backgrounds ─────────────────── */
-        --app-bg:       #0c0c0c;   /* body / root bg — co-op.us --co-bg */
-        --hud-surface:  #111111;   /* sidebar bg */
-        --hud-bar:      #0c0c0c;   /* status bar bg — flush with bg */
-        --hud-panel:    #0c0c0c;   /* content panel bg */
-        --ink:          #111111;   /* deep panel bg */
-        --surface:      #161616;   /* page content bg — co-op.us --co-surface */
-        --panel:        #222222;   /* card / elevated bg — co-op.us --co-surface-hover */
-        --raised:       #2a2a2a;   /* raised element bg — co-op.us --co-surface-active */
-
-        /* ── Borders — visible, co-op.us standard ─── */
-        --hud-border:      #2a2a2a;   /* HUD panel border */
-        --hud-border-deep: #383838;   /* HUD elevated border — co-op.us --co-border */
-        --border-nav:      #2a2a2a;   /* nav section divider */
-        --border-mid:      #383838;   /* standard border — co-op.us --co-border */
-        --border-hud2:     #505050;   /* HUD deep border — co-op.us --co-border-hover */
-
-        /* ── Glow washes ──────────────────────────── */
-        --hud-glow-ember:  rgba(196,149,106,0.10);
-        --hud-glow-green:  rgba(74,222,128,0.10);
-        --hud-glow-amber:  rgba(251,191,36,0.10);
-        --hud-glow-blue:   rgba(139,191,255,0.10);
-
-        /* ── Text — high contrast, co-op.us scale ──── */
-        --text-primary:  #f0f0f0;   /* co-op.us --co-text */
-        --text-page:     #f0f0f0;   /* page body text */
-        --text-warm:     #d0d0d0;   /* warm body text */
-        --text-display:  #f0f0f0;   /* display headings */
-        --text-muted:    #9a9a9a;   /* co-op.us --co-text-muted */
-        --text-accent:   #b8b8b8;   /* co-op.us --co-text-secondary */
-        --text-nav:      #9a9a9a;   /* nav item text — legible by default */
-        --text-mid:      #b8b8b8;   /* nav hover / mid — co-op.us --co-text-secondary */
-        --text-3a5a:     #707070;   /* raised text */
-        --text-subdim:   #707070;   /* subdued */
-        --text-dim:      #707070;   /* dim */
-        --text-ghost:    #505050;   /* ghost */
-        --text-soft:     #b8b8b8;   /* soft */
-        --text-ccc:      #cccccc;   /* lighter */
-        --text-dim2a40:  #505050;   /* very dim */
-
-        /* ── Hover overlays ───────────────────────── */
-        --hover-light:  rgba(255,255,255,0.05);
-        --hover-med:    rgba(255,255,255,0.08);
-        --hover-dim:    rgba(255,255,255,0.03);
-
-        /* ── Gold accent — unchanged ──────────────── */
-        --gold:    #c4956a;
-        --gold-06: rgba(196,149,106,0.06);
-        --gold-12: rgba(196,149,106,0.12);
-        --gold-15: rgba(196,149,106,0.15);
-        --gold-20: rgba(196,149,106,0.20);
-        --gold-25: rgba(196,149,106,0.25);
-        --gold-30: rgba(196,149,106,0.30);
-        --gold-40: rgba(196,149,106,0.40);
-
-        /* ── Status palette — co-op.us vivid system ── */
-        --status-ok:      #4ade80;   /* teal-green — co-op.us success */
-        --status-ok-bg:   rgba(74,222,128,0.10);
-        --status-warn:    #fbbf24;   /* amber — co-op.us warning */
-        --status-warn-bg: rgba(251,191,36,0.10);
-        --status-err:     #ef4444;   /* red — co-op.us error */
-        --status-err-bg:  rgba(239,68,68,0.10);
-        --status-info:    #8bbfff;   /* blue — co-op.us info */
-        --status-info-bg: rgba(139,191,255,0.10);
-        --status-teal:    #7ccfb8;   /* teal accent — co-op.us */
-        --status-purple:  #a78bfa;   /* purple accent — co-op.us */
-        --status-orange:  #fb923c;   /* orange — co-op.us */
-
-        /* ── HUD status aliases ───────────────────── */
-        --hud-status-live:  #4ade80;
-        --hud-status-warn:  #fbbf24;
-        --hud-status-error: #ef4444;
-        --hud-status-info:  #8bbfff;
-
-        /* ── Typography — IBM Plex Mono first ──────── */
-        --hud-mono: 'IBM Plex Mono','JetBrains Mono','Fira Code',Consolas,monospace;
-        --hud-transition: 0.12s ease;
-
-        /* ── Z-index ──────────────────────────────── */
-        --hud-z-panel:    0;
-        --hud-z-sidebar:  16;
-        --hud-z-backdrop: 15;
-        --hud-z-bar:      20;
-      }
-
-      /* ── Light mode overrides — co-op.us light palette ───────────── */
-      [data-theme="light"] {
-        /* App shell */
-        --app-bg:       #f5f3f0;   /* co-op.us --co-bg light */
-        --hud-surface:  #fffdf9;   /* co-op.us --co-nav-bg light */
-        --hud-bar:      #fffdf9;
-        --hud-panel:    #f5f3f0;
-        --ink:          #ebe8e2;
-        --surface:      #ffffff;   /* co-op.us --co-surface light */
-        --panel:        #f0ede8;   /* co-op.us --co-surface-hover light */
-        --raised:       #e8e4dd;
-
-        /* Borders */
-        --hud-border:      #d5cfc6;   /* co-op.us --co-border light */
-        --hud-border-deep: #c0b8ab;
-        --border-nav:      #ddd7ce;
-        --border-mid:      #d5cfc6;
-        --border-hud2:     #c0b8ab;
-
-        /* Text */
-        --text-primary:  #1a1a1a;   /* co-op.us --co-text light */
-        --text-page:     #1a1a1a;
-        --text-warm:     #333333;
-        --text-display:  #1a1a1a;
-        --text-muted:    #888888;   /* co-op.us --co-text-muted light */
-        --text-accent:   #555555;
-        --text-nav:      #555555;
-        --text-mid:      #666666;
-        --text-3a5a:     #888888;
-        --text-subdim:   #777777;
-        --text-dim:      #888888;
-        --text-ghost:    #aaaaaa;
-        --text-soft:     #777777;
-        --text-ccc:      #999999;
-        --text-dim2a40:  #aaaaaa;
-
-        /* Gold — darker for contrast on light */
-        --gold: #a07850;
-
-        /* Status — same vivid colors work on light too */
-        --status-ok:      #16a34a;
-        --status-ok-bg:   rgba(22,163,74,0.08);
-        --status-warn:    #d97706;
-        --status-warn-bg: rgba(217,119,6,0.08);
-        --status-err:     #dc2626;
-        --status-err-bg:  rgba(220,38,38,0.08);
-        --status-info:    #2563eb;
-        --status-info-bg: rgba(37,99,235,0.08);
-
-        /* Hover overlays */
-        --hover-light: rgba(0,0,0,0.03);
-        --hover-med:   rgba(0,0,0,0.05);
-        --hover-dim:   rgba(0,0,0,0.02);
-      }
-
-      body {
-        margin: 0;
-        font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
-        background: var(--app-bg);
-        color: var(--text-primary);
-        min-height: 100vh;
-        transition: background 0.2s ease, color 0.2s ease;
-      }
-      #root { min-height: 100vh; }
-    </style>
-    <script type="module" crossorigin src="/intranet/assets/index-Bewh5reu.js"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intranet — RegenHub, LCA</title>
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="refresh" content="0;url=/intranet/board/">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    background: #0c0c0c;
+    color: #c8c8c8;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .wrap {
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+  }
+  .org { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #888; margin-bottom: 28px; }
+  .heading { font-size: 15px; color: #e8e0d8; margin-bottom: 12px; }
+  .sub { font-size: 12px; color: #666; line-height: 1.6; margin-bottom: 32px; }
+  .links { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    color: #c4956a;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    transition: border-color 0.15s, background 0.15s;
+    min-width: 220px;
+    justify-content: center;
+  }
+  .link-btn:hover { border-color: #c4956a; background: rgba(196,149,106,0.06); }
+  .link-btn.primary { border-color: rgba(196,149,106,0.4); }
+  .notice { margin-top: 40px; font-size: 11px; color: #444; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="org">RegenHub, LCA · Member Intranet</div>
+  <div class="heading">This section is being reorganized.</div>
+  <div class="sub">Active intranet pages are linked below.<br>You are being redirected to the Board interface.</div>
+  <div class="links">
+    <a class="link-btn primary" href="/intranet/board/">Board Interface →</a>
+    <a class="link-btn" href="/intranet/treasury/">Treasury →</a>
+    <a class="link-btn" href="/public/treasury/">Public Treasury →</a>
+  </div>
+  <div class="notice">
+    If you are not redirected automatically, <a href="/intranet/board/" style="color:#888">click here</a>.
+  </div>
+</div>
+</body>
 </html>
