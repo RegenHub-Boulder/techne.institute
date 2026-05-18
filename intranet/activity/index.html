@@ -27,11 +27,7 @@
     --green:        #a0c46a;
     --blue:         #6ab0c4;
     --purple:       #c46ab0;
-    --phase-proposal:    #6a8fc4;
-    --phase-negotiation: #c4956a;
-    --phase-execution:   #a0c46a;
-    --phase-synthesis:   #c46ab0;
-    --phase-discovery:   #8fc46a;
+    --red:          #c46a6a;
   }
 
   [data-mode="light"] {
@@ -50,225 +46,74 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html, body {
-    min-height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: 15px;
-    line-height: 1.6;
-  }
+  html, body { min-height: 100%; background: var(--bg); color: var(--text); font-family: 'Libre Baskerville', Georgia, serif; font-size: 15px; line-height: 1.6; }
 
   /* ── Nav ── */
   .site-nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--surface-2);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 0;
-    padding: 0 24px;
-    height: 52px;
+    position: sticky; top: 0; z-index: 100;
+    background: var(--surface-2); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 24px; height: 52px;
   }
-  .nav-brand {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--terra);
-    text-decoration: none;
-    letter-spacing: 0.08em;
-    margin-right: 24px;
-    flex-shrink: 0;
-  }
-  .nav-links {
-    display: flex;
-    gap: 4px;
-    flex: 1;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
+  .nav-brand { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--terra); text-decoration: none; letter-spacing: 0.08em; margin-right: 24px; flex-shrink: 0; }
+  .nav-links { display: flex; gap: 4px; flex: 1; overflow-x: auto; scrollbar-width: none; }
   .nav-links::-webkit-scrollbar { display: none; }
-  .nav-link {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-decoration: none;
-    padding: 6px 10px;
-    border-radius: 4px;
-    white-space: nowrap;
-    transition: color 0.15s, background 0.15s;
-  }
+  .nav-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); text-decoration: none; padding: 6px 10px; border-radius: 4px; white-space: nowrap; transition: color 0.15s, background 0.15s; }
   .nav-link:hover { color: var(--text); background: var(--border); }
   .nav-link.active { color: var(--terra); }
   .nav-actions { display: flex; gap: 8px; align-items: center; margin-left: auto; }
-  .theme-btn {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    border-radius: 4px;
-    padding: 6px 10px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    cursor: pointer;
-    transition: border-color 0.15s, color 0.15s;
-    min-height: 44px;
-    min-width: 44px;
-  }
+  .theme-btn { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 4px; padding: 6px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; cursor: pointer; transition: border-color 0.15s, color 0.15s; min-height: 44px; min-width: 44px; }
   .theme-btn:hover { border-color: var(--terra); color: var(--terra); }
 
-  /* ── Layout ── */
-  .page-wrap {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 32px 24px 64px;
-  }
+  /* ── Layout shell (shifts when drawer open on desktop) ── */
+  .shell { display: flex; min-height: calc(100vh - 52px); position: relative; }
+  .main-content { flex: 1; min-width: 0; transition: margin-right 0.28s cubic-bezier(0.4,0,0.2,1); }
+  .shell.drawer-open .main-content { margin-right: 440px; }
+
+  .page-wrap { max-width: 860px; margin: 0 auto; padding: 32px 24px 64px; }
 
   /* ── Header ── */
-  .page-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 32px;
-    flex-wrap: wrap;
-  }
-  .page-title-group { flex: 1; }
-  .page-eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--terra);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .page-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--heading);
-    letter-spacing: -0.02em;
-    margin-bottom: 6px;
-  }
-  .page-subtitle {
-    font-size: 13px;
-    color: var(--muted);
-    font-family: 'IBM Plex Mono', monospace;
-  }
+  .page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
+  .page-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--terra); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .page-title { font-size: 24px; font-weight: 700; color: var(--heading); letter-spacing: -0.02em; margin-bottom: 6px; }
+  .page-subtitle { font-size: 13px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
 
   /* ── Tabs ── */
-  .tab-bar {
-    display: flex;
-    gap: 4px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 28px;
-  }
-  .tab-btn {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    padding: 10px 16px;
-    cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
-    margin-bottom: -1px;
-  }
+  .tab-bar { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+  .tab-btn { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 16px; cursor: pointer; transition: color 0.15s, border-color 0.15s; margin-bottom: -1px; }
   .tab-btn:hover { color: var(--text); }
   .tab-btn.active { color: var(--terra); border-bottom-color: var(--terra); }
 
   /* ── Toolbar ── */
-  .toolbar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
+  .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
   .toolbar-left { display: flex; gap: 8px; flex: 1; flex-wrap: wrap; }
-  .filter-btn {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    padding: 5px 12px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
-    min-height: 32px;
-  }
+  .filter-btn { font-family: 'IBM Plex Mono', monospace; font-size: 11px; padding: 5px 12px; border-radius: 4px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; transition: all 0.15s; min-height: 32px; }
   .filter-btn:hover, .filter-btn.active { border-color: var(--terra); color: var(--terra); background: var(--terra-dim); }
-  .btn-primary {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    padding: 8px 16px;
-    border-radius: 4px;
-    border: 1px solid var(--terra-border);
-    background: var(--terra-dim);
-    color: var(--terra);
-    cursor: pointer;
-    transition: all 0.15s;
-    min-height: 36px;
-  }
+  .btn-primary { font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 8px 16px; border-radius: 4px; border: 1px solid var(--terra-border); background: var(--terra-dim); color: var(--terra); cursor: pointer; transition: all 0.15s; min-height: 36px; white-space: nowrap; }
   .btn-primary:hover { background: rgba(196, 149, 106, 0.20); border-color: var(--terra); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  /* ── Feed ── */
+  /* ── Views ── */
   #feed-view, #items-view { display: none; }
   #feed-view.active, #items-view.active { display: block; }
 
+  /* ── Feed ── */
   .feed-list { display: flex; flex-direction: column; gap: 2px; }
-
   .event-row {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    padding: 12px 16px;
-    border-radius: 6px;
-    background: var(--surface);
-    border: 1px solid transparent;
-    transition: border-color 0.15s;
-    position: relative;
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 12px 16px; border-radius: 6px;
+    background: var(--surface); border: 1px solid transparent;
+    transition: border-color 0.15s, background 0.15s;
+    cursor: pointer;
   }
-  .event-row:hover { border-color: var(--border-hover); }
-
-  .event-avatar {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
+  .event-row:hover { border-color: var(--border-hover); background: var(--surface-2); }
+  .event-row.active-detail { border-color: var(--terra-border); background: var(--terra-dim); }
+  .event-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); flex-shrink: 0; margin-top: 2px; }
   .event-avatar.agent { background: rgba(160, 196, 106, 0.15); color: var(--green); }
   .event-avatar.system { background: rgba(106, 176, 196, 0.15); color: var(--blue); }
-
   .event-body { flex: 1; min-width: 0; }
-  .event-meta {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 3px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
+  .event-meta { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 3px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .event-actor { color: var(--text); }
-  .event-type-badge {
-    padding: 1px 7px;
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.03em;
-  }
+  .event-type-badge { padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 500; letter-spacing: 0.03em; }
   .badge-proposed  { background: rgba(106,143,196,0.15); color: #6a8fc4; }
   .badge-claimed   { background: rgba(196,149,106,0.15); color: #c4956a; }
   .badge-progress  { background: rgba(160,196,106,0.15); color: #a0c46a; }
@@ -278,233 +123,276 @@
   .badge-git_push  { background: rgba(106,176,196,0.15); color: #6ab0c4; }
   .badge-pr_merged { background: rgba(160,196,106,0.15); color: #a0c46a; }
   .badge-default   { background: var(--border); color: var(--muted); }
-
-  .event-title {
-    font-size: 14px;
-    color: var(--text);
-    line-height: 1.4;
-  }
-  .event-title a {
-    color: var(--blue);
-    text-decoration: none;
-  }
-  .event-title a:hover { text-decoration: underline; }
-  .event-ref {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--terra);
-    text-decoration: none;
-  }
+  .event-title { font-size: 14px; color: var(--text); line-height: 1.4; }
+  .event-ref { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--terra); text-decoration: none; }
   .event-ref:hover { text-decoration: underline; }
-  .event-body-text {
-    font-size: 13px;
-    color: var(--muted);
-    margin-top: 4px;
-    line-height: 1.5;
-    font-family: 'IBM Plex Mono', monospace;
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
-  .event-time {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--faint);
-    margin-left: auto;
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
+  .event-body-text { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.5; font-family: 'IBM Plex Mono', monospace; white-space: pre-wrap; word-break: break-word; }
+  .event-time { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--faint); margin-left: auto; flex-shrink: 0; white-space: nowrap; }
+  .chevron-hint { font-size: 10px; color: var(--very-faint); margin-left: 6px; flex-shrink: 0; align-self: center; }
 
   /* ── Work Items ── */
   .items-grid { display: flex; flex-direction: column; gap: 8px; }
-
   .work-item-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px 20px;
-    transition: border-color 0.15s;
-    cursor: pointer;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px 20px; transition: border-color 0.15s, background 0.15s; cursor: pointer;
   }
-  .work-item-card:hover { border-color: var(--border-hover); }
-  .work-item-top {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 8px;
-  }
-  .work-ref {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--terra);
-    flex-shrink: 0;
-    margin-top: 2px;
-    min-width: 36px;
-  }
-  .work-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--heading);
-    flex: 1;
-    line-height: 1.3;
-  }
-  .work-complexity {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    background: var(--border);
-    color: var(--muted);
-    flex-shrink: 0;
-  }
-  .work-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-  }
-  .phase-pill {
-    padding: 2px 10px;
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
+  .work-item-card:hover { border-color: var(--border-hover); background: var(--surface-2); }
+  .work-item-card.active-detail { border-color: var(--terra-border); background: var(--terra-dim); }
+  .work-item-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+  .work-ref { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--terra); flex-shrink: 0; margin-top: 2px; min-width: 36px; }
+  .work-title { font-size: 15px; font-weight: 700; color: var(--heading); flex: 1; line-height: 1.3; }
+  .work-complexity { font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--border); color: var(--muted); flex-shrink: 0; }
+  .work-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+  .phase-pill { padding: 2px 10px; border-radius: 10px; font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
   .phase-discovery   { background: rgba(143,196,106,0.12); color: #8fc46a; }
   .phase-proposal    { background: rgba(106,143,196,0.12); color: #6a8fc4; }
   .phase-negotiation { background: rgba(196,149,106,0.12); color: #c4956a; }
   .phase-execution   { background: rgba(160,196,106,0.12); color: #a0c46a; }
   .phase-synthesis   { background: rgba(196,106,176,0.12); color: #c46ab0; }
-
-  .status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    display: inline-block;
-    flex-shrink: 0;
-  }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
   .dot-open        { background: var(--faint); }
   .dot-claimed     { background: #c4956a; }
-  .dot-in_progress { background: #a0c46a; }
+  .dot-in_progress { background: #a0c46a; box-shadow: 0 0 6px rgba(160,196,106,0.4); }
   .dot-testing     { background: #c46ab0; }
   .dot-completed   { background: #6ab0c4; }
   .dot-archived    { background: var(--very-faint); }
+  .work-desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-top: 8px; margin-left: 48px; }
 
-  .work-desc {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.5;
-    margin-top: 8px;
-    margin-left: 48px;
-  }
-
-  /* ── Propose Modal ── */
-  .modal-overlay {
+  /* ── Detail Drawer ── */
+  .drawer-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
+    background: rgba(0,0,0,0.4);
+    z-index: 200;
   }
-  .modal-overlay.open { display: flex; }
-  .modal {
+  .drawer-overlay.open { display: block; }
+
+  .drawer {
+    position: fixed;
+    top: 52px; /* below nav */
+    right: 0;
+    bottom: 0;
+    width: 440px;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 28px 28px 24px;
-    width: 100%;
-    max-width: 540px;
-    max-height: 90vh;
-    overflow-y: auto;
+    border-left: 1px solid var(--border);
+    z-index: 201;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    overflow: hidden;
   }
-  .modal-title {
-    font-size: 18px;
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .drawer-ref {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--terra);
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .drawer-title {
+    font-size: 17px;
     font-weight: 700;
     color: var(--heading);
-    margin-bottom: 20px;
+    line-height: 1.3;
+    flex: 1;
   }
-  .form-group {
-    margin-bottom: 16px;
+  .drawer-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: -2px;
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
   }
-  .form-label {
-    display: block;
+  .drawer-close:hover { color: var(--text); background: var(--border); }
+
+  .drawer-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     color: var(--muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
   }
-  .form-label span { color: var(--terra); }
-  .form-input, .form-textarea, .form-select {
-    width: 100%;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    color: var(--text);
+
+  .drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  .drawer-section {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .drawer-section:last-child { border-bottom: none; }
+
+  .drawer-section-label {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    padding: 9px 12px;
-    outline: none;
-    transition: border-color 0.15s;
-    min-height: 38px;
+    font-size: 10px;
+    color: var(--faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
   }
+
+  .drawer-desc {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .drawer-proof {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--blue);
+    word-break: break-all;
+  }
+  .drawer-proof a { color: var(--blue); }
+  .drawer-result {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.55;
+    white-space: pre-wrap;
+  }
+
+  /* Event history in drawer */
+  .drawer-events { display: flex; flex-direction: column; }
+  .drawer-event {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--very-faint);
+    position: relative;
+  }
+  .drawer-event:last-child { border-bottom: none; }
+
+  .de-line {
+    position: absolute;
+    left: 13px;
+    top: 32px;
+    bottom: -10px;
+    width: 1px;
+    background: var(--very-faint);
+  }
+  .drawer-event:last-child .de-line { display: none; }
+
+  .de-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .de-avatar.agent { background: rgba(160,196,106,0.15); color: var(--green); }
+  .de-avatar.system { background: rgba(106,176,196,0.15); color: var(--blue); }
+
+  .de-content { flex: 1; min-width: 0; }
+  .de-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 3px;
+  }
+  .de-actor { color: var(--text); }
+  .de-time { color: var(--faint); margin-left: auto; white-space: nowrap; }
+  .de-title { font-size: 13px; color: var(--text); line-height: 1.4; }
+  .de-body { font-size: 12px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-top: 3px; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+  .de-url a { color: var(--blue); font-family: 'IBM Plex Mono', monospace; font-size: 11px; word-break: break-all; }
+
+  /* Drawer actions */
+  .drawer-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--surface-2);
+    flex-shrink: 0;
+  }
+  .action-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    min-height: 32px;
+  }
+  .action-btn:hover { border-color: var(--terra-border); color: var(--terra); background: var(--terra-dim); }
+  .action-btn.primary { border-color: var(--terra-border); color: var(--terra); background: var(--terra-dim); }
+  .action-btn.primary:hover { background: rgba(196,149,106,0.20); }
+  .action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .drawer-loading { padding: 32px 20px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--faint); }
+
+  /* ── Propose Modal ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; align-items: center; justify-content: center; padding: 16px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 28px 28px 24px; width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; }
+  .modal-title { font-size: 18px; font-weight: 700; color: var(--heading); margin-bottom: 20px; }
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+  .form-label span { color: var(--terra); }
+  .form-input, .form-textarea, .form-select { width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 5px; color: var(--text); font-family: 'IBM Plex Mono', monospace; font-size: 13px; padding: 9px 12px; outline: none; transition: border-color 0.15s; min-height: 38px; }
   .form-textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
   .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--terra); }
   .form-select { appearance: none; cursor: pointer; }
   .form-row { display: flex; gap: 12px; }
   .form-row .form-group { flex: 1; }
-  .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 24px;
-  }
-  .btn-cancel {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    padding: 8px 16px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    background: none;
-    color: var(--muted);
-    cursor: pointer;
-    min-height: 36px;
-  }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+  .btn-cancel { font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 8px 16px; border-radius: 4px; border: 1px solid var(--border); background: none; color: var(--muted); cursor: pointer; min-height: 36px; }
   .btn-cancel:hover { color: var(--text); border-color: var(--border-hover); }
 
-  /* ── State messages ── */
-  .state-msg {
-    text-align: center;
-    padding: 48px 24px;
-    color: var(--faint);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-  }
-  .state-msg.error { color: #c46a6a; }
-
-  /* ── Count badge ── */
-  .count-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 9px;
-    background: var(--border);
-    color: var(--muted);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    padding: 0 5px;
-  }
+  /* ── State ── */
+  .state-msg { text-align: center; padding: 48px 24px; color: var(--faint); font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+  .state-msg.error { color: var(--red); }
+  .count-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; border-radius: 9px; background: var(--border); color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 0 5px; }
 
   /* ── Responsive ── */
+  @media (max-width: 820px) {
+    .shell.drawer-open .main-content { margin-right: 0; }
+    .drawer { width: 100%; top: 52px; }
+    .drawer-overlay.open { display: none; } /* drawer is full-width, no overlay needed */
+  }
   @media (max-width: 640px) {
     .page-wrap { padding: 20px 16px 48px; }
     .site-nav { padding: 0 16px; }
@@ -535,57 +423,76 @@
   </div>
 </nav>
 
-<div class="page-wrap">
-  <div class="page-header">
-    <div class="page-title-group">
-      <div class="page-eyebrow">Event · REA</div>
-      <h1 class="page-title">Activity</h1>
-      <div class="page-subtitle">Coordination ledger — human and agent work, made legible</div>
-    </div>
-    <button class="btn-primary" id="proposeBtn">+ Propose work</button>
-  </div>
+<div class="shell" id="shell">
+  <div class="main-content">
+    <div class="page-wrap">
+      <div class="page-header">
+        <div class="page-title-group">
+          <div class="page-eyebrow">Event · REA</div>
+          <h1 class="page-title">Activity</h1>
+          <div class="page-subtitle">Coordination ledger — human and agent work, made legible</div>
+        </div>
+        <button class="btn-primary" id="proposeBtn">+ Propose work</button>
+      </div>
 
-  <div class="tab-bar">
-    <button class="tab-btn active" data-tab="feed">
-      Feed <span class="count-badge" id="feedCount">—</span>
-    </button>
-    <button class="tab-btn" data-tab="items">
-      Work Items <span class="count-badge" id="itemsCount">—</span>
-    </button>
-  </div>
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="feed">
+          Feed <span class="count-badge" id="feedCount">—</span>
+        </button>
+        <button class="tab-btn" data-tab="items">
+          Work Items <span class="count-badge" id="itemsCount">—</span>
+        </button>
+      </div>
 
-  <!-- Feed view -->
-  <div id="feed-view" class="active">
-    <div class="toolbar">
-      <div class="toolbar-left" id="feedFilters">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="proposed">Proposed</button>
-        <button class="filter-btn" data-filter="progress">Progress</button>
-        <button class="filter-btn" data-filter="completed">Completed</button>
-        <button class="filter-btn" data-filter="git">Git</button>
+      <!-- Feed view -->
+      <div id="feed-view" class="active">
+        <div class="toolbar">
+          <div class="toolbar-left" id="feedFilters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="proposed">Proposed</button>
+            <button class="filter-btn" data-filter="progress">Progress</button>
+            <button class="filter-btn" data-filter="completed">Completed</button>
+            <button class="filter-btn" data-filter="git">Git</button>
+          </div>
+        </div>
+        <div class="feed-list" id="feedList">
+          <div class="state-msg" id="feedState">Loading...</div>
+        </div>
+      </div>
+
+      <!-- Work Items view -->
+      <div id="items-view">
+        <div class="toolbar">
+          <div class="toolbar-left" id="statusFilters">
+            <button class="filter-btn active" data-status="all">All</button>
+            <button class="filter-btn" data-status="open">Open</button>
+            <button class="filter-btn" data-status="in_progress">In progress</button>
+            <button class="filter-btn" data-status="testing">Testing</button>
+            <button class="filter-btn" data-status="completed">Completed</button>
+          </div>
+        </div>
+        <div class="items-grid" id="itemsList">
+          <div class="state-msg" id="itemsState">Loading...</div>
+        </div>
       </div>
     </div>
-    <div class="feed-list" id="feedList">
-      <div class="state-msg" id="feedState">Loading...</div>
-    </div>
-  </div>
+  </div><!-- /main-content -->
 
-  <!-- Work Items view -->
-  <div id="items-view">
-    <div class="toolbar">
-      <div class="toolbar-left" id="statusFilters">
-        <button class="filter-btn active" data-status="all">All</button>
-        <button class="filter-btn" data-status="open">Open</button>
-        <button class="filter-btn" data-status="in_progress">In progress</button>
-        <button class="filter-btn" data-status="testing">Testing</button>
-        <button class="filter-btn" data-status="completed">Completed</button>
-      </div>
+  <!-- Detail Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="drawer" id="drawer" role="dialog" aria-label="Work item detail">
+    <div class="drawer-header" id="drawerHeader">
+      <span class="drawer-ref" id="drawerRef"></span>
+      <span class="drawer-title" id="drawerTitle">Loading…</span>
+      <button class="drawer-close" id="drawerClose" aria-label="Close">×</button>
     </div>
-    <div class="items-grid" id="itemsList">
-      <div class="state-msg" id="itemsState">Loading...</div>
+    <div class="drawer-meta" id="drawerMeta"></div>
+    <div class="drawer-body" id="drawerBody">
+      <div class="drawer-loading">Loading…</div>
     </div>
+    <div class="drawer-actions" id="drawerActions"></div>
   </div>
-</div>
+</div><!-- /shell -->
 
 <!-- Propose Modal -->
 <div class="modal-overlay" id="proposeModal">
@@ -654,6 +561,7 @@ let allEvents = []
 let allItems = []
 let feedFilter = 'all'
 let statusFilter = 'all'
+let activeItemId = null
 
 // ── Theme ──
 const html = document.documentElement
@@ -704,14 +612,15 @@ document.getElementById('statusFilters').addEventListener('click', e => {
 async function loadFeed() {
   const el = document.getElementById('feedList')
   const state = document.getElementById('feedState')
-  state.textContent = 'Loading...'
-  state.className = 'state-msg'
-  el.innerHTML = ''
-  el.appendChild(state)
-
+  if (!el.querySelector('.event-row')) {
+    state.textContent = 'Loading...'
+    state.className = 'state-msg'
+    el.innerHTML = ''
+    el.appendChild(state)
+  }
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/work_events?order=created_at.desc&limit=100&select=*,work_items(ref,title)`,
+      `${SUPABASE_URL}/rest/v1/work_events?order=created_at.desc&limit=100&select=*,work_items(id,ref,title)`,
       { headers: hdrs }
     )
     if (!res.ok) throw new Error(await res.text())
@@ -727,11 +636,12 @@ async function loadFeed() {
 async function loadItems() {
   const el = document.getElementById('itemsList')
   const state = document.getElementById('itemsState')
-  state.textContent = 'Loading...'
-  state.className = 'state-msg'
-  el.innerHTML = ''
-  el.appendChild(state)
-
+  if (!el.querySelector('.work-item-card')) {
+    state.textContent = 'Loading...'
+    state.className = 'state-msg'
+    el.innerHTML = ''
+    el.appendChild(state)
+  }
   try {
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/work_items?order=created_at.desc&limit=200`,
@@ -768,10 +678,13 @@ function renderFeed() {
 
   filtered.forEach(ev => {
     const row = document.createElement('div')
-    row.className = 'event-row'
+    const isActive = ev.work_items?.id === activeItemId
+    row.className = 'event-row' + (isActive ? ' active-detail' : '')
+    row.dataset.workItemId = ev.work_items?.id || ''
+    row.dataset.eventId = ev.id
+
     const initials = (ev.actor_name || '?').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()
     const avatarClass = ev.actor_type === 'agent' ? 'agent' : ev.actor_type === 'system' ? 'system' : ''
-
     const badge = badgeHTML(ev.event_type)
     const timeStr = relativeTime(ev.created_at)
     const item = ev.work_items
@@ -780,10 +693,10 @@ function renderFeed() {
     if (ev.title) {
       titleHTML = `<div class="event-title">${escHtml(ev.title)}`
       if (item?.ref) {
-        titleHTML += ` <a class="event-ref" href="#${item.ref}" title="${escHtml(item.title || '')}">${item.ref}</a>`
+        titleHTML += ` <span class="event-ref">${item.ref}</span>`
       }
       if (ev.subject_url) {
-        titleHTML += ` <a href="${escHtml(ev.subject_url)}" target="_blank" rel="noopener" class="event-title a">[↗]</a>`
+        titleHTML += ` <a href="${escHtml(ev.subject_url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--blue);font-size:12px;text-decoration:none;">[↗]</a>`
       }
       titleHTML += `</div>`
     }
@@ -797,10 +710,17 @@ function renderFeed() {
           <span>${escHtml(ev.source || 'manual')}</span>
         </div>
         ${titleHTML}
-        ${ev.body ? `<div class="event-body-text">${escHtml(ev.body.slice(0, 200))}${ev.body.length > 200 ? '…' : ''}</div>` : ''}
+        ${ev.body ? `<div class="event-body-text">${escHtml(ev.body.slice(0, 160))}${ev.body.length > 160 ? '…' : ''}</div>` : ''}
       </div>
-      <div class="event-time">${timeStr}</div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">
+        <div class="event-time">${timeStr}</div>
+        ${item?.id ? '<div class="chevron-hint">›</div>' : ''}
+      </div>
     `
+
+    if (item?.id) {
+      row.addEventListener('click', () => openDetail(item.id))
+    }
     el.appendChild(row)
   })
 }
@@ -823,7 +743,9 @@ function renderItems() {
 
   filtered.forEach(item => {
     const card = document.createElement('div')
-    card.className = 'work-item-card'
+    const isActive = item.id === activeItemId
+    card.className = 'work-item-card' + (isActive ? ' active-detail' : '')
+    card.dataset.itemId = item.id
     card.innerHTML = `
       <div class="work-item-top">
         <span class="work-ref">${escHtml(item.ref || '—')}</span>
@@ -834,20 +756,234 @@ function renderItems() {
         <span class="status-dot dot-${item.status}"></span>
         <span>${statusLabel(item.status)}</span>
         <span class="phase-pill phase-${item.phase}">${item.phase}</span>
-        ${item.subject_ref ? `<a href="${escHtml(item.subject_ref)}" target="_blank" rel="noopener" style="color:var(--blue);font-size:11px;font-family:'IBM Plex Mono',monospace;text-decoration:none;">${truncate(item.subject_ref, 50)}↗</a>` : ''}
-        <span style="margin-left:auto;">${relativeTime(item.created_at)}</span>
+        ${item.subject_ref ? `<a href="${escHtml(item.subject_ref)}" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--blue);font-size:11px;font-family:'IBM Plex Mono',monospace;text-decoration:none;">${truncate(item.subject_ref, 46)}↗</a>` : ''}
+        <span style="margin-left:auto;font-size:10px;">${relativeTime(item.created_at)}</span>
+        <span style="color:var(--faint);font-size:12px;">›</span>
       </div>
-      ${item.description ? `<div class="work-desc">${escHtml(item.description.slice(0, 200))}${item.description.length > 200 ? '…' : ''}</div>` : ''}
+      ${item.description ? `<div class="work-desc">${escHtml(item.description.slice(0, 180))}${item.description.length > 180 ? '…' : ''}</div>` : ''}
     `
+    card.addEventListener('click', () => openDetail(item.id))
     el.appendChild(card)
   })
 }
 
+// ── Detail Drawer ──
+const drawer = document.getElementById('drawer')
+const drawerOverlay = document.getElementById('drawerOverlay')
+const shell = document.getElementById('shell')
+
+function openDetail(itemId) {
+  activeItemId = itemId
+  shell.classList.add('drawer-open')
+  drawer.classList.add('open')
+  drawerOverlay.classList.add('open')
+
+  // Mark active state on cards/rows
+  document.querySelectorAll('.work-item-card').forEach(c => {
+    c.classList.toggle('active-detail', c.dataset.itemId === itemId)
+  })
+  document.querySelectorAll('.event-row').forEach(r => {
+    r.classList.toggle('active-detail', r.dataset.workItemId === itemId)
+  })
+
+  // Show skeleton
+  document.getElementById('drawerRef').textContent = '…'
+  document.getElementById('drawerTitle').textContent = 'Loading…'
+  document.getElementById('drawerMeta').innerHTML = ''
+  document.getElementById('drawerBody').innerHTML = '<div class="drawer-loading">Loading…</div>'
+  document.getElementById('drawerActions').innerHTML = ''
+
+  fetchDetail(itemId)
+}
+
+function closeDrawer() {
+  activeItemId = null
+  shell.classList.remove('drawer-open')
+  drawer.classList.remove('open')
+  drawerOverlay.classList.remove('open')
+  document.querySelectorAll('.work-item-card, .event-row').forEach(el => el.classList.remove('active-detail'))
+}
+
+document.getElementById('drawerClose').addEventListener('click', closeDrawer)
+drawerOverlay.addEventListener('click', closeDrawer)
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer() })
+
+async function fetchDetail(itemId) {
+  try {
+    // Fetch item + events in parallel
+    const [itemRes, eventsRes] = await Promise.all([
+      fetch(`${SUPABASE_URL}/rest/v1/work_items?id=eq.${itemId}&limit=1`, { headers: hdrs }),
+      fetch(`${SUPABASE_URL}/rest/v1/work_events?work_item_id=eq.${itemId}&order=created_at.asc&limit=100`, { headers: hdrs }),
+    ])
+    if (!itemRes.ok) throw new Error(await itemRes.text())
+    const [item] = await itemRes.json()
+    if (!item) throw new Error('Item not found')
+    const events = eventsRes.ok ? await eventsRes.json() : []
+
+    renderDrawer(item, events)
+  } catch (err) {
+    document.getElementById('drawerBody').innerHTML = `<div class="drawer-loading" style="color:var(--red)">Error: ${escHtml(err.message)}</div>`
+  }
+}
+
+function renderDrawer(item, events) {
+  // Header
+  document.getElementById('drawerRef').textContent = item.ref || '—'
+  document.getElementById('drawerTitle').textContent = item.title
+
+  // Meta
+  const meta = document.getElementById('drawerMeta')
+  meta.innerHTML = `
+    <span class="status-dot dot-${item.status}" style="margin-right:2px;"></span>
+    <span>${statusLabel(item.status)}</span>
+    <span class="phase-pill phase-${item.phase}">${item.phase}</span>
+    ${item.complexity ? `<span style="background:var(--border);padding:1px 7px;border-radius:10px;font-size:10px;">${item.complexity}</span>` : ''}
+    <span style="margin-left:auto;color:var(--faint);font-size:10px;">${relativeTime(item.created_at)}</span>
+  `
+
+  // Body
+  const body = document.getElementById('drawerBody')
+  let html = ''
+
+  if (item.description) {
+    html += `<div class="drawer-section">
+      <div class="drawer-section-label">Description</div>
+      <div class="drawer-desc">${escHtml(item.description)}</div>
+    </div>`
+  }
+
+  if (item.subject_ref) {
+    html += `<div class="drawer-section">
+      <div class="drawer-section-label">Subject</div>
+      <div class="drawer-proof">
+        <span style="color:var(--muted);font-size:10px;margin-right:6px;">${escHtml(item.subject_type || 'ref')}</span>
+        ${item.subject_ref.startsWith('http')
+          ? `<a href="${escHtml(item.subject_ref)}" target="_blank" rel="noopener">${escHtml(item.subject_ref)}</a>`
+          : escHtml(item.subject_ref)}
+      </div>
+    </div>`
+  }
+
+  if (item.completion_proof || item.result_summary) {
+    html += `<div class="drawer-section">`
+    if (item.completion_proof) {
+      html += `<div class="drawer-section-label">Completion proof</div>
+        <div class="drawer-proof" style="margin-bottom:${item.result_summary ? '12px' : '0'}">
+          ${item.completion_proof.startsWith('http')
+            ? `<a href="${escHtml(item.completion_proof)}" target="_blank" rel="noopener">${escHtml(item.completion_proof)}</a>`
+            : escHtml(item.completion_proof)}
+        </div>`
+    }
+    if (item.result_summary) {
+      html += `<div class="drawer-section-label" style="margin-top:${item.completion_proof ? '8px' : '0'}">Result summary</div>
+        <div class="drawer-result">${escHtml(item.result_summary)}</div>`
+    }
+    html += `</div>`
+  }
+
+  // Event history
+  html += `<div class="drawer-section">
+    <div class="drawer-section-label">History · ${events.length} event${events.length !== 1 ? 's' : ''}</div>
+    <div class="drawer-events">`
+
+  if (!events.length) {
+    html += `<div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--faint);padding:8px 0;">No events recorded yet.</div>`
+  } else {
+    events.forEach((ev, i) => {
+      const initials = (ev.actor_name || '?').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()
+      const avClass = ev.actor_type === 'agent' ? 'agent' : ev.actor_type === 'system' ? 'system' : ''
+      html += `<div class="drawer-event">
+        ${i < events.length - 1 ? '<div class="de-line"></div>' : ''}
+        <div class="de-avatar ${avClass}">${initials}</div>
+        <div class="de-content">
+          <div class="de-meta">
+            <span class="de-actor">${escHtml(ev.actor_name || 'unknown')}</span>
+            ${badgeHTML(ev.event_type)}
+            <span class="de-time">${relativeTime(ev.created_at)}</span>
+          </div>
+          ${ev.title ? `<div class="de-title">${escHtml(ev.title)}</div>` : ''}
+          ${ev.body ? `<div class="de-body">${escHtml(ev.body.slice(0,400))}${ev.body.length > 400 ? '…' : ''}</div>` : ''}
+          ${ev.subject_url ? `<div class="de-url" style="margin-top:4px;"><a href="${escHtml(ev.subject_url)}" target="_blank" rel="noopener">${escHtml(ev.subject_url)}</a></div>` : ''}
+        </div>
+      </div>`
+    })
+  }
+
+  html += `</div></div>`
+  body.innerHTML = html
+
+  // Actions
+  renderDrawerActions(item)
+}
+
+function renderDrawerActions(item) {
+  const el = document.getElementById('drawerActions')
+  const actions = []
+
+  if (item.status === 'open') {
+    actions.push(`<button class="action-btn primary" onclick="drawerClaim('${item.id}')">Claim</button>`)
+  }
+  if (item.status === 'claimed') {
+    actions.push(`<button class="action-btn primary" onclick="drawerProgress('${item.id}')">Start work</button>`)
+  }
+  if (item.status === 'in_progress') {
+    actions.push(`<button class="action-btn primary" onclick="drawerCompletePrompt('${item.id}')">Mark complete</button>`)
+  }
+  if (item.status === 'testing') {
+    actions.push(`<button class="action-btn primary" onclick="drawerSynthesize('${item.id}', true)">Accept</button>`)
+    actions.push(`<button class="action-btn" onclick="drawerSynthesize('${item.id}', false)">Return</button>`)
+  }
+  if (item.subject_ref && item.subject_ref.startsWith('http')) {
+    actions.push(`<a class="action-btn" href="${escHtml(item.subject_ref)}" target="_blank" rel="noopener">Open subject ↗</a>`)
+  }
+
+  el.innerHTML = actions.join('') || `<span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--faint);">No actions available</span>`
+}
+
+// Drawer quick-actions
+async function drawerClaim(itemId) {
+  const name = prompt('Your name (for the ledger):') || 'unknown'
+  await apiFetch(`${FUNCTIONS_URL}/work-claim`, { work_item_id: itemId, actor_name: name, actor_type: 'human' })
+  await refreshDetail(itemId)
+}
+
+async function drawerProgress(itemId) {
+  const note = prompt('Progress note (optional):') || ''
+  const name = prompt('Your name:') || 'unknown'
+  await apiFetch(`${FUNCTIONS_URL}/work-progress`, { work_item_id: itemId, actor_name: name, actor_type: 'human', note: note || undefined })
+  await refreshDetail(itemId)
+}
+
+async function drawerCompletePrompt(itemId) {
+  const proof = prompt('Completion proof (URL or description):')
+  if (!proof) return
+  const summary = prompt('Result summary:')
+  if (!summary) return
+  const name = prompt('Your name:') || 'unknown'
+  await apiFetch(`${FUNCTIONS_URL}/work-complete`, { work_item_id: itemId, actor_name: name, actor_type: 'human', completion_proof: proof, result_summary: summary })
+  await refreshDetail(itemId)
+}
+
+async function drawerSynthesize(itemId, approved) {
+  const note = prompt(`${approved ? 'Acceptance' : 'Return'} note (optional):`) || ''
+  const name = prompt('Your name (steward):') || 'unknown'
+  await apiFetch(`${FUNCTIONS_URL}/work-synthesize`, { work_item_id: itemId, actor_name: name, actor_type: 'human', approved, synthesis_note: note || undefined })
+  await refreshDetail(itemId)
+}
+
+async function apiFetch(url, body) {
+  const res = await fetch(url, { method: 'POST', headers: hdrs, body: JSON.stringify(body) })
+  return res.json()
+}
+
+async function refreshDetail(itemId) {
+  await Promise.all([loadFeed(), loadItems()])
+  await fetchDetail(itemId)
+}
+
 // ── Propose Modal ──
 const modal = document.getElementById('proposeModal')
-document.getElementById('proposeBtn').addEventListener('click', () => {
-  modal.classList.add('open')
-})
+document.getElementById('proposeBtn').addEventListener('click', () => modal.classList.add('open'))
 document.getElementById('cancelModal').addEventListener('click', closeModal)
 modal.addEventListener('click', e => { if (e.target === modal) closeModal() })
 function closeModal() {
@@ -858,13 +994,13 @@ function closeModal() {
 document.getElementById('submitProposal').addEventListener('click', async () => {
   const title = document.getElementById('prop-title').value.trim()
   if (!title) {
-    document.getElementById('proposeResult').textContent = 'Title is required.'
-    document.getElementById('proposeResult').style.color = '#c46a6a'
+    const r = document.getElementById('proposeResult')
+    r.textContent = 'Title is required.'
+    r.style.color = 'var(--red)'
     return
   }
-
   const btn = document.getElementById('submitProposal')
-  btn.textContent = 'Submitting...'
+  btn.textContent = 'Submitting…'
   btn.disabled = true
 
   const payload = {
@@ -877,28 +1013,27 @@ document.getElementById('submitProposal').addEventListener('click', async () => 
   }
 
   try {
-    const res = await fetch(`${FUNCTIONS_URL}/work-propose`, {
-      method: 'POST',
-      headers: hdrs,
-      body: JSON.stringify(payload),
-    })
+    const res = await fetch(`${FUNCTIONS_URL}/work-propose`, { method: 'POST', headers: hdrs, body: JSON.stringify(payload) })
     const data = await res.json()
     if (data.ok) {
-      const el = document.getElementById('proposeResult')
-      el.textContent = `✓ Created ${data.data.ref}`
-      el.style.color = '#a0c46a'
+      const r = document.getElementById('proposeResult')
+      r.textContent = `✓ Created ${data.data.ref}`
+      r.style.color = 'var(--green)'
       setTimeout(() => {
         closeModal()
         loadFeed()
         loadItems()
-      }, 1200)
+        openDetail(data.data.id)
+      }, 900)
     } else {
-      document.getElementById('proposeResult').textContent = `Error: ${data.error}`
-      document.getElementById('proposeResult').style.color = '#c46a6a'
+      const r = document.getElementById('proposeResult')
+      r.textContent = `Error: ${data.error}`
+      r.style.color = 'var(--red)'
     }
   } catch (err) {
-    document.getElementById('proposeResult').textContent = `Error: ${err.message}`
-    document.getElementById('proposeResult').style.color = '#c46a6a'
+    const r = document.getElementById('proposeResult')
+    r.textContent = `Error: ${err.message}`
+    r.style.color = 'var(--red)'
   } finally {
     btn.textContent = 'Submit proposal'
     btn.disabled = false
@@ -908,13 +1043,9 @@ document.getElementById('submitProposal').addEventListener('click', async () => 
 // ── Utilities ──
 function escHtml(str) {
   if (!str) return ''
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
 }
-
-function truncate(str, n) {
-  return str.length > n ? str.slice(0, n) + '…' : str
-}
-
+function truncate(str, n) { return str.length > n ? str.slice(0, n) + '…' : str }
 function relativeTime(iso) {
   if (!iso) return ''
   const diff = (Date.now() - new Date(iso).getTime()) / 1000
@@ -924,36 +1055,23 @@ function relativeTime(iso) {
   if (diff < 86400*7) return `${Math.floor(diff/86400)}d ago`
   return new Date(iso).toLocaleDateString('en-US', { month:'short', day:'numeric' })
 }
-
 function statusLabel(s) {
   const map = { open:'open', claimed:'claimed', in_progress:'in progress', testing:'testing', completed:'completed', archived:'archived' }
   return map[s] || s
 }
-
 function badgeHTML(type) {
   const classes = {
-    proposed: 'badge-proposed',
-    claimed: 'badge-claimed',
-    progress: 'badge-progress',
-    completed: 'badge-completed',
-    synthesized: 'badge-synthesized',
-    returned: 'badge-returned',
-    git_push: 'badge-git_push',
-    pr_merged: 'badge-pr_merged',
+    proposed:'badge-proposed', claimed:'badge-claimed', progress:'badge-progress',
+    completed:'badge-completed', synthesized:'badge-synthesized', returned:'badge-returned',
+    git_push:'badge-git_push', pr_merged:'badge-pr_merged',
   }
-  const cls = classes[type] || 'badge-default'
-  return `<span class="event-type-badge ${cls}">${escHtml(type)}</span>`
+  return `<span class="event-type-badge ${classes[type] || 'badge-default'}">${escHtml(type)}</span>`
 }
 
 // ── Init ──
 loadFeed()
 loadItems()
-
-// Refresh every 30s
-setInterval(() => {
-  loadFeed()
-  loadItems()
-}, 30000)
+setInterval(() => { loadFeed(); loadItems() }, 30000)
 </script>
 </body>
 </html>
