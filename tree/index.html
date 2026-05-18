@@ -1229,6 +1229,8 @@
       description:'RegenHub investment thesis — The Basket: a model for cooperative venture returns.' },
     { id:'writing-collective-intelligence', path:'/writing/collective-intelligence.html', title:'On Collective Intelligence', zone:2, authLevel:'curated', parent:'home',
       description:'Essay on collective intelligence — the conditions under which groups think better than individuals, and what that means for cooperative infrastructure.' },
+    { id:'corpus', path:'/corpus/', title:'Cybernetic Corpus', zone:2, authLevel:'curated', parent:'home',
+      description:'Anatomy of the cooperative as a living body — ten organs, three connective tissues, force-directed graph. Perceived from inside by Nou with live organ vitality indicators.' },
 
     // ── Zone 3: Members ───────────────────────────────────────
     { id:'intranet', path:'/intranet/', title:'Member Intranet', zone:3, authLevel:'members', parent:'home',
@@ -1373,6 +1375,10 @@
     { from:'intranet-rea', to:'intranet-journal' }, { from:'intranet-rea', to:'intranet-ledger' },
     { from:'intranet-design-gateway', to:'design-system' },
     { from:'intranet-speak-ledger', to:'intranet-journal' },
+
+    // Corpus connections
+    { from:'corpus', to:'cis' }, { from:'corpus', to:'intranet' },
+    { from:'corpus', to:'writing-collective-intelligence' },
 
   ]
 
