@@ -12,8 +12,8 @@
     --bg:           #0f0f0f;
     --surface:      #1a1a1a;
     --surface-2:    #141414;
-    --border:       #2a2a2a;
-    --border-strong:#3a3a3a;
+    --border:       #363636;
+    --border-strong:#484848;
     --terra:        #c4956a;
     --terra-text:   #c4956a;
     --terra-dim:    rgba(196, 149, 106, 0.12);
@@ -40,8 +40,8 @@
     --bg:           #faf7f2;
     --surface:      #f3ede4;
     --surface-2:    #efe8dc;
-    --border:       #d8cfc1;
-    --border-strong:#c4b69f;
+    --border:       #ccc4b8;
+    --border-strong:#b8a898;
     --terra:        #c4956a;
     --terra-text:   #96704a;
     --terra-dim:    rgba(196, 149, 106, 0.14);
@@ -228,6 +228,7 @@
     align-items: stretch;
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
     transition: border-color 0.15s, background 0.15s;
     min-height: 76px;
     overflow: hidden;
@@ -494,7 +495,7 @@
     </div>
 
     <!-- Treasury -->
-    <a class="module-row" data-rea="resource" href="/intranet/treasury/">
+    <div class="module-row" data-rea="resource" onclick="window.location.href='/intranet/treasury/'" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='/intranet/treasury/'">
       <div class="module-accent"></div>
       <div class="module-body">
         <div class="module-top">
@@ -513,10 +514,10 @@
         </div>
         <div class="module-chevron">›</div>
       </div>
-    </a>
+    </div>
 
     <!-- Activity -->
-    <a class="module-row" data-rea="event" href="/intranet/activity/">
+    <div class="module-row" data-rea="event" onclick="window.location.href='/intranet/activity/'" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='/intranet/activity/'">
       <div class="module-accent"></div>
       <div class="module-body">
         <div class="module-top">
@@ -535,10 +536,10 @@
         </div>
         <div class="module-chevron">›</div>
       </div>
-    </a>
+    </div>
 
     <!-- People -->
-    <a class="module-row" data-rea="agent" href="/intranet/board/">
+    <div class="module-row" data-rea="agent" onclick="window.location.href='/intranet/board/'" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='/intranet/board/'">
       <div class="module-accent"></div>
       <div class="module-body">
         <div class="module-top">
@@ -557,7 +558,7 @@
         </div>
         <div class="module-chevron">›</div>
       </div>
-    </a>
+    </div>
 
     <!-- Agreements -->
     <div class="module-row draft" data-rea="agreement">
