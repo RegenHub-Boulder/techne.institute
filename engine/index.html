@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function(){
+      var s = localStorage.getItem('techne-theme');
+      if (s === 'light' || s === 'dark') document.documentElement.setAttribute('data-theme', s);
+      else if (window.matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.setAttribute('data-theme', 'light');
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cooperative Engine — RegenHub, LCA</title>
+  <meta name="description" content="The capital infrastructure of RegenHub, LCA. Basket portfolio system, legal framework, and agreements layer for the cooperative's patronage accounting engine.">
+  <link rel="canonical" href="https://techne.institute/engine/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Tokens ── */
+    :root {
+      --bg:           #0a0a0a;
+      --surface:      #141412;
+      --surface-2:    #1a1a18;
+      --rule:         #2a2520;
+      --rule-strong:  #3a3530;
+      --text:         #e8e4df;
+      --text-dim:     #9a9590;
+      --text-faint:   #5a5550;
+      --accent:       #c4956a;
+      --accent-dim:   #8a6a4a;
+      --accent-bright:#d4a57a;
+      --accent-bg:    rgba(196,149,106,0.08);
+      --accent-border:rgba(196,149,106,0.25);
+      --green:        #6a9a6a;
+      --green-bg:     rgba(106,154,106,0.10);
+      --green-border: rgba(106,154,106,0.30);
+      --blue:         #6a8ac4;
+      --blue-bg:      rgba(106,138,196,0.10);
+      --blue-border:  rgba(106,138,196,0.30);
+      --serif:        'EB Garamond', Georgia, serif;
+      --sans:         Inter, -apple-system, sans-serif;
+      --mono:         'IBM Plex Mono', 'JetBrains Mono', monospace;
+    }
+    [data-theme="light"] {
+      --bg:           #f7f5f0;
+      --surface:      #ffffff;
+      --surface-2:    #f0ede8;
+      --rule:         #ddd8d0;
+      --rule-strong:  #c8c2b8;
+      --text:         #1c1917;
+      --text-dim:     #5a5248;
+      --text-faint:   #9a9088;
+      --accent:       #a07040;
+      --accent-dim:   #806030;
+      --accent-bright:#c09060;
+      --accent-bg:    rgba(160,112,64,0.08);
+      --accent-border:rgba(160,112,64,0.25);
+      --green:        #4a7a4a;
+      --green-bg:     rgba(74,122,74,0.08);
+      --green-border: rgba(74,122,74,0.25);
+      --blue:         #4a6a9a;
+      --blue-bg:      rgba(74,106,154,0.08);
+      --blue-border:  rgba(74,106,154,0.25);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 17px; scroll-behavior: smooth; background: var(--bg); }
+    body {
+      font-family: var(--serif);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-bright); }
+
+    /* ── Nav ── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 52px;
+    }
+    .nav-left { display: flex; align-items: center; gap: 0.6rem; }
+    .nav-home {
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--text-faint); letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .nav-home:hover { color: var(--accent); }
+    .nav-sep { color: var(--rule-strong); font-size: 0.8rem; }
+    .nav-current {
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .theme-btn {
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em;
+      background: none; border: 1px solid var(--rule-strong); color: var(--text-faint);
+      padding: 4px 10px; cursor: pointer; border-radius: 3px;
+    }
+    .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Layout ── */
+    .page { max-width: 800px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+    /* ── Cover ── */
+    .cover {
+      padding: 4rem 0 3.5rem;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 3.5rem;
+    }
+    .cover-eyebrow {
+      font-family: var(--mono); font-size: 0.7rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.25rem; display: block;
+    }
+    .cover h1 {
+      font-family: var(--serif); font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 500; line-height: 1.2;
+      color: var(--text); margin-bottom: 1rem;
+    }
+    .cover-sub {
+      font-size: 1.1rem; font-style: italic;
+      color: var(--text-dim); line-height: 1.65;
+      margin-bottom: 1.75rem; max-width: 540px;
+    }
+    .cover-meta {
+      display: flex; gap: 0; flex-wrap: wrap;
+      border-top: 1px solid var(--rule);
+      padding-top: 1rem;
+    }
+    .cover-meta-item {
+      font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em;
+      color: var(--text-faint); padding-right: 1.5rem;
+      border-right: 1px solid var(--rule); margin-right: 1.5rem;
+    }
+    .cover-meta-item:last-child { border-right: none; margin-right: 0; }
+    .cover-meta-item strong { color: var(--text-dim); font-weight: 500; }
+
+    /* ── Section label ── */
+    .section-label {
+      font-family: var(--mono); font-size: 0.65rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.5rem; display: block;
+    }
+
+    /* ── Description ── */
+    .desc-block { margin-bottom: 2.5rem; }
+    .desc-block p {
+      color: var(--text-dim); margin-bottom: 0.9rem;
+      max-width: 620px; line-height: 1.75;
+    }
+
+    /* ── Document cards ── */
+    .doc-grid {
+      display: flex; flex-direction: column; gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .doc-card {
+      display: flex; gap: 0;
+      background: var(--surface);
+      border: 1px solid var(--rule-strong);
+      border-radius: 8px; overflow: hidden;
+      text-decoration: none; color: inherit;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .doc-card:hover {
+      border-color: var(--accent-border);
+      background: var(--surface-2);
+    }
+
+    .doc-accent {
+      width: 4px; flex-shrink: 0;
+      background: var(--doc-color, var(--rule-strong));
+    }
+
+    .doc-body {
+      padding: 1.5rem 1.75rem;
+      flex: 1; min-width: 0;
+    }
+
+    .doc-type {
+      font-family: var(--mono); font-size: 0.65rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--doc-color, var(--text-faint));
+      margin-bottom: 0.4rem; display: block;
+    }
+
+    .doc-title {
+      font-family: var(--serif); font-size: 1.25rem;
+      font-weight: 500; color: var(--text);
+      margin-bottom: 0.4rem; line-height: 1.3;
+    }
+
+    .doc-desc {
+      font-family: var(--sans); font-size: 0.82rem;
+      color: var(--text-dim); line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .doc-tags {
+      display: flex; gap: 6px; flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: var(--mono); font-size: 0.62rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 3px;
+    }
+    .tag-active {
+      background: var(--green-bg); color: var(--green);
+      border: 1px solid var(--green-border);
+    }
+    .tag-research {
+      background: var(--blue-bg); color: var(--blue);
+      border: 1px solid var(--blue-border);
+    }
+    .tag-precounsel {
+      background: var(--accent-bg); color: var(--accent);
+      border: 1px solid var(--accent-border);
+    }
+
+    .doc-action {
+      padding: 1.5rem 1.75rem 1.5rem 0;
+      display: flex; flex-direction: column;
+      align-items: flex-end; justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .doc-size {
+      font-family: var(--mono); font-size: 0.65rem;
+      color: var(--text-faint); letter-spacing: 0.04em;
+    }
+
+    .doc-dl {
+      font-family: var(--mono); font-size: 0.72rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+      background: var(--accent-bg);
+      padding: 6px 14px; border-radius: 4px;
+      white-space: nowrap;
+    }
+    .doc-card:hover .doc-dl { background: rgba(196,149,106,0.16); }
+
+    /* ── Counsel note ── */
+    .counsel-note {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--accent-dim);
+      border-radius: 0 6px 6px 0;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .counsel-note-label {
+      font-family: var(--mono); font-size: 0.65rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent-dim); margin-bottom: 0.5rem; display: block;
+    }
+    .counsel-note p {
+      font-family: var(--sans); font-size: 0.82rem;
+      color: var(--text-dim); line-height: 1.65;
+    }
+
+    /* ── Basket summary ── */
+    .basket-row {
+      display: flex; align-items: center; gap: 0;
+      border-bottom: 1px solid var(--rule);
+      padding: 0.75rem 0;
+      font-family: var(--mono); font-size: 0.78rem;
+    }
+    .basket-row:last-child { border-bottom: none; }
+    .basket-season { color: var(--accent); min-width: 3.5rem; }
+    .basket-year { color: var(--text-dim); min-width: 7rem; }
+    .basket-status { min-width: 7rem; }
+    .basket-mark { color: var(--text-dim); text-align: right; flex: 1; }
+    .status-resolved  { color: var(--green); }
+    .status-liquidating { color: var(--accent-bright); }
+    .status-maturing  { color: var(--accent); }
+    .status-subscription { color: var(--blue); }
+    .status-composing { color: var(--text-faint); }
+
+    /* ── Totals bar ── */
+    .totals-bar {
+      display: flex; gap: 0; flex-wrap: wrap;
+      background: var(--surface);
+      border: 1px solid var(--rule-strong);
+      border-radius: 8px; overflow: hidden;
+      margin-bottom: 3rem;
+    }
+    .total-item {
+      padding: 1.1rem 1.5rem; flex: 1; min-width: 120px;
+      border-right: 1px solid var(--rule);
+    }
+    .total-item:last-child { border-right: none; }
+    .total-label {
+      font-family: var(--mono); font-size: 0.62rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-faint); margin-bottom: 0.25rem; display: block;
+    }
+    .total-value {
+      font-family: var(--mono); font-size: 1rem;
+      font-weight: 500; color: var(--text);
+    }
+    .total-value.accent { color: var(--accent); }
+
+    /* ── Footer ── */
+    .page-footer {
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 8px;
+    }
+    .footer-l {
+      font-family: var(--mono); font-size: 0.68rem;
+      color: var(--text-faint); letter-spacing: 0.06em;
+    }
+    .footer-r {
+      font-family: var(--mono); font-size: 0.68rem;
+      color: var(--text-faint); display: flex; gap: 1.25rem;
+    }
+    .footer-r a { color: var(--text-faint); }
+    .footer-r a:hover { color: var(--accent); }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .page { padding: 0 1rem 4rem; }
+      .site-nav { padding: 0 1rem; }
+      .cover { padding: 2.5rem 0 2.5rem; }
+      .doc-action { display: none; }
+      .totals-bar { flex-direction: column; }
+      .total-item { border-right: none; border-bottom: 1px solid var(--rule); }
+      .total-item:last-child { border-bottom: none; }
+      .basket-year { display: none; }
+      .basket-mark { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-left">
+    <a href="/" class="nav-home">Techne</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current">Cooperative Engine</span>
+  </div>
+  <button class="theme-btn" id="themeBtn">Light</button>
+</nav>
+
+<div class="page">
+
+  <header class="cover">
+    <span class="cover-eyebrow">RegenHub, LCA · Capital Infrastructure</span>
+    <h1>Cooperative Engine</h1>
+    <p class="cover-sub">The basket portfolio system and legal framework for executing the cooperative's patronage accounting engine — from composition through maturation and resolution.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><strong>Version</strong> &nbsp;6</div>
+      <div class="cover-meta-item"><strong>Season</strong> &nbsp;3 Legal</div>
+      <div class="cover-meta-item"><strong>Active basket</strong> &nbsp;Spring 2027</div>
+      <div class="cover-meta-item"><strong>Updated</strong> &nbsp;May 2026</div>
+    </div>
+  </header>
+
+  <!-- Portfolio snapshot -->
+  <div class="totals-bar">
+    <div class="total-item">
+      <span class="total-label">Total holdings</span>
+      <span class="total-value accent">$8.5M</span>
+    </div>
+    <div class="total-item">
+      <span class="total-label">Treasury</span>
+      <span class="total-value">$1.8M</span>
+    </div>
+    <div class="total-item">
+      <span class="total-label">Patronage circ.</span>
+      <span class="total-value">$380K</span>
+    </div>
+    <div class="total-item">
+      <span class="total-label">Active members</span>
+      <span class="total-value">67</span>
+    </div>
+    <div class="total-item">
+      <span class="total-label">Baskets in motion</span>
+      <span class="total-value">5</span>
+    </div>
+  </div>
+
+  <!-- Documents -->
+  <span class="section-label">Documents</span>
+
+  <div class="doc-grid">
+
+    <!-- Cooperative Engine v6 -->
+    <a class="doc-card" href="cooperative-engine-v6.pdf" target="_blank" style="--doc-color: var(--accent);">
+      <div class="doc-accent"></div>
+      <div class="doc-body">
+        <span class="doc-type">Portfolio Overview</span>
+        <div class="doc-title">Cooperative Engine v6</div>
+        <div class="doc-desc">Portfolio snapshot, basket lifecycle across five seasons, active basket status (Spring 2027, Stage 6 of 8, 1.48x mark), outcome projections, and subscription pathway for the member subscription round now open.</div>
+        <div class="doc-tags">
+          <span class="tag tag-active">Active</span>
+          <span class="tag tag-research" style="background:var(--accent-bg);color:var(--accent);border-color:var(--accent-border);">Season 3</span>
+        </div>
+      </div>
+      <div class="doc-action">
+        <span class="doc-size">49 KB · PDF</span>
+        <span class="doc-dl">Open PDF</span>
+      </div>
+    </a>
+
+    <!-- Agreements Layer Memo -->
+    <a class="doc-card" href="agreements-layer-memo.pdf" target="_blank" style="--doc-color: var(--blue);">
+      <div class="doc-accent"></div>
+      <div class="doc-body">
+        <span class="doc-type">Legal Research Memo</span>
+        <div class="doc-title">Agreements Layer for Basket Engine</div>
+        <div class="doc-desc">Instruments, variables, and progressive adoption framework for executing the basket lifecycle within Colorado LCA law. Audience: Pote, Muchnik, Treasury. Pre-counsel review.</div>
+        <div class="doc-tags">
+          <span class="tag tag-research">Research</span>
+          <span class="tag tag-precounsel">Pre-counsel</span>
+        </div>
+      </div>
+      <div class="doc-action">
+        <span class="doc-size">114 KB · PDF</span>
+        <span class="doc-dl">Open PDF</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Counsel note -->
+  <div class="counsel-note">
+    <span class="counsel-note-label">Counsel note</span>
+    <p>The agreements layer memo is legal research informing counsel decisions, not legal advice. Every instrument, exemption pathway, and tax position identified requires review and refinement by formation counsel (Je Pote), cooperative legal counsel (Yev Muchnik), and CPA before execution. Statutory citations should be verified for currency.</p>
+  </div>
+
+  <!-- Basket status table -->
+  <span class="section-label">Basket Portfolio</span>
+
+  <div style="background:var(--surface);border:1px solid var(--rule-strong);border-radius:8px;padding:1rem 1.5rem;margin-bottom:3rem;">
+    <div class="basket-row">
+      <span class="basket-season">S25</span>
+      <span class="basket-year">Spring 2025</span>
+      <span class="basket-status status-resolved">Resolved</span>
+      <span class="basket-mark">2.42x &middot; $3.4M distributed</span>
+    </div>
+    <div class="basket-row">
+      <span class="basket-season">S26</span>
+      <span class="basket-year">Spring 2026</span>
+      <span class="basket-status status-liquidating">Liquidating</span>
+      <span class="basket-mark">60% realized &middot; $1.3M distributed</span>
+    </div>
+    <div class="basket-row" style="background:var(--accent-bg);margin:0 -1.5rem;padding:0.75rem 1.5rem;">
+      <span class="basket-season">S27</span>
+      <span class="basket-year">Spring 2027 &#x25C6;</span>
+      <span class="basket-status status-maturing">Maturing</span>
+      <span class="basket-mark">1.48x &middot; Q6 of 16</span>
+    </div>
+    <div class="basket-row">
+      <span class="basket-season">S28</span>
+      <span class="basket-year">Spring 2028</span>
+      <span class="basket-status status-subscription">Subscription</span>
+      <span class="basket-mark">68% filled &middot; day 20 of 30</span>
+    </div>
+    <div class="basket-row">
+      <span class="basket-season">S29</span>
+      <span class="basket-year">Spring 2029</span>
+      <span class="basket-status status-composing">Composing</span>
+      <span class="basket-mark">Board review &middot; day 8 of 21</span>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <span class="footer-l">RegenHub, LCA &middot; Boulder, Colorado &middot; #20261215588</span>
+    <div class="footer-r">
+      <a href="/formation/">Formation</a>
+      <a href="/work/">Work Ledger</a>
+      <a href="/">Techne.institute</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  const html = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  const stored = localStorage.getItem('techne-theme');
+  if (stored) html.setAttribute('data-theme', stored);
+  btn.textContent = html.getAttribute('data-theme') === 'dark' ? 'Light' : 'Dark';
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('techne-theme', next);
+    btn.textContent = next === 'dark' ? 'Light' : 'Dark';
+  });
+</script>
+
+</body>
+</html>
