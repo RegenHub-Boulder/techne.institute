@@ -1,0 +1,2253 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooperative Engine v6 · Legal Surface</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root[data-theme="dark"] {
+  --bg: #0c0c0c;
+  --bg-elev: #141414;
+  --bg-card: #131313;
+  --bg-inset: #0a0a0a;
+  --text: #e8e4dc;
+  --text-dim: #8a8278;
+  --text-faint: #4a4640;
+  --terra: #c4956a;
+  --terra-text: #c4956a;
+  --terra-soft: #8a6b48;
+  --rule: #222;
+  --rule-soft: #1a1a1a;
+  --v-parachute: #c4956a;
+  --v-postage: #b88660;
+  --v-bonfires: #b8a05c;
+  --v-verdant: #7a8c6a;
+  --v-hearth: #6a82a0;
+  --active-glow: rgba(196, 149, 106, 0.12);
+  --status-healthy: #7a8c6a;
+  --status-active: #c4956a;
+  --status-watch: #b8a05c;
+  --status-caution: #6a82a0;
+  --legal-executed: #7a8c6a;
+  --legal-active: #c4956a;
+  --legal-pending: #5a5448;
+  --legal-awaiting: #4a4036;
+  --season-1: #7a8c6a;
+  --season-2: #8a9c7a;
+  --season-3: #b8a05c;
+  --season-4: #c4956a;
+  --season-5: #6a82a0;
+}
+:root[data-theme="light"] {
+  --bg: #faf7f2;
+  --bg-elev: #f1ece2;
+  --bg-card: #f4efe5;
+  --bg-inset: #ede7da;
+  --text: #1a1a1a;
+  --text-dim: #5a5448;
+  --text-faint: #968d7e;
+  --terra: #c4956a;
+  --terra-text: #8a6536;
+  --terra-soft: #6e5236;
+  --rule: #d4cdc0;
+  --rule-soft: #e2dccf;
+  --v-parachute: #8a6536;
+  --v-postage: #a06b3a;
+  --v-bonfires: #8a7434;
+  --v-verdant: #4d5e3e;
+  --v-hearth: #3d5470;
+  --active-glow: rgba(196, 149, 106, 0.15);
+  --status-healthy: #4d5e3e;
+  --status-active: #8a6536;
+  --status-watch: #8a7434;
+  --status-caution: #3d5470;
+  --legal-executed: #4d5e3e;
+  --legal-active: #8a6536;
+  --legal-pending: #968d7e;
+  --legal-awaiting: #c4bdb0;
+  --season-1: #4d5e3e;
+  --season-2: #5a6e48;
+  --season-3: #8a7434;
+  --season-4: #8a6536;
+  --season-5: #3d5470;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 13.5px;
+  line-height: 1.55;
+  transition: background 400ms ease, color 400ms ease;
+  -webkit-font-smoothing: antialiased;
+}
+@media (prefers-reduced-motion: reduce) {
+  body, * { transition: none !important; animation: none !important; }
+}
+
+.hud {
+  height: 100vh;
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  display: grid;
+  grid-template-rows: auto auto auto auto auto 1fr auto auto;
+  gap: 8px;
+}
+
+.hud-header {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--rule);
+}
+.hud-title-block { display: flex; align-items: baseline; gap: 14px; }
+.hud-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--terra-text);
+  text-transform: uppercase;
+}
+.hud-title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text);
+  letter-spacing: -0.005em;
+}
+.hud-status {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.hud-status .sep {
+  width: 1px;
+  height: 14px;
+  background: var(--rule);
+}
+.hud-status .active-tag { color: var(--terra-text); }
+.hud-status .legal-tag {
+  padding: 2px 8px;
+  border: 1px solid;
+  border-radius: 2px;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+}
+.hud-status .legal-tag.s1 { color: var(--season-1); border-color: var(--season-1); }
+.hud-status .legal-tag.s2 { color: var(--season-2); border-color: var(--season-2); }
+.hud-status .legal-tag.s3 { color: var(--season-3); border-color: var(--season-3); }
+.hud-status .legal-tag.s4 { color: var(--season-4); border-color: var(--season-4); }
+.hud-status .legal-tag.s5 { color: var(--season-5); border-color: var(--season-5); }
+
+.back-link {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  text-decoration: none;
+  padding: 5px 11px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 200ms ease, border-color 200ms ease;
+  flex-shrink: 0;
+}
+.back-link:hover { color: var(--terra-text); border-color: var(--rule); }
+.toggle {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--text-dim);
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 200ms ease, border-color 200ms ease;
+  flex-shrink: 0;
+}
+.toggle:hover { color: var(--text); border-color: var(--terra); }
+.toggle svg { width: 11px; height: 11px; }
+.toggle .icon-light { display: none; }
+:root[data-theme="light"] .toggle .icon-light { display: inline-block; }
+:root[data-theme="light"] .toggle .icon-dark { display: none; }
+
+.coop-vitals {
+  display: grid;
+  grid-template-columns: auto repeat(5, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 8px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+}
+.coop-vitals-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--terra-text);
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding-right: 12px;
+  border-right: 1px solid var(--rule);
+}
+.coop-vital {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.coop-vital-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+.coop-vital-value {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.portfolio-section {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+.portfolio-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.portfolio-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--terra-text);
+  text-transform: uppercase;
+}
+.portfolio-count {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.portfolio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.portfolio-row {
+  display: grid;
+  grid-template-columns: 96px 220px 1fr 80px auto;
+  gap: 14px;
+  align-items: center;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease;
+  border-left: 2px solid transparent;
+  border-radius: 1px;
+}
+.portfolio-row:hover {
+  background: var(--bg-inset);
+}
+.portfolio-row.active {
+  background: var(--bg-inset);
+  border-left-color: var(--terra);
+}
+.portfolio-season {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.portfolio-season .id {
+  color: var(--terra-text);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+}
+.portfolio-row.active .portfolio-season .id { color: var(--terra); }
+
+.mini-stages {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  position: relative;
+  align-items: center;
+  height: 16px;
+}
+.mini-stages::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5.5%;
+  right: 5.5%;
+  height: 1px;
+  background: var(--rule);
+  transform: translateY(-50%);
+}
+.mini-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
+}
+.mini-dot.done {
+  background: var(--terra-soft);
+  border-color: var(--terra-soft);
+}
+.mini-dot.current {
+  background: var(--terra);
+  border-color: var(--terra);
+}
+.portfolio-row.active .mini-dot.current {
+  box-shadow: 0 0 0 3px var(--active-glow);
+}
+
+.portfolio-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.portfolio-stage .name {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  text-transform: uppercase;
+}
+.portfolio-stage .status {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  text-transform: none;
+}
+
+.portfolio-legal {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.portfolio-legal .legal-tag {
+  padding: 2px 4px;
+  border: 1px solid;
+  border-radius: 1px;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+.portfolio-legal.s1 .legal-tag { color: var(--season-1); border-color: var(--season-1); }
+.portfolio-legal.s2 .legal-tag { color: var(--season-2); border-color: var(--season-2); }
+.portfolio-legal.s3 .legal-tag { color: var(--season-3); border-color: var(--season-3); }
+.portfolio-legal.s4 .legal-tag { color: var(--season-4); border-color: var(--season-4); }
+.portfolio-legal.s5 .legal-tag { color: var(--season-5); border-color: var(--season-5); }
+.portfolio-legal .label {
+  color: var(--text-faint);
+  font-size: 7px;
+  letter-spacing: 0.1em;
+}
+
+.portfolio-value {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--text);
+  text-align: right;
+}
+.portfolio-value .label {
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  display: block;
+}
+
+.stage-bar {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 0;
+  position: relative;
+  padding: 4px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+}
+.stage-bar::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 6.5%;
+  right: 6.5%;
+  height: 1px;
+  background: var(--rule);
+  transform: translateY(-50%);
+}
+.stage-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+  position: relative;
+}
+.stage-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--bg);
+  transition: all 250ms ease;
+  position: relative;
+  z-index: 1;
+}
+.stage-node.done .stage-dot {
+  background: var(--terra-soft);
+  border-color: var(--terra-soft);
+}
+.stage-node.current .stage-dot {
+  background: var(--terra);
+  border-color: var(--terra);
+  box-shadow: 0 0 0 3px var(--active-glow);
+}
+.stage-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  text-align: center;
+}
+.stage-node.done .stage-label { color: var(--text-dim); }
+.stage-node.current .stage-label { color: var(--terra-text); }
+.stage-legal-pip {
+  position: absolute;
+  top: 2px;
+  right: 50%;
+  margin-right: -16px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--legal-pending);
+}
+.stage-node.done .stage-legal-pip { background: var(--legal-executed); }
+.stage-node.current .stage-legal-pip { background: var(--legal-active); }
+
+.pathway-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  gap: 16px;
+}
+.pathway-label-block {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--terra-text);
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.pathway-label-block .description {
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+  text-transform: none;
+  font-size: 9px;
+}
+.pathway-options {
+  display: flex;
+  gap: 3px;
+  background: var(--bg-inset);
+  padding: 2px;
+  border-radius: 2px;
+}
+.pathway-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  padding: 4px 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 200ms ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+.pathway-btn:hover { color: var(--text); }
+.pathway-btn .range {
+  font-size: 7px;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+.pathway-btn.active {
+  background: var(--terra);
+  color: var(--bg);
+}
+.pathway-btn.active .range { color: var(--bg); opacity: 0.7; }
+.pathway-aside {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  text-align: right;
+}
+.pathway-aside .strong { color: var(--text); }
+
+.hud-main {
+  display: grid;
+  grid-template-columns: 0.7fr 1.5fr;
+  gap: 8px;
+  min-height: 0;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--rule-soft);
+  flex-shrink: 0;
+  gap: 12px;
+}
+.card-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--terra-text);
+  text-transform: uppercase;
+}
+.card-title {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+  margin-top: 1px;
+}
+.card-trigger {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.card-trigger .name { color: var(--terra-text); }
+.card-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  text-align: right;
+}
+.card-meta .duration {
+  display: block;
+  font-size: 8px;
+  color: var(--text-faint);
+  margin-top: 1px;
+}
+.card-body { min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+
+.venture-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-height: 0;
+}
+.venture-row {
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 3px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.venture-row:last-child { border-bottom: none; }
+.venture-swatch {
+  width: 5px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.venture-name {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.venture-name .name {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 11.5px;
+  color: var(--text);
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.venture-name .meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+}
+.venture-value {
+  text-align: right;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  color: var(--text);
+}
+.venture-value .pct {
+  display: block;
+  font-size: 8px;
+  color: var(--text-faint);
+  margin-top: 1px;
+  letter-spacing: 0.04em;
+}
+
+.composition-bar {
+  height: 14px;
+  display: flex;
+  margin-top: 6px;
+  border-radius: 1px;
+  overflow: hidden;
+  background: var(--bg-inset);
+  flex-shrink: 0;
+}
+.bar-segment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  color: var(--bg);
+  font-weight: 500;
+}
+
+.composition-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--rule-soft);
+  flex-shrink: 0;
+}
+.total-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+.total-value {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.vitals-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  padding-bottom: 7px;
+  margin-bottom: 7px;
+  border-bottom: 1px solid var(--rule-soft);
+  flex-shrink: 0;
+}
+.vital {
+  background: var(--bg-inset);
+  padding: 5px 9px;
+  border-left: 2px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.vital.healthy { border-left-color: var(--status-healthy); }
+.vital.active { border-left-color: var(--status-active); }
+.vital.watch { border-left-color: var(--status-watch); }
+.vital.caution { border-left-color: var(--status-caution); }
+.vital-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 7.5px;
+  letter-spacing: 0.13em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vital-value {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--text);
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vital-bar {
+  height: 2px;
+  background: var(--bg-card);
+  border-radius: 1px;
+  overflow: hidden;
+  margin: 2px 0 0;
+}
+.vital-bar-fill {
+  height: 100%;
+  background: var(--status-active);
+  transition: width 400ms ease;
+}
+.vital.healthy .vital-bar-fill { background: var(--status-healthy); }
+.vital.watch .vital-bar-fill { background: var(--status-watch); }
+.vital.caution .vital-bar-fill { background: var(--status-caution); }
+.vital-qualifier {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.vital.healthy .status-dot { background: var(--status-healthy); }
+.vital.active .status-dot { background: var(--status-active); }
+.vital.watch .status-dot { background: var(--status-watch); }
+.vital.caution .status-dot { background: var(--status-caution); }
+
+.stage-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 5px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+.stage-detail::-webkit-scrollbar { width: 3px; }
+.stage-detail::-webkit-scrollbar-track { background: transparent; }
+.stage-detail::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 999px; }
+.stage-section {
+  margin-bottom: 9px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.stage-section:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+  color: var(--terra-text);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+.section-label .aside {
+  font-size: 8px;
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+}
+.section-text {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+.section-text em {
+  color: var(--terra-text);
+  font-style: italic;
+}
+.stage-narrative {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+.stage-narrative em { color: var(--terra-text); font-style: italic; }
+.actors-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.actor-block .section-label { color: var(--text-faint); }
+.consider-list {
+  display: grid;
+  gap: 3px;
+}
+.consider-item {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding: 2px 0;
+}
+.consider-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  color: var(--terra-text);
+  text-transform: uppercase;
+}
+.consider-text {
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--text-dim);
+}
+.metrics-block {
+  background: var(--bg-inset);
+  padding: 7px 11px;
+  margin-top: 2px;
+}
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+  border-bottom: 1px dashed var(--rule-soft);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+}
+.metric-row:last-child { border-bottom: none; }
+.metric-row .label { color: var(--text-dim); letter-spacing: 0.04em; }
+.metric-row .value { color: var(--text); }
+.metric-row .value.accent { color: var(--terra-text); }
+.progress-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 40px;
+  gap: 9px;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 3px 0;
+}
+.progress-row .label { color: var(--text-dim); }
+.progress-row .value { color: var(--text); text-align: right; }
+.progress-track {
+  height: 4px;
+  background: var(--bg-card);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--terra);
+  transition: width 400ms ease;
+}
+.exit-event {
+  display: grid;
+  grid-template-columns: 10px 1fr auto auto;
+  gap: 9px;
+  align-items: center;
+  padding: 3px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+}
+.exit-event .swatch { width: 5px; height: 11px; }
+.exit-event .name { font-family: 'Libre Baskerville', Georgia, serif; font-style: italic; color: var(--text); font-size: 11.5px; }
+.exit-event .multiple { color: var(--terra-text); }
+.exit-event .return { color: var(--text); }
+.exit-event.pending { opacity: 0.4; }
+
+.secondary-market {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.sec-mech {
+  background: var(--bg-inset);
+  padding: 6px 9px;
+  border-left: 2px solid var(--status-healthy);
+}
+.sec-mech-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  color: var(--status-healthy);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.sec-mech-text {
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+
+/* LEGAL SURFACE */
+.legal-surface {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.legal-row {
+  display: grid;
+  grid-template-columns: 10px 1fr auto auto;
+  gap: 9px;
+  align-items: start;
+  padding: 6px 10px;
+  background: var(--bg-inset);
+  border-left: 2px solid var(--legal-pending);
+  transition: opacity 200ms ease;
+}
+.legal-row.executed { border-left-color: var(--legal-executed); }
+.legal-row.active { border-left-color: var(--legal-active); }
+.legal-row.pending { border-left-color: var(--legal-pending); }
+.legal-row.awaiting {
+  border-left-color: var(--legal-awaiting);
+  border-left-style: dashed;
+  opacity: 0.5;
+}
+.legal-icon {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  margin-top: 6px;
+  background: var(--legal-pending);
+  flex-shrink: 0;
+}
+.legal-row.executed .legal-icon { background: var(--legal-executed); }
+.legal-row.active .legal-icon { background: var(--legal-active); }
+.legal-row.awaiting .legal-icon { background: var(--legal-awaiting); border: 1px dashed var(--legal-awaiting); background: transparent; }
+.legal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.legal-name {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 11.5px;
+  color: var(--text);
+  line-height: 1.3;
+}
+.legal-row.awaiting .legal-name { color: var(--text-dim); }
+.legal-desc {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+.legal-vars {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+.legal-vars .var-label {
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-right: 4px;
+}
+.legal-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: flex-end;
+}
+.legal-season-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  padding: 1px 5px;
+  border: 1px solid;
+  border-radius: 1px;
+  text-transform: uppercase;
+}
+.legal-season-tag.s1 { color: var(--season-1); border-color: var(--season-1); }
+.legal-season-tag.s2 { color: var(--season-2); border-color: var(--season-2); }
+.legal-season-tag.s3 { color: var(--season-3); border-color: var(--season-3); }
+.legal-season-tag.s4 { color: var(--season-4); border-color: var(--season-4); }
+.legal-season-tag.s5 { color: var(--season-5); border-color: var(--season-5); }
+.legal-status-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.legal-row.executed .legal-status-tag { color: var(--legal-executed); }
+.legal-row.active .legal-status-tag { color: var(--legal-active); }
+.legal-row.awaiting .legal-status-tag { color: var(--legal-awaiting); }
+.legal-scope {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  text-transform: lowercase;
+  margin-top: 1px;
+}
+
+.legal-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.legal-stat {
+  background: var(--bg-card);
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.legal-stat .stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 7.5px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+.legal-stat .stat-value {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.legal-stat.executed .stat-value { color: var(--legal-executed); }
+.legal-stat.active .stat-value { color: var(--legal-active); }
+.legal-stat.pending .stat-value { color: var(--text-dim); }
+.legal-stat.awaiting .stat-value { color: var(--legal-awaiting); }
+
+.outcome-chart-card { padding: 8px 14px; }
+.outcome-chart-card .card-head { margin-bottom: 3px; padding-bottom: 3px; }
+.chart-container {
+  position: relative;
+  height: 80px;
+  display: flex;
+}
+.chart-svg { flex: 1; }
+.chart-legend {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.05em;
+  padding-left: 12px;
+  min-width: 95px;
+}
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-dim);
+}
+.chart-legend-item .swatch { width: 14px; height: 2px; flex-shrink: 0; }
+.chart-legend-item .end-val { margin-left: auto; color: var(--text); }
+
+.hud-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 5px;
+  border-top: 1px solid var(--rule);
+  gap: 14px;
+}
+.controls-left {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+.controls-right { display: flex; gap: 6px; }
+.btn {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--text-dim);
+  padding: 5px 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+.btn:hover:not(:disabled) { color: var(--terra-text); border-color: var(--terra); }
+.btn.primary {
+  background: var(--terra);
+  border-color: var(--terra);
+  color: var(--bg);
+}
+.btn.primary:hover:not(:disabled) { background: var(--terra-soft); border-color: var(--terra-soft); color: var(--bg); }
+.btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+@media (max-width: 1180px) {
+  .hud { padding: 8px 14px; }
+  .portfolio-row { grid-template-columns: 80px 180px 1fr 70px auto; }
+}
+@media (max-width: 1000px) {
+  .hud-main { grid-template-columns: 1fr; }
+  .vitals-strip { grid-template-columns: repeat(2, 1fr); }
+  .actors-grid { grid-template-columns: 1fr; gap: 8px; }
+  .coop-vitals { grid-template-columns: 1fr; }
+  .coop-vitals-label { display: none; }
+  .legal-summary { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-height: 800px) {
+  .stage-label { display: none; }
+  .stage-bar { padding: 3px 12px; }
+  .chart-container { height: 70px; }
+}
+</style>
+</head>
+<body>
+<div class="hud">
+
+  <header class="hud-header">
+    <div class="hud-title-block">
+      <span class="hud-brand">Cooperative Engine · v6</span>
+      <span class="hud-title">RegenHub, LCA</span>
+    </div>
+    <div class="hud-status">
+      <span>Legal Surface</span>
+      <span class="sep"></span>
+      <span class="active-tag" id="active-basket-tag">Active: Basket Spring 2027</span>
+      <span class="sep"></span>
+      <span class="legal-tag" id="legal-tag">Season 3 Legal</span>
+    </div>
+    <a class="back-link" href="/engine/">← Engine</a>
+    <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light or dark mode">
+      <svg class="icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <span class="theme-label">Light</span>
+    </button>
+  </header>
+
+  <div class="coop-vitals">
+    <div class="coop-vitals-label">Cooperative State</div>
+    <div class="coop-vital">
+      <div class="coop-vital-label">Total Holdings</div>
+      <div class="coop-vital-value">$8.5M</div>
+    </div>
+    <div class="coop-vital">
+      <div class="coop-vital-label">Treasury</div>
+      <div class="coop-vital-value">$1.8M</div>
+    </div>
+    <div class="coop-vital">
+      <div class="coop-vital-label">Patronage Circulating</div>
+      <div class="coop-vital-value">380K</div>
+    </div>
+    <div class="coop-vital">
+      <div class="coop-vital-label">Active Members</div>
+      <div class="coop-vital-value">67</div>
+    </div>
+    <div class="coop-vital">
+      <div class="coop-vital-label">Baskets in Motion</div>
+      <div class="coop-vital-value">5</div>
+    </div>
+  </div>
+
+  <section class="portfolio-section">
+    <div class="portfolio-head">
+      <div class="portfolio-label">§ A · Portfolio of Baskets · Legal Framework by Season</div>
+      <div class="portfolio-count" id="portfolio-count"></div>
+    </div>
+    <div class="portfolio-list" id="portfolio-list"></div>
+  </section>
+
+  <nav class="stage-bar" id="stage-bar"></nav>
+
+  <div class="pathway-row">
+    <div class="pathway-label-block">
+      <span>Subscription Pathway</span>
+      <span class="description">Applies to active basket modeling</span>
+    </div>
+    <div class="pathway-options" id="pathway-options"></div>
+    <div class="pathway-aside" id="pathway-aside"></div>
+  </div>
+
+  <main class="hud-main">
+
+    <section class="card composition-card">
+      <div class="card-head">
+        <div>
+          <div class="card-label">§ B · Composition</div>
+          <div class="card-title" id="composition-title">Voluntary Contributions</div>
+        </div>
+        <div class="card-meta" id="venture-count"></div>
+      </div>
+      <div class="card-body">
+        <div class="venture-list" id="venture-list"></div>
+        <div class="composition-bar" id="composition-bar"></div>
+        <div class="composition-total">
+          <span class="total-label">Composed Value</span>
+          <span class="total-value" id="total-value">$0</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card stage-card">
+      <div class="card-head">
+        <div>
+          <div class="card-label">§ C · Active Stage</div>
+          <div class="card-title" id="stage-title">Gathering</div>
+          <div class="card-trigger" id="stage-trigger"></div>
+        </div>
+        <div class="card-meta">
+          <span id="stage-meta">Stage 00 of 08</span>
+          <span class="duration" id="stage-duration"></span>
+        </div>
+      </div>
+      <div class="vitals-strip" id="vitals-strip"></div>
+      <div class="card-body stage-detail" id="stage-detail"></div>
+    </section>
+
+  </main>
+
+  <section class="card outcome-chart-card">
+    <div class="card-head">
+      <div>
+        <div class="card-label">§ D · Outcome Projection</div>
+        <div class="card-title">Trajectories for Active Basket</div>
+      </div>
+      <div class="card-meta">Diverges at Stage 06 · Maturing</div>
+    </div>
+    <div class="chart-container">
+      <svg class="chart-svg" id="chart-svg" preserveAspectRatio="none"></svg>
+      <div class="chart-legend" id="chart-legend"></div>
+    </div>
+  </section>
+
+  <footer class="hud-controls">
+    <div class="controls-left" id="footer-status">Initial state</div>
+    <div class="controls-right">
+      <button class="btn" id="btn-retreat" onclick="retreat()">◂ Stage</button>
+      <button class="btn" onclick="resetToBasketStage()">Reset Stage</button>
+      <button class="btn primary" id="btn-advance" onclick="advance()">Stage ▸</button>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+
+const baskets = [
+  {
+    id: 'S25', season: 'Spring 2025', currentStage: 8, legalSeason: 1,
+    ventures: [
+      { name: 'lattice.dev', valuation: 4000000, basketEquityPct: 10, colorVar: '--v-parachute', exit: 2.6 },
+      { name: 'threadwork.co', valuation: 3000000, basketEquityPct: 10, colorVar: '--v-postage', exit: 1.8 },
+      { name: 'haven.network', valuation: 8000000, basketEquityPct: 5, colorVar: '--v-bonfires', exit: 4.2 },
+      { name: 'creek.farm', valuation: 1500000, basketEquityPct: 10, colorVar: '--v-verdant', exit: 0.8 },
+      { name: 'kindred.org', valuation: 1500000, basketEquityPct: 10, colorVar: '--v-hearth', exit: 2.4 }
+    ],
+    pathway: 'high',
+    stageStatus: { 8: 'Resolved \u00b7 2.42x \u00b7 $3.4M distributed' }
+  },
+  {
+    id: 'S26', season: 'Spring 2026', currentStage: 7, legalSeason: 2,
+    ventures: [
+      { name: 'meadow.app', valuation: 4500000, basketEquityPct: 10, colorVar: '--v-parachute', exit: 3.0 },
+      { name: 'chronicle.media', valuation: 3000000, basketEquityPct: 10, colorVar: '--v-postage', exit: 1.4 },
+      { name: 'terrain.ai', valuation: 12000000, basketEquityPct: 3, colorVar: '--v-bonfires', exit: 5.2 },
+      { name: 'almanac.farm', valuation: 2000000, basketEquityPct: 10, colorVar: '--v-verdant', exit: 1.1 },
+      { name: 'commons.co', valuation: 2000000, basketEquityPct: 10, colorVar: '--v-hearth', exit: 2.0 }
+    ],
+    pathway: 'medium',
+    stageStatus: { 7: 'Liquidating \u00b7 60% realized \u00b7 $1.3M distributed' }
+  },
+  {
+    id: 'S27', season: 'Spring 2027', currentStage: 6, legalSeason: 3,
+    ventures: [
+      { name: 'parachute.computer', valuation: 5000000, basketEquityPct: 10, colorVar: '--v-parachute', exit: 3.2 },
+      { name: 'postage.protocol', valuation: 4000000, basketEquityPct: 10, colorVar: '--v-postage', exit: 2.4 },
+      { name: 'bonfires.ai', valuation: 15000000, basketEquityPct: 2.5, colorVar: '--v-bonfires', exit: 8.1 },
+      { name: 'verdant.farm', valuation: 2500000, basketEquityPct: 10, colorVar: '--v-verdant', exit: 0.6 },
+      { name: 'hearth.work', valuation: 2500000, basketEquityPct: 10, colorVar: '--v-hearth', exit: 1.8 }
+    ],
+    pathway: 'medium',
+    stageStatus: { 6: 'Maturing \u00b7 1.48x mark \u00b7 Q6 of \u224816' }
+  },
+  {
+    id: 'S28', season: 'Spring 2028', currentStage: 3, legalSeason: 4,
+    ventures: [
+      { name: 'weave.app', valuation: 6000000, basketEquityPct: 10, colorVar: '--v-parachute', exit: 2.5 },
+      { name: 'carrier.work', valuation: 4000000, basketEquityPct: 10, colorVar: '--v-postage', exit: 1.6 },
+      { name: 'glow.systems', valuation: 14000000, basketEquityPct: 3, colorVar: '--v-bonfires', exit: 4.0 },
+      { name: 'orchard.farm', valuation: 2500000, basketEquityPct: 10, colorVar: '--v-verdant', exit: 1.2 },
+      { name: 'watershed.co', valuation: 2000000, basketEquityPct: 10, colorVar: '--v-hearth', exit: 1.8 }
+    ],
+    pathway: 'medium',
+    stageStatus: { 3: 'Member Subscription \u00b7 day 20 of 30 \u00b7 68% filled' }
+  },
+  {
+    id: 'S29', season: 'Spring 2029', currentStage: 1, legalSeason: 5,
+    ventures: [
+      { name: 'nascent.dev', valuation: 3000000, basketEquityPct: 10, colorVar: '--v-parachute', exit: null },
+      { name: 'pulse.media', valuation: 3000000, basketEquityPct: 10, colorVar: '--v-postage', exit: null },
+      { name: 'ranger.tools', valuation: 7000000, basketEquityPct: 5, colorVar: '--v-bonfires', exit: null },
+      { name: 'pollinator.farm', valuation: 2000000, basketEquityPct: 10, colorVar: '--v-verdant', exit: null },
+      { name: 'threshold.co', valuation: 2000000, basketEquityPct: 10, colorVar: '--v-hearth', exit: null }
+    ],
+    pathway: 'medium',
+    stageStatus: { 1: 'Composing \u00b7 Board review \u00b7 day 8 of 21' }
+  }
+];
+
+const legalSeasonNames = {
+  1: 'Season 1 \u00b7 Minimum Viable Legal',
+  2: 'Season 2 \u00b7 Patronage Maturity',
+  3: 'Season 3 \u00b7 Community Window',
+  4: 'Season 4 \u00b7 Internal Secondary Market',
+  5: 'Season 5 \u00b7 Full Secondary Mechanics'
+};
+
+const stageAgreements = {
+  0: [
+    { name: 'Voluntary Equity Contribution Agreement', season: 1, scope: 'per venture',
+      desc: 'Transfers venture equity to the LCA at fair-market value under Section 721',
+      vars: 'venture, equity %, FMV, valuation method, effective date' },
+    { name: 'Contribution Valuation Memorandum', season: 1, scope: 'per venture',
+      desc: 'Records the FMV methodology supporting each contribution',
+      vars: 'method, basis date, computed FMV, supporting documents' }
+  ],
+  1: [
+    { name: 'Board Composition Resolution', season: 1, scope: 'single',
+      desc: 'Authorizes basket composition, share price, and reserve allocations',
+      vars: 'ventures included, equity %, share price, reserves, meeting reference' }
+  ],
+  2: [
+    { name: 'Basket Prospectus', season: 1, scope: 'single',
+      desc: 'Disclosure document, the foundation for antifraud defense under 10b-5',
+      vars: 'composition, valuations, risks, use of proceeds, exemption claimed' },
+    { name: 'Form D Filing', season: 1, scope: 'single',
+      desc: 'SEC filing under Reg D 506(b) safe harbor, filed via EDGAR',
+      vars: 'issuer, securities, amount, exemption type, first sale date' },
+    { name: 'Colorado Notice Filing', season: 1, scope: 'single',
+      desc: 'State coordinated filing under C.R.S. \u00a7 11-51-308(1)(p)',
+      vars: 'issuer, offering, exemption, fee, filing date' }
+  ],
+  3: [
+    { name: 'Member Subscription Agreement', season: 1, scope: 'per subscriber',
+      desc: 'Records member commitment, patronage redemption, and share allocation',
+      vars: 'subscriber, basket, shares, patronage, cash, queue position' },
+    { name: 'Patronage Unit Redemption Form', season: 2, scope: 'per subscriber',
+      desc: 'Debits patronage account and credits basket shares to capital account',
+      vars: 'subscriber, vintage debited, units, shares credited' },
+    { name: 'Sophistication Acknowledgment', season: 1, scope: 'per non-accredited',
+      desc: 'Required for non-accredited subscribers under Rule 506(b)',
+      vars: 'subscriber, sophistication basis, acknowledgment signature' }
+  ],
+  4: [
+    { name: 'Community Subscription Agreement', season: 3, scope: 'per subscriber',
+      desc: 'Records community subscription and patron admission terms',
+      vars: 'subscriber, basket, shares, cash, admission terms' },
+    { name: 'New Patron Member Admission', season: 3, scope: 'per new patron',
+      desc: 'Admits community subscriber as patron member of the LCA',
+      vars: 'new patron, address, membership date, initial vintage assignment' }
+  ],
+  5: [
+    { name: 'Settlement Confirmation', season: 1, scope: 'per subscriber',
+      desc: 'Records final allocation and credits shares to subscriber capital accounts',
+      vars: 'subscriber, basket, final shares, final value, settlement date' },
+    { name: 'Patronage Dividend Allocation Resolution', season: 2, scope: 'single',
+      desc: 'Allocates patronage units to subscribers based on basket closing',
+      vars: 'closing data, allocation rate, vintage assignments, dividend total' }
+  ],
+  6: [
+    { name: 'Quarterly Valuation Memorandum', season: 2, scope: 'per quarter',
+      desc: 'Records marked value of each underlying position and methodology',
+      vars: 'basket, period, per-venture marks, methodology, signature' },
+    { name: 'Bid/Ask Window Procedures', season: 4, scope: 'per window',
+      desc: 'Quarterly internal market clearing with vintage-priority on buy side',
+      vars: 'window date, bids, asks, trades, clearing price' },
+    { name: 'LCA Buyback Authorization', season: 4, scope: 'per buyback',
+      desc: 'Repurchases shares at marked value, returns them to LCA inventory',
+      vars: 'shares repurchased, marked price, treasury impact, recycling target' },
+    { name: 'Patronage Reconversion Agreement', season: 5, scope: 'per reconversion',
+      desc: 'Exchanges basket shares for current-vintage patronage units',
+      vars: 'subscriber, shares converted, vintage credited, marked value' },
+    { name: 'Cross-Basket Swap Agreement', season: 5, scope: 'per swap',
+      desc: 'Trades older basket shares for newer basket shares at proportional value',
+      vars: 'subscriber, old basket, new basket, proportional value, tax position' },
+    { name: 'Member-to-Member Transfer Recording', season: 5, scope: 'per transfer',
+      desc: 'Records peer-to-peer transfers in the cooperative\u2019s books',
+      vars: 'transferor, transferee, shares, recording date, basis' }
+  ],
+  7: [
+    { name: 'Distribution Authorization', season: 2, scope: 'per exit',
+      desc: 'Authorizes distribution of proceeds from a venture exit',
+      vars: 'exit event, proceeds, per-share amount, tax characterization' },
+    { name: 'Distribution Notice to Subscribers', season: 2, scope: 'per subscriber',
+      desc: 'Notifies each subscriber of distribution and tax treatment',
+      vars: 'subscriber, basket, per-share amount, tax form, distribution date' }
+  ],
+  8: [
+    { name: 'Basket Closure Resolution', season: 2, scope: 'single',
+      desc: 'Records final aggregate return and archives basket in cooperative records',
+      vars: 'final multiple, total distributed, IRR, archive date' },
+    { name: 'Schedule K-1 Issuance', season: 1, scope: 'per member annually',
+      desc: 'Annual partnership tax form to each member capturing allocations',
+      vars: 'member, income, gain, loss, deductions, distributions' }
+  ]
+};
+
+const stageNames = ['Gathering', 'Composing', 'Announced', 'Member Subscription', 'Community Subscription', 'Closed', 'Maturing', 'Liquidating', 'Resolved'];
+
+const SHARE_PRICE = 100;
+const MEMBER_RESERVE_PCT = 0.80;
+const COMMUNITY_RESERVE_PCT = 0.20;
+
+const pathways = {
+  low:    { key: 'low',    name: 'Low',    range: '20\u201330%',  memberFill: 0.30, communityFill: 0.20, overall: 0.28, qualifier: 'Modest Uptake' },
+  medium: { key: 'medium', name: 'Medium', range: '31\u201359%',  memberFill: 0.55, communityFill: 0.30, overall: 0.50, qualifier: 'Balanced Uptake' },
+  high:   { key: 'high',   name: 'High',   range: '60%+',         memberFill: 0.85, communityFill: 0.65, overall: 0.81, qualifier: 'Strong Uptake' }
+};
+
+const transitions = [
+  { from: 0, to: 1, name: 'Season Call' },
+  { from: 1, to: 2, name: 'Board Ratifies' },
+  { from: 2, to: 3, name: 'Window Opens' },
+  { from: 3, to: 4, name: 'Member Window Closes' },
+  { from: 4, to: 5, name: 'Subscription Closes' },
+  { from: 5, to: 6, name: 'Settlement' },
+  { from: 6, to: 7, name: 'First Exit' },
+  { from: 7, to: 8, name: 'Final Resolution' }
+];
+
+let activeBasketId = 'S27';
+let currentStage = 6;
+let currentPathway = 'medium';
+
+function activeBasket() { return baskets.find(b => b.id === activeBasketId); }
+function pw() { return pathways[currentPathway]; }
+
+const stages = [
+  {
+    id: 0, title: 'Gathering', duration: 'Continuous',
+    narrative: 'Ventures within the studio are making <em>voluntary equity contributions</em> to the cooperative. The LCA accumulates holdings on behalf of members. No basket has yet been composed.',
+    mechanism: 'When a venture joins the studio, it executes a contribution agreement transferring a defined percentage of its equity to the LCA at the venture\u2019s current fair-market valuation. Multiple ventures may contribute concurrently.',
+    lcaAction: 'The LCA receives contributions, records fair-market valuations at receipt, maintains the cap table, and holds equity in trust for the benefit of its members.',
+    memberView: 'Members observe holdings accumulate. The trajectory hints at what next season\u2019s composition might draw from, though no basket is yet available.',
+    vitals: () => [
+      { label: 'Holdings', value: '5 positions', status: 'healthy', qualifier: 'Diversified' },
+      { label: 'Concentration', value: '28%', status: 'healthy', qualifier: 'Within Threshold', bar: 28 },
+      { label: 'Quarterly Inflow', value: '+$300K', status: 'active', qualifier: 'Pipeline Active' },
+      { label: 'Avg Vintage', value: '8 mo', status: 'active', qualifier: 'Maturing' }
+    ],
+    considerations: [
+      { label: 'Sizing', text: 'Each contribution is a venture-by-venture negotiation, not a fixed percentage.' },
+      { label: 'Vesting', text: 'Voluntary contributions are not refundable once executed; they vest in the LCA.' },
+      { label: 'Valuation', text: 'Fair-market valuation at receipt has downstream effects.' }
+    ],
+    vizType: 'gathering',
+    footer: 'Continuous state \u00b7 LCA holdings being gathered'
+  },
+  {
+    id: 1, title: 'Composing', duration: '2\u20134 weeks',
+    narrative: 'The LCA Treasury and Board are <em>composing this season\u2019s basket</em>. They review holdings, select positions, set valuations, and decide what proportion of each to include.',
+    mechanism: 'The Treasury proposes a composition draft. The Board reviews and ratifies. Positions may be excluded if not ready (for instance a venture in active fundraising at a non-public valuation).',
+    lcaAction: 'The Treasury drafts the composition. The Board reviews and ratifies. Share price and reserve allocations are set.',
+    memberView: 'The composition process is governed but not yet public. Member-directors participate. The general membership awaits announcement.',
+    vitals: () => [
+      { label: 'Composition Density', value: '5 of 5', status: 'active', qualifier: 'All Included' },
+      { label: 'Reserve Discipline', value: '0%', status: 'watch', qualifier: 'No Retained', bar: 0 },
+      { label: 'Valuation Spread', value: '6.0x', status: 'watch', qualifier: 'Wide Range' },
+      { label: 'Days in Review', value: '4 of 14', status: 'active', qualifier: 'Mid-Cycle', bar: 28 }
+    ],
+    considerations: [
+      { label: 'Curation', text: 'A basket is judgment; composition reflects strategy.' },
+      { label: 'Reserve', text: 'The cooperative may retain a strategic reserve in any holding.' },
+      { label: 'Pricing', text: 'Share price affects accessibility to smaller patrons.' }
+    ],
+    vizType: 'composing',
+    footer: 'Governance action \u00b7 composition under board review'
+  },
+  {
+    id: 2, title: 'Announced', duration: '7\u201314 days',
+    narrative: 'The basket is <em>publicly announced</em>. Members review composition, valuations, share price, and the patronage queue.',
+    mechanism: 'A basket prospectus is published. Members can model their potential allocation by examining their patronage units and projected queue position.',
+    lcaAction: 'The LCA publishes the prospectus, opens the member-only review window, posts the FAQ, and calculates per-member queue positions.',
+    memberView: 'Each member sees the prospectus, their patronage balance with vintage, and a projected queue position.',
+    vitals: () => [
+      { label: 'Member Awareness', value: '87%', status: 'healthy', qualifier: 'Strong Reach', bar: 87 },
+      { label: 'Window Remaining', value: '5 days', status: 'active', qualifier: 'Mid-Window' },
+      { label: 'FAQ Engagement', value: '23 questions', status: 'healthy', qualifier: 'Active Discussion' },
+      { label: 'Modeling Activity', value: '41 members', status: 'healthy', qualifier: 'High Interest' }
+    ],
+    considerations: [
+      { label: 'Disclosure', text: 'Adequate review time is essential for informed consent.' },
+      { label: 'Opt-In', text: 'Subscription is not automatic; members must elect.' },
+      { label: 'Modeling', text: 'Members simulate their queue outcome before committing.' }
+    ],
+    vizType: 'announced',
+    footer: 'Disclosure period \u00b7 pre-subscription window open for review'
+  },
+  {
+    id: 3, title: 'Member Subscription', duration: '30 days',
+    narrative: 'The <em>member subscription window</em> is open. Members with patronage units have priority access, ordered by vintage.',
+    mechanism: 'The subscription system processes redemption requests in vintage-descending order. Each member\u2019s patronage units set the maximum they can redeem.',
+    lcaAction: 'The LCA processes requests in vintage order, debits patronage units, credits basket shares, and publishes queue progress.',
+    memberView: 'Each member submits their redemption request and watches their position resolve.',
+    vitals: () => {
+      const p = pw();
+      const fillPct = Math.round(p.memberFill * 100);
+      return [
+        { label: 'Fill Rate', value: fillPct + '%', status: p.key === 'low' ? 'watch' : (p.key === 'high' ? 'healthy' : 'active'), qualifier: p.qualifier, bar: fillPct },
+        { label: 'Velocity', value: Math.round(totalBasketValue() / SHARE_PRICE * MEMBER_RESERVE_PCT * p.memberFill / 20) + ' sh/day', status: 'active', qualifier: 'Per-Day Pace' },
+        { label: 'Vintage Served', value: p.key === 'low' ? '22 mo' : (p.key === 'high' ? '6 mo' : '14 mo'), status: 'healthy', qualifier: p.key === 'low' ? 'Senior Only' : (p.key === 'high' ? 'Deep Queue' : 'Mid Queue') },
+        { label: 'Days Remaining', value: '10 of 30', status: 'watch', qualifier: 'Closing Soon', bar: 33 }
+      ];
+    },
+    considerations: [
+      { label: 'Vintage', text: 'Vintage orders access but does not set magnitude.' },
+      { label: 'Opt-Out', text: 'Members may decline without penalty.' },
+      { label: 'Tail Risk', text: 'Back-of-queue members may receive less or nothing.' }
+    ],
+    vizType: 'member-sub',
+    footer: 'Active subscription \u00b7 vintage queue advancing'
+  },
+  {
+    id: 4, title: 'Community Subscription', duration: '7\u201314 days',
+    narrative: 'The member window has closed. <em>Remaining shares offered to the broader community</em> at the same valuations.',
+    mechanism: 'New community subscribers may join the cooperative as patrons, with fresh vintage starting at subscription date.',
+    lcaAction: 'The LCA opens the community portal, processes new patron registrations, issues fresh patronage units.',
+    memberView: 'Existing members observe community uptake as a signal of regional interest.',
+    vitals: () => {
+      const p = pw();
+      const fillPct = Math.round(p.communityFill * 100);
+      return [
+        { label: 'Community Fill', value: fillPct + '%', status: p.key === 'low' ? 'watch' : 'healthy', qualifier: p.key === 'low' ? 'Light' : (p.key === 'high' ? 'Strong' : 'Steady'), bar: fillPct },
+        { label: 'New Patrons', value: p.key === 'low' ? '7' : (p.key === 'high' ? '34' : '17'), status: 'healthy', qualifier: 'Joining Now' },
+        { label: 'Geographic Reach', value: p.key === 'low' ? '4 zips' : (p.key === 'high' ? '18 zips' : '9 zips'), status: 'healthy', qualifier: 'Regional' },
+        { label: 'Days Remaining', value: '2 days', status: 'watch', qualifier: 'Closing', bar: 14 }
+      ];
+    },
+    considerations: [
+      { label: 'Regulatory', text: 'Securities rules apply more strictly to non-member offerings.' },
+      { label: 'Vintage', text: 'Community subscribers begin at zero vintage.' },
+      { label: 'Geography', text: 'Eligibility may be regionally scoped.' }
+    ],
+    vizType: 'community-sub',
+    footer: 'Secondary window \u00b7 regional uptake in progress'
+  },
+  {
+    id: 5, title: 'Closed', duration: '1\u20133 days',
+    narrative: 'The subscription period has ended. The LCA <em>receives proceeds</em>, basket shares settle to subscribers, and the basket is recorded as active.',
+    mechanism: 'Subscribers receive basket shares as a claim on underlying venture positions. The LCA receives gross proceeds. Patronage dividends are credited at the standard rate.',
+    lcaAction: 'The LCA settles allocations, records claims, credits dividends, receives proceeds, marks the basket as active.',
+    memberView: 'Subscribers see basket shares recorded in their capital accounts. All members see patronage dividends credited.',
+    vitals: () => {
+      const p = pw();
+      const total = totalBasketValue();
+      const totalShares = Math.floor(total / SHARE_PRICE);
+      const memberShares = Math.floor(totalShares * MEMBER_RESERVE_PCT * p.memberFill);
+      const communityShares = Math.floor(totalShares * COMMUNITY_RESERVE_PCT * p.communityFill);
+      const totalClaimed = memberShares + communityShares;
+      const proceeds = totalClaimed * SHARE_PRICE;
+      const overallPct = Math.round((totalClaimed / totalShares) * 100);
+      return [
+        { label: 'Settlement Rate', value: overallPct + '%', status: p.key === 'low' ? 'watch' : (p.key === 'high' ? 'healthy' : 'active'), qualifier: p.qualifier, bar: overallPct },
+        { label: 'Member / Community', value: `${Math.round(memberShares/totalClaimed*100)} / ${Math.round(communityShares/totalClaimed*100)}`, status: 'active', qualifier: 'Split' },
+        { label: 'Proceeds', value: fmtCurrency(proceeds), status: 'healthy', qualifier: 'Treasury Funded' },
+        { label: 'Dividends', value: fmtCurrency(proceeds * 0.04), status: 'healthy', qualifier: 'Patrons Credited' }
+      ];
+    },
+    considerations: [
+      { label: 'Irrevocable', text: 'Settlement cannot be reversed.' },
+      { label: 'Treasury', text: 'The cooperative\u2019s treasury is recapitalized.' },
+      { label: 'Retention', text: 'Unsold shares revert to LCA inventory for future baskets or secondary market.' }
+    ],
+    vizType: 'closed',
+    footer: 'Subscription closed \u00b7 basket now active'
+  },
+  {
+    id: 6, title: 'Maturing', duration: '3\u20137 years',
+    narrative: 'The basket has settled. <em>Underlying ventures grow and change</em>. The LCA maintains quarterly reporting and operates an <em>internal secondary market</em>.',
+    mechanism: 'The LCA receives periodic valuation marks and aggregates them into a basket valuation. Between reports, internal liquidity flows through five mechanisms.',
+    lcaAction: 'The LCA receives marks, issues quarterly statements, operates the internal secondary market, maintains a buyback reserve, and governs as a board member of each venture.',
+    memberView: 'Subscribers receive quarterly statements. During bid/ask windows, members can transact internally without forcing premature liquidation.',
+    vitals: () => [
+      { label: 'Aggregate Mark', value: '1.48x', status: 'healthy', qualifier: 'Above Cost' },
+      { label: 'Position Health', value: '4 of 5', status: 'healthy', qualifier: 'Largely Healthy' },
+      { label: 'Secondary Volume', value: '142 sh / Qtr', status: 'active', qualifier: 'Active Market' },
+      { label: 'Quarters Elapsed', value: '6 of \u224816', status: 'active', qualifier: 'Mid-Maturation', bar: 38 }
+    ],
+    considerations: [
+      { label: 'Time', text: 'Maturing typically lasts years, the longest stage in the lifecycle.' },
+      { label: 'Marks', text: 'Periodic marks are estimates, not realized value.' },
+      { label: 'Liquidity', text: 'Secondary market provides flexibility without forcing exit.' }
+    ],
+    vizType: 'maturing',
+    footer: 'Holding period \u00b7 underlying valuations evolving, internal market open'
+  },
+  {
+    id: 7, title: 'Liquidating', duration: 'Variable',
+    narrative: 'One or more underlying ventures has had a <em>liquidity event</em>. Proportional returns flow through the LCA to basket holders.',
+    mechanism: 'When a venture has a liquidity event, the cooperative\u2019s position converts to cash or new equity. The LCA distributes the proportional share to basket holders.',
+    lcaAction: 'The LCA receives proceeds from exits, calculates distributions, distributes to basket holders, updates remaining composition.',
+    memberView: 'Subscribers receive distribution notices and proceeds as each venture exits.',
+    vitals: () => [
+      { label: 'Realization Rate', value: '60%', status: 'active', qualifier: 'Distribution', bar: 60 },
+      { label: 'Cash Realized', value: '$1.94M', status: 'healthy', qualifier: 'Above Cost' },
+      { label: 'Pending Exits', value: '2 positions', status: 'watch', qualifier: 'Still Maturing' },
+      { label: 'Multiple to Date', value: '2.31x', status: 'healthy', qualifier: 'Strong Returns' }
+    ],
+    considerations: [
+      { label: 'Variety', text: 'Exits take many forms: cash, stock, escrow, earnouts.' },
+      { label: 'Tax', text: 'Treatment varies by exit type and jurisdiction.' },
+      { label: 'Patience', text: 'Partial liquidations may continue for years.' }
+    ],
+    vizType: 'liquidating',
+    footer: 'Realization in progress \u00b7 partial distributions flowing'
+  },
+  {
+    id: 8, title: 'Resolved', duration: 'Final accounting',
+    narrative: 'All positions in the basket have resolved. The LCA <em>calculates final returns</em>, distributes any remaining proceeds, and archives the basket.',
+    mechanism: 'The LCA computes the basket\u2019s final aggregate return: sum of distributions plus adjustments, divided by original subscription. The basket is archived.',
+    lcaAction: 'The LCA computes final returns, issues final distributions and tax documents, publishes performance summary, archives the basket.',
+    memberView: 'Subscribers receive their final accounting. New baskets are already in formation.',
+    vitals: () => [
+      { label: 'Final Multiple', value: '2.42x', status: 'healthy', qualifier: 'Strong Vintage' },
+      { label: 'Total Distributed', value: '$4.30M', status: 'healthy', qualifier: 'All Realized' },
+      { label: 'IRR (Illustrative)', value: '21.4%', status: 'healthy', qualifier: 'Above Benchmark' },
+      { label: 'Reinvestment', value: '67%', status: 'active', qualifier: 'High Continuity', bar: 67 }
+    ],
+    considerations: [
+      { label: 'Reputation', text: 'Performance feeds the cooperative\u2019s institutional memory.' },
+      { label: 'Reinvest', text: 'Subscribers may roll proceeds into the current season.' },
+      { label: 'Continuity', text: 'The cooperative\u2019s learning compounds across baskets.' }
+    ],
+    vizType: 'resolved',
+    footer: 'Cycle complete \u00b7 basket archived in cooperative ledger'
+  }
+];
+
+function fmtCurrency(n) {
+  if (n >= 1000000) return '$' + (n / 1000000).toFixed(2) + 'M';
+  if (n >= 1000) return '$' + (n / 1000).toFixed(0) + 'K';
+  return '$' + Math.round(n).toLocaleString();
+}
+
+function basketValue(v) { return v.valuation * (v.basketEquityPct / 100); }
+function totalBasketValue() { return activeBasket().ventures.reduce((s, v) => s + basketValue(v), 0); }
+
+function getAgreementStatus(basket, stageId, agreementSeason) {
+  if (agreementSeason > basket.legalSeason) return 'awaiting';
+  if (stageId < basket.currentStage) return 'executed';
+  if (stageId === basket.currentStage) return 'active';
+  return 'pending';
+}
+
+function statusLabel(status, stageId, basket) {
+  if (status === 'executed') return 'Executed';
+  if (status === 'active') return 'In Execution';
+  if (status === 'pending') return 'Awaiting Stage';
+  if (status === 'awaiting') return 'Awaiting Framework';
+  return '';
+}
+
+function renderPortfolio() {
+  const list = document.getElementById('portfolio-list');
+  list.innerHTML = baskets.map(b => {
+    const total = b.ventures.reduce((s, v) => s + basketValue(v), 0);
+    const dots = stageNames.map((_, i) => {
+      let cls = 'mini-dot';
+      if (i < b.currentStage) cls += ' done';
+      if (i === b.currentStage) cls += ' current';
+      return `<span class="${cls}"></span>`;
+    }).join('');
+    const isActive = b.id === activeBasketId;
+    return `
+      <div class="portfolio-row ${isActive ? 'active' : ''}" onclick="selectBasket('${b.id}')">
+        <div class="portfolio-season">
+          <span class="id">${b.id}</span>
+          <span>${b.season}</span>
+        </div>
+        <div class="mini-stages">${dots}</div>
+        <div class="portfolio-stage">
+          <span class="name">${stageNames[b.currentStage]}</span>
+          <span class="status">${b.stageStatus[b.currentStage] || ''}</span>
+        </div>
+        <div class="portfolio-legal s${b.legalSeason}">
+          <span class="legal-tag">S${b.legalSeason}</span>
+          <span class="label">Legal</span>
+        </div>
+        <div class="portfolio-value">
+          ${fmtCurrency(total)}
+          <span class="label">Composed</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('portfolio-count').textContent = baskets.length + ' baskets in motion';
+}
+
+function renderVentures() {
+  const total = totalBasketValue();
+  const list = document.getElementById('venture-list');
+  const vs = activeBasket().ventures;
+  list.innerHTML = vs.map(v => {
+    const val = basketValue(v);
+    const pctOfBasket = (val / total) * 100;
+    return `
+      <div class="venture-row">
+        <span class="venture-swatch" style="background: var(${v.colorVar})"></span>
+        <div class="venture-name">
+          <span class="name">${v.name}</span>
+          <span class="meta">${v.basketEquityPct}% of ${fmtCurrency(v.valuation)}</span>
+        </div>
+        <div class="venture-value">
+          ${fmtCurrency(val)}
+          <span class="pct">${pctOfBasket.toFixed(1)}% of basket</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const bar = document.getElementById('composition-bar');
+  bar.innerHTML = vs.map(v => {
+    const pct = (basketValue(v) / total) * 100;
+    return `<div class="bar-segment" style="flex: ${pct}; background: var(${v.colorVar})">${pct > 14 ? Math.round(pct) + '%' : ''}</div>`;
+  }).join('');
+
+  document.getElementById('total-value').textContent = fmtCurrency(total);
+  document.getElementById('venture-count').textContent = vs.length + ' positions';
+  document.getElementById('composition-title').textContent = 'Basket ' + activeBasket().season;
+}
+
+function renderStageBar() {
+  const bar = document.getElementById('stage-bar');
+  bar.innerHTML = stages.map(s => {
+    let cls = 'stage-node';
+    if (s.id < currentStage) cls += ' done';
+    if (s.id === currentStage) cls += ' current';
+    return `
+      <button class="${cls}" onclick="jumpToStage(${s.id})" aria-label="Go to ${s.title}">
+        <span class="stage-dot"></span>
+        <span class="stage-label">${s.title}</span>
+      </button>
+    `;
+  }).join('');
+}
+
+function renderPathwaySelector() {
+  const opts = document.getElementById('pathway-options');
+  opts.innerHTML = Object.values(pathways).map(p => `
+    <button class="pathway-btn ${p.key === currentPathway ? 'active' : ''}" onclick="selectPathway('${p.key}')">
+      <span>${p.name}</span>
+      <span class="range">${p.range}</span>
+    </button>
+  `).join('');
+
+  const p = pw();
+  const aside = document.getElementById('pathway-aside');
+  aside.innerHTML = `<span class="strong">${p.qualifier}</span> \u00b7 M${Math.round(p.memberFill*100)}% / C${Math.round(p.communityFill*100)}%`;
+}
+
+function renderVitals(s) {
+  const strip = document.getElementById('vitals-strip');
+  const vitals = typeof s.vitals === 'function' ? s.vitals() : s.vitals;
+  strip.innerHTML = vitals.map(v => {
+    const bar = v.bar !== undefined
+      ? `<div class="vital-bar"><div class="vital-bar-fill" style="width: ${v.bar}%"></div></div>`
+      : '';
+    return `
+      <div class="vital ${v.status}">
+        <div class="vital-label">${v.label}</div>
+        <div class="vital-value">${v.value}</div>
+        ${bar}
+        <div class="vital-qualifier">
+          <span class="status-dot"></span>
+          <span>${v.qualifier}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function vizContent(s) {
+  const total = totalBasketValue();
+  const p = pw();
+  const vs = activeBasket().ventures;
+  switch (s.vizType) {
+    case 'gathering':
+      return vs.map(v => `
+        <div class="metric-row">
+          <span class="label">${v.name}</span>
+          <span class="value">${v.basketEquityPct}% \u00b7 ${fmtCurrency(basketValue(v))}</span>
+        </div>
+      `).join('');
+    case 'composing':
+      return `
+        <div class="metric-row"><span class="label">Positions Under Review</span><span class="value">${vs.length}</span></div>
+        <div class="metric-row"><span class="label">Fair-Market Sum</span><span class="value">${fmtCurrency(total)}</span></div>
+        <div class="metric-row"><span class="label">Proposed Share Price</span><span class="value">$100</span></div>
+        <div class="metric-row"><span class="label">Proposed Share Count</span><span class="value">${Math.floor(total / SHARE_PRICE).toLocaleString()}</span></div>
+        <div class="metric-row"><span class="label">Status</span><span class="value accent">Awaiting Board Ratification</span></div>
+      `;
+    case 'announced': {
+      const totalShares = Math.floor(total / SHARE_PRICE);
+      return `
+        <div class="metric-row"><span class="label">Basket ID</span><span class="value">RB-${activeBasketId}-001</span></div>
+        <div class="metric-row"><span class="label">Composed Value</span><span class="value">${fmtCurrency(total)}</span></div>
+        <div class="metric-row"><span class="label">Total Shares</span><span class="value">${totalShares.toLocaleString()} at $100</span></div>
+        <div class="metric-row"><span class="label">Member Reserve</span><span class="value">80% (${Math.floor(totalShares * MEMBER_RESERVE_PCT).toLocaleString()})</span></div>
+        <div class="metric-row"><span class="label">Community Reserve</span><span class="value">20% (${Math.floor(totalShares * COMMUNITY_RESERVE_PCT).toLocaleString()})</span></div>
+      `;
+    }
+    case 'member-sub': {
+      const totalShares = Math.floor(total / SHARE_PRICE);
+      const memberShares = Math.floor(totalShares * MEMBER_RESERVE_PCT);
+      const claimed = Math.floor(memberShares * p.memberFill);
+      const pct = Math.round(p.memberFill * 100);
+      return `
+        <div class="progress-row">
+          <span class="label">Member Pool</span>
+          <div class="progress-track"><div class="progress-fill" style="width: ${pct}%"></div></div>
+          <span class="value">${pct}%</span>
+        </div>
+        <div class="metric-row"><span class="label">Shares Claimed</span><span class="value">${claimed.toLocaleString()} of ${memberShares.toLocaleString()}</span></div>
+        <div class="metric-row"><span class="label">Pathway</span><span class="value accent">${p.name} \u00b7 ${p.range}</span></div>
+        <div class="metric-row"><span class="label">Reverting to LCA</span><span class="value">${(memberShares - claimed).toLocaleString()}</span></div>
+      `;
+    }
+    case 'community-sub': {
+      const totalShares = Math.floor(total / SHARE_PRICE);
+      const communityShares = Math.floor(totalShares * COMMUNITY_RESERVE_PCT);
+      const claimed = Math.floor(communityShares * p.communityFill);
+      const pct = Math.round(p.communityFill * 100);
+      return `
+        <div class="progress-row">
+          <span class="label">Community</span>
+          <div class="progress-track"><div class="progress-fill" style="width: ${pct}%"></div></div>
+          <span class="value">${pct}%</span>
+        </div>
+        <div class="metric-row"><span class="label">Claimed</span><span class="value">${claimed.toLocaleString()} of ${communityShares.toLocaleString()}</span></div>
+        <div class="metric-row"><span class="label">Pathway</span><span class="value accent">${p.name} \u00b7 ${p.range}</span></div>
+      `;
+    }
+    case 'closed': {
+      const totalShares = Math.floor(total / SHARE_PRICE);
+      const memberShares = Math.floor(totalShares * MEMBER_RESERVE_PCT * p.memberFill);
+      const communityShares = Math.floor(totalShares * COMMUNITY_RESERVE_PCT * p.communityFill);
+      const totalClaimed = memberShares + communityShares;
+      const proceeds = totalClaimed * SHARE_PRICE;
+      const reverted = totalShares - totalClaimed;
+      return `
+        <div class="metric-row"><span class="label">Total Settled</span><span class="value">${totalClaimed.toLocaleString()} of ${totalShares.toLocaleString()}</span></div>
+        <div class="metric-row"><span class="label">Unsold (Reverts)</span><span class="value">${reverted.toLocaleString()} sh \u00b7 ${fmtCurrency(reverted * SHARE_PRICE)}</span></div>
+        <div class="metric-row"><span class="label">Proceeds to LCA</span><span class="value">${fmtCurrency(proceeds)}</span></div>
+        <div class="metric-row"><span class="label">Patronage Dividends</span><span class="value">${fmtCurrency(proceeds * 0.04)}</span></div>
+      `;
+    }
+    case 'maturing': {
+      const drifts = [1.42, 1.18, 2.05, 0.78, 1.31];
+      const positionMarks = vs.map((v, i) => `
+        <div class="metric-row">
+          <span class="label">${v.name}</span>
+          <span class="value">${fmtCurrency(basketValue(v) * (drifts[i] || 1))} \u00b7 ${(drifts[i] || 1).toFixed(2)}x</span>
+        </div>
+      `).join('');
+      return `
+        ${positionMarks}
+        <div class="metric-row"><span class="label">Quarters Since Close</span><span class="value accent">6 quarters</span></div>
+        <div class="metric-row"><span class="label">Secondary Volume</span><span class="value">142 sh / quarter</span></div>
+        <div class="metric-row"><span class="label">LCA Buyback Reserve</span><span class="value">$45K available</span></div>
+      `;
+    }
+    case 'liquidating':
+      return vs.map((v, i) => {
+        const exited = i < 3;
+        const exitMult = v.exit || 1;
+        return `
+          <div class="exit-event ${exited ? '' : 'pending'}">
+            <span class="swatch" style="background: var(${v.colorVar})"></span>
+            <span class="name">${v.name}</span>
+            <span class="multiple">${exited ? exitMult.toFixed(2) + 'x' : 'pending'}</span>
+            <span class="return">${exited ? fmtCurrency(basketValue(v) * exitMult) : '\u2014'}</span>
+          </div>
+        `;
+      }).join('');
+    case 'resolved': {
+      const totalExit = vs.reduce((s, v) => s + basketValue(v) * (v.exit || 1), 0);
+      const multiple = totalExit / total;
+      return vs.map(v => `
+        <div class="exit-event">
+          <span class="swatch" style="background: var(${v.colorVar})"></span>
+          <span class="name">${v.name}</span>
+          <span class="multiple">${(v.exit || 1).toFixed(2)}x</span>
+          <span class="return">${fmtCurrency(basketValue(v) * (v.exit || 1))}</span>
+        </div>
+      `).join('') + `
+        <div class="metric-row" style="margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--rule);">
+          <span class="label">Aggregate Return</span>
+          <span class="value accent">${fmtCurrency(totalExit)} \u00b7 ${multiple.toFixed(2)}x</span>
+        </div>
+      `;
+    }
+  }
+  return '';
+}
+
+function vizHeading(s) {
+  const map = {
+    'gathering': 'LCA Ledger',
+    'composing': 'Board Composition',
+    'announced': 'Prospectus Published',
+    'member-sub': 'Subscription Progress',
+    'community-sub': 'Community Window',
+    'closed': 'Settlement',
+    'maturing': 'Holding Period \u00b7 Marks &amp; Secondary',
+    'liquidating': 'Exit Events',
+    'resolved': 'Final Returns'
+  };
+  return map[s.vizType];
+}
+
+function getTriggerForStage(stageId) {
+  if (stageId === 0) return null;
+  const t = transitions.find(t => t.to === stageId);
+  return t ? t.name : null;
+}
+
+function renderSecondaryMarket() {
+  return `
+    <div class="stage-section">
+      <div class="section-label">Internal Liquidity \u00b7 Five Mechanisms</div>
+      <div class="secondary-market">
+        <div class="sec-mech">
+          <div class="sec-mech-label">Bid / Ask Windows</div>
+          <div class="sec-mech-text">Quarterly windows; members offer shares at marked valuation. Vintage priority for buyers.</div>
+        </div>
+        <div class="sec-mech">
+          <div class="sec-mech-label">LCA Buyback</div>
+          <div class="sec-mech-text">Cooperative repurchases shares at marked value, recycling them into future baskets.</div>
+        </div>
+        <div class="sec-mech">
+          <div class="sec-mech-label">Patronage Reconversion</div>
+          <div class="sec-mech-text">Members exchange shares back into current-vintage patronage units at marked value.</div>
+        </div>
+        <div class="sec-mech">
+          <div class="sec-mech-label">Cross-Basket Swap</div>
+          <div class="sec-mech-text">Members trade older basket shares for shares in newer baskets at proportional value.</div>
+        </div>
+        <div class="sec-mech" style="grid-column: span 2">
+          <div class="sec-mech-label">Member-to-Member Direct</div>
+          <div class="sec-mech-text">Two members negotiate exchange peer-to-peer; the LCA records the transfer.</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderLegalSurface(stageId) {
+  const agreements = stageAgreements[stageId] || [];
+  if (agreements.length === 0) return '';
+  const basket = activeBasket();
+
+  // Compute summary stats
+  let executed = 0, active = 0, pending = 0, awaiting = 0;
+  agreements.forEach(a => {
+    const status = getAgreementStatus(basket, stageId, a.season);
+    if (status === 'executed') executed++;
+    else if (status === 'active') active++;
+    else if (status === 'pending') pending++;
+    else if (status === 'awaiting') awaiting++;
+  });
+
+  const summaryHTML = `
+    <div class="legal-summary">
+      <div class="legal-stat executed">
+        <span class="stat-label">Executed</span>
+        <span class="stat-value">${executed}</span>
+      </div>
+      <div class="legal-stat active">
+        <span class="stat-label">In Execution</span>
+        <span class="stat-value">${active}</span>
+      </div>
+      <div class="legal-stat pending">
+        <span class="stat-label">Pending Stage</span>
+        <span class="stat-value">${pending}</span>
+      </div>
+      <div class="legal-stat awaiting">
+        <span class="stat-label">Awaiting Framework</span>
+        <span class="stat-value">${awaiting}</span>
+      </div>
+    </div>
+  `;
+
+  const rows = agreements.map(a => {
+    const status = getAgreementStatus(basket, stageId, a.season);
+    const statusText = statusLabel(status, stageId, basket);
+    return `
+      <div class="legal-row ${status}">
+        <span class="legal-icon"></span>
+        <div class="legal-body">
+          <div class="legal-name">${a.name}</div>
+          <div class="legal-desc">${a.desc}</div>
+          <div class="legal-vars"><span class="var-label">Records</span>${a.vars}</div>
+        </div>
+        <div class="legal-meta">
+          <span class="legal-season-tag s${a.season}">S${a.season}</span>
+          <span class="legal-status-tag">${statusText}</span>
+        </div>
+        <div class="legal-scope">${a.scope}</div>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="stage-section">
+      <div class="section-label">
+        <span>Legal Surface \u00b7 Required Instruments</span>
+        <span class="aside">Basket Legal Framework: Season ${basket.legalSeason}</span>
+      </div>
+      ${summaryHTML}
+      <div class="legal-surface">${rows}</div>
+    </div>
+  `;
+}
+
+function renderStage() {
+  const s = stages[currentStage];
+  const basket = activeBasket();
+  document.getElementById('stage-title').textContent = s.title;
+  document.getElementById('stage-meta').textContent = `Stage ${String(s.id).padStart(2, '0')} of 08`;
+  document.getElementById('stage-duration').textContent = s.duration;
+  document.getElementById('footer-status').textContent = s.footer;
+  document.getElementById('active-basket-tag').textContent = 'Active: Basket ' + basket.season;
+
+  // Update legal tag
+  const legalTag = document.getElementById('legal-tag');
+  legalTag.textContent = 'Season ' + basket.legalSeason + ' Legal';
+  legalTag.className = 'legal-tag s' + basket.legalSeason;
+
+  const trigger = getTriggerForStage(s.id);
+  document.getElementById('stage-trigger').innerHTML = trigger
+    ? `Triggered by \u00b7 <span class="name">${trigger}</span>`
+    : 'Initial state \u00b7 <span class="name">No Prior Transition</span>';
+
+  renderVitals(s);
+
+  const detail = document.getElementById('stage-detail');
+  detail.scrollTop = 0;
+  const secondaryHTML = s.vizType === 'maturing' ? renderSecondaryMarket() : '';
+  const legalSurfaceHTML = renderLegalSurface(s.id);
+
+  detail.innerHTML = `
+    <div class="stage-section">
+      <div class="section-label"><span>What\u2019s Happening</span></div>
+      <p class="stage-narrative">${s.narrative}</p>
+    </div>
+    <div class="stage-section">
+      <div class="section-label"><span>How It Works</span></div>
+      <p class="section-text">${s.mechanism}</p>
+    </div>
+    <div class="stage-section actors-grid">
+      <div class="actor-block">
+        <div class="section-label"><span>LCA Action</span></div>
+        <p class="section-text">${s.lcaAction}</p>
+      </div>
+      <div class="actor-block">
+        <div class="section-label"><span>Member View</span></div>
+        <p class="section-text">${s.memberView}</p>
+      </div>
+    </div>
+    <div class="stage-section">
+      <div class="section-label"><span>${vizHeading(s)}</span></div>
+      <div class="metrics-block">${vizContent(s)}</div>
+    </div>
+    ${secondaryHTML}
+    ${legalSurfaceHTML}
+    <div class="stage-section">
+      <div class="section-label"><span>Key Considerations</span></div>
+      <div class="consider-list">
+        ${s.considerations.map(c => `
+          <div class="consider-item">
+            <span class="consider-label">${c.label}</span>
+            <span class="consider-text">${c.text}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  document.getElementById('btn-retreat').disabled = currentStage === 0;
+  document.getElementById('btn-advance').disabled = currentStage === stages.length - 1;
+}
+
+function renderChart() {
+  const svg = document.getElementById('chart-svg');
+  const w = svg.clientWidth || 700;
+  const h = svg.clientHeight || 80;
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  svg.innerHTML = '';
+
+  const total = totalBasketValue();
+  const p = pw();
+  const realizedBase = total * p.overall;
+
+  const margin = { top: 8, right: 16, bottom: 16, left: 48 };
+  const innerW = w - margin.left - margin.right;
+  const innerH = h - margin.top - margin.bottom;
+
+  const scenarios = [
+    { name: 'Pessimistic', endMult: 0.55, color: 'var(--v-hearth)', stroke: '3 3' },
+    { name: 'Base', endMult: 2.4, color: 'var(--terra)', stroke: 'none' },
+    { name: 'Optimistic', endMult: 5.8, color: 'var(--v-verdant)', stroke: '6 2' }
+  ];
+
+  const maxY = realizedBase * 6.2;
+  const stageCount = stages.length;
+  const xPos = i => margin.left + (i / (stageCount - 1)) * innerW;
+  const yPos = v => margin.top + innerH - (v / maxY) * innerH;
+
+  scenarios.forEach(sc => {
+    const points = [];
+    for (let i = 0; i < stageCount; i++) {
+      let v = realizedBase;
+      if (i >= 6) {
+        const progress = (i - 6) / 2;
+        v = realizedBase * (1 + (sc.endMult - 1) * progress);
+      }
+      points.push([xPos(i), yPos(v)]);
+    }
+    const path = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0]} ${p[1]}`).join(' ');
+    svg.innerHTML += `<path d="${path}" stroke="${sc.color}" stroke-width="${sc.stroke === 'none' ? 2 : 1.5}" stroke-dasharray="${sc.stroke === 'none' ? '' : sc.stroke}" fill="none" stroke-linecap="round" stroke-linejoin="round" />`;
+  });
+
+  for (let i = 0; i < stageCount; i++) {
+    const x = xPos(i);
+    const isActive = i === currentStage;
+    svg.innerHTML += `<line x1="${x}" y1="${margin.top}" x2="${x}" y2="${margin.top + innerH}" stroke="var(--rule-soft)" stroke-width="1" />`;
+    svg.innerHTML += `<text x="${x}" y="${h - 4}" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="${isActive ? 'var(--terra-text)' : 'var(--text-faint)'}" letter-spacing="0.1em">${String(i).padStart(2, '0')}</text>`;
+  }
+
+  const tickValues = [0, realizedBase, realizedBase * 2.5, realizedBase * 5];
+  tickValues.forEach(t => {
+    const y = yPos(t);
+    svg.innerHTML += `<line x1="${margin.left}" y1="${y}" x2="${w - margin.right}" y2="${y}" stroke="var(--rule-soft)" stroke-width="0.5" stroke-dasharray="2 2" />`;
+    svg.innerHTML += `<text x="${margin.left - 5}" y="${y + 3}" text-anchor="end" font-family="IBM Plex Mono" font-size="8" fill="var(--text-faint)">${fmtCurrency(t)}</text>`;
+  });
+
+  const activeX = xPos(currentStage);
+  svg.innerHTML += `<line x1="${activeX}" y1="${margin.top}" x2="${activeX}" y2="${margin.top + innerH}" stroke="var(--terra)" stroke-width="1.5" />`;
+  svg.innerHTML += `<circle cx="${activeX}" cy="${margin.top + innerH}" r="3" fill="var(--terra)" />`;
+
+  document.getElementById('chart-legend').innerHTML = scenarios.map(sc => {
+    const endVal = realizedBase * sc.endMult;
+    return `
+      <div class="chart-legend-item">
+        <span class="swatch" style="background: ${sc.color};"></span>
+        <span>${sc.name}</span>
+        <span class="end-val">${fmtCurrency(endVal)}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function render() {
+  renderPortfolio();
+  renderVentures();
+  renderStageBar();
+  renderPathwaySelector();
+  renderStage();
+  renderChart();
+}
+
+function selectBasket(id) {
+  activeBasketId = id;
+  currentStage = activeBasket().currentStage;
+  currentPathway = activeBasket().pathway;
+  render();
+}
+
+function advance() { if (currentStage < stages.length - 1) { currentStage++; render(); } }
+function retreat() { if (currentStage > 0) { currentStage--; render(); } }
+function jumpToStage(i) { currentStage = i; render(); }
+function resetToBasketStage() { currentStage = activeBasket().currentStage; render(); }
+function selectPathway(key) { currentPathway = key; render(); }
+
+function toggleTheme() {
+  const root = document.documentElement;
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  document.querySelector('.theme-label').textContent = next === 'dark' ? 'Light' : 'Dark';
+  renderChart();
+}
+
+window.addEventListener('resize', () => renderChart());
+render();
+</script>
+</body>
+</html>
