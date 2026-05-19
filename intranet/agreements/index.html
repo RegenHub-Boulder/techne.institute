@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Agreements — RegenHub, LCA</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ── Design System ── */
+  :root {
+    --void:       #0c0c0c;
+    --ink:        #111111;
+    --surface:    #161616;
+    --panel:      #222222;
+    --raised:     #2a2a2a;
+    --border:     #383838;
+    --border-dim: #2a2a2a;
+
+    --gold:    #c4956a;
+    --gold-20: rgba(196, 149, 106, 0.20);
+    --gold-12: rgba(196, 149, 106, 0.12);
+
+    --parchment: #f0f0f0;
+    --warm:      #d0d0d0;
+    --muted:     #9a9a9a;
+    --dim:       #707070;
+    --ghost:     #505050;
+
+    --green:  #4ade80;
+    --amber:  #fbbf24;
+    --red:    #ef4444;
+    --blue:   #8bbfff;
+
+    --sans:  Inter, system-ui, sans-serif;
+    --mono:  'IBM Plex Mono', Consolas, monospace;
+  }
+
+  [data-mode="light"] {
+    --void:       #f5f3f0;
+    --ink:        #fffdf9;
+    --surface:    #ffffff;
+    --panel:      #f0ede8;
+    --raised:     #e8e4dd;
+    --border:     #c8c2ba;
+    --border-dim: #dbd5cc;
+    --gold:       #a07850;
+    --gold-20:    rgba(160, 120, 80, 0.18);
+    --gold-12:    rgba(160, 120, 80, 0.10);
+    --parchment:  #1a1a1a;
+    --warm:       #333333;
+    --muted:      #888888;
+    --dim:        #aaaaaa;
+    --ghost:      #cccccc;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    background: var(--void);
+    color: var(--warm);
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Nav ── */
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink); border-bottom: 1px solid var(--border-dim);
+    display: flex; align-items: center; padding: 0 24px; height: 52px; gap: 4px;
+  }
+  .nav-brand {
+    font-family: var(--mono); font-size: 0.8rem; font-weight: 600;
+    color: var(--gold); text-decoration: none; letter-spacing: 0.08em;
+    margin-right: 16px; flex-shrink: 0;
+  }
+  .nav-links { display: flex; gap: 2px; flex: 1; overflow-x: auto; scrollbar-width: none; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-link {
+    display: flex; align-items: center;
+    padding: 0.45rem 0.75rem; border-radius: 6px;
+    font-family: var(--sans); font-size: 0.8rem;
+    color: var(--dim); text-decoration: none; white-space: nowrap;
+    border-left: 2px solid transparent;
+    transition: color 0.15s, background 0.2s;
+  }
+  .nav-link:hover { color: var(--warm); background: var(--raised); }
+  .nav-link.active {
+    background: var(--gold-12); border-left-color: var(--gold);
+    color: var(--parchment); font-weight: 600;
+  }
+  .nav-actions { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+  .theme-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 6px; padding: 0.4rem 0.75rem;
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    cursor: pointer; transition: border-color 0.15s, color 0.15s; min-height: 32px;
+  }
+  .theme-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── Layout ── */
+  .page-wrap { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+  .page-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px; margin-bottom: 2rem; flex-wrap: wrap;
+  }
+  .page-eyebrow {
+    font-family: var(--mono); font-size: 0.68rem; font-weight: 700;
+    color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .page-title {
+    font-family: var(--sans); font-size: 1.75rem; font-weight: 800;
+    color: var(--parchment); letter-spacing: -0.02em; line-height: 1.15;
+    margin-bottom: 4px;
+  }
+  .page-subtitle { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    display: flex; gap: 1px; margin-bottom: 1.5rem;
+    background: var(--border-dim); border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border-dim);
+  }
+  .stat {
+    flex: 1; padding: 0.75rem 1rem; background: var(--panel);
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .stat-value {
+    font-family: var(--mono); font-size: 1.2rem; font-weight: 600;
+    color: var(--parchment); line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--mono); font-size: 0.65rem; color: var(--dim);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  /* ── Filter bar ── */
+  .filter-bar {
+    display: flex; gap: 6px; margin-bottom: 1.25rem; flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-btn {
+    font-family: var(--mono); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    background: var(--panel); border: 1px solid var(--border);
+    color: var(--dim); border-radius: 5px;
+    padding: 0.3rem 0.7rem; cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .filter-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-12); }
+  .filter-sep { flex: 1; }
+  .filter-count {
+    font-family: var(--mono); font-size: 0.7rem; color: var(--dim);
+  }
+
+  /* ── Agreement list ── */
+  .agreement-list { display: flex; flex-direction: column; gap: 6px; }
+
+  .agreement-row {
+    background: var(--panel); border: 1px solid var(--border-dim); border-radius: 8px;
+    padding: 1rem 1.25rem;
+    transition: border-color 0.15s;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: start;
+  }
+  .agreement-row:hover { border-color: var(--border); }
+  .agreement-row.superseded { opacity: 0.6; }
+
+  .agreement-accent {
+    width: 3px; height: 100%; min-height: 48px;
+    background: var(--gold); border-radius: 2px;
+    flex-shrink: 0; align-self: stretch;
+    opacity: 0.6;
+  }
+  .agreement-accent.superseded { opacity: 0.3; }
+
+  .agreement-body { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .agreement-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+  .agr-type {
+    font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 4px;
+    border: 1px solid var(--gold-20);
+    color: var(--gold); background: var(--gold-12);
+    flex-shrink: 0;
+  }
+  .agr-type.policy { color: var(--blue); border-color: rgba(139,191,255,0.2); background: rgba(139,191,255,0.08); }
+  .agr-type.grant { color: var(--amber); border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.08); }
+  .agr-type.membership { color: var(--green); border-color: rgba(74,222,128,0.2); background: rgba(74,222,128,0.08); }
+
+  .agreement-title {
+    font-family: var(--sans); font-size: 0.95rem; font-weight: 600;
+    color: var(--parchment); line-height: 1.3;
+  }
+  .agreement-meta {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 0.7rem; color: var(--dim);
+  }
+  .agreement-meta span { display: flex; align-items: center; gap: 4px; }
+
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    display: inline-block; flex-shrink: 0;
+  }
+  .status-dot.active  { background: var(--green); }
+  .status-dot.superseded { background: var(--dim); }
+  .status-dot.draft { background: var(--amber); }
+
+  .agreement-links { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+  .agr-link {
+    font-family: var(--mono); font-size: 0.68rem;
+    color: var(--gold); text-decoration: none;
+    padding: 3px 8px; border: 1px solid var(--gold-20);
+    border-radius: 4px; background: var(--gold-12);
+    transition: background 0.12s; white-space: nowrap;
+  }
+  .agr-link:hover { background: var(--gold-20); }
+  .agr-link.sec {
+    color: var(--dim); border-color: var(--border); background: transparent;
+  }
+  .agr-link.sec:hover { background: var(--raised); color: var(--warm); }
+
+  /* ── Schema notice ── */
+  .schema-notice {
+    background: var(--panel); border: 1px dashed var(--border);
+    border-radius: 8px; padding: 1.5rem;
+    display: flex; flex-direction: column; gap: 10px;
+    font-family: var(--mono); font-size: 0.75rem;
+  }
+  .schema-notice-head {
+    font-weight: 600; color: var(--gold); letter-spacing: 0.04em;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .schema-notice-body { color: var(--muted); line-height: 1.7; }
+  .schema-notice-body code {
+    color: var(--warm); background: var(--raised);
+    padding: 1px 5px; border-radius: 3px; font-size: 0.72rem;
+  }
+
+  /* ── Bylaw trace ── */
+  .bylaw-trace {
+    margin-top: 3rem; padding-top: 1rem;
+    border-top: 1px solid var(--border-dim);
+    font-family: var(--mono); font-size: 0.7rem; color: var(--ghost);
+    line-height: 1.7;
+  }
+  .bylaw-trace a { color: var(--dim); }
+  .bylaw-trace a:hover { color: var(--gold); }
+
+  /* ── Empty state ── */
+  .empty-state {
+    text-align: center; padding: 3rem 2rem;
+    color: var(--dim); font-family: var(--mono); font-size: 0.8rem;
+  }
+
+  /* ── Section header ── */
+  .section-head {
+    font-family: var(--mono); font-size: 0.68rem; font-weight: 700;
+    color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 8px; margin-top: 1.5rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-head::after {
+    content: ''; flex: 1; height: 1px; background: var(--border-dim);
+  }
+
+  @media (max-width: 600px) {
+    .page-wrap { padding: 1.5rem 1rem 4rem; }
+    .stats-bar { flex-wrap: wrap; }
+    .agreement-row { grid-template-columns: auto 1fr; }
+    .agreement-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav class="site-nav">
+  <a class="nav-brand" href="/intranet/">CIS</a>
+  <div class="nav-links">
+    <a class="nav-link" href="/intranet/treasury/">Treasury</a>
+    <a class="nav-link" href="/intranet/activity/">Activity</a>
+    <a class="nav-link" href="/intranet/people/">People</a>
+    <a class="nav-link active" href="/intranet/agreements/">Agreements</a>
+    <a class="nav-link" href="/intranet/signals/">Signals</a>
+    <a class="nav-link" href="/intranet/intelligence/">Intelligence</a>
+  </div>
+  <div class="nav-actions">
+    <button class="theme-btn" id="themeBtn">Light</button>
+  </div>
+</nav>
+
+<!-- ── Page ── -->
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">REA · Agreement</div>
+      <h1 class="page-title">Agreements</h1>
+      <p class="page-subtitle">Governing documents — bylaws, policies, grants, member agreements</p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar" id="statsBar">
+    <div class="stat">
+      <div class="stat-value" id="statTotal">—</div>
+      <div class="stat-label">Total</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="statActive">—</div>
+      <div class="stat-label">Active</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="statSuperseded">—</div>
+      <div class="stat-label">Superseded</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="statPublic">—</div>
+      <div class="stat-label">Public</div>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="bylaws">Bylaws</button>
+    <button class="filter-btn" data-filter="articles">Articles</button>
+    <button class="filter-btn" data-filter="policy">Policy</button>
+    <button class="filter-btn" data-filter="grant">Grant</button>
+    <button class="filter-btn" data-filter="membership_agreement">Membership</button>
+    <div class="filter-sep"></div>
+    <span class="filter-count" id="filterCount"></span>
+  </div>
+
+  <!-- Agreement list -->
+  <div id="agreementList"></div>
+
+  <!-- Bylaw trace -->
+  <div class="bylaw-trace">
+    Public-facing registry. Visibility governed by CIS PRD §8 (Agreements module) and bylaws §6 (member rights).
+    Governing documents designated <code>is_public=true</code> are available without authentication.
+    Full agreement text and signatures accessible to members with active standing.
+    <br>
+    Schema: <a href="/intranet-src/docs/migrations/p01-cis-phase1-schema.sql">p01-cis-phase1-schema.sql</a> ·
+    Work item: <a href="/intranet/activity/">W005</a> ·
+    Supabase: <code>gxyeobogqfubgzklmxwt</code> · view: <code>governing_documents</code>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+const SUPABASE_URL  = 'https://gxyeobogqfubgzklmxwt.supabase.co'
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4eWVvYm9ncWZ1Ymd6a2xteHd0IiwicGFzcyI6ImFub24iLCJpYXQiOjE3NzIxMjM0NjcsImV4cCI6MjA4NzY5OTQ2N30.0kc5nw4YwpoqyykDkeGZuyQKbdEKnXnEIP8Nzwr0nPQ'
+
+// ── Seed data (shown when schema not yet deployed) ──
+const SEED_AGREEMENTS = [
+  {
+    id: 'seed-1',
+    agreement_type: 'articles',
+    title: 'Articles of Organization — RegenHub, LCA',
+    version: '1.0',
+    status: 'active',
+    is_public: true,
+    effective_date: '2026-02-06',
+    bylaw_anchor: null,
+    canonical_url: 'https://www.sos.state.co.us/biz/BusinessEntityDetail.do?quitButtonDestination=BusinessEntityResults&nameTyp=ENT&masterFileId=20261215588',
+    description: 'Colorado Limited Cooperative Association — original filing. Colorado Secretary of State filing #20261215588.',
+    _seed: true
+  },
+  {
+    id: 'seed-2',
+    agreement_type: 'bylaws',
+    title: 'Bylaws — RegenHub, LCA',
+    version: '1.0',
+    status: 'active',
+    is_public: true,
+    effective_date: '2026-02-06',
+    bylaw_anchor: null,
+    canonical_url: null,
+    description: 'Governing bylaws of RegenHub, LCA. Covers membership classes, patron-investor structure, capital accounts, board composition, and cooperative principles.',
+    _seed: true
+  },
+  {
+    id: 'seed-3',
+    agreement_type: 'grant',
+    title: 'Ethereum Ecosystem Grant Agreement — Boulder Hub',
+    version: '1.0',
+    status: 'active',
+    is_public: true,
+    effective_date: '2026-02-01',
+    bylaw_anchor: null,
+    canonical_url: null,
+    description: 'Grant agreement for the Boulder Ethereum Community Hub. Defines KPI obligations, reporting milestones, and compliant use requirements.',
+    _seed: true
+  }
+]
+
+// ── Type display helpers ──
+function typeClass(t) {
+  if (t === 'bylaws' || t === 'articles') return ''
+  if (t === 'policy') return 'policy'
+  if (t === 'grant') return 'grant'
+  if (t === 'membership_agreement') return 'membership'
+  return ''
+}
+function typeLabel(t) {
+  const map = {
+    articles: 'Articles',
+    bylaws: 'Bylaws',
+    policy: 'Policy',
+    grant: 'Grant',
+    membership_agreement: 'Membership Agr.',
+    minutes: 'Minutes',
+    report: 'Report',
+    other: 'Other'
+  }
+  return map[t] || t
+}
+
+// ── Render ──
+let allAgreements = []
+let currentFilter = 'all'
+let schemaDeployed = true
+
+function renderAgreements(list) {
+  const container = document.getElementById('agreementList')
+  const visible = currentFilter === 'all'
+    ? list
+    : list.filter(a => a.agreement_type === currentFilter)
+
+  document.getElementById('filterCount').textContent =
+    visible.length + ' document' + (visible.length !== 1 ? 's' : '')
+
+  if (!list.length) {
+    container.innerHTML = `<div class="empty-state">No governing documents found.</div>`
+    return
+  }
+
+  // Group by type order
+  const order = ['articles', 'bylaws', 'policy', 'grant', 'membership_agreement', 'minutes', 'report', 'other']
+  const grouped = {}
+  for (const agr of visible) {
+    const g = agr.agreement_type || 'other'
+    if (!grouped[g]) grouped[g] = []
+    grouped[g].push(agr)
+  }
+
+  let html = ''
+
+  // Schema notice if seed data
+  if (!schemaDeployed) {
+    html += `
+    <div class="schema-notice" style="margin-bottom:1.5rem;">
+      <div class="schema-notice-head">
+        <span style="opacity:0.6;">◌</span> Schema not yet deployed
+      </div>
+      <div class="schema-notice-body">
+        The <code>agreements</code> table and <code>governing_documents</code> view have not been applied
+        to this Supabase project. Showing founding documents from seed data.<br><br>
+        To deploy: run <code>p01-cis-phase1-schema.sql</code> in the Supabase SQL editor
+        (project: <code>gxyeobogqfubgzklmxwt</code>). Work item: W005.
+      </div>
+    </div>`
+  }
+
+  html += `<div class="agreement-list">`
+
+  const sortedTypes = order.filter(t => grouped[t]?.length)
+  for (const type of sortedTypes) {
+    const docs = grouped[type]
+    if (visible.length > 3 || currentFilter === 'all') {
+      html += `<div class="section-head">${typeLabel(type)}</div>`
+    }
+    for (const agr of docs) {
+      const isSup = agr.status === 'superseded'
+      const effectiveStr = agr.effective_date
+        ? new Date(agr.effective_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+        : '—'
+
+      html += `
+      <div class="agreement-row${isSup ? ' superseded' : ''}">
+        <div class="agreement-accent${isSup ? ' superseded' : ''}"></div>
+        <div class="agreement-body">
+          <div class="agreement-top">
+            <span class="agr-type ${typeClass(agr.agreement_type)}">${typeLabel(agr.agreement_type)}</span>
+            <span class="agreement-title">${escHtml(agr.title)}</span>
+          </div>
+          <div class="agreement-meta">
+            <span>
+              <span class="status-dot ${agr.status}"></span>
+              ${agr.status}
+            </span>
+            ${agr.version ? `<span>v${escHtml(agr.version)}</span>` : ''}
+            <span>Effective ${effectiveStr}</span>
+            ${agr.bylaw_anchor ? `<span>§ ${escHtml(agr.bylaw_anchor)}</span>` : ''}
+            ${agr._seed ? `<span style="color:var(--ghost);">seed data</span>` : ''}
+          </div>
+          ${agr.description ? `<div style="font-size:0.78rem;color:var(--muted);margin-top:2px;line-height:1.5;">${escHtml(agr.description)}</div>` : ''}
+        </div>
+        <div class="agreement-links">
+          ${agr.canonical_url
+            ? `<a class="agr-link" href="${escHtml(agr.canonical_url)}" target="_blank" rel="noopener">View ↗</a>`
+            : `<span class="agr-link sec">Private</span>`}
+        </div>
+      </div>`
+    }
+  }
+
+  html += `</div>`
+  container.innerHTML = html
+}
+
+function updateStats(list) {
+  const total = list.length
+  const active = list.filter(a => a.status === 'active').length
+  const superseded = list.filter(a => a.status === 'superseded').length
+  const pub = list.filter(a => a.is_public).length
+  document.getElementById('statTotal').textContent = total
+  document.getElementById('statActive').textContent = active
+  document.getElementById('statSuperseded').textContent = superseded
+  document.getElementById('statPublic').textContent = pub
+}
+
+function escHtml(s) {
+  if (!s) return ''
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+// ── Filter buttons ──
+document.getElementById('filterBar').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn')
+  if (!btn) return
+  currentFilter = btn.dataset.filter
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  renderAgreements(allAgreements)
+})
+
+// ── Fetch from Supabase ──
+async function loadAgreements() {
+  try {
+    const resp = await fetch(
+      `${SUPABASE_URL}/rest/v1/governing_documents?order=effective_date.desc`,
+      {
+        headers: {
+          'apikey': SUPABASE_ANON,
+          'Authorization': 'Bearer ' + SUPABASE_ANON,
+          'Accept': 'application/json'
+        }
+      }
+    )
+    if (!resp.ok) throw new Error(`${resp.status}`)
+    const data = await resp.json()
+    schemaDeployed = true
+    allAgreements = data
+    updateStats(data)
+    renderAgreements(data)
+  } catch (err) {
+    // View not deployed — fall back to seed
+    schemaDeployed = false
+    allAgreements = SEED_AGREEMENTS
+    updateStats(SEED_AGREEMENTS)
+    renderAgreements(SEED_AGREEMENTS)
+  }
+}
+
+// ── Theme ──
+const root = document.documentElement
+const themeBtn = document.getElementById('themeBtn')
+const storedTheme = localStorage.getItem('cis-theme')
+if (storedTheme) root.setAttribute('data-mode', storedTheme)
+themeBtn.textContent = root.getAttribute('data-mode') === 'dark' ? 'Light' : 'Dark'
+themeBtn.addEventListener('click', () => {
+  const next = root.getAttribute('data-mode') === 'dark' ? 'light' : 'dark'
+  root.setAttribute('data-mode', next)
+  localStorage.setItem('cis-theme', next)
+  themeBtn.textContent = next === 'dark' ? 'Light' : 'Dark'
+})
+
+loadAgreements()
+</script>
+
+</body>
+</html>

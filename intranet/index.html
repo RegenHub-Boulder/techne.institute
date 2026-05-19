@@ -471,7 +471,7 @@
   <div class="section-label">
     <span class="label muted">Common Information System</span>
     <div class="section-label-line"></div>
-    <span class="label muted" style="flex-shrink:0;">6 modules</span>
+    <span class="label muted" style="flex-shrink:0;">Phase 01 · 5 live</span>
   </div>
 
   <div class="module-list">
@@ -539,7 +539,7 @@
     </div>
 
     <!-- People -->
-    <div class="module-row" data-rea="agent" onclick="window.location.href='/intranet/board/'" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='/intranet/board/'">
+    <div class="module-row" data-rea="agent" onclick="window.location.href='/intranet/people/'" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='/intranet/people/'">
       <div class="module-accent"></div>
       <div class="module-body">
         <div class="module-top">
@@ -548,20 +548,21 @@
         </div>
         <div class="module-desc">Member directory, board, committees, Nou. The cooperative's agent layer — who holds standing, what capacity, under what agreement.</div>
         <div class="module-links">
-          <a class="module-link" href="/intranet/board/" onclick="event.stopPropagation()">Board HUD →</a>
+          <a class="module-link" href="/intranet/people/" onclick="event.stopPropagation()">Member Directory →</a>
+          <a class="module-link sec" href="/intranet/board/" onclick="event.stopPropagation()">Board HUD →</a>
         </div>
       </div>
       <div class="module-side">
         <div class="module-status">
-          <span class="pip" data-status="partial" data-tip="Partial — Board HUD live; member directory forthcoming"></span>
-          partial
+          <span class="pip" data-status="live" data-tip="Live — Phase 01 member directory on gxyeobogqfubgzklmxwt"></span>
+          live
         </div>
         <div class="module-chevron">›</div>
       </div>
     </div>
 
     <!-- Agreements -->
-    <div class="module-row draft" data-rea="agreement">
+    <div class="module-row" data-rea="agreement" onclick="window.location.href='/intranet/agreements/'" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='/intranet/agreements/'">
       <div class="module-accent"></div>
       <div class="module-body">
         <div class="module-top">
@@ -569,12 +570,16 @@
           <span class="module-rea">Agreement</span>
         </div>
         <div class="module-desc">Bylaws, board policies, member agreements, minutes, benefit reports, the EE grant. Versioned, signed, searchable.</div>
+        <div class="module-links">
+          <a class="module-link" href="/intranet/agreements/" onclick="event.stopPropagation()">Agreement Registry →</a>
+        </div>
       </div>
       <div class="module-side">
         <div class="module-status">
-          <span class="pip" data-status="off" data-tip="Forthcoming — not yet built"></span>
-          forthcoming
+          <span class="pip" data-status="live" data-tip="Live — Phase 01 governing_documents view on gxyeobogqfubgzklmxwt"></span>
+          live
         </div>
+        <div class="module-chevron">›</div>
       </div>
     </div>
 
@@ -655,8 +660,16 @@
           <span class="state-v num">v0.2</span>
         </div>
         <div class="state-kv">
+          <span class="state-k">Phase</span>
+          <span class="state-v" style="font-size:10px;color:var(--terra-text);">01 · Agent &amp; Agreement</span>
+        </div>
+        <div class="state-kv">
+          <span class="state-k">CROPS</span>
+          <span class="state-v" style="font-size:10px;">CR=02 · O=03 · P=02 · S=02</span>
+        </div>
+        <div class="state-kv">
           <span class="state-k">Modules live</span>
-          <span class="state-v num">3 of 6</span>
+          <span class="state-v num">5 of 6</span>
         </div>
         <div class="state-kv">
           <span class="state-k">Intelligence</span>

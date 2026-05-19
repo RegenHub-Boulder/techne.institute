@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>People — RegenHub, LCA</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ── Design System ── */
+  :root {
+    --void:       #0c0c0c;
+    --ink:        #111111;
+    --surface:    #161616;
+    --panel:      #222222;
+    --raised:     #2a2a2a;
+    --border:     #383838;
+    --border-dim: #2a2a2a;
+
+    --gold:    #c4956a;
+    --gold-20: rgba(196, 149, 106, 0.20);
+    --gold-12: rgba(196, 149, 106, 0.12);
+
+    --agent:    #a0c46a;
+    --agent-12: rgba(160, 196, 106, 0.12);
+    --agent-20: rgba(160, 196, 106, 0.20);
+
+    --parchment: #f0f0f0;
+    --warm:      #d0d0d0;
+    --muted:     #9a9a9a;
+    --dim:       #707070;
+    --ghost:     #505050;
+
+    --green:  #4ade80;
+    --amber:  #fbbf24;
+    --red:    #ef4444;
+    --blue:   #8bbfff;
+
+    --sans:  Inter, system-ui, sans-serif;
+    --mono:  'IBM Plex Mono', Consolas, monospace;
+  }
+
+  [data-mode="light"] {
+    --void:       #f5f3f0;
+    --ink:        #fffdf9;
+    --surface:    #ffffff;
+    --panel:      #f0ede8;
+    --raised:     #e8e4dd;
+    --border:     #c8c2ba;
+    --border-dim: #dbd5cc;
+    --gold:       #a07850;
+    --gold-20:    rgba(160, 120, 80, 0.18);
+    --gold-12:    rgba(160, 120, 80, 0.10);
+    --agent:      #5a8f2a;
+    --agent-12:   rgba(90, 143, 42, 0.10);
+    --agent-20:   rgba(90, 143, 42, 0.18);
+    --parchment:  #1a1a1a;
+    --warm:       #333333;
+    --muted:      #888888;
+    --dim:        #aaaaaa;
+    --ghost:      #cccccc;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    background: var(--void);
+    color: var(--warm);
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Nav ── */
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink); border-bottom: 1px solid var(--border-dim);
+    display: flex; align-items: center; padding: 0 24px; height: 52px; gap: 4px;
+  }
+  .nav-brand {
+    font-family: var(--mono); font-size: 0.8rem; font-weight: 600;
+    color: var(--gold); text-decoration: none; letter-spacing: 0.08em;
+    margin-right: 16px; flex-shrink: 0;
+  }
+  .nav-links { display: flex; gap: 2px; flex: 1; overflow-x: auto; scrollbar-width: none; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-link {
+    display: flex; align-items: center;
+    padding: 0.45rem 0.75rem; border-radius: 6px;
+    font-family: var(--sans); font-size: 0.8rem;
+    color: var(--dim); text-decoration: none; white-space: nowrap;
+    border-left: 2px solid transparent;
+    transition: color 0.15s, background 0.2s;
+  }
+  .nav-link:hover { color: var(--warm); background: var(--raised); }
+  .nav-link.active {
+    background: var(--agent-12); border-left-color: var(--agent);
+    color: var(--parchment); font-weight: 600;
+  }
+  .nav-actions { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+  .theme-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 6px; padding: 0.4rem 0.75rem;
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    cursor: pointer; transition: border-color 0.15s, color 0.15s; min-height: 32px;
+  }
+  .theme-btn:hover { border-color: var(--agent); color: var(--agent); }
+
+  /* ── Layout ── */
+  .page-wrap { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+  .page-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px; margin-bottom: 2rem; flex-wrap: wrap;
+  }
+  .page-eyebrow {
+    font-family: var(--mono); font-size: 0.68rem; font-weight: 700;
+    color: var(--agent); letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .page-title {
+    font-family: var(--sans); font-size: 1.75rem; font-weight: 800;
+    color: var(--parchment); letter-spacing: -0.02em; line-height: 1.15;
+    margin-bottom: 4px;
+  }
+  .page-subtitle { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    display: flex; gap: 1px; margin-bottom: 1.5rem;
+    background: var(--border-dim); border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border-dim);
+  }
+  .stat {
+    flex: 1; padding: 0.75rem 1rem; background: var(--panel);
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .stat-value {
+    font-family: var(--mono); font-size: 1.2rem; font-weight: 600;
+    color: var(--parchment); line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--mono); font-size: 0.65rem; color: var(--dim);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  /* ── Tab bar ── */
+  .tab-bar {
+    display: flex; gap: 2px;
+    border-bottom: 1px solid var(--border-dim); margin-bottom: 1.5rem;
+  }
+  .tab-btn {
+    font-family: var(--sans); font-size: 0.82rem; font-weight: 500;
+    color: var(--muted); background: none; border: none;
+    border-bottom: 2px solid transparent;
+    padding: 8px 14px; cursor: pointer;
+    transition: color 0.15s, border-color 0.15s; margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--warm); }
+  .tab-btn.active { color: var(--agent); border-bottom-color: var(--agent); }
+
+  /* ── Member grid ── */
+  .member-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 8px;
+  }
+
+  .member-card {
+    background: var(--panel); border: 1px solid var(--border-dim); border-radius: 8px;
+    padding: 1rem 1.25rem;
+    transition: border-color 0.15s, background 0.2s;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .member-card:hover { border-color: var(--border); }
+
+  .member-top { display: flex; align-items: center; gap: 10px; }
+  .member-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--agent-12); border: 1px solid rgba(160,196,106,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 600;
+    color: var(--agent); flex-shrink: 0;
+    overflow: hidden;
+  }
+  .member-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  .member-name {
+    font-family: var(--sans); font-size: 0.95rem; font-weight: 600;
+    color: var(--parchment); line-height: 1.2;
+  }
+  .member-legal {
+    font-family: var(--mono); font-size: 0.68rem; color: var(--muted); margin-top: 1px;
+  }
+
+  .member-meta {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 0.68rem; color: var(--dim);
+  }
+  .class-pill {
+    font-family: var(--mono); font-size: 0.63rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 2px 8px; border-radius: 3px;
+  }
+  .class-patron   { background: var(--agent-12); color: var(--agent); }
+  .class-investor { background: rgba(139,191,255,0.10); color: var(--blue); }
+
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    display: inline-block;
+  }
+  .dot-active    { background: var(--green); box-shadow: 0 0 5px rgba(74,222,128,0.4); }
+  .dot-applicant { background: var(--amber); }
+  .dot-suspended { background: var(--red); }
+  .dot-withdrawn { background: var(--dim); }
+
+  .member-eth {
+    font-family: var(--mono); font-size: 0.65rem; color: var(--dim);
+    word-break: break-all;
+  }
+  .member-eth a { color: var(--blue); text-decoration: none; }
+  .member-eth a:hover { text-decoration: underline; }
+
+  /* ── Board section ── */
+  .board-section { margin-bottom: 2rem; }
+  .section-label-row {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 0.75rem;
+  }
+  .section-label {
+    font-family: var(--mono); font-size: 0.68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--dim);
+  }
+  .section-rule { flex: 1; height: 1px; background: var(--border-dim); }
+
+  /* ── Bylaw trace ── */
+  .bylaw-trace {
+    font-family: var(--mono); font-size: 0.68rem; color: var(--ghost);
+    margin-top: 0.5rem;
+  }
+  .bylaw-trace a { color: var(--gold); text-decoration: none; }
+  .bylaw-trace a:hover { text-decoration: underline; }
+
+  /* ── State messages ── */
+  .state-msg {
+    text-align: center; padding: 3rem 1.5rem;
+    color: var(--dim); font-family: var(--mono); font-size: 0.82rem;
+  }
+  .state-msg.error { color: var(--red); }
+
+  /* ── Schema notice ── */
+  .schema-notice {
+    background: var(--panel); border: 1px solid rgba(196,149,106,0.25);
+    border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.5rem;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .schema-notice-icon {
+    font-family: var(--mono); font-size: 0.8rem; color: var(--gold); flex-shrink: 0; padding-top: 1px;
+  }
+  .schema-notice-body { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); line-height: 1.6; }
+  .schema-notice-body strong { color: var(--warm); }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .page-wrap { padding: 1.5rem 1rem 3rem; }
+    .site-nav { padding: 0 14px; }
+    .stats-bar { flex-direction: column; gap: 1px; }
+    .member-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-brand" href="/intranet/">CIS</a>
+  <div class="nav-links">
+    <a class="nav-link" href="/intranet/treasury/">Treasury</a>
+    <a class="nav-link" href="/intranet/activity/">Activity</a>
+    <a class="nav-link active" href="/intranet/people/">People</a>
+    <a class="nav-link" href="/intranet/agreements/">Agreements</a>
+    <a class="nav-link" href="/intranet/signals/">Signals</a>
+    <a class="nav-link" href="/intranet/intelligence/">Intelligence</a>
+  </div>
+  <div class="nav-actions">
+    <button class="theme-btn" id="themeToggle">Light</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">Agent · REA · §1.1–1.4</div>
+      <h1 class="page-title">People</h1>
+      <div class="page-subtitle">Member register — canonical, not curated</div>
+    </div>
+  </div>
+
+  <div class="stats-bar" id="statsBar">
+    <div class="stat">
+      <div class="stat-value" id="statTotal">—</div>
+      <div class="stat-label">Active members</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="statPatron">—</div>
+      <div class="stat-label">Patron class</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="statInvestor">—</div>
+      <div class="stat-label">Investor class</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="statShares">—</div>
+      <div class="stat-label">Shares issued</div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="members">Members</button>
+    <button class="tab-btn" data-tab="board">Board & Officers</button>
+    <button class="tab-btn" data-tab="organizers">Organizers</button>
+  </div>
+
+  <div id="schema-notice" class="schema-notice" style="display:none;">
+    <div class="schema-notice-icon">⚑</div>
+    <div class="schema-notice-body">
+      <strong>Phase 01 schema not yet deployed.</strong> The Phase 01 CIS schema (agents, memberships, stock_ledger) is specified in <code>intranet-src/docs/migrations/p01-cis-phase1-schema.sql</code>. Once deployed to the CIS Supabase project, this directory will populate automatically. Work item <strong>W003</strong> tracks deployment.
+    </div>
+  </div>
+
+  <!-- Members tab -->
+  <div id="members-view">
+    <div class="board-section">
+      <div class="section-label-row">
+        <span class="section-label">Patron Members</span>
+        <div class="section-rule"></div>
+        <span style="font-family:var(--mono);font-size:0.65rem;color:var(--ghost);">§1.2</span>
+      </div>
+      <div class="member-grid" id="patronGrid">
+        <div class="state-msg" id="patronState">Loading…</div>
+      </div>
+    </div>
+
+    <div class="board-section" id="investorSection" style="display:none;">
+      <div class="section-label-row">
+        <span class="section-label">Investor Members</span>
+        <div class="section-rule"></div>
+        <span style="font-family:var(--mono);font-size:0.65rem;color:var(--ghost);">§1.3</span>
+      </div>
+      <div class="member-grid" id="investorGrid"></div>
+    </div>
+  </div>
+
+  <!-- Board tab -->
+  <div id="board-view" style="display:none;">
+    <div class="board-section">
+      <div class="section-label-row">
+        <span class="section-label">Current Board</span>
+        <div class="section-rule"></div>
+        <span style="font-family:var(--mono);font-size:0.65rem;color:var(--ghost);">§III</span>
+      </div>
+      <div class="member-grid" id="boardGrid">
+        <div class="state-msg">Board records live in Phase 03 (Governance module). Phase 01 delivers member directory.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Organizers tab -->
+  <div id="organizers-view" style="display:none;">
+    <div class="board-section">
+      <div class="section-label-row">
+        <span class="section-label">Founding Organizers</span>
+        <div class="section-rule"></div>
+      </div>
+      <div class="member-grid" id="organizerGrid">
+        <div class="state-msg" id="organizerState">Loading…</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bylaw-trace">
+    Visibility governed by <a href="/intranet/agreements/">§18.1</a> — membership list available to members on request. Tax identifiers and contact details not displayed.
+  </div>
+</div><!-- /page-wrap -->
+
+<script>
+// ── Config ──
+// CIS Supabase — deploy p01-cis-phase1-schema.sql to activate live data
+const SUPABASE_URL = 'https://gxyeobogqfubgzklmxwt.supabase.co'
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4eWVvYm9ncWZ1Ymd6a2xteHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMjM0NjcsImV4cCI6MjA4NzY5OTQ2N30.0kc5nw4YwpoqyykDkeGZuyQKbdEKnXnEIP8Nzwr0nPQ'
+
+const hdrs = {
+  'apikey': SUPABASE_ANON,
+  'Authorization': `Bearer ${SUPABASE_ANON}`,
+}
+
+// ── Theme ──
+const html = document.documentElement
+const themeBtn = document.getElementById('themeToggle')
+const saved = localStorage.getItem('cis-theme')
+if (saved) html.setAttribute('data-mode', saved)
+else if (window.matchMedia('(prefers-color-scheme: light)').matches) html.setAttribute('data-mode', 'light')
+function updateThemeBtn() { themeBtn.textContent = html.getAttribute('data-mode') === 'dark' ? 'Light' : 'Dark' }
+updateThemeBtn()
+themeBtn.addEventListener('click', () => {
+  const next = html.getAttribute('data-mode') === 'dark' ? 'light' : 'dark'
+  html.setAttribute('data-mode', next)
+  localStorage.setItem('cis-theme', next)
+  updateThemeBtn()
+})
+
+// ── Tabs ──
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+    btn.classList.add('active')
+    const tab = btn.dataset.tab
+    document.getElementById('members-view').style.display = tab === 'members' ? '' : 'none'
+    document.getElementById('board-view').style.display = tab === 'board' ? '' : 'none'
+    document.getElementById('organizers-view').style.display = tab === 'organizers' ? '' : 'none'
+  })
+})
+
+// ── Data ──
+async function load() {
+  try {
+    // Try active_members view (available once Phase 01 schema deployed)
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/active_members?order=member_since.asc&limit=200`,
+      { headers: hdrs }
+    )
+    if (!res.ok) {
+      const err = await res.text()
+      if (err.includes('does not exist') || res.status === 404) {
+        showSchemaNotice()
+        showSeedData()
+        return
+      }
+      throw new Error(err)
+    }
+    const members = await res.json()
+    renderMembers(members)
+  } catch (err) {
+    if (err.message.includes('does not exist') || err.message.includes('relation')) {
+      showSchemaNotice()
+      showSeedData()
+    } else {
+      document.getElementById('patronState').textContent = `Error: ${err.message}`
+      document.getElementById('patronState').className = 'state-msg error'
+    }
+  }
+}
+
+function showSchemaNotice() {
+  document.getElementById('schema-notice').style.display = 'flex'
+}
+
+// Seed data: the eight organizers (public record from filings)
+function showSeedData() {
+  const organizers = [
+    { display_name: 'Todd Youngblood', membership_class: 'patron', status: 'active', role: 'Ventures & Operations Steward' },
+    { display_name: 'Aaron G Neyer', membership_class: 'patron', status: 'active', role: 'Organizer' },
+    { display_name: 'Benjamin Ross', membership_class: 'patron', status: 'active', role: 'Organizer' },
+    { display_name: 'Jonathan Borichevskiy', membership_class: 'patron', status: 'active', role: 'Organizer' },
+    { display_name: 'Kevin Owocki', membership_class: 'patron', status: 'active', role: 'Organizer' },
+    { display_name: 'Lucian Hymer', membership_class: 'patron', status: 'active', role: 'Organizer' },
+    { display_name: 'Neil Mackay Yarnal', membership_class: 'patron', status: 'active', role: 'Organizer' },
+    { display_name: 'Savannah Kruger', membership_class: 'patron', status: 'active', role: 'Organizer' },
+  ]
+
+  // Show in patron grid
+  document.getElementById('patronState').style.display = 'none'
+  const patronGrid = document.getElementById('patronGrid')
+  organizers.filter(m => m.membership_class === 'patron').forEach(m => {
+    patronGrid.appendChild(renderCard(m))
+  })
+
+  // Update stats
+  document.getElementById('statTotal').textContent = '8'
+  document.getElementById('statPatron').textContent = '8'
+  document.getElementById('statInvestor').textContent = '0'
+  document.getElementById('statShares').textContent = '8'
+
+  // Organizer tab
+  document.getElementById('organizerState').style.display = 'none'
+  const orgGrid = document.getElementById('organizerGrid')
+  organizers.forEach(m => orgGrid.appendChild(renderCard(m, true)))
+}
+
+function renderMembers(members) {
+  const patron   = members.filter(m => m.membership_class === 'patron')
+  const investor = members.filter(m => m.membership_class === 'investor')
+
+  document.getElementById('statTotal').textContent   = members.length
+  document.getElementById('statPatron').textContent  = patron.length
+  document.getElementById('statInvestor').textContent = investor.length
+  const totalShares = members.reduce((n, m) => n + (m.shares || 0), 0)
+  document.getElementById('statShares').textContent  = totalShares
+
+  const patronGrid = document.getElementById('patronGrid')
+  patronGrid.innerHTML = ''
+  if (!patron.length) {
+    const msg = document.createElement('div')
+    msg.className = 'state-msg'
+    msg.textContent = 'No patron members yet.'
+    patronGrid.appendChild(msg)
+  } else {
+    patron.forEach(m => patronGrid.appendChild(renderCard(m)))
+  }
+
+  if (investor.length) {
+    document.getElementById('investorSection').style.display = ''
+    const investorGrid = document.getElementById('investorGrid')
+    investor.forEach(m => investorGrid.appendChild(renderCard(m)))
+  }
+}
+
+function renderCard(m, showRole = false) {
+  const initials = (m.display_name || '?').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()
+  const div = document.createElement('div')
+  div.className = 'member-card'
+
+  const ethHTML = m.ethereum_address
+    ? `<div class="member-eth"><a href="https://etherscan.io/address/${esc(m.ethereum_address)}" target="_blank" rel="noopener">
+        ${m.ethereum_address.slice(0,6)}…${m.ethereum_address.slice(-4)}
+       </a></div>`
+    : ''
+
+  const roleHTML = showRole && m.role
+    ? `<div style="font-family:var(--mono);font-size:0.68rem;color:var(--muted);">${esc(m.role)}</div>`
+    : ''
+
+  const sinceHTML = m.member_since
+    ? `<span>since ${new Date(m.member_since).toLocaleDateString('en-US',{month:'short',year:'numeric'})}</span>`
+    : ''
+
+  div.innerHTML = `
+    <div class="member-top">
+      <div class="member-avatar">${initials}</div>
+      <div>
+        <div class="member-name">${esc(m.display_name)}</div>
+        ${m.legal_name && m.legal_name !== m.display_name
+          ? `<div class="member-legal">${esc(m.legal_name)}</div>` : ''}
+      </div>
+    </div>
+    <div class="member-meta">
+      <span class="status-dot dot-${m.status || 'active'}"></span>
+      <span>${m.status || 'active'}</span>
+      <span class="class-pill class-${m.membership_class}">${m.membership_class}</span>
+      ${sinceHTML}
+    </div>
+    ${roleHTML}
+    ${ethHTML}
+  `
+  return div
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+}
+
+load()
+</script>
+</body>
+</html>
