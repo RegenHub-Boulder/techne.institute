@@ -10,15 +10,7 @@
   var AUTH_URL = 'https://hvbdpgkdcdskhpbdeeim.supabase.co';
   var AUTH_KEY = 'sb_publishable_kB69BlNpkNhOllwGMOE6xg_i4l1VHMv';
 
-  var path = window.location.pathname.replace(/\/?$/, '/');
-
-  function active(href) {
-    var h = href.replace(/\/?$/, '/');
-    if (h === '/intranet/') return path === '/intranet/';
-    return path.startsWith(h);
-  }
-
-  /* ── Inject CSS ── */
+  /* ── CSS (injected into <head> immediately — safe before <body> exists) ── */
   var css = `
 #cis-nav {
   position: sticky; top: 0; z-index: 1000;
@@ -207,9 +199,7 @@
   font-size: 9.5px;
   letter-spacing: 0.07em;
 }
-[data-mode="light"] #cis-footer {
-  border-top-color: #ddd5c8;
-}
+[data-mode="light"] #cis-footer { border-top-color: #ddd5c8; }
 #cis-footer .cf-left {
   color: #3a3a3a;
   text-transform: uppercase;
@@ -221,8 +211,7 @@
   gap: 16px; flex-wrap: wrap;
 }
 #cis-footer .cf-link {
-  color: #555;
-  text-decoration: none;
+  color: #555; text-decoration: none;
   transition: color 120ms;
 }
 #cis-footer .cf-link:hover { color: #c4956a; }
@@ -231,12 +220,10 @@
 #cis-footer .cf-signout {
   padding: 4px 11px;
   background: transparent;
-  border: 1px solid #2e2e2e;
-  border-radius: 4px;
+  border: 1px solid #2e2e2e; border-radius: 4px;
   color: #555;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9.5px;
-  letter-spacing: 0.08em;
+  font-size: 9.5px; letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
   transition: color 120ms, border-color 120ms;
@@ -250,165 +237,75 @@
   styleEl.textContent = css;
   document.head.appendChild(styleEl);
 
-  /* ── Nav HTML ── */
-  var links = [
-    { href: '/intranet/',            label: 'CIS'         },
-    { href: '/intranet/people/',     label: 'People'      },
-    { href: '/intranet/agreements/', label: 'Agreements'  },
-    { href: '/intranet/treasury/',   label: 'Treasury'    },
-    { href: '/intranet/activity/',   label: 'Activity'    },
-    { href: '/intranet/board/',      label: 'Board'       },
-    { href: '/intranet/enroll/',     label: 'Enroll'      },
-  ];
-
-  function iconSvg(d) {
-    return '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>';
-  }
-  var ICON_PROFILE = iconSvg('<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>');
-  var ICON_SIGNOUT = iconSvg('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>');
-
-  var nav = document.createElement('nav');
-  nav.id = 'cis-nav';
-  nav.setAttribute('role', 'navigation');
-  nav.setAttribute('aria-label', 'CIS primary navigation');
-  nav.innerHTML =
-    '<a class="cn-brand" href="/intranet/" aria-label="CIS home">\u03c4</a>' +
-    '<div class="cn-links">' +
-      links.map(function (l) {
-        return '<a class="cn-link' + (active(l.href) ? ' on' : '') + '" href="' + l.href + '">' + l.label + '</a>';
-      }).join('') +
-    '</div>' +
-    '<div class="cn-right">' +
-      '<div class="cn-chip" id="cn-chip" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">' +
-        '<div class="cn-avatar" id="cn-avatar">\u2026</div>' +
-        '<span class="cn-uname" id="cn-uname">Loading</span>' +
-        '<span class="cn-caret">\u25be</span>' +
-        '<div class="cn-menu" id="cn-menu" role="menu">' +
-          '<div class="cn-memail" id="cn-memail"></div>' +
-          '<a class="cn-mitem" href="/intranet/profile/" role="menuitem">' +
-            ICON_PROFILE + ' Edit Profile' +
-          '</a>' +
-          '<div class="cn-mdivide"></div>' +
-          '<button class="cn-mitem danger" id="cn-signout" role="menuitem">' +
-            ICON_SIGNOUT + ' Sign out' +
-          '</button>' +
-        '</div>' +
-      '</div>' +
-      '<button class="cn-mode" id="cn-mode">Light</button>' +
-    '</div>';
-
-  /* Insert at very top of body, before any existing children */
-  document.body.insertBefore(nav, document.body.firstChild);
-
-  /* ── Dark/light mode ── */
-  var html = document.documentElement;
-  var modeBtn = document.getElementById('cn-mode');
-
-  function applyTheme(mode) {
-    html.setAttribute('data-mode', mode);
-    modeBtn.textContent = mode === 'dark' ? 'Light' : 'Dark';
-  }
-
+  /* Apply saved theme immediately (before body paint) to avoid flash */
   var savedTheme = localStorage.getItem('cis-theme');
   if (savedTheme) {
-    applyTheme(savedTheme);
+    document.documentElement.setAttribute('data-mode', savedTheme);
   } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-    applyTheme('light');
-  } else {
-    modeBtn.textContent = html.getAttribute('data-mode') === 'dark' ? 'Light' : 'Dark';
+    document.documentElement.setAttribute('data-mode', 'light');
   }
 
-  modeBtn.addEventListener('click', function () {
-    var next = html.getAttribute('data-mode') === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('cis-theme', next);
-    applyTheme(next);
-  });
+  /* ── Everything that touches <body> runs after DOMContentLoaded ── */
+  function init() {
+    var html = document.documentElement;
+    var path = window.location.pathname.replace(/\/?$/, '/');
 
-  /* ── User menu toggle ── */
-  var chip = document.getElementById('cn-chip');
-  var menu = document.getElementById('cn-menu');
-
-  chip.addEventListener('click', function (e) {
-    e.stopPropagation();
-    var open = menu.classList.toggle('open');
-    chip.setAttribute('aria-expanded', String(open));
-  });
-
-  chip.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
-    if (e.key === 'Escape') { menu.classList.remove('open'); chip.setAttribute('aria-expanded', 'false'); }
-  });
-
-  document.addEventListener('click', function () {
-    menu.classList.remove('open');
-    chip.setAttribute('aria-expanded', 'false');
-  });
-
-  /* ── Auth ── */
-  function getInitials(str) {
-    if (!str) return '?';
-    var clean = str.split('@')[0];
-    var parts = clean.split(/[\s._\-]+/).filter(Boolean);
-    if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-    return clean.slice(0, 2).toUpperCase();
-  }
-
-  function showSignedOut() {
-    chip.outerHTML = '<a class="cn-signin" href="/intranet/login/">Sign in</a>';
-    if (document.body.dataset.authRequired !== undefined) {
-      window.location.href = '/intranet/login/?redirect=' + encodeURIComponent(window.location.pathname);
+    function active(href) {
+      var h = href.replace(/\/?$/, '/');
+      if (h === '/intranet/') return path === '/intranet/';
+      return path.startsWith(h);
     }
-  }
 
-  function showUser(session) {
-    var user = session.user;
-    var email = user.email || '';
-    var meta = user.user_metadata || {};
-    var display = meta.full_name || meta.name || email.split('@')[0] || '?';
+    function iconSvg(d) {
+      return '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>';
+    }
+    var ICON_PROFILE = iconSvg('<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>');
+    var ICON_SIGNOUT = iconSvg('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>');
 
-    document.getElementById('cn-uname').textContent = display;
-    document.getElementById('cn-memail').textContent = email;
-    document.getElementById('cn-avatar').textContent = getInitials(display);
+    var links = [
+      { href: '/intranet/',            label: 'CIS'        },
+      { href: '/intranet/people/',     label: 'People'     },
+      { href: '/intranet/agreements/', label: 'Agreements' },
+      { href: '/intranet/treasury/',   label: 'Treasury'   },
+      { href: '/intranet/activity/',   label: 'Activity'   },
+      { href: '/intranet/board/',      label: 'Board'      },
+      { href: '/intranet/enroll/',     label: 'Enroll'     },
+    ];
 
-    /* Expose user globally for other scripts on the page */
-    window.cisUser = { session: session, user: user, email: email, display: display };
-  }
+    /* ── Build nav ── */
+    var nav = document.createElement('nav');
+    nav.id = 'cis-nav';
+    nav.setAttribute('role', 'navigation');
+    nav.setAttribute('aria-label', 'CIS primary navigation');
+    nav.innerHTML =
+      '<a class="cn-brand" href="/intranet/" aria-label="CIS home">\u03c4</a>' +
+      '<div class="cn-links">' +
+        links.map(function (l) {
+          return '<a class="cn-link' + (active(l.href) ? ' on' : '') + '" href="' + l.href + '">' + l.label + '</a>';
+        }).join('') +
+      '</div>' +
+      '<div class="cn-right">' +
+        '<div class="cn-chip" id="cn-chip" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">' +
+          '<div class="cn-avatar" id="cn-avatar">\u2026</div>' +
+          '<span class="cn-uname" id="cn-uname">Loading</span>' +
+          '<span class="cn-caret">\u25be</span>' +
+          '<div class="cn-menu" id="cn-menu" role="menu">' +
+            '<div class="cn-memail" id="cn-memail"></div>' +
+            '<a class="cn-mitem" href="/intranet/profile/" role="menuitem">' +
+              ICON_PROFILE + ' Edit Profile' +
+            '</a>' +
+            '<div class="cn-mdivide"></div>' +
+            '<button class="cn-mitem danger" id="cn-signout" role="menuitem">' +
+              ICON_SIGNOUT + ' Sign out' +
+            '</button>' +
+          '</div>' +
+        '</div>' +
+        '<button class="cn-mode" id="cn-mode">Light</button>' +
+      '</div>';
 
-  function initAuth(sb) {
-    sb.auth.getSession().then(function (result) {
-      var session = result.data && result.data.session;
-      if (session) {
-        showUser(session);
-        function doSignOut() {
-          sb.auth.signOut().then(function () {
-            window.location.href = '/intranet/login/';
-          });
-        }
-        document.getElementById('cn-signout').addEventListener('click', doSignOut);
-        var footerSignout = document.getElementById('cf-signout');
-        if (footerSignout) {
-          footerSignout.style.display = '';
-          footerSignout.addEventListener('click', doSignOut);
-        }
-        /* Auth-change listener — handles token refresh / sign-out from another tab */
-        sb.auth.onAuthStateChange(function (event, newSession) {
-          if (event === 'SIGNED_OUT' || !newSession) {
-            window.location.href = '/intranet/login/';
-          } else if (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN') {
-            showUser(newSession);
-          }
-        });
-      } else {
-        showSignedOut();
-      }
-    }).catch(function (err) {
-      console.warn('CIS nav auth error:', err);
-      document.getElementById('cn-uname').textContent = 'Auth error';
-    });
-  }
+    document.body.insertBefore(nav, document.body.firstChild);
 
-  /* ── Footer ── */
-  function injectFooter() {
+    /* ── Build footer ── */
     var footer = document.createElement('footer');
     footer.id = 'cis-footer';
     footer.innerHTML =
@@ -420,32 +317,135 @@
         '<button class="cf-signout" id="cf-signout" style="display:none;">Sign out</button>' +
       '</div>';
     document.body.appendChild(footer);
-  }
 
-  function loadSupabaseAndInit() {
-    if (window.supabase && typeof window.supabase.createClient === 'function') {
-      initAuth(window.supabase.createClient(AUTH_URL, AUTH_KEY));
-      return;
+    /* ── Dark/light toggle ── */
+    var modeBtn = document.getElementById('cn-mode');
+
+    function applyTheme(mode) {
+      html.setAttribute('data-mode', mode);
+      modeBtn.textContent = mode === 'dark' ? 'Light' : 'Dark';
     }
-    var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-    script.onload = function () {
-      initAuth(window.supabase.createClient(AUTH_URL, AUTH_KEY));
-    };
-    script.onerror = function () {
-      document.getElementById('cn-uname').textContent = 'Offline';
-    };
-    document.head.appendChild(script);
-  }
 
-  function init() {
-    injectFooter();
+    /* Sync button label with current state (may have been set above) */
+    applyTheme(html.getAttribute('data-mode') || 'dark');
+
+    modeBtn.addEventListener('click', function () {
+      var next = html.getAttribute('data-mode') === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('cis-theme', next);
+      applyTheme(next);
+    });
+
+    /* ── User menu toggle ── */
+    var chip = document.getElementById('cn-chip');
+    var menu = document.getElementById('cn-menu');
+
+    chip.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = menu.classList.toggle('open');
+      chip.setAttribute('aria-expanded', String(open));
+    });
+    chip.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
+      if (e.key === 'Escape') { menu.classList.remove('open'); chip.setAttribute('aria-expanded', 'false'); }
+    });
+    document.addEventListener('click', function () {
+      menu.classList.remove('open');
+      chip.setAttribute('aria-expanded', 'false');
+    });
+
+    /* ── Auth helpers ── */
+    function getInitials(str) {
+      if (!str) return '?';
+      var clean = str.split('@')[0];
+      var parts = clean.split(/[\s._\-]+/).filter(Boolean);
+      if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+      return clean.slice(0, 2).toUpperCase();
+    }
+
+    function showSignedOut() {
+      var c = document.getElementById('cn-chip');
+      if (c) c.outerHTML = '<a class="cn-signin" href="/intranet/login/">Sign in</a>';
+      if (document.body.dataset.authRequired !== undefined) {
+        window.location.href = '/intranet/login/?redirect=' + encodeURIComponent(window.location.pathname);
+      }
+    }
+
+    function showUser(session) {
+      var user = session.user;
+      var email = user.email || '';
+      var meta = user.user_metadata || {};
+      var display = meta.full_name || meta.name || email.split('@')[0] || '?';
+
+      var nameEl   = document.getElementById('cn-uname');
+      var emailEl  = document.getElementById('cn-memail');
+      var avatarEl = document.getElementById('cn-avatar');
+      if (nameEl)   nameEl.textContent   = display;
+      if (emailEl)  emailEl.textContent  = email;
+      if (avatarEl) avatarEl.textContent = getInitials(display);
+
+      window.cisUser = { session: session, user: user, email: email, display: display };
+    }
+
+    function initAuth(sb) {
+      sb.auth.getSession().then(function (result) {
+        var session = result.data && result.data.session;
+        if (session) {
+          showUser(session);
+
+          function doSignOut() {
+            sb.auth.signOut().then(function () {
+              window.location.href = '/intranet/login/';
+            });
+          }
+
+          var navSignout    = document.getElementById('cn-signout');
+          var footerSignout = document.getElementById('cf-signout');
+          if (navSignout)    navSignout.addEventListener('click', doSignOut);
+          if (footerSignout) {
+            footerSignout.style.display = '';
+            footerSignout.addEventListener('click', doSignOut);
+          }
+
+          sb.auth.onAuthStateChange(function (event, newSession) {
+            if (event === 'SIGNED_OUT' || !newSession) {
+              window.location.href = '/intranet/login/';
+            } else if (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN') {
+              showUser(newSession);
+            }
+          });
+        } else {
+          showSignedOut();
+        }
+      }).catch(function (err) {
+        console.warn('CIS nav auth error:', err);
+        var el = document.getElementById('cn-uname');
+        if (el) el.textContent = 'Auth error';
+      });
+    }
+
+    /* Load Supabase if not already present, then init auth */
+    function loadSupabaseAndInit() {
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        initAuth(window.supabase.createClient(AUTH_URL, AUTH_KEY));
+        return;
+      }
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+      script.onload  = function () { initAuth(window.supabase.createClient(AUTH_URL, AUTH_KEY)); };
+      script.onerror = function () {
+        var el = document.getElementById('cn-uname');
+        if (el) el.textContent = 'Offline';
+      };
+      document.head.appendChild(script);
+    }
+
     loadSupabaseAndInit();
-  }
+  } /* end init() */
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
+
 })();
