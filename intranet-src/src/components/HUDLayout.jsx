@@ -44,6 +44,8 @@ const NAV_ITEMS = [
   { path: 'messages',    label: 'Messages',   icon: 'messages'   },
 ]
 
+const ENROLL_ICON = 'M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11'
+
 const STEWARD_ITEMS = [
   { path: 'admin',      label: 'Steward',    icon: 'admin'      },
 ]
@@ -142,6 +144,17 @@ export function HUDLayout({ children, banner }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [theme, setTheme] = useState(getStoredTheme)
   const currentPath = window.location.pathname.replace(/^\/intranet\/?/, '').replace(/\/$/, '')
+
+  // Read enrollment state from localStorage to show/style the enroll nav item
+  const enrollmentState = (() => {
+    if (!participant?.id) return null
+    try {
+      const raw = localStorage.getItem(`techne-enrollment-${participant.id}`)
+      return raw ? JSON.parse(raw) : null
+    } catch (_) { return null }
+  })()
+  const enrollmentComplete = enrollmentState?.enrollmentComplete === true
+  const enrollmentStarted = !!enrollmentState && enrollmentState.step > 0
 
   function toggleTheme() {
     const next = theme === 'dark' ? 'light' : 'dark'
@@ -274,6 +287,48 @@ export function HUDLayout({ children, banner }) {
                 />
               ))}
             </div>
+
+            {/* Enrollment nav item — shown until enrollment is complete */}
+            {!enrollmentComplete && (
+              <div style={{ ...s.navSection, marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid var(--border-nav)' }}>
+                <a
+                  href="/intranet/enroll/"
+                  onClick={e => { e.preventDefault(); navigate('enroll'); handleNavClick() }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    padding: '0.45rem 0.75rem',
+                    borderRadius: '6px',
+                    textDecoration: 'none',
+                    fontSize: '0.8rem',
+                    fontWeight: currentPath === 'enroll' ? 600 : 500,
+                    color: currentPath === 'enroll' ? 'var(--text-primary)' : 'var(--gold)',
+                    background: currentPath === 'enroll' ? 'var(--gold-12)' : 'rgba(196,149,106,0.06)',
+                    borderLeft: currentPath === 'enroll' ? '2px solid var(--gold)' : '2px solid rgba(196,149,106,0.35)',
+                    transition: 'all 0.12s',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <span style={{ color: 'var(--gold)', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d={ENROLL_ICON} />
+                    </svg>
+                  </span>
+                  <span>Enroll</span>
+                  {enrollmentStarted && (
+                    <span style={{
+                      marginLeft: 'auto',
+                      width: '6px', height: '6px',
+                      borderRadius: '50%',
+                      background: 'var(--gold)',
+                      flexShrink: 0,
+                    }} title="In progress" />
+                  )}
+                </a>
+              </div>
+            )}
 
             {(isSteward || (participant?.membership_class === 4)) && (
               <div style={{ ...s.navSection, marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid var(--border-nav)' }}>

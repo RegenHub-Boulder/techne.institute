@@ -180,6 +180,154 @@ function MerkleIndicator({ root }) {
   )
 }
 
+// ─── Enrollment CTA ──────────────────────────────────────────────────────────
+
+function EnrollCTA({ participantId }) {
+  const [enrollState, setEnrollState] = useState(null)
+
+  useEffect(() => {
+    if (!participantId) return
+    try {
+      const raw = localStorage.getItem(`techne-enrollment-${participantId}`)
+      if (raw) setEnrollState(JSON.parse(raw))
+    } catch (_) {}
+  }, [participantId])
+
+  // Don't show if completed
+  if (enrollState?.enrollmentComplete) return null
+
+  const inProgress = enrollState && enrollState.step > 0
+  const stepLabels = ['Identity', 'Bylaws — Read', 'Bylaws — Vote',
+    'Agreement — Read', 'Agreement — Vote', 'Orientation', 'Complete']
+  const stepLabel = inProgress ? stepLabels[enrollState.step] : null
+  const pct = inProgress ? Math.round((enrollState.step / 6) * 100) : 0
+
+  return (
+    <div style={enrollStyles.wrap}>
+      <div style={enrollStyles.accentBar} />
+      <div style={enrollStyles.inner}>
+        <div style={enrollStyles.left}>
+          <p style={enrollStyles.eyebrow}>Board enrollment</p>
+          <h2 style={enrollStyles.title}>
+            {inProgress ? 'Enrollment in progress' : 'Complete your enrollment'}
+          </h2>
+          <p style={enrollStyles.body}>
+            {inProgress
+              ? `Paused at ${stepLabel}. Your progress is saved — pick up where you left off.`
+              : 'Read the governing documents, record your advisory comments, and cast your ratification vote. This is the governance act.'}
+          </p>
+          {inProgress && (
+            <div style={enrollStyles.progressWrap}>
+              <div style={enrollStyles.progressTrack}>
+                <div style={{ ...enrollStyles.progressFill, width: `${pct}%` }} />
+              </div>
+              <span style={enrollStyles.progressLabel}>{pct}% complete</span>
+            </div>
+          )}
+        </div>
+        <a
+          href="/intranet/enroll/"
+          onClick={e => {
+            e.preventDefault()
+            window.history.pushState(null, '', '/intranet/enroll/')
+            window.dispatchEvent(new PopStateEvent('popstate'))
+          }}
+          style={enrollStyles.cta}
+        >
+          {inProgress ? 'Resume →' : 'Begin enrollment →'}
+        </a>
+      </div>
+    </div>
+  )
+}
+
+const enrollStyles = {
+  wrap: {
+    position: 'relative',
+    background: 'rgba(196,149,106,0.05)',
+    border: '1px solid rgba(196,149,106,0.2)',
+    borderRadius: '10px',
+    overflow: 'hidden',
+    marginBottom: '1.75rem',
+  },
+  accentBar: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0,
+    height: '2px',
+    background: 'linear-gradient(90deg, var(--gold) 0%, transparent 70%)',
+  },
+  inner: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '1.5rem',
+    padding: '1.25rem 1.5rem',
+    flexWrap: 'wrap',
+  },
+  left: {
+    flex: 1,
+    minWidth: '200px',
+  },
+  eyebrow: {
+    fontSize: '0.6rem',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '0.12em',
+    color: 'var(--gold)',
+    margin: '0 0 0.3rem',
+  },
+  title: {
+    fontSize: '1rem',
+    fontWeight: 700,
+    color: 'var(--text-primary)',
+    margin: '0 0 0.4rem',
+    letterSpacing: '-0.01em',
+  },
+  body: {
+    fontSize: '0.8rem',
+    color: 'var(--text-nav)',
+    margin: 0,
+    lineHeight: 1.55,
+  },
+  progressWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.75rem',
+    marginTop: '0.75rem',
+  },
+  progressTrack: {
+    flex: 1,
+    height: '4px',
+    background: 'rgba(255,255,255,0.08)',
+    borderRadius: '2px',
+    overflow: 'hidden',
+    maxWidth: '200px',
+  },
+  progressFill: {
+    height: '100%',
+    background: 'var(--gold)',
+    borderRadius: '2px',
+    transition: 'width 0.3s ease',
+  },
+  progressLabel: {
+    fontSize: '0.72rem',
+    color: 'var(--text-nav)',
+    whiteSpace: 'nowrap',
+  },
+  cta: {
+    display: 'inline-block',
+    background: 'var(--gold)',
+    color: '#0a0a0f',
+    fontSize: '0.82rem',
+    fontWeight: 700,
+    padding: '0.55rem 1.25rem',
+    borderRadius: '6px',
+    textDecoration: 'none',
+    flexShrink: 0,
+    letterSpacing: '0.01em',
+  },
+}
+
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 
 export default function Home() {
@@ -219,6 +367,9 @@ export default function Home() {
           <span style={styles.onlineLabel}>Live</span>
         </div>
       </div>
+
+      {/* Enrollment CTA — shown until enrollment is complete */}
+      <EnrollCTA participantId={participant?.id} />
 
       {/* Metric grid */}
       {loading ? (
