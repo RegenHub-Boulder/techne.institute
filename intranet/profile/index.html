@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Profile — RegenHub Intranet</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="/intranet/nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  :root {
+    --bg:           #0f0f0f;
+    --surface:      #1a1a1a;
+    --surface-2:    #141414;
+    --border:       #363636;
+    --border-strong:#484848;
+    --terra:        #c4956a;
+    --terra-text:   #c4956a;
+    --terra-dim:    rgba(196,149,106,0.12);
+    --heading:      #e8e0d8;
+    --text:         #d4d4d4;
+    --muted:        #999;
+    --faint:        #666;
+  }
+  [data-mode="light"] {
+    --bg:           #faf7f2;
+    --surface:      #f3ede4;
+    --surface-2:    #efe8dc;
+    --border:       #ccc4b8;
+    --border-strong:#b8a898;
+    --terra:        #c4956a;
+    --terra-text:   #96704a;
+    --terra-dim:    rgba(196,149,106,0.14);
+    --heading:      #2d2620;
+    --text:         #3d342b;
+    --muted:        #6b5f53;
+    --faint:        #968774;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    transition: background 300ms ease, color 300ms ease;
+  }
+
+  .page-shell {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .page-eyebrow {
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--terra-text);
+    opacity: 0.8;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--heading);
+    margin-bottom: 6px;
+  }
+
+  .page-sub {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-bottom: 36px;
+    line-height: 1.6;
+  }
+
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .section-head {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .section-title {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--terra-text);
+    opacity: 0.85;
+  }
+  .section-note {
+    font-size: 9.5px;
+    color: var(--faint);
+    letter-spacing: 0.04em;
+  }
+
+  .section-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 500px) { .field-row { grid-template-columns: 1fr; } }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label {
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 8px 10px;
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 150ms;
+    resize: vertical;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--terra);
+  }
+  .field input::placeholder,
+  .field textarea::placeholder { color: var(--faint); }
+
+  .field input[readonly] {
+    opacity: 0.55;
+    cursor: default;
+  }
+
+  .field-hint {
+    font-size: 9.5px;
+    color: var(--faint);
+    letter-spacing: 0.04em;
+  }
+
+  .avatar-preview {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--terra);
+    color: #0f0f0f;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0;
+    flex-shrink: 0;
+    border: 2px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .avatar-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .btn-save {
+    padding: 9px 20px;
+    background: var(--terra);
+    border: none;
+    border-radius: 5px;
+    color: #0f0f0f;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 150ms;
+  }
+  .btn-save:hover { opacity: 0.88; }
+  .btn-save:disabled { opacity: 0.5; cursor: default; }
+
+  .btn-secondary {
+    padding: 9px 16px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 150ms, border-color 150ms;
+  }
+  .btn-secondary:hover { color: var(--text); border-color: var(--border-strong); }
+
+  .save-msg {
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    display: none;
+  }
+  .save-msg.ok  { display: inline; color: #6ae89a; }
+  .save-msg.err { display: inline; color: #e89090; }
+
+  .info-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .info-label {
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .info-val { font-size: 12px; color: var(--heading); text-align: right; word-break: break-all; }
+  .info-val.muted { color: var(--muted); font-size: 11px; }
+</style>
+</head>
+<body data-auth-required>
+
+<div class="page-shell">
+  <p class="page-eyebrow">Account</p>
+  <h1>Edit Profile</h1>
+  <p class="page-sub" id="page-sub">Loading account details…</p>
+
+  <div id="profile-content" style="display:none;">
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-title">Identity</span>
+      </div>
+      <div class="section-body">
+        <div class="avatar-row">
+          <div class="avatar-preview" id="avatar-preview">?</div>
+          <div style="flex:1;">
+            <p style="font-size:11px;color:var(--muted);line-height:1.6;">
+              Your avatar is generated from your initials. Display name changes update it automatically.
+            </p>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-name">Display name</label>
+            <input type="text" id="f-name" placeholder="Your name" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="f-role">Role / title</label>
+            <input type="text" id="f-role" placeholder="e.g. Ventures Steward">
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-location">Location</label>
+          <input type="text" id="f-location" placeholder="e.g. Boulder, CO">
+        </div>
+        <div class="field">
+          <label for="f-bio">Short bio</label>
+          <textarea id="f-bio" rows="3" placeholder="One or two sentences about you and your work…"></textarea>
+          <span class="field-hint">Visible to other intranet members.</span>
+        </div>
+        <div class="actions">
+          <button class="btn-save" id="save-btn">Save changes</button>
+          <a class="btn-secondary" href="/intranet/">Back to CIS</a>
+          <span class="save-msg" id="save-msg"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-title">Account</span>
+        <span class="section-note">Read-only</span>
+      </div>
+      <div class="section-body">
+        <div class="info-row">
+          <span class="info-label">Email</span>
+          <span class="info-val" id="info-email">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">User ID</span>
+          <span class="info-val muted" id="info-uid">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Last sign-in</span>
+          <span class="info-val muted" id="info-signin">—</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /profile-content -->
+</div><!-- /page-shell -->
+
+<script>
+var AUTH_URL = 'https://hvbdpgkdcdskhpbdeeim.supabase.co';
+var AUTH_KEY = 'sb_publishable_kB69BlNpkNhOllwGMOE6xg_i4l1VHMv';
+
+function getInitials(str) {
+  if (!str) return '?';
+  var clean = str.split('@')[0];
+  var parts = clean.split(/[\s._\-]+/).filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  return clean.slice(0, 2).toUpperCase();
+}
+
+function formatDate(iso) {
+  if (!iso) return '—';
+  try {
+    return new Date(iso).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  } catch(e) { return iso; }
+}
+
+/* Wait for supabase to be available (loaded by nav.js) */
+function whenReady(fn) {
+  if (window.supabase) { fn(); return; }
+  var t = setInterval(function() {
+    if (window.supabase) { clearInterval(t); fn(); }
+  }, 50);
+}
+
+whenReady(function() {
+  var sb = supabase.createClient(AUTH_URL, AUTH_KEY);
+
+  sb.auth.getSession().then(function(result) {
+    var session = result.data && result.data.session;
+    if (!session) {
+      window.location.href = '/intranet/login/?redirect=/intranet/profile/';
+      return;
+    }
+
+    var user = session.user;
+    var meta = user.user_metadata || {};
+
+    /* Populate account section */
+    document.getElementById('info-email').textContent = user.email || '—';
+    document.getElementById('info-uid').textContent = user.id || '—';
+    document.getElementById('info-signin').textContent = formatDate(user.last_sign_in_at);
+
+    /* Populate form */
+    var name = meta.full_name || meta.name || '';
+    var role = meta.role || '';
+    var location = meta.location || '';
+    var bio = meta.bio || '';
+
+    document.getElementById('f-name').value = name;
+    document.getElementById('f-role').value = role;
+    document.getElementById('f-location').value = location;
+    document.getElementById('f-bio').value = bio;
+
+    function updateAvatar() {
+      var n = document.getElementById('f-name').value.trim() || user.email || '';
+      document.getElementById('avatar-preview').textContent = getInitials(n);
+    }
+    document.getElementById('f-name').addEventListener('input', updateAvatar);
+    updateAvatar();
+
+    document.getElementById('page-sub').textContent = 'Update your display name, role, and bio.';
+    document.getElementById('profile-content').style.display = '';
+
+    /* Save */
+    var saveBtn = document.getElementById('save-btn');
+    var saveMsg = document.getElementById('save-msg');
+
+    saveBtn.addEventListener('click', function() {
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving…';
+      saveMsg.className = 'save-msg';
+      saveMsg.textContent = '';
+
+      var updates = {
+        data: {
+          full_name: document.getElementById('f-name').value.trim(),
+          role: document.getElementById('f-role').value.trim(),
+          location: document.getElementById('f-location').value.trim(),
+          bio: document.getElementById('f-bio').value.trim()
+        }
+      };
+
+      sb.auth.updateUser(updates).then(function(r) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save changes';
+        if (r.error) {
+          saveMsg.className = 'save-msg err';
+          saveMsg.textContent = r.error.message || 'Save failed.';
+        } else {
+          saveMsg.className = 'save-msg ok';
+          saveMsg.textContent = 'Saved.';
+          setTimeout(function() { saveMsg.textContent = ''; saveMsg.className = 'save-msg'; }, 2500);
+          /* Update nav display */
+          if (window.cisUser) {
+            var display = updates.data.full_name || user.email.split('@')[0];
+            var nameEl = document.getElementById('cn-uname');
+            var avatarEl = document.getElementById('cn-avatar');
+            if (nameEl) nameEl.textContent = display;
+            if (avatarEl) avatarEl.textContent = getInitials(display);
+          }
+        }
+      });
+    });
+  });
+});
+</script>
+</body>
+</html>

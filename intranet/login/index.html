@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Sign in — RegenHub Intranet</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  :root {
+    --bg:      #0f0f0f;
+    --surface: #1a1a1a;
+    --border:  #333;
+    --terra:   #c4956a;
+    --text:    #d4d4d4;
+    --muted:   #888;
+    --heading: #e8e0d8;
+  }
+  [data-mode="light"] {
+    --bg:      #faf7f2;
+    --surface: #f3ede4;
+    --border:  #ccc4b8;
+    --terra:   #c4956a;
+    --text:    #3d342b;
+    --muted:   #7a6d62;
+    --heading: #2d2620;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .gate {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 380px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px 36px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .brand-mark {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 28px;
+    color: var(--terra);
+    line-height: 1;
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .brand-name {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--heading);
+  }
+  .brand-sub {
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  h1 {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--heading);
+    margin-bottom: 8px;
+  }
+  .sub {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  label {
+    display: block;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  input[type="email"] {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 150ms;
+    margin-bottom: 16px;
+  }
+  input[type="email"]:focus {
+    border-color: var(--terra);
+  }
+  input[type="email"]::placeholder { color: var(--muted); }
+
+  button[type="submit"] {
+    width: 100%;
+    padding: 11px 16px;
+    background: var(--terra);
+    border: none;
+    border-radius: 6px;
+    color: #0f0f0f;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 150ms;
+  }
+  button[type="submit"]:hover { opacity: 0.88; }
+  button[type="submit"]:disabled { opacity: 0.5; cursor: default; }
+
+  .msg {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    line-height: 1.6;
+    display: none;
+  }
+  .msg.success {
+    display: block;
+    background: rgba(74, 222, 128, 0.08);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    color: #6ae89a;
+  }
+  .msg.error {
+    display: block;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #e89090;
+  }
+
+  .footer-note {
+    margin-top: 28px;
+    font-size: 9.5px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .footer-note a { color: var(--terra); text-decoration: none; }
+  .footer-note a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="gate">
+  <div class="card">
+    <div class="brand">
+      <span class="brand-mark">τ</span>
+      <div class="brand-text">
+        <span class="brand-name">RegenHub, LCA</span>
+        <span class="brand-sub">Member Intranet</span>
+      </div>
+    </div>
+
+    <h1>Sign in</h1>
+    <p class="sub">Enter your email address. We'll send you a one-time sign-in link — no password required.</p>
+
+    <form id="login-form">
+      <label for="email">Email address</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+      <button type="submit" id="submit-btn">Send sign-in link</button>
+    </form>
+
+    <div class="msg" id="msg"></div>
+
+    <p class="footer-note">
+      Restricted to RegenHub organizers &amp; members.<br>
+      Questions? <a href="mailto:todd@techne.institute">Contact Todd</a>
+    </p>
+  </div>
+</div>
+
+<script>
+var AUTH_URL = 'https://hvbdpgkdcdskhpbdeeim.supabase.co';
+var AUTH_KEY = 'sb_publishable_kB69BlNpkNhOllwGMOE6xg_i4l1VHMv';
+var sb = supabase.createClient(AUTH_URL, AUTH_KEY);
+
+/* Theme */
+var savedTheme = localStorage.getItem('cis-theme');
+if (savedTheme) document.documentElement.setAttribute('data-mode', savedTheme);
+
+/* If already signed in, redirect */
+var params = new URLSearchParams(window.location.search);
+var redirectTo = params.get('redirect') || '/intranet/';
+
+sb.auth.getSession().then(function(r) {
+  if (r.data && r.data.session) {
+    window.location.href = redirectTo;
+  }
+});
+
+var form = document.getElementById('login-form');
+var submitBtn = document.getElementById('submit-btn');
+var msgEl = document.getElementById('msg');
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  var email = document.getElementById('email').value.trim();
+  if (!email) return;
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending…';
+  msgEl.className = 'msg';
+  msgEl.textContent = '';
+
+  /* Magic link redirect must be an allowed URL in Supabase dashboard */
+  var redirectUrl = window.location.origin + redirectTo;
+
+  sb.auth.signInWithOtp({
+    email: email,
+    options: { emailRedirectTo: redirectUrl }
+  }).then(function(result) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Send sign-in link';
+    if (result.error) {
+      msgEl.className = 'msg error';
+      msgEl.textContent = result.error.message || 'Sign-in failed. Try again.';
+    } else {
+      msgEl.className = 'msg success';
+      msgEl.textContent = 'Check your email — a sign-in link is on its way to ' + email + '.';
+      form.reset();
+    }
+  });
+});
+</script>
+</body>
+</html>
