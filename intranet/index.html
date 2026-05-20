@@ -1,715 +1,182 @@
-<!DOCTYPE html>
-<html lang="en" data-mode="dark">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex,nofollow">
-<title>Common Information System — RegenHub, LCA</title>
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg:           #0f0f0f;
-    --surface:      #1a1a1a;
-    --surface-2:    #141414;
-    --border:       #363636;
-    --border-strong:#484848;
-    --terra:        #c4956a;
-    --terra-text:   #c4956a;
-    --terra-dim:    rgba(196, 149, 106, 0.12);
-    --terra-glow:   rgba(196, 149, 106, 0.05);
-    --heading:      #e8e0d8;
-    --text:         #d4d4d4;
-    --muted:        #999;
-    --faint:        #666;
-    --very-faint:   #444;
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Techne Intranet</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="stylesheet" href="/assets/tokens.css" />
+    <!-- Theme detection: runs before paint to prevent flash -->
+    <script>
+      (function() {
+        var s = localStorage.getItem('techne-theme');
+        if (s === 'light' || s === 'dark') {
+          document.documentElement.setAttribute('data-theme', s);
+        } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      /* ── HUD design tokens — co-op.us coordinate palette ────────────── */
+      :root {
+        /* ── App shell backgrounds ─────────────────── */
+        --app-bg:       #0c0c0c;   /* body / root bg — co-op.us --co-bg */
+        --hud-surface:  #111111;   /* sidebar bg */
+        --hud-bar:      #0c0c0c;   /* status bar bg — flush with bg */
+        --hud-panel:    #0c0c0c;   /* content panel bg */
+        --ink:          #111111;   /* deep panel bg */
+        --surface:      #161616;   /* page content bg — co-op.us --co-surface */
+        --panel:        #222222;   /* card / elevated bg — co-op.us --co-surface-hover */
+        --raised:       #2a2a2a;   /* raised element bg — co-op.us --co-surface-active */
 
-    --rea-resource:  #6ab0c4;
-    --rea-agent:     #a0c46a;
-    --rea-agreement: #c4956a;
-    --rea-event:     #c46ab0;
-    --rea-hub:       #6a8fc4;
+        /* ── Borders — visible, co-op.us standard ─── */
+        --hud-border:      #2a2a2a;   /* HUD panel border */
+        --hud-border-deep: #383838;   /* HUD elevated border — co-op.us --co-border */
+        --border-nav:      #2a2a2a;   /* nav section divider */
+        --border-mid:      #383838;   /* standard border — co-op.us --co-border */
+        --border-hud2:     #505050;   /* HUD deep border — co-op.us --co-border-hover */
 
-    --live:    #22c55e;
-    --partial: #3b82f6;
-    --synth:   #f59e0b;
-    --static:  #6b7280;
-  }
+        /* ── Glow washes ──────────────────────────── */
+        --hud-glow-ember:  rgba(196,149,106,0.10);
+        --hud-glow-green:  rgba(74,222,128,0.10);
+        --hud-glow-amber:  rgba(251,191,36,0.10);
+        --hud-glow-blue:   rgba(139,191,255,0.10);
 
-  [data-mode="light"] {
-    --bg:           #faf7f2;
-    --surface:      #f3ede4;
-    --surface-2:    #efe8dc;
-    --border:       #ccc4b8;
-    --border-strong:#b8a898;
-    --terra:        #c4956a;
-    --terra-text:   #96704a;
-    --terra-dim:    rgba(196, 149, 106, 0.14);
-    --terra-glow:   rgba(196, 149, 106, 0.07);
-    --heading:      #2d2620;
-    --text:         #3d342b;
-    --muted:        #6b5f53;
-    --faint:        #968774;
-    --very-faint:   #c4b69f;
-  }
+        /* ── Text — high contrast, co-op.us scale ──── */
+        --text-primary:  #f0f0f0;   /* co-op.us --co-text */
+        --text-page:     #f0f0f0;   /* page body text */
+        --text-warm:     #d0d0d0;   /* warm body text */
+        --text-display:  #f0f0f0;   /* display headings */
+        --text-muted:    #9a9a9a;   /* co-op.us --co-text-muted */
+        --text-accent:   #b8b8b8;   /* co-op.us --co-text-secondary */
+        --text-nav:      #9a9a9a;   /* nav item text — legible by default */
+        --text-mid:      #b8b8b8;   /* nav hover / mid — co-op.us --co-text-secondary */
+        --text-3a5a:     #707070;   /* raised text */
+        --text-subdim:   #707070;   /* subdued */
+        --text-dim:      #707070;   /* dim */
+        --text-ghost:    #505050;   /* ghost */
+        --text-soft:     #b8b8b8;   /* soft */
+        --text-ccc:      #cccccc;   /* lighter */
+        --text-dim2a40:  #505050;   /* very dim */
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition: none !important; animation: none !important; }
-  }
+        /* ── Hover overlays ───────────────────────── */
+        --hover-light:  rgba(255,255,255,0.05);
+        --hover-med:    rgba(255,255,255,0.08);
+        --hover-dim:    rgba(255,255,255,0.03);
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        /* ── Gold accent — unchanged ──────────────── */
+        --gold:    #c4956a;
+        --gold-06: rgba(196,149,106,0.06);
+        --gold-12: rgba(196,149,106,0.12);
+        --gold-15: rgba(196,149,106,0.15);
+        --gold-20: rgba(196,149,106,0.20);
+        --gold-25: rgba(196,149,106,0.25);
+        --gold-30: rgba(196,149,106,0.30);
+        --gold-40: rgba(196,149,106,0.40);
 
-  html, body {
-    min-height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12.5px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    transition: background 300ms ease, color 300ms ease;
-  }
+        /* ── Status palette — co-op.us vivid system ── */
+        --status-ok:      #4ade80;   /* teal-green — co-op.us success */
+        --status-ok-bg:   rgba(74,222,128,0.10);
+        --status-warn:    #fbbf24;   /* amber — co-op.us warning */
+        --status-warn-bg: rgba(251,191,36,0.10);
+        --status-err:     #ef4444;   /* red — co-op.us error */
+        --status-err-bg:  rgba(239,68,68,0.10);
+        --status-info:    #8bbfff;   /* blue — co-op.us info */
+        --status-info-bg: rgba(139,191,255,0.10);
+        --status-teal:    #7ccfb8;   /* teal accent — co-op.us */
+        --status-purple:  #a78bfa;   /* purple accent — co-op.us */
+        --status-orange:  #fb923c;   /* orange — co-op.us */
 
-  /* ── Typography ── */
-  .label {
-    font-size: 9.5px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--terra-text);
-    opacity: 0.85;
-    display: inline-block;
-  }
-  .label.muted { color: var(--faint); opacity: 0.9; }
-  .serif { font-family: 'Libre Baskerville', Georgia, serif; }
-  .num { font-feature-settings: 'tnum'; font-variant-numeric: tabular-nums; color: var(--heading); font-weight: 500; }
-  .rule { width: 36px; height: 1px; background: linear-gradient(90deg, var(--terra), transparent); margin: 8px 0 14px; }
-  .rule.full { width: 100%; }
+        /* ── HUD status aliases ───────────────────── */
+        --hud-status-live:  #4ade80;
+        --hud-status-warn:  #fbbf24;
+        --hud-status-error: #ef4444;
+        --hud-status-info:  #8bbfff;
 
-  /* ── Status pips ── */
-  .pip {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    display: inline-block;
-    flex-shrink: 0;
-    position: relative;
-    cursor: help;
-  }
-  .pip[data-status="live"]     { background: var(--live); }
-  .pip[data-status="partial"]  { background: var(--partial); }
-  .pip[data-status="synth"]    { background: var(--synth); }
-  .pip[data-status="static"]   { background: var(--static); }
-  .pip[data-status="off"]      { background: var(--border-strong); }
+        /* ── Typography — IBM Plex Mono first ──────── */
+        --hud-mono: 'IBM Plex Mono','JetBrains Mono','Fira Code',Consolas,monospace;
+        --hud-transition: 0.12s ease;
 
-  .pip::before {
-    content: attr(data-tip);
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--surface);
-    border: 1px solid var(--border-strong);
-    border-radius: 6px;
-    padding: 6px 10px;
-    font-size: 9.5px;
-    color: var(--text);
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 180ms ease;
-    z-index: 50;
-    font-family: 'IBM Plex Mono', monospace;
-  }
-  .pip:hover::before { opacity: 1; }
+        /* ── Z-index ──────────────────────────────── */
+        --hud-z-panel:    0;
+        --hud-z-sidebar:  16;
+        --hud-z-backdrop: 15;
+        --hud-z-bar:      20;
+      }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.85); }
-  }
-  .pip[data-status="live"] { animation: pulse 2.4s ease-in-out infinite; }
+      /* ── Light mode overrides — co-op.us light palette ───────────── */
+      [data-theme="light"] {
+        /* App shell */
+        --app-bg:       #f5f3f0;   /* co-op.us --co-bg light */
+        --hud-surface:  #fffdf9;   /* co-op.us --co-nav-bg light */
+        --hud-bar:      #fffdf9;
+        --hud-panel:    #f5f3f0;
+        --ink:          #ebe8e2;
+        --surface:      #ffffff;   /* co-op.us --co-surface light */
+        --panel:        #f0ede8;   /* co-op.us --co-surface-hover light */
+        --raised:       #e8e4dd;
 
-  /* ── Header ── */
-  .hud-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    height: 64px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 24px;
-    gap: 18px;
-    transition: background 300ms ease;
-  }
+        /* Borders */
+        --hud-border:      #d5cfc6;   /* co-op.us --co-border light */
+        --hud-border-deep: #c0b8ab;
+        --border-nav:      #ddd7ce;
+        --border-mid:      #d5cfc6;
+        --border-hud2:     #c0b8ab;
 
-  .header-left { display: flex; align-items: center; gap: 18px; }
+        /* Text */
+        --text-primary:  #1a1a1a;   /* co-op.us --co-text light */
+        --text-page:     #1a1a1a;
+        --text-warm:     #333333;
+        --text-display:  #1a1a1a;
+        --text-muted:    #888888;   /* co-op.us --co-text-muted light */
+        --text-accent:   #555555;
+        --text-nav:      #555555;
+        --text-mid:      #666666;
+        --text-3a5a:     #888888;
+        --text-subdim:   #777777;
+        --text-dim:      #888888;
+        --text-ghost:    #aaaaaa;
+        --text-soft:     #777777;
+        --text-ccc:      #999999;
+        --text-dim2a40:  #aaaaaa;
 
-  .brand { display: flex; align-items: center; gap: 14px; }
-  .brand-mark {
-    width: 28px; height: 28px;
-    border: 1px solid var(--terra);
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--terra-text);
-    font-family: 'Libre Baskerville', serif;
-    font-style: italic; font-weight: 700; font-size: 14px;
-    background: var(--terra-dim);
-    text-decoration: none;
-    transition: background 0.15s;
-    flex-shrink: 0;
-  }
-  .brand-mark:hover { background: rgba(196,149,106,0.20); }
-  .brand-text { display: flex; flex-direction: column; line-height: 1.2; }
-  .brand-name { font-family: 'Libre Baskerville', serif; font-size: 14.5px; color: var(--heading); letter-spacing: -0.01em; }
-  .brand-sub { font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+        /* Gold — darker for contrast on light */
+        --gold: #a07850;
 
-  .header-badges { display: flex; gap: 8px; align-items: center; }
-  .hbadge {
-    font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--muted);
-    padding: 4px 10px;
-    border: 1px solid var(--border-strong);
-    border-radius: 4px;
-    display: flex; align-items: center; gap: 6px;
-    background: var(--surface-2);
-    transition: border-color 0.15s, color 0.15s;
-  }
-  .hbadge.active { color: var(--terra-text); border-color: rgba(196,149,106,0.5); background: var(--terra-dim); }
-  .hbadge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--terra); }
-  .hbadge-dot.live { animation: pulse 2.4s ease-in-out infinite; }
+        /* Status — same vivid colors work on light too */
+        --status-ok:      #16a34a;
+        --status-ok-bg:   rgba(22,163,74,0.08);
+        --status-warn:    #d97706;
+        --status-warn-bg: rgba(217,119,6,0.08);
+        --status-err:     #dc2626;
+        --status-err-bg:  rgba(220,38,38,0.08);
+        --status-info:    #2563eb;
+        --status-info-bg: rgba(37,99,235,0.08);
 
-  .header-right { display: flex; align-items: center; gap: 12px; }
+        /* Hover overlays */
+        --hover-light: rgba(0,0,0,0.03);
+        --hover-med:   rgba(0,0,0,0.05);
+        --hover-dim:   rgba(0,0,0,0.02);
+      }
 
-  .mode-btn {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase;
-    background: none; border: 1px solid var(--border-strong);
-    color: var(--faint); border-radius: 4px;
-    padding: 5px 10px; cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
-    min-height: 28px;
-  }
-  .mode-btn:hover { color: var(--terra-text); border-color: rgba(196,149,106,0.5); }
-
-  /* ── Page shell ── */
-  /* Border as background gives 1px gap between panes */
-  .page-shell {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 28px 24px 64px;
-  }
-
-  /* ── Section label row ── */
-  .section-label {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-    margin-top: 28px;
-  }
-  .section-label:first-child { margin-top: 0; }
-  .section-label-line { flex: 1; height: 1px; background: var(--border); }
-
-  /* ── Module list ── */
-  .module-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .module-row {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    display: flex;
-    align-items: stretch;
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    min-height: 76px;
-    overflow: hidden;
-  }
-  .module-row:hover { border-color: var(--border-strong); background: var(--surface-2); }
-  .module-row.draft { opacity: 0.45; pointer-events: none; }
-
-  .module-accent {
-    width: 3px;
-    flex-shrink: 0;
-    background: var(--row-color, var(--border-strong));
-    border-radius: 0;
-  }
-
-  .module-body {
-    padding: 14px 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    min-width: 0;
-    flex: 1;
-  }
-
-  .module-top {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .module-name {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 15px;
-    color: var(--heading);
-    letter-spacing: -0.01em;
-    font-weight: 400;
-  }
-  .module-rea {
-    font-size: 9px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--row-color, var(--faint));
-    opacity: 0.85;
-  }
-  .module-desc {
-    font-size: 11.5px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-  .module-links {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-top: 4px;
-  }
-  .module-link {
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    color: var(--terra-text);
-    text-decoration: none;
-    padding: 2px 8px;
-    border: 1px solid rgba(196,149,106,0.35);
-    border-radius: 3px;
-    transition: background 0.12s;
-    pointer-events: auto;
-  }
-  .module-link:hover { background: var(--terra-dim); }
-  .module-link.sec {
-    color: var(--muted);
-    border-color: var(--border-strong);
-  }
-  .module-link.sec:hover { background: var(--surface-2); color: var(--text); }
-
-  .module-side {
-    padding: 14px 18px 14px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 8px;
-    min-width: 90px;
-    flex-shrink: 0;
-  }
-  .module-status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .module-chevron {
-    font-size: 14px;
-    color: var(--faint);
-    line-height: 1;
-    margin-top: auto;
-  }
-
-  /* REA color assignments */
-  .module-row[data-rea="resource"]  { --row-color: var(--rea-resource); }
-  .module-row[data-rea="agent"]     { --row-color: var(--rea-agent); }
-  .module-row[data-rea="agreement"] { --row-color: var(--rea-agreement); }
-  .module-row[data-rea="event"]     { --row-color: var(--rea-event); }
-  .module-row[data-rea="hub"]       { --row-color: var(--rea-hub); }
-  .module-row[data-rea="cross"]     { --row-color: var(--border-strong); }
-
-  /* ── Two-column layout for lower section ── */
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .ref-pane {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-  }
-
-  .ref-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 12px 14px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.15s, background 0.15s;
-  }
-  .ref-item:hover { border-color: rgba(196,149,106,0.4); background: var(--surface-2); }
-  .ref-item-name { font-size: 12px; color: var(--heading); font-weight: 500; }
-  .ref-item-sub { font-size: 10px; color: var(--muted); line-height: 1.5; }
-  .ref-item-tag {
-    font-size: 9px; letter-spacing: 0.10em; text-transform: uppercase;
-    padding: 1px 6px; border-radius: 2px;
-    border: 1px solid rgba(196,149,106,0.35); color: var(--terra-text);
-    background: var(--terra-dim); display: inline-block; width: fit-content;
-    margin-top: 2px;
-  }
-
-  .state-pane {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-  }
-
-  .state-row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .state-kv {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .state-kv:last-child { border-bottom: none; }
-  .state-k { font-size: 10px; color: var(--faint); letter-spacing: 0.06em; }
-  .state-v { font-size: 11px; color: var(--heading); text-align: right; }
-
-  /* ── Footer ── */
-  .hud-footer {
-    margin-top: 32px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .footer-l { font-size: 9.5px; color: var(--very-faint); letter-spacing: 0.08em; text-transform: uppercase; }
-  .footer-r { font-size: 9.5px; color: var(--very-faint); display: flex; gap: 16px; }
-  .footer-r a { color: var(--faint); text-decoration: none; }
-  .footer-r a:hover { color: var(--terra-text); }
-
-  /* ── Responsive ── */
-  @media (max-width: 820px) {
-    .header-badges { display: none; }
-    .two-col { grid-template-columns: 1fr; }
-    .module-side { min-width: 70px; }
-  }
-  @media (max-width: 600px) {
-    .page-shell { padding: 20px 16px 48px; }
-    .hud-header { padding: 0 16px; height: 56px; }
-    .brand-text { display: none; }
-    .module-name { font-size: 14px; }
-    .module-side { min-width: 60px; }
-    .module-desc { font-size: 11px; }
-  }
-  @media (max-width: 400px) {
-    .module-side { display: none; }
-  }
-</style>
-</head>
-<body>
-
-<!-- ── Header ── -->
-<header class="hud-header">
-  <div class="header-left">
-    <a class="brand-mark serif" href="/" title="Techne Institute">T</a>
-    <div class="brand-text">
-      <span class="brand-name">RegenHub, LCA</span>
-      <span class="brand-sub">Member Intranet</span>
-    </div>
-
-    <div class="header-badges">
-      <div class="hbadge active">
-        <div class="hbadge-dot live"></div>
-        CIS v0.2
-      </div>
-      <div class="hbadge">
-        <div class="hbadge-dot" style="background:var(--static);"></div>
-        Boulder · MT
-      </div>
-    </div>
-  </div>
-
-  <div class="header-right">
-    <button class="mode-btn" id="modeBtn">Light</button>
-  </div>
-</header>
-
-<!-- ── Page ── -->
-<div class="page-shell">
-
-  <!-- Primary nav section -->
-  <div class="section-label">
-    <span class="label muted">Common Information System</span>
-    <div class="section-label-line"></div>
-    <span class="label muted" style="flex-shrink:0;">Phase 01 · 5 live</span>
-  </div>
-
-  <div class="module-list">
-
-    <!-- Home -->
-    <div class="module-row draft" data-rea="cross">
-      <div class="module-accent"></div>
-      <div class="module-body">
-        <div class="module-top">
-          <span class="module-name">Home</span>
-          <span class="module-rea">cross-cutting</span>
-        </div>
-        <div class="module-desc">Personal dashboard — action items, upcoming meetings, recent notices. The surface you land on when you open the intranet.</div>
-      </div>
-      <div class="module-side">
-        <div class="module-status">
-          <span class="pip" data-status="off" data-tip="Forthcoming — not yet built"></span>
-          forthcoming
-        </div>
-      </div>
-    </div>
-
-    <!-- Treasury -->
-    <div class="module-row" data-rea="resource" onclick="window.location.href='/intranet/treasury/'" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='/intranet/treasury/'">
-      <div class="module-accent"></div>
-      <div class="module-body">
-        <div class="module-top">
-          <span class="module-name">Treasury</span>
-          <span class="module-rea">Resource</span>
-        </div>
-        <div class="module-desc">Capital account, stock ledger, distributions, tax summary. The cooperative's financial state held against the bylaws.</div>
-        <div class="module-links">
-          <a class="module-link sec" href="/public/treasury/" onclick="event.stopPropagation()">Public Treasury ↗</a>
-        </div>
-      </div>
-      <div class="module-side">
-        <div class="module-status">
-          <span class="pip" data-status="live" data-tip="Live — Supabase-backed, real data"></span>
-          live
-        </div>
-        <div class="module-chevron">›</div>
-      </div>
-    </div>
-
-    <!-- Activity -->
-    <div class="module-row" data-rea="event" onclick="window.location.href='/intranet/activity/'" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='/intranet/activity/'">
-      <div class="module-accent"></div>
-      <div class="module-body">
-        <div class="module-top">
-          <span class="module-name">Activity</span>
-          <span class="module-rea">Event</span>
-        </div>
-        <div class="module-desc">Work ledger — human and agent coordination, made legible. Five-phase arc: Discovery → Proposal → Negotiation → Execution → Synthesis.</div>
-        <div class="module-links">
-          <a class="module-link sec" href="/work/" onclick="event.stopPropagation()">PRD ↗</a>
-        </div>
-      </div>
-      <div class="module-side">
-        <div class="module-status">
-          <span class="pip" data-status="live" data-tip="Live — Work Ledger v0.1 on gxyeobogqfubgzklmxwt"></span>
-          live
-        </div>
-        <div class="module-chevron">›</div>
-      </div>
-    </div>
-
-    <!-- People -->
-    <div class="module-row" data-rea="agent" onclick="window.location.href='/intranet/people/'" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='/intranet/people/'">
-      <div class="module-accent"></div>
-      <div class="module-body">
-        <div class="module-top">
-          <span class="module-name">People</span>
-          <span class="module-rea">Agent</span>
-        </div>
-        <div class="module-desc">Member directory, board, committees, Nou. The cooperative's agent layer — who holds standing, what capacity, under what agreement.</div>
-        <div class="module-links">
-          <a class="module-link" href="/intranet/people/" onclick="event.stopPropagation()">Member Directory →</a>
-          <a class="module-link sec" href="/intranet/board/" onclick="event.stopPropagation()">Board HUD →</a>
-        </div>
-      </div>
-      <div class="module-side">
-        <div class="module-status">
-          <span class="pip" data-status="live" data-tip="Live — Phase 01 member directory on gxyeobogqfubgzklmxwt"></span>
-          live
-        </div>
-        <div class="module-chevron">›</div>
-      </div>
-    </div>
-
-    <!-- Agreements -->
-    <div class="module-row" data-rea="agreement" onclick="window.location.href='/intranet/agreements/'" role="link" tabindex="0" onkeydown="if(event.key==='Enter')window.location.href='/intranet/agreements/'">
-      <div class="module-accent"></div>
-      <div class="module-body">
-        <div class="module-top">
-          <span class="module-name">Agreements</span>
-          <span class="module-rea">Agreement</span>
-        </div>
-        <div class="module-desc">Bylaws, board policies, member agreements, minutes, benefit reports, the EE grant. Versioned, signed, searchable.</div>
-        <div class="module-links">
-          <a class="module-link" href="/intranet/agreements/" onclick="event.stopPropagation()">Agreement Registry →</a>
-        </div>
-      </div>
-      <div class="module-side">
-        <div class="module-status">
-          <span class="pip" data-status="live" data-tip="Live — Phase 01 governing_documents view on gxyeobogqfubgzklmxwt"></span>
-          live
-        </div>
-        <div class="module-chevron">›</div>
-      </div>
-    </div>
-
-    <!-- Hub -->
-    <div class="module-row" data-rea="hub" style="pointer-events:none;opacity:0.6;">
-      <div class="module-accent"></div>
-      <div class="module-body">
-        <div class="module-top">
-          <span class="module-name">Hub</span>
-          <span class="module-rea">Hub Operations · EE Grant</span>
-        </div>
-        <div class="module-desc">Co-working sessions, event calendar, application status, KPI dashboard. Visible to Hub Members, Hub Visitors, and EE Liaisons.</div>
-        <div class="module-links">
-          <a class="module-link sec" href="/cis/ops/" style="pointer-events:auto" onclick="event.stopPropagation()">Hub Ops PRD ↗</a>
-        </div>
-      </div>
-      <div class="module-side">
-        <div class="module-status">
-          <span class="pip" data-status="off" data-tip="Role-conditional — forthcoming; requires Hub Member or EE Liaison standing"></span>
-          role-gated
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /module-list -->
-
-  <!-- Reference + System state -->
-  <div class="section-label" style="margin-top:32px;">
-    <span class="label muted">Reference &amp; state</span>
-    <div class="section-label-line"></div>
-  </div>
-
-  <div class="two-col">
-
-    <!-- Reference docs -->
-    <div class="ref-pane">
-      <div class="rule"></div>
-      <a class="ref-item" href="/cis/">
-        <div class="ref-item-name">CIS PRD</div>
-        <div class="ref-item-sub">17 sections. Principles, CROPS pathway, information model, identity, modules, roadmap. The specification this navigation implements.</div>
-        <span class="ref-item-tag">v0.2</span>
-      </a>
-      <a class="ref-item" href="/cis/ops/">
-        <div class="ref-item-name">Hub Operations PRD</div>
-        <div class="ref-item-sub">Operational surface for the Boulder Ethereum Community Hub. KPI obligations, grant milestones, CROPS Stage 02→03 targets.</div>
-        <span class="ref-item-tag">v0.1</span>
-      </a>
-      <a class="ref-item" href="/work/">
-        <div class="ref-item-name">Work Ledger PRD</div>
-        <div class="ref-item-sub">Standalone coordination surface. Two-table model, five-phase arc, Coordination API, GitHub ingest. CIS Activity module specification.</div>
-        <span class="ref-item-tag">v0.2</span>
-      </a>
-    </div>
-
-    <!-- System state -->
-    <div class="state-pane">
-      <div class="rule"></div>
-      <div class="state-row">
-        <span class="label muted">System</span>
-        <div class="state-kv">
-          <span class="state-k">Entity</span>
-          <span class="state-v num">RegenHub, LCA</span>
-        </div>
-        <div class="state-kv">
-          <span class="state-k">Filing</span>
-          <span class="state-v num">#20261215588</span>
-        </div>
-        <div class="state-kv">
-          <span class="state-k">Type</span>
-          <span class="state-v">Colorado LCA</span>
-        </div>
-        <div class="state-kv">
-          <span class="state-k">Location</span>
-          <span class="state-v">Boulder, CO</span>
-        </div>
-        <div class="state-kv">
-          <span class="state-k">CIS version</span>
-          <span class="state-v num">v0.2</span>
-        </div>
-        <div class="state-kv">
-          <span class="state-k">Phase</span>
-          <span class="state-v" style="font-size:10px;color:var(--terra-text);">01 · Agent &amp; Agreement</span>
-        </div>
-        <div class="state-kv">
-          <span class="state-k">CROPS</span>
-          <span class="state-v" style="font-size:10px;">CR=02 · O=03 · P=02 · S=02</span>
-        </div>
-        <div class="state-kv">
-          <span class="state-k">Modules live</span>
-          <span class="state-v num">5 of 6</span>
-        </div>
-        <div class="state-kv">
-          <span class="state-k">Intelligence</span>
-          <span class="state-v" style="display:flex;align-items:center;gap:6px;justify-content:flex-end;">
-            <span class="pip" data-status="live" style="animation-duration:2.4s;" data-tip="Nou is active"></span>
-            Nou · ERC-8004:2202
-          </span>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /two-col -->
-
-  <!-- Footer -->
-  <footer class="hud-footer">
-    <div class="footer-l">RegenHub, LCA · Boulder, Colorado · #20261215588</div>
-    <div class="footer-r">
-      <a href="/cis/">CIS PRD v0.2</a>
-      <a href="/tree/">Site index</a>
-      <a href="/">Techne.institute</a>
-    </div>
-  </footer>
-
-</div><!-- /page-shell -->
-
-<script>
-  const root = document.documentElement;
-  const btn = document.getElementById('modeBtn');
-
-  const stored = localStorage.getItem('cis-theme');
-  if (stored) root.setAttribute('data-mode', stored);
-  btn.textContent = root.getAttribute('data-mode') === 'dark' ? 'Light' : 'Dark';
-
-  btn.addEventListener('click', () => {
-    const next = root.getAttribute('data-mode') === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-mode', next);
-    localStorage.setItem('cis-theme', next);
-    btn.textContent = next === 'dark' ? 'Light' : 'Dark';
-  });
-</script>
-
-</body>
+      body {
+        margin: 0;
+        font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
+        background: var(--app-bg);
+        color: var(--text-primary);
+        min-height: 100vh;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+      #root { min-height: 100vh; }
+    </style>
+    <script type="module" crossorigin src="/intranet/assets/index-DMGcbQ4B.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
