@@ -136,7 +136,7 @@ function getStoredTheme() {
   return document.documentElement.getAttribute('data-theme') || 'dark'
 }
 
-export function HUDLayout({ children }) {
+export function HUDLayout({ children, banner }) {
   const { participant, displayName, signOut, isSteward } = useAuth()
   const isMobile = useIsMobile(768)
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -309,6 +309,7 @@ export function HUDLayout({ children }) {
 
         {/* Panel content */}
         <main style={s.panel}>
+          {banner}
           {children}
         </main>
       </div>
