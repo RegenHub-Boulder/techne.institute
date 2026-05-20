@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>樗 · Tree of Heaven — Spectator Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bg:         #0c0c0c;
+  --surface:    #141412;
+  --panel:      #1c1b18;
+  --raised:     #242220;
+  --border:     #2e2c28;
+  --border-hi:  #3e3c38;
+
+  --ink:        #f0ece2;
+  --ink-soft:   #c8c2b3;
+  --ink-fade:   #8a857a;
+  --ink-ghost:  #4a4844;
+
+  --terra:      #c4956a;
+  --terra-dim:  rgba(196,149,106,0.15);
+  --terra-text: #d4a87f;
+
+  --moss:       #7a9478;
+  --moss-dim:   rgba(122,148,120,0.15);
+  --moss-text:  #9ab298;
+
+  /* Role colors */
+  --arborist:   #7a9478;
+  --ecologist:  #6ab0a8;
+  --neighbor:   #c4956a;
+  --steward:    #a78bfa;
+  --planner:    #8bbfff;
+  --engine:     #4ade80;
+
+  /* Season accents */
+  --spring:  #7fb87a;
+  --summer:  #c4956a;
+  --fall:    #d4774a;
+  --winter:  #8bbfff;
+
+  --sans:    Inter, system-ui, sans-serif;
+  --mono:    'IBM Plex Mono', 'JetBrains Mono', monospace;
+  --serif:   'Libre Baskerville', Georgia, serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+.hdr {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.hdr-brand {
+  font-family: var(--serif);
+  font-size: 18px;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.hdr-glyph { font-family: 'Noto Serif SC', serif; color: var(--terra-text); font-size: 20px; }
+.hdr-latin { font-style: italic; font-size: 15px; color: var(--ink-soft); }
+
+.hdr-badge {
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 3px;
+  border: 1px solid rgba(196,149,106,0.3);
+  color: var(--terra-text); background: var(--terra-dim);
+}
+
+.hdr-season {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-fade);
+  transition: color 0.5s ease;
+}
+.season-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--spring);
+  transition: background 0.5s ease;
+}
+
+.hdr-turn {
+  font-size: 11px; color: var(--ink-fade); letter-spacing: 0.06em;
+  margin-left: 4px;
+}
+
+.hdr-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+
+.ctrl-btn {
+  background: var(--panel); border: 1px solid var(--border-hi);
+  color: var(--ink-fade); border-radius: 5px;
+  padding: 5px 12px; font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: border-color 0.15s, color 0.15s;
+}
+.ctrl-btn:hover { border-color: var(--terra); color: var(--terra-text); }
+.ctrl-btn.active { border-color: var(--terra); color: var(--terra-text); background: var(--terra-dim); }
+
+.speed-select {
+  background: var(--panel); border: 1px solid var(--border-hi);
+  color: var(--ink-fade); border-radius: 5px;
+  padding: 5px 8px; font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.08em;
+  cursor: pointer; outline: none;
+}
+
+/* ── Season progress bar ── */
+.season-bar {
+  height: 3px; background: var(--surface); flex-shrink: 0;
+  display: flex; gap: 1px; border-bottom: 1px solid var(--border);
+}
+.season-seg {
+  flex: 1; background: var(--panel); position: relative; overflow: hidden;
+}
+.season-seg-label {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+}
+.season-seg-fill {
+  height: 100%; width: 0%;
+  transition: width 0.3s ease;
+}
+.season-seg.spring .season-seg-fill  { background: var(--spring); }
+.season-seg.summer .season-seg-fill  { background: var(--summer); }
+.season-seg.fall   .season-seg-fill  { background: var(--fall); }
+.season-seg.winter .season-seg-fill  { background: var(--winter); }
+
+/* ── Main layout ── */
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 260px 1fr 280px;
+  gap: 1px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.pane {
+  background: var(--bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.pane-head {
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--border);
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-ghost); flex-shrink: 0;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.pane-head-val { color: var(--ink-fade); }
+
+/* ── Left: Tree pane ── */
+.tree-pane .tree-svg-wrap {
+  padding: 16px 12px 8px;
+  display: flex; justify-content: center;
+  flex-shrink: 0;
+}
+
+.tree-metrics {
+  padding: 0 14px 12px;
+  display: flex; flex-direction: column; gap: 6px;
+  flex-shrink: 0;
+}
+
+.metric {
+  display: flex; align-items: center; gap: 8px;
+}
+.metric-label {
+  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-ghost); width: 76px; flex-shrink: 0;
+}
+.metric-bar {
+  flex: 1; height: 4px; background: var(--panel); border-radius: 2px; overflow: hidden;
+}
+.metric-fill {
+  height: 100%; border-radius: 2px;
+  transition: width 0.8s ease;
+}
+.metric-fill.canopy    { background: var(--moss); }
+.metric-fill.health    { background: var(--engine); }
+.metric-fill.allelop   { background: var(--fall); }
+.metric-fill.native    { background: var(--ecologist); }
+.metric-val {
+  font-size: 10px; color: var(--ink-fade); width: 28px; text-align: right;
+}
+
+.sucker-count {
+  padding: 8px 14px;
+  font-size: 10px; color: var(--ink-ghost);
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+}
+.sucker-count span { color: var(--moss-text); }
+
+/* Plot observations */
+.plot-log {
+  flex: 1; overflow-y: auto; padding: 8px 14px;
+  display: flex; flex-direction: column; gap: 6px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.plot-entry {
+  font-size: 10px; color: var(--ink-fade); line-height: 1.5;
+  padding: 6px 8px;
+  background: var(--surface);
+  border-left: 2px solid var(--moss-dim);
+  border-radius: 0 4px 4px 0;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.plot-entry.visible { opacity: 1; transform: translateX(0); }
+.plot-entry .pe-season {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-ghost); margin-bottom: 2px;
+}
+
+/* ── Center: Feed pane ── */
+.feed-pane { }
+
+.feed-scroll {
+  flex: 1; overflow-y: auto; padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 8px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+
+/* Turn separator */
+.turn-sep {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-ghost); padding: 4px 0;
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.turn-sep.visible { opacity: 1; }
+.turn-sep::before, .turn-sep::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.turn-sep .ts-label { white-space: nowrap; }
+
+/* Phase separator */
+.phase-sep {
+  text-align: center;
+  font-family: var(--serif); font-style: italic;
+  font-size: 16px; color: var(--ink-ghost);
+  padding: 16px 0 8px;
+  opacity: 0; transition: opacity 0.4s ease;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.phase-sep.visible { opacity: 1; }
+.phase-sep-sub {
+  font-family: var(--mono); font-style: normal;
+  font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-ghost);
+}
+
+/* Action cards */
+.action-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 12px;
+  border-left: 3px solid var(--ink-ghost);
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.action-card.visible { opacity: 1; transform: translateY(0); }
+.action-card.arborist  { border-left-color: var(--arborist); }
+.action-card.ecologist { border-left-color: var(--ecologist); }
+.action-card.neighbor  { border-left-color: var(--neighbor); }
+.action-card.steward   { border-left-color: var(--steward); }
+.action-card.planner   { border-left-color: var(--planner); }
+.action-card.engine    { border-left-color: var(--engine); border-style: dashed; }
+.action-card.agreement { border-left-color: var(--terra); background: var(--terra-dim); }
+
+.ac-top {
+  display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;
+}
+.ac-role {
+  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+  font-weight: 600;
+}
+.ac-role.arborist  { color: var(--arborist); }
+.ac-role.ecologist { color: var(--ecologist); }
+.ac-role.neighbor  { color: var(--neighbor); }
+.ac-role.steward   { color: var(--steward); }
+.ac-role.planner   { color: var(--planner); }
+.ac-role.engine    { color: var(--engine); }
+.ac-role.agreement { color: var(--terra-text); }
+
+.ac-verb {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-ghost);
+  padding: 1px 5px; border-radius: 3px;
+  border: 1px solid var(--border-hi);
+}
+.ac-verb.tend    { border-color: rgba(122,148,120,0.4); color: var(--arborist); }
+.ac-verb.remove  { border-color: rgba(212,119,74,0.4); color: var(--fall); }
+.ac-verb.witness { border-color: rgba(106,176,168,0.4); color: var(--ecologist); }
+.ac-verb.let-be  { border-color: rgba(167,139,250,0.4); color: var(--steward); }
+.ac-verb.propose { border-color: rgba(196,149,106,0.4); color: var(--terra-text); }
+.ac-verb.vote    { border-color: rgba(139,191,255,0.4); color: var(--planner); }
+.ac-verb.system  { color: var(--ink-ghost); }
+
+.ac-desc { font-size: 11px; color: var(--ink-soft); line-height: 1.55; }
+
+/* Chat bubble */
+.chat-card {
+  background: var(--panel);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 4px;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+  border: 1px solid var(--border);
+}
+.chat-card.visible { opacity: 1; transform: translateY(0); }
+.chat-meta {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-ghost); margin-bottom: 3px;
+  display: flex; gap: 6px; align-items: center;
+}
+.chat-meta .from { font-weight: 600; }
+.chat-meta .to { color: var(--ink-ghost); }
+.chat-dm { color: var(--steward); }
+.chat-body { font-size: 11px; color: var(--ink-fade); font-style: italic; line-height: 1.5; }
+
+/* ── Right: Agreement pane ── */
+.agr-pane { }
+
+/* Player roster */
+.roster {
+  padding: 10px 12px 8px;
+  display: flex; flex-direction: column; gap: 5px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.agent-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 8px; border-radius: 5px;
+  background: var(--surface); border: 1px solid var(--border);
+  transition: border-color 0.3s ease;
+}
+.agent-row.active-turn { border-color: var(--border-hi); }
+
+.agent-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.agent-dot.arborist  { background: var(--arborist); }
+.agent-dot.ecologist { background: var(--ecologist); }
+.agent-dot.neighbor  { background: var(--neighbor); }
+.agent-dot.steward   { background: var(--steward); }
+.agent-dot.planner   { background: var(--planner); }
+
+.agent-name { font-size: 10px; color: var(--ink-soft); flex: 1; }
+.agent-trust {
+  font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 1px 5px; border-radius: 3px;
+  border: 1px solid var(--border-hi);
+  color: var(--ink-ghost);
+  transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+.agent-trust.known    { color: var(--ecologist); border-color: rgba(106,176,168,0.4); background: rgba(106,176,168,0.08); }
+.agent-trust.trusted  { color: var(--engine); border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.08); }
+.agent-last-action { font-size: 9px; color: var(--ink-ghost); }
+
+/* Agreement tracker */
+.agr-scroll {
+  flex: 1; overflow-y: auto; padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 8px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+
+.agr-clause {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; padding: 10px 12px;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.agr-clause.visible { opacity: 1; transform: translateY(0); }
+.agr-clause.passed { border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.05); }
+.agr-clause.failed { border-color: rgba(212,119,74,0.2); opacity: 0.5; }
+
+.clause-head {
+  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--terra-text); margin-bottom: 5px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.clause-status {
+  font-size: 8px; padding: 1px 6px; border-radius: 3px;
+}
+.clause-status.pending  { color: var(--ink-ghost); border: 1px solid var(--border-hi); }
+.clause-status.voting   { color: var(--planner); border: 1px solid rgba(139,191,255,0.3); }
+.clause-status.passed   { color: var(--engine); border: 1px solid rgba(74,222,128,0.4); background: rgba(74,222,128,0.1); }
+.clause-status.failed   { color: var(--fall); border: 1px solid rgba(212,119,74,0.3); }
+
+.clause-body { font-size: 11px; color: var(--ink-soft); line-height: 1.5; margin-bottom: 8px; }
+
+.vote-row {
+  display: flex; flex-wrap: wrap; gap: 4px;
+}
+.vote-pip {
+  font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 3px;
+  border: 1px solid var(--border);
+  color: var(--ink-ghost);
+  opacity: 0; transition: opacity 0.3s ease;
+  display: flex; align-items: center; gap: 3px;
+}
+.vote-pip.visible { opacity: 1; }
+.vote-pip.consent    { color: var(--engine); border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.08); }
+.vote-pip.dissent    { color: var(--fall); border-color: rgba(212,119,74,0.4); background: rgba(212,119,74,0.08); }
+.vote-pip.stand-aside { color: var(--steward); border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.08); }
+.vote-pip.recorded-dissent { color: var(--neighbor); border-color: rgba(196,149,106,0.4); background: rgba(196,149,106,0.08); }
+
+/* Final agreement artifact */
+.artifact {
+  margin: 8px 12px;
+  padding: 14px;
+  background: var(--terra-dim);
+  border: 1px solid rgba(196,149,106,0.4);
+  border-radius: 8px;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  flex-shrink: 0;
+}
+.artifact.visible { opacity: 1; transform: translateY(0); }
+.artifact-head {
+  font-family: var(--serif); font-style: italic;
+  font-size: 13px; color: var(--terra-text);
+  margin-bottom: 6px;
+}
+.artifact-merkle {
+  font-size: 9px; color: var(--ink-ghost); letter-spacing: 0.04em;
+  word-break: break-all; line-height: 1.5; margin-bottom: 6px;
+}
+.artifact-dissent {
+  font-size: 10px; color: var(--ink-fade); line-height: 1.5;
+  border-top: 1px solid rgba(196,149,106,0.2);
+  padding-top: 6px; margin-top: 6px;
+}
+.artifact-dissent strong { color: var(--neighbor); }
+
+/* ── Controls footer ── */
+.footer-bar {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 8px 20px;
+  display: flex; align-items: center; gap: 12px;
+  flex-shrink: 0;
+}
+.scrub {
+  flex: 1; height: 4px; background: var(--panel);
+  border-radius: 2px; cursor: pointer; position: relative;
+}
+.scrub-fill {
+  height: 100%; background: var(--terra); border-radius: 2px;
+  width: 0%; transition: width 0.3s ease;
+  pointer-events: none;
+}
+.scrub-label { font-size: 9px; color: var(--ink-ghost); letter-spacing: 0.06em; }
+
+/* ── Tree SVG ── */
+#tree-svg { width: 100%; max-width: 220px; height: 200px; }
+
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="hdr">
+  <div class="hdr-brand">
+    <span class="hdr-glyph">樗</span>
+    <span class="hdr-latin">Tree of Heaven</span>
+  </div>
+  <div class="hdr-badge">Spectator · Simulation</div>
+  <div class="hdr-season">
+    <div class="season-dot" id="seasonDot"></div>
+    <span id="seasonLabel">Spring</span>
+  </div>
+  <div class="hdr-turn" id="turnLabel">Turn 1 of 16</div>
+  <div class="hdr-right">
+    <select class="speed-select" id="speedSelect">
+      <option value="1200">Normal</option>
+      <option value="600">Fast</option>
+      <option value="2400">Slow</option>
+    </select>
+    <button class="ctrl-btn active" id="playBtn">⏸ Pause</button>
+    <button class="ctrl-btn" id="restartBtn">↺ Restart</button>
+  </div>
+</header>
+
+<!-- Season progress bar -->
+<div class="season-bar">
+  <div class="season-seg spring"><div class="season-seg-fill" id="fill-spring"></div></div>
+  <div class="season-seg summer"><div class="season-seg-fill" id="fill-summer"></div></div>
+  <div class="season-seg fall"><div class="season-seg-fill" id="fill-fall"></div></div>
+  <div class="season-seg winter"><div class="season-seg-fill" id="fill-winter"></div></div>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- Left: Tree -->
+  <div class="pane tree-pane">
+    <div class="pane-head">
+      <span>The Tree</span>
+      <span class="pane-head-val" id="treeAge">34 yrs · Ailanthus altissima</span>
+    </div>
+
+    <div class="tree-svg-wrap">
+      <svg id="tree-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Ground -->
+        <rect x="0" y="172" width="200" height="28" fill="#1c1b18"/>
+        <rect x="0" y="170" width="200" height="4" fill="#242220"/>
+
+        <!-- Roots / suckers (dynamic) -->
+        <g id="suckers"></g>
+
+        <!-- Trunk -->
+        <path d="M96,170 C94,140 93,110 95,85 C96,75 104,75 105,85 C107,110 106,140 104,170 Z"
+              fill="#5a4a35" id="trunk"/>
+
+        <!-- Canopy layers (dynamic opacity/color) -->
+        <g id="canopy">
+          <circle cx="100" cy="68" r="42" fill="#4f6a4d" opacity="0.9" id="canopy-main"/>
+          <circle cx="78"  cy="80" r="28" fill="#5a7a58" opacity="0.8" id="canopy-l"/>
+          <circle cx="122" cy="80" r="28" fill="#5a7a58" opacity="0.8" id="canopy-r"/>
+          <circle cx="100" cy="48" r="26" fill="#6a8a68" opacity="0.85" id="canopy-top"/>
+          <circle cx="88"  cy="60" r="18" fill="#7a9a78" opacity="0.6" id="canopy-tl"/>
+          <circle cx="114" cy="58" r="18" fill="#7a9a78" opacity="0.6" id="canopy-tr"/>
+        </g>
+
+        <!-- Samaras (appear in fall) -->
+        <g id="samaras" opacity="0"></g>
+
+        <!-- Allelopathy indicator -->
+        <ellipse cx="100" cy="168" rx="60" ry="6"
+                 fill="rgba(212,119,74,0)" id="allelopathy-glow"
+                 style="transition: fill 1s ease;"/>
+
+        <!-- Shade circle (summer) -->
+        <ellipse cx="100" cy="168" rx="55" ry="5"
+                 fill="rgba(0,0,0,0)" id="shade-circle"
+                 style="transition: fill 1s ease;"/>
+      </svg>
+    </div>
+
+    <div class="tree-metrics">
+      <div class="metric">
+        <span class="metric-label">Canopy</span>
+        <div class="metric-bar"><div class="metric-fill canopy" id="m-canopy" style="width:65%"></div></div>
+        <span class="metric-val" id="mv-canopy">65</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Health</span>
+        <div class="metric-bar"><div class="metric-fill health" id="m-health" style="width:82%"></div></div>
+        <span class="metric-val" id="mv-health">82</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Allelopathy</span>
+        <div class="metric-bar"><div class="metric-fill allelop" id="m-allelop" style="width:28%"></div></div>
+        <span class="metric-val" id="mv-allelop">28</span>
+      </div>
+      <div class="metric">
+        <span class="metric-label">Native cover</span>
+        <div class="metric-bar"><div class="metric-fill native" id="m-native" style="width:35%"></div></div>
+        <span class="metric-val" id="mv-native">35</span>
+      </div>
+    </div>
+
+    <div class="sucker-count">
+      Suckers: <span id="sucker-count">8</span> &nbsp;·&nbsp; Samaras: <span id="samara-count">0</span>
+    </div>
+
+    <div class="plot-log" id="plotLog">
+      <!-- Witness observations appear here -->
+    </div>
+  </div>
+
+  <!-- Center: Feed -->
+  <div class="pane feed-pane">
+    <div class="pane-head">
+      <span>Game Feed</span>
+      <span class="pane-head-val">All agents · spectator view</span>
+    </div>
+    <div class="feed-scroll" id="feedScroll">
+      <!-- Events stream in here -->
+    </div>
+  </div>
+
+  <!-- Right: Agreement -->
+  <div class="pane agr-pane">
+    <div class="pane-head">
+      <span>Roster</span>
+      <span class="pane-head-val">5 agents · FFA</span>
+    </div>
+
+    <div class="roster" id="roster">
+      <div class="agent-row" id="ar-arborist">
+        <div class="agent-dot arborist"></div>
+        <span class="agent-name">The Arborist</span>
+        <span class="agent-trust new" id="trust-arborist">new</span>
+      </div>
+      <div class="agent-row" id="ar-ecologist">
+        <div class="agent-dot ecologist"></div>
+        <span class="agent-name">The Ecologist</span>
+        <span class="agent-trust new" id="trust-ecologist">new</span>
+      </div>
+      <div class="agent-row" id="ar-neighbor">
+        <div class="agent-dot neighbor"></div>
+        <span class="agent-name">The Neighbor</span>
+        <span class="agent-trust new" id="trust-neighbor">new</span>
+      </div>
+      <div class="agent-row" id="ar-steward">
+        <div class="agent-dot steward"></div>
+        <span class="agent-name">The Steward</span>
+        <span class="agent-trust new" id="trust-steward">new</span>
+      </div>
+      <div class="agent-row" id="ar-planner">
+        <div class="agent-dot planner"></div>
+        <span class="agent-name">The Planner</span>
+        <span class="agent-trust new" id="trust-planner">new</span>
+      </div>
+    </div>
+
+    <div class="pane-head" style="border-top:1px solid var(--border);">
+      <span>Agreement Tracker</span>
+      <span class="pane-head-val" id="agrStatus">Winter · voting pending</span>
+    </div>
+
+    <div class="agr-scroll" id="agrScroll">
+      <!-- Clauses appear here -->
+    </div>
+
+    <div class="artifact" id="artifact">
+      <div class="artifact-head">Stewardship Agreement · 2026</div>
+      <div class="artifact-merkle" id="artifactMerkle"></div>
+      <div class="artifact-dissent">
+        <strong>Recorded dissent (Planner):</strong> "Development scenario requires clear lot by 2028. Stand-aside with this reservation noted in the record."
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- Footer -->
+<div class="footer-bar">
+  <span class="scrub-label" id="scrubLabel">0%</span>
+  <div class="scrub" id="scrub">
+    <div class="scrub-fill" id="scrubFill"></div>
+  </div>
+  <span class="scrub-label">games.coop · 樗 plugin proposal · spectator simulation</span>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// GAME SCRIPT — scripted 16-turn simulation
+// ─────────────────────────────────────────────
+
+const SCRIPT = [
+
+  // ════════════ SPRING ════════════
+  { id: 's0', type: 'phase', season: 'spring', text: 'Spring', sub: 'Leafing · suckers wake · native plants vulnerable' },
+
+  { id: 's1', type: 'turn', season: 'spring', turn: 1 },
+
+  { id: 'e1', type: 'action', season: 'spring', turn: 1, role: 'arborist', verb: 'tend', plot: true,
+    desc: 'Pruned 6 suckers from the root collar. Root pressure reduced. Structural health assessed: canopy load balanced.',
+    tree: { suckers: -2 },
+    plotEntry: 'S1 · Arborist: 6 suckers removed. Structural health: good.' },
+
+  { id: 'e2', type: 'action', season: 'spring', turn: 1, role: 'ecologist', verb: 'witness', plot: true,
+    desc: 'Soil pH 6.1 at drip line. Early allelopathy markers detected. Germination suppression zone: 3m radius from trunk.',
+    tree: {},
+    plotEntry: 'S1 · Ecologist: allelopathy index 0.3, suppression zone active.' },
+
+  { id: 'e2c', type: 'chat', season: 'spring', turn: 1, role: 'ecologist', scope: 'all',
+    msg: 'Allelopathy index: 0.3. Early but present. Worth watching as summer approaches.' },
+
+  { id: 'e3', type: 'action', season: 'spring', turn: 1, role: 'neighbor', verb: 'witness', plot: false,
+    desc: 'Full canopy emerging. Back wall shaded by mid-morning. Samaras not yet visible.',
+    tree: {} },
+
+  { id: 'e3c', type: 'chat', season: 'spring', turn: 1, role: 'neighbor', scope: 'all',
+    msg: 'Canopy is back. For what it\'s worth — I like the shade.' },
+
+  { id: 'e4', type: 'action', season: 'spring', turn: 1, role: 'steward', verb: 'let-be', plot: false,
+    desc: 'No action taken.' },
+
+  { id: 'e4c', type: 'chat', season: 'spring', turn: 1, role: 'steward', scope: 'all',
+    msg: 'The tree leafed without asking. As it has, thirty-four springs.' },
+
+  { id: 'e5', type: 'action', season: 'spring', turn: 1, role: 'planner', verb: 'let-be', plot: false,
+    desc: 'No action taken.' },
+
+  { id: 'e5c', type: 'chat', season: 'spring', turn: 1, role: 'planner', scope: 'all',
+    msg: 'Noting the development scenario. Will raise later.' },
+
+  { id: 's2', type: 'turn', season: 'spring', turn: 2 },
+
+  { id: 'e6', type: 'action', season: 'spring', turn: 2, role: 'arborist', verb: 'tend', plot: true,
+    desc: 'Mulched drip line. Water stress prevented. Health improving.',
+    tree: { health: +5, canopy: +4 },
+    plotEntry: 'S2 · Arborist: mulch applied, water stress low.' },
+
+  { id: 'e7', type: 'action', season: 'spring', turn: 2, role: 'ecologist', verb: 'witness', plot: true,
+    desc: 'Native seedling count declining near trunk. 3 species affected: blue grama, Buffalo grass, plains prickly pear. Allelopathy measurable.',
+    tree: { native: -4 },
+    plotEntry: 'S2 · Ecologist: native seedlings declining. 3 spp. affected.' },
+
+  { id: 'e7c', type: 'chat', season: 'spring', turn: 2, role: 'ecologist', scope: 'all',
+    msg: 'Native seedling data attached. I\'m not raising an alarm yet — but this is the trajectory.' },
+
+  { id: 'e8', type: 'action', season: 'spring', turn: 2, role: 'steward', verb: 'witness', plot: true,
+    desc: 'Published historical observation: tree predates the last parking lot resurfacing. Estimated planting: 1991.',
+    plotEntry: 'S2 · Steward: tree est. 1991. Predates last repaving by 7 years.' },
+
+  { id: 'e8c', type: 'chat', season: 'spring', turn: 2, role: 'steward', scope: 'all',
+    msg: 'This tree is older than most decisions made about this lot. That\'s not an argument. It\'s a fact.' },
+
+  { id: 'e8c2', type: 'chat', season: 'spring', turn: 2, role: 'ecologist', scope: 'dm', to: 'steward',
+    msg: 'I respect the provenance. But the allelopathy doesn\'t care how old the tree is.' },
+
+  // ════════════ SUMMER ════════════
+  { id: 'su0', type: 'phase', season: 'summer', text: 'Summer', sub: 'Canopy peak · allelopathy peak · neighbors notice' },
+  { id: 'su1', type: 'turn', season: 'summer', turn: 3, treeEvent: true,
+    treeEventDesc: 'Tree advances: canopy peak. Allelopathy index rises. Shade index maximum.',
+    tree: { canopy: +12, allelop: +18, suckers: +3 } },
+
+  { id: 'su2e', type: 'action', season: 'summer', turn: 3, role: 'arborist', verb: 'tend', plot: true,
+    desc: 'Inspected for water stress and spotted lanternfly. No infestation detected. Structural integrity good.',
+    tree: { health: +3 },
+    plotEntry: 'S3 · Arborist: no lanternfly. Structural: good.' },
+
+  { id: 'su3e', type: 'action', season: 'summer', turn: 3, role: 'ecologist', verb: 'witness', plot: true,
+    desc: 'Native cover now 22%. Allelopathy index: 0.58. Critical threshold at 0.7. Suppression radius expanded to 4.5m.',
+    tree: { native: -5 },
+    plotEntry: 'S3 · Ecologist: native cover 22%, allelop 0.58. Threshold approaching.' },
+
+  { id: 'su3ec', type: 'chat', season: 'summer', turn: 3, role: 'ecologist', scope: 'all',
+    msg: 'Allelopathy index is 0.58. Critical threshold is 0.7. I\'m publishing this so everyone has the same number.' },
+
+  { id: 'su4e', type: 'action', season: 'summer', turn: 3, role: 'neighbor', verb: 'witness', plot: false,
+    desc: 'Shade index at maximum. Back wall temperature reduced by ~8°F. Positive for the building.' },
+
+  { id: 'su4ec', type: 'chat', season: 'summer', turn: 3, role: 'neighbor', scope: 'all',
+    msg: 'It\'s been a hot summer. The wall behind the parking lot reads 8 degrees cooler. I\'m not indifferent to your data, Ecologist — but I\'m not indifferent to this either.' },
+
+  { id: 'su5e', type: 'action', season: 'summer', turn: 3, role: 'steward', verb: 'let-be', plot: false,
+    desc: 'No action taken.' },
+
+  { id: 'su5ec', type: 'chat', season: 'summer', turn: 3, role: 'steward', scope: 'all',
+    msg: 'The shade is the tree\'s argument. It doesn\'t need me to make it.' },
+
+  { id: 'su6e', type: 'action', season: 'summer', turn: 3, role: 'planner', verb: 'propose', plot: false,
+    desc: 'Proposed clause: "Removal with 6-month notice, any season, by majority vote."',
+    clauseId: 'clause-removal',
+    clauseTitle: 'Clause A — Removal on Notice',
+    clauseBody: 'Tree to be removed with 6-month notice, by majority vote of participating agents. Plot to be cleared for development assessment.',
+    clauseStatus: 'pending' },
+
+  { id: 'su6ec', type: 'chat', season: 'summer', turn: 3, role: 'planner', scope: 'all',
+    msg: 'I want to be transparent: there\'s a development scenario that requires a clear lot. Six months is generous. I\'m open to amendment.' },
+
+  { id: 'su4', type: 'turn', season: 'summer', turn: 4 },
+
+  { id: 'su7e', type: 'action', season: 'summer', turn: 4, role: 'ecologist', verb: 'propose', plot: false,
+    desc: 'Proposed clause: "Phased transition: remove tree by spring 2028, plant 3 native shade species by fall 2027."',
+    clauseId: 'clause-phased',
+    clauseTitle: 'Clause B — Phased Transition',
+    clauseBody: 'Tree to be removed by Spring 2028. Native shade replacement species (3x) planted by Fall 2027. Interim sucker and samara management by Arborist.',
+    clauseStatus: 'pending' },
+
+  { id: 'su7ec', type: 'chat', season: 'summer', turn: 4, role: 'ecologist', scope: 'all',
+    msg: 'Clause B is a middle path. The tree stays two more years. The native restoration begins now. It\'s not ideal for the ecology but it gives time.' },
+
+  { id: 'su8ec', type: 'chat', season: 'summer', turn: 4, role: 'steward', scope: 'all',
+    msg: 'Two years is a deadline. The tree doesn\'t understand deadlines.' },
+
+  { id: 'su9ec', type: 'chat', season: 'summer', turn: 4, role: 'steward', scope: 'dm', to: 'ecologist',
+    msg: 'I know you\'re trying to find an acceptable path. I\'m not blocking your clause. I\'m recording what\'s lost in it.' },
+
+  // ════════════ FALL ════════════
+  { id: 'fa0', type: 'phase', season: 'fall', text: 'Fall', sub: 'Samaras · cleanup decision · native species last window' },
+  { id: 'fa1', type: 'turn', season: 'fall', turn: 5, treeEvent: true,
+    treeEventDesc: 'Tree advances: 4,200 samaras released. Suckers re-sprouted from cut points.',
+    tree: { samaras: 4200, suckers: +4, canopy: -8 } },
+
+  { id: 'fa2e', type: 'action', season: 'fall', turn: 5, role: 'arborist', verb: 'remove', plot: true,
+    desc: 'Removed samaras from immediate plot perimeter. Approximately 2,400 collected before dispersal.',
+    tree: { samaras: -2400, health: -1 },
+    plotEntry: 'S5 · Arborist: 2400 samaras collected. 1800 dispersed.' },
+
+  { id: 'fa3e', type: 'action', season: 'fall', turn: 5, role: 'ecologist', verb: 'witness', plot: true,
+    desc: 'Samara count: 4,200 estimated. Native species last germination window. Restoration seeding now would compete with samaras.',
+    plotEntry: 'S5 · Ecologist: 4200 samaras. Native restoration window closing.' },
+
+  { id: 'fa3ec', type: 'chat', season: 'fall', turn: 5, role: 'ecologist', scope: 'all',
+    msg: '4,200 samaras. Each one viable for 2 years. The tree is planning ahead regardless of what we decide.' },
+
+  { id: 'fa4e', type: 'action', season: 'fall', turn: 5, role: 'neighbor', verb: 'remove', plot: true,
+    desc: 'Cleared samaras from parking lot cracks. Labor: ~3 hours. Fourth consecutive fall.',
+    plotEntry: 'S5 · Neighbor: 3 hrs clearing samaras. Fourth year.' },
+
+  { id: 'fa4ec', type: 'chat', season: 'fall', turn: 5, role: 'neighbor', scope: 'all',
+    msg: 'Four falls. Every fall, three hours minimum. I\'m not angry at the tree. But I want that in the record.' },
+
+  { id: 'fa5e', type: 'action', season: 'fall', turn: 5, role: 'steward', verb: 'witness', plot: true,
+    desc: 'Published observation: 4,200 samaras — each a possibility the tree extends without permission. This is what it means to be a tree.',
+    plotEntry: 'S5 · Steward: 4200 possibilities. This is what trees do.' },
+
+  { id: 'fa5ec', type: 'chat', season: 'fall', turn: 5, role: 'steward', scope: 'dm', to: 'neighbor',
+    msg: 'I know the labor is real. I\'m not minimizing it. I\'m asking what the labor is in service of.' },
+
+  { id: 'fa6', type: 'turn', season: 'fall', turn: 6 },
+
+  { id: 'fa7e', type: 'action', season: 'fall', turn: 6, role: 'arborist', verb: 'propose', plot: false,
+    desc: 'Proposed clause: "Tended — prune twice/year, managed sucker removal, shared samara cleanup."',
+    clauseId: 'clause-tended',
+    clauseTitle: 'Clause C — Tended',
+    clauseBody: 'Tree to be kept and actively managed: structural pruning twice/year by Arborist, sucker removal quarterly, samara cleanup shared by all agents each fall. Management cost shared in proportion to benefit received.',
+    clauseStatus: 'pending' },
+
+  { id: 'fa7ec', type: 'chat', season: 'fall', turn: 6, role: 'arborist', scope: 'all',
+    msg: 'Clause C is my proposal. Managed stewardship. The tree stays, the labor is shared, the plot stays functional.' },
+
+  { id: 'fa8ec', type: 'chat', season: 'fall', turn: 6, role: 'planner', scope: 'all',
+    msg: 'Tended is fine short-term. My development concern is 2028. If Clause C includes a review trigger at 2028, I can work with it.' },
+
+  { id: 'fa9ec', type: 'chat', season: 'fall', turn: 6, role: 'ecologist', scope: 'all',
+    msg: 'Shared cleanup doesn\'t address the allelopathy. Tended is better than Removal but it\'s not a restoration path.' },
+
+  // Trust upgrades after fall
+  { id: 'trust1', type: 'trust', agent: 'arborist', level: 'known' },
+  { id: 'trust2', type: 'trust', agent: 'ecologist', level: 'known' },
+  { id: 'trust3', type: 'trust', agent: 'steward', level: 'known' },
+
+  // ════════════ WINTER ════════════
+  { id: 'wi0', type: 'phase', season: 'winter', text: 'Winter', sub: 'Agreement window · bare skeleton · proposals consolidate' },
+  { id: 'wi1', type: 'turn', season: 'winter', turn: 7, treeEvent: true,
+    treeEventDesc: 'Tree advances: bare skeleton. Root system dormant. Suckers retreat. Allelopathy recedes.',
+    tree: { canopy: -20, allelop: -10, suckers: -2 } },
+
+  { id: 'wi2', type: 'agrStatus', text: 'Winter · agreement phase open' },
+
+  { id: 'wi3e', type: 'chat', season: 'winter', turn: 7, role: 'steward', scope: 'all',
+    msg: 'Bare. You can see the structure now. No one is confused about what it is.' },
+
+  { id: 'wi4e', type: 'chat', season: 'winter', turn: 7, role: 'planner', scope: 'all',
+    msg: 'Three clauses on the table. A, B, and C. I\'d like to vote. I think we\'ve deliberated enough.' },
+
+  { id: 'wi5e', type: 'chat', season: 'winter', turn: 7, role: 'ecologist', scope: 'all',
+    msg: 'Agreed. I\'ll vote on all three.' },
+
+  { id: 'wi2t', type: 'turn', season: 'winter', turn: 8 },
+
+  // Voting on Clause A (Removal)
+  { id: 'v-a-1', type: 'vote', clauseId: 'clause-removal', role: 'planner',    position: 'consent',         clauseStatus: null },
+  { id: 'v-a-2', type: 'vote', clauseId: 'clause-removal', role: 'ecologist',  position: 'stand-aside',     clauseStatus: null },
+  { id: 'v-a-3', type: 'vote', clauseId: 'clause-removal', role: 'neighbor',   position: 'dissent',         clauseStatus: null },
+  { id: 'v-a-4', type: 'vote', clauseId: 'clause-removal', role: 'arborist',   position: 'dissent',         clauseStatus: null },
+  { id: 'v-a-5', type: 'vote', clauseId: 'clause-removal', role: 'steward',    position: 'dissent',         clauseStatus: 'failed' },
+
+  { id: 'v-a-c', type: 'chat', season: 'winter', turn: 8, role: 'planner', scope: 'all',
+    msg: 'Clause A fails. I expected it. The development scenario remains my concern — I\'ll record it.' },
+
+  // Voting on Clause B (Phased)
+  { id: 'v-b-1', type: 'vote', clauseId: 'clause-phased', role: 'ecologist',  position: 'consent',         clauseStatus: null },
+  { id: 'v-b-2', type: 'vote', clauseId: 'clause-phased', role: 'planner',    position: 'consent',         clauseStatus: null },
+  { id: 'v-b-3', type: 'vote', clauseId: 'clause-phased', role: 'arborist',   position: 'dissent',         clauseStatus: null },
+  { id: 'v-b-4', type: 'vote', clauseId: 'clause-phased', role: 'neighbor',   position: 'dissent',         clauseStatus: null },
+  { id: 'v-b-5', type: 'vote', clauseId: 'clause-phased', role: 'steward',    position: 'stand-aside',     clauseStatus: 'failed' },
+
+  { id: 'v-b-c', type: 'chat', season: 'winter', turn: 8, role: 'steward', scope: 'all',
+    msg: 'I stand aside. The schedule troubles me more than the outcome. But I don\'t block.' },
+
+  // Voting on Clause C (Tended)
+  { id: 'v-c-1', type: 'vote', clauseId: 'clause-tended', role: 'arborist',   position: 'consent',          clauseStatus: null },
+  { id: 'v-c-2', type: 'vote', clauseId: 'clause-tended', role: 'neighbor',   position: 'consent',          clauseStatus: null },
+  { id: 'v-c-3', type: 'vote', clauseId: 'clause-tended', role: 'ecologist',  position: 'stand-aside',      clauseStatus: null },
+  { id: 'v-c-4', type: 'vote', clauseId: 'clause-tended', role: 'steward',    position: 'stand-aside',      clauseStatus: null },
+  { id: 'v-c-5', type: 'vote', clauseId: 'clause-tended', role: 'planner',    position: 'recorded-dissent', clauseStatus: 'passed' },
+
+  { id: 'v-c-ca', type: 'chat', season: 'winter', turn: 8, role: 'ecologist', scope: 'all',
+    msg: 'I stand aside on Tended. It\'s not restoration — but it\'s not irreversible. I can live with it.' },
+
+  { id: 'v-c-cb', type: 'chat', season: 'winter', turn: 8, role: 'steward', scope: 'all',
+    msg: 'I stand aside. The tree tends itself well enough without our management. But this is better than removal.' },
+
+  { id: 'v-c-cc', type: 'chat', season: 'winter', turn: 8, role: 'planner', scope: 'all',
+    msg: 'I stand aside and record my dissent. The development scenario is real. I want it in the agreement.' },
+
+  // Trust upgrades for winter
+  { id: 'trust4', type: 'trust', agent: 'neighbor', level: 'known' },
+  { id: 'trust5', type: 'trust', agent: 'planner', level: 'known' },
+  { id: 'trust6', type: 'trust', agent: 'arborist', level: 'trusted' },
+  { id: 'trust7', type: 'trust', agent: 'ecologist', level: 'trusted' },
+
+  // Settlement
+  { id: 'settle', type: 'settle',
+    outcome: 'Tended',
+    merkle: '0x7f3a2c8b1e9d4f06a5b3c271e4d8f90a1b2c3d4e5f67890abcdef1234567890' }
+];
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+
+let treeState = {
+  canopy: 65, health: 82, allelop: 28, native: 35,
+  suckers: 8, samaras: 0
+};
+
+let clauses = {};
+let currentEventIdx = 0;
+let isPlaying = true;
+let timer = null;
+let speed = 1200;
+
+const seasonColors = {
+  spring: '#7fb87a', summer: '#c4956a', fall: '#d4774a', winter: '#8bbfff'
+};
+
+const roleLabels = {
+  arborist: 'Arborist', ecologist: 'Ecologist',
+  neighbor: 'Neighbor', steward: 'Steward', planner: 'Planner'
+};
+
+const verbLabels = {
+  'tend': 'tend', 'remove': 'remove', 'witness': 'witness',
+  'let-be': 'let-be', 'propose': 'propose', 'vote': 'vote',
+  'system': 'system advance'
+};
+
+// ─────────────────────────────────────────────
+// RENDER HELPERS
+// ─────────────────────────────────────────────
+
+function updateSeasonUI(season) {
+  const dot = document.getElementById('seasonDot');
+  const label = document.getElementById('seasonLabel');
+  dot.style.background = seasonColors[season] || '#888';
+  label.style.color = seasonColors[season] || '';
+  label.textContent = season.charAt(0).toUpperCase() + season.slice(1);
+}
+
+function updateSeasonBar(season, turn) {
+  const seasonTurns = { spring: 2, summer: 2, fall: 2, winter: 2 };
+  const seasonOrder = ['spring', 'summer', 'fall', 'winter'];
+  // just fill the relevant segment
+  const segments = { spring: [1,2], summer: [3,4], fall: [5,6], winter: [7,8] };
+  for (const [s, range] of Object.entries(segments)) {
+    const fill = document.getElementById('fill-' + s);
+    if (!fill) continue;
+    if (s === season) {
+      const progress = ((turn - range[0]) / (range[1] - range[0] + 1)) * 100;
+      fill.style.width = Math.min(100, Math.max(0, progress * 2)) + '%';
+    } else if (seasonOrder.indexOf(s) < seasonOrder.indexOf(season)) {
+      fill.style.width = '100%';
+    }
+  }
+}
+
+function updateMetric(key, val) {
+  treeState[key] = Math.max(0, Math.min(100, treeState[key] + val));
+  const bar = document.getElementById('m-' + key);
+  const valEl = document.getElementById('mv-' + key);
+  if (bar) bar.style.width = treeState[key] + '%';
+  if (valEl) valEl.textContent = treeState[key];
+}
+
+function updateTreeSVG(season, treeData) {
+  // Update canopy colors and size based on season
+  const mainCanopy = document.getElementById('canopy-main');
+  const allCanopy = ['canopy-main','canopy-l','canopy-r','canopy-top','canopy-tl','canopy-tr'];
+  const colors = {
+    spring: ['#4a7a48','#558055','#609a60','#70aa6e','#80bb7e','#90cc8e'],
+    summer: ['#3a6a38','#486848','#557055','#607c60','#6a886a','#759075'],
+    fall:   ['#9a5520','#b06030','#c07040','#a04830','#884020','#d08040'],
+    winter: ['#3a3a38','#424240','#3e3e3c','#363634','#2e2e2c','#323230']
+  };
+  const sc = colors[season] || colors.spring;
+  allCanopy.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) { el.setAttribute('fill', sc[i]); }
+  });
+
+  // Samaras in fall
+  const samaraEl = document.getElementById('samaras');
+  if (season === 'fall' && treeState.samaras > 0) {
+    samaraEl.setAttribute('opacity', '0.8');
+    // Draw simple seed shapes
+    let s = '';
+    for (let i = 0; i < 12; i++) {
+      const x = 60 + Math.sin(i * 1.1) * 55 + Math.random() * 20;
+      const y = 80 + Math.cos(i * 1.3) * 40 + Math.random() * 20;
+      s += `<ellipse cx="${x}" cy="${y}" rx="3" ry="7" fill="#c4956a" opacity="0.6" transform="rotate(${i*15},${x},${y})"/>`;
+    }
+    samaraEl.innerHTML = s;
+  } else {
+    samaraEl.setAttribute('opacity', '0');
+  }
+
+  // Winter: bare branches
+  if (season === 'winter') {
+    allCanopy.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.setAttribute('opacity', '0.15');
+    });
+  } else {
+    const opacities = [0.9, 0.8, 0.8, 0.85, 0.6, 0.6];
+    allCanopy.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) el.setAttribute('opacity', opacities[i]);
+    });
+  }
+
+  // Canopy size
+  const scale = 0.7 + (treeState.canopy / 100) * 0.5;
+  document.getElementById('canopy').setAttribute('transform', `scale(${scale}) translate(${(1-scale)*100}, ${(1-scale)*60})`);
+
+  // Allelopathy glow
+  const aglow = document.getElementById('allelopathy-glow');
+  if (aglow) {
+    const a = treeState.allelop / 100;
+    aglow.setAttribute('fill', `rgba(212,119,74,${a * 0.35})`);
+    aglow.setAttribute('rx', 30 + a * 40);
+  }
+
+  // Shade circle (summer only)
+  const sc2 = document.getElementById('shade-circle');
+  if (sc2) {
+    sc2.setAttribute('fill', season === 'summer' ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0)');
+  }
+
+  // Suckers
+  const sEl = document.getElementById('suckers');
+  let suckerSVG = '';
+  const n = Math.min(treeState.suckers, 10);
+  for (let i = 0; i < n; i++) {
+    const side = i % 2 === 0 ? -1 : 1;
+    const x = 100 + side * (16 + (i >> 1) * 10);
+    suckerSVG += `<path d="M${x},170 C${x + side*4},158 ${x + side*3},150 ${x},145" stroke="#5a4a35" stroke-width="2" fill="none" opacity="0.7"/>`;
+  }
+  sEl.innerHTML = suckerSVG;
+
+  document.getElementById('sucker-count').textContent = treeState.suckers;
+  document.getElementById('samara-count').textContent = treeState.samaras > 0 ? treeState.samaras.toLocaleString() : '0';
+}
+
+function addToFeed(el) {
+  const feed = document.getElementById('feedScroll');
+  feed.appendChild(el);
+  requestAnimationFrame(() => {
+    el.classList.add('visible');
+    feed.scrollTop = feed.scrollHeight;
+  });
+}
+
+function addTurnSep(turn, season) {
+  const el = document.createElement('div');
+  el.className = 'turn-sep';
+  const seasonName = season.charAt(0).toUpperCase() + season.slice(1);
+  el.innerHTML = `<span class="ts-label">Turn ${turn} · ${seasonName}</span>`;
+  addToFeed(el);
+  updateSeasonUI(season);
+  updateSeasonBar(season, turn);
+  document.getElementById('turnLabel').textContent = `Turn ${turn} of 8`;
+}
+
+function addPhaseSep(text, sub, season) {
+  const el = document.createElement('div');
+  el.className = 'phase-sep';
+  el.innerHTML = `${text}<span class="phase-sep-sub">${sub}</span>`;
+  el.style.color = seasonColors[season] || 'var(--ink-ghost)';
+  addToFeed(el);
+  updateSeasonUI(season);
+}
+
+function addActionCard(ev) {
+  const el = document.createElement('div');
+  el.className = `action-card ${ev.role}`;
+  const verb = verbLabels[ev.verb] || ev.verb;
+  el.innerHTML = `
+    <div class="ac-top">
+      <span class="ac-role ${ev.role}">${roleLabels[ev.role] || ev.role}</span>
+      <span class="ac-verb ${ev.verb}">${verb}</span>
+    </div>
+    <div class="ac-desc">${ev.desc}</div>`;
+  addToFeed(el);
+
+  if (ev.tree) {
+    for (const [k, v] of Object.entries(ev.tree)) {
+      if (k === 'samaras') {
+        treeState.samaras = Math.max(0, treeState.samaras + v);
+        document.getElementById('samara-count').textContent = treeState.samaras.toLocaleString();
+      } else if (k === 'suckers') {
+        treeState.suckers = Math.max(0, treeState.suckers + v);
+        document.getElementById('sucker-count').textContent = treeState.suckers;
+      } else {
+        updateMetric(k, v);
+      }
+    }
+  }
+
+  if (ev.plotEntry) {
+    addPlotEntry(ev.plotEntry, ev.season);
+  }
+
+  updateTreeSVG(ev.season, ev.tree);
+}
+
+function addTreeEvent(ev) {
+  const el = document.createElement('div');
+  el.className = 'action-card engine';
+  el.innerHTML = `
+    <div class="ac-top">
+      <span class="ac-role engine">Tree · Engine</span>
+      <span class="ac-verb system">season advance</span>
+    </div>
+    <div class="ac-desc">${ev.treeEventDesc}</div>`;
+  addToFeed(el);
+
+  if (ev.tree) {
+    for (const [k, v] of Object.entries(ev.tree)) {
+      if (k === 'samaras') {
+        treeState.samaras = Math.max(0, treeState.samaras + (typeof v === 'number' ? v : 0));
+        if (v > 0) treeState.samaras = v;
+        document.getElementById('samara-count').textContent = treeState.samaras.toLocaleString();
+      } else if (k === 'suckers') {
+        treeState.suckers = Math.max(0, treeState.suckers + v);
+        document.getElementById('sucker-count').textContent = treeState.suckers;
+      } else {
+        updateMetric(k, v);
+      }
+    }
+  }
+  updateTreeSVG(ev.season, ev.tree);
+}
+
+function addChatCard(ev) {
+  const el = document.createElement('div');
+  el.className = 'chat-card';
+  const isDm = ev.scope === 'dm';
+  el.innerHTML = `
+    <div class="chat-meta">
+      <span class="from ${ev.role}" style="color:var(--${ev.role})">${roleLabels[ev.role]}</span>
+      ${isDm ? `<span class="chat-dm">→ ${ev.to ? roleLabels[ev.to] : '?'} (dm)</span>` : '<span class="to">→ all</span>'}
+    </div>
+    <div class="chat-body">"${ev.msg}"</div>`;
+  addToFeed(el);
+}
+
+function addPlotEntry(text, season) {
+  const el = document.createElement('div');
+  el.className = 'plot-entry';
+  el.innerHTML = `<div class="pe-season">${season}</div>${text}`;
+  const log = document.getElementById('plotLog');
+  log.appendChild(el);
+  requestAnimationFrame(() => el.classList.add('visible'));
+  log.scrollTop = log.scrollHeight;
+}
+
+function addClause(ev) {
+  const el = document.createElement('div');
+  el.className = 'agr-clause';
+  el.id = ev.clauseId;
+  el.innerHTML = `
+    <div class="clause-head">
+      ${ev.clauseTitle}
+      <span class="clause-status pending" id="cs-${ev.clauseId}">pending</span>
+    </div>
+    <div class="clause-body">${ev.clauseBody}</div>
+    <div class="vote-row" id="votes-${ev.clauseId}"></div>`;
+  clauses[ev.clauseId] = { el, votes: {} };
+  const agr = document.getElementById('agrScroll');
+  agr.appendChild(el);
+  requestAnimationFrame(() => el.classList.add('visible'));
+}
+
+function addVote(ev) {
+  const row = document.getElementById('votes-' + ev.clauseId);
+  if (!row) return;
+  const pip = document.createElement('span');
+  pip.className = `vote-pip ${ev.position}`;
+  const roleColor = `var(--${ev.role})`;
+  pip.innerHTML = `<span style="color:${roleColor};font-size:8px;">●</span> ${roleLabels[ev.role]}`;
+  row.appendChild(pip);
+  requestAnimationFrame(() => pip.classList.add('visible'));
+
+  if (ev.clauseStatus) {
+    const cs = document.getElementById('cs-' + ev.clauseId);
+    const clause = document.getElementById(ev.clauseId);
+    if (cs) {
+      cs.className = `clause-status ${ev.clauseStatus}`;
+      cs.textContent = ev.clauseStatus;
+    }
+    if (clause) {
+      clause.classList.add(ev.clauseStatus);
+    }
+  }
+
+  // Also add to feed
+  const el = document.createElement('div');
+  el.className = `action-card ${ev.role}`;
+  const posLabel = {
+    'consent': 'consent', 'dissent': 'dissent',
+    'stand-aside': 'stand aside', 'recorded-dissent': 'stand aside (dissent recorded)'
+  }[ev.position] || ev.position;
+  el.innerHTML = `
+    <div class="ac-top">
+      <span class="ac-role ${ev.role}">${roleLabels[ev.role]}</span>
+      <span class="ac-verb vote">vote · ${posLabel}</span>
+    </div>
+    <div class="ac-desc" style="font-size:10px;color:var(--ink-fade);">on ${document.getElementById(ev.clauseId)?.querySelector('.clause-head')?.childNodes[0]?.textContent?.trim() || ev.clauseId}</div>`;
+  addToFeed(el);
+}
+
+function updateTrust(agent, level) {
+  const el = document.getElementById('trust-' + agent);
+  if (el) {
+    el.className = 'agent-trust ' + level;
+    el.textContent = level;
+  }
+}
+
+function addSettlement(ev) {
+  const el = document.createElement('div');
+  el.className = 'action-card agreement';
+  el.innerHTML = `
+    <div class="ac-top">
+      <span class="ac-role agreement">Settlement · on-chain</span>
+      <span class="ac-verb propose">outcome: ${ev.outcome}</span>
+    </div>
+    <div class="ac-desc">Stewardship agreement anchored. Merkle root: <span style="font-family:var(--mono);font-size:10px;color:var(--terra-text)">${ev.merkle.substring(0,20)}…</span></div>`;
+  addToFeed(el);
+
+  const artifact = document.getElementById('artifact');
+  document.getElementById('artifactMerkle').textContent = ev.merkle;
+  document.getElementById('agrStatus').textContent = 'Settled · Tended';
+  requestAnimationFrame(() => artifact.classList.add('visible'));
+}
+
+// ─────────────────────────────────────────────
+// SIMULATION ENGINE
+// ─────────────────────────────────────────────
+
+function processEvent(ev) {
+  switch (ev.type) {
+    case 'phase':   addPhaseSep(ev.text, ev.sub, ev.season); break;
+    case 'turn':
+      addTurnSep(ev.turn, ev.season);
+      if (ev.treeEvent) addTreeEvent(ev);
+      break;
+    case 'action':  addActionCard(ev); break;
+    case 'chat':    addChatCard(ev); break;
+    case 'clause':  addClause(ev); break;
+    case 'vote':    addVote(ev); break;
+    case 'trust':   updateTrust(ev.agent, ev.level); break;
+    case 'settle':  addSettlement(ev); break;
+    case 'agrStatus':
+      document.getElementById('agrStatus').textContent = ev.text; break;
+  }
+
+  // Handle events that also create clauses
+  if (ev.clauseId && ev.type === 'action') {
+    addClause(ev);
+  }
+}
+
+function tick() {
+  if (currentEventIdx >= SCRIPT.length) {
+    isPlaying = false;
+    document.getElementById('playBtn').textContent = '✓ Done';
+    document.getElementById('playBtn').classList.remove('active');
+    return;
+  }
+
+  const ev = SCRIPT[currentEventIdx++];
+  processEvent(ev);
+
+  const progress = (currentEventIdx / SCRIPT.length) * 100;
+  document.getElementById('scrubFill').style.width = progress + '%';
+  document.getElementById('scrubLabel').textContent = Math.round(progress) + '%';
+
+  if (isPlaying) {
+    const delay = ev.type === 'phase' ? speed * 1.8
+                : ev.type === 'settle' ? speed * 2
+                : ev.type === 'chat' ? speed * 0.9
+                : ev.type === 'trust' ? 200
+                : speed;
+    timer = setTimeout(tick, delay);
+  }
+}
+
+function play() {
+  isPlaying = true;
+  document.getElementById('playBtn').textContent = '⏸ Pause';
+  document.getElementById('playBtn').classList.add('active');
+  tick();
+}
+
+function pause() {
+  isPlaying = false;
+  clearTimeout(timer);
+  document.getElementById('playBtn').textContent = '▶ Play';
+  document.getElementById('playBtn').classList.remove('active');
+}
+
+function restart() {
+  pause();
+  currentEventIdx = 0;
+  treeState = { canopy: 65, health: 82, allelop: 28, native: 35, suckers: 8, samaras: 0 };
+  clauses = {};
+
+  document.getElementById('feedScroll').innerHTML = '';
+  document.getElementById('plotLog').innerHTML = '';
+  document.getElementById('agrScroll').innerHTML = '';
+  document.getElementById('artifact').classList.remove('visible');
+  document.getElementById('agrStatus').textContent = 'Winter · voting pending';
+
+  ['arborist','ecologist','neighbor','steward','planner'].forEach(r => {
+    const el = document.getElementById('trust-' + r);
+    if (el) { el.className = 'agent-trust new'; el.textContent = 'new'; }
+  });
+
+  // Reset metrics
+  const metrics = { canopy: 65, health: 82, allelop: 28, native: 35 };
+  for (const [k, v] of Object.entries(metrics)) {
+    const bar = document.getElementById('m-' + k);
+    const val = document.getElementById('mv-' + k);
+    if (bar) bar.style.width = v + '%';
+    if (val) val.textContent = v;
+  }
+
+  document.getElementById('sucker-count').textContent = '8';
+  document.getElementById('samara-count').textContent = '0';
+  document.getElementById('scrubFill').style.width = '0%';
+  document.getElementById('scrubLabel').textContent = '0%';
+  document.getElementById('fill-spring').style.width = '0%';
+  document.getElementById('fill-summer').style.width = '0%';
+  document.getElementById('fill-fall').style.width = '0%';
+  document.getElementById('fill-winter').style.width = '0%';
+
+  updateSeasonUI('spring');
+  updateTreeSVG('spring', null);
+
+  setTimeout(play, 400);
+}
+
+// Controls
+document.getElementById('playBtn').addEventListener('click', () => {
+  if (isPlaying) pause(); else play();
+});
+
+document.getElementById('restartBtn').addEventListener('click', restart);
+
+document.getElementById('speedSelect').addEventListener('change', e => {
+  speed = parseInt(e.target.value);
+});
+
+// Init tree and start
+updateTreeSVG('spring', null);
+setTimeout(play, 800);
+</script>
+</body>
+</html>
