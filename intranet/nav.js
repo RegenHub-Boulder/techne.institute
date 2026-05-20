@@ -192,6 +192,58 @@
 #cis-nav .cn-mode:hover { color: #aaa; border-color: #444; }
 [data-mode="light"] #cis-nav .cn-mode { border-color: #ccc; color: #888; }
 [data-mode="light"] #cis-nav .cn-mode:hover { color: #444; border-color: #aaa; }
+
+/* ── Site footer ── */
+#cis-footer {
+  margin-top: 60px;
+  border-top: 1px solid #1e1e1e;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.07em;
+}
+[data-mode="light"] #cis-footer {
+  border-top-color: #ddd5c8;
+}
+#cis-footer .cf-left {
+  color: #3a3a3a;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+[data-mode="light"] #cis-footer .cf-left { color: #aaa; }
+#cis-footer .cf-right {
+  display: flex; align-items: center;
+  gap: 16px; flex-wrap: wrap;
+}
+#cis-footer .cf-link {
+  color: #555;
+  text-decoration: none;
+  transition: color 120ms;
+}
+#cis-footer .cf-link:hover { color: #c4956a; }
+[data-mode="light"] #cis-footer .cf-link { color: #aaa; }
+[data-mode="light"] #cis-footer .cf-link:hover { color: #96704a; }
+#cis-footer .cf-signout {
+  padding: 4px 11px;
+  background: transparent;
+  border: 1px solid #2e2e2e;
+  border-radius: 4px;
+  color: #555;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 120ms, border-color 120ms;
+}
+#cis-footer .cf-signout:hover { color: #e89090; border-color: rgba(200,70,70,0.4); }
+[data-mode="light"] #cis-footer .cf-signout { border-color: #ccc; color: #aaa; }
+[data-mode="light"] #cis-footer .cf-signout:hover { color: #b05050; border-color: rgba(176,80,80,0.4); }
 `;
 
   var styleEl = document.createElement('style');
@@ -327,11 +379,17 @@
       var session = result.data && result.data.session;
       if (session) {
         showUser(session);
-        document.getElementById('cn-signout').addEventListener('click', function () {
+        function doSignOut() {
           sb.auth.signOut().then(function () {
             window.location.href = '/intranet/login/';
           });
-        });
+        }
+        document.getElementById('cn-signout').addEventListener('click', doSignOut);
+        var footerSignout = document.getElementById('cf-signout');
+        if (footerSignout) {
+          footerSignout.style.display = '';
+          footerSignout.addEventListener('click', doSignOut);
+        }
         /* Auth-change listener — handles token refresh / sign-out from another tab */
         sb.auth.onAuthStateChange(function (event, newSession) {
           if (event === 'SIGNED_OUT' || !newSession) {
@@ -347,6 +405,21 @@
       console.warn('CIS nav auth error:', err);
       document.getElementById('cn-uname').textContent = 'Auth error';
     });
+  }
+
+  /* ── Footer ── */
+  function injectFooter() {
+    var footer = document.createElement('footer');
+    footer.id = 'cis-footer';
+    footer.innerHTML =
+      '<span class="cf-left">RegenHub, LCA &middot; Boulder, CO &middot; #20261215588</span>' +
+      '<div class="cf-right">' +
+        '<a class="cf-link" href="/cis/">CIS PRD</a>' +
+        '<a class="cf-link" href="/tree/">Site index</a>' +
+        '<a class="cf-link" href="/">Techne.institute</a>' +
+        '<button class="cf-signout" id="cf-signout" style="display:none;">Sign out</button>' +
+      '</div>';
+    document.body.appendChild(footer);
   }
 
   function loadSupabaseAndInit() {
@@ -365,9 +438,14 @@
     document.head.appendChild(script);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadSupabaseAndInit);
-  } else {
+  function init() {
+    injectFooter();
     loadSupabaseAndInit();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
   }
 })();
