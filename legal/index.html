@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function() {
+      var s = localStorage.getItem('techne-theme');
+      if (s === 'light' || s === 'dark') document.documentElement.setAttribute('data-theme', s);
+      else document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal Documents — RegenHub, LCA</title>
+  <meta name="description" content="Governing documents of RegenHub, LCA — Articles of Organization, Bylaws, and Membership Agreement. Status, versions, and legal analysis.">
+  <meta property="og:title" content="Legal Documents — RegenHub, LCA">
+  <meta property="og:description" content="Articles of Organization filed Feb 6 2026. Bylaws and Membership Agreement in organizer review.">
+  <meta property="og:url" content="https://techne.institute/legal/">
+  <meta property="og:site_name" content="Techne Institute">
+  <link rel="canonical" href="https://techne.institute/legal/">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="/assets/nav.js" defer></script>
+  <style>
+    :root {
+      --serif: 'Libre Baskerville', Georgia, serif;
+      --mono:  'IBM Plex Mono', 'Courier New', monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg:           #08080a;
+      --surface:      #111114;
+      --raised:       #18181c;
+      --border:       rgba(196,149,106,0.12);
+      --border-dim:   rgba(255,255,255,0.06);
+      --text:         #e0d8cc;
+      --text-warm:    #c8bca8;
+      --text-muted:   rgba(200,188,168,0.55);
+      --text-dim:     rgba(200,188,168,0.28);
+      --gold:         #c4956a;
+      --moss:         #6a8a5e;
+      --rust:         #9a5a5a;
+      --sky:          #5a7a9a;
+    }
+
+    [data-theme="light"] {
+      --bg:           #f7f5f0;
+      --surface:      #ebe7df;
+      --raised:       #ffffff;
+      --border:       rgba(196,149,106,0.20);
+      --border-dim:   rgba(0,0,0,0.08);
+      --text:         #2a2520;
+      --text-warm:    #3a3028;
+      --text-muted:   rgba(60,48,36,0.60);
+      --text-dim:     rgba(60,48,36,0.30);
+      --gold:         #8a6a3a;
+      --moss:         #4a6a3a;
+      --rust:         #8a3a3a;
+      --sky:          #3a5a7a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2rem 6rem;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      border-top: 2px solid var(--gold);
+      padding-top: 2rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .page-header .eyebrow {
+      font-family: var(--mono);
+      font-size: 0.60rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .page-header h1 {
+      font-family: var(--serif);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .page-header .lede {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      line-height: 1.7;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-dim);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    /* ── DOCUMENT CARD ── */
+    .doc-card {
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      border-radius: 6px;
+      margin-bottom: 1.25rem;
+      overflow: hidden;
+      transition: border-color 200ms ease;
+    }
+
+    .doc-card:hover {
+      border-color: var(--border);
+    }
+
+    .doc-card-inner {
+      padding: 1.5rem 1.75rem;
+    }
+
+    .doc-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .doc-title {
+      font-family: var(--serif);
+      font-size: 1.0rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .doc-title a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(196,149,106,0.25);
+      transition: border-color 150ms ease, color 150ms ease;
+    }
+
+    .doc-title a:hover {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    /* ── STATUS BADGES ── */
+    .status-badge {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      padding: 0.25rem 0.6rem;
+      border-radius: 3px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .status-filed {
+      background: rgba(90,122,154,0.15);
+      color: var(--sky);
+      border: 1px solid rgba(90,122,154,0.30);
+    }
+
+    .status-draft {
+      background: rgba(196,149,106,0.10);
+      color: var(--gold);
+      border: 1px solid rgba(196,149,106,0.25);
+    }
+
+    .status-ratified {
+      background: rgba(106,138,94,0.12);
+      color: var(--moss);
+      border: 1px solid rgba(106,138,94,0.28);
+    }
+
+    .status-blocked {
+      background: rgba(154,90,90,0.12);
+      color: var(--rust);
+      border: 1px solid rgba(154,90,90,0.28);
+    }
+
+    /* ── DOC META ROW ── */
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .doc-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .doc-meta-label {
+      font-family: var(--mono);
+      font-size: 0.53rem;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      color: var(--text-dim);
+    }
+
+    .doc-meta-val {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ── DOC DESCRIPTION ── */
+    .doc-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+
+    /* ── BLOCKING ISSUES WARNING ── */
+    .blocking-notice {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(154,90,90,0.08);
+      border: 1px solid rgba(154,90,90,0.20);
+      border-radius: 4px;
+      padding: 0.6rem 0.85rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .blocking-notice .bi-icon {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--rust);
+      flex-shrink: 0;
+    }
+
+    .blocking-notice .bi-text {
+      font-size: 0.78rem;
+      color: var(--rust);
+      line-height: 1.4;
+    }
+
+    /* ── ANALYSIS LINK ── */
+    .analysis-link {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 150ms ease, border-color 150ms ease;
+    }
+
+    .analysis-link:hover {
+      color: var(--gold);
+      border-bottom-color: rgba(196,149,106,0.4);
+    }
+
+    /* ── DIVIDER ── */
+    .doc-card-footer {
+      border-top: 1px solid var(--border-dim);
+      padding: 0.7rem 1.75rem;
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    /* ── FILED CARD (no link, external reference) ── */
+    .doc-card.is-external .doc-card-inner {
+      opacity: 0.85;
+    }
+
+    /* ── SECTION SPACING ── */
+    .doc-section {
+      margin-bottom: 3.5rem;
+    }
+
+    /* ── STATUS KEY ── */
+    .status-key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 3rem;
+      padding: 1.1rem 1.4rem;
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      border-radius: 6px;
+    }
+
+    .status-key-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      align-self: center;
+      margin-right: 0.25rem;
+    }
+
+    /* ── PROSE NOTE ── */
+    .note {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      padding: 1rem 1.25rem;
+      border-left: 2px solid var(--border);
+      margin-top: 2rem;
+    }
+
+    .note strong {
+      color: var(--text-warm);
+      font-weight: 700;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .doc-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .doc-meta {
+        gap: 1rem;
+      }
+      .wrap {
+        padding: 2rem 1.25rem 5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<techne-nav mode="public" active-section="about"></techne-nav>
+
+<div class="wrap">
+
+  <header class="page-header">
+    <p class="eyebrow">Legal Documents</p>
+    <h1>Governing Documents</h1>
+    <p class="lede">The foundational legal instruments of RegenHub, LCA — from the state filing that created the cooperative to the bylaws and membership agreement currently in organizer review.</p>
+  </header>
+
+  <!-- Status key -->
+  <div class="status-key">
+    <span class="status-key-label">Status key —</span>
+    <span class="status-badge status-filed">Filed</span>
+    <span style="font-size:0.78rem; color:var(--text-dim); align-self:center;">State record, legally in effect</span>
+    <span class="status-badge status-draft" style="margin-left:0.75rem;">Draft</span>
+    <span style="font-size:0.78rem; color:var(--text-dim); align-self:center;">In organizer review, not yet ratified</span>
+    <span class="status-badge status-ratified" style="margin-left:0.75rem;">Ratified</span>
+    <span style="font-size:0.78rem; color:var(--text-dim); align-self:center;">Adopted by board vote</span>
+  </div>
+
+  <!-- ── FORMATION DOCUMENTS ── -->
+  <section class="doc-section">
+    <p class="section-label">Formation</p>
+
+    <!-- Articles of Organization -->
+    <div class="doc-card is-external">
+      <div class="doc-card-inner">
+        <div class="doc-card-header">
+          <span class="doc-title">Articles of Organization</span>
+          <span class="status-badge status-filed">Filed</span>
+        </div>
+        <div class="doc-meta">
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Entity</span>
+            <span class="doc-meta-val">RegenHub, LCA</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Type</span>
+            <span class="doc-meta-val">Colorado Limited Cooperative Association</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">SOS Number</span>
+            <span class="doc-meta-val">20261163853</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Filed</span>
+            <span class="doc-meta-val">February 6, 2026</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Public Benefit</span>
+            <span class="doc-meta-val">Cultivating scenius</span>
+          </div>
+        </div>
+        <p class="doc-desc">The founding instrument filed with the Colorado Secretary of State. Establishes RegenHub as a Limited Cooperative Association with a designated public benefit purpose. Legally in effect as of the filing date.</p>
+      </div>
+      <div class="doc-card-footer">
+        <a class="analysis-link" href="https://www.sos.state.co.us/biz/BusinessEntityDetail.do?quitButtonDestination=BusinessEntityResults&nameTyp=ENT&masterFileId=20261163853&entityId2=20261163853&fileId=20261163853&srchTyp=ENTITY" target="_blank" rel="noopener">Colorado SOS record ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GOVERNANCE DOCUMENTS ── -->
+  <section class="doc-section">
+    <p class="section-label">Governance</p>
+
+    <!-- Bylaws v.2 -->
+    <div class="doc-card">
+      <div class="doc-card-inner">
+        <div class="doc-card-header">
+          <span class="doc-title">
+            <a href="/legal/bylaws-v2/">Bylaws, Version 2</a>
+          </span>
+          <span class="status-badge status-draft">Draft</span>
+        </div>
+        <div class="doc-meta">
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Version</span>
+            <span class="doc-meta-val">v.2</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Drafted</span>
+            <span class="doc-meta-val">May 11, 2026</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Articles</span>
+            <span class="doc-meta-val">18</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Attorney</span>
+            <span class="doc-meta-val">Jeffrey Pote / Pote Law Firm</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Based on</span>
+            <span class="doc-meta-val">Meadow Cooperative LCA bylaws</span>
+          </div>
+        </div>
+        <div class="blocking-notice">
+          <span class="bi-icon">⚠ 2 blocking</span>
+          <span class="bi-text">Issue 1 (Net Profit Allocation formula) and Issue 4 (Schedule A placeholder values) must be resolved before ratification.</span>
+        </div>
+        <p class="doc-desc">Eighteen-article bylaws governing the cooperative's structure, member rights, board composition, voting procedures, patronage distribution, and dissolution. Adapted from the Meadow Cooperative LCA model under attorney guidance. In active organizer review; not yet ratified.</p>
+      </div>
+      <div class="doc-card-footer">
+        <a class="analysis-link" href="/legal/bylaws-analysis/">View legal analysis (8 issues identified) →</a>
+      </div>
+    </div>
+
+    <!-- Bylaws Analysis -->
+    <div class="doc-card">
+      <div class="doc-card-inner">
+        <div class="doc-card-header">
+          <span class="doc-title">
+            <a href="/legal/bylaws-analysis/">Bylaws — Legal Analysis</a>
+          </span>
+          <span class="status-badge status-draft">Working document</span>
+        </div>
+        <div class="doc-meta">
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Issues identified</span>
+            <span class="doc-meta-val">8 total</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Blocking</span>
+            <span class="doc-meta-val" style="color:var(--rust);">2</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Non-blocking</span>
+            <span class="doc-meta-val">6</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Reviewed</span>
+            <span class="doc-meta-val">May 2026</span>
+          </div>
+        </div>
+        <p class="doc-desc">Annotated legal analysis of the bylaws draft. Grounds each issue in Colorado ULCAA, IRC § 704(b), and cooperative governance principles. Identifies resolution paths for each issue and sequencing for the ratification process.</p>
+      </div>
+      <div class="doc-card-footer">
+        <a class="analysis-link" href="/legal/bylaws-v2/">View bylaws document →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MEMBERSHIP DOCUMENTS ── -->
+  <section class="doc-section">
+    <p class="section-label">Membership</p>
+
+    <!-- Membership Agreement v.2 -->
+    <div class="doc-card">
+      <div class="doc-card-inner">
+        <div class="doc-card-header">
+          <span class="doc-title">
+            <a href="/legal/membership-agreement-v2/">Membership Agreement, Version 2</a>
+          </span>
+          <span class="status-badge status-draft">Draft</span>
+        </div>
+        <div class="doc-meta">
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Version</span>
+            <span class="doc-meta-val">v.2</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Drafted</span>
+            <span class="doc-meta-val">May 11, 2026</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Class</span>
+            <span class="doc-meta-val">Class A Patron Membership</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Based on</span>
+            <span class="doc-meta-val">Pote Law Firm v.1 (April 23, 2026)</span>
+          </div>
+        </div>
+        <div class="blocking-notice">
+          <span class="bi-icon">⚠ 3 blocking</span>
+          <span class="bi-text">Issue 1 (IP assignment scope), Issue 2 (voluntary withdrawal mechanics), and Issue 3 (patronage accounting / federal tax alignment) must be resolved before ratification.</span>
+        </div>
+        <p class="doc-desc">The agreement each Class A Patron Member signs upon joining the cooperative. Governs membership obligations, intellectual property, patronage rights, capital account mechanics, and withdrawal procedures. Not yet ratified.</p>
+      </div>
+      <div class="doc-card-footer">
+        <a class="analysis-link" href="/legal/membership-agreement-modifications/">View legal analysis (6 issues identified) →</a>
+      </div>
+    </div>
+
+    <!-- Membership Agreement Analysis -->
+    <div class="doc-card">
+      <div class="doc-card-inner">
+        <div class="doc-card-header">
+          <span class="doc-title">
+            <a href="/legal/membership-agreement-modifications/">Membership Agreement — Legal Analysis</a>
+          </span>
+          <span class="status-badge status-draft">Working document</span>
+        </div>
+        <div class="doc-meta">
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Issues identified</span>
+            <span class="doc-meta-val">6 total</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Blocking</span>
+            <span class="doc-meta-val" style="color:var(--rust);">3</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Non-blocking</span>
+            <span class="doc-meta-val">3</span>
+          </div>
+          <div class="doc-meta-item">
+            <span class="doc-meta-label">Reviewed</span>
+            <span class="doc-meta-val">May 2026</span>
+          </div>
+        </div>
+        <p class="doc-desc">Annotated legal analysis of the membership agreement draft. Covers IP assignment scope, voluntary withdrawal and redemption mechanics, and patronage accounting alignment with Subchapter K and IRC § 704(b). Includes resolution paths and attorney referrals for each blocking issue.</p>
+      </div>
+      <div class="doc-card-footer">
+        <a class="analysis-link" href="/legal/membership-agreement-v2/">View membership agreement →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NOTE ── -->
+  <aside class="note">
+    <strong>On document status:</strong> The Articles of Organization are legally in effect. The Bylaws and Membership Agreement are working drafts in organizer review — they represent the cooperative's intent and are the documents the board will read, comment on, and vote to ratify. No governance document other than the Articles is legally binding until formally adopted by a ratification vote. Drafts are published here in the interest of transparency with prospective members.
+  </aside>
+
+</div><!-- /wrap -->
+
+</body>
+</html>
