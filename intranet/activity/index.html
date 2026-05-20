@@ -8,7 +8,8 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="/intranet/nav.js"></script>
 <style>
   /* ── Design System Tokens ── */
   :root {
@@ -577,20 +578,7 @@
 </head>
 <body>
 
-<nav class="site-nav">
-  <a class="nav-brand" href="/intranet/">CIS</a>
-  <div class="nav-links">
-    <a class="nav-link" href="/intranet/treasury/">Treasury</a>
-    <a class="nav-link active" href="/intranet/activity/">Activity</a>
-    <a class="nav-link" href="/intranet/people/">People</a>
-    <a class="nav-link" href="/intranet/agreements/">Agreements</a>
-    <a class="nav-link" href="/intranet/signals/">Signals</a>
-    <a class="nav-link" href="/intranet/intelligence/">Intelligence</a>
-  </div>
-  <div class="nav-actions">
-    <button class="theme-btn" id="themeToggle">Light</button>
-  </div>
-</nav>
+<!-- nav.js injects primary nav -->
 
 <div class="shell" id="shell">
   <div class="main-content">
@@ -759,25 +747,7 @@ let feedFilter = 'all'
 let statusFilter = 'all'
 let activeItemId = null
 
-// ── Theme ──
-const html = document.documentElement
-const themeBtn = document.getElementById('themeToggle')
-const saved = localStorage.getItem('cis-theme')
-if (saved) {
-  html.setAttribute('data-mode', saved)
-} else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-  html.setAttribute('data-mode', 'light')
-}
-function updateThemeBtn() {
-  themeBtn.textContent = html.getAttribute('data-mode') === 'dark' ? 'Light' : 'Dark'
-}
-updateThemeBtn()
-themeBtn.addEventListener('click', () => {
-  const next = html.getAttribute('data-mode') === 'dark' ? 'light' : 'dark'
-  html.setAttribute('data-mode', next)
-  localStorage.setItem('cis-theme', next)
-  updateThemeBtn()
-})
+// theme handled by nav.js
 
 // ── Tabs ──
 const tabBtns = document.querySelectorAll('.tab-btn')

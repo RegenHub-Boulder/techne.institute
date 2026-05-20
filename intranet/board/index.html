@@ -7,6 +7,7 @@
 <title>RegenHub · Operating Layer · HUD</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/intranet/nav.js"></script>
 <style>
   :root {
     --bg: #0f0f0f;
@@ -713,48 +714,7 @@
 <!-- ───────── HUD ───────── -->
 <div class="hud hidden" id="hud" role="application" aria-label="RegenHub LCA Operating Layer Heads-Up Display">
 
-  <!-- ───────── Header ───────── -->
-  <header class="header">
-    <div class="header-left">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">R</div>
-        <div class="brand-text">
-          <span class="brand-name">RegenHub, LCA</span>
-          <span class="brand-sub">Operating Layer · Heads-Up Display</span>
-        </div>
-      </div>
-
-      <div class="badges">
-        <span class="badge active" title="Filed February 6, 2026 · Colorado Secretary of State">
-          <span class="badge-dot live"></span> Active &nbsp;&middot;&nbsp; CO Filed 2026-02-06
-        </span>
-        <span class="badge" title="Public benefit corporation under Colorado Revised Nonprofit and Cooperative Code">
-          Public Benefit
-        </span>
-        <span class="badge" title="Subchapter K partnership taxation election">
-          Subchapter K
-        </span>
-        <span class="badge" title="Bylaws version 4 · adoption pending Initial Board">
-          Bylaws v4 &nbsp;&middot;&nbsp; ratification pending
-        </span>
-      </div>
-    </div>
-
-    <div class="controls">
-      <div class="user-pill">
-        <span class="user-pill-dot"></span>
-        <span id="hud-user"></span>
-      </div>
-      <div class="toggle" role="group" aria-label="Color mode">
-        <button class="toggle-btn" id="btn-light" aria-label="Light mode">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        </button>
-        <button class="toggle-btn active" id="btn-dark" aria-label="Dark mode">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-      </div>
-    </div>
-  </header>
+  <!-- nav.js injects primary nav; header removed -->
 
   <!-- ───────── Stack pane (Left) ───────── -->
   <aside class="pane stack-pane" data-collapse-id="pane-stack">
@@ -1319,11 +1279,10 @@
       var { data: { session } } = await authSb.auth.getSession();
       if (!session) {
         document.getElementById('gate-text').textContent = 'Redirecting to sign-in…';
-        window.location.href = '/intranet/?redirect=' + encodeURIComponent(window.location.pathname);
+        window.location.href = '/intranet/login/?redirect=' + encodeURIComponent(window.location.pathname);
         return;
       }
-      var email = session.user && session.user.email ? session.user.email : '';
-      document.getElementById('hud-user').textContent = email;
+      // user displayed in shared nav (nav.js)
       document.getElementById('gate').classList.add('hidden');
       document.getElementById('hud').classList.remove('hidden');
       restoreCollapseState();
@@ -1518,21 +1477,7 @@
   // Update sync meta every 5s
   setInterval(updateSyncMeta, 5000);
 
-  // ── Mode toggle ──────────────────────────────
-  var btnLight = document.getElementById('btn-light');
-  var btnDark = document.getElementById('btn-dark');
-  var html = document.documentElement;
-
-  function setMode(mode) {
-    html.setAttribute('data-mode', mode);
-    btnLight.classList.toggle('active', mode === 'light');
-    btnDark.classList.toggle('active', mode === 'dark');
-  }
-  btnLight.addEventListener('click', function () { setMode('light'); });
-  btnDark.addEventListener('click', function () { setMode('dark'); });
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-    setMode('light');
-  }
+  // theme handled by nav.js
 
   // ── 12h / 24h toggle ─────────────────────────
   var fmtToggle = document.getElementById('fmt-toggle');

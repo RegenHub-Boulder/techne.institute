@@ -7,6 +7,7 @@
 <title>RegenHub · Treasury</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/intranet/nav.js"></script>
 <style>
   :root {
     --bg: #0f0f0f;
@@ -294,7 +295,7 @@
         <div class="sync-dot" id="sync-dot"></div>
         <span id="sync-label">–</span>
       </div>
-      <button class="mode-btn" id="mode-btn" onclick="toggleMode()">Light</button>
+      <!-- mode toggle moved to nav.js -->
     </div>
   </header>
 
@@ -546,7 +547,7 @@
       var { data: { session } } = await authSb.auth.getSession();
       if (!session) {
         document.getElementById('gate-text').textContent = 'REDIRECTING TO SIGN-IN…';
-        window.location.href = '/intranet/?redirect=' + encodeURIComponent(window.location.pathname);
+        window.location.href = '/intranet/login/?redirect=' + encodeURIComponent(window.location.pathname);
         return;
       }
       document.getElementById('gate').classList.add('hidden');
@@ -824,22 +825,7 @@
     return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  window.toggleMode = function() {
-    var html = document.documentElement;
-    var next = html.getAttribute('data-mode') === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-mode', next);
-    document.getElementById('mode-btn').textContent = next === 'dark' ? 'Light' : 'Dark';
-    try { localStorage.setItem('treasury-mode', next); } catch(e) {}
-  };
-
-  // Restore mode preference
-  try {
-    var saved = localStorage.getItem('treasury-mode');
-    if (saved) {
-      document.documentElement.setAttribute('data-mode', saved);
-      document.getElementById('mode-btn').textContent = saved === 'dark' ? 'Light' : 'Dark';
-    }
-  } catch(e) {}
+  // theme handled by nav.js
 
   checkAuth();
 })();

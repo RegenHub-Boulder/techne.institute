@@ -821,48 +821,86 @@
 
     <!-- SECTION: HUD chrome -->
     <section class="section">
-      <div class="section-label">HUD Chrome — Status Bar + Navigation</div>
+      <div class="section-label">CIS Primary Navigation</div>
 
-      <div class="comp-card" style="background: #0c0c0c; margin-bottom: 1rem;">
-
-        <!-- Status bar mock -->
-        <div class="status-bar" style="margin-bottom: 1.25rem; border-radius: 6px;">
-          <div style="display:flex;align-items:center;gap:0.6rem;">
-            <span class="wordmark">Techne</span>
-            <span class="sep">·</span>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:#9a9a9a;text-transform:uppercase;letter-spacing:0.06em;">Intranet</span>
-            <span class="sep">·</span>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:#9a9a9a;">Apr 10, 2026</span>
+      <!-- Live nav preview (dark) -->
+      <div class="comp-card" style="padding:0;overflow:hidden;margin-bottom:0.75rem;border-radius:8px;">
+        <div style="
+          height:46px;background:#131313;border-bottom:1px solid #242424;
+          display:flex;align-items:center;padding:0 16px;gap:0;
+          font-family:'IBM Plex Mono',monospace;font-size:11px;
+        ">
+          <a style="font-family:'Libre Baskerville',Georgia,serif;font-size:19px;color:#c4956a;text-decoration:none;margin-right:18px;opacity:0.9;">τ</a>
+          <div style="display:flex;gap:2px;flex:1;">
+            <span style="padding:5px 9px;color:#c4956a;background:rgba(196,149,106,0.1);border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">CIS</span>
+            <span style="padding:5px 9px;color:#777;border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">People</span>
+            <span style="padding:5px 9px;color:#777;border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">Agreements</span>
+            <span style="padding:5px 9px;color:#777;border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">Treasury</span>
+            <span style="padding:5px 9px;color:#777;border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">Activity</span>
+            <span style="padding:5px 9px;color:#777;border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">Board</span>
+            <span style="padding:5px 9px;color:#777;border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">Enroll</span>
           </div>
-          <div style="display:flex;align-items:center;gap:0.75rem;">
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:#9a9a9a;">Todd</span>
-            <span style="background:rgba(196,149,106,0.15);color:#c4956a;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:1px 5px;border-radius:3px;">steward</span>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:#9a9a9a;text-decoration:underline;">Sign out</span>
+          <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+            <div style="display:flex;align-items:center;gap:7px;padding:4px 10px 4px 5px;background:rgba(255,255,255,0.05);border:1px solid #2e2e2e;border-radius:20px;">
+              <div style="width:22px;height:22px;border-radius:50%;background:#c4956a;color:#0f0f0f;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;">TY</div>
+              <span style="font-size:10.5px;color:#ccc;letter-spacing:0.03em;">Todd</span>
+              <span style="font-size:8px;color:#555;">▾</span>
+            </div>
+            <button style="padding:4px 10px;background:transparent;border:1px solid #2e2e2e;border-radius:4px;color:#555;font-size:10px;font-family:'IBM Plex Mono',monospace;cursor:default;letter-spacing:0.07em;">Light</button>
           </div>
         </div>
+      </div>
 
-        <!-- Nav mock -->
-        <div class="nav-demo">
-          <div class="nav-item nav-item-active">
-            <span class="nav-dot nav-dot-gold" style="border-radius:50%;width:6px;height:6px;"></span>
-            Dashboard
+      <!-- Live nav preview (light) -->
+      <div class="comp-card" style="padding:0;overflow:hidden;margin-bottom:1.5rem;border-radius:8px;border-color:#ccc;">
+        <div style="
+          height:46px;background:#f0ebe4;border-bottom:1px solid #cfc7bd;
+          display:flex;align-items:center;padding:0 16px;gap:0;
+          font-family:'IBM Plex Mono',monospace;font-size:11px;
+        ">
+          <a style="font-family:'Libre Baskerville',Georgia,serif;font-size:19px;color:#c4956a;text-decoration:none;margin-right:18px;opacity:0.9;">τ</a>
+          <div style="display:flex;gap:2px;flex:1;">
+            <span style="padding:5px 9px;color:#96704a;background:rgba(150,112,74,0.1);border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">CIS</span>
+            <span style="padding:5px 9px;color:#888;border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">People</span>
+            <span style="padding:5px 9px;color:#888;border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">Agreements</span>
+            <span style="padding:5px 9px;color:#888;border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">Treasury</span>
+            <span style="padding:5px 9px;color:#888;border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">Activity</span>
+            <span style="padding:5px 9px;color:#888;border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">Board</span>
+            <span style="padding:5px 9px;color:#888;border-radius:4px;font-size:10.5px;letter-spacing:0.05em;">Enroll</span>
           </div>
-          <div class="nav-item nav-item-idle">
-            <span class="nav-dot" style="border-radius:50%;width:6px;height:6px;"></span>
-            Account
+          <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+            <div style="display:flex;align-items:center;gap:7px;padding:4px 10px 4px 5px;background:rgba(0,0,0,0.04);border:1px solid #ccc;border-radius:20px;">
+              <div style="width:22px;height:22px;border-radius:50%;background:#c4956a;color:#0f0f0f;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;">TY</div>
+              <span style="font-size:10.5px;color:#3d342b;letter-spacing:0.03em;">Todd</span>
+              <span style="font-size:8px;color:#aaa;">▾</span>
+            </div>
+            <button style="padding:4px 10px;background:transparent;border:1px solid #ccc;border-radius:4px;color:#888;font-size:10px;font-family:'IBM Plex Mono',monospace;cursor:default;letter-spacing:0.07em;">Dark</button>
           </div>
-          <div class="nav-item nav-item-idle">
-            <span class="nav-dot" style="border-radius:50%;width:6px;height:6px;"></span>
-            Cooperative
-          </div>
-          <div class="nav-item nav-item-idle">
-            <span class="nav-dot" style="border-radius:50%;width:6px;height:6px;"></span>
-            Finance
-          </div>
-          <div class="nav-item nav-item-idle">
-            <span class="nav-dot" style="border-radius:50%;width:6px;height:6px;"></span>
-            Cloud
-          </div>
+        </div>
+      </div>
+
+      <!-- Usage -->
+      <div class="comp-card" style="margin-bottom:0.75rem;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9a9a9a;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;">Usage</div>
+        <pre style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#c4956a;background:#0c0c0c;padding:14px 16px;border-radius:6px;overflow-x:auto;line-height:1.7;margin:0;">&lt;!-- In &lt;head&gt;, after font loading --&gt;
+&lt;script src="/intranet/nav.js"&gt;&lt;/script&gt;
+
+&lt;!-- Optional: require auth on this page --&gt;
+&lt;body data-auth-required&gt;</pre>
+      </div>
+
+      <!-- Behaviour list -->
+      <div class="comp-card">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#9a9a9a;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;">Behaviour</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#d0d0d0;line-height:2;">
+          <div>— Self-injects sticky nav bar + site footer on <code style="color:#c4956a;">DOMContentLoaded</code></div>
+          <div>— Reads Supabase session (Workshop project); shows initials avatar + display name</div>
+          <div>— User chip dropdown: <strong style="color:#e0e0e0;">Edit Profile</strong> → <code style="color:#c4956a;">/intranet/profile/</code> &nbsp;·&nbsp; <strong style="color:#e0e0e0;">Sign out</strong> → clears session</div>
+          <div>— Footer sign-out button shown when authenticated; hidden when not</div>
+          <div>— Dark/light toggle writes to <code style="color:#c4956a;">localStorage('cis-theme')</code> and sets <code style="color:#c4956a;">data-mode</code> on <code>&lt;html&gt;</code></div>
+          <div>— Active section link highlighted automatically from <code style="color:#c4956a;">window.location.pathname</code></div>
+          <div>— <code style="color:#c4956a;">data-auth-required</code> on body redirects unauthenticated users to <code style="color:#c4956a;">/intranet/login/</code></div>
+          <div>— Exposes <code style="color:#c4956a;">window.cisUser</code> for page scripts needing user context</div>
         </div>
       </div>
     </section>
