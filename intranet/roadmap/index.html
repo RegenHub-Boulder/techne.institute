@@ -427,7 +427,7 @@
 
   <!-- Context card -->
   <div class="context-card">
-    <p>The <em>Common Information System</em> is the cooperative's book of record — member registry, capital accounts, agreements, and governance events. It is built in two stages: the <em>floor</em> (substrate infrastructure) followed by five CIS modules. Phases 0, 1, and 3 are complete as of May 22. Phase 2 (bylaws ingestion) is the active next step.</p>
+    <p>The <em>Common Information System</em> is the cooperative's book of record — member registry, capital accounts, agreements, and governance events. It is built in two stages: the <em>floor</em> (substrate infrastructure) followed by five CIS modules. Phases 0, 1, 2, and 3 are complete as of May 22. Phase 4 (Nou harness) is the active next step.</p>
     <div class="stats-strip">
       <div class="stat"><span class="num">3</span>&nbsp;of 6 floor phases complete</div>
       <div class="stat"><span class="num" style="color:var(--synth);">1</span>&nbsp;urgent decision open</div>
@@ -502,30 +502,26 @@
     </div>
 
     <!-- Phase 2: Pending -->
-    <div class="module-row phase-floor pending">
+    <div class="module-row phase-floor complete">
       <div class="module-accent"></div>
       <div class="module-body">
         <div class="module-top">
           <span class="module-name">Bylaws Loader</span>
           <span class="module-phase">Phase 2 · L3 Agreement Sections</span>
         </div>
-        <div class="module-desc">The bylaws loaded as structured, searchable sections — each stamped with a stable address that survives amendments. Nou cannot cite the bylaws until this phase is complete.</div>
+        <div class="module-desc">Bylaws v2 loaded as 187 structured, searchable sections — each stamped with a stable address that survives amendments. Nou can now cite the bylaws by section address.</div>
         <div class="module-deliverables">
-          <span class="del-tag">Bylaws v1.3 in markdown</span>
-          <span class="del-tag">Idempotent loader</span>
-          <span class="del-tag">1,536-dim vector embeddings</span>
-          <span class="del-tag">superseded_by amendment chain</span>
-        </div>
-        <div class="module-blockers" style="border-top-color:rgba(196,149,106,0.15);">
-          <div class="blocker-label" style="color:var(--terra-text);">Needs input</div>
-          <div class="blocker-item" style="color:var(--muted);">Todd confirms: does bylaws v1.3 have lettered sub-subsections? (e.g. §5.3.2.a)</div>
-          <div class="blocker-item" style="color:var(--muted);">Bylaws v1.3 source document in markdown format</div>
+          <span class="del-tag">Bylaws v2 (18 articles + Schedule A)</span>
+          <span class="del-tag">Idempotent seed migration</span>
+          <span class="del-tag">187 sections · address scheme bylaws:v2:art-N.sec-M.sub-P.item-Q</span>
+          <span class="del-tag">Lettered clauses inline · numeric sub-sub-sections as rows</span>
+          <span class="del-tag">Deployed 2026-05-22</span>
         </div>
       </div>
       <div class="module-side">
         <div class="module-status">
-          <span class="pip" data-status="off" data-tip="Pending — follows Phase 1"></span>
-          pending
+          <span class="pip" data-status="on" data-tip="Complete — 187 sections deployed 2026-05-22"></span>
+          complete
         </div>
       </div>
     </div>
@@ -819,28 +815,28 @@
       </div>
     </div>
 
-    <!-- D3: Bylaws sub-subsections — medium -->
-    <div class="module-row phase-decision decision-medium">
+    <!-- D3: Bylaws sub-subsections — resolved -->
+    <div class="module-row phase-decision decision-resolved">
       <div class="module-accent"></div>
       <div class="module-body">
         <div class="module-top">
-          <span class="module-name">Bylaws v1.3 sub-subsection format</span>
-          <span class="urgency-chip urgency-medium">medium</span>
+          <span class="module-name">Bylaws v2 sub-subsection format</span>
+          <span class="urgency-chip urgency-low">resolved</span>
         </div>
-        <div class="module-desc">Does bylaws v1.3 contain lettered sub-subsections (e.g. §5.3.2.a)? Determines the addressing format before the Phase 2 loader is built.</div>
+        <div class="module-desc">Bylaws v2 confirmed (May 22, 2026): lettered clauses (a)(b)(c) are inline in parent body_markdown. Numeric sub-sub-sections (e.g. §3.5.2.1–3.5.2.6) get their own rows. Addressing scheme: bylaws:v2:art-N.sec-M[.sub-P[.item-Q]].</div>
         <div class="decision-options">
-          <div class="decision-option">No lettered sub-subsections → addressing stays at art-N.sec-M.sub-P (current scheme)</div>
-          <div class="decision-option">Yes, lettered clauses exist → extend to art-N.sec-M.sub-P.clause-A</div>
+          <div class="decision-option" style="opacity:0.5;text-decoration:line-through;">No lettered sub-subsections → addressing stays at art-N.sec-M.sub-P</div>
+          <div class="decision-option decision-chosen">Both patterns present — lettered clauses inline, numeric sub-sub-sections as rows. Scheme extended to art-N.sec-M.sub-P.item-Q. 187 sections deployed.</div>
         </div>
         <div class="decision-footer">
           <div class="decision-meta">Owner: <span>Todd</span></div>
-          <div class="decision-meta">Blocks: <span>Phase 2 bylaws loader</span></div>
+          <div class="decision-meta">Resolved: <span>May 22, 2026</span></div>
         </div>
       </div>
       <div class="module-side">
         <div class="module-status">
-          <span class="pip" data-status="off" data-tip="Pending — needed before Phase 2 loader is built"></span>
-          open
+          <span class="pip" data-status="on" data-tip="Resolved — scheme finalized, bylaws v2 deployed"></span>
+          resolved
         </div>
       </div>
     </div>
