@@ -429,7 +429,7 @@
   <div class="context-card">
     <p>The <em>Common Information System</em> is the cooperative's book of record — member registry, capital accounts, agreements, and governance events. It is built in two stages: the <em>floor</em> (substrate infrastructure) followed by five CIS modules. Phases 0, 1, 2, and 3 are complete as of May 22. Phase 4 (Nou harness) is the active next step.</p>
     <div class="stats-strip">
-      <div class="stat"><span class="num">3</span>&nbsp;of 6 floor phases complete</div>
+      <div class="stat"><span class="num">4</span>&nbsp;of 6 floor phases complete</div>
       <div class="stat"><span class="num" style="color:var(--synth);">1</span>&nbsp;urgent decision open</div>
       <div class="stat"><span class="num">5</span>&nbsp;CIS waves planned</div>
       <div class="stat"><span class="num" style="color:var(--live);">5</span>&nbsp;intranet modules live</div>
@@ -520,7 +520,7 @@
       </div>
       <div class="module-side">
         <div class="module-status">
-          <span class="pip" data-status="on" data-tip="Complete — 187 sections deployed 2026-05-22"></span>
+          <span class="pip" data-status="live" data-tip="Complete — 187 sections deployed 2026-05-22"></span>
           complete
         </div>
       </div>
@@ -536,7 +536,7 @@
         </div>
         <div class="module-desc">The database enforces who can see what — not just the application layer. Every policy cites the specific bylaw section that authorizes it. Deployed ahead of bylaws ingestion with the cite-as-you-enforce pattern in place for all 6 tables.</div>
         <div class="module-deliverables">
-          <span class="del-tag">31 RLS policies across 6 tables</span>
+          <span class="del-tag">28 RLS policies across 5 tables</span>
           <span class="del-tag">15-role model: 11 coop + 4 hub</span>
           <span class="del-tag">has_role() · has_any_role() · agent_id() helpers</span>
           <span class="del-tag">Cite-as-you-enforce: §1.4 §1.7 §2.9 §III §18.1</span>
@@ -816,12 +816,12 @@
     </div>
 
     <!-- D3: Bylaws sub-subsections — resolved -->
-    <div class="module-row phase-decision decision-resolved">
-      <div class="module-accent"></div>
+    <div class="module-row phase-decision" style="opacity:0.55;">
+      <div class="module-accent" style="background:var(--live);"></div>
       <div class="module-body">
         <div class="module-top">
           <span class="module-name">Bylaws v2 sub-subsection format</span>
-          <span class="urgency-chip urgency-low">resolved</span>
+          <span class="urgency-chip" style="background:rgba(34,197,94,0.12);color:var(--live);border-color:rgba(34,197,94,0.3);">resolved</span>
         </div>
         <div class="module-desc">Bylaws v2 confirmed (May 22, 2026): lettered clauses (a)(b)(c) are inline in parent body_markdown. Numeric sub-sub-sections (e.g. §3.5.2.1–3.5.2.6) get their own rows. Addressing scheme: bylaws:v2:art-N.sec-M[.sub-P[.item-Q]].</div>
         <div class="decision-options">
@@ -835,8 +835,8 @@
       </div>
       <div class="module-side">
         <div class="module-status">
-          <span class="pip" data-status="on" data-tip="Resolved — scheme finalized, bylaws v2 deployed"></span>
-          resolved
+          <span class="pip" data-status="live" data-tip="Resolved — scheme finalized, bylaws v2 deployed"></span>
+          <span style="color:var(--live);">done</span>
         </div>
       </div>
     </div>
