@@ -1,0 +1,2064 @@
+<!doctype html>
+<html lang="en" data-mode="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Advanced View · CIS · Techne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Design tokens ─────────────────────────────── */
+:root[data-mode="dark"] {
+  --bg:          #0f0f0f;
+  --surface:     #1a1a1a;
+  --surface-2:   #1f1f1f;
+  --surface-3:   #242424;
+  --border:      #2e2e2e;
+  --border-soft: #232323;
+  --terra:       #c4956a;
+  --terra-text:  #c4956a;
+  --terra-dim:   rgba(196, 149, 106, 0.10);
+  --terra-edge:  rgba(196, 149, 106, 0.28);
+  --heading:     #e8e0d8;
+  --text:        #d4d4d4;
+  --muted:       #999999;
+  --faint:       #666666;
+  --good:        #8aa67e;
+  --good-dim:    rgba(138, 166, 126, 0.12);
+  --info:        #7a8ba8;
+  --info-dim:    rgba(122, 139, 168, 0.12);
+  --warn:        #cc8855;
+  --warn-dim:    rgba(204, 136, 85, 0.10);
+}
+:root[data-mode="light"] {
+  --bg:          #faf7f2;
+  --surface:     #f4efe9;
+  --surface-2:   #efe9e1;
+  --surface-3:   #e8e1d5;
+  --border:      #d8cfc2;
+  --border-soft: #e2dbcf;
+  --terra:       #c4956a;
+  --terra-text:  #96704a;
+  --terra-dim:   rgba(150, 112, 74, 0.08);
+  --terra-edge:  rgba(150, 112, 74, 0.30);
+  --heading:     #2a2520;
+  --text:        #3a342d;
+  --muted:       #6a6258;
+  --faint:       #a59c8d;
+  --good:        #5e7a51;
+  --good-dim:    rgba(94, 122, 81, 0.12);
+  --info:        #5a6f8e;
+  --info-dim:    rgba(90, 111, 142, 0.10);
+  --warn:        #a06a3e;
+  --warn-dim:    rgba(160, 106, 62, 0.10);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-mode]) {
+    --bg:#faf7f2;--surface:#f4efe9;--surface-2:#efe9e1;--surface-3:#e8e1d5;
+    --border:#d8cfc2;--border-soft:#e2dbcf;--terra:#c4956a;--terra-text:#96704a;
+    --terra-dim:rgba(150,112,74,0.08);--terra-edge:rgba(150,112,74,0.30);
+    --heading:#2a2520;--text:#3a342d;--muted:#6a6258;--faint:#a59c8d;
+    --good:#5e7a51;--good-dim:rgba(94,122,81,0.12);
+    --info:#5a6f8e;--info-dim:rgba(90,111,142,0.10);
+    --warn:#a06a3e;--warn-dim:rgba(160,106,62,0.10);
+  }
+}
+
+/* ── Base reset ───────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 14px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+*, *::before, *::after {
+  transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--terra-edge); }
+
+/* ── Auth overlay ─────────────────────────────── */
+#auth-overlay {
+  position: fixed; inset: 0; background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+}
+#auth-overlay .spinner {
+  width: 24px; height: 24px;
+  border: 2px solid var(--border);
+  border-top-color: var(--terra);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── App shell ────────────────────────────────── */
+.app {
+  display: grid;
+  grid-template-columns: 240px 1fr 340px;
+  grid-template-rows: 64px 1fr 44px;
+  grid-template-areas:
+    "topbar  topbar  topbar"
+    "sidebar canvas  panel"
+    "foot    foot    foot";
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ── Topbar ───────────────────────────────────── */
+.topbar {
+  grid-area: topbar;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+  z-index: 10;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 700;
+  color: var(--heading);
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.brand .mark {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, var(--terra) 0%, var(--terra-edge) 100%);
+  display: flex; align-items: center; justify-content: center;
+  color: #0f0f0f;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px; font-weight: 500;
+  flex-shrink: 0;
+}
+.brand .dba {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.12em; font-weight: 400;
+  margin-left: 2px;
+}
+.identity {
+  display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0;
+}
+#tb-name {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 14px; font-weight: 700; color: var(--heading);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 180px;
+}
+.role-pills { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
+.role-pill {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 2px 7px; border: 1px solid var(--border);
+  border-radius: 999px; background: var(--surface-2); color: var(--muted);
+}
+.role-pill.active { color: var(--terra-text); border-color: var(--terra-edge); background: var(--terra-dim); }
+.standing-indicator {
+  display: flex; align-items: center; gap: 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--good); text-transform: uppercase; letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+.standing-indicator .dot {
+  width: 6px; height: 6px; background: var(--good); border-radius: 50%;
+}
+.top-actions {
+  display: flex; gap: 6px; align-items: center; flex-shrink: 0;
+}
+.icon-btn {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 7px; width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text); cursor: pointer; position: relative;
+  font-size: 11px;
+}
+.icon-btn:hover { border-color: var(--terra-edge); color: var(--terra-text); }
+.icon-btn .notif-badge {
+  position: absolute; top: 4px; right: 4px;
+  background: var(--warn); color: var(--bg);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px; width: 13px; height: 13px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 500;
+}
+.icon-btn svg { display: block; pointer-events: none; }
+.view-switch {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
+  padding: 5px 10px; border: 1px solid var(--border);
+  border-radius: 6px; background: var(--surface-2);
+  color: var(--muted); cursor: pointer; text-decoration: none;
+  white-space: nowrap;
+}
+.view-switch:hover { border-color: var(--terra-edge); color: var(--terra-text); }
+
+/* ── Sidebar ──────────────────────────────────── */
+.sidebar {
+  grid-area: sidebar;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 14px 0 20px;
+  display: flex; flex-direction: column;
+}
+.nav-group { margin-bottom: 4px; }
+.nav-group-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--terra-text);
+  text-transform: uppercase; letter-spacing: 0.14em;
+  padding: 12px 18px 6px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 18px;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 13.5px; color: var(--text);
+  cursor: pointer; position: relative;
+  user-select: none;
+}
+.nav-item .num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--faint);
+  letter-spacing: 0.04em; min-width: 28px;
+}
+.nav-item .lbl { flex: 1; }
+.nav-item .dot-ind {
+  width: 5px; height: 5px; border-radius: 50%;
+}
+.dot-ind.warn { background: var(--warn); }
+.dot-ind.good { background: var(--good); }
+.dot-ind.info { background: var(--info); }
+.nav-item:hover { background: var(--surface-2); color: var(--heading); }
+.nav-item:hover .num { color: var(--terra-text); }
+.nav-item.active { background: var(--terra-dim); color: var(--heading); }
+.nav-item.active::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--terra);
+}
+.nav-item.active .num { color: var(--terra-text); }
+.nav-sep { height: 1px; background: var(--border-soft); margin: 8px 0; }
+.sidebar-spacer { flex: 1; }
+.compliance-strip {
+  padding: 12px 18px 8px;
+  border-top: 1px solid var(--border-soft);
+}
+.comp-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--faint); text-transform: uppercase;
+  letter-spacing: 0.12em; margin-bottom: 8px;
+}
+.comp-row {
+  display: flex; align-items: center; gap: 6px;
+  padding: 3px 0;
+}
+.comp-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--terra); flex-shrink: 0;
+}
+.comp-dot.warn { background: var(--warn); }
+.comp-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--muted);
+}
+.comp-cite {
+  font-size: 9px; color: var(--faint); margin-left: auto;
+  letter-spacing: 0.05em;
+}
+
+/* ── Canvas ───────────────────────────────────── */
+.canvas {
+  grid-area: canvas;
+  overflow-y: auto;
+  background: var(--bg);
+}
+.module-view {
+  display: none;
+  padding: 30px 36px 80px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.module-view.active { display: block; }
+.module-head {
+  margin-bottom: 26px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.module-crumb {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--terra-text);
+  text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 9px;
+}
+.module-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 30px; font-weight: 700; color: var(--heading);
+  line-height: 1.2; margin-bottom: 7px; letter-spacing: -0.01em;
+}
+.module-title em { font-style: italic; }
+.module-subtitle {
+  color: var(--muted); font-size: 14.5px; line-height: 1.65;
+  max-width: 600px;
+}
+.module-ref {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--muted); letter-spacing: 0.05em; margin-top: 7px;
+}
+
+/* Stat strip */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px; margin-bottom: 24px;
+}
+.stat {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+}
+.stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--terra-text);
+  text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 7px;
+}
+.stat-value {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 21px; color: var(--heading); font-weight: 700; line-height: 1.1;
+}
+.stat-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--muted); margin-top: 5px; letter-spacing: 0.04em;
+}
+
+/* Live state grid */
+.state-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-bottom: 22px;
+}
+.state-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 18px;
+}
+.state-card-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.state-card-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--terra-text);
+  text-transform: uppercase; letter-spacing: 0.12em;
+}
+.state-card-cite {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--faint); letter-spacing: 0.05em;
+}
+.state-big {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 22px; font-weight: 700; color: var(--heading); line-height: 1;
+  margin-bottom: 6px;
+}
+.state-big small {
+  font-size: 12px; font-weight: 400; color: var(--muted);
+  font-family: 'IBM Plex Mono', monospace; margin-left: 3px;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+.chip {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 6px; padding: 3px 8px;
+}
+.chip .n {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 500; color: var(--heading);
+}
+.chip .lbl {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--muted); letter-spacing: 0.04em;
+}
+.gauge-wrap { margin-top: 4px; }
+.gauge {
+  height: 4px; background: var(--surface-3);
+  border-radius: 2px; margin: 6px 0 5px; overflow: hidden;
+}
+.gauge-fill {
+  height: 100%; background: var(--terra);
+  border-radius: 2px; transition: width 0.6s ease;
+}
+.gauge-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--muted); display: flex;
+  justify-content: space-between;
+}
+.formula-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+  margin-top: 4px;
+}
+.formula-cell { text-align: center; }
+.formula-pct {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px; font-weight: 500; color: var(--terra-text); line-height: 1;
+}
+.formula-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--muted); margin-top: 3px;
+}
+
+/* Section label */
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--terra-text);
+  text-transform: uppercase; letter-spacing: 0.16em;
+  margin: 24px 0 10px;
+}
+/* Cards */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 11px; padding: 20px 22px; margin-bottom: 12px;
+}
+.card-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 12px; gap: 10px;
+}
+.card-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 16px; font-weight: 700; color: var(--heading);
+}
+.card-title em { font-style: italic; }
+.card-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--muted); letter-spacing: 0.04em;
+}
+.card p { font-size: 13.5px; line-height: 1.65; margin-bottom: 10px; }
+.card p:last-child { margin-bottom: 0; }
+
+/* Pending actions */
+.pending {
+  display: flex; gap: 12px; padding: 13px 15px;
+  border: 1px solid var(--terra-edge); background: var(--terra-dim);
+  border-radius: 10px; margin-bottom: 9px; align-items: flex-start;
+}
+.pending-icon { flex-shrink: 0; color: var(--terra-text); padding-top: 1px; }
+.pending-body { flex: 1; }
+.pending-title {
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 700; color: var(--heading); font-size: 14px; margin-bottom: 3px;
+}
+.pending-desc { font-size: 13px; color: var(--text); line-height: 1.55; margin-bottom: 8px; }
+.pending-actions { display: flex; gap: 7px; }
+.btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 5px 11px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--surface-2);
+  color: var(--text); cursor: pointer;
+}
+.btn:hover { border-color: var(--terra-edge); color: var(--terra-text); }
+.btn.primary { background: var(--terra); border-color: var(--terra); color: #0f0f0f; }
+.btn.primary:hover { opacity: 0.85; }
+
+/* Activity log */
+.log-item {
+  display: grid; grid-template-columns: 100px 1fr;
+  gap: 12px; padding: 9px 0;
+  border-bottom: 1px dotted var(--border-soft);
+  font-size: 13px; align-items: baseline;
+}
+.log-item:last-child { border-bottom: none; }
+.log-when {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--muted); letter-spacing: 0.04em;
+}
+.log-what { color: var(--text); line-height: 1.5; }
+.log-what .cite {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--faint); margin-left: 6px;
+}
+.log-live { color: var(--terra-text) !important; }
+
+/* Ledger table */
+.ledger {
+  background: var(--bg); border: 1px solid var(--border-soft);
+  border-radius: 8px; overflow: hidden;
+}
+.ledger-head {
+  display: grid; grid-template-columns: 110px 1fr 100px 100px;
+  gap: 10px; padding: 9px 14px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border-soft);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.ledger-row {
+  display: grid; grid-template-columns: 110px 1fr 100px 100px;
+  gap: 10px; padding: 11px 14px;
+  border-bottom: 1px dotted var(--border-soft);
+  font-size: 13px; align-items: baseline;
+}
+.ledger-row:last-child { border-bottom: none; }
+.ledger-date {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--muted); letter-spacing: 0.04em;
+}
+.ledger-type {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--terra-text);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  display: block; margin-bottom: 2px;
+}
+.ledger-desc { color: var(--text); }
+.ledger-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px; color: var(--heading); text-align: right;
+}
+.ledger-num.pos { color: var(--good); }
+.ledger-num.neg { color: var(--warn); }
+
+/* Stack layers (from artifact 2) */
+.layer-stack { margin-top: 12px; }
+.layer {
+  padding: 10px 14px;
+  border: 1px solid var(--border); border-radius: 8px;
+  margin-bottom: 7px; background: var(--surface-2);
+}
+.layer.kernel { border-color: var(--terra-edge); background: var(--terra-dim); }
+.layer-head {
+  display: flex; gap: 10px; align-items: center; margin-bottom: 4px;
+}
+.layer-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--terra-text);
+  letter-spacing: 0.1em; opacity: 0.8; min-width: 20px;
+}
+.layer-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; color: var(--heading); letter-spacing: 0.04em;
+}
+.layer-fluid {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--faint); margin-left: auto;
+  letter-spacing: 0.1em;
+}
+.layer-body { font-size: 13px; color: var(--muted); margin-left: 30px; }
+.layer-state {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--terra-text); margin-left: 30px;
+  margin-top: 3px; display: flex; gap: 8px;
+}
+
+/* Thresholds tape */
+.tape {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  margin-top: 10px;
+}
+.tape-cell {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 7px; padding: 10px 12px;
+}
+.tape-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--muted); text-transform: uppercase;
+  letter-spacing: 0.1em; display: block; margin-bottom: 4px;
+}
+.tape-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px; color: var(--heading); font-weight: 500;
+  display: block; margin-bottom: 3px;
+}
+.tape-cite {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px; color: var(--faint); letter-spacing: 0.05em;
+}
+
+/* Module stub */
+.module-stub {
+  text-align: center; padding: 60px 20px;
+  color: var(--faint); font-style: italic;
+}
+.module-stub .stub-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 18px; color: var(--muted); margin-bottom: 8px;
+}
+
+/* ── Right panel (Nou) ─────────────────────────── */
+.panel {
+  grid-area: panel;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.panel-section {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border-soft);
+  padding: 14px 16px;
+}
+.panel-section:last-child { border-bottom: none; flex: 1; overflow-y: auto; }
+.panel-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--terra-text);
+  text-transform: uppercase; letter-spacing: 0.14em;
+  margin-bottom: 10px;
+}
+
+/* Solar */
+.solar-card { }
+.solar-coords {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--faint); letter-spacing: 0.06em;
+  float: right; margin-top: 2px;
+}
+.solar-stage { margin: 8px 0; }
+.solar-stage svg { width: 100%; max-height: 140px; display: block; }
+.time-main { display: flex; align-items: baseline; gap: 6px; margin-top: 6px; }
+.time-now {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 22px; color: var(--heading); letter-spacing: 0.02em;
+}
+.time-ampm {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px; color: var(--terra-text); text-transform: uppercase;
+}
+.time-secondary {
+  display: flex; align-items: center; gap: 6px; margin-top: 3px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--muted);
+}
+.solar-data {
+  display: grid; grid-template-columns: auto 1fr auto 1fr;
+  gap: 3px 6px; margin-top: 8px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+}
+.solar-data .k { color: var(--faint); letter-spacing: 0.06em; }
+.solar-data .v { color: var(--terra-text); }
+.solar-divider { grid-column: 1/-1; height: 1px; background: var(--border); margin: 4px 0; }
+.fmt-toggle {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px;
+  color: var(--faint); background: none; border: 1px solid var(--border);
+  border-radius: 3px; padding: 1px 5px; cursor: pointer; margin-left: 4px;
+}
+.fmt-toggle:hover { color: var(--terra-text); border-color: var(--terra-edge); }
+
+/* REA activity */
+.rea-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 6px; margin-bottom: 12px;
+}
+.rea-cell {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 7px; padding: 8px 10px; text-align: center;
+}
+.rea-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px; color: var(--muted); text-transform: uppercase;
+  letter-spacing: 0.08em; display: block; margin-bottom: 4px;
+}
+.rea-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 18px; color: var(--heading); line-height: 1;
+}
+.rea-cite {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px; color: var(--faint); margin-top: 2px; letter-spacing: 0.05em;
+}
+.log-section { margin-bottom: 12px; }
+.log-section-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 6px;
+}
+.log-section-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--heading); letter-spacing: 0.05em;
+}
+.log-section-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--faint);
+}
+.log-entry {
+  padding: 7px 0;
+  border-bottom: 1px dotted var(--border-soft);
+}
+.log-entry:last-child { border-bottom: none; }
+.log-entry-when {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--muted);
+}
+.log-entry-what {
+  font-size: 12.5px; color: var(--text); line-height: 1.5;
+}
+.log-entry-what .cite {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--faint); margin-left: 5px;
+}
+.log-entry.live .log-entry-when { color: var(--terra-text); }
+.workflow-item {
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 7px; margin-bottom: 5px;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 8px;
+}
+.workflow-name {
+  font-size: 12.5px; color: var(--text); line-height: 1.4;
+}
+.workflow-name small {
+  display: block; font-size: 10.5px;
+  color: var(--muted); font-style: italic; margin-top: 2px;
+}
+.workflow-state {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--terra-text); white-space: nowrap; flex-shrink: 0;
+}
+
+/* Nou strip */
+.nou-strip {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 12px 16px;
+  background: var(--terra-dim); border-top: 1px solid var(--terra-edge);
+  flex-shrink: 0;
+}
+.nou-mark {
+  width: 26px; height: 26px; border-radius: 6px;
+  background: var(--terra-dim); border: 1px solid var(--terra-edge);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Libre Baskerville', serif; font-style: italic;
+  color: var(--terra-text); font-size: 14px; flex-shrink: 0;
+}
+.nou-text {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 12px; color: var(--text); line-height: 1.5; font-style: italic;
+}
+.nou-text small {
+  display: block; font-style: normal;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--faint); letter-spacing: 0.08em; margin-top: 3px;
+}
+.nou-status {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; color: var(--terra-text); letter-spacing: 0.12em;
+  text-transform: uppercase; margin-left: auto; flex-shrink: 0; padding-top: 6px;
+}
+
+/* ── Footer strip ─────────────────────────────── */
+.foot {
+  grid-area: foot;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  overflow: hidden;
+}
+.foot-compliance {
+  display: flex; gap: 16px; align-items: center;
+}
+.foot-comp {
+  display: flex; align-items: center; gap: 5px;
+}
+.foot-comp-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--terra);
+}
+.foot-comp-dot.warn { background: var(--warn); }
+.foot-comp-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--text);
+}
+.foot-comp-cite {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px; color: var(--faint); margin-left: 3px; letter-spacing: 0.05em;
+}
+.foot-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px; color: var(--faint); display: flex; gap: 12px;
+  letter-spacing: 0.06em;
+}
+
+/* ── Responsive guard ─────────────────────────── */
+@media (max-width: 1100px) {
+  body::before {
+    content: 'Advanced view is optimised for widescreen. Some panels may compress.';
+    display: block; padding: 7px 14px;
+    background: var(--terra-dim); color: var(--terra-text);
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-align: center;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Auth loading overlay -->
+<div id="auth-overlay"><div class="spinner"></div></div>
+
+<!-- App shell -->
+<div class="app" id="app" style="display:none">
+
+  <!-- ── Topbar ─────────────────────────────── -->
+  <header class="topbar">
+    <a class="brand" href="/intranet/">
+      <span class="mark">τ</span>
+      <span>RegenHub</span>
+      <span class="dba">dba techne</span>
+    </a>
+
+    <div class="identity">
+      <span id="tb-name">—</span>
+      <div class="role-pills">
+        <span class="role-pill active" id="pill-patron">Patron</span>
+        <span class="role-pill" id="pill-director" style="display:none">Director</span>
+        <span class="role-pill" id="pill-steward" style="display:none">Steward</span>
+      </div>
+      <div class="standing-indicator">
+        <span class="dot"></span>
+        <span>Good standing</span>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <!-- Notifications -->
+      <button class="icon-btn" id="notif-btn" title="Notifications" aria-label="Notifications">
+        <span class="notif-badge" id="notif-count" style="display:none">2</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+      </button>
+      <!-- Mode toggle -->
+      <button class="icon-btn" id="mode-btn" title="Toggle theme" aria-label="Toggle colour mode">
+        <svg id="mode-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </svg>
+        <svg id="mode-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <!-- View switch -->
+      <a class="view-switch" href="/intranet/" title="Switch to Simple view">Simple view</a>
+      <!-- Profile -->
+      <a class="icon-btn" href="/intranet/profile/" title="Profile" aria-label="Edit profile">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- ── Sidebar ────────────────────────────── -->
+  <nav class="sidebar" role="navigation" aria-label="CIS modules">
+
+    <div class="nav-group">
+      <div class="nav-item active" data-module="today">
+        <span class="num">—</span>
+        <span class="lbl">Today</span>
+        <span class="dot-ind warn"></span>
+      </div>
+    </div>
+
+    <div class="nav-sep"></div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">A · Membership</div>
+      <div class="nav-item" data-module="01">
+        <span class="num">01</span>
+        <span class="lbl">Member Directory</span>
+      </div>
+      <div class="nav-item" data-module="09">
+        <span class="num">09</span>
+        <span class="lbl">Membership Lifecycle</span>
+        <span class="dot-ind info"></span>
+      </div>
+      <div class="nav-item" data-module="12">
+        <span class="num">12</span>
+        <span class="lbl">Onboarding</span>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">B · Capital</div>
+      <div class="nav-item" data-module="02">
+        <span class="num">02</span>
+        <span class="lbl">Capital Account</span>
+      </div>
+      <div class="nav-item" data-module="03">
+        <span class="num">03</span>
+        <span class="lbl">Stock Ledger</span>
+      </div>
+      <div class="nav-item" data-module="10">
+        <span class="num">10</span>
+        <span class="lbl">Tax &amp; Reporting</span>
+        <span class="dot-ind warn"></span>
+      </div>
+      <div class="nav-item" data-module="11">
+        <span class="num">11</span>
+        <span class="lbl">Treasury</span>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">C · Governance</div>
+      <div class="nav-item" data-module="05">
+        <span class="num">05</span>
+        <span class="lbl">Meetings</span>
+        <span class="dot-ind good"></span>
+      </div>
+      <div class="nav-item" data-module="06">
+        <span class="num">06</span>
+        <span class="lbl">Decisions &amp; Votes</span>
+        <span class="dot-ind warn"></span>
+      </div>
+      <div class="nav-item" data-module="13">
+        <span class="num">13</span>
+        <span class="lbl">Conflict</span>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-label">D · Records</div>
+      <div class="nav-item" data-module="04">
+        <span class="num">04</span>
+        <span class="lbl">Agreements</span>
+      </div>
+      <div class="nav-item" data-module="07">
+        <span class="num">07</span>
+        <span class="lbl">Notices</span>
+      </div>
+      <div class="nav-item" data-module="08">
+        <span class="num">08</span>
+        <span class="lbl">Benefit Report</span>
+        <span class="dot-ind warn"></span>
+      </div>
+    </div>
+
+    <div class="sidebar-spacer"></div>
+
+    <!-- Compliance strip at sidebar bottom -->
+    <div class="compliance-strip">
+      <div class="comp-label">Compliance</div>
+      <div class="comp-row">
+        <span class="comp-dot"></span>
+        <span class="comp-name">Subchapter K</span>
+        <span class="comp-cite">§VI · elected</span>
+      </div>
+      <div class="comp-row">
+        <span class="comp-dot"></span>
+        <span class="comp-name">704(b) accounts</span>
+        <span class="comp-cite">partial</span>
+      </div>
+      <div class="comp-row">
+        <span class="comp-dot warn"></span>
+        <span class="comp-name">Benefit report</span>
+        <span class="comp-cite">§XV · in draft</span>
+      </div>
+      <div class="comp-row">
+        <span class="comp-dot warn"></span>
+        <span class="comp-name">Base attestations</span>
+        <span class="comp-cite">scope tbd</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Canvas ─────────────────────────────── -->
+  <main class="canvas" role="main">
+
+    <!-- Today -->
+    <section class="module-view active" id="mod-today">
+      <div class="module-head">
+        <div class="module-crumb">Common Information System · Today</div>
+        <h1 class="module-title">Good <em id="greeting-time">day</em>, <span id="greeting-name">—</span></h1>
+        <p class="module-subtitle" id="today-date-line">Loading cooperative state…</p>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="stat-strip">
+        <div class="stat">
+          <div class="stat-label">Capital · Book</div>
+          <div class="stat-value" id="stat-capital-book">—</div>
+          <div class="stat-meta">IRC 704(b) basis</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Capital · Tax</div>
+          <div class="stat-value" id="stat-capital-tax">—</div>
+          <div class="stat-meta">Subch. K adjusted</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Patron Stock</div>
+          <div class="stat-value" id="stat-stock">—</div>
+          <div class="stat-meta">1 share per Patron</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Votes YTD</div>
+          <div class="stat-value" id="stat-votes">—</div>
+          <div class="stat-meta">consent &amp; majority</div>
+        </div>
+      </div>
+
+      <!-- Live state grid -->
+      <div class="section-label">Live State · Cooperative</div>
+      <div class="state-grid">
+        <div class="state-card">
+          <div class="state-card-head">
+            <span class="state-card-title">Members</span>
+            <span class="state-card-cite">§I · §1.7</span>
+          </div>
+          <div class="state-big" id="state-members">—</div>
+          <div class="chips" id="state-members-chips">
+            <span class="chip"><span class="n">—</span><span class="lbl">Patron</span></span>
+            <span class="chip"><span class="n">—</span><span class="lbl">Investor</span></span>
+            <span class="chip"><span class="n">—</span><span class="lbl">Applicant</span></span>
+          </div>
+        </div>
+
+        <div class="state-card">
+          <div class="state-card-head">
+            <span class="state-card-title">Capital accounts</span>
+            <span class="state-card-cite">§V · 704(b)</span>
+          </div>
+          <div class="state-big" id="state-capital">—</div>
+          <div class="chips">
+            <span class="chip"><span class="n" id="cap-patron">—</span><span class="lbl">Patron</span></span>
+            <span class="chip"><span class="n" id="cap-investor">—</span><span class="lbl">Investor</span></span>
+            <span class="chip"><span class="n" id="cap-reconciled">—</span><span class="lbl">Reconciled</span></span>
+          </div>
+        </div>
+
+        <div class="state-card">
+          <div class="state-card-head">
+            <span class="state-card-title">Next assembly</span>
+            <span class="state-card-cite">§II · §2.7</span>
+          </div>
+          <div class="gauge-wrap">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px;">
+              <span class="state-big" style="font-size:18px;" id="state-assembly-rsvp">— / —</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);">RSVP / quorum</span>
+            </div>
+            <div class="gauge"><div class="gauge-fill" id="assembly-gauge" style="width:0%"></div></div>
+            <div class="gauge-meta">
+              <span id="assembly-date">—</span>
+              <span>simple majority</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="state-card">
+          <div class="state-card-head">
+            <span class="state-card-title">Decisions in motion</span>
+            <span class="state-card-cite">§2.6 · §3.13</span>
+          </div>
+          <div class="chips" style="margin-top:4px;">
+            <span class="chip"><span class="n" id="dec-open">—</span><span class="lbl">Open</span></span>
+            <span class="chip"><span class="n" id="dec-voting">—</span><span class="lbl">Voting</span></span>
+            <span class="chip"><span class="n" id="dec-consent">—</span><span class="lbl">Consent</span></span>
+            <span class="chip"><span class="n" id="dec-passed">—</span><span class="lbl">Passed YTD</span></span>
+          </div>
+          <p style="font-size:12px;color:var(--muted);margin-top:8px;margin-bottom:0;">All votes immutable once cast.</p>
+        </div>
+      </div>
+
+      <!-- Patronage formula -->
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Patronage formula</h3>
+          <span class="card-meta">§5.3 · working draft</span>
+        </div>
+        <div class="formula-row">
+          <div class="formula-cell"><div class="formula-pct">40<small style="font-size:10px;color:var(--muted);">%</small></div><div class="formula-name">Labor</div></div>
+          <div class="formula-cell"><div class="formula-pct">30<small style="font-size:10px;color:var(--muted);">%</small></div><div class="formula-name">Patronage</div></div>
+          <div class="formula-cell"><div class="formula-pct">20<small style="font-size:10px;color:var(--muted);">%</small></div><div class="formula-name">Capital</div></div>
+          <div class="formula-cell"><div class="formula-pct">10<small style="font-size:10px;color:var(--muted);">%</small></div><div class="formula-name">Community</div></div>
+        </div>
+        <p style="margin-top:10px;font-size:12.5px;color:var(--muted);">Working draft. Bylaws default to equal allocation until ratified by board policy.</p>
+      </div>
+
+      <!-- Pending actions -->
+      <div class="section-label">Pending · Your Action Required</div>
+
+      <div class="pending">
+        <span class="pending-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><path d="M12 3c-1.2 0-2.4.6-3 1.7A3.6 3.6 0 0 0 4.6 9c-1.1.7-1.7 1.8-1.7 3s.6 2.4 1.7 3c-.4 1.2-.1 2.5.7 3.4.9.9 2.2 1.1 3.4.7.7 1.1 1.8 1.7 3 1.7s2.4-.6 3-1.7c1.2.4 2.5.1 3.4-.7.9-.9 1.1-2.2.7-3.4 1.1-.7 1.7-1.8 1.7-3s-.6-2.4-1.7-3c.4-1.2.1-2.5-.7-3.4-.9-.9-2.2-1.1-3.4-.7-.6-1.1-1.8-1.7-3-1.7Z"/></svg>
+        </span>
+        <div class="pending-body">
+          <div class="pending-title">Vote open · Patronage Allocation Q1 2026</div>
+          <div class="pending-desc">Motion 2026-04: Ratify Q1 patronage allocation per the proposed formula. Consent / Stand-aside / Object. Quorum 5/8 organizers.</div>
+          <div class="pending-actions">
+            <button class="btn primary" onclick="showModule('06')">Open ballot</button>
+            <button class="btn" onclick="showModule('06')">View details</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pending">
+        <span class="pending-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </span>
+        <div class="pending-body">
+          <div class="pending-title">Signature needed · Membership Agreement v1.4</div>
+          <div class="pending-desc">MA v1.4 (April 23, 2026) requires your signature. This agreement governs your rights and obligations as a Patron member.</div>
+          <div class="pending-actions">
+            <button class="btn primary" onclick="showModule('04')">Sign agreement</button>
+            <button class="btn" onclick="showModule('04')">Review</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pending" style="border-color:var(--info);background:var(--info-dim);">
+        <span class="pending-icon" style="color:var(--info);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </span>
+        <div class="pending-body">
+          <div class="pending-title" style="color:var(--info);">Board meeting · May 23, 2026</div>
+          <div class="pending-desc">Annual organizer assembly. Agenda: bylaws v4 ratification, board officer elections, Q1 report. 10-day advance notice sent.</div>
+          <div class="pending-actions">
+            <button class="btn" onclick="showModule('05')">View agenda</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity -->
+      <div class="section-label">Recent Activity</div>
+      <div class="card" id="activity-log">
+        <div class="log-item">
+          <div class="log-when log-live">today · 14:02</div>
+          <div class="log-what">Motion 2026-04 opened for vote<span class="cite">§3.13</span></div>
+        </div>
+        <div class="log-item">
+          <div class="log-when">today · 09:18</div>
+          <div class="log-what">Notice sent · annual meeting May 23<span class="cite">§2.4</span></div>
+        </div>
+        <div class="log-item">
+          <div class="log-when">yesterday</div>
+          <div class="log-what">Application received · D. Castillo<span class="cite">§1.4</span></div>
+        </div>
+        <div class="log-item">
+          <div class="log-when">may 04</div>
+          <div class="log-what">Q1 capital allocation posted<span class="cite">§5.3</span></div>
+        </div>
+        <div class="log-item">
+          <div class="log-when">may 02</div>
+          <div class="log-what">Board policy 02 ratified · reserve<span class="cite">policy</span></div>
+        </div>
+      </div>
+
+      <!-- The Stack (from artifact 2) -->
+      <div class="section-label">Layer Stack · Legal Foundation</div>
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">The Stack</h3>
+          <span class="card-meta">06 → 01 · lower layers reachable from upper</span>
+        </div>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:12px;">The legal documents are the foundation. The interesting work is the layers above them.</p>
+        <div class="layer-stack">
+          <div class="layer">
+            <div class="layer-head"><span class="layer-num">06</span><span class="layer-name">Interface</span><span class="layer-fluid">iterated daily</span></div>
+            <div class="layer-body">Member portal, handbook, calendar, onboarding.</div>
+            <div class="layer-state"><span>3 surfaces</span><span>·</span><span>portal live</span></div>
+          </div>
+          <div class="layer">
+            <div class="layer-head"><span class="layer-num">05</span><span class="layer-name">Practices &amp; rituals</span><span class="layer-fluid">applications</span></div>
+            <div class="layer-body">How meetings actually run, decisions get made.</div>
+            <div class="layer-state"><span>4 named</span><span>·</span><span>5 emerging</span></div>
+          </div>
+          <div class="layer">
+            <div class="layer-head"><span class="layer-num">04</span><span class="layer-name">Board policies</span><span class="layer-fluid">runtime services</span></div>
+            <div class="layer-body">Allocation formula, withdrawal procedure, reserve.</div>
+            <div class="layer-state"><span>0 ratified</span><span>·</span><span>3 designed</span></div>
+          </div>
+          <div class="layer">
+            <div class="layer-head"><span class="layer-num">03</span><span class="layer-name">Bylaws</span><span class="layer-fluid">system libraries</span></div>
+            <div class="layer-body">17 articles, supermajority to amend.</div>
+            <div class="layer-state"><span>v4 drafted</span><span>·</span><span>awaiting board</span></div>
+          </div>
+          <div class="layer kernel">
+            <div class="layer-head"><span class="layer-num">02</span><span class="layer-name">Articles</span><span class="layer-fluid">kernel</span></div>
+            <div class="layer-body">Filed with Colorado · public benefit purpose.</div>
+            <div class="layer-state"><span>filed 2026-02-06</span></div>
+          </div>
+          <div class="layer kernel">
+            <div class="layer-head"><span class="layer-num">01</span><span class="layer-name">External constraints</span><span class="layer-fluid">immutable</span></div>
+            <div class="layer-body">CO statute · IRC Subchapter K · securities law.</div>
+            <div class="layer-state"><span>3 frameworks tracked</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thresholds -->
+      <div class="section-label">Thresholds &amp; Clocks</div>
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Governance parameters</h3>
+          <span class="card-meta">configured by bylaw</span>
+        </div>
+        <div class="tape">
+          <div class="tape-cell"><span class="tape-name">Quorum</span><span class="tape-val">simple majority</span><span class="tape-cite">§2.7.1 · of Patron Members</span></div>
+          <div class="tape-cell"><span class="tape-name">Amendment vote</span><span class="tape-val">2 / 3</span><span class="tape-cite">§XII · board + members</span></div>
+          <div class="tape-cell"><span class="tape-name">Termination vote</span><span class="tape-val">3 / 4</span><span class="tape-cite">§1.10.2 · with hearing</span></div>
+          <div class="tape-cell"><span class="tape-name">Member petition</span><span class="tape-val">25%</span><span class="tape-cite">§XII · to Secretary</span></div>
+          <div class="tape-cell"><span class="tape-name">Notice · meeting</span><span class="tape-val">10 days</span><span class="tape-cite">§2.4 · advance</span></div>
+          <div class="tape-cell"><span class="tape-name">Notice · hearing</span><span class="tape-val">14 days</span><span class="tape-cite">§1.10.2</span></div>
+          <div class="tape-cell"><span class="tape-name">Withdrawal notice</span><span class="tape-val">14 days</span><span class="tape-cite">§1.9</span></div>
+          <div class="tape-cell"><span class="tape-name">Redemption window</span><span class="tape-val">≤ 5 yrs</span><span class="tape-cite">§1.9.3 · non-redeem optional</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 Member Directory -->
+    <section class="module-view" id="mod-01">
+      <div class="module-head">
+        <div class="module-crumb">A · Membership · 01</div>
+        <h1 class="module-title">Member <em>Directory</em></h1>
+        <p class="module-subtitle">All current, former, and applicant members of RegenHub, LCA. One Patron stock per active Patron member.</p>
+        <div class="module-ref">§I · §1.7 · §2.9 · RLS: Patron members only</div>
+      </div>
+      <div class="module-stub">
+        <div class="stub-title">Member directory</div>
+        <p>Loading member records from CIS…</p>
+      </div>
+    </section>
+
+    <!-- 02 Capital Account -->
+    <section class="module-view" id="mod-02">
+      <div class="module-head">
+        <div class="module-crumb">B · Capital · 02</div>
+        <h1 class="module-title">Capital <em>Account</em></h1>
+        <p class="module-subtitle">Your individual capital account. Book basis (IRC 704(b)) and tax basis tracked separately. Contributions, allocations, and withdrawals.</p>
+        <div class="module-ref">§V · §5.1–5.4 · IRC 704(b) · RLS: own account only</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Account summary</h3>
+          <span class="card-meta" id="cap-as-of">as of —</span>
+        </div>
+        <div class="stat-strip" style="margin-bottom:0;">
+          <div class="stat">
+            <div class="stat-label">Book basis</div>
+            <div class="stat-value" id="cap-detail-book">—</div>
+            <div class="stat-meta">704(b)</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Tax basis</div>
+            <div class="stat-value" id="cap-detail-tax">—</div>
+            <div class="stat-meta">Subch. K adjusted</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Patronage YTD</div>
+            <div class="stat-value" id="cap-detail-patronage">—</div>
+            <div class="stat-meta">allocated</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Withdrawable</div>
+            <div class="stat-value" id="cap-detail-withdrawable">$0</div>
+            <div class="stat-meta">per §1.9</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-label">Transaction ledger</div>
+      <div class="card" style="padding:0;">
+        <div class="ledger">
+          <div class="ledger-head">
+            <span>Date</span><span>Event</span><span>Amount</span><span>Balance</span>
+          </div>
+          <div class="ledger-row">
+            <span class="ledger-date">2026-04-01</span>
+            <span><span class="ledger-type">Allocation</span><span class="ledger-desc">Q1 2026 patronage allocation</span></span>
+            <span class="ledger-num pos">+$1,200</span>
+            <span class="ledger-num">$6,420</span>
+          </div>
+          <div class="ledger-row">
+            <span class="ledger-date">2026-02-06</span>
+            <span><span class="ledger-type">Contribution</span><span class="ledger-desc">Initial capital contribution · membership</span></span>
+            <span class="ledger-num pos">+$5,220</span>
+            <span class="ledger-num">$5,220</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 Stock Ledger -->
+    <section class="module-view" id="mod-03">
+      <div class="module-head">
+        <div class="module-crumb">B · Capital · 03</div>
+        <h1 class="module-title">Stock <em>Ledger</em></h1>
+        <p class="module-subtitle">Patron membership stock — one share per active Patron member. Issued, transferred, and redeemed through board-approved transactions.</p>
+        <div class="module-ref">§III · §1.13 · CO LCA Act · RLS: Patron members</div>
+      </div>
+      <div class="module-stub">
+        <div class="stub-title">Stock ledger</div>
+        <p>Loading from CIS…</p>
+      </div>
+    </section>
+
+    <!-- 04 Agreements -->
+    <section class="module-view" id="mod-04">
+      <div class="module-head">
+        <div class="module-crumb">D · Records · 04</div>
+        <h1 class="module-title"><em>Agreements</em></h1>
+        <p class="module-subtitle">Bylaws, board policies, and member agreements. Your signature status on each active document.</p>
+        <div class="module-ref">§XVI · MA v1.4 · RLS: own signature status</div>
+      </div>
+      <div class="pending">
+        <span class="pending-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </span>
+        <div class="pending-body">
+          <div class="pending-title">Membership Agreement v1.4 · <em>unsigned</em></div>
+          <div class="pending-desc">April 23, 2026. Governs your rights and obligations as a Patron member of RegenHub, LCA.</div>
+          <div class="pending-actions">
+            <button class="btn primary">Sign now</button>
+            <button class="btn">Download PDF</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Active agreements</h3></div>
+        <div class="log-item">
+          <div class="log-when">2026-02-06</div>
+          <div class="log-what">Articles of Organization · filed CO SOS<span class="cite">§XVI</span></div>
+        </div>
+        <div class="log-item">
+          <div class="log-when">2026-04-23</div>
+          <div class="log-what">Membership Agreement v1.4 · <em>awaiting your signature</em><span class="cite">§XVI</span></div>
+        </div>
+        <div class="log-item">
+          <div class="log-when">drafted</div>
+          <div class="log-what">Bylaws v4 · 17 articles · pending board ratification<span class="cite">§XII</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 Meetings -->
+    <section class="module-view" id="mod-05">
+      <div class="module-head">
+        <div class="module-crumb">C · Governance · 05</div>
+        <h1 class="module-title"><em>Meetings</em></h1>
+        <p class="module-subtitle">Scheduled meetings, agendas, minutes, and attendance records. 10-day advance notice required per §2.4.</p>
+        <div class="module-ref">§II · §2.4 · §2.7 · RLS: Patron members</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Annual organizer assembly</h3>
+          <span class="card-meta" style="color:var(--good)">confirmed · 9 RSVP</span>
+        </div>
+        <p>Thursday, May 23, 2026 · 10-day notice sent ✓</p>
+        <p style="color:var(--muted);">Agenda: Bylaws v4 ratification, board officer elections, Q1 financial report, patronage formula adoption. Quorum: simple majority of Patron members.</p>
+        <div class="pending-actions" style="margin-top:10px;">
+          <button class="btn primary">RSVP</button>
+          <button class="btn">Download agenda</button>
+        </div>
+      </div>
+      <div class="section-label">Past meetings</div>
+      <div class="card">
+        <div class="log-item">
+          <div class="log-when">2026-04-02</div>
+          <div class="log-what">Organizer call · Q1 review · minutes published<span class="cite">§2.4</span></div>
+        </div>
+        <div class="log-item">
+          <div class="log-when">2026-02-06</div>
+          <div class="log-what">Formation meeting · written consent of organizers<span class="cite">§2.6</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 Decisions & Votes -->
+    <section class="module-view" id="mod-06">
+      <div class="module-head">
+        <div class="module-crumb">C · Governance · 06</div>
+        <h1 class="module-title">Decisions &amp; <em>Votes</em></h1>
+        <p class="module-subtitle">Open motions, active ballots, and the immutable decision record. Full Consent ratification: Consent / Stand-aside / Object.</p>
+        <div class="module-ref">§2.6 · §3.13 · RLS: Patron members</div>
+      </div>
+      <div class="pending">
+        <span class="pending-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        </span>
+        <div class="pending-body">
+          <div class="pending-title">Motion 2026-04 · Patronage Allocation Q1 2026</div>
+          <div class="pending-desc">Ratify Q1 2026 patronage allocation per proposed formula (40% Labor · 30% Patronage · 20% Capital · 10% Community). Your vote required.</div>
+          <div class="pending-actions">
+            <button class="btn primary">Consent</button>
+            <button class="btn">Stand aside</button>
+            <button class="btn" style="color:var(--warn);border-color:var(--warn);">Object</button>
+          </div>
+        </div>
+      </div>
+      <div class="section-label">Decision record</div>
+      <div class="card">
+        <div class="log-item">
+          <div class="log-when">open</div>
+          <div class="log-what log-live">Motion 2026-04 · Patronage Allocation Q1 — <em>vote in progress</em><span class="cite">§3.13</span></div>
+        </div>
+        <div class="log-item">
+          <div class="log-when">2026-05-02</div>
+          <div class="log-what">Motion 2026-03 · Board policy 02 (reserve) — <em>ratified</em><span class="cite">§3.4</span></div>
+        </div>
+        <div class="log-item">
+          <div class="log-when">2026-04-02</div>
+          <div class="log-what">Motion 2026-02 · Q1 budget approval — <em>ratified</em><span class="cite">§3.13</span></div>
+        </div>
+        <div class="log-item">
+          <div class="log-when">2026-02-06</div>
+          <div class="log-what">Formation consent · organizers written consent — <em>passed unanimous</em><span class="cite">§2.6</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 Notices -->
+    <section class="module-view" id="mod-07">
+      <div class="module-head">
+        <div class="module-crumb">D · Records · 07</div>
+        <h1 class="module-title"><em>Notices</em></h1>
+        <p class="module-subtitle">All formal notices issued to members. Meeting notices (10-day), hearing notices (14-day), and administrative communications.</p>
+        <div class="module-ref">§2.4 · §1.10.2 · RLS: addressed member or all Patrons</div>
+      </div>
+      <div class="module-stub">
+        <div class="stub-title">Notice log</div>
+        <p>Loading from CIS…</p>
+      </div>
+    </section>
+
+    <!-- 08 Benefit Report -->
+    <section class="module-view" id="mod-08">
+      <div class="module-head">
+        <div class="module-crumb">D · Records · 08</div>
+        <h1 class="module-title">Benefit <em>Report</em></h1>
+        <p class="module-subtitle">Annual public benefit report. Due 90 days after fiscal year close. Demonstrates progress toward the public benefit purpose: "Cultivating scenius."</p>
+        <div class="module-ref">§XV · CO LCA Act § 7-58-110</div>
+      </div>
+      <div class="pending" style="border-color:var(--warn-dim);background:var(--warn-dim);">
+        <span class="pending-icon" style="color:var(--warn);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </span>
+        <div class="pending-body">
+          <div class="pending-title" style="color:var(--warn);">Annual benefit report · in draft</div>
+          <div class="pending-desc">FY 2025 benefit report. Data gathered. Narrative drafting in progress. Board review required before publication.</div>
+          <div class="pending-actions">
+            <button class="btn">View draft</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 Membership Lifecycle -->
+    <section class="module-view" id="mod-09">
+      <div class="module-head">
+        <div class="module-crumb">A · Membership · 09</div>
+        <h1 class="module-title">Membership <em>Lifecycle</em></h1>
+        <p class="module-subtitle">Application → admission → active → withdrawal → termination. Each transition documented in the REA event log.</p>
+        <div class="module-ref">§I · §1.4–1.10 · RLS: Patron members (own record full, others summary)</div>
+      </div>
+      <div class="module-stub">
+        <div class="stub-title">Lifecycle status</div>
+        <p>Loading membership state from CIS…</p>
+      </div>
+    </section>
+
+    <!-- 10 Tax & Reporting -->
+    <section class="module-view" id="mod-10">
+      <div class="module-head">
+        <div class="module-crumb">B · Capital · 10</div>
+        <h1 class="module-title">Tax &amp; <em>Reporting</em></h1>
+        <p class="module-subtitle">K-1 preparation, Subchapter K elections, 704(b) book/tax basis reconciliation, and annual filing status.</p>
+        <div class="module-ref">§VI · IRC 704(b) · Subchapter K · RLS: own K-1 only</div>
+      </div>
+      <div class="pending" style="border-color:var(--warn-dim);background:var(--warn-dim);">
+        <span class="pending-icon" style="color:var(--warn);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        </span>
+        <div class="pending-body">
+          <div class="pending-title" style="color:var(--warn);">K-1 preparation in progress</div>
+          <div class="pending-desc">FY 2025 Schedule K-1 preparation following Q1 allocation posting. Awaiting final book/tax reconciliation.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 Treasury -->
+    <section class="module-view" id="mod-11">
+      <div class="module-head">
+        <div class="module-crumb">B · Capital · 11</div>
+        <h1 class="module-title"><em>Treasury</em></h1>
+        <p class="module-subtitle">Operating accounts, reserves, and the co-op's balance sheet. REA resource tracking with full audit trail.</p>
+        <div class="module-ref">§V · RLS: Directors and Stewards only</div>
+      </div>
+      <div class="module-stub">
+        <div class="stub-title">Treasury</div>
+        <p>Loading treasury data from CIS…<br><small>Access requires Director or Steward role.</small></p>
+      </div>
+    </section>
+
+    <!-- 12 Onboarding -->
+    <section class="module-view" id="mod-12">
+      <div class="module-head">
+        <div class="module-crumb">A · Membership · 12</div>
+        <h1 class="module-title"><em>Onboarding</em></h1>
+        <p class="module-subtitle">The 7-step Full Consent ratification flow for new Patron members. From invitation through ratification.</p>
+        <div class="module-ref">§I · §1.4–1.6 · Full Consent protocol</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Full Consent ratification</h3>
+          <span class="card-meta">7-step protocol</span>
+        </div>
+        <div class="log-item"><div class="log-when">Step 01</div><div class="log-what">Invitation · organizer nominates applicant</div></div>
+        <div class="log-item"><div class="log-when">Step 02</div><div class="log-what">Application · applicant submits statement of intent</div></div>
+        <div class="log-item"><div class="log-when">Step 03</div><div class="log-what">Review period · 14-day organizer review</div></div>
+        <div class="log-item"><div class="log-when">Step 04</div><div class="log-what">Consent round · all organizers consent / stand-aside / object</div></div>
+        <div class="log-item"><div class="log-when">Step 05</div><div class="log-what">Ratification · 5/8 organizer quorum met, no standing objections</div></div>
+        <div class="log-item"><div class="log-when">Step 06</div><div class="log-what">Capital contribution · initial contribution received</div></div>
+        <div class="log-item"><div class="log-when">Step 07</div><div class="log-what">Activation · stock issued, capital account opened, CIS access granted</div></div>
+        <div style="margin-top:14px;">
+          <a href="/intranet/enroll/" class="btn">Start enrollment flow →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13 Conflict -->
+    <section class="module-view" id="mod-13">
+      <div class="module-head">
+        <div class="module-crumb">C · Governance · 13</div>
+        <h1 class="module-title"><em>Conflict</em></h1>
+        <p class="module-subtitle">Conflict of interest disclosures, dispute resolution procedures, and hearing records. 14-day advance notice required for any termination hearing.</p>
+        <div class="module-ref">§1.10.2 · §XIV · RLS: restricted by case</div>
+      </div>
+      <div class="module-stub">
+        <div class="stub-title">Conflict register</div>
+        <p>No active conflicts on record.</p>
+      </div>
+    </section>
+
+  </main><!-- /canvas -->
+
+  <!-- ── Right panel (Nou) ──────────────────── -->
+  <aside class="panel" role="complementary" aria-label="Nou context panel">
+
+    <!-- Solar section -->
+    <div class="panel-section">
+      <div class="panel-label" style="display:flex;justify-content:space-between;">
+        Solar Cycle
+        <span class="solar-coords" id="solar-coords">Boulder · 40.01°N 105.27°W</span>
+      </div>
+      <div class="solar-stage">
+        <svg viewBox="0 0 200 165" id="solar-svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#c4956a" stop-opacity="0.55"/>
+              <stop offset="60%" stop-color="#c4956a" stop-opacity="0.12"/>
+              <stop offset="100%" stop-color="#c4956a" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="dayGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c4956a" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#c4956a" stop-opacity="0.05"/>
+            </linearGradient>
+            <clipPath id="earthClip">
+              <circle cx="100" cy="115" r="46"/>
+            </clipPath>
+          </defs>
+          <!-- Sun -->
+          <circle cx="100" cy="22" r="28" fill="url(#sunGlow)"/>
+          <circle cx="100" cy="22" r="9" fill="#c4956a"/>
+          <circle cx="100" cy="22" r="11" fill="none" stroke="#c4956a" stroke-width="0.8" opacity="0.6"/>
+          <g stroke="#c4956a" stroke-width="0.9" stroke-linecap="round" opacity="0.7">
+            <line x1="100" y1="8" x2="100" y2="4"/>
+            <line x1="100" y1="36" x2="100" y2="40"/>
+            <line x1="86" y1="22" x2="82" y2="22"/>
+            <line x1="114" y1="22" x2="118" y2="22"/>
+            <line x1="90" y1="12" x2="87" y2="9"/>
+            <line x1="110" y1="12" x2="113" y2="9"/>
+            <line x1="90" y1="32" x2="87" y2="35"/>
+            <line x1="110" y1="32" x2="113" y2="35"/>
+          </g>
+          <!-- Noon marker -->
+          <line x1="100" y1="32" x2="100" y2="52" stroke="#c4956a" stroke-width="0.9" opacity="0.6"/>
+          <text x="100" y="49" font-family="IBM Plex Mono" font-size="5" fill="#c4956a" text-anchor="middle" letter-spacing="0.4" opacity="0.85">NOON</text>
+          <polygon points="96,52 100,58 104,52" fill="#c4956a" stroke="none"/>
+          <!-- Earth -->
+          <circle cx="100" cy="115" r="46" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="0.8"/>
+          <!-- Day side (fixed top half) -->
+          <g clip-path="url(#earthClip)">
+            <path d="M 54,115 A 46,46 0 0,1 146,115 Z" fill="url(#dayGrad)"/>
+          </g>
+          <!-- Terminator -->
+          <line x1="54" y1="115" x2="146" y2="115" stroke="#c4956a" stroke-width="0.6" stroke-dasharray="2,2.5" opacity="0.5"/>
+          <text x="51" y="113" font-family="IBM Plex Mono" font-size="5.5" fill="var(--faint)" text-anchor="end" letter-spacing="0.4">SET</text>
+          <text x="149" y="113" font-family="IBM Plex Mono" font-size="5.5" fill="var(--faint)" letter-spacing="0.4">RISE</text>
+          <!-- Rotating Earth contents -->
+          <g id="earth-rotating" transform="rotate(0 100 115)">
+            <circle cx="100" cy="115" r="30" fill="none" stroke="var(--faint)" stroke-width="0.4" stroke-dasharray="1,2" opacity="0.3"/>
+            <circle cx="100" cy="115" r="15" fill="none" stroke="var(--faint)" stroke-width="0.4" stroke-dasharray="1,2" opacity="0.3"/>
+            <g stroke="var(--faint)" stroke-width="0.4" stroke-dasharray="1,2" opacity="0.25">
+              <line x1="100" y1="115" x2="100" y2="69"/>
+              <line x1="100" y1="115" x2="132" y2="75"/>
+              <line x1="100" y1="115" x2="146" y2="115"/>
+              <line x1="100" y1="115" x2="132" y2="155"/>
+              <line x1="100" y1="115" x2="100" y2="161"/>
+              <line x1="100" y1="115" x2="68" y2="155"/>
+              <line x1="100" y1="115" x2="54" y2="115"/>
+              <line x1="100" y1="115" x2="68" y2="75"/>
+            </g>
+            <!-- Boulder pin: 40°N, -105.27°W — polar projection from top -->
+            <!-- dist = 46*(90-40)/90 = 25.56; angle from top CW = -105.27° -->
+            <!-- x = 100 + 25.56*sin(-105.27°) = 100 - 24.67 = 75.33 -->
+            <!-- y = 115 - 25.56*cos(-105.27°) = 115 + 6.7 = 121.7 -->
+            <g id="boulder-pin">
+              <circle cx="75.33" cy="121.7" r="5" fill="none" stroke="#c4956a" stroke-width="0.5" opacity="0.5">
+                <animate attributeName="r" values="2.5;6;2.5" dur="3.6s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.55;0;0.55" dur="3.6s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="75.33" cy="121.7" r="2.5" fill="#c4956a" stroke="var(--bg)" stroke-width="0.8"/>
+            </g>
+          </g>
+          <!-- Boulder label -->
+          <text id="boulder-label" x="100" y="163" font-family="IBM Plex Mono" font-size="6.5" fill="#c4956a" letter-spacing="0.6" text-anchor="middle" opacity="0.85">BOULDER · DAY</text>
+        </svg>
+      </div>
+      <div class="time-main">
+        <span class="time-now" id="big-time">--:--:--</span>
+        <span class="time-ampm" id="big-ampm"></span>
+        <button class="fmt-toggle" id="fmt-toggle" type="button" aria-label="Toggle 12/24h">24h</button>
+      </div>
+      <div class="time-secondary">
+        <span id="big-tz">MDT</span>
+        <span>·</span><span>UTC</span>
+        <span id="big-utc">--:--:--</span>
+      </div>
+      <div class="solar-data">
+        <span class="k">rise</span><span class="v" id="s-rise">--:--</span>
+        <span class="k">noon</span><span class="v" id="s-noon">--:--</span>
+        <div class="solar-divider"></div>
+        <span class="k">set</span><span class="v" id="s-set">--:--</span>
+        <span class="k">light</span><span class="v" id="s-light">--h --m</span>
+      </div>
+    </div>
+
+    <!-- REA activity -->
+    <div class="panel-section" style="flex:1;overflow-y:auto;">
+      <div class="panel-label">REA · Activity · Augmentation</div>
+      <div class="rea-row">
+        <div class="rea-cell"><span class="rea-name">Agents</span><div class="rea-num" id="rea-agents">—</div><div class="rea-cite">§1.1</div></div>
+        <div class="rea-cell"><span class="rea-name">Agreements</span><div class="rea-num" id="rea-agreements">—</div><div class="rea-cite">§XVI</div></div>
+        <div class="rea-cell"><span class="rea-name">Resources</span><div class="rea-num" id="rea-resources">—</div><div class="rea-cite">§V</div></div>
+        <div class="rea-cell"><span class="rea-name">Events</span><div class="rea-num" id="rea-events">—</div><div class="rea-cite">log</div></div>
+      </div>
+
+      <div class="log-section">
+        <div class="log-section-head">
+          <span class="log-section-title">Event log</span>
+          <span class="log-section-meta">most recent · 5</span>
+        </div>
+        <div class="log-entry live">
+          <div class="log-entry-when">today · 14:02</div>
+          <div class="log-entry-what">Motion 2026-04 opened for vote<span class="cite">§3.13</span></div>
+        </div>
+        <div class="log-entry">
+          <div class="log-entry-when">today · 09:18</div>
+          <div class="log-entry-what">Notice sent · annual meeting<span class="cite">§2.4</span></div>
+        </div>
+        <div class="log-entry">
+          <div class="log-entry-when">yesterday</div>
+          <div class="log-entry-what">Application received · D. Castillo<span class="cite">§1.4</span></div>
+        </div>
+        <div class="log-entry">
+          <div class="log-entry-when">may 04</div>
+          <div class="log-entry-what">Q1 capital allocation posted<span class="cite">§5.3</span></div>
+        </div>
+        <div class="log-entry">
+          <div class="log-entry-when">may 02</div>
+          <div class="log-entry-what">Board policy 02 ratified<span class="cite">policy</span></div>
+        </div>
+      </div>
+
+      <div class="log-section">
+        <div class="log-section-head">
+          <span class="log-section-title">Workflows in flight</span>
+          <span class="log-section-meta" id="workflow-count">3 active</span>
+        </div>
+        <div class="workflow-item">
+          <div class="workflow-name">Member admission · D. Castillo<small>application received · board review pending</small></div>
+          <span class="workflow-state">2/6</span>
+        </div>
+        <div class="workflow-item">
+          <div class="workflow-name">Allocation cycle · Q1 2026<small>posted · awaiting K-1 prep</small></div>
+          <span class="workflow-state">4/5</span>
+        </div>
+        <div class="workflow-item">
+          <div class="workflow-name">Annual benefit report<small>data gathered · narrative drafting</small></div>
+          <span class="workflow-state">2/4</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nou strip -->
+    <div class="nou-strip">
+      <div class="nou-mark" aria-hidden="true">ν</div>
+      <div class="nou-text">
+        Reading the bylaws, the ledger, and the meeting record.
+        <small>Nou · read-only · cites every claim</small>
+      </div>
+      <span class="nou-status" id="nou-status">listening</span>
+    </div>
+
+  </aside><!-- /panel -->
+
+  <!-- ── Footer strip ───────────────────────── -->
+  <footer class="foot">
+    <div class="foot-compliance">
+      <div class="foot-comp" title="Subchapter K partnership election filed">
+        <span class="foot-comp-dot"></span>
+        <span class="foot-comp-name">Subchapter K</span>
+        <span class="foot-comp-cite">§VI · elected</span>
+      </div>
+      <div class="foot-comp" title="704(b) book capital accounts">
+        <span class="foot-comp-dot"></span>
+        <span class="foot-comp-name">704(b) accounts</span>
+        <span class="foot-comp-cite">partial</span>
+      </div>
+      <div class="foot-comp" title="Annual benefit report in draft">
+        <span class="foot-comp-dot warn"></span>
+        <span class="foot-comp-name">Benefit report</span>
+        <span class="foot-comp-cite">§XV · in draft</span>
+      </div>
+      <div class="foot-comp" title="Audit-ready record retention met">
+        <span class="foot-comp-dot"></span>
+        <span class="foot-comp-name">Audit ready</span>
+        <span class="foot-comp-cite">retention met</span>
+      </div>
+      <div class="foot-comp" title="On-chain attestation scope TBD">
+        <span class="foot-comp-dot warn"></span>
+        <span class="foot-comp-name">Base attestations</span>
+        <span class="foot-comp-cite">scope tbd</span>
+      </div>
+    </div>
+    <div class="foot-meta">
+      <span>CIS v0.2 · advanced</span>
+      <span>Boulder, CO · 40.0150°N 105.2705°W</span>
+      <span id="foot-user">—</span>
+    </div>
+  </footer>
+
+</div><!-- /app -->
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ── Config ──────────────────────────────── */
+  var AUTH_URL  = 'https://hvbdpgkdcdskhpbdeeim.supabase.co';
+  var AUTH_KEY  = 'sb_publishable_kB69BlNpkNhOllwGMOE6xg_i4l1VHMv';
+  var LAT = 40.0150, LON = -105.2705; // Boulder, CO
+
+  /* ── Theme ───────────────────────────────── */
+  var html = document.documentElement;
+  var saved = localStorage.getItem('cis-theme');
+  if (saved) html.setAttribute('data-mode', saved);
+
+  var modeBtn   = document.getElementById('mode-btn');
+  var modeSun   = document.getElementById('mode-sun');
+  var modeMoon  = document.getElementById('mode-moon');
+
+  function updateModeIcon() {
+    var isDark = html.getAttribute('data-mode') !== 'light';
+    modeSun.style.display  = isDark  ? 'block' : 'none';
+    modeMoon.style.display = isDark  ? 'none'  : 'block';
+  }
+  updateModeIcon();
+
+  modeBtn.addEventListener('click', function () {
+    var next = html.getAttribute('data-mode') === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-mode', next);
+    localStorage.setItem('cis-theme', next);
+    updateModeIcon();
+  });
+
+  /* ── Auth ────────────────────────────────── */
+  var sb = supabase.createClient(AUTH_URL, AUTH_KEY);
+  var overlay = document.getElementById('auth-overlay');
+  var app     = document.getElementById('app');
+
+  sb.auth.getSession().then(function (res) {
+    var session = res.data && res.data.session;
+    if (!session) {
+      var here = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.href = '/intranet/login/?redirect=' + here;
+      return;
+    }
+    onAuthed(session.user);
+  }).catch(function () {
+    window.location.href = '/intranet/login/';
+  });
+
+  sb.auth.onAuthStateChange(function (event, session) {
+    if (event === 'SIGNED_OUT' || !session) {
+      window.location.href = '/intranet/login/';
+    }
+  });
+
+  function onAuthed(user) {
+    overlay.style.display = 'none';
+    app.style.display = '';
+
+    var meta  = user.user_metadata || {};
+    var name  = meta.full_name || meta.name || user.email.split('@')[0];
+    var roles = meta.cis_roles || ['Patron'];
+    if (typeof roles === 'string') roles = [roles];
+
+    /* Topbar identity */
+    document.getElementById('tb-name').textContent = name;
+    document.getElementById('foot-user').textContent = user.email;
+
+    /* Role pills */
+    var pillPatron   = document.getElementById('pill-patron');
+    var pillDirector = document.getElementById('pill-director');
+    var pillSteward  = document.getElementById('pill-steward');
+
+    if (roles.indexOf('Patron') >= 0 || roles.length === 0) {
+      pillPatron.style.display = '';
+      pillPatron.classList.add('active');
+    }
+    if (roles.indexOf('Director') >= 0) {
+      pillDirector.style.display = '';
+      pillDirector.classList.add('active');
+    }
+    if (roles.indexOf('Steward') >= 0) {
+      pillSteward.style.display = '';
+      pillSteward.classList.add('active');
+    }
+
+    /* Today greeting */
+    var h = new Date().getHours();
+    var greet = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+    document.getElementById('greeting-time').textContent = greet;
+    document.getElementById('greeting-name').textContent = name.split(' ')[0];
+
+    /* Today date line */
+    var now = new Date();
+    var opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('today-date-line').textContent =
+      now.toLocaleDateString('en-US', opts) + ' · Boulder, Colorado';
+
+    /* Stats (placeholder — will connect to CIS Supabase via RLS) */
+    document.getElementById('stat-capital-book').textContent = '$6,420';
+    document.getElementById('stat-capital-tax').textContent  = '$6,318';
+    document.getElementById('stat-stock').textContent        = 'PS-0001';
+    document.getElementById('stat-votes').textContent        = '8/9';
+
+    /* Live state (placeholder) */
+    document.getElementById('state-members').innerHTML  = '8 <small>active</small>';
+    document.getElementById('cap-patron').textContent   = '7';
+    document.getElementById('cap-investor').textContent = '1';
+    document.getElementById('cap-reconciled').textContent = '7/8';
+    document.getElementById('state-capital').innerHTML  = '$184k <small>book</small>';
+    document.getElementById('state-assembly-rsvp').textContent = '9 / 7';
+    document.getElementById('assembly-gauge').style.width = '75%';
+    document.getElementById('assembly-date').textContent = 'annual · thu may 23';
+    document.getElementById('dec-open').textContent    = '3';
+    document.getElementById('dec-voting').textContent  = '1';
+    document.getElementById('dec-consent').textContent = '2';
+    document.getElementById('dec-passed').textContent  = '7';
+
+    /* REA counts (placeholder) */
+    document.getElementById('rea-agents').textContent     = '21';
+    document.getElementById('rea-agreements').textContent = '14';
+    document.getElementById('rea-resources').textContent  = '3';
+    document.getElementById('rea-events').textContent     = '147';
+
+    /* Capital module */
+    document.getElementById('cap-as-of').textContent          = 'as of ' + now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    document.getElementById('cap-detail-book').textContent     = '$6,420';
+    document.getElementById('cap-detail-tax').textContent      = '$6,318';
+    document.getElementById('cap-detail-patronage').textContent = '$1,200';
+    document.getElementById('cap-detail-withdrawable').textContent = '$0';
+
+    /* Notification badge */
+    document.getElementById('notif-count').style.display = '';
+  }
+
+  /* ── Module navigation ───────────────────── */
+  function showModule(id) {
+    /* Hide all module views */
+    var views = document.querySelectorAll('.module-view');
+    for (var i = 0; i < views.length; i++) {
+      views[i].classList.remove('active');
+    }
+    /* Show target */
+    var target = document.getElementById('mod-' + id);
+    if (target) {
+      target.classList.add('active');
+      target.scrollTop = 0;
+      var canvas = document.querySelector('.canvas');
+      if (canvas) canvas.scrollTop = 0;
+    }
+    /* Update nav active state */
+    var items = document.querySelectorAll('.nav-item');
+    for (var j = 0; j < items.length; j++) {
+      var d = items[j].getAttribute('data-module');
+      items[j].classList.toggle('active', d === id);
+    }
+    /* Update URL hash without reload */
+    history.replaceState(null, '', '#' + id);
+  }
+  window.showModule = showModule;
+
+  /* Wire up nav items */
+  document.addEventListener('DOMContentLoaded', function () {
+    var items = document.querySelectorAll('.nav-item[data-module]');
+    for (var i = 0; i < items.length; i++) {
+      (function (item) {
+        item.addEventListener('click', function () {
+          showModule(item.getAttribute('data-module'));
+        });
+      })(items[i]);
+    }
+    /* Restore from hash */
+    var hash = window.location.hash.replace('#', '');
+    if (hash) showModule(hash);
+  });
+
+  /* ── Solar cycle (Boulder, CO) ───────────── */
+  var is24h = false;
+
+  /* Sun declination (degrees) for a given date */
+  function sunDeclination(d) {
+    var N = Math.round((d - new Date(d.getFullYear(), 0, 1)) / 864e5) + 1;
+    return -23.45 * Math.cos((360 / 365) * (N + 10) * Math.PI / 180);
+  }
+
+  /* Solar noon (LST minutes from midnight) */
+  function solarNoonLocal(d) {
+    var N     = Math.round((d - new Date(d.getFullYear(), 0, 1)) / 864e5) + 1;
+    var B     = (360 / 365) * (N - 81) * Math.PI / 180;
+    var EoT   = 9.87 * Math.sin(2 * B) - 7.53 * Math.cos(B) - 1.5 * Math.sin(B); // minutes
+    var tzOff = -d.getTimezoneOffset(); // minutes (positive = east)
+    var LSTM  = 15 * Math.round(tzOff / 60);
+    return 720 - 4 * (LON - LSTM) - EoT; // minutes from local midnight
+  }
+
+  function sunriseSunset(d) {
+    var decl  = sunDeclination(d) * Math.PI / 180;
+    var lat   = LAT * Math.PI / 180;
+    var cosH  = -Math.tan(lat) * Math.tan(decl);
+    if (cosH > 1)  return null; // polar night
+    if (cosH < -1) return null; // midnight sun
+    var H   = Math.acos(cosH) * 180 / Math.PI; // hour angle degrees
+    var H_m = H * 4; // minutes
+    var noon_m = solarNoonLocal(d);
+    return { rise: noon_m - H_m, set: noon_m + H_m, noon: noon_m };
+  }
+
+  function fmtMin(totalMin, use24h) {
+    var h = Math.floor(totalMin / 60) % 24;
+    var m = Math.round(totalMin % 60);
+    if (m >= 60) { h++; m -= 60; }
+    if (use24h) {
+      return (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+    }
+    var ampm = h >= 12 ? 'PM' : 'AM';
+    var hh = h % 12 || 12;
+    return hh + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+  }
+
+  function fmtTime(date, use24h) {
+    if (use24h) {
+      var h = date.getHours(), m = date.getMinutes(), s = date.getSeconds();
+      return (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+    }
+    var h = date.getHours(), m = date.getMinutes(), s = date.getSeconds();
+    var ampm = h>=12?'pm':'am'; h = h%12||12;
+    return h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  }
+
+  function earthRotationAngle(d) {
+    var now_m = d.getHours()*60 + d.getMinutes() + d.getSeconds()/60;
+    var noon  = solarNoonLocal(d) || 720;
+    /* Angle so Boulder (at angle 0) faces sun at solar noon */
+    return (now_m - noon) * (360 / (24 * 60));
+  }
+
+  function updateSolar() {
+    var now  = new Date();
+    var ss   = sunriseSunset(now);
+    var geo  = document.getElementById('earth-rotating');
+    var lbl  = document.getElementById('boulder-label');
+
+    if (geo) {
+      var ang = earthRotationAngle(now);
+      geo.setAttribute('transform', 'rotate(' + ang.toFixed(2) + ' 100 115)');
+    }
+
+    /* Is Boulder in day or night? */
+    var now_m = now.getHours()*60 + now.getMinutes();
+    var isDay = ss ? (now_m >= ss.rise && now_m <= ss.set) : true;
+    if (lbl) lbl.textContent = 'BOULDER · ' + (isDay ? 'DAY' : 'NIGHT');
+
+    /* Clock */
+    var timeEl = document.getElementById('big-time');
+    var ampmEl = document.getElementById('big-ampm');
+    var utcEl  = document.getElementById('big-utc');
+    var tzEl   = document.getElementById('big-tz');
+
+    if (timeEl) {
+      if (is24h) {
+        timeEl.textContent = fmtTime(now, true);
+        ampmEl.textContent = '';
+      } else {
+        var raw = fmtTime(now, false);
+        var parts = raw.split(' ');
+        timeEl.textContent = parts[0];
+        ampmEl.textContent = parts[1] || '';
+      }
+    }
+    if (utcEl) {
+      var utc = new Date(now.getTime());
+      utcEl.textContent = (utc.getUTCHours()<10?'0':'')+utc.getUTCHours()+':'+(utc.getUTCMinutes()<10?'0':'')+utc.getUTCMinutes()+':'+(utc.getUTCSeconds()<10?'0':'')+utc.getUTCSeconds();
+    }
+    if (tzEl) {
+      tzEl.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone.replace('America/', '').replace(/_/g,' ') || 'local';
+    }
+
+    /* Solar times */
+    if (ss) {
+      var se = document.getElementById('s-rise');
+      var sn = document.getElementById('s-noon');
+      var ss2 = document.getElementById('s-set');
+      var sl = document.getElementById('s-light');
+      if (se) se.textContent  = fmtMin(ss.rise, is24h);
+      if (sn) sn.textContent  = fmtMin(ss.noon, is24h);
+      if (ss2) ss2.textContent = fmtMin(ss.set,  is24h);
+      if (sl) {
+        var dayLen = ss.set - ss.rise;
+        var dh = Math.floor(dayLen/60), dm = Math.round(dayLen%60);
+        sl.textContent = dh+'h '+(dm<10?'0':'')+dm+'m';
+      }
+    }
+  }
+
+  document.getElementById('fmt-toggle').addEventListener('click', function () {
+    is24h = !is24h;
+    this.textContent = is24h ? '12h' : '24h';
+    updateSolar();
+  });
+
+  setInterval(updateSolar, 1000);
+  updateSolar();
+
+})();
+</script>
+</body>
+</html>
