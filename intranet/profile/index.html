@@ -306,26 +306,6 @@
 
     <div class="section">
       <div class="section-head">
-        <span class="section-title">Default View</span>
-      </div>
-      <div class="section-body">
-        <div class="field">
-          <label for="f-default-view">Intranet default view</label>
-          <select id="f-default-view">
-            <option value="simple">Simple — /intranet/ (dashboard overview)</option>
-            <option value="advanced">Advanced — /intranet/a/ (full CIS portal)</option>
-          </select>
-          <span class="field-hint">When you visit /intranet/ you'll be redirected to your preferred view.</span>
-        </div>
-        <div class="actions">
-          <button class="btn-save" id="save-view-btn">Save view preference</button>
-          <span class="save-msg" id="save-view-msg"></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-head">
         <span class="section-title">Account</span>
         <span class="section-note">Read-only</span>
       </div>
@@ -401,13 +381,11 @@ whenReady(function() {
     var role = meta.role || '';
     var location = meta.location || '';
     var bio = meta.bio || '';
-    var defaultView = meta.default_view || 'simple';
 
     document.getElementById('f-name').value = name;
     document.getElementById('f-role').value = role;
     document.getElementById('f-location').value = location;
     document.getElementById('f-bio').value = bio;
-    document.getElementById('f-default-view').value = defaultView;
 
     function updateAvatar() {
       var n = document.getElementById('f-name').value.trim() || user.email || '';
@@ -418,28 +396,6 @@ whenReady(function() {
 
     document.getElementById('page-sub').textContent = 'Update your display name, role, and bio.';
     document.getElementById('profile-content').style.display = '';
-
-    /* Save view preference */
-    var saveViewBtn = document.getElementById('save-view-btn');
-    var saveViewMsg = document.getElementById('save-view-msg');
-    saveViewBtn.addEventListener('click', function() {
-      saveViewBtn.disabled = true;
-      saveViewBtn.textContent = 'Saving…';
-      saveViewMsg.className = 'save-msg';
-      var view = document.getElementById('f-default-view').value;
-      sb.auth.updateUser({ data: { default_view: view } }).then(function(r) {
-        saveViewBtn.disabled = false;
-        saveViewBtn.textContent = 'Save view preference';
-        if (r.error) {
-          saveViewMsg.className = 'save-msg err';
-          saveViewMsg.textContent = r.error.message || 'Save failed.';
-        } else {
-          saveViewMsg.className = 'save-msg ok';
-          saveViewMsg.textContent = 'Saved.';
-          setTimeout(function() { saveViewMsg.textContent = ''; saveViewMsg.className = 'save-msg'; }, 2000);
-        }
-      });
-    });
 
     /* Save */
     var saveBtn = document.getElementById('save-btn');

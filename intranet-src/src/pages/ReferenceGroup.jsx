@@ -62,6 +62,210 @@ const PLAN_DOCS = [
   },
 ]
 
+// ─── Roadmap data ─────────────────────────────────────────────────────────────
+
+const STATUS_LABEL = {
+  complete:      'Complete',
+  'in-progress': 'In Progress',
+  blocked:       'Blocked',
+  pending:       'Pending',
+}
+const STATUS_COLOR = {
+  complete:      { bg: 'rgba(52,199,89,0.12)',   text: '#34c759',          border: 'rgba(52,199,89,0.25)' },
+  'in-progress': { bg: 'rgba(196,149,106,0.15)', text: 'var(--gold)',      border: 'rgba(196,149,106,0.35)' },
+  blocked:       { bg: 'rgba(255,69,58,0.12)',   text: '#ff453a',          border: 'rgba(255,69,58,0.3)' },
+  pending:       { bg: 'rgba(255,255,255,0.05)', text: 'var(--text-subdim)', border: 'rgba(255,255,255,0.08)' },
+}
+const URGENCY_COLOR = {
+  urgent: { bg: 'rgba(255,69,58,0.12)',   text: '#ff453a' },
+  high:   { bg: 'rgba(196,149,106,0.15)', text: 'var(--gold)' },
+  medium: { bg: 'rgba(100,130,200,0.15)', text: '#7aa2f7' },
+}
+
+const FLOOR_PHASES = [
+  {
+    id: 'p0', label: 'Phase 0', name: 'Foundation Decisions', status: 'complete',
+    summary: 'All key design decisions recorded: which database, which vendors, how cooperative law encodes into the database, and how to resist censorship. The full specification exists as documents; no database code has run yet.',
+    deliverables: [
+      'Stack & vendor selection · CROPS posture documented',
+      'Chokepoint analysis: 8 vendors, exit paths, Glide explicitly excluded',
+      'REA ontology: agents · agreements · events · resources',
+      'Stable bylaw addressing (bylaws:v1.3:art-1.sec-4)',
+      'Unified audit event stream design',
+      '15-role access model (11 cooperative + 4 Hub)',
+      'Schema naming conventions — PRD Shape v0.1',
+    ],
+  },
+  {
+    id: 'p1', label: 'Phase 1', name: 'Raw Schema Deployment', status: 'blocked',
+    summary: 'Database tables are designed and ready to install. Three setup steps from Todd unblock this. Once deployed, the cooperative has a live database — empty but wired — ready to receive member records.',
+    deliverables: [
+      'Supabase project wdrsmhwtdwdfyvlbugdq provisioned ✓',
+      'Core tables: agents · agreements · agreement_sections · events · resources',
+      'citext + pgvector extensions enabled',
+      'audit schema + append-only immutability trigger',
+      'Bootstrap seed: RegenHub · Nou · Dianoia',
+      'Migration runner ready (cis/migrate.js)',
+    ],
+    blockers: [
+      'Generate PAT from LCA Supabase account → app.supabase.com/account/tokens',
+      'Enable connection pooler → Dashboard · Settings · Database · Connection Pooling',
+      'Enable pgvector → Dashboard · Database · Extensions · search "vector"',
+    ],
+  },
+  {
+    id: 'p2', label: 'Phase 2', name: 'Bylaws Loader', status: 'pending',
+    summary: 'The bylaws loaded as structured, searchable sections — each stamped with a stable address that survives amendments. Nou cannot cite the bylaws until this phase is complete.',
+    deliverables: [
+      'Bylaws v1.3 in markdown with frontmatter (address · ordinal · heading)',
+      'Idempotent loader: parse → insert → diff → emit amendment events',
+      'Vector embeddings per section (1,536-dimensional)',
+      'superseded_by chain for amendment history',
+      'All bylaws sections in agreement_sections table',
+    ],
+    blockers: [
+      'Todd confirms: does bylaws v1.3 have lettered sub-subsections? (e.g. §5.3.2.a)',
+      'Bylaws v1.3 source document in markdown format',
+    ],
+  },
+  {
+    id: 'p3', label: 'Phase 3', name: 'RLS Policy Layer', status: 'pending',
+    summary: 'The database enforces who can see what — not just the application layer. Every rule cites the specific bylaw section that authorizes it. When bylaws are amended, affected policies surface for review automatically.',
+    deliverables: [
+      '15-role model as Postgres Row-Level Security policies',
+      'Every policy cites its bylaw stable address in comments',
+      'Scoped impersonation: Nou inherits user JWT, never elevates',
+      'RLS on all primitive tables',
+    ],
+  },
+  {
+    id: 'p4', label: 'Phase 4', name: 'Nou Harness', status: 'pending',
+    summary: "Nou's knowledge grounding — connecting AI responses to the actual bylaws, member agreements, and cooperative records. Three rules: impersonation by permission only; every legal claim cites a source; refusals follow a defined protocol.",
+    deliverables: [
+      'Three-section system prompt: standing · user context · retrieved context',
+      'Citation contract: structured output with stable bylaw addresses',
+      'Four refusal shapes: out-of-scope · insufficient-basis · privacy · impersonation-denied',
+      'Grounding harness tests against bylaws retrieval',
+    ],
+  },
+  {
+    id: 'p5', label: 'Phase 5', name: 'Validation Gate', status: 'pending',
+    summary: 'Before the system goes live: a walkaway rehearsal — can the cooperative rebuild from every vendor export? The board signs off on the chokepoint analysis as a prerequisite for this gate.',
+    deliverables: [
+      'Walkaway rehearsal: pg_dump → fresh Postgres → verify 10 event records',
+      'CROPS audit: 8 vendors, postures confirmed',
+      'Board approval: chokepoint analysis reviewed and signed',
+      'Phase 5 gate check passed · document filed in CIS repo',
+    ],
+    blockers: [
+      'Board review and sign-off on chokepoint analysis',
+    ],
+  },
+]
+
+const CIS_WAVES = [
+  {
+    id: 'w1', label: 'Wave 1', name: 'Agent & Agreement', status: 'pending',
+    prereq: 'Floor Phases 1–3',
+    summary: 'The member registry: who is in the cooperative, which agreements they have signed, and what roles they hold. Every other CIS module depends on this.',
+    capabilities: [
+      'Member onboarding: application → approval → role assignment',
+      'Agreement signing and version history',
+      'Member directory (access-controlled by role)',
+      'Role lifecycle tracking with audit trail',
+    ],
+  },
+  {
+    id: 'w2', label: 'Wave 2', name: 'Capital Accounts', status: 'pending',
+    prereq: 'Wave 1 · patronage formula defined',
+    summary: "The patronage ledger: contributions, allocations, distributions. The LCA's Subchapter T compliance layer — the legal requirement for cooperative accounting. K-1s are generated from this data.",
+    capabilities: [
+      'Capital account module: contributions · allocations · distributions',
+      'Patronage formula implementation (after board defines)',
+      'K-1 generation for member tax reporting',
+      'Mercury webhook → capital event pipeline',
+      'Xero sync for accounting and tax reporting',
+    ],
+  },
+  {
+    id: 'w3', label: 'Wave 3', name: 'Governance & Events', status: 'pending',
+    prereq: 'Wave 1',
+    summary: 'Meeting records, voting, and the formal governance layer. Board and member decisions recorded as immutable events — the cooperative institutional memory.',
+    capabilities: [
+      'Meeting records: agenda · attendance · minutes',
+      'Voting events with eligibility enforcement',
+      'Resolution tracking and full audit trail',
+      'Director and officer role lifecycle',
+      'On-chain attestation scaffold (Base EVM, CROPS Stage 03)',
+    ],
+  },
+  {
+    id: 'w4', label: 'Wave 4', name: 'Hub Operations', status: 'pending',
+    prereq: 'Wave 1 · application form host decided',
+    summary: 'The physical space layer: Hub Member applications, coworking, attendance, and KPI tracking. Hub Operations Phase 1 has started — this wave operationalizes it in CIS.',
+    capabilities: [
+      'Hub Member application intake (Formbricks or managed form)',
+      'Attendance and coworking event records',
+      'KPI snapshot scheduling (Make.com)',
+      'EE Liaison role and Enterprise Engagement module',
+      'Monthly Hub Operations reports (Nou)',
+    ],
+  },
+  {
+    id: 'w5', label: 'Wave 5', name: 'Watershed', status: 'pending',
+    prereq: 'Wave 3+ · bioregional coordination protocol',
+    summary: "The ecological intelligence layer: connecting the cooperative's records to watershed rhythms and bioregional data networks. Foundation for Nou's environmental grounding.",
+    capabilities: [
+      'Ecological event stream integration',
+      'Seasonal and watershed state grounding',
+      'Bioregional coordination network participation',
+      'On-chain grant compliance verification (CROPS Stage 03)',
+    ],
+  },
+]
+
+const OPEN_DECISIONS = [
+  {
+    id: 'd1', urgency: 'urgent', owner: 'Todd', blocks: 'Wave 4 intake flow',
+    title: 'Application form host',
+    context: 'Hub Operations Phase 1 started May 22. Member application intake needs a host before the first applicant arrives.',
+    options: [
+      'Formbricks self-hosted on Coolify — Stage 02 CROPS posture, no vendor dependency on form data',
+      'Tally or Typeform managed SaaS — Stage 01, faster setup, applicant data visible to vendor',
+    ],
+    recommendation: 'Formbricks (recommendation from chokepoint analysis)',
+  },
+  {
+    id: 'd2', urgency: 'urgent', owner: 'Todd', blocks: 'All substrate phases',
+    title: 'Phase 1 database setup (3 steps)',
+    context: 'The migration is written and tested. Three steps in the Supabase dashboard unblock Phase 1 deployment.',
+    options: [
+      'Step 1: Generate PAT at app.supabase.com/account/tokens (must be LCA account, not personal)',
+      'Step 2: Enable connection pooler → Dashboard → Settings → Database → Connection Pooling',
+      'Step 3: Enable pgvector → Dashboard → Database → Extensions → search "vector" → Enable',
+    ],
+  },
+  {
+    id: 'd3', urgency: 'medium', owner: 'Todd', blocks: 'Phase 2 bylaws loader',
+    title: 'Bylaws v1.3 sub-subsection format',
+    context: 'Does bylaws v1.3 contain lettered sub-subsections (e.g. §5.3.2.a)? Determines the addressing format before the loader is built.',
+    options: [
+      'No lettered sub-subsections → addressing stays at art-N.sec-M.sub-P (current scheme)',
+      'Yes, lettered clauses exist → extend to art-N.sec-M.sub-P.clause-A',
+    ],
+  },
+  {
+    id: 'd4', urgency: 'medium', owner: 'Todd + Board', blocks: 'Wave 2 capital accounts',
+    title: 'Patronage formula',
+    context: 'Wave 2 capital accounts require a patronage allocation formula. The database schema is ready; the formula has not been defined yet.',
+    options: [
+      'Hours-based: patronage proportional to hours worked × rate',
+      'Revenue-based: patronage proportional to revenue invoiced through cooperative',
+      'Hybrid: board sets weights and factors each year',
+    ],
+  },
+]
+
 // ─── Root component ───────────────────────────────────────────────────────────
 
 export default function ReferenceGroup({ initialTab = 'guide' }) {
@@ -433,6 +637,21 @@ function DocRow({ doc }) {
 
 // ─── Roadmap Tab ──────────────────────────────────────────────────────────────
 
+function StatusChip({ status }) {
+  const s = STATUS_COLOR[status] || STATUS_COLOR.pending
+  return (
+    <span style={{
+      display: 'inline-block', fontSize: '0.62rem', fontWeight: 700,
+      textTransform: 'uppercase', letterSpacing: '0.08em',
+      padding: '0.2em 0.65em', borderRadius: 4,
+      background: s.bg, color: s.text, border: `1px solid ${s.border}`,
+      flexShrink: 0,
+    }}>
+      {STATUS_LABEL[status] || status}
+    </span>
+  )
+}
+
 function RoadmapTab() {
   const [selected, setSelected] = useState(null)
   const [content,  setContent]  = useState('')
@@ -482,54 +701,228 @@ function RoadmapTab() {
     return html
   }
 
+  const floorDone  = FLOOR_PHASES.filter(p => p.status === 'complete').length
+  const floorTotal = FLOOR_PHASES.length
+  const urgentCount = OPEN_DECISIONS.filter(d => d.urgency === 'urgent').length
+
   return (
     <div>
-      {/* Diagrams */}
-      <div style={r.diagramGrid}>
-        {[
-          { src: '/intranet/diagrams/architecture-overview.svg', label: 'Architecture Overview' },
-          { src: '/intranet/diagrams/roadmap-timeline.svg',      label: 'Roadmap Timeline' },
-        ].map(({ src, label }) => (
-          <a key={src} href={src} target="_blank" rel="noopener noreferrer" style={r.diagramCard}>
-            <div style={r.diagramLabel}>{label} ↗</div>
-            <img src={src} alt={label} style={r.diagramImg} />
-          </a>
-        ))}
+
+      {/* ── Context banner ── */}
+      <div style={r.banner}>
+        <div style={r.bannerBody}>
+          <p style={r.bannerText}>
+            The <strong style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Common Information System</strong> is
+            the cooperative's book of record: member registry, capital accounts,
+            agreements, and governance events. It is built in layers — first the{' '}
+            <em>floor</em> (substrate infrastructure), then five CIS modules on top.
+            Phase 0 specification is complete. Phase 1 deployment is ready to run
+            pending three setup steps.
+          </p>
+          <div style={r.bannerStats}>
+            <div style={r.statPill}>
+              <span style={r.statNum}>{floorDone}/{floorTotal}</span>
+              <span style={r.statLabel}>Floor phases complete</span>
+            </div>
+            <div style={{ ...r.statPill, borderColor: 'rgba(255,69,58,0.25)', background: 'rgba(255,69,58,0.06)' }}>
+              <span style={{ ...r.statNum, color: '#ff453a' }}>{urgentCount}</span>
+              <span style={r.statLabel}>Urgent decisions open</span>
+            </div>
+            <div style={r.statPill}>
+              <span style={r.statNum}>{CIS_WAVES.length}</span>
+              <span style={r.statLabel}>CIS waves planned</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Document cards */}
-      {!selected && (
-        <div style={r.docGrid}>
-          {PLAN_DOCS.map(doc => (
-            <button key={doc.id} onClick={() => loadDoc(doc)} style={r.docCard}>
-              <div style={r.docCardTitle}>{doc.title}</div>
-              <div style={r.docCardSub}>{doc.subtitle}</div>
-              <div style={r.docCardCta}>Read →</div>
-            </button>
+      {/* ── The Floor: Substrate Phases ── */}
+      <div style={r.section}>
+        <div style={r.sectionHead}>
+          <span style={r.sectionTag}>The Floor</span>
+          <h2 style={r.sectionTitle}>Substrate Phases</h2>
+          <p style={r.sectionDesc}>
+            Six prerequisite phases. The floor is the database, cooperative law
+            encoded as access policies, and Nou's citation harness. No CIS module
+            can run before the floor is laid.
+          </p>
+        </div>
+        <div style={r.phaseGrid}>
+          {FLOOR_PHASES.map(phase => (
+            <div key={phase.id} style={r.phaseCard}>
+              <div style={r.phaseCardTop}>
+                <div>
+                  <div style={r.phaseLabel}>{phase.label}</div>
+                  <div style={r.phaseName}>{phase.name}</div>
+                </div>
+                <StatusChip status={phase.status} />
+              </div>
+              <p style={r.phaseSummary}>{phase.summary}</p>
+              {phase.deliverables && (
+                <div style={r.itemGroup}>
+                  <div style={r.itemGroupLabel}>Deliverables</div>
+                  {phase.deliverables.map((d, i) => (
+                    <div key={i} style={r.itemRow}>
+                      <span style={r.itemDot}>·</span>
+                      <span style={r.itemText}>{d}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {phase.blockers && (
+                <div style={{ ...r.itemGroup, ...r.blockerGroup }}>
+                  <div style={{ ...r.itemGroupLabel, color: '#ff6b6b' }}>Blocked on</div>
+                  {phase.blockers.map((b, i) => (
+                    <div key={i} style={r.itemRow}>
+                      <span style={{ ...r.itemDot, color: '#ff6b6b' }}>!</span>
+                      <span style={{ ...r.itemText, color: 'var(--text-warm)' }}>{b}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </div>
-      )}
+      </div>
 
-      {/* Document reader */}
-      {selected && (
-        <div>
-          <div style={r.docHeader}>
-            <div>
-              <h2 style={r.docTitle}>{selected.title}</h2>
-              <p style={r.docSubtitle}>{selected.subtitle}</p>
-            </div>
-            <button
-              onClick={() => { setSelected(null); setContent('') }}
-              style={r.closeBtn}
-            >← Back</button>
-          </div>
-          {loading && <div style={g.loading}>Loading…</div>}
-          {error   && <div style={g.error}>{error}</div>}
-          {!loading && !error && content && (
-            <div style={g.mdBody} dangerouslySetInnerHTML={{ __html: renderMd(content) }} />
-          )}
+      {/* ── CIS Modules: Five Waves ── */}
+      <div style={r.section}>
+        <div style={r.sectionHead}>
+          <span style={r.sectionTag}>CIS Modules</span>
+          <h2 style={r.sectionTitle}>Five Waves</h2>
+          <p style={r.sectionDesc}>
+            Capability layers built on the floor. Waves begin once Floor Phases 1–3 are
+            complete. Wave 1 is the prerequisite for all others.
+          </p>
         </div>
-      )}
+        <div style={r.phaseGrid}>
+          {CIS_WAVES.map(wave => (
+            <div key={wave.id} style={r.phaseCard}>
+              <div style={r.phaseCardTop}>
+                <div>
+                  <div style={r.phaseLabel}>{wave.label}</div>
+                  <div style={r.phaseName}>{wave.name}</div>
+                </div>
+                <StatusChip status={wave.status} />
+              </div>
+              {wave.prereq && (
+                <div style={r.prereqNote}>Prereq: {wave.prereq}</div>
+              )}
+              <p style={r.phaseSummary}>{wave.summary}</p>
+              {wave.capabilities && (
+                <div style={r.itemGroup}>
+                  <div style={r.itemGroupLabel}>Capabilities</div>
+                  {wave.capabilities.map((c, i) => (
+                    <div key={i} style={r.itemRow}>
+                      <span style={r.itemDot}>·</span>
+                      <span style={r.itemText}>{c}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Open Decisions (Board Action) ── */}
+      <div style={r.section}>
+        <div style={r.sectionHead}>
+          <span style={{ ...r.sectionTag, background: 'rgba(255,69,58,0.08)', color: '#ff6b6b', borderColor: 'rgba(255,69,58,0.2)' }}>Board Action</span>
+          <h2 style={r.sectionTitle}>Open Decisions</h2>
+          <p style={r.sectionDesc}>
+            Phase 0 items that require input before work can proceed.
+            Urgent items are blocking active phases today.
+          </p>
+        </div>
+        <div style={r.decisionList}>
+          {OPEN_DECISIONS.map(dec => {
+            const uc = URGENCY_COLOR[dec.urgency] || URGENCY_COLOR.medium
+            return (
+              <div key={dec.id} style={r.decisionCard}>
+                <div style={r.decisionTop}>
+                  <h3 style={r.decisionTitle}>{dec.title}</h3>
+                  <span style={{ ...r.urgencyChip, background: uc.bg, color: uc.text }}>
+                    {dec.urgency}
+                  </span>
+                </div>
+                <p style={r.decisionContext}>{dec.context}</p>
+                <div style={r.decisionOptions}>
+                  {dec.options.map((opt, i) => (
+                    <div key={i} style={r.decisionOption}>
+                      <span style={r.optionDot} />
+                      <span style={r.optionText}>{opt}</span>
+                    </div>
+                  ))}
+                </div>
+                {dec.recommendation && (
+                  <div style={r.recommendNote}>
+                    Recommendation: {dec.recommendation}
+                  </div>
+                )}
+                <div style={r.decisionFooter}>
+                  <span style={r.decisionMeta}>Owner: {dec.owner}</span>
+                  <span style={{ ...r.decisionMeta, color: 'var(--text-subdim)' }}>Blocks: {dec.blocks}</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* ── Reference Documents ── */}
+      <div style={r.section}>
+        <div style={r.sectionHead}>
+          <span style={r.sectionTag}>Reference</span>
+          <h2 style={r.sectionTitle}>Specification Documents</h2>
+        </div>
+
+        {/* Diagrams */}
+        <div style={r.diagramGrid}>
+          {[
+            { src: '/intranet/diagrams/architecture-overview.svg', label: 'Architecture Overview' },
+            { src: '/intranet/diagrams/roadmap-timeline.svg',      label: 'Roadmap Timeline' },
+          ].map(({ src, label }) => (
+            <a key={src} href={src} target="_blank" rel="noopener noreferrer" style={r.diagramCard}>
+              <div style={r.diagramLabel}>{label} ↗</div>
+              <img src={src} alt={label} style={r.diagramImg} />
+            </a>
+          ))}
+        </div>
+
+        {/* Document cards / reader */}
+        {!selected && (
+          <div style={r.docGrid}>
+            {PLAN_DOCS.map(doc => (
+              <button key={doc.id} onClick={() => loadDoc(doc)} style={r.docCard}>
+                <div style={r.docCardTitle}>{doc.title}</div>
+                <div style={r.docCardSub}>{doc.subtitle}</div>
+                <div style={r.docCardCta}>Read →</div>
+              </button>
+            ))}
+          </div>
+        )}
+        {selected && (
+          <div>
+            <div style={r.docHeader}>
+              <div>
+                <h2 style={r.docTitle}>{selected.title}</h2>
+                <p style={r.docSubtitle}>{selected.subtitle}</p>
+              </div>
+              <button
+                onClick={() => { setSelected(null); setContent('') }}
+                style={r.closeBtn}
+              >← Back</button>
+            </div>
+            {loading && <div style={g.loading}>Loading…</div>}
+            {error   && <div style={g.error}>{error}</div>}
+            {!loading && !error && content && (
+              <div style={g.mdBody} dangerouslySetInnerHTML={{ __html: renderMd(content) }} />
+            )}
+          </div>
+        )}
+      </div>
+
     </div>
   )
 }
@@ -621,9 +1014,101 @@ const d = {
 // ─── Roadmap tab styles ───────────────────────────────────────────────────────
 
 const r = {
+  // Context banner
+  banner: {
+    background: 'rgba(196,149,106,0.05)', border: '1px solid rgba(196,149,106,0.12)',
+    borderRadius: 10, padding: '1.25rem 1.5rem', marginBottom: '2rem',
+  },
+  bannerBody: { display: 'flex', flexDirection: 'column', gap: '1rem' },
+  bannerText: { fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.7, margin: 0 },
+  bannerStats: { display: 'flex', gap: '0.75rem', flexWrap: 'wrap' },
+  statPill: {
+    display: 'flex', alignItems: 'center', gap: '0.5rem',
+    padding: '0.35rem 0.75rem', background: 'rgba(255,255,255,0.04)',
+    border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20,
+  },
+  statNum: { fontSize: '0.9rem', fontWeight: 700, color: 'var(--gold)' },
+  statLabel: { fontSize: '0.72rem', color: 'var(--text-ghost)' },
+
+  // Section layout
+  section: { marginBottom: '2.5rem' },
+  sectionHead: { marginBottom: '1.25rem' },
+  sectionTag: {
+    display: 'inline-block', fontSize: '0.62rem', fontWeight: 700,
+    textTransform: 'uppercase', letterSpacing: '0.1em',
+    padding: '0.2em 0.65em', borderRadius: 4, marginBottom: '0.5rem',
+    background: 'rgba(196,149,106,0.1)', color: 'var(--gold)',
+    border: '1px solid rgba(196,149,106,0.2)',
+  },
+  sectionTitle: {
+    fontSize: '1.15rem', fontWeight: 700, letterSpacing: '-0.015em',
+    margin: '0 0 0.4rem', color: 'var(--text-primary)',
+  },
+  sectionDesc: { fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: 0, maxWidth: '600px' },
+
+  // Phase / Wave cards
+  phaseGrid: { display: 'flex', flexDirection: 'column', gap: '0.75rem' },
+  phaseCard: {
+    background: 'var(--ink)', border: '1px solid #1a1a2e', borderRadius: 10,
+    padding: '1.1rem 1.25rem',
+  },
+  phaseCardTop: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.75rem', marginBottom: '0.6rem' },
+  phaseLabel: { fontSize: '0.65rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-ghost)', marginBottom: '0.15rem' },
+  phaseName:  { fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em' },
+  phaseSummary: { fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.65, margin: '0 0 0.75rem' },
+  prereqNote: {
+    fontSize: '0.72rem', color: 'var(--text-ghost)', marginBottom: '0.6rem',
+    padding: '0.2rem 0.55rem', background: 'rgba(255,255,255,0.03)',
+    borderRadius: 4, display: 'inline-block', border: '1px solid rgba(255,255,255,0.06)',
+  },
+
+  // Deliverables / capabilities list
+  itemGroup: { marginTop: '0.15rem' },
+  blockerGroup: {
+    marginTop: '0.65rem', paddingTop: '0.65rem',
+    borderTop: '1px solid rgba(255,69,58,0.12)',
+  },
+  itemGroupLabel: {
+    fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase',
+    letterSpacing: '0.08em', color: 'var(--text-ghost)', marginBottom: '0.35rem',
+  },
+  itemRow: { display: 'flex', gap: '0.5rem', marginBottom: '0.2rem', alignItems: 'flex-start' },
+  itemDot: { fontSize: '0.85rem', color: 'var(--text-ghost)', flexShrink: 0, lineHeight: 1.55 },
+  itemText: { fontSize: '0.78rem', color: 'var(--text-subdim)', lineHeight: 1.55 },
+
+  // Open Decisions
+  decisionList: { display: 'flex', flexDirection: 'column', gap: '0.75rem' },
+  decisionCard: {
+    background: 'var(--ink)', border: '1px solid #1a1a2e', borderRadius: 10,
+    padding: '1.1rem 1.25rem',
+  },
+  decisionTop: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.75rem', marginBottom: '0.5rem' },
+  decisionTitle: { fontSize: '0.92rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, letterSpacing: '-0.01em' },
+  urgencyChip: {
+    display: 'inline-block', fontSize: '0.6rem', fontWeight: 700,
+    textTransform: 'uppercase', letterSpacing: '0.08em',
+    padding: '0.2em 0.6em', borderRadius: 4, flexShrink: 0,
+  },
+  decisionContext: { fontSize: '0.81rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 0.75rem' },
+  decisionOptions: { display: 'flex', flexDirection: 'column', gap: '0.3rem', marginBottom: '0.65rem' },
+  decisionOption: { display: 'flex', gap: '0.5rem', alignItems: 'flex-start' },
+  optionDot: {
+    width: 5, height: 5, borderRadius: '50%', background: 'rgba(255,255,255,0.15)',
+    flexShrink: 0, marginTop: '0.45rem',
+  },
+  optionText: { fontSize: '0.78rem', color: 'var(--text-subdim)', lineHeight: 1.55 },
+  recommendNote: {
+    fontSize: '0.75rem', color: 'var(--gold)', background: 'rgba(196,149,106,0.07)',
+    border: '1px solid rgba(196,149,106,0.18)', borderRadius: 5,
+    padding: '0.35rem 0.65rem', marginBottom: '0.65rem',
+  },
+  decisionFooter: { display: 'flex', gap: '1rem', flexWrap: 'wrap', paddingTop: '0.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' },
+  decisionMeta: { fontSize: '0.72rem', color: 'var(--text-ghost)' },
+
+  // Reference / diagrams section
   diagramGrid: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-    gap: '1rem', marginBottom: '1.5rem',
+    gap: '1rem', marginBottom: '1.25rem',
   },
   diagramCard: {
     display: 'block', background: 'var(--ink)', border: '1px solid #1a1a2e',
