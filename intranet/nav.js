@@ -171,7 +171,7 @@
 }
 #cis-nav .cn-signin:hover { background: rgba(196,149,106,0.2); }
 
-/* ── Mode toggle ── */
+/* ── Mode toggle (light/dark) ── */
 #cis-nav .cn-mode {
   padding: 4px 10px;
   background: transparent;
@@ -184,6 +184,25 @@
 #cis-nav .cn-mode:hover { color: #aaa; border-color: #444; }
 [data-mode="light"] #cis-nav .cn-mode { border-color: #ccc; color: #888; }
 [data-mode="light"] #cis-nav .cn-mode:hover { color: #444; border-color: #aaa; }
+
+/* ── Env toggle (dev/prod) ── */
+#cis-nav .cn-env {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid #2e2e2e; border-radius: 4px;
+  color: #555; font-size: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  cursor: pointer; letter-spacing: 0.07em;
+  transition: color 130ms, border-color 130ms, background 130ms;
+}
+#cis-nav .cn-env:hover { color: #aaa; border-color: #444; }
+#cis-nav .cn-env.dev {
+  color: #5db87a; border-color: rgba(74,180,100,0.35);
+  background: rgba(74,180,100,0.06);
+}
+#cis-nav .cn-env.dev:hover { border-color: rgba(74,180,100,0.55); background: rgba(74,180,100,0.1); }
+[data-mode="light"] #cis-nav .cn-env { border-color: #ccc; color: #888; }
+[data-mode="light"] #cis-nav .cn-env.dev { color: #3a8a50; border-color: rgba(58,138,80,0.4); background: rgba(58,138,80,0.07); }
 
 /* ── Site footer ── */
 #cis-footer {
@@ -245,6 +264,9 @@
     document.documentElement.setAttribute('data-mode', 'light');
   }
 
+  /* Expose env mode globally so pages can read it before nav fully boots */
+  window.CIS_DEV_MODE = (localStorage.getItem('cis-env') === 'dev');
+
   /* ── Everything that touches <body> runs after DOMContentLoaded ── */
   function init() {
     var html = document.documentElement;
@@ -300,6 +322,7 @@
             '</button>' +
           '</div>' +
         '</div>' +
+        '<button class="cn-env" id="cn-env" title="Toggle dev / prod view">Prod</button>' +
         '<button class="cn-mode" id="cn-mode">Light</button>' +
       '</div>';
 
@@ -333,6 +356,33 @@
       var next = html.getAttribute('data-mode') === 'dark' ? 'light' : 'dark';
       localStorage.setItem('cis-theme', next);
       applyTheme(next);
+    });
+
+    /* ── Dev / Prod env toggle ── */
+    var envBtn  = document.getElementById('cn-env');
+    var _envMode = localStorage.getItem('cis-env') || 'prod';
+
+    function applyEnv(env) {
+      _envMode = env;
+      window.CIS_DEV_MODE = (env === 'dev');
+      envBtn.textContent = env === 'dev' ? 'Dev' : 'Prod';
+      envBtn.classList.toggle('dev', env === 'dev');
+      // Show/hide all [data-dev-only] elements on the page
+      document.querySelectorAll('[data-dev-only]').forEach(function (el) {
+        el.style.display = (env === 'dev') ? '' : 'none';
+      });
+      // Dispatch so pages can react
+      window.dispatchEvent(new CustomEvent('cisenvchange', { detail: { env: env } }));
+    }
+
+    // Init from saved pref (default: prod)
+    // Run after a tick so page elements exist
+    setTimeout(function () { applyEnv(_envMode); }, 0);
+
+    envBtn.addEventListener('click', function () {
+      var next = _envMode === 'dev' ? 'prod' : 'dev';
+      localStorage.setItem('cis-env', next);
+      applyEnv(next);
     });
 
     /* ── User menu toggle ── */

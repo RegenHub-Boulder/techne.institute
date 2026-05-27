@@ -9,10 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <script src="/intranet/nav.js"></script>
 <script>
-/* View-preference redirect: if user has set Advanced as default, send them there.
-   nav.js sets window.cisUser once auth resolves. We poll for it then check. */
+/* View-preference redirect: only redirect to advanced view when dev mode is active. */
 (function () {
-  // Skip redirect if coming back from advanced view (has ?from=advanced or ?view=simple)
+  // Skip redirect if in prod mode (default) — advanced view is dev-only
+  if (localStorage.getItem('cis-env') !== 'dev') return;
+
+  // Skip if coming back from advanced view
   var params = new URLSearchParams(window.location.search);
   if (params.get('view') === 'simple' || params.get('from') === 'advanced') return;
 
@@ -27,7 +29,6 @@
     }
   }, 100);
 
-  // Stop checking after 10s (user not authed or no preference)
   setTimeout(function () { clearInterval(interval); }, 10000);
 })();
 </script>
@@ -467,9 +468,9 @@
 <!-- ── Page ── -->
 <div class="page-shell">
 
-  <!-- Advanced view banner -->
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:20px;gap:12px;">
-    <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);letter-spacing:0.04em;">Simple view — <span style="color:var(--terra-text);">/intranet/</span></span>
+  <!-- Advanced view banner — dev mode only -->
+  <div data-dev-only style="display:none;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:20px;gap:12px;">
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);letter-spacing:0.04em;">Production view — <span style="color:var(--terra-text);">/intranet/</span> <span style="color:#5db87a;font-size:9.5px;background:rgba(74,180,100,0.08);border:1px solid rgba(74,180,100,0.25);border-radius:3px;padding:1px 6px;margin-left:6px;">DEV MODE</span></span>
     <a href="/intranet/a/" style="font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--terra-text);text-decoration:none;border:1px solid var(--border);padding:5px 12px;border-radius:5px;background:var(--surface-2);white-space:nowrap;">Advanced view →</a>
   </div>
 
