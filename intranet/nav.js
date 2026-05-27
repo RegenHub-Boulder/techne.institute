@@ -365,7 +365,11 @@
     function showSignedOut() {
       var c = document.getElementById('cn-chip');
       if (c) c.outerHTML = '<a class="cn-signin" href="/intranet/login/">Sign in</a>';
-      if (document.body.dataset.authRequired !== undefined) {
+      // Default-deny: redirect unless the page is explicitly marked data-public
+      // or we are already on the login page (avoid redirect loop).
+      var isPublic = document.body.dataset.public !== undefined;
+      var isLoginPage = window.location.pathname.indexOf('/intranet/login') === 0;
+      if (!isPublic && !isLoginPage) {
         window.location.href = '/intranet/login/?redirect=' + encodeURIComponent(window.location.pathname);
       }
     }
