@@ -365,6 +365,7 @@
     function showSignedOut() {
       var c = document.getElementById('cn-chip');
       if (c) c.outerHTML = '<a class="cn-signin" href="/intranet/login/">Sign in</a>';
+      window.CIS_SESSION = null;   // signal to comments.js and other widgets
       // Default-deny: redirect unless the page is explicitly marked data-public
       // or we are already on the login page (avoid redirect loop).
       var isPublic = document.body.dataset.public !== undefined;
@@ -387,7 +388,8 @@
       if (emailEl)  emailEl.textContent  = email;
       if (avatarEl) avatarEl.textContent = getInitials(display);
 
-      window.cisUser = { session: session, user: user, email: email, display: display };
+      window.cisUser    = { session: session, user: user, email: email, display: display };
+      window.CIS_SESSION = session;   // used by comments.js and other intranet widgets
     }
 
     function initAuth(sb) {
