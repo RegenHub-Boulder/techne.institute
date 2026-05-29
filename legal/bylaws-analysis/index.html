@@ -520,6 +520,108 @@
       .meta-grid { grid-template-columns: 1fr 1fr; }
       .section-header { flex-direction: column; gap: 0.4rem; }
     }
+  
+    /* ── ADDENDUM ── */
+    .addendum-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 4rem 0 3rem;
+    }
+    .addendum-divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--sky);
+      opacity: 0.25;
+    }
+    .addendum-divider-label {
+      font-family: var(--mono);
+      font-size: 0.60rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--sky);
+      white-space: nowrap;
+    }
+    .addendum-banner {
+      background: rgba(90,122,154,0.05);
+      border: 1px solid rgba(90,122,154,0.20);
+      border-left: 3px solid var(--sky);
+      padding: 1rem 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .addendum-banner .addendum-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--sky);
+      margin-bottom: 0.5rem;
+    }
+    .concur-card {
+      background: rgba(90,122,154,0.05);
+      border: 1px solid rgba(90,122,154,0.18);
+      padding: 0.9rem 1.15rem;
+      margin-bottom: 1.75rem;
+    }
+    .concur-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--sky);
+      margin-bottom: 0.45rem;
+    }
+    .concur-body {
+      font-size: 0.84rem;
+      color: var(--text-warm);
+      line-height: 1.68;
+    }
+    .concur-body p { margin: 0; }
+    .concur-body p + p { margin-top: 0.75rem; }
+    .diverge-card {
+      background: rgba(196,149,106,0.05);
+      border: 1px solid rgba(196,149,106,0.22);
+      padding: 0.9rem 1.15rem;
+      margin-bottom: 1.75rem;
+    }
+    .diverge-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 0.45rem;
+    }
+    .diverge-body {
+      font-size: 0.84rem;
+      color: var(--text-warm);
+      line-height: 1.68;
+    }
+    .diverge-body p { margin: 0; }
+    .diverge-body p + p { margin-top: 0.75rem; }
+    .affirm-card {
+      background: rgba(106,138,94,0.05);
+      border: 1px solid rgba(106,138,94,0.20);
+      padding: 0.9rem 1.15rem;
+      margin-bottom: 1.75rem;
+    }
+    .affirm-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--moss);
+      margin-bottom: 0.45rem;
+    }
+    .affirm-body {
+      font-size: 0.84rem;
+      color: var(--text-warm);
+      line-height: 1.68;
+    }
+    .affirm-body p { margin: 0; }
+    .affirm-body p + p { margin-top: 0.75rem; }
+    .issue-num.addendum { background: rgba(90,122,154,0.08); border-color: rgba(90,122,154,0.22); color: var(--sky); }
+
   </style>
   <script src="/intranet/comments.js" defer></script>
 </head>
@@ -1177,6 +1279,218 @@
         <div class="q-num">Question 06</div>
         <div class="q-topic">Guaranteed payments</div>
         <div class="q-body">Is the intent to prohibit all member compensation while taxed as a partnership, or to prohibit only employment-style compensation while permitting IRC § 707(c) guaranteed payments?</div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- ── ADDENDUM ── -->
+
+  <div class="addendum-divider">
+    <div class="addendum-divider-line"></div>
+    <span class="addendum-divider-label">Addendum &mdash; May 2026</span>
+    <div class="addendum-divider-line"></div>
+  </div>
+
+  <div class="addendum-banner">
+    <div class="addendum-label">Additional Research Read</div>
+    <p>The following findings are drawn from an independent Colorado legal research read of both v.2 documents, oriented to the ratification window. The read reviewed Bylaws v.2 and Membership Agreement v.2 together against Colorado ULCAA, IRC Subchapter K, and cooperative governance standards. Where findings extend existing issues above, cross-references are noted. Where they diverge from the analysis above, the divergence is made explicit. Research posture, not legal advice.</p>
+  </div>
+
+
+  <!-- ── A01 ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="issue-num addendum">Extends Issue 01</span>
+      <h2>Profit Allocation Default is Permissive Where It Must Be Determinate</h2>
+    </div>
+
+    <div class="concur-card">
+      <div class="concur-label">Concurs &amp; Adds Specificity</div>
+      <div class="concur-body">
+        <p>The existing analysis flags equal allocation as contrary to the ULCAA default and IRC &sect; 704(b). This read adds a specific mechanism problem: &sect; 5.3.2 uses <em>may</em> be allocated equally as a fallback for the period before a Patronage Plan exists. For an allocation to carry <em>substantial economic effect</em> under IRC &sect; 704(b), the method must be fixed in advance, not left optional. A permissive default leaves the opening fiscal period without a determinate allocation rule.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label problem">Specific problem &mdash; the "may" fallback</div>
+      <div class="problem-text">
+        <p>MA &sect; 2.4 defers the Patronage Plan until ninety days after the first patron member is admitted. For the opening fiscal period there will likely be no Plan, and the fallback in &sect; 5.3.2 reads that profit <em>may</em> be allocated equally. For the alternative test for economic effect, the allocation method must be specified before any income or loss is allocated. A "may" leaves a gap between when members are admitted and when the Plan is adopted.</p>
+        <p>The fix is one word: replace "may be allocated equally" with "shall be allocated equally per capita among patron members in good standing until the Board ratifies a Patronage Plan." This closes the opening-period gap and removes the daylight between the patronage rule and its fallback.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label proposed">Path</div>
+      <div class="proposed-lang">
+        Replace <em>"Net Profits <strong>may</strong> be allocated equally"</em> in the pre-Plan fallback with a binding default: <em>"Until a Patronage Plan is adopted, Net Profits <strong>shall</strong> be allocated equally per capita among patron members in good standing at the close of the fiscal year."</em> This makes the first-period allocation determinate for IRC &sect; 704(b) purposes.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── A02 ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="issue-num addendum">Extends Issue 05</span>
+      <h2>Section 4.8 Contradicts Itself — Second Paragraph Undercuts the First</h2>
+    </div>
+
+    <div class="concur-card">
+      <div class="concur-label">Adds New Dimension to Issue 05</div>
+      <div class="concur-body">
+        <p>The existing analysis flags &sect; 4.8 for needing a &sect; 707(c) guaranteed-payments carve-out. This read identifies a second problem within the same section: the two paragraphs directly contradict each other, meaning the fix is not just an addition but a conforming revision.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label problem">Internal contradiction</div>
+      <div class="problem-text">
+        <p>The first paragraph correctly bars a member from drawing a W-2 salary while the entity is a partnership &mdash; the long-settled rule of <code>Rev. Rul. 69-184</code> &mdash; and routes pay through guaranteed payments under <code>IRC &sect; 707(c)</code>. The second paragraph then says <em>no officer is prevented from receiving a salary by reason of being a member</em>. This re-opens precisely the exception the first paragraph just foreclosed. As currently drafted, the two paragraphs cannot both be followed.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label proposed">Path</div>
+      <div class="proposed-lang">
+        Strike or conform the second paragraph so the &sect; 707(c) treatment stands without qualification. If the intent of the second paragraph was to preserve a carve-out for officers acting in a non-member capacity (e.g., under a &sect; 707(a) arm's-length arrangement), that intent should be stated explicitly rather than as a general salary permission.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── A03 ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="issue-num addendum">New &mdash; A03</span>
+      <h2>Liquidation Waterfall Has Two Endings</h2>
+    </div>
+
+    <div class="block">
+      <div class="block-label problem">Problem</div>
+      <div class="problem-text">
+        <p>&sect; 5.1.5 correctly says liquidating distributions follow positive capital-account balances, consistent with what <code>IRC &sect; 704(b)</code> requires for the alternate test for economic effect. Article XIV &sect; 14.3 then sends any residual equally to current and three-year former members.</p>
+        <p>If capital accounts have already absorbed the final gain or loss allocation &mdash; as they should under &sect; 5.1.5 &mdash; there should be nothing left to distribute equally. A separate equal-distribution tier that does not track capital accounts can break substantial economic effect because it produces an outcome not consistent with the members' actual economic arrangement.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label statute">Statutory basis</div>
+      <ul class="statute-list">
+        <li><span class="statute-cite">IRC &sect; 704(b); Treas. Reg. &sect; 1.704-1(b)(2)(ii)(b)(2):</span> Liquidating distributions must be made in accordance with positive capital account balances for the alternate test for economic effect to apply.</li>
+        <li><span class="statute-cite">C.R.S. &sect; 7-58-104:</span> Public benefit asset assignment on dissolution &mdash; a potentially applicable path for residual assets that avoids the capital-account consistency problem.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-label proposed">Path</div>
+      <div class="proposed-lang">
+        Reconcile Article XIV with &sect; 5.1.5 by removing the equal-distribution tier, or recharacterize the &sect; 14.3 residual explicitly as a <em>public-benefit asset assignment</em> rather than a member distribution &mdash; a path Article XIV itself already contemplates for illiquid assets. If the equal residual distribution is intentional, the document should explain how it interacts with &sect; 5.1.5 without breaking the capital-account-based liquidation rule.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── A04 ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="issue-num addendum">New &mdash; A04</span>
+      <h2>Community Participant Class Is Difficult to Place in the Statute</h2>
+    </div>
+
+    <div class="block">
+      <div class="block-label problem">Problem</div>
+      <div class="problem-text">
+        <p>ULCAA recognizes two member classes: <em>patron members</em> (who patronize the cooperative) and <em>investor members</em> (who provide capital). A Community Participant described as "a member with access to programming" who neither patronizes as a patron member nor invests as an investor member does not fit cleanly into either statutory category.</p>
+        <p>&sect; 1.1(c) leaves governance rights for this class to Board discretion, which creates ambiguity across voting rights, capital account treatment, and Schedule A (where Community Participant share price and dues are placeholders alongside the other classes).</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label statute">Statutory basis</div>
+      <ul class="statute-list">
+        <li><span class="statute-cite">C.R.S. &sect; 7-58-103(14), (15):</span> Patron member and investor member definitions &mdash; the two statutory categories available to a ULCAA entity.</li>
+        <li><span class="statute-cite">C.R.S. &sect; 7-58-401:</span> Governance rights of patron vs. investor members &mdash; Board discretion to define governance rights works within, not around, the statutory framework.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-label proposed">Path</div>
+      <div class="proposed-lang">
+        Make a deliberate choice: is the Community Participant a sub-type of patron member (with reduced patronage activity), a form of investor member, or a non-member participant in cooperative programming? Once the classification is settled, align &sect;&sect; 1.1, 1.4, and Schedule A to that choice. If the class is intended to be non-member, the voting and capital-account provisions that currently apply to members should not attach to it.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── A05 ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="issue-num addendum">New &mdash; A05</span>
+      <h2>Court-Access Waiver Is Broader Than a Jury Waiver</h2>
+    </div>
+
+    <div class="block">
+      <div class="block-label problem">Problem</div>
+      <div class="problem-text">
+        <p>Waiving the right to a jury trial is routine and the Membership Agreement's own &sect; 9.9 jury waiver is clean. Bylaws &sect; 11.5 goes further and waives <em>all rights to seek remedies in any court</em>. This is a qualitatively different waiver &mdash; it forecloses judicial access entirely, not just the jury.</p>
+        <p>Paired with a Board hearing in which the Board may itself be a party to the dispute (disputes between members and the Board over governance decisions), the breadth of &sect; 11.5 invites a fairness challenge to enforceability. A member who cannot get a neutral adjudicator when the cooperative is the adverse party has no meaningful dispute resolution path.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label proposed">Path</div>
+      <div class="proposed-lang">
+        Consider narrowing &sect; 11.5 to a jury waiver (consistent with MA &sect; 9.9) plus mandatory arbitration before a neutral arbitrator, and add an explicit neutral adjudication path for cases where the Board itself is the adverse party. Wholesale court-access waivers in membership agreements have been subject to challenge in other cooperative and club contexts; narrowing to arbitration + jury waiver is both more standard and more likely to be enforced.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── A06 ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="issue-num addendum">New &mdash; A06</span>
+      <h2>Article XII Sets a Threshold for Amending the Articles of Organization</h2>
+    </div>
+
+    <div class="block">
+      <div class="block-label problem">Problem</div>
+      <div class="problem-text">
+        <p>Bylaws can govern their own amendment. Article XII, however, also sets a voting threshold for amending the Articles of Organization. Article amendments are a state-law matter: they follow the ULCAA's statutory procedure and require a filing with the Colorado Secretary of State. A bylaw-set threshold for article amendments could be misread as the controlling rule, potentially creating confusion about whether a bylaw amendment is also needed whenever the Articles are amended.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-label statute">Statutory basis</div>
+      <ul class="statute-list">
+        <li><span class="statute-cite">C.R.S. &sect; 7-58-201 et seq.:</span> Article amendment procedure under the ULCAA &mdash; governs the form and filing requirements for amending a limited cooperative association's articles of organization.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <div class="block-label proposed">Path</div>
+      <div class="proposed-lang">
+        Add a clarifying clause to Article XII stating that article amendments proceed under the ULCAA's statutory procedure (including any required state filing), and that the threshold stated in Article XII governs <em>bylaw</em> amendments only. If the Board intends the Article XII threshold to apply to Article amendments as an internal governance matter (above the statutory floor), that intent should be stated explicitly with a note that it does not substitute for the statutory procedure.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── A07 ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="issue-num addendum">Affirmed</span>
+      <h2>Capital-Account Machinery and the Partnership Tax Spine Are Well-Drafted</h2>
+    </div>
+
+    <div class="affirm-card">
+      <div class="affirm-label">Solid as Drafted</div>
+      <div class="affirm-body">
+        <p>The research read affirms the following provisions as well-constructed and not requiring revision: the capital-account rules in &sect; 5.1, the qualified income offset in &sect; 5.3.4, and the no-deficit-restoration posture in &sect; 5.6. Together these form the standard <em>alternate test for economic effect</em> used by a partnership that does not impose a deficit restoration obligation &mdash; an appropriate posture for an early-stage cooperative.</p>
+        <p>The guaranteed-payment handling under &sect; 707(c) is correct in principle (the internal contradiction in the second paragraph of &sect; 4.8, addressed above, is a drafting problem, not a structural error). The consent-to-tax provisions in &sect;&sect; 1.10 and 6.1 are clear and consistent with the Subchapter K election.</p>
       </div>
     </div>
   </div>
