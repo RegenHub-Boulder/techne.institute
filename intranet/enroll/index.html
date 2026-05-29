@@ -114,7 +114,7 @@
     display: flex; flex-direction: column; align-items: center;
     flex: 1; min-width: 64px; position: relative; cursor: pointer;
   }
-  .rail-item.future { cursor: default; }
+  .rail-item.future { cursor: pointer; }
   .rail-dot {
     width: 22px; height: 22px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
@@ -504,7 +504,7 @@ function renderRail() {
     const connector = i < STEPS.length - 1
       ? `<div class="rail-connector${done ? ' done' : ''}"></div>` : '';
     return `
-      <div class="rail-item${cls === 'future' ? ' future' : ''}" onclick="${i <= STATE.step ? `goToStep(${i})` : ''}" title="${step.label}${step.phase ? ' — ' + step.phase : ''}">
+      <div class="rail-item${cls === 'future' ? ' future' : ''}" onclick="goToStep(${i})" title="${step.label}${step.phase ? ' — ' + step.phase : ''}">
         <div class="rail-dot ${cls}">${done ? iconSvg('M20 6L9 17l-5-5', 10) : (i+1)}</div>
         <div class="rail-labels">
           <span class="rail-phase ${cls}">${step.phase}</span>
@@ -604,7 +604,7 @@ function renderDocRead(docKey, stepNum) {
       <div class="step-footer">
         <button class="btn-secondary" onclick="goBack()">← Back</button>
         <div class="spacer"></div>
-        <button class="btn-primary" id="readNext_${docKey}" ${isRead ? '' : 'disabled'} onclick="submitDocRead('${docKey}')">Continue →</button>
+        <button class="btn-primary" id="readNext_${docKey}" onclick="submitDocRead('${docKey}')">Continue →</button>
       </div>
     </div>`;
 }
@@ -696,6 +696,7 @@ function renderOrientation() {
           </div>
         </div>
       </div>
+      <div id="orient_error"></div>
       <div class="step-footer">
         <button class="btn-secondary" onclick="goBack()">← Back</button>
         <div class="spacer"></div>
@@ -772,7 +773,6 @@ function goBack() {
 }
 
 function goToStep(i) {
-  if (i > STATE.step) return;
   STATE.step = i;
   save(STATE);
   render();
@@ -807,13 +807,11 @@ function updateCheckState(docKey) {
   const btn = document.getElementById('readNext_' + docKey);
   STATE[docKey + 'Read'] = cb.checked;
   save(STATE);
-  if (btn) btn.disabled = !cb.checked;
 }
 
 function submitDocRead(docKey) {
   const comment = document.getElementById('comment_' + docKey)?.value?.trim() || '';
   STATE[docKey + 'Comment'] = comment;
-  STATE[docKey + 'Read']    = true;
   save(STATE);
   goNext();
 }
@@ -846,6 +844,24 @@ function submitDocVote(docKey) {
 }
 
 function submitOrientation() {
+  // Final submission gate: both read checkboxes and both votes must be set
+  const missing = [];
+  if (!STATE.bylawsRead) missing.push('Confirm you have read the Bylaws (step 2)');
+  if (!STATE.bylawsVote) missing.push('Cast your vote on the Bylaws (step 3)');
+  if (!STATE.maRead)     missing.push('Confirm you have read the Membership Agreement (step 4)');
+  if (!STATE.maVote)     missing.push('Cast your vote on the Membership Agreement (step 5)');
+
+  const errEl = document.getElementById('orient_error');
+  if (missing.length > 0) {
+    if (errEl) errEl.innerHTML =
+      '<div class="error-notice" style="margin:0 24px 16px;">' +
+      '<strong>Before completing enrollment:</strong><ul style="margin:6px 0 0 14px;line-height:1.8;">' +
+      missing.map(m => '<li>' + m + '</li>').join('') +
+      '</ul></div>';
+    return;
+  }
+  if (errEl) errEl.innerHTML = '';
+
   STATE.orientDone = true;
   STATE.complete   = true;
   STATE.completedAt= new Date().toISOString();
