@@ -135,6 +135,27 @@ const TIERS = [
 ];
 
 // ============================================================
+// Roster: illustrative seed data.
+// Authoritative source is the CIS People module.
+// Replace with live roster data when the People module exposes it.
+// ============================================================
+const ROSTER = [
+  { id: 'm1', name: 'Member one',   roles: ['backend', 'devops', 'data'],        capacityHours: 220 },
+  { id: 'm2', name: 'Member two',   roles: ['frontend', 'design'],               capacityHours: 180 },
+  { id: 'm3', name: 'Member three', roles: ['design', 'content', 'product'],     capacityHours: 160 },
+  { id: 'm4', name: 'Member four',  roles: ['data', 'ml', 'research'],           capacityHours: 200 },
+  { id: 'm5', name: 'Member five',  roles: ['frontend', 'qa', 'backend'],        capacityHours: 150 },
+];
+
+// ============================================================
+// Policy parameters: indicative, not ratified.
+// Isolated here so the board can adjust them in one place.
+// ============================================================
+const DRAW_PCT = 50;            // percent of labor value paid as current cash draw
+const COORDINATION_MARGIN = 0;  // percent added to labor when billing; 0 keeps current behavior
+const PROPOSED_LABOR_WEIGHT = 40; // patronage formula labor weight, proposed
+
+// ============================================================
 // Hash chain: append-only log of scenario events.
 // Uses SubtleCrypto for real SHA-256 in the browser.
 // ============================================================
@@ -197,7 +218,7 @@ export default function ScenarioEngine() {
   const tier = TIERS.find((x) => x.id === tierId);
 
   // --------------------------------------------------------
-  // Derived computation
+  // Derived computation (buyer-facing)
   // --------------------------------------------------------
   const computation = useMemo(() => {
     const roleRows = Object.entries(pattern.hours).map(([roleKey, baseHours]) => {
@@ -216,6 +237,143 @@ export default function ScenarioEngine() {
     const grandTotal = laborCost + ongoingOverHorizon;
     return { roleRows, totalHours, laborCost, infraItems, monthlyInfra, monthlyMaintenance, monthlyOngoing, ongoingOverHorizon, grandTotal };
   }, [patternId, tierId, complexity, horizon, maintenancePct]);
+
+  // --------------------------------------------------------
+  // Members' side: roster allocation and cooperative economics
+  // Reads from computation; does not mutate it.
+  // --------------------------------------------------------
+  const memberView = useMemo(() => {
+    // -- Allocation --
+    const allocated = {};  // memberId -> { roleKey -> hours }
+    const remaining = {};  // memberId -> remaining capacity
+
+    ROSTER.forEach((m) => {
+      allocated[m.id] = {};
+      remaining[m.id] = m.capacityHours;
+    });
+
+    const coveredHoursByRole = {};
+
+    computation.roleRows.forEach((row) => {
+      const eligible = ROSTER.filter((m) => m.roles.includes(row.key) && remaining[m.id] > 0);
+      const totalEligibleCap = eligible.reduce((s, m) => s + remaining[m.id], 0);
+      coveredHoursByRole[row.key] = 0;
+
+      if (totalEligibleCap === 0) return;
+
+      // Proportional pass
+      eligible.forEach((m) => {
+        const share = row.hours * (remaining[m.id] / totalEligibleCap);
+        const take = Math.min(share, remaining[m.id]);
+        allocated[m.id][row.key] = (allocated[m.id][row.key] || 0) + take;
+        remaining[m.id] -= take;
+        coveredHoursByRole[row.key] += take;
+      });
+
+      // Settling pass: absorb rounding/cap residue
+      let residue = row.hours - coveredHoursByRole[row.key];
+      if (residue > 0.001) {
+        for (const m of eligible) {
+          if (residue <= 0.001) break;
+          if (remaining[m.id] > 0.001) {
+            const take = Math.min(residue, remaining[m.id]);
+            allocated[m.id][row.key] = (allocated[m.id][row.key] || 0) + take;
+            remaining[m.id] -= take;
+            coveredHoursByRole[row.key] += take;
+            residue -= take;
+          }
+        }
+      }
+    });
+
+    // -- Derived figures --
+    const coveredHours = Object.values(coveredHoursByRole).reduce((s, h) => s + h, 0);
+    const uncoveredHours = Math.max(0, computation.totalHours - coveredHours);
+    const coveragePct = computation.totalHours > 0 ? coveredHours / computation.totalHours : 0;
+
+    const perMember = ROSTER.map((m) => {
+      const memberAlloc = allocated[m.id];
+      const hours = Object.values(memberAlloc).reduce((s, h) => s + h, 0);
+      const laborValue = Object.entries(memberAlloc).reduce((s, [roleKey, h]) => {
+        return s + h * ROLES[roleKey].rate;
+      }, 0);
+      const rolesEngaged = Object.keys(memberAlloc).filter((k) => (memberAlloc[k] || 0) > 0.01);
+      return { ...m, hours, laborValue, rolesEngaged };
+    }).filter((m) => m.hours > 0.01);
+
+    const memberLaborValueTotal = perMember.reduce((s, m) => s + m.laborValue, 0);
+
+    const perMemberWithWeight = perMember.map((m) => ({
+      ...m,
+      laborWeightShare: memberLaborValueTotal > 0 ? m.laborValue / memberLaborValueTotal : 0,
+    }));
+
+    // -- Blended rate for uncovered roles --
+    let blendedUncoveredRate = 0;
+    const uncoveredRoleHours = computation.roleRows.reduce((s, r) => {
+      return s + Math.max(0, r.hours - (coveredHoursByRole[r.key] || 0));
+    }, 0);
+    if (uncoveredRoleHours > 0) {
+      const weightedRateSum = computation.roleRows.reduce((s, r) => {
+        const uh = Math.max(0, r.hours - (coveredHoursByRole[r.key] || 0));
+        return s + r.rate * uh;
+      }, 0);
+      blendedUncoveredRate = weightedRateSum / uncoveredRoleHours;
+    }
+
+    // -- Cooperative economics (indicative) --
+    const revenue = computation.grandTotal * (1 + COORDINATION_MARGIN / 100);
+    const currentDraw = memberLaborValueTotal * (DRAW_PCT / 100);
+    const heldCredit = memberLaborValueTotal - currentDraw;
+    const infraCost = computation.ongoingOverHorizon;
+    const contractorCost = uncoveredHours * blendedUncoveredRate;
+    const retainedSurplus = revenue - currentDraw - infraCost - contractorCost;
+
+    return {
+      coveredHours,
+      uncoveredHours,
+      coveragePct,
+      perMember: perMemberWithWeight,
+      memberLaborValueTotal,
+      currentDraw,
+      heldCredit,
+      infraCost,
+      contractorCost,
+      retainedSurplus,
+      revenue,
+    };
+  }, [computation]);
+
+  // --------------------------------------------------------
+  // Availability: roster-derived, replacing the prior mock
+  // --------------------------------------------------------
+  const availability = useMemo(() => {
+    const { coveragePct, coveredHours, uncoveredHours, perMember } = memberView;
+    const staffedCount = perMember.length;
+    const totalHours = computation.totalHours;
+
+    if (coveragePct >= 1.0) {
+      return {
+        status: 'available',
+        label: 'Capacity available',
+        detail: `${fmtHours(coveredHours)} covered across ${staffedCount} member${staffedCount !== 1 ? 's' : ''}. The current roster can staff this engagement without additional hiring.`,
+      };
+    }
+    if (coveragePct >= 0.6) {
+      return {
+        status: 'partial',
+        label: 'Partial capacity',
+        detail: `${fmtHours(coveredHours)} of ${fmtHours(totalHours)} covered by ${staffedCount} member${staffedCount !== 1 ? 's' : ''}. ${fmtHours(uncoveredHours)} would require additional staffing or a staged timeline.`,
+      };
+    }
+    return {
+      status: 'queued',
+      label: 'Queued pending capacity',
+      detail: `${fmtHours(uncoveredHours)} of ${fmtHours(totalHours)} are not covered by the current roster. A planning conversation would establish a workable start window.`,
+    };
+  }, [memberView, computation.totalHours]);
+
+  const availabilityColor = availability.status === 'available' ? '#7fb56a' : availability.status === 'partial' ? t.terra : '#b56a6a';
 
   // --------------------------------------------------------
   // Chain: append a hash each time the scenario materially changes
@@ -243,19 +401,6 @@ export default function ScenarioEngine() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patternId, tierId, complexity, horizon, projectName]);
-
-  // --------------------------------------------------------
-  // Mock availability check
-  // --------------------------------------------------------
-  const availability = useMemo(() => {
-    const load = computation.totalHours;
-    if (load < 200) return { status: 'available', label: 'Capacity available', detail: 'The current member roster can begin within two weeks.' };
-    if (load < 600) return { status: 'available', label: 'Capacity available', detail: 'The current member roster can begin within three to four weeks.' };
-    if (load < 1200) return { status: 'partial', label: 'Partial capacity', detail: 'Approximately seventy percent of the required labor is covered. We would propose a staged start or an extended timeline.' };
-    return { status: 'queued', label: 'Queued pending capacity', detail: 'Exceeds current availability. We would schedule a planning conversation to shape a workable start window.' };
-  }, [computation.totalHours]);
-
-  const availabilityColor = availability.status === 'available' ? '#7fb56a' : availability.status === 'partial' ? t.terra : '#b56a6a';
 
   // --------------------------------------------------------
   // Request pre-authorized invoice
@@ -565,9 +710,154 @@ export default function ScenarioEngine() {
           </div>
         </section>
 
+        {/* ================= MEMBERS' SIDE ================= */}
+        <section style={{ marginBottom: 56 }}>
+          <SectionHeading number="05" label="The members' side" title="Who does the work, and what it returns.">
+            The same scenario read from the cooperative's side. These figures are <em>indicative</em>, pending a ratified compensation policy.
+          </SectionHeading>
+
+          <div style={{ background: t.surface, border: `1px solid ${t.border}`, borderRadius: 12, padding: 28, display: 'flex', flexDirection: 'column', gap: 28 }}>
+
+            {/* -- Coverage -- */}
+            <div>
+              <div style={{ fontFamily: t.mono, fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: t.muted, marginBottom: 14 }}>
+                Coverage
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+                <div style={{
+                  fontFamily: t.mono,
+                  fontSize: 32,
+                  fontWeight: 700,
+                  lineHeight: 1,
+                  color: memberView.coveragePct >= 1.0 ? '#7fb56a' : memberView.coveragePct >= 0.6 ? t.terra : '#b56a6a',
+                }}>
+                  {Math.round(memberView.coveragePct * 100)}%
+                </div>
+                <div>
+                  <div style={{ fontFamily: t.serif, fontSize: 15, color: t.white, fontWeight: 700 }}>
+                    {fmtHours(memberView.coveredHours)} covered of {fmtHours(computation.totalHours)} total
+                  </div>
+                  {memberView.uncoveredHours > 0.5 ? (
+                    <div style={{ fontFamily: t.mono, fontSize: 12, color: '#b56a6a', marginTop: 4 }}>
+                      {fmtHours(memberView.uncoveredHours)} not covered by current roster
+                    </div>
+                  ) : (
+                    <div style={{ fontFamily: t.mono, fontSize: 12, color: '#7fb56a', marginTop: 4 }}>
+                      Full roster coverage at current configuration
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ height: 1, background: t.border }} />
+
+            {/* -- Allocation table -- */}
+            <div>
+              <div style={{ fontFamily: t.mono, fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: t.muted, marginBottom: 14 }}>
+                Allocation
+              </div>
+              {memberView.perMember.length === 0 ? (
+                <div style={{ fontFamily: t.mono, fontSize: 12.5, color: t.faint, padding: '14px 0', lineHeight: 1.65 }}>
+                  No roster members are eligible for the roles in this scenario.
+                </div>
+              ) : (
+                <div style={{ border: `1px solid ${t.border}`, borderRadius: 10, overflow: 'hidden' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: t.mono, fontSize: 12.5 }}>
+                    <thead>
+                      <tr style={{ background: 'rgba(196,149,106,0.03)', borderBottom: `1px solid ${t.terraBorder}` }}>
+                        <TH>Member</TH>
+                        <TH>Roles</TH>
+                        <TH align="right">Hours</TH>
+                        <TH align="right">Labor value</TH>
+                        <TH align="right">Labor weight</TH>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {memberView.perMember.map((m) => (
+                        <tr key={m.id} style={{ borderBottom: `1px solid ${t.border}` }}>
+                          <td style={{ padding: '11px 14px', color: t.white, whiteSpace: 'nowrap' }}>{m.name}</td>
+                          <td style={{ padding: '11px 14px', color: t.text, fontSize: 11.5, lineHeight: 1.5 }}>
+                            {m.rolesEngaged.map((k) => ROLES[k].name).join(', ')}
+                          </td>
+                          <td style={{ padding: '11px 14px', textAlign: 'right', color: t.text, whiteSpace: 'nowrap' }}>
+                            {fmtHours(m.hours)}
+                          </td>
+                          <td style={{ padding: '11px 14px', textAlign: 'right', color: t.terra, whiteSpace: 'nowrap' }}>
+                            {fmtCurrency(m.laborValue)}
+                          </td>
+                          <td style={{ padding: '11px 14px', textAlign: 'right', color: t.muted, whiteSpace: 'nowrap' }}>
+                            {Math.round(m.laborWeightShare * 100)}%
+                          </td>
+                        </tr>
+                      ))}
+                      <tr style={{ background: 'rgba(196,149,106,0.05)' }}>
+                        <td style={{ padding: '14px', color: t.white, fontWeight: 700 }} colSpan={3}>
+                          Covered labor total
+                        </td>
+                        <td style={{ padding: '14px', textAlign: 'right', color: t.terra, fontWeight: 700, whiteSpace: 'nowrap' }}>
+                          {fmtCurrency(memberView.memberLaborValueTotal)}
+                        </td>
+                        <td style={{ padding: '14px', textAlign: 'right', color: t.muted }}>100%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            <div style={{ height: 1, background: t.border }} />
+
+            {/* -- Where the value goes -- */}
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 14, flexWrap: 'wrap', gap: 8 }}>
+                <div style={{ fontFamily: t.mono, fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: t.muted }}>
+                  Where the value goes
+                </div>
+                <div style={{ fontFamily: t.mono, fontSize: 10.5, color: t.faint, fontStyle: 'italic' }}>
+                  Indicative. Labor weight proposed at {PROPOSED_LABOR_WEIGHT}%, not ratified.
+                </div>
+              </div>
+              <div style={{ border: `1px solid ${t.border}`, borderRadius: 10, overflow: 'hidden' }}>
+                <EconLine
+                  label="Current cash draw to members"
+                  note={`${DRAW_PCT}% of covered labor value, paid on delivery`}
+                  value={fmtCurrency(memberView.currentDraw)}
+                />
+                <EconLine
+                  label="Medium-term credit held"
+                  note={`${100 - DRAW_PCT}% retained as member credit`}
+                  value={fmtCurrency(memberView.heldCredit)}
+                />
+                <EconLine
+                  label="Infrastructure cost"
+                  note={`${horizon}-month horizon`}
+                  value={fmtCurrency(memberView.infraCost)}
+                />
+                {memberView.contractorCost > 0 && (
+                  <EconLine
+                    label="Contractor cost for uncovered work"
+                    note={`${fmtHours(memberView.uncoveredHours)} at blended rate`}
+                    value={fmtCurrency(memberView.contractorCost)}
+                    accent="#b56a6a"
+                  />
+                )}
+                <EconLine
+                  label="Retained cooperative surplus"
+                  note="Revenue minus draw, infrastructure, and contractor"
+                  value={fmtCurrency(memberView.retainedSurplus)}
+                  accent={memberView.retainedSurplus >= 0 ? '#7fb56a' : '#b56a6a'}
+                  footer
+                />
+              </div>
+            </div>
+
+          </div>
+        </section>
+
         {/* ================= PRE-AUTHORIZATION ================= */}
         <section style={{ marginBottom: 56 }}>
-          <SectionHeading number="05" label="Pre-authorization" title="Commit the scenario to paper.">
+          <SectionHeading number="06" label="Pre-authorization" title="Commit the scenario to paper.">
             When the shape is right, request a pre-authorized invoice. Operations staff will verify member availability and countersign within two business days. The invoice is paid through Stripe or Mercury after final approval.
           </SectionHeading>
 
@@ -617,7 +907,7 @@ export default function ScenarioEngine() {
 
         {/* ================= MERKLE CHAIN ================= */}
         <section style={{ marginBottom: 56 }}>
-          <SectionHeading number="06" label="Audit chain" title="Every configuration writes a hash.">
+          <SectionHeading number="07" label="Audit chain" title="Every configuration writes a hash.">
             Each material change writes an append-only record whose hash depends on the hash of the prior record. The chain cannot be silently revised. Root hashes are periodically published to Base for public verifiability.
           </SectionHeading>
           <div style={{ background: t.surface, border: `1px solid ${t.border}`, borderRadius: 12, padding: '4px 0', overflow: 'hidden' }}>
@@ -649,7 +939,7 @@ export default function ScenarioEngine() {
 
         {/* ================= LEARNER ================= */}
         <section style={{ marginBottom: 32 }}>
-          <SectionHeading number="07" label="Why it costs this" title="How to read the numbers.">
+          <SectionHeading number="08" label="Why it costs this" title="How to read the numbers.">
             A note for anyone using this engine to learn rather than commission.
           </SectionHeading>
           <div style={{ background: t.surface, border: `1px solid ${t.border}`, borderRadius: 12, padding: 28 }}>
@@ -774,6 +1064,41 @@ function TH({ children, align }) {
     }}>
       {children}
     </th>
+  );
+}
+
+function EconLine({ label, note, value, accent, footer }) {
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '12px 16px',
+      borderBottom: footer ? 'none' : `1px solid ${t.border}`,
+      background: footer ? 'rgba(196,149,106,0.03)' : 'transparent',
+      gap: 16,
+    }}>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontFamily: t.serif, fontSize: 14, color: footer ? t.white : t.text, fontWeight: footer ? 700 : 400 }}>
+          {label}
+        </div>
+        {note && (
+          <div style={{ fontFamily: t.mono, fontSize: 10.5, color: t.faint, marginTop: 2, lineHeight: 1.5 }}>
+            {note}
+          </div>
+        )}
+      </div>
+      <div style={{
+        fontFamily: t.mono,
+        fontSize: footer ? 15 : 13,
+        color: accent || t.terra,
+        whiteSpace: 'nowrap',
+        fontWeight: footer ? 700 : 400,
+        flexShrink: 0,
+      }}>
+        {value}
+      </div>
+    </div>
   );
 }
 
