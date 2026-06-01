@@ -397,6 +397,8 @@
 <script>
 // ── State management ────────────────────────────────────────────────────────
 
+const AUTH_URL    = 'https://hvbdpgkdcdskhpbdeeim.supabase.co';
+const AUTH_KEY    = 'sb_publishable_kB69BlNpkNhOllwGMOE6xg_i4l1VHMv';
 const STORAGE_KEY = 'techne-enroll-v1';
 
 const DEFAULT_STATE = {
@@ -795,6 +797,21 @@ function submitIdentity() {
   STATE.bio          = document.getElementById('f_bio')?.value?.trim() || '';
   STATE.profileSaved = true;
   save(STATE);
+
+  // Persist to Supabase user_metadata so /intranet/profile/ reflects these values
+  try {
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+      window.supabase.createClient(AUTH_URL, AUTH_KEY).auth.updateUser({
+        data: {
+          full_name: STATE.name,
+          role:      STATE.role,
+          location:  STATE.location,
+          bio:       STATE.bio
+        }
+      }).catch(function() {}); // fire-and-forget; enroll flow continues regardless
+    }
+  } catch (_) {}
+
   goNext();
 }
 
