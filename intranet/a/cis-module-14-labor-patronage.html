@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIS Module 14: Labor-Hour Mutual Credit and Labor-Patronage Cash-Out</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{ --terra:#c4956a; --moss:#7a9478; --alert:#b06a4a; --r:7px; }
+  [data-theme="dark"]{
+    --bg:#0f0f0f; --surface:#1a1a1a; --surface-2:#161616; --surface-3:#1f1f1f;
+    --border:#333333; --border-soft:#262626;
+    --text:#e8e1d6; --text-dim:#928a7e; --text-faint:#6a635a;
+    --terra-text:#c8a079; --moss-text:#9bb799; --alert-text:#d68a64;
+    --spine:#2c2c2c; --shadow:0 1px 0 rgba(0,0,0,.4);
+  }
+  [data-theme="light"]{
+    --bg:#faf7f2; --surface:#f4efe9; --surface-2:#efe8df; --surface-3:#f7f3ec;
+    --border:#d9cebe; --border-soft:#e6ddcf;
+    --text:#2a2520; --text-dim:#6f6658; --text-faint:#9a8f7d;
+    --terra-text:#96704a; --moss-text:#5f7d5d; --alert-text:#9c5538;
+    --spine:#ddd1c0; --shadow:0 1px 2px rgba(120,100,70,.07);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:"Libre Baskerville",Georgia,serif; line-height:1.7; font-size:16px;
+    transition:background-color .4s ease,color .4s ease; -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:"IBM Plex Mono",monospace;}
+
+  /* Top bar */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    display:flex;justify-content:space-between;align-items:center;gap:16px;
+    padding:13px 26px;background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--border-soft);
+    transition:background-color .4s ease,border-color .4s ease;
+  }
+  .topbar .mark{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--terra-text);}
+  .toggle{
+    font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+    background:transparent;color:var(--text-dim);border:1px solid var(--border);border-radius:var(--r);
+    padding:7px 11px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:border-color .4s,color .4s;
+  }
+  .toggle:hover{border-color:var(--terra);color:var(--terra-text);}
+  .toggle svg{width:12px;height:12px;}
+
+  /* Layout */
+  .shell{max-width:1140px;margin:0 auto;padding:0 26px;}
+  .layout{display:grid;grid-template-columns:228px 1fr;gap:48px;align-items:start;}
+  nav.toc{position:sticky;top:64px;padding-top:48px;align-self:start;max-height:calc(100vh - 64px);overflow:auto;}
+  nav.toc .tlabel{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-faint);margin:0 0 14px;}
+  nav.toc a{display:block;font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.5;color:var(--text-dim);text-decoration:none;padding:5px 0 5px 12px;border-left:2px solid var(--border-soft);transition:color .25s,border-color .25s;}
+  nav.toc a:hover{color:var(--text);}
+  nav.toc a.active{color:var(--terra-text);border-left-color:var(--terra);}
+  main{min-width:0;padding:48px 0 96px;max-width:760px;}
+
+  /* Headings + prose */
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--terra-text);margin:0 0 16px;}
+  h1{font-size:38px;line-height:1.14;font-weight:700;letter-spacing:-.015em;margin:0 0 18px;}
+  .standfirst{font-size:18px;line-height:1.6;color:var(--text-dim);margin:0 0 22px;}
+  .standfirst em{font-style:italic;color:var(--text);}
+  h2{font-size:25px;line-height:1.2;font-weight:700;margin:64px 0 6px;letter-spacing:-.01em;scroll-margin-top:72px;}
+  .h2sub{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);margin:0 0 20px;}
+  h3{font-size:18px;font-weight:700;margin:34px 0 8px;}
+  p{margin:0 0 16px;}
+  em{font-style:italic;}
+  a.ref{color:var(--terra-text);text-decoration:none;border-bottom:1px dotted var(--terra);}
+  .lead-note{font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.7;color:var(--text-dim);background:var(--surface-2);border:1px solid var(--border-soft);border-left:3px solid var(--terra);border-radius:var(--r);padding:16px 18px;margin:0 0 24px;}
+
+  /* Status pills */
+  .pill{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;padding:3px 8px;border-radius:20px;border:1px solid var(--border);color:var(--text-dim);white-space:nowrap;display:inline-block;}
+  .pill.op,.pill.ratified,.pill.filed{border-color:var(--moss);color:var(--moss-text);}
+  .pill.proposed{border-color:var(--terra);color:var(--terra-text);}
+  .pill.blocked{border-color:var(--alert);color:var(--alert-text);}
+  .pill.open,.pill.notstarted{border-color:var(--border);color:var(--text-dim);}
+
+  /* Cards / panels */
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;margin:0 0 18px;transition:background-color .4s,border-color .4s;}
+  .panel.accent{border-left:3px solid var(--terra);background:var(--surface-2);}
+  .panel.moss{border-left:3px solid var(--moss);background:var(--surface-2);}
+
+  /* Figure */
+  figure{margin:30px 0;background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--r);padding:26px 22px 18px;transition:background-color .4s,border-color .4s;}
+  figure.wide{max-width:980px;}
+  figcaption{font-family:"IBM Plex Mono",monospace;font-size:11px;line-height:1.6;letter-spacing:.04em;color:var(--text-dim);margin-top:16px;text-align:center;}
+  figcaption b{color:var(--terra-text);font-weight:500;}
+  .figtitle{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra-text);text-align:center;margin:0 0 18px;}
+
+  /* SVG diagram classes */
+  .d-fill{fill:var(--surface);}
+  .d-fill2{fill:var(--surface-3);}
+  .d-stroke{stroke:var(--border);}
+  .d-line{stroke:var(--spine);}
+  .d-acc{stroke:var(--terra);}
+  .d-text{fill:var(--text);font-family:"IBM Plex Mono",monospace;}
+  .d-dim{fill:var(--text-dim);font-family:"IBM Plex Mono",monospace;}
+  .d-terra{fill:var(--terra-text);font-family:"IBM Plex Mono",monospace;}
+  .d-moss{fill:var(--moss-text);font-family:"IBM Plex Mono",monospace;}
+
+  /* Stepper (linear flows) */
+  .stepper{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;margin:6px 0 4px;}
+  .stepper .step{flex:1 1 150px;min-width:140px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 14px;position:relative;}
+  .stepper .step .n{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;color:var(--terra-text);display:block;margin-bottom:6px;}
+  .stepper .step .t{font-size:14.5px;line-height:1.35;}
+  .stepper .step .x{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--text-dim);margin-top:7px;display:block;line-height:1.5;}
+  .stepper .arr{display:flex;align-items:center;color:var(--terra);font-family:"IBM Plex Mono",monospace;font-size:16px;}
+  @media (max-width:600px){.stepper .arr{transform:rotate(90deg);width:100%;justify-content:center;}}
+
+  /* Weighting bar */
+  .wbar{display:flex;height:46px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);margin:4px 0 14px;}
+  .wbar span{display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;font-size:12px;color:#1a1208;font-weight:600;}
+  .wbar .w40{flex:40;background:var(--terra);}
+  .wbar .w30{flex:30;background:#d4ab86;}
+  .wbar .w20{flex:20;background:var(--moss);}
+  .wbar .w10{flex:10;background:#9bb08e;}
+  .wkey{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--text-dim);}
+  .wkey b{font-weight:600;color:var(--text);}
+
+  /* Stack grid */
+  .stack{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:6px 0;}
+  .chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:13px 14px;}
+  .chip .nm{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--terra-text);font-weight:500;}
+  .chip .rl{font-size:13px;color:var(--text-dim);line-height:1.4;margin-top:4px;}
+
+  /* Risk + dependency rows */
+  .rrow{display:grid;grid-template-columns:140px 1fr;gap:16px;padding:15px 0;border-top:1px solid var(--border-soft);}
+  .rrow:first-of-type{border-top:none;}
+  .rrow .rk{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--text);letter-spacing:.02em;}
+  .rrow .rk .sev{display:block;font-size:10px;color:var(--text-faint);margin-top:4px;letter-spacing:.1em;text-transform:uppercase;}
+  .rrow .rv{font-size:14px;color:var(--text-dim);line-height:1.55;}
+  .rrow .rv b{color:var(--text);font-weight:400;font-style:italic;}
+  .deps{list-style:none;padding:0;margin:8px 0;}
+  .deps li{display:flex;gap:12px;align-items:baseline;padding:11px 0;border-top:1px solid var(--border-soft);font-size:14.5px;}
+  .deps li:first-child{border-top:none;}
+  .deps .dl{flex:0 0 auto;}
+  @media (max-width:600px){.rrow{grid-template-columns:1fr;gap:5px;}}
+
+  /* Glossary */
+  dl.gloss{margin:8px 0;}
+  dl.gloss dt{font-style:italic;color:var(--terra-text);font-size:15.5px;margin-top:16px;}
+  dl.gloss dd{margin:4px 0 0;color:var(--text-dim);font-size:14.5px;line-height:1.6;}
+  dl.gloss.retired dt{color:var(--alert-text);}
+
+  hr.rule{border:none;border-top:1px solid var(--border);margin:36px 0;}
+
+  footer{border-top:1px solid var(--border);margin-top:40px;padding-top:22px;}
+  .sources{font-family:"IBM Plex Mono",monospace;font-size:11.5px;line-height:1.75;color:var(--text-dim);}
+  .caveat{font-family:"IBM Plex Mono",monospace;font-size:11.5px;line-height:1.75;color:var(--text-dim);background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--r);padding:18px 20px;margin-top:24px;}
+
+  @media (max-width:880px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    nav.toc{position:static;max-height:none;padding-top:24px;border-bottom:1px solid var(--border-soft);padding-bottom:18px;margin-bottom:8px;overflow:visible;}
+    nav.toc a{display:inline-block;border-left:none;border-bottom:2px solid var(--border-soft);margin:0 10px 6px 0;padding:4px 0;}
+    nav.toc a.active{border-left:none;border-bottom-color:var(--terra);}
+    main{padding-top:16px;}
+    h1{font-size:30px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="mark">Techne &middot; CIS Module 14</span>
+  <button class="toggle" id="themeBtn" aria-label="Toggle light and dark theme">
+    <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+    <span id="themeLabel">Light</span>
+  </button>
+</div>
+
+<div class="shell">
+<div class="layout">
+
+  <nav class="toc" id="toc">
+    <p class="tlabel">Contents</p>
+    <a href="#summary">Summary</a>
+    <a href="#overview">What this is and why</a>
+    <a href="#problem">Problem, goals, non-goals</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#architecture">The dual ledger</a>
+    <a href="#mutualcredit">Mutual-credit subsystem</a>
+    <a href="#cashout">Labor-patronage cash-out</a>
+    <a href="#compliance">Books and compliance</a>
+    <a href="#requirements">Requirements and roles</a>
+    <a href="#tech">Technical architecture</a>
+    <a href="#rollout">Phased rollout</a>
+    <a href="#risks">Risk register</a>
+    <a href="#dependencies">Open dependencies</a>
+    <a href="#synthesis">Synthesis</a>
+    <a href="#recommendations">Recommendations</a>
+    <a href="#sources">Sources and caveats</a>
+  </nav>
+
+  <main>
+    <p class="eyebrow">Product Requirements Document &middot; Capital &amp; Value Flow Group</p>
+    <h1>Labor-Hour Mutual Credit and Labor-Patronage Cash-Out</h1>
+    <p class="standfirst">A compliance, books, recordkeeping, and accounting module for RegenHub, LCA. It lets a member turn accumulated in-network labor value into real money by routing it through the cooperative's own power to distribute surplus to its members, <em>not</em> by making labor credits redeemable for cash.</p>
+    <div class="lead-note">Status: draft for member and counsel review. This document presents factual information and design tradeoffs. It is not legal, tax, securities, or accounting advice. Every classification described here is fact-specific and provisional, and must be confirmed by qualified cooperative, securities, BSA/fintech, and partnership-tax counsel before the module is operated.</div>
+
+    <!-- SUMMARY -->
+    <h2 id="summary">Summary</h2>
+    <p class="h2sub">The three things to hold in mind</p>
+    <div class="panel accent">
+      <p>This module lets a member convert accumulated in-network labor value into real money by routing it through the cooperative's existing, lawful power to distribute its own surplus to its own members in proportion to <em>patronage</em>, a section 704 allocation followed by a section 731 cash distribution, rather than by making labor credits redeemable for cash, which would cross money-transmission, stablecoin, and securities perimeters.</p>
+      <p>The architecture is a <em>dual ledger</em> built on one append-only REA / ValueFlows event log. A single labor event, attested by EAS countersignatures, feeds both Ledger One, a closed-loop mutual-credit system denominated in labor-hours and redeemable only in member goods and services, and Ledger Two, the patronage measure that drives each member's allocation and capital account.</p>
+      <p>The cash-out is surplus-dependent, not on-demand redemption at par, it cannot pay non-members, and it is therefore a complement to, not a replacement for, a licensed-partner fiat on/off-ramp. Key dependencies remain open: the 40/30/20/10 patronage weighting, the DRO-versus-QIO election, the 704(c) method, front-end selection, and counsel sign-off.</p>
+    </div>
+
+    <!-- OVERVIEW -->
+    <h2 id="overview">What this is and why it exists</h2>
+    <p class="h2sub">Written first for the non-technical member</p>
+    <p>Imagine you do ten hours of design work for another member. Two things should happen, and this module makes both happen from a single record of those ten hours.</p>
+    <p>First, inside the network, you have given value and should be able to receive value back. The mutual-credit ledger records that you are now up ten labor-hours and the member you helped is down ten. You can spend your positive balance on goods and services offered by other members. No money changed hands, no token was printed, and the sum of everyone's balances is always zero. This is the oldest form of money there is: not coins, but a running tally of who owes whom, the same accounting that sat on clay tablets thousands of years before coined money. The Swiss WIR cooperative has run a business credit-clearing system on this principle since 1934, and Sardinia's Sardex did the same for thousands of businesses after 2009.</p>
+    <p>Second, over the period, the cooperative is keeping track of how much you have contributed, because that contribution is your <em>patronage</em>, and patronage is how a cooperative decides who receives what share of its surplus. At period close, if the cooperative earned a surplus, the board allocates that surplus among members in proportion to their patronage and then distributes cash. That cash distribution is your cash-out. It is real money, and it comes to you not because you cashed in your labor-hours (you did not, they remain inside the closed loop) but because you are an owner of a business that made money and is paying owners their share.</p>
+    <p>Why go to this trouble instead of letting people trade labor-hours for dollars? Because the moment the cooperative promises to convert an internal credit into cash on demand, it starts to look like three regulated things at once: a money transmitter, a stablecoin issuer, and a securities issuer. Routing value through surplus distribution keeps the cooperative squarely inside what it already is, an entity paying its owners their share of its own income.</p>
+    <p>The honest limit, stated plainly: this is not an ATM. You cannot demand your money on a Tuesday, because surplus depends on whether the cooperative actually earned a surplus, the board must act, and the cooperative cannot pay non-members at all. For on-demand fiat in and out, the cooperative still needs a licensed banking or payments partner. This module complements that partner, it does not replace it.</p>
+
+    <figure class="wide">
+      <p class="figtitle">Figure 1 &middot; Three perimeters the design stays inside of</p>
+      <div class="stack" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+        <div class="chip"><span class="nm">Not money transmission</span><span class="rl">The co-op pays its own members their share of its own income. It does not accept and forward third-party value (31 CFR 1010.100(ff)).</span></div>
+        <div class="chip"><span class="nm">Not a payment stablecoin</span><span class="rl">There is no fixed-value redemption obligation and no stable-value representation, so it falls outside the GENIUS Act definition.</span></div>
+        <div class="chip"><span class="nm">Not a security</span><span class="rl">Units stay non-transferable membership rights tied to use and patronage, not tradable instruments bought for passive return (Howey, Reves).</span></div>
+      </div>
+      <figcaption>The closed-loop, non-transferable, non-redeemable design is what keeps the credit on the safe side of all three lines. <b>Confirm each with counsel.</b></figcaption>
+    </figure>
+
+    <!-- PROBLEM -->
+    <h2 id="problem">Problem, goals, and non-goals</h2>
+    <p class="h2sub">What the module must and must not do</p>
+    <p>Members accumulate real economic value through in-network labor, but that value is trapped: it is illiquid, hard to account for, and the obvious way to free it, direct redemption for cash, would push the cooperative across perimeters it is not licensed to cross and would convert member-owners into customers of an unlicensed money business.</p>
+    <div class="panel moss">
+      <h3 style="margin-top:0">Goals</h3>
+      <p style="margin-bottom:0">Give members a lawful path to convert accumulated labor value into cash. Keep clean, auditable books for the LCA. Denominate intra-network exchange in labor-hours through a closed-loop mutual-credit system. Measure labor as patronage and drive section 704 allocations and section 731 distributions from that measure. Maintain member capital accounts from the event log. Preserve the no-phantom-tax commitment by distributing cash alongside allocation. Support both a periodic cash-out channel and an exit channel.</p>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">Non-goals</h3>
+      <p style="margin-bottom:0">This module does not provide on-demand liquidity. It does not make labor credits redeemable for fiat. It does not transmit money for third parties. It does not issue a transferable token or a payment stablecoin. It does not serve non-members. It does not replace a licensed fiat on/off-ramp. It does not, by itself, decide the patronage formula or the tax elections; those are governance and counsel decisions named as dependencies.</p>
+    </div>
+
+    <!-- GLOSSARY -->
+    <h2 id="glossary">Glossary</h2>
+    <p class="h2sub">Plain definitions, and the terms we deliberately retire</p>
+    <dl class="gloss">
+      <dt>Mutual credit</dt><dd>A closed accounting system in which each member starts at zero, balances move in equal and opposite directions when value is exchanged, and the sum of all balances is always zero. Credits are records of obligation, not stored value, redeemable only in member goods and services.</dd>
+      <dt>Labor-hour unit</dt><dd>The unit of account in the mutual-credit ledger. One labor-hour is one attested hour of in-network labor: a measuring stick for exchange, not a claim on the cooperative's cash.</dd>
+      <dt>Patronage measure</dt><dd>The accumulation of a member's attested labor events over a period, expressed as patronage. Under C.R.S. 7-58-102, patronage means business transactions that entitle a person to financial rights based on the value or quantity of business done.</dd>
+      <dt>Section 704 allocation</dt><dd>The assignment of the cooperative's distributive share of income to each member. Under Subchapter K it must have substantial economic effect or otherwise match the partner's interest in the partnership.</dd>
+      <dt>Section 731 distribution</dt><dd>The actual cash distribution to a member. Gain is generally not recognized except to the extent money distributed exceeds the member's adjusted basis in their interest.</dd>
+      <dt>Capital account</dt><dd>The running measure of a member's equity, increased by income allocations and contributions and decreased by distributions and losses. Here it is computed from the event log, not stored elsewhere as authoritative.</dd>
+      <dt>Patronage units</dt><dd>Units of patronage measurement that feed the 704 allocation and build the capital account. They are explicitly not Subchapter T notices of allocation.</dd>
+    </dl>
+    <div class="panel" style="border-left:3px solid var(--alert);margin-top:22px;">
+      <h3 style="margin-top:0;color:var(--alert-text)">Retired terms, do not use as the tax characterization</h3>
+      <dl class="gloss retired" style="margin-bottom:0">
+        <dt>Patronage dividend, patronage refund, written notice of allocation, qualified or nonqualified notice, per-unit retain allocation</dt>
+        <dd>These are Subchapter T terms (IRC 1381 to 1388) describing cooperatives taxed as corporations. RegenHub elected Subchapter K. Using them would misstate the tax treatment and reintroduce the previously identified blocking conflict. The word <em>patronage</em> alone is retained only as the economic basis for allocation.</dd>
+      </dl>
+    </div>
+
+    <!-- ARCHITECTURE -->
+    <h2 id="architecture">The dual-ledger architecture</h2>
+    <p class="h2sub">One event log, two projections</p>
+    <p>The system records one thing and reads it two ways. A member performs labor; this becomes one <em>economic event</em> in an append-only log, attested by EAS countersignatures from the people involved. That single attested event is the source of truth. From it, two projections branch out, and neither stores its own authoritative balance: balances are <em>computed, not stored</em>.</p>
+
+    <figure class="wide">
+      <p class="figtitle">Figure 2 &middot; The dual ledger</p>
+      <svg viewBox="0 0 760 470" width="100%" role="img" aria-label="A single labor event feeds an append-only event log, which projects into a mutual-credit ledger and a patronage measure.">
+        <!-- labor event -->
+        <rect class="d-fill2 d-stroke" x="280" y="14" width="200" height="48" rx="6" stroke-width="1.2"/>
+        <text class="d-text" x="380" y="36" text-anchor="middle" font-size="12.5" font-weight="600">Labor event</text>
+        <text class="d-dim" x="380" y="52" text-anchor="middle" font-size="10">EAS countersigned attestation</text>
+        <!-- arrow down -->
+        <line class="d-acc" x1="380" y1="62" x2="380" y2="92" stroke-width="1.6"/>
+        <polygon points="380,98 375,90 385,90" fill="var(--terra)"/>
+        <!-- event log spine -->
+        <rect class="d-fill d-stroke" x="120" y="100" width="520" height="52" rx="6" stroke-width="1.4"/>
+        <text class="d-terra" x="380" y="124" text-anchor="middle" font-size="12" font-weight="600">APPEND-ONLY REA / VALUEFLOWS EVENT LOG</text>
+        <text class="d-dim" x="380" y="141" text-anchor="middle" font-size="10">the single source of truth &middot; balances are computed by replay, never stored</text>
+        <!-- branch lines -->
+        <line class="d-line" x1="240" y1="152" x2="240" y2="186" stroke-width="1.4"/>
+        <line class="d-line" x1="520" y1="152" x2="520" y2="186" stroke-width="1.4"/>
+        <polygon points="240,192 235,184 245,184" fill="var(--spine)"/>
+        <polygon points="520,192 515,184 525,184" fill="var(--spine)"/>
+        <!-- left: mutual credit -->
+        <rect class="d-fill2 d-stroke" x="40" y="194" width="320" height="120" rx="6" stroke-width="1.2"/>
+        <text class="d-moss" x="200" y="218" text-anchor="middle" font-size="11.5" font-weight="600">LEDGER ONE &middot; MUTUAL CREDIT</text>
+        <line class="d-line" x1="64" y1="230" x2="336" y2="230" stroke-width="0.8"/>
+        <text class="d-dim" x="64" y="252" font-size="10.5">+ giver's balance rises, receiver's falls</text>
+        <text class="d-dim" x="64" y="271" font-size="10.5">+ all balances net to zero</text>
+        <text class="d-dim" x="64" y="290" font-size="10.5">+ denominated in labor-hours</text>
+        <text class="d-dim" x="64" y="309" font-size="10.5">+ closed-loop: spend on member goods only</text>
+        <!-- right: patronage -->
+        <rect class="d-fill2 d-stroke" x="400" y="194" width="320" height="120" rx="6" stroke-width="1.2"/>
+        <text class="d-terra" x="560" y="218" text-anchor="middle" font-size="11.5" font-weight="600">LEDGER TWO &middot; PATRONAGE MEASURE</text>
+        <line class="d-line" x1="424" y1="230" x2="696" y2="230" stroke-width="0.8"/>
+        <text class="d-dim" x="424" y="252" font-size="10.5">+ same event accrues as patronage</text>
+        <text class="d-dim" x="424" y="271" font-size="10.5">+ drives the 704 allocation</text>
+        <text class="d-dim" x="424" y="290" font-size="10.5">+ builds the member's capital account</text>
+        <text class="d-dim" x="424" y="309" font-size="10.5">+ leads to the 731 cash distribution</text>
+        <!-- right downstream -->
+        <line class="d-acc" x1="560" y1="314" x2="560" y2="344" stroke-width="1.6"/>
+        <polygon points="560,350 555,342 565,342" fill="var(--terra)"/>
+        <rect class="d-fill d-stroke" x="430" y="352" width="260" height="44" rx="6" stroke-width="1.2"/>
+        <text class="d-text" x="560" y="372" text-anchor="middle" font-size="11.5" font-weight="600">704 allocation &rarr; capital account</text>
+        <text class="d-dim" x="560" y="388" text-anchor="middle" font-size="10">board-ratified at period close</text>
+        <line class="d-acc" x1="560" y1="396" x2="560" y2="420" stroke-width="1.6"/>
+        <polygon points="560,426 555,418 565,418" fill="var(--terra)"/>
+        <rect class="d-fill2" x="430" y="428" width="260" height="34" rx="6" stroke="var(--terra)" stroke-width="1.3"/>
+        <text class="d-terra" x="560" y="449" text-anchor="middle" font-size="11.5" font-weight="600">731 CASH DISTRIBUTION (the cash-out)</text>
+      </svg>
+      <figcaption>The same EAS-attested labor event is read two ways. The mutual-credit balance stays inside the loop; the patronage reading becomes a share of real surplus paid out in cash.</figcaption>
+    </figure>
+
+    <p>The data model follows REA and ValueFlows directly. <em>Agents</em> are members, stewards, directors, and the Nou agent, each carrying an ERC-8004 identity. <em>Economic events</em> are labor performed, credit cleared, allocation, distribution, and exit redemption. <em>Resources</em> are labor-hours, member goods, member services, and cash. <em>Commitments and agreements</em> are first-class: a credit is recorded as an agreement between named agents before and as an event fulfils it. The <em>EAS attestation</em> is what brings a labor event into existence on the log, a digitally signed claim conforming to a registered schema, identified by a unique UID.</p>
+
+    <!-- MUTUAL CREDIT -->
+    <h2 id="mutualcredit">The mutual-credit subsystem</h2>
+    <p class="h2sub">Start at zero, and the limit is the underwriting</p>
+    <p>Every member account starts at zero. There is no purchase of starting credits and no minting; a balance exists only as the net of recorded events. When member A receives value from member B, the system posts one event: A's balance decreases and B's increases, equal and opposite.</p>
+    <p>The single most important parameter is each member's <em>credit limit</em>, the maximum negative balance allowed. This is the system's risk management, and it should be set to realistic labor capacity: how much a member can plausibly earn back through in-network labor in a reasonable period. Sardex offers a concrete reference: each member firm there receives a credit line loosely estimated at one one-hundredth of turnover and a positive-balance cap near one tenth of turnover, with the stated purpose of avoiding leverage. The cooperative should adopt an analogous documented heuristic anchored to attested labor capacity rather than to cash turnover, and should consider a positive-balance cap to discourage hoarding.</p>
+    <p>A positive labor-hour balance is redeemable only in goods and services offered by members. It is not redeemable for fiat, not transferable to non-members, and carries no fixed-value redemption promise. These three constraints are precisely what keep the credit outside money transmission, outside the payment-stablecoin definition, and outside the Howey analysis. Balances, remaining limits, and clearing positions are all computed by replaying events, so the ledger never stores a figure that could drift from the events that produced it.</p>
+
+    <!-- CASHOUT -->
+    <h2 id="cashout">The labor-patronage cash-out</h2>
+    <p class="h2sub">How a labor hour becomes a lawful dollar</p>
+    <p>Each EAS-attested labor event, besides its mutual-credit projection, accrues to the performer's patronage for the period. Patronage is therefore measured from the same attested events, not from a separate timesheet. At period close the system computes each member's weighted patronage and the cooperative's allocable surplus, produces a proposed allocation in the ratio of each member's patronage to total patronage, and presents it to the board. The board's authorization is the governance hinge, and keeping allocation a discrete board act at period close (rather than an automatic per-hour payout) is also central to the section 707 mitigation below.</p>
+
+    <figure class="wide">
+      <p class="figtitle">Figure 3 &middot; The periodic cash-out flow</p>
+      <div class="stepper">
+        <div class="step"><span class="n">01</span><span class="t">Labor performed and countersigned</span><span class="x">EAS attestation on the event log</span></div>
+        <div class="arr">&rarr;</div>
+        <div class="step"><span class="n">02</span><span class="t">Patronage accrues over the period</span><span class="x">same event, second reading</span></div>
+        <div class="arr">&rarr;</div>
+        <div class="step"><span class="n">03</span><span class="t">Period close: weighted patronage and allocable surplus</span><span class="x">after authorized reserves</span></div>
+        <div class="arr">&rarr;</div>
+        <div class="step"><span class="n">04</span><span class="t">Board ratifies the 704 allocation</span><span class="x">builds each capital account</span></div>
+        <div class="arr">&rarr;</div>
+        <div class="step" style="border-color:var(--terra);"><span class="n" style="color:var(--terra-text)">05</span><span class="t">731 cash distribution via Mercury</span><span class="x">your share of real surplus</span></div>
+      </div>
+      <figcaption>This is your share of the cooperative's surplus as an owner, <b>not a redemption of your credits.</b> It is surplus-dependent and contingent on the board acting.</figcaption>
+    </figure>
+
+    <h3>The patronage weighting (proposed, pending ratification)</h3>
+    <p>The cooperative has proposed weighting patronage as 40 percent labor, 30 percent revenue, 20 percent cash contributed, and 10 percent community contribution. This is a <span class="pill proposed">Proposed</span> formula and is not ratified. It is a governance and counsel decision, because the weighting is part of what the section 704(b) analysis must respect. The module must treat the weights as configuration, not hard-coded constants, so the ratified formula can be entered without code changes.</p>
+    <figure>
+      <div class="wbar">
+        <span class="w40">40</span><span class="w30">30</span><span class="w20">20</span><span class="w10">10</span>
+      </div>
+      <div class="wkey">
+        <span><b>40</b> Labor</span><span><b>30</b> Revenue</span><span><b>20</b> Cash contributed</span><span><b>10</b> Community</span>
+      </div>
+      <figcaption>Proposed patronage weighting. Held as editable configuration until ratified by the board.</figcaption>
+    </figure>
+
+    <h3>Two channels, and the no-phantom-tax mechanism</h3>
+    <p>There are two ways value comes home. The <em>periodic channel</em> is the labor-patronage-weighted 704 allocation plus 731 cash distribution at period close. The <em>exit channel</em> is capital-account redemption on withdrawal: because labor patronage builds the member's capital account, a departing member cashes out accumulated labor value as a return of equity. RegenHub's stated principle is that a Subchapter K member who has paid tax annually on allocated income should receive their full capital-account balance on exit, subject to the solvency limits of C.R.S. 7-58-1007.</p>
+    <p>Under Subchapter K, members are taxed on allocated distributive share whether or not cash is distributed; the gap is phantom income. Because this module distributes cash alongside the allocation by design, the periodic distribution funds the member's tax on the allocation, reinforcing rather than straining the no-phantom-tax promise.</p>
+
+    <!-- COMPLIANCE -->
+    <h2 id="compliance">Books, recordkeeping, and compliance functions</h2>
+    <p class="h2sub">This is how the LCA keeps its books</p>
+    <p>Running a mutual-credit network in which members trade goods and services makes the cooperative, in substance, a <em>barter exchange</em>. Under IRC section 6045 and 26 CFR 1.6045-1, a barter exchange is a kind of broker and must report members' barter transactions on Form 1099-B at fair market value, with a de minimis exception for exchanges valued under one dollar. The module must therefore value each clearing event at fair market value, accumulate per-member annual totals, and be able to produce 1099-B data. This is a substantive obligation that follows from running the ledger and must be confirmed with counsel.</p>
+    <div class="panel">
+      <div class="rrow"><div class="rk">1099-B reporting</div><div class="rv">Barter clearing events valued at fair market value, accumulated and reportable per member (IRC 6045).</div></div>
+      <div class="rrow"><div class="rk">K-1 distributive share</div><div class="rv">As a partnership, the co-op files Form 1065 and issues each member a Schedule K-1; the module produces the per-member allocation figures.</div></div>
+      <div class="rrow"><div class="rk">Capital accounts</div><div class="rv">Maintained by replaying allocation, contribution, and distribution events per Treasury Reg. 1.704-1(b)(2)(iv).</div></div>
+      <div class="rrow"><div class="rk">Xero reconciliation</div><div class="rv">The module is the system of record for member events; Xero is the accounting mirror. Scheduled reconciliation posts summarized journals and flags divergence.</div></div>
+      <div class="rrow"><div class="rk">Audit trail</div><div class="rv">The append-only log plus EAS attestations on Base and Optimism give a tamper-evident trail from any balance back to the events that produced it.</div></div>
+    </div>
+
+    <!-- REQUIREMENTS -->
+    <h2 id="requirements">Requirements and roles</h2>
+    <p class="h2sub">Who can do what, and what members can expect</p>
+    <p>Functionally, the module records EAS-attested labor events, projects them to both ledgers, computes balances and patronage on demand, enforces credit limits, restricts redemption to member goods and services, runs the period-close allocation against a configurable weighting, routes board ratification, triggers distributions through the banking partner, computes exit redemptions, and generates 1099-B and K-1 data. The non-functional priorities are auditability, deterministic correctness of computed balances, member-data privacy, configurability of the weighting and tax elections without code change, and least-privilege permissions.</p>
+    <div class="stack">
+      <div class="chip"><span class="nm">Member</span><span class="rl">Record and countersign own labor events, view own balances and patronage, spend positive balance, receive distributions.</span></div>
+      <div class="chip"><span class="nm">Steward</span><span class="rl">Facilitate and witness attestations, set or recommend credit limits within policy, assist reconciliation.</span></div>
+      <div class="chip"><span class="nm">Director</span><span class="rl">Ratify period-close allocations and authorize distributions. Cannot unilaterally alter the event log.</span></div>
+      <div class="chip"><span class="nm">Nou agent</span><span class="rl">Answers from the actual ledger (Grounded), guides cash-out requests (Procedural), surfaces discrepancies (Investigative), aids limit-setting (Augmentation), flags limits and tax distributions (Proactive). No privileged back door.</span></div>
+    </div>
+
+    <!-- TECH -->
+    <h2 id="tech">Technical architecture</h2>
+    <p class="h2sub">Mapping to the existing stack</p>
+    <p>The blockchain's role here is attestation and audit, not bearer-instrument issuance. The regulatory analysis points one way: a transferable, redeemable token invites money-transmission, stablecoin, and Howey scrutiny, while a permissioned mutual-credit clearing ledger of non-transferable membership rights does not. The decision is therefore a <em>permissioned, non-transferable</em> clearing ledger (the event log on Supabase, integrity anchored by EAS), not a transferable on-chain token.</p>
+    <div class="stack">
+      <div class="chip"><span class="nm">Supabase</span><span class="rl">System of record: the append-only event log and identity tables.</span></div>
+      <div class="chip"><span class="nm">Make.com</span><span class="rl">Orchestration: period-close jobs, ratification routing, distribution triggers.</span></div>
+      <div class="chip"><span class="nm">Nou (Claude)</span><span class="rl">Conversational and analytical layer in five modes.</span></div>
+      <div class="chip"><span class="nm">Mercury</span><span class="rl">Payment rail and banking for actual fiat distributions.</span></div>
+      <div class="chip"><span class="nm">Xero</span><span class="rl">Accounting mirror and reconciliation target.</span></div>
+      <div class="chip"><span class="nm">Base / Optimism</span><span class="rl">Carry EAS attestations for integrity and audit.</span></div>
+      <div class="chip"><span class="nm">EAS</span><span class="rl">Attestation layer that issues labor events.</span></div>
+      <div class="chip"><span class="nm">ERC-8004</span><span class="rl">Agent identity and common-bond gating for members and Nou.</span></div>
+      <div class="chip"><span class="nm">D3 v7</span><span class="rl">Visualizations: balances, clearing networks, patronage composition.</span></div>
+    </div>
+    <p style="margin-top:18px">Front-end framework selection remains an <span class="pill open">Open</span> decision, to be made against clear criteria: the same computed read-models must serve both member-facing plain-language views and developer and accountant views, with clean Supabase and Nou integration, D3 v7 support, role-based access, and auditability. Glide is not used and must not be recommended.</p>
+
+    <!-- ROLLOUT -->
+    <h2 id="rollout">Phased rollout</h2>
+    <p class="h2sub">De-risked, aligned to the build waves</p>
+    <p>The mutual-credit and books phases can be built in parallel with the governance work, because they do not depend on the unresolved tax elections. Only the cash-out, Phase 3, does.</p>
+    <div class="panel">
+      <div class="rrow"><div class="rk">Phase 0<span class="sev">Foundations</span></div><div class="rv">Identity and the event-log spine operational; EAS labor-event schema registered, attestations flowing on testnet. <b>KPI: deterministic balance replay.</b></div></div>
+      <div class="rrow"><div class="rk">Phase 1<span class="sev">Mutual-credit pilot</span></div><div class="rv">A cohort transacts with enforced credit limits and closed-loop redemption. <b>KPI: active accounts, clearing volume, zero fiat-redemption leakage.</b></div></div>
+      <div class="rrow"><div class="rk">Phase 2<span class="sev">Patronage and books</span></div><div class="rv">Capital accounts computed from the log and reconciled to Xero; 1099-B and K-1 data producible. <b>KPI: near-zero reconciliation variance.</b></div></div>
+      <div class="rrow"><div class="rk">Phase 3<span class="sev">Periodic cash-out</span></div><div class="rv">Patronage Plan ratified, weighting set, tax elections made, counsel sign-off; a board-ratified allocation and a 731 distribution executed. <b>KPI: tax-distribution coverage ratio.</b></div></div>
+      <div class="rrow"><div class="rk">Phase 4<span class="sev">Exit redemption</span></div><div class="rv">A departing member's capital account returned, subject to the 7-58-1007 solvency limits. <b>KPI: exits completed within policy.</b></div></div>
+    </div>
+
+    <!-- RISKS -->
+    <h2 id="risks">Risk register</h2>
+    <p class="h2sub">Named honestly, with mitigations</p>
+    <div class="panel">
+      <div class="rrow"><div class="rk">Money transmission<span class="sev">Regulatory</span></div><div class="rv"><b>Risk:</b> recharacterized as accepting and forwarding third-party value. <b>Mitigation:</b> the co-op distributes its own surplus to its own members; redemption is closed-loop. Confirm with BSA counsel.</div></div>
+      <div class="rrow"><div class="rk">Stablecoin<span class="sev">Regulatory</span></div><div class="rv"><b>Risk:</b> treated as a payment stablecoin under the GENIUS Act. <b>Mitigation:</b> no fixed-value redemption obligation, no stable-value representation, not redeemable for money at all.</div></div>
+      <div class="rrow"><div class="rk">Securities<span class="sev">Regulatory</span></div><div class="rv"><b>Risk:</b> interests treated as investment contracts (Howey) or notes (Reves). <b>Mitigation:</b> keep units non-transferable membership rights tied to use and patronage; rely on the cooperative exemption at C.R.S. 7-58-1009. The Reves case itself arose from a co-op's marketed, transferable demand notes, the exact pattern to avoid.</div></div>
+      <div class="rrow"><div class="rk">704(b) effect<span class="sev">Tax</span></div><div class="rv"><b>Risk:</b> the allocation fails substantial economic effect. <b>Mitigation:</b> maintain capital accounts under Reg. 1.704-1(b)(2)(iv), liquidate by positive capital accounts, and elect a DRO or a QIO. Open dependency.</div></div>
+      <div class="rrow"><div class="rk">707 recharacterization<span class="sev">Tax</span></div><div class="rv"><b>Risk:</b> the cash-out looks like pay-per-hour and is recharacterized as a guaranteed payment (707(c)), bringing self-employment tax and ordinary-income timing. <b>Mitigation:</b> keep conversion at arm's length from per-hour pay; patronage accrues, the board allocates surplus by formula at period close, distribution follows and is contingent on surplus. This can be managed by design, not eliminated.</div></div>
+      <div class="rrow"><div class="rk">Technical</div><div class="rv"><b>Risk:</b> stored balances drift, or attestations are lost. <b>Mitigation:</b> compute all balances from the append-only log; anchor integrity with EAS; deterministic replay tests.</div></div>
+      <div class="rrow"><div class="rk">Governance</div><div class="rv"><b>Risk:</b> allocations made without board authorization, or the weighting applied before ratification. <b>Mitigation:</b> enforce ratification as a gate; lock the weighting as configuration until ratified.</div></div>
+      <div class="rrow"><div class="rk">Adoption</div><div class="rv"><b>Risk:</b> members treat labor-hours as guaranteed cash. <b>Mitigation:</b> plain-language education, Nou explanations, explicit communication that liquidity is surplus-dependent.</div></div>
+      <div class="rrow"><div class="rk">Accounting</div><div class="rv"><b>Risk:</b> 1099-B or K-1 obligations missed, or Xero diverges. <b>Mitigation:</b> build reporting and reconciliation as core functions with variance alerts.</div></div>
+    </div>
+
+    <!-- DEPENDENCIES -->
+    <h2 id="dependencies">Open dependencies</h2>
+    <p class="h2sub">Honest status, nothing unfinished shown as settled</p>
+    <ul class="deps">
+      <li><span class="dl"><span class="pill proposed">Proposed</span></span><span>The 40/30/20/10 patronage weighting. Blocks Phase 3.</span></li>
+      <li><span class="dl"><span class="pill open">Open</span></span><span>The DRO versus QIO election. Required for the 704(b) safe harbor.</span></li>
+      <li><span class="dl"><span class="pill open">Open</span></span><span>The 704(c) methodology (traditional, curative, or remedial).</span></li>
+      <li><span class="dl"><span class="pill open">Open</span></span><span>Front-end framework selection (Glide excluded).</span></li>
+      <li><span class="dl"><span class="pill notstarted">Not started</span></span><span>Counsel sign-off across cooperative, securities, BSA/fintech, and partnership-tax. Blocking for Phase 3.</span></li>
+      <li><span class="dl"><span class="pill blocked">Keystone</span></span><span>Patronage Plan ratification, which unblocks bylaws v2 and the Membership Agreement v2. Write the labor-credit-to-patronage bridge as a section of the Plan, and reference it here.</span></li>
+    </ul>
+    <p style="margin-top:18px">The module sits primarily in the <em>Capital &amp; Value Flow</em> group. It depends on <em>Membership &amp; Identity</em> for identity and common-bond gating via ERC-8004, on the capital-account and event-log spine (balances computed, not stored), and on <em>Governance &amp; Decision</em> for board ratification. It surfaces records through <em>Records &amp; Public Surface</em>. Its keystone external dependency is the Patronage Plan.</p>
+
+    <!-- SYNTHESIS -->
+    <h2 id="synthesis">Synthesis</h2>
+    <p class="h2sub">The through-line</p>
+    <div class="panel accent">
+      <p>One idea runs through this module, and it is old. <em>Credit</em> comes from <em>credere</em>, to trust or to believe; a credit is a believed promise between named people, not a thing. That is why mutual credit fits an REA event log so naturally: the log records exactly what credit actually is, an agreement and a commitment between agents, fulfilled by an event, netting to zero across a community. The cooperative does not need to manufacture money; it needs only to keep an honest account of who has given and who has received.</p>
+      <p style="margin-bottom:0">The cash-out extends the same idea without betraying it. Rather than routing members' value through extractive external rails, a money transmitter's float, a stablecoin issuer's reserve, a securities market's intermediaries, the cooperative routes value through the one power it already holds: to allocate its surplus by patronage and distribute it to members. This is the non-colonial alternative. Value created by members, measured as patronage, returns to members as their share of their own enterprise's income. The labor-hour ledger and the patronage measure are two readings of one truthful record, and the cash that flows is the cooperative's own surplus coming home to the people who made it.</p>
+    </div>
+
+    <!-- RECOMMENDATIONS -->
+    <h2 id="recommendations">Recommendations</h2>
+    <p class="h2sub">In priority order</p>
+    <ol style="padding-left:20px;">
+      <li style="margin-bottom:12px"><em>Write the bridge into the Patronage Plan now.</em> The highest-leverage action, because the Plan is the keystone that unblocks bylaws v2 and the Membership Agreement v2. Threshold to advance: a drafted bridge section circulated to counsel.</li>
+      <li style="margin-bottom:12px"><em>Sequence counsel review across all four specialties before Phase 3,</em> with the 707 recharacterization risk and the 1099-B barter obligation called out explicitly.</li>
+      <li style="margin-bottom:12px"><em>Build Phases 0 to 2 in parallel with the governance work,</em> since only the cash-out depends on the unresolved tax elections.</li>
+      <li style="margin-bottom:12px"><em>Lock the weighting and tax elections as configuration, not code,</em> so the ratified formula and elections ship without redeployment.</li>
+      <li style="margin-bottom:12px"><em>Make the 707 distance a design rule, not a slogan.</em> Forbid fixed per-hour dollar promises anywhere in the member experience; always present cash-out as surplus-dependent and board-authorized.</li>
+      <li><em>Choose the front end against the stated criteria and exclude Glide,</em> during Phase 0 or 1 so member-facing and accountant-facing views share a settled framework.</li>
+    </ol>
+
+    <footer>
+      <h2 id="sources" style="margin-top:18px">Sources and caveats</h2>
+      <p class="sources">Authorities referenced: IRC sections 704, 707, 731, 1381 to 1388, and 6045; Treasury Regs. 1.704-1, 1.731-1, 1.6045-1; 31 CFR 1010.100 and FinCEN CVC guidance; the GENIUS Act payment-stablecoin definition; the Colorado Uniform Limited Cooperative Association Act (C.R.S. Title 7, Article 58, including 7-58-102, 7-58-603, 7-58-1004, 7-58-1005, 7-58-1007, and 7-58-1009); and the Howey and Reves decisions. Design and accounting grounding: McCarthy, "The REA Accounting Model" (The Accounting Review, 1982); ValueFlows and hREA; the EAS and ERC-8004 specifications; and the WIR and Sardex mutual-credit case studies.</p>
+      <div class="caveat">This document is informational and presents tradeoffs; it is not legal, tax, securities, or accounting advice, and no characterization here should be treated as settled. Whether the structure avoids money transmission, the GENIUS Act, and securities treatment, and whether the allocation satisfies section 704(b) and avoids section 707(c) recharacterization, are fact-specific determinations requiring qualified counsel. Several elements are unfinished and labeled as such: the 40/30/20/10 weighting is proposed and not ratified, the DRO/QIO election and 704(c) method are open, front-end selection is open, and counsel sign-off is outstanding. A scholarly nuance on the examples: WIR is often cited as a mutual-credit pioneer but is more precisely a central clearing institution within a closed system, and Sardex is the closer model for true peer-to-peer credit clearing. The module is a complement to, not a substitute for, a licensed fiat on/off-ramp, and members do not receive on-demand liquidity. As of June 2026.</div>
+    </footer>
+
+  </main>
+</div>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var btn=document.getElementById('themeBtn'),label=document.getElementById('themeLabel'),icon=document.getElementById('themeIcon');
+  var sun='<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>';
+  var moon='<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"></path>';
+  function apply(t){root.setAttribute('data-theme',t);if(t==='dark'){label.textContent='Light';icon.innerHTML=sun;}else{label.textContent='Dark';icon.innerHTML=moon;}}
+  var prefersLight=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches;
+  apply(prefersLight?'light':'dark');
+  btn.addEventListener('click',function(){apply(root.getAttribute('data-theme')==='dark'?'light':'dark');});
+
+  // Active TOC highlight
+  var links=Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+  var map={};links.forEach(function(a){var id=a.getAttribute('href').slice(1);var s=document.getElementById(id);if(s)map[id]=a;});
+  if('IntersectionObserver' in window){
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(l){l.classList.remove('active');});
+          var a=map[e.target.id];if(a)a.classList.add('active');
+        }
+      });
+    },{rootMargin:'-10% 0px -80% 0px',threshold:0});
+    Object.keys(map).forEach(function(id){obs.observe(document.getElementById(id));});
+  }
+})();
+</script>
+</body>
+</html>

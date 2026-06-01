@@ -917,6 +917,11 @@ html, body {
         <span class="num">11</span>
         <span class="lbl">Treasury</span>
       </div>
+      <div class="nav-item" data-module="14">
+        <span class="num">14</span>
+        <span class="lbl">Labor Patronage</span>
+        <span class="dot-ind warn"></span>
+      </div>
     </div>
 
     <div class="nav-group">
@@ -1546,6 +1551,148 @@ html, body {
         <div class="stub-title">Conflict register</div>
         <p>No active conflicts on record.</p>
       </div>
+    </section>
+
+    <!-- 14 Labor Patronage -->
+    <section class="module-view" id="mod-14">
+      <div class="module-head">
+        <div class="module-crumb">B · Capital · 14</div>
+        <h1 class="module-title">Labor-Hour Mutual Credit &amp; <em>Labor-Patronage Cash-Out</em></h1>
+        <p class="module-subtitle">Dual-ledger system. One attested labor event projects to two places: a closed-loop mutual-credit ledger denominated in labor-hours, and a patronage measure that drives § 704 allocations and § 731 cash distributions.</p>
+        <div class="module-ref">IRC § 704 · § 731 · § 6045 · C.R.S. 7-58-102 · REA / ValueFlows · EAS attestation · PRD: <a href="/intranet/a/cis-module-14-labor-patronage.html" style="color:var(--terra-text);" target="_blank">Module 14 PRD ↗</a></div>
+      </div>
+
+      <div class="section-label">Status</div>
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Phased rollout</h3>
+          <span class="card-meta">Phases 0–4</span>
+        </div>
+        <div style="display:grid;gap:8px;">
+          <div style="display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:baseline;padding:10px 0;border-top:1px solid var(--border-soft);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">Phase 0<span style="display:block;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-top:3px;">Foundations</span></span>
+            <span style="font-size:13px;color:var(--text-dim);">Identity and event-log spine. EAS labor-event schema registered, attestations on testnet. <strong style="font-weight:400;color:var(--text);font-style:italic;">KPI: deterministic balance replay.</strong></span>
+          </div>
+          <div style="display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:baseline;padding:10px 0;border-top:1px solid var(--border-soft);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">Phase 1<span style="display:block;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-top:3px;">Mutual-credit pilot</span></span>
+            <span style="font-size:13px;color:var(--text-dim);">Cohort transacts with enforced credit limits and closed-loop redemption. <strong style="font-weight:400;color:var(--text);font-style:italic;">KPI: active accounts, clearing volume, zero fiat-redemption leakage.</strong></span>
+          </div>
+          <div style="display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:baseline;padding:10px 0;border-top:1px solid var(--border-soft);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">Phase 2<span style="display:block;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-top:3px;">Patronage &amp; books</span></span>
+            <span style="font-size:13px;color:var(--text-dim);">Capital accounts computed from event log; reconciled to Xero. 1099-B and K-1 data producible. <strong style="font-weight:400;color:var(--text);font-style:italic;">KPI: near-zero reconciliation variance.</strong></span>
+          </div>
+          <div style="display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:baseline;padding:10px 0;border-top:1px solid var(--border-soft);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--terra-text);">Phase 3<span style="display:block;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-top:3px;">Periodic cash-out</span></span>
+            <span style="font-size:13px;color:var(--text-dim);">Patronage Plan ratified, weighting set, tax elections made, counsel sign-off. Board-ratified allocation → 731 distribution via Mercury. <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--terra-text);border:1px solid var(--terra-edge);border-radius:3px;padding:1px 6px;white-space:nowrap;">blocked · open deps</span></span>
+          </div>
+          <div style="display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:baseline;padding:10px 0;border-top:1px solid var(--border-soft);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">Phase 4<span style="display:block;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-top:3px;">Exit redemption</span></span>
+            <span style="font-size:13px;color:var(--text-dim);">Departing member's capital account returned per C.R.S. 7-58-1007 solvency limits. <strong style="font-weight:400;color:var(--text);font-style:italic;">KPI: exits completed within policy.</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Architecture · Dual Ledger</div>
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">One event log, two projections</h3>
+          <span class="card-meta">REA / ValueFlows · EAS attested</span>
+        </div>
+        <p style="font-size:13.5px;color:var(--text-dim);margin:0 0 14px;">A single EAS-countersigned labor event feeds the append-only log. From it, two projections are computed — never stored. Balances are replayed from events.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="background:var(--surface-2);border:1px solid var(--border-soft);border-left:3px solid var(--moss);border-radius:6px;padding:14px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--moss-text);margin-bottom:8px;">Ledger One · Mutual Credit</div>
+            <ul style="margin:0;padding:0 0 0 14px;font-size:12.5px;color:var(--text-dim);line-height:1.8;">
+              <li>Denominated in labor-hours</li>
+              <li>Giver's balance rises, receiver's falls</li>
+              <li>All balances net to zero</li>
+              <li>Closed-loop: spend on member goods only</li>
+              <li>Not redeemable for fiat</li>
+            </ul>
+          </div>
+          <div style="background:var(--surface-2);border:1px solid var(--border-soft);border-left:3px solid var(--terra);border-radius:6px;padding:14px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--terra-text);margin-bottom:8px;">Ledger Two · Patronage Measure</div>
+            <ul style="margin:0;padding:0 0 0 14px;font-size:12.5px;color:var(--text-dim);line-height:1.8;">
+              <li>Same event accrues as patronage</li>
+              <li>Drives the § 704 allocation</li>
+              <li>Builds the member's capital account</li>
+              <li>Leads to the § 731 cash distribution</li>
+              <li>Board ratified at period close</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Patronage Formula · Proposed</div>
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Weighting</h3>
+          <span class="card-meta" style="color:var(--terra-text);">proposed · not ratified</span>
+        </div>
+        <div style="display:flex;height:40px;border-radius:5px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px;">
+          <div style="flex:40;background:var(--terra);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#1a1208;font-weight:600;">40</div>
+          <div style="flex:30;background:#d4ab86;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#1a1208;font-weight:600;">30</div>
+          <div style="flex:20;background:var(--moss);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#1a1208;font-weight:600;">20</div>
+          <div style="flex:10;background:#9bb08e;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#1a1208;font-weight:600;">10</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px 18px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">
+          <span><strong style="color:var(--text);">40%</strong> Labor</span>
+          <span><strong style="color:var(--text);">30%</strong> Revenue</span>
+          <span><strong style="color:var(--text);">20%</strong> Cash contributed</span>
+          <span><strong style="color:var(--text);">10%</strong> Community</span>
+        </div>
+        <p style="font-size:12px;font-family:'IBM Plex Mono',monospace;color:var(--faint);margin:10px 0 0;">Held as editable configuration. Must be ratified by board and confirmed with § 704(b) counsel before Phase 3.</p>
+      </div>
+
+      <div class="section-label">Open Dependencies</div>
+      <div class="card" style="padding:0;">
+        <div style="display:grid;gap:0;">
+          <div style="display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:baseline;padding:13px 18px;border-bottom:1px solid var(--border-soft);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--terra-text);border:1px solid var(--terra-edge);border-radius:3px;padding:2px 6px;white-space:nowrap;text-align:center;">proposed</span>
+            <span style="font-size:13px;color:var(--text-dim);">40/30/20/10 patronage weighting. Blocks Phase 3.</span>
+          </div>
+          <div style="display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:baseline;padding:13px 18px;border-bottom:1px solid var(--border-soft);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);border-radius:3px;padding:2px 6px;white-space:nowrap;text-align:center;">open</span>
+            <span style="font-size:13px;color:var(--text-dim);">DRO vs. QIO election — required for § 704(b) safe harbor.</span>
+          </div>
+          <div style="display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:baseline;padding:13px 18px;border-bottom:1px solid var(--border-soft);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);border-radius:3px;padding:2px 6px;white-space:nowrap;text-align:center;">open</span>
+            <span style="font-size:13px;color:var(--text-dim);">704(c) methodology — traditional, curative, or remedial.</span>
+          </div>
+          <div style="display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:baseline;padding:13px 18px;border-bottom:1px solid var(--border-soft);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);border-radius:3px;padding:2px 6px;white-space:nowrap;text-align:center;">open</span>
+            <span style="font-size:13px;color:var(--text-dim);">Front-end framework selection (Glide excluded).</span>
+          </div>
+          <div style="display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:baseline;padding:13px 18px;border-bottom:1px solid var(--border-soft);">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);border-radius:3px;padding:2px 6px;white-space:nowrap;text-align:center;">not started</span>
+            <span style="font-size:13px;color:var(--text-dim);">Counsel sign-off across cooperative, securities, BSA/fintech, and partnership-tax. Blocking for Phase 3.</span>
+          </div>
+          <div style="display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:baseline;padding:13px 18px;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#c07a4a;border:1px solid rgba(192,122,74,0.4);border-radius:3px;padding:2px 6px;white-space:nowrap;text-align:center;">keystone</span>
+            <span style="font-size:13px;color:var(--text-dim);">Patronage Plan ratification — unblocks Bylaws v.2 and Membership Agreement v.2. Write the labor-credit-to-patronage bridge as a section of the Plan.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Compliance Perimeters</div>
+      <div class="card">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+          <div style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:5px;padding:12px 14px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--moss-text);margin-bottom:6px;">Not money transmission</div>
+            <p style="margin:0;font-size:12.5px;color:var(--text-dim);line-height:1.5;">Co-op pays its own members their share of its own income. Does not accept and forward third-party value (31 CFR 1010.100(ff)).</p>
+          </div>
+          <div style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:5px;padding:12px 14px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--moss-text);margin-bottom:6px;">Not a payment stablecoin</div>
+            <p style="margin:0;font-size:12.5px;color:var(--text-dim);line-height:1.5;">No fixed-value redemption obligation and no stable-value representation — outside the GENIUS Act definition.</p>
+          </div>
+          <div style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:5px;padding:12px 14px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--moss-text);margin-bottom:6px;">Not a security</div>
+            <p style="margin:0;font-size:12.5px;color:var(--text-dim);line-height:1.5;">Units are non-transferable membership rights tied to use and patronage — not tradable instruments bought for passive return (Howey, Reves).</p>
+          </div>
+        </div>
+        <p style="font-size:11.5px;font-family:'IBM Plex Mono',monospace;color:var(--faint);margin:12px 0 0;border-top:1px solid var(--border-soft);padding-top:10px;">All three characterizations are provisional and fact-specific. Confirm with qualified cooperative, securities, BSA/fintech, and partnership-tax counsel before Phase 3.</p>
+      </div>
+
     </section>
 
   </main><!-- /canvas -->
