@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function() {
+      var s = localStorage.getItem('techne-theme');
+      if (s === 'light' || s === 'dark') document.documentElement.setAttribute('data-theme', s);
+      else document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bylaws v.1 — RegenHub, LCA</title>
+  <meta name="description" content="Bylaws of RegenHub, LCA — Original v.1 draft as received from attorney, March 2026. Reference document for reconciling changes in v.2.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --serif: 'Libre Baskerville', Georgia, serif;
+      --mono:  'IBM Plex Mono', 'Courier New', monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg:         #08080a;
+      --surface:    #111114;
+      --raised:     #18181c;
+      --border:     rgba(196,149,106,0.12);
+      --border-dim: rgba(255,255,255,0.06);
+      --text:       #e0d8cc;
+      --text-warm:  #c8bca8;
+      --text-muted: rgba(200,188,168,0.55);
+      --text-dim:   rgba(200,188,168,0.28);
+      --gold:       #c4956a;
+      --moss:       #6a8a5e;
+      --rust:       #9a5a5a;
+      --sky:        #5a7a9a;
+    }
+
+    [data-theme="light"] {
+      --bg:         #f7f5f0;
+      --surface:    #ebe7df;
+      --raised:     #ffffff;
+      --border:     rgba(196,149,106,0.20);
+      --border-dim: rgba(0,0,0,0.08);
+      --text:       #2a2520;
+      --text-warm:  #3a3028;
+      --text-muted: rgba(60,48,36,0.60);
+      --text-dim:   rgba(60,48,36,0.30);
+      --gold:       #8a6a3a;
+      --moss:       #4a6a3a;
+      --rust:       #8a3a3a;
+      --sky:        #3a5a7a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 3rem 2rem 6rem;
+    }
+
+    /* -- VERSION BANNER -- */
+    .version-banner {
+      background: rgba(90,122,154,0.10);
+      border: 1px solid rgba(90,122,154,0.30);
+      padding: 0.6rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--sky);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    /* -- V2 COMPARE BAR -- */
+    .compare-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .compare-bar-text {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .compare-bar-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .compare-link {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      text-decoration: none;
+      padding: 0.25rem 0.65rem;
+      border-radius: 2px;
+    }
+
+    .compare-link.v2 {
+      color: var(--gold);
+      border: 1px solid rgba(196,149,106,0.35);
+      background: rgba(196,149,106,0.06);
+    }
+    .compare-link.v2:hover { background: rgba(196,149,106,0.12); }
+
+    .compare-link.analysis {
+      color: var(--text-muted);
+      border: 1px solid var(--border-dim);
+    }
+    .compare-link.analysis:hover { color: var(--text); border-color: rgba(200,188,168,0.25); }
+
+    /* -- DOCUMENT HEADER -- */
+    .doc-header {
+      border-top: 2px solid var(--sky);
+      padding-top: 2rem;
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .doc-header .org-name {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--sky);
+      margin-bottom: 0.75rem;
+    }
+
+    .doc-header h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+    }
+
+    .doc-header .doc-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .doc-meta-bar {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      padding: 0.9rem 0;
+      border-top: 1px solid var(--border-dim);
+      border-bottom: 1px solid var(--border-dim);
+      margin: 1.5rem 0 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .doc-meta-bar .m-item { text-align: center; }
+    .doc-meta-bar .m-label {
+      font-family: var(--mono);
+      font-size: 0.54rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      margin-bottom: 0.15rem;
+    }
+    .doc-meta-bar .m-val { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* -- TOC -- */
+    .toc {
+      margin-bottom: 2.5rem;
+      padding: 1rem 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      line-height: 2;
+      color: var(--text-muted);
+      columns: 2;
+      column-gap: 2rem;
+    }
+    .toc a { color: var(--text-muted); text-decoration: none; }
+    .toc a:hover { color: var(--sky); }
+    .toc .toc-label { font-size: 0.56rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-dim); margin-bottom: 0.4rem; display: block; }
+
+    /* -- PREAMBLE -- */
+    .preamble {
+      margin-bottom: 3rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--surface);
+      border-left: 3px solid var(--border);
+    }
+
+    .preamble .preamble-heading {
+      font-family: var(--mono);
+      font-size: 0.60rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-dim);
+      margin-bottom: 0.9rem;
+    }
+
+    .preamble p {
+      font-size: 0.86rem;
+      color: var(--text-warm);
+      line-height: 1.7;
+      margin-bottom: 0.9rem;
+    }
+
+    .preamble p:last-child { margin-bottom: 0; }
+
+    .preamble ol {
+      list-style: none;
+      margin: 0.9rem 0 0.9rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .preamble ol li {
+      display: flex;
+      gap: 0.75rem;
+      font-size: 0.84rem;
+      color: var(--text-warm);
+    }
+
+    .preamble ol li .ica-num {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      min-width: 1.4rem;
+      padding-top: 0.15rem;
+    }
+
+    /* -- ARTICLE -- */
+    .article {
+      margin-bottom: 3.5rem;
+    }
+
+    .article-header {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      margin-bottom: 0.35rem;
+    }
+
+    .article h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    .section {
+      margin-bottom: 1.75rem;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      color: var(--sky);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.35rem;
+      display: block;
+    }
+
+    .section h3 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+
+    .section p {
+      font-size: 0.88rem;
+      color: var(--text-warm);
+      margin-bottom: 0.6rem;
+      line-height: 1.7;
+    }
+    .section p:last-child { margin-bottom: 0; }
+
+    .section ol, .section ul {
+      margin: 0.5rem 0 0.6rem 1.5rem;
+      font-size: 0.88rem;
+      color: var(--text-warm);
+    }
+    .section li { margin-bottom: 0.35rem; line-height: 1.6; }
+
+    .sub-label {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-right: 0.3rem;
+    }
+
+    /* -- SCHEDULE -- */
+    .schedule {
+      margin-top: 3rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+    }
+
+    .schedule .schedule-heading {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+
+    .schedule table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .schedule th {
+      text-align: left;
+      border-bottom: 1px solid var(--border-dim);
+      padding: 0.4rem 0.75rem 0.4rem 0;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+    }
+
+    .schedule td {
+      padding: 0.4rem 0.75rem 0.4rem 0;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    .placeholder-val {
+      font-style: italic;
+      color: var(--text-dim);
+    }
+
+    /* -- FOOTER NAV -- */
+    .doc-footer {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-dim);
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .doc-footer a {
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      text-decoration: none;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+    .doc-footer a:hover { color: var(--gold); }
+
+    /* -- THEME TOGGLE -- */
+    .theme-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.4rem 0.75rem;
+      cursor: pointer;
+      border-radius: 2px;
+      z-index: 50;
+    }
+    .theme-toggle:hover { color: var(--gold); border-color: var(--border); }
+
+    @media (max-width: 600px) {
+      .wrap { padding: 2rem 1.25rem 5rem; }
+      .toc { columns: 1; }
+      .doc-meta-bar { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="version-banner">Version 1 — Original attorney draft · Reference document only · Not in effect</div>
+
+  <div class="compare-bar">
+    <span class="compare-bar-text">This is v.1 — the original draft as received from attorney counsel. Revised language appears in v.2.</span>
+    <div class="compare-bar-links">
+      <a class="compare-link v2" href="/legal/bylaws-v2/">View Bylaws v.2 (revised) →</a>
+      <a class="compare-link analysis" href="/legal/bylaws-analysis/">Legal analysis ↗</a>
+      <a class="compare-link analysis" href="/legal/bylaws-analysis/changes/">Proposed changes ↗</a>
+    </div>
+  </div>
+
+  <div class="doc-header">
+    <div class="org-name">RegenHub, LCA · Bylaws Version 1</div>
+    <h1>BYLAWS</h1>
+    <div class="doc-sub">A Colorado Public Benefit Limited Cooperative Association</div>
+  </div>
+
+  <div class="doc-meta-bar">
+    <div class="m-item">
+      <div class="m-label">Version</div>
+      <div class="m-val">v.1 (original)</div>
+    </div>
+    <div class="m-item">
+      <div class="m-label">Attorney</div>
+      <div class="m-val">Jeffrey Pote / Pote Law Firm</div>
+    </div>
+    <div class="m-item">
+      <div class="m-label">Effective Date</div>
+      <div class="m-val">[March XX], 2026</div>
+    </div>
+    <div class="m-item">
+      <div class="m-label">Articles</div>
+      <div class="m-val">18 + Schedule A</div>
+    </div>
+    <div class="m-item">
+      <div class="m-label">Status</div>
+      <div class="m-val">Superseded by v.2 draft</div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <span class="toc-label">Table of Contents</span>
+    <a href="#preamble">Preamble</a><br>
+    <a href="#article-i">Article I: Membership</a><br>
+    <a href="#article-ii">Article II: Meetings of Members</a><br>
+    <a href="#article-iii">Article III: Directors</a><br>
+    <a href="#article-iv">Article IV: Officers and Management</a><br>
+    <a href="#article-v">Article V: Capital</a><br>
+    <a href="#article-vi">Article VI: Tax and Accounting</a><br>
+    <a href="#article-vii">Article VII: Contracts, Loans, Checks, and Deposits</a><br>
+    <a href="#article-viii">Article VIII: Fiscal Year</a><br>
+    <a href="#article-ix">Article IX: Unclaimed Money</a><br>
+    <a href="#article-x">Article X: Notice; Waiver of Notice</a><br>
+    <a href="#article-xi">Article XI: Dispute Resolution; Jury Trial Waiver</a><br>
+    <a href="#article-xii">Article XII: Amendments</a><br>
+    <a href="#article-xiii">Article XIII: Acquisition, Merger, Dissolution, or Conversion</a><br>
+    <a href="#article-xiv">Article XIV: Dissolution</a><br>
+    <a href="#article-xv">Article XV: Annual Benefit Report</a><br>
+    <a href="#article-xvi">Article XVI: Distribution of Bylaws</a><br>
+    <a href="#article-xvii">Article XVII: Certain Transactions</a><br>
+    <a href="#article-xviii">Article XVIII: Right to Information; Confidentiality</a><br>
+    <a href="#schedule-a">Schedule A: Stock Prices &amp; Membership Dues</a>
+  </div>
+
+  <!-- PREAMBLE -->
+  <div class="preamble" id="preamble">
+    <div class="preamble-heading">Preamble</div>
+
+    <p><strong>WHEREAS</strong>, RegenHub, LCA (the <span style="font-style:italic;">"Cooperative"</span>) is a public benefit limited cooperative association, the articles of organization of which, as amended from time to time (the <span style="font-style:italic;">"Articles"</span> or <span style="font-style:italic;">"Articles of Organization"</span>) are filed pursuant to the Colorado Uniform Limited Cooperative Association Act, C.R.S. Title 7, Article 58 (the <span style="font-style:italic;">"ULCAA"</span>) and the Public Benefit Corporation Act of Colorado, C.R.S. Title 7, Article 101, Part 5 (<span style="font-style:italic;">"PBCA"</span>) on behalf of the Cooperative.</p>
+
+    <p><strong>WHEREAS</strong>, Cooperative's business shall be conducted on a cooperative basis for the mutual benefit of the Cooperative's members, and in accordance with the public benefit and other purposes for which the Cooperative is organized as set forth in its Articles of Organization.</p>
+
+    <p><strong>WHEREAS</strong>, the Cooperative adopts and subscribes to the seven International Cooperative Alliance cooperative principles:</p>
+
+    <ol>
+      <li><span class="ica-num">1.</span><span><strong>Voluntary and Open Membership.</strong> Cooperatives are voluntary organizations, open to all people able to contribute to or patronize its services and willing to accept the responsibilities of membership, without discrimination based on gender, sexual orientation, social, racial, political, or religious identity.</span></li>
+      <li><span class="ica-num">2.</span><span><strong>Democratic Member Control.</strong> Cooperatives are democratic organizations controlled by their members — those who contribute to or patronize the services of the Cooperative — who actively participate in the setting of policies and making of decisions.</span></li>
+      <li><span class="ica-num">3.</span><span><strong>Members' Economic Participation.</strong> Members within each membership class have contributed equally to, and democratically control, the capital of the Cooperative. This benefits non-investor members in proportion to their contribution to or patronage of the Cooperative rather than on their capital invested.</span></li>
+      <li><span class="ica-num">4.</span><span><strong>Autonomy and Independence.</strong> Cooperatives are autonomous, self-help organizations controlled by their members. If the Cooperative enters into agreements with other organizations or raises capital from external sources, it is done so based on terms that ensure democratic control by the members and maintains the Cooperative's autonomy.</span></li>
+      <li><span class="ica-num">5.</span><span><strong>Education, Training, and Information.</strong> Cooperatives provide education and training for members, elected representatives, managers, and employees so they can contribute effectively to the development and services of their cooperative. Members also inform the general public about the nature and benefits of cooperatives.</span></li>
+      <li><span class="ica-num">6.</span><span><strong>Cooperation among Cooperatives.</strong> Cooperatives serve their members most effectively and strengthen the cooperative movement by working together through local, regional, national, and international structures.</span></li>
+      <li><span class="ica-num">7.</span><span><strong>Concern for Community.</strong> While focusing on member needs, cooperatives work for the sustainable development of communities, both locally and beyond, through policies and programs accepted by the members.</span></li>
+    </ol>
+
+    <p><strong>WHEREAS</strong>, the Articles of Organization, the ULCAA, and the PBCA, each as amended, and any provisions of any successor act, are incorporated by reference as if fully set forth herein. In the event of any conflict, it is the intention of the Cooperative that such conflict shall be resolved first in accordance with the Articles of Organization, then these bylaws of the Cooperative (the <span style="font-style:italic;">"Bylaws"</span>) whenever possible, then the ULCAA, and finally the PBCA, unless otherwise expressly specified by these Bylaws.</p>
+  </div>
+
+  <!-- ARTICLE I -->
+  <div class="article" id="article-i">
+    <div class="article-header">Article I</div>
+    <h2>Membership</h2>
+
+    <div class="section" id="s1-1">
+      <span class="section-label">§ 1.1</span>
+      <h3>Membership Classes</h3>
+      <p>The Cooperative shall have two (2) membership classes: (a) patron members (<span style="font-style:italic;">"Patron Members"</span>) and (b) investor members (<span style="font-style:italic;">"Investor Members"</span>). Subject to Colorado law, the board of directors (<span style="font-style:italic;">"Board"</span>) shall have the right and authority to create additional classes of membership.</p>
+    </div>
+
+    <div class="section" id="s1-2">
+      <span class="section-label">§ 1.2</span>
+      <h3>Patron Members</h3>
+      <p>Subject to acceptance by the Board in its sole discretion, any natural person or entity that meets the following eligibility requirements may be admitted as a Patron Member:</p>
+      <ol>
+        <li>Is a resident of any state or country in which the Cooperative does business, at least 18 years of age or qualified to do business;</li>
+        <li>Commits to providing services through and patronizing the Cooperative as a co-owner;</li>
+        <li>Agrees to purchase one (1) share of Class A common voting stock (Patron Share/Patron Stock), at the price in Schedule A;</li>
+        <li>Agrees to pay periodic dues as set forth in Schedule A;</li>
+        <li>Agrees to undertake patronage responsibilities prescribed by Bylaws, Membership Agreement, or Board policies;</li>
+        <li>Agrees to participate in Cooperative governance;</li>
+        <li>Meets other conditions prescribed by the Board; and</li>
+        <li>Agrees to abide by the Articles, Bylaws, Confirmed Member Membership Agreement, and rules and policies of the Cooperative.</li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1-3">
+      <span class="section-label">§ 1.3</span>
+      <h3>Investor Members</h3>
+      <p>Subject to Board acceptance, a natural person or Entity that: (1) agrees to purchase one or more shares of Preferred Stock; (2) agrees to meet qualifications in investment documents; (3) agrees to maintain good standing; and (4) agrees to abide by Articles, Bylaws, and investor documents.</p>
+    </div>
+
+    <div class="section" id="s1-4">
+      <span class="section-label">§ 1.4</span>
+      <h3>Admission to Membership</h3>
+      <p><span class="sub-label">1.4.1</span> The Cooperative may admit any applicant who: (1) meets all qualifications; (2) applies for admission; (3) purchases at least one share of Patron Stock or Preferred Stock in cash, promissory note, or combination; (4) executes applicable membership agreement; and (5) is approved by simple majority vote of the Board.</p>
+      <p><span class="sub-label">1.4.2</span> A person is not eligible if the Board finds their admission would hinder the Cooperative's operation or hurt its reputation (but not on basis of sex, race, ethnicity, national origin, sexual orientation, or protected status). The Board may also limit or delay admission if it would adversely affect the Cooperative's purposes.</p>
+      <p><span class="sub-label">1.4.3</span> Applicant is a Member effective upon acceptance, payment for Stock, and full execution of required agreements.</p>
+    </div>
+
+    <div class="section" id="s1-5">
+      <span class="section-label">§ 1.5</span>
+      <h3>Representation of Certain Members</h3>
+      <p>If a Member is not a natural person, it may be represented by any individual duly authorized in writing.</p>
+    </div>
+
+    <div class="section" id="s1-6">
+      <span class="section-label">§ 1.6</span>
+      <h3>Multiple Membership Interests</h3>
+      <p>Each Member shall only receive a single vote on any matter, regardless of multiple classes or shares held.</p>
+    </div>
+
+    <div class="section" id="s1-7">
+      <span class="section-label">§ 1.7</span>
+      <h3>Record of Members</h3>
+      <p>A record of Members with names, addresses, and tax ID numbers shall be kept. Members must notify the Cooperative of any changes.</p>
+    </div>
+
+    <div class="section" id="s1-8">
+      <span class="section-label">§ 1.8</span>
+      <h3>Restrictions on Transfer of Membership or Stock</h3>
+      <ol>
+        <li>No Patron Stock may be transferred to any person except to the Cooperative upon redemption or repurchase.</li>
+        <li>Preferred Stock may only be transferred as provided in investment documents.</li>
+        <li>Any purported transfer in violation of these Bylaws or investment documents shall be void unless consented to in writing by the Board.</li>
+        <li>These restrictions are specifically enforceable.</li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1-9">
+      <span class="section-label">§ 1.9</span>
+      <h3>Withdrawal</h3>
+      <ol>
+        <li>A Patron Member may withdraw by providing at least 14 calendar days written notice to the Board, unless the Board waives this requirement.</li>
+        <li>A withdrawing Member remains active until withdrawal is effective. Such Member may reapply for membership after withdrawal effective date.</li>
+        <li>The Board reserves the right to delay the timing and method of equity redemption. The Board shall redeem equity within five (5) years of withdrawal, in cash, promissory note, or combination.</li>
+        <li>Withdrawal of an Investor Member is in accordance with investment documents.</li>
+        <li>No action shall waive or impair obligations under any contract that specifies separate termination terms.</li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1-10">
+      <span class="section-label">§ 1.10</span>
+      <h3>Suspension or Termination of Patron Members</h3>
+      <p><span class="sub-label">1.10.1</span> <strong>Suspension.</strong> By simple majority vote, the Board may suspend a Patron Member for up to 180 days if such Member has violated Bylaws/policies, committed criminal acts involving fraud or dishonesty, or been disruptive. Suspended Member may not patronize, vote, or be involved in management. No Director subject to potential suspension may vote on their own suspension.</p>
+      <p><span class="sub-label">1.10.2</span> <strong>Termination.</strong> Following a hearing with 14 calendar days written notice, the Board may terminate by 3/4 vote if a Member has: ceased patronizing the Cooperative for 3 consecutive months, violated membership agreement, ceased to be eligible (death, insolvency, incapacity), or been disruptive. No Director subject to termination may vote on their own termination.</p>
+    </div>
+
+    <div class="section" id="s1-11">
+      <span class="section-label">§ 1.11</span>
+      <h3>Rights and Interest on Withdrawal or Termination</h3>
+      <p><span class="sub-label">1.11.1</span> <strong>Patron Members.</strong> On withdrawal or termination, all rights cease and the Member is entitled only to payment for equity interest calculated per Article V. Within 120 days, the Cooperative shall consider distributing the equity interest in cash, promissory note, or combination. The Board may delay, withhold, or modify timing if it would impair the Cooperative's financial health; provided that redemption shall occur within 5 years.</p>
+      <p><span class="sub-label">1.11.2</span> <strong>Investor Members.</strong> Rights and interests are defined in the Investor Membership Agreement or governing agreement.</p>
+    </div>
+
+    <div class="section" id="s1-12">
+      <span class="section-label">§ 1.12</span>
+      <h3>Consent to Tax Treatment</h3>
+      <p>Each Member agrees to take into account on their income tax return any allocations of Net Profits or Net Losses in the manner provided in Code § 704(b). Each Member is solely responsible for any tax liability incurred and shall indemnify and hold harmless the Cooperative from any claims arising out of their purchase or holding of Stock.</p>
+    </div>
+
+    <div class="section" id="s1-13">
+      <span class="section-label">§ 1.13</span>
+      <h3>Authorized Capital</h3>
+      <p><span class="sub-label">1.13.1</span> <strong>Common Stock.</strong> Unlimited number of Class A patron stock shares authorized, no par value. Each Member holding Patron Stock has one and only one vote. Stock is fully paid, non-assessable, and may not be transferred except as set forth in Bylaws or membership agreement.</p>
+      <p><span class="sub-label">1.13.2</span> <strong>Preferred Stock.</strong> RESERVED.</p>
+    </div>
+
+    <div class="section" id="s1-14">
+      <span class="section-label">§ 1.14</span>
+      <h3>Preferences and Rights of Holders of Patron Stock</h3>
+      <p><span class="sub-label">1.14.1</span> Eligibility. Restricted per Bylaws.</p>
+      <p><span class="sub-label">1.14.2</span> Voting. No more than a single vote per Member.</p>
+      <p><span class="sub-label">1.14.3</span> Allocations and Distributions. Per §§ 5.3 and 5.4.</p>
+      <p><span class="sub-label">1.14.4</span> Liquidation Rights. Per Articles V and XIV.</p>
+    </div>
+
+    <div class="section" id="s1-15">
+      <span class="section-label">§ 1.15</span>
+      <h3>RESERVED</h3>
+    </div>
+
+    <div class="section" id="s1-16">
+      <span class="section-label">§ 1.16</span>
+      <h3>Certificates of Interests</h3>
+      <p>The Cooperative is not required to issue certificates representing memberships, Stock, or other investments.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE II -->
+  <div class="article" id="article-ii">
+    <div class="article-header">Article II</div>
+    <h2>Meetings of Members</h2>
+
+    <div class="section" id="s2-1">
+      <span class="section-label">§ 2.1</span>
+      <h3>Membership Meetings, Generally</h3>
+      <p>All meetings may take place in person, by telephone, video conference, or other electronic means, within or outside Colorado. If no place is designated, meetings take place at the Cooperative's principal office. Meetings shall be led by the President or highest ranking officer in attendance.</p>
+    </div>
+
+    <div class="section" id="s2-2">
+      <span class="section-label">§ 2.2</span>
+      <h3>Annual Meetings</h3>
+      <p>An annual membership meeting shall be held each calendar year. If not held within 14 months from the previous annual meeting, the President or Secretary shall call such meeting. Any lawful business may be brought before the meeting; amendments to Articles or Bylaws must be stated in the notice.</p>
+    </div>
+
+    <div class="section" id="s2-3">
+      <span class="section-label">§ 2.3</span>
+      <h3>Special Meetings</h3>
+      <p>May be called by written request of (a) two or more Directors or (b) at least 25% of Members, delivered to the President or Secretary. Special meeting must be held no less than 14 days and no more than 60 days from the request. Business is limited to the purpose stated in the notice.</p>
+    </div>
+
+    <div class="section" id="s2-4">
+      <span class="section-label">§ 2.4</span>
+      <h3>Notice of Meetings</h3>
+      <p>Written notice shall be sent not less than 14 days and not more than 60 days before the meeting. Notice shall state the time, place (if any), and business.</p>
+    </div>
+
+    <div class="section" id="s2-5">
+      <span class="section-label">§ 2.5</span>
+      <h3>Waiver of Notice</h3>
+      <p><span class="sub-label">2.5.1</span> <strong>Written Waiver.</strong> A written waiver signed by the Member entitled to notice shall be equivalent to giving notice.</p>
+      <p><span class="sub-label">2.5.2</span> <strong>Waiver by Attendance.</strong> Attending a meeting waives objection to lack of notice unless the Member objects at the beginning. Attendance includes in person, telephonic, or online meeting formats.</p>
+    </div>
+
+    <div class="section" id="s2-6">
+      <span class="section-label">§ 2.6</span>
+      <h3>Voting at Meetings</h3>
+      <p><span class="sub-label">2.6.1</span> <strong>Patron Member Voting.</strong> Each Patron Member (in good standing) has one and only one vote. A suspended Member is not in good standing.</p>
+      <p><span class="sub-label">2.6.2</span> <strong>Investor Member Voting.</strong> Where specifically required by law or investor agreement, Investor Members vote as a separate class, with one vote each. Quorum is a majority of entitled Investor Members; passage requires majority of those present.</p>
+      <p><span class="sub-label">2.6.3</span> <strong>Action at a Meeting.</strong> With quorum, all matters require a simple majority affirmative vote of Patron Members present and entitled to vote.</p>
+      <ul>
+        <li><strong>Proxy Voting.</strong> Permitted if memorialized in writing, signed by both Member and proxy. A Member who designates a proxy is considered present for quorum purposes.</li>
+        <li><strong>Cumulative Voting.</strong> Prohibited.</li>
+        <li><strong>Voting by Mail or Electronic Means.</strong> The Board may submit matters to vote by ballot or electronic means. Voting shall remain open for at least the minimum notice period.</li>
+      </ul>
+    </div>
+
+    <div class="section" id="s2-7">
+      <span class="section-label">§ 2.7</span>
+      <h3>Quorum</h3>
+      <p><span class="sub-label">2.7.1</span> A quorum for transaction of business is a simple majority of Patron Members, present in person.</p>
+      <p>If quorum is lost during a meeting, the meeting may be recessed or adjourned until quorum is obtained.</p>
+    </div>
+
+    <div class="section" id="s2-8">
+      <span class="section-label">§ 2.8</span>
+      <h3>Action without a Meeting</h3>
+      <p><span class="sub-label">2.8.1</span> Actions of Members may be taken without a meeting if approved by the number of votes that would have passed in a duly noticed meeting. Records may be received electronically.</p>
+      <p><span class="sub-label">2.8.2</span> Action is effective as of the date the Cooperative receives the last record necessary to effect the action. Members may revoke consent before effectiveness.</p>
+      <p><span class="sub-label">2.8.3</span> Notice for action without a meeting shall describe the proposed action and specify the deadline for consent. Action is not effective unless within 60 days the required consents are received.</p>
+    </div>
+
+    <div class="section" id="s2-9">
+      <span class="section-label">§ 2.9</span>
+      <h3>Membership List</h3>
+      <p>At least 10 days before every meeting, a complete alphabetical list of Members with addresses shall be available electronically upon request.</p>
+    </div>
+
+    <div class="section" id="s2-10">
+      <span class="section-label">§ 2.10</span>
+      <h3>Order of Business</h3>
+      <ol>
+        <li>Determination of quorum</li>
+        <li>Proof of proper notice</li>
+        <li>Review of agenda, reading and disposition of minutes</li>
+        <li>Financial report</li>
+        <li>Report of Board by President or Vice President</li>
+        <li>Report of Secretary, Treasurer, or Secretary-Treasurer</li>
+        <li>Reports of committees</li>
+        <li>Nominations for vacancies on the Board</li>
+        <li>Elections</li>
+        <li>Unfinished business</li>
+        <li>New business</li>
+        <li>Adjournment</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ARTICLE III -->
+  <div class="article" id="article-iii">
+    <div class="article-header">Article III</div>
+    <h2>Directors</h2>
+
+    <div class="section" id="s3-1">
+      <span class="section-label">§ 3.1</span>
+      <h3>General Powers</h3>
+      <p>The business of the Cooperative shall be managed by or under the direction of the Board, which may exercise all powers permissible under Colorado law, the Articles, and Bylaws.</p>
+    </div>
+
+    <div class="section" id="s3-2">
+      <span class="section-label">§ 3.2</span>
+      <h3>Composition of the Board of Directors; Election of Nonmembers</h3>
+      <p><span class="sub-label">3.2.1</span> The Board shall consist of an odd number of Directors between 3 and 9, decided annually by the current Board. Number may be changed by 2/3 supermajority vote of all Directors or by 2/3 supermajority vote of Patron Members. No reduction shall remove any Director before their term expires.</p>
+      <p>The initial Board was determined by written consent of the organizer(s) and serves until the first annual membership meeting (Initial Term). Each Director on any subsequent Board serves until the next Board is elected (approximately one year). A Director filling a vacancy serves only the remaining unexpired term. Any Director may be re-elected for an unlimited number of subsequent terms.</p>
+    </div>
+
+    <div class="section" id="s3-3">
+      <span class="section-label">§ 3.3</span>
+      <h3>Qualifications of Directors</h3>
+      <p>Directors must be natural persons, at least 18 years old. If a Director is a Member, they must remain in good standing. Directors may be officers or employees.</p>
+    </div>
+
+    <div class="section" id="s3-4">
+      <span class="section-label">§ 3.4</span>
+      <h3>Nomination and Election</h3>
+      <p><span class="sub-label">3.4.1</span> Any Member may propose nominees at least 10 days before the meeting. A ballot shall be mailed/emailed at least 5 days before the meeting if nominees were received. Nominations may also be made from the floor. Any nominee must meet director qualifications. The Members shall strive to nominate twice as many nominees as directorships to be filled.</p>
+      <p><span class="sub-label">3.4.2</span> Directors are elected by Members in person, or by mail or email ballots. When only one nomination per directorship, the President may declare elected by general consent. When more nominees than directorships, each Member casts one vote per directorship for any nominee. The nominee with the most total votes is elected. In a tie for the last vacancy, a run-off election decides.</p>
+    </div>
+
+    <div class="section" id="s3-5">
+      <span class="section-label">§ 3.5</span>
+      <h3>Removal of Directors</h3>
+      <p><strong>Removal by Members.</strong> By 2/3 vote of Members entitled to vote at a properly noticed special meeting. The Director subject to removal may not vote on their own removal and does not count for quorum.</p>
+      <p><strong>Removal by the Board.</strong> Only with cause, by unanimous vote of all non-subject Directors. Causes include: failure to meet qualifications, fraudulent conduct, gross abuse of position, intentional or reckless harm, continued failure to comply with Articles or Bylaws, or failure to attend 3 consecutive regular Board meetings without cause.</p>
+    </div>
+
+    <div class="section" id="s3-6">
+      <span class="section-label">§ 3.6</span>
+      <h3>Resignation</h3>
+      <p>A Director may resign at any time by providing written notice to the Board. Resignation is effective upon receipt unless a later date is specified.</p>
+    </div>
+
+    <div class="section" id="s3-7">
+      <span class="section-label">§ 3.7</span>
+      <h3>Vacancies</h3>
+      <p>Any vacancy may be filled by a simple majority vote of remaining Directors, even if less than a quorum. If there are no Directors, any officer or Member may call a special meeting of the Members to fill vacancies.</p>
+    </div>
+
+    <div class="section" id="s3-8">
+      <span class="section-label">§ 3.8</span>
+      <h3>Annual Board Meetings; Election of Officers</h3>
+      <p>The annual Board meeting shall be held promptly after the annual membership meeting (in no event more than 30 days after its adjournment). The Board shall elect a President, Secretary, and Treasurer. The Board may combine Secretary and Treasurer duties into "Secretary-Treasurer." Each officer holds office until election and qualification of a successor.</p>
+    </div>
+
+    <div class="section" id="s3-9">
+      <span class="section-label">§ 3.9</span>
+      <h3>Regular Board Meetings</h3>
+      <p>Held at such times and places (including electronically) as the Board may determine. The Board may establish regular meeting times and hold meetings without notice.</p>
+    </div>
+
+    <div class="section" id="s3-10">
+      <span class="section-label">§ 3.10</span>
+      <h3>Special Board Meetings</h3>
+      <p>Called by the President or by at least two Directors. Any and all business may be transacted. A meeting may be held without notice upon consent of all Directors.</p>
+    </div>
+
+    <div class="section" id="s3-11">
+      <span class="section-label">§ 3.11</span>
+      <h3>Notice</h3>
+      <p>Prior written notice at least 2 days prior to any Board meeting, delivered per Article X. Notice may be waived. Appearance at a meeting constitutes waiver of notice, except if attending expressly to object.</p>
+    </div>
+
+    <div class="section" id="s3-12">
+      <span class="section-label">§ 3.12</span>
+      <h3>Electronic Meetings</h3>
+      <p>One or more Board or committee members may participate through any means of communication if all can communicate during the meeting. Such participation constitutes presence in person.</p>
+    </div>
+
+    <div class="section" id="s3-13">
+      <span class="section-label">§ 3.13</span>
+      <h3>Quorum; Voting</h3>
+      <p>A simple majority of all Directors constitutes a quorum. Each Director has one vote. No Director may vote on a matter in which they have a financial self-interest except as permitted by Article XVII. A simple majority vote of those present at a properly noticed meeting with quorum is the act of the Board. In the event of a tie, the vote fails.</p>
+    </div>
+
+    <div class="section" id="s3-14">
+      <span class="section-label">§ 3.14</span>
+      <h3>Referendum</h3>
+      <p>Upon demand of at least two Directors, any Board-approved resolution must be referred to the Members for ratification at the next annual or special membership meeting. The request must be made at the same meeting at which the motion was passed.</p>
+    </div>
+
+    <div class="section" id="s3-15">
+      <span class="section-label">§ 3.15</span>
+      <h3>Action without a Meeting</h3>
+      <p>Actions of the Board or any committee may be taken without a meeting if agreed to by all members of the Board or committee, evidenced by written consents signed or electronically submitted by all Directors. Any such written consent shall be filed with the minutes.</p>
+    </div>
+
+    <div class="section" id="s3-16">
+      <span class="section-label">§ 3.16</span>
+      <h3>Presumption of Assent</h3>
+      <p>A Director is considered to have assented to an action unless: (1) the Director votes against it or abstains and causes the abstention to be recorded; (2) the Director objects at the beginning and does not later vote for the action; (3) the Director has their dissent recorded in minutes; (4) the Director does not attend the meeting; or (5) the Director gives notice of objection in writing to the Board chair within 24 hours after the meeting.</p>
+    </div>
+
+    <div class="section" id="s3-17">
+      <span class="section-label">§ 3.17</span>
+      <h3>Compensation and Expense Reimbursement</h3>
+      <p>The Board may propose compensation of Directors and officers, which must be approved and ratified by a simple majority vote of Members. Directors and officers may be reimbursed for actual and reasonable out-of-pocket expenses. Nothing precludes any Director or officer from serving in any other capacity and receiving proper compensation.</p>
+    </div>
+
+    <div class="section" id="s3-18">
+      <span class="section-label">§ 3.18</span>
+      <h3>Committees</h3>
+      <p>The Board may, in its sole discretion, establish or dismantle committees and appoint or remove persons to such committees.</p>
+    </div>
+
+    <div class="section" id="s3-19">
+      <span class="section-label">§ 3.19</span>
+      <h3>General Standards of Conduct for Directors and Officers</h3>
+      <p><span class="sub-label">3.19.1</span> Each Director and officer shall discharge duties: (a) in good faith and proper purpose; (b) with the care an ordinary prudent person would exercise; (c) in a manner reasonably believed to be in the best interests of the Cooperative and its membership, including operating for the public benefit and balancing financial interests of Members, interests of materially affected stakeholders, and the Cooperative's public benefit purposes; and (d) in accordance with the Articles of Organization.</p>
+      <p><span class="sub-label">3.19.2</span> A Director or officer may rely on information, opinions, reports, or statements prepared or presented by: (a) officers, employees, or committees of the Cooperative they reasonably believe merit confidence; or (b) legal counsel, a public accountant, or another person within their professional or expert competence.</p>
+      <p><span class="sub-label">3.19.3</span> A Director or officer is not acting in good faith if they have knowledge making reliance otherwise permitted by § 3.19.2 unwarranted.</p>
+    </div>
+
+    <div class="section" id="s3-20">
+      <span class="section-label">§ 3.20</span>
+      <h3>Indemnification</h3>
+      <p>The Cooperative shall indemnify Directors, officers, and others in accordance with Article IX of its Articles of Organization.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE IV -->
+  <div class="article" id="article-iv">
+    <div class="article-header">Article IV</div>
+    <h2>Officers and Management</h2>
+
+    <div class="section" id="s4-1">
+      <span class="section-label">§ 4.1</span>
+      <h3>Officers, in General</h3>
+      <p>Officers include: a President, a Secretary, and a Treasurer. The Board may also elect vice presidents, assistant secretaries, and assistant treasurers. Any number of offices may be held by the same person, unless otherwise specified. The Board shall define duties and compensation of officers.</p>
+    </div>
+
+    <div class="section" id="s4-2">
+      <span class="section-label">§ 4.2</span>
+      <h3>President</h3>
+      <p>The President shall be a Director and the chief executive officer. Subject to the Board, the President has general and active management of the Cooperative's business affairs and property. The President presides at all membership meetings, executes all contracts (unless delegated), may authorize changes to the registered office, and performs all duties incident to the office and such other duties as prescribed by the Board.</p>
+    </div>
+
+    <div class="section" id="s4-3">
+      <span class="section-label">§ 4.3</span>
+      <h3>Vice President</h3>
+      <p>Performs all duties of the President in the President's absence or death or inability to act. At any time, subject to the Board, may execute contracts or equipment leases in the ordinary course of business.</p>
+    </div>
+
+    <div class="section" id="s4-4">
+      <span class="section-label">§ 4.4</span>
+      <h3>Treasurer</h3>
+      <p>Has charge and custody of all corporate funds, securities, and other valuables. Keeps full and accurate accounts of receipts and disbursements. Renders to the President and Board an account of all transactions and the Cooperative's financial condition at regular meetings or upon Board request.</p>
+    </div>
+
+    <div class="section" id="s4-5">
+      <span class="section-label">§ 4.5</span>
+      <h3>Secretary</h3>
+      <p>Attends all meetings of the Board and the Members, records all votes and keeps minutes. Gives notice in accordance with Bylaws or as required by law. Is custodian of corporate records and seal. Keeps register of email and post office addresses of each Member. Signs certificates for shares with the President (or authorized Vice President).</p>
+    </div>
+
+    <div class="section" id="s4-6">
+      <span class="section-label">§ 4.6</span>
+      <h3>Assistant Officers</h3>
+      <p>The Board may elect and a duly appointed officer may appoint assistant officers. No officer may appoint an assistant officer with greater authority. The Board may limit the authority of any officer or assistant officer.</p>
+    </div>
+
+    <div class="section" id="s4-7">
+      <span class="section-label">§ 4.7</span>
+      <h3>Reports of Business</h3>
+      <p>The President (or highest ranking officer in attendance) shall present at each annual membership meeting a detailed statement or report of the preceding year's business, showing the financial condition of the Cooperative.</p>
+    </div>
+
+    <div class="section" id="s4-8">
+      <span class="section-label">§ 4.8</span>
+      <h3>Salaries and Compensation</h3>
+      <p>Except as advised by written opinion of tax counsel, at any time while the Cooperative is taxed as a partnership, no Director or officer who is also a Member may receive salary or other compensation as an employee in consideration for their services. Subject to the foregoing, salaries and compensation of officers shall be fixed from time to time by the Board.</p>
+    </div>
+
+    <div class="section" id="s4-9">
+      <span class="section-label">§ 4.9</span>
+      <h3>Multiple Offices</h3>
+      <p>Any individual may hold one or more offices; provided, however, that no person may simultaneously be the President and Secretary, or the President and any Vice President.</p>
+    </div>
+
+    <div class="section" id="s4-10">
+      <span class="section-label">§ 4.10</span>
+      <h3>Term; Removal; Resignation; Vacancies</h3>
+      <p>Officers hold office until their successors are elected and qualified. The Board has the power to remove any officer with or without cause by a simple majority vote of Directors not serving as the officer subject to removal. An officer may resign at any time by providing written notice to the Board. Resignation is effective upon receipt unless a later date is specified. Vacancies may be filled for the unexpired term by the Board in its sole discretion.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE V -->
+  <div class="article" id="article-v">
+    <div class="article-header">Article V</div>
+    <h2>Capital</h2>
+
+    <div class="section" id="s5-1">
+      <span class="section-label">§ 5.1</span>
+      <h3>Capital Accounts</h3>
+      <p><span class="sub-label">5.1.1</span> <span style="font-style:italic;">"Capital Account"</span> means, with respect to any Member, the capital account established and maintained in accordance with Code § 704(b) and Regulations § 1.704-1(b).</p>
+      <p><span class="sub-label">5.1.2</span> The Cooperative shall establish and maintain a separate Capital Account for each Member. Each Member's Capital Account will be increased by: (i) qualifying investment pursuant to Schedule A or any agreement; (ii) additional or supplemental capital contributions required by the Board; (iii) the Gross Asset Value of property contributed (net of liabilities); and (iv) allocations of income or gains. Capital Account will be decreased by: (a) cash distributed; (b) Gross Asset Value of property distributed (net of liabilities); and (c) allocations of deductions or losses.</p>
+      <p><span class="sub-label">5.1.3</span> The manner of maintaining Capital Accounts is intended to comply with Code § 704(b) and Regulations. If the Cooperative's accountants or tax advisors determine modifications are needed to comply, the method shall be modified; provided that any change shall not materially alter the economic arrangement between or among the Members.</p>
+      <p><span class="sub-label">5.1.4</span> The Board or duly authorized officer shall make any adjustments necessary to maintain equality between Capital Accounts and the amount of capital reflected on the Cooperative's balance sheet. The Board may direct adjustments to Capital Accounts to reflect revaluation of Cooperative property.</p>
+      <p><span class="sub-label">5.1.5</span> Upon liquidation, liquidating Distributions shall be made in accordance with positive Capital Account balances.</p>
+    </div>
+
+    <div class="section" id="s5-2">
+      <span class="section-label">§ 5.2</span>
+      <h3>Additional Capital Contributions</h3>
+      <p>The Board may require Members to make additional or supplemental capital contributions on a percentage or other basis established in a written policy furnished to each Member or in any applicable agreement.</p>
+    </div>
+
+    <div class="section" id="s5-3">
+      <span class="section-label">§ 5.3</span>
+      <h3>Allocation of Net Profits and Losses</h3>
+      <p><span class="sub-label">5.3.1</span> <span style="font-style:italic;">"Net Profit"</span> and <span style="font-style:italic;">"Net Loss"</span> mean, for each Fiscal Year, an amount equal to the Cooperative's taxable income or loss for such period per Code § 703(a), with various adjustments for tax-exempt income, certain expenditures, gain or loss from property disposition, depreciation, revaluation, and Code §§ 734(b) or 743(b) adjustments.</p>
+      <p><span class="sub-label">5.3.2</span> <strong>Net Profits.</strong> Except for distributions and/or payments owing to Investor Members, Net Profits shall be allocated equally among the Patron Members at the end of each tax year and <em>may</em> be allocated equally among the Members at such other times as determined by the Board. The Board has authority to develop, review, and revise the methodology for calculating each Member's allocable share of Net Profits and Net Losses.</p>
+      <p><span class="sub-label">5.3.3</span> <strong>Net Losses.</strong> Net Losses will be shared by Patron Members in proportion to their respective Capital Accounts.</p>
+      <p><span class="sub-label">5.3.4</span> <strong>Additional Tax Matters.</strong> All items of income, gain, loss, deduction, and other allocations not otherwise provided for shall be allocated among the Members in the same manner as Net Profits and Net Losses. A qualified income offset shall apply to the extent a Member shall have a negative Capital Account balance per Regulation § 1.704-1(b)(2)(ii)(d).</p>
+    </div>
+
+    <div class="section" id="s5-4">
+      <span class="section-label">§ 5.4</span>
+      <h3>Distributions</h3>
+      <p><span class="sub-label">5.4.1</span> <span style="font-style:italic;">"Distributable Cash"</span> means all cash, revenues, and funds received by the Cooperative, less: (a) all principal and interest payments on indebtedness; (b) all cash expenditures incident to normal business operations; (c) compensation, reimbursements, and guaranteed payments to Members, employees, and agents; (d) distributions and payments owing to Investor Members; and (e) reserves reasonably deemed necessary by the Board.</p>
+      <p><span class="sub-label">5.4.2</span> <strong>Record Date.</strong> The date on which the Board or duly authorized committee or officer determines to make a distribution shall be the record date.</p>
+      <p><span class="sub-label">5.4.3</span> <strong>Distributions in Kind.</strong> The Cooperative shall not distribute any asset other than cash to any Member except upon dissolution.</p>
+      <p><span class="sub-label">5.4.4</span> <strong>Limitations on Distributions.</strong> No distribution shall be made if it would leave the Cooperative unable to (i) pay its obligations and liabilities or (ii) establish reasonable reserves.</p>
+      <p><span class="sub-label">5.4.5</span> <strong>Exclusions.</strong> No redemption, recapitalization, conversion, or exchange of Stock or equity interests shall be deemed a distribution.</p>
+    </div>
+
+    <div class="section" id="s5-5">
+      <span class="section-label">§ 5.5</span>
+      <h3>Tax Withholding</h3>
+      <p><span class="sub-label">5.5.1</span> <strong>Withholding Advances.</strong> To the extent the Cooperative is required by applicable law or any tax treaty to withhold or make tax payments, it shall withhold such amounts from distributions. All such amounts withheld shall be treated as amounts actually distributed to such Person.</p>
+      <p><span class="sub-label">5.5.2</span> <strong>Indemnification.</strong> Each Member shall defend, indemnify, hold harmless, and advance fees for the Cooperative from any liability with respect to taxes, interest, or penalties that may be asserted by reason of the Cooperative's failure to deduct and withhold tax.</p>
+      <p><span class="sub-label">5.5.3</span> <strong>Overwithholding.</strong> Neither the Cooperative nor any Director, officer, or agent shall be liable for any excess taxes withheld. In the event of an overwithholding, a Member's sole recourse shall be to apply for a refund from the appropriate taxing authority.</p>
+    </div>
+
+    <div class="section" id="s5-6">
+      <span class="section-label">§ 5.6</span>
+      <h3>Limitation of Liability; Negative Capital Accounts</h3>
+      <p>No Member shall be liable for the debts, liabilities, or obligations of the Cooperative in an amount exceeding the positive balance, if any, of such Member's Capital Account. No Member shall have any obligation to restore any deficit balance in their Capital Account, including upon and after dissolution, winding up, and liquidation.</p>
+    </div>
+
+    <div class="section" id="s5-7">
+      <span class="section-label">§ 5.7</span>
+      <h3>No Offsets</h3>
+      <p>No Member shall be entitled to demand offset of their allocated share of Net Profits retained by the Cooperative against any indebtedness or claim due to the Cooperative.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE VI -->
+  <div class="article" id="article-vi">
+    <div class="article-header">Article VI</div>
+    <h2>Tax and Accounting</h2>
+
+    <div class="section" id="s6-1">
+      <span class="section-label">§ 6.1</span>
+      <h3>Tax Election</h3>
+      <p>It is intended that the Cooperative be treated as a partnership for federal, state, and local income tax purposes. Each Member shall report their respective share of Net Profits or Net Losses for tax purposes, whether or not distributions are made. Each Member is responsible for paying all taxes imposed on them individually, including quarterly self-employment taxes.</p>
+    </div>
+
+    <div class="section" id="s6-2">
+      <span class="section-label">§ 6.2</span>
+      <h3>Tax Returns and Reports</h3>
+      <p><span class="sub-label">6.2.1</span> The Board or duly authorized officer shall cause the preparation and timely filing of all tax returns. Copies of such returns, or pertinent information therefrom, including all required Schedule K-1 forms, shall be furnished to Members within a reasonable time after the end of the Cooperative's Fiscal Year.</p>
+      <p><span class="sub-label">6.2.2</span> Upon request of the Cooperative, every Member who is not a resident of Colorado shall provide any signed written agreements required by Colorado law.</p>
+      <p><span class="sub-label">6.2.3</span> All elections permitted to be made by the Cooperative under federal or state laws shall be made by the Board or duly authorized officer as they deem appropriate and in the best interests of the Members.</p>
+    </div>
+
+    <div class="section" id="s6-3">
+      <span class="section-label">§ 6.3</span>
+      <h3>Accounting Period and Principles</h3>
+      <p>The Cooperative's accounting period shall be the Fiscal Year. For financial reporting purposes, the Cooperative shall use generally accepted accounting principles applied on a consistent basis, unless the Cooperative is required to use a different method for federal income tax purposes.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE VII -->
+  <div class="article" id="article-vii">
+    <div class="article-header">Article VII</div>
+    <h2>Contracts, Loans, Checks, and Deposits</h2>
+
+    <div class="section" id="s7-1">
+      <span class="section-label">§ 7.1</span>
+      <h3>Contracts</h3>
+      <p>The Board may authorize any officers or agents to enter into any contract or execute and deliver any instrument in the name of and on behalf of the Cooperative. The President or any Vice President may enter into contracts or equipment leases in the ordinary course of business.</p>
+    </div>
+
+    <div class="section" id="s7-2">
+      <span class="section-label">§ 7.2</span>
+      <h3>Loans</h3>
+      <p>No loans shall be contracted on behalf of the Cooperative unless authorized by a resolution of the Board.</p>
+    </div>
+
+    <div class="section" id="s7-3">
+      <span class="section-label">§ 7.3</span>
+      <h3>Checks, Drafts, Etc.</h3>
+      <p>All checks, drafts, or other orders for the payment of money shall be signed by such officers or agents and in such manner as determined by resolution of the Board.</p>
+    </div>
+
+    <div class="section" id="s7-4">
+      <span class="section-label">§ 7.4</span>
+      <h3>Deposits and Depositories</h3>
+      <p>All funds of the Cooperative not otherwise employed shall be deposited from time to time to the credit of the Cooperative in such banks, credit unions, trust companies, or other depositories as the Board may select.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE VIII -->
+  <div class="article" id="article-viii">
+    <div class="article-header">Article VIII</div>
+    <h2>Fiscal Year</h2>
+    <div class="section">
+      <p>The fiscal year of the Cooperative shall commence on the 1st day of January each year and shall end on the following 31st day of December.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE IX -->
+  <div class="article" id="article-ix">
+    <div class="article-header">Article IX</div>
+    <h2>Unclaimed Money</h2>
+    <div class="section">
+      <p>This Article IX shall apply to any attempted distribution of or demand for funds held by the Cooperative in a Member's Account for which the person entitled to payment cannot be located. If the Money Claim is not made in writing within a period of three (3) years after giving written notice, it shall be removed as a liability on the books of the Cooperative and the Money Claim shall be extinguished. No removal shall be made unless the Cooperative has sent a written notice of eligibility for payment. Any and all amounts recovered by the Cooperative pursuant to this Article, after deducting any taxes payable thereon, shall be placed in a reserve or surplus account.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE X -->
+  <div class="article" id="article-x">
+    <div class="article-header">Article X</div>
+    <h2>Notice; Waiver of Notice</h2>
+
+    <div class="section" id="s10-1">
+      <span class="section-label">§ 10.1</span>
+      <h3>Notice, Generally</h3>
+      <p>Unless otherwise specified, all notices shall be in writing and shall be deemed effectively delivered: (a) when hand delivered; (b) when sent by confirmed electronic mail during normal business hours, and if not so confirmed, then on the next business day; (c) five (5) days after having been sent by registered or certified mail, return receipt requested, postage prepaid; or (d) one (1) day after deposit with a nationally recognized overnight courier.</p>
+    </div>
+
+    <div class="section" id="s10-2">
+      <span class="section-label">§ 10.2</span>
+      <h3>Waiver of Notice, Generally</h3>
+      <p>A waiver in writing, signed by the person entitled to notice, whether before, during, or after the event requiring such notice, shall be deemed equivalent to the giving of such notice.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE XI -->
+  <div class="article" id="article-xi">
+    <div class="article-header">Article XI</div>
+    <h2>Dispute Resolution; Jury Trial Waiver</h2>
+
+    <div class="section" id="s11-1">
+      <span class="section-label">§ 11.1</span>
+      <h3>Dispute Resolution, Generally</h3>
+      <p>Except for any equitable relief set forth in any agreement or these Bylaws, all disputes arising from or related to the performance of these Bylaws shall be resolved first through good faith negotiation. If the Dispute cannot be resolved through good faith negotiation, the parties may agree to non-binding mediation. Any remaining Dispute shall be arbitrated in accordance with this Article. All documents and information related to any Dispute shall be kept confidential.</p>
+    </div>
+
+    <div class="section" id="s11-2">
+      <span class="section-label">§ 11.2</span>
+      <h3>Negotiation and Mediation</h3>
+      <p>Any party may give notice of a Dispute. Parties shall attempt to negotiate a resolution. If unable to resolve, parties may agree to select a single neutral third party mediator. If unable to agree on a single mediator, the Board shall select the mediator. Costs and fees associated with mediation shall be shared equally by the parties.</p>
+    </div>
+
+    <div class="section" id="s11-3">
+      <span class="section-label">§ 11.3</span>
+      <h3>Binding Arbitration</h3>
+      <p>Any Dispute not resolved within 30 days of original notice shall be submitted to the American Arbitration Association ("AAA") for binding arbitration by a single arbitrator. All parties shall collectively select one arbitrator. If they fail within 30 days after submission to arbitration, AAA shall select the arbitrator. Arbitration shall be conducted in the State of Colorado under the Colorado Arbitration Act. The decision shall be binding, final, and unappealable. Costs and fees shall initially be shared equally; provided that the prevailing party shall be awarded reasonable attorney fees, expert witness costs, and other expenses.</p>
+    </div>
+
+    <div class="section" id="s11-4">
+      <span class="section-label">§ 11.4</span>
+      <h3>Governing Law; Waivers</h3>
+      <p>These Bylaws shall be governed by the laws of the State of Colorado. EACH MEMBER AND THE COOPERATIVE IRREVOCABLY WAIVES ALL RIGHTS TO SEEK REMEDIES IN ANY COURT AND THE RIGHT TO TRIAL BY JURY OF ANY SUIT, CLAIM, CAUSE OF ACTION OR OTHER ACTION TO ENFORCE ANY TERM OR CONDITION OF THESE BYLAWS OR OTHERWISE ARISING OUT OF OR RELATED TO THESE BYLAWS.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE XII -->
+  <div class="article" id="article-xii">
+    <div class="article-header">Article XII</div>
+    <h2>Amendments</h2>
+    <div class="section">
+      <p>Amendments to these Bylaws or the Articles of Organization shall be proposed and recommended (a) by a two-thirds (2/3rds) vote of the Board or (b) by a petition presented to the Secretary and signed by twenty-five percent (25%) of the Members, and, in either case, thereafter ratified by a two-thirds (2/3rds) vote of the Members, whether present or voting by mail, email or other permitted electronic voting means, provided the eligible Members so voting have received the exact wording of the amendments.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE XIII -->
+  <div class="article" id="article-xiii">
+    <div class="article-header">Article XIII</div>
+    <h2>Acquisition, Merger, Dissolution, or Conversion</h2>
+    <div class="section">
+      <p>If the Cooperative is a party to a proposed acquisition or a plan of merger, consolidation, dissolution, or share or equity capital exchange, such proposal or plan shall first be approved by a 2/3 vote of the Board and then shall be submitted and approved by a 2/3 vote of the Members present and voting. The provisions of Article XIV shall apply to any proceeds which may result from such acquisition, merger, consolidation, or share or equity capital exchange.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE XIV -->
+  <div class="article" id="article-xiv">
+    <div class="article-header">Article XIV</div>
+    <h2>Dissolution</h2>
+
+    <div class="section">
+      <p>Upon the dissolution, liquidation, or sale of the Cooperative, or sale of all or substantially all of the Cooperative's assets (each a <span style="font-style:italic;">"Liquidity Event"</span>), all debts and liabilities shall first be paid according to their respective priorities as defined by law or agreement. Any property or proceeds remaining shall be distributed in the following priorities:</p>
+    </div>
+
+    <div class="section" id="s14-1">
+      <span class="section-label">§ 14.1</span>
+      <p>First, to holders of Preferred Stock, if any, to the extent of any (a) liquidation rights set forth in a Series designation or otherwise and (b) declared but undistributed allocations or distributions, plus an amount equal to the original purchase price paid for all outstanding shares of Preferred Stock; and then</p>
+    </div>
+
+    <div class="section" id="s14-2">
+      <span class="section-label">§ 14.2</span>
+      <p>To distribute any remaining assets in the following order:</p>
+      <ol type="A">
+        <li>To the current and former Patron Members in accordance with the positive balance (if any) of each Member's Capital Account (as determined after taking into account all Capital Account adjustments for the Company's taxable year during which the liquidation occurs), either in cash or in kind, as determined by the trustees; and</li>
+        <li>Thereafter equally to all current Patron Members.</li>
+      </ol>
+      <p>If, in winding up the affairs of the Cooperative, certain assets are not liquid, have no market value, and the costs of delaying winding up exceed potential benefits, the trustees are authorized to assign the assets or any future proceeds to any local, statewide, or national nonprofit organization that has as a principal purpose the advancement of activities aligned with the Cooperative's mission or public benefit purposes.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE XV -->
+  <div class="article" id="article-xv">
+    <div class="article-header">Article XV</div>
+    <h2>Annual Benefit Report</h2>
+    <div class="section">
+      <p>The Cooperative shall prepare an annual benefit report to be provided to each Member and posted on the Cooperative's website, which shall include a description of: (a) the ways in which the Cooperative promoted the public benefits identified in the Articles of Organization and the best interests of those materially affected by the Cooperative's conduct, (b) any circumstances that have hindered these efforts, and (c) the process and rationale for selecting or changing the third-party standard used to complete this assessment. The annual benefit report does not need to be performed, audited, verified, or certified by any third party.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE XVI -->
+  <div class="article" id="article-xvi">
+    <div class="article-header">Article XVI</div>
+    <h2>Distribution of Bylaws</h2>
+    <div class="section">
+      <p>After adoption of these Bylaws or an amendment, a copy shall be provided to each Member and other person qualified to share in the Cooperative's Net Profits, and to each person who later becomes a Member or person qualified to share in the Cooperative's Net Profits as shown on the books of record of the Cooperative.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE XVII -->
+  <div class="article" id="article-xvii">
+    <div class="article-header">Article XVII</div>
+    <h2>Certain Transactions</h2>
+
+    <div class="section" id="s17-1">
+      <span class="section-label">§ 17.1</span>
+      <h3>Certain Transactions</h3>
+      <p>Contracts and/or transactions between the Cooperative and one or more of its Directors or officers, or between the Cooperative and any other corporation, partnership, association, or other organization in which one or more of its directors or officers have a financial interest, shall not be either void or voidable solely for this reason, or solely because the Director or officer is present at or participates in the meeting, or solely because the vote of such Director or officer is counted, if:</p>
+      <p><span class="sub-label">17.1.1</span> The material facts are disclosed or are known to the Board, and the Board in good faith authorizes, approves, or ratifies by affirmative vote of a majority of all Directors, and the contract is fair as to the Cooperative; or</p>
+      <p><span class="sub-label">17.1.2</span> The material facts are disclosed or are known to the Voting Members, and the contract is specifically approved in good faith by Members having a majority of the votes entitled to be voted; or</p>
+      <p><span class="sub-label">17.1.3</span> The material facts are disclosed or are known to the Board or the appropriate committee, and the Board or committee in good faith authorizes, approves, or ratifies by an affirmative vote of a majority of the disinterested Directors on the Board or committee, even though the number of disinterested Directors may be less than a quorum.</p>
+    </div>
+
+    <div class="section" id="s17-2">
+      <span class="section-label">§ 17.2</span>
+      <h3>Determining a Quorum</h3>
+      <p>Directors with an interest described in § 17.1 may be counted in determining the presence of a quorum.</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE XVIII -->
+  <div class="article" id="article-xviii">
+    <div class="article-header">Article XVIII</div>
+    <h2>Right to Information; Confidentiality</h2>
+
+    <div class="section" id="s18-1">
+      <span class="section-label">§ 18.1</span>
+      <h3>Right to Information</h3>
+      <p>The Cooperative shall maintain in record available at its principal office such information as is required by law. The Cooperative strives to balance the privacy interest of its Members with the right to access information. A Member or former Member making a valid request for information shall be solely responsible for paying or reimbursing the Cooperative for the reasonable costs associated with copying documents.</p>
+    </div>
+
+    <div class="section" id="s18-2">
+      <span class="section-label">§ 18.2</span>
+      <h3>Confidentiality</h3>
+      <p>Members and former Members shall at all times maintain in strict confidence and not disclose to any person not entitled to receive such information any and all information received by or through the Cooperative, pertaining to the records of the Cooperative, its Members, and the operations, activities, or transactions of the Cooperative. Each Member and former Member shall further ensure that any information transmitted to an attorney or other agent shall be kept in confidence to the same degree. All membership information, fee schedules, financial information, correspondence, and all other Cooperative documents and information furnished to the Member by the Cooperative will be kept in strict confidence.</p>
+    </div>
+  </div>
+
+  <!-- SCHEDULE A -->
+  <div class="schedule" id="schedule-a">
+    <div class="schedule-heading">Schedule A — Stock Prices &amp; Membership Dues</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Membership Class</th>
+          <th>Share Price</th>
+          <th>Membership Dues (yearly)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Patron Member</td>
+          <td class="placeholder-val">[TBD]</td>
+          <td class="placeholder-val">[TBD]</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:0.75rem;font-family:var(--mono);font-size:0.68rem;color:var(--text-dim);">The Board reserves the right in its sole and absolute discretion to revise Share Prices and Membership Dues at any time, with written notice.</p>
+  </div>
+
+  <!-- FOOTER NAV -->
+  <div class="doc-footer">
+    <a href="/legal/">← Legal documents</a>
+    <a href="/legal/bylaws-v2/">Bylaws v.2 (revised) →</a>
+    <a href="/legal/bylaws-analysis/">Legal analysis ↗</a>
+    <a href="/legal/bylaws-analysis/changes/">Proposed changes index ↗</a>
+  </div>
+
+</div><!-- /wrap -->
+
+<button class="theme-toggle" onclick="
+  var t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('techne-theme', t);
+">Toggle theme</button>
+
+</body>
+</html>
