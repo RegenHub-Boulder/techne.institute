@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Patronage Model: Premises and Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0f0f0f; --surface: #1c1c1c; --surface-2: #242424; --border: #3a3a3a;
+    --text: #ede9e2; --text-dim: #b6afa4;
+    --terra: #d6a778; --terra-text: #d6a778; --moss: #8aa888;
+    --serif: 'Libre Baskerville', Georgia, serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+  [data-theme="light"] {
+    color-scheme: light;
+    --bg: #faf7f2; --surface: #f4efe9; --surface-2: #ece4d8; --border: #d8cdbf;
+    --text: #2a2521; --text-dim: #6b6258;
+    --terra: #c4956a; --terra-text: #96704a; --moss: #5f7a5d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: var(--serif); line-height: 1.6;
+    transition: background 400ms ease, color 400ms ease;
+    padding: 1.5rem 1.8rem; display: flex; flex-direction: column;
+  }
+  @media (prefers-reduced-motion: reduce) { body, * { transition: none !important; } }
+
+  .topbar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.3rem; }
+  .kicker { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--terra-text); }
+  h1 { font-size: 1.4rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; margin-top: 0.2rem; }
+  .sub { color: var(--text-dim); font-style: italic; font-size: 0.84rem; margin-top: 0.2rem; max-width: 78ch; }
+  .toggle {
+    font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase;
+    background: transparent; border: 1px solid var(--border); color: var(--text-dim);
+    padding: 0.35rem 0.7rem; border-radius: 4px; cursor: pointer; white-space: nowrap;
+    transition: border-color 200ms ease, color 200ms ease;
+  }
+  .toggle:hover { border-color: var(--terra); color: var(--terra-text); }
+
+  .legends { display: flex; gap: 2.4rem; flex-wrap: wrap; margin: 0.7rem 0; }
+  .legrp { display: flex; flex-direction: column; gap: 0.3rem; }
+  .legrp .lh { font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terra-text); }
+  .legrow { display: flex; gap: 1.1rem; flex-wrap: wrap; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-dim); }
+  .legrow span { display: inline-flex; align-items: center; }
+  .legrow i { width: 9px; height: 9px; border-radius: 2px; margin-right: 0.4rem; font-style: normal; }
+  .dot-rea { background: var(--moss); }
+  .dot-internal { background: var(--terra); }
+  .dot-external { background: transparent; border: 1px solid var(--terra-text); }
+  .st-filed { background: var(--moss); }
+  .st-committed { background: var(--terra); }
+  .st-proposed { background: var(--text-dim); }
+  .st-open { background: transparent; border: 1px dashed var(--terra-text); }
+
+  .stage { flex: 1; display: grid; grid-template-columns: 1fr 1.32fr; gap: 1.4rem; min-height: 0; }
+  .leftcol { display: flex; flex-direction: column; gap: 0.55rem; min-height: 0; }
+
+  .modes { display: flex; gap: 0.3rem; }
+  .mode {
+    flex: 1; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+    background: transparent; border: 1px solid var(--border); color: var(--text-dim);
+    padding: 0.45rem 0.5rem; border-radius: 4px; cursor: pointer;
+    transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
+  }
+  .mode:hover { border-color: var(--terra); color: var(--terra-text); }
+  .mode.active { border-color: var(--terra); color: var(--terra-text); background: var(--surface-2); }
+
+  .listwrap { flex: 1; min-height: 0; overflow-y: auto; padding-right: 0.3rem; }
+  .tower { display: flex; flex-direction: column-reverse; gap: 0.32rem; }
+  .amaster { display: flex; flex-direction: column; gap: 0.32rem; }
+  .item {
+    background: var(--surface); border: 1px solid var(--border); border-left-width: 3px; border-radius: 5px;
+    padding: 0.45rem 0.7rem; cursor: pointer; display: flex; align-items: center; gap: 0.7rem;
+    transition: border-color 180ms ease, background 180ms ease; text-align: left; width: 100%; font-family: inherit;
+  }
+  .item:hover { background: var(--surface-2); }
+  .item.active { background: var(--surface-2); border-color: var(--terra); }
+  .item.lb-filed { border-left-color: var(--moss); }
+  .item.lb-committed { border-left-color: var(--terra); }
+  .item.lb-proposed { border-left-color: var(--text-dim); }
+  .item.lb-open { border-left-color: var(--terra-text); border-left-style: dashed; }
+  .item .num { font-family: var(--mono); font-size: 0.7rem; color: var(--terra-text); width: 1.7rem; flex: 0 0 auto; }
+  .item .name { font-size: 0.86rem; font-weight: 700; flex: 1; line-height: 1.3; }
+  .item .srcdots { display: flex; gap: 0.22rem; flex: 0 0 auto; }
+  .item .srcdots i { width: 7px; height: 7px; border-radius: 2px; font-style: normal; }
+  .item .ministatus { font-family: var(--mono); font-size: 0.52rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim); flex: 0 0 auto; }
+
+  .bedrock {
+    border: 1px solid var(--moss); border-radius: 5px; background: var(--surface);
+    padding: 0.5rem 0.75rem; display: flex; align-items: center; gap: 0.6rem; cursor: pointer;
+    transition: background 180ms ease;
+  }
+  .bedrock:hover { background: var(--surface-2); }
+  .bedrock .bk-tag { font-family: var(--mono); font-size: 0.54rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--moss); border: 1px solid var(--moss); border-radius: 3px; padding: 0.1rem 0.4rem; white-space: nowrap; }
+  .bedrock .bk-text { font-size: 0.78rem; color: var(--text-dim); font-style: italic; }
+
+  .detail { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.4rem 1.6rem; overflow-y: auto; }
+  .d-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.8rem; }
+  .d-num { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--terra-text); }
+  .d-status { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.12rem 0.5rem; border-radius: 3px; white-space: nowrap; }
+  .ds-filed { color: var(--moss); border: 1px solid var(--moss); }
+  .ds-committed { color: var(--terra-text); border: 1px solid var(--terra); }
+  .ds-proposed { color: var(--text-dim); border: 1px solid var(--border); }
+  .ds-open { color: var(--terra-text); border: 1px dashed var(--terra-text); }
+  .detail h2 { font-size: 1.3rem; font-weight: 700; margin: 0.2rem 0 0.85rem; line-height: 1.2; }
+  .adds { font-style: italic; color: var(--text); font-size: 0.95rem; margin-bottom: 1.2rem; }
+  .adds b { font-weight: 700; font-style: normal; color: var(--terra-text); }
+  .statement { font-size: 0.96rem; margin-bottom: 1.2rem; }
+  .sec-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.6rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+  .reqs { list-style: none; margin-bottom: 1.3rem; }
+  .reqs li { display: flex; gap: 0.7rem; align-items: baseline; padding: 0.45rem 0; border-bottom: 1px solid var(--border); }
+  .reqs li:last-child { border-bottom: none; }
+  .reqs .rtext { flex: 1; font-size: 0.9rem; }
+  .src-tag { font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.12rem 0.45rem; border-radius: 3px; white-space: nowrap; flex: 0 0 auto; }
+  .src-rea { color: var(--moss); border: 1px solid var(--moss); }
+  .src-internal { color: var(--terra-text); border: 1px solid var(--terra); }
+  .src-external { color: var(--text-dim); border: 1px dashed var(--terra-text); }
+
+  .asm { margin-bottom: 1.3rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .asm-card { background: var(--surface-2); border: 1px solid var(--border); border-left-width: 3px; border-radius: 4px; padding: 0.55rem 0.75rem; cursor: pointer; transition: border-color 160ms ease; width: 100%; text-align: left; font-family: inherit; color: var(--text); }
+  .asm-card:hover { border-color: var(--terra); }
+  .asm-card.lb-filed { border-left-color: var(--moss); }
+  .asm-card.lb-committed { border-left-color: var(--terra); }
+  .asm-card.lb-proposed { border-left-color: var(--text-dim); }
+  .asm-card.lb-open { border-left-color: var(--terra-text); border-left-style: dashed; }
+  .asm-top { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; margin-bottom: 0.2rem; }
+  .asm-id { font-family: var(--mono); font-size: 0.62rem; color: var(--terra-text); font-weight: 500; }
+  .asm-text { font-size: 0.84rem; }
+  .asm-link { font-family: var(--mono); font-size: 0.54rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim); margin-top: 0.3rem; }
+  .asm-none { font-size: 0.86rem; color: var(--text-dim); font-style: italic; }
+
+  .implies { font-family: var(--mono); font-size: 0.82rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 1.3rem; }
+  .implies::before { content: "implies  "; color: var(--terra-text); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
+  .chip { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.04em; background: var(--surface-2); border: 1px solid var(--border); border-radius: 4px; padding: 0.3rem 0.6rem; cursor: pointer; color: var(--text); transition: border-color 160ms ease, color 160ms ease; }
+  .chip:hover { border-color: var(--terra); color: var(--terra-text); }
+  .chip b { color: var(--terra-text); font-weight: 500; }
+
+  .builds { font-family: var(--mono); font-size: 0.72rem; color: var(--text-dim); line-height: 1.7; }
+  .builds b { color: var(--terra-text); font-weight: 500; }
+
+  @media (max-width: 860px) {
+    body { height: auto; }
+    .stage { grid-template-columns: 1fr; }
+    .listwrap { overflow: visible; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div>
+      <span class="kicker">Techne / CIS / Accounting and Labor Spine</span>
+      <h1>The Patronage Model: Premises and Architecture</h1>
+      <p class="sub">Two entry points into one model. Enter through a tier to see what it requires and rests on, or through an assumption to see everything it governs. Left borders mark status; the cross-links navigate both directions.</p>
+    </div>
+    <button class="toggle" id="themeToggle">Light</button>
+  </div>
+
+  <div class="legends">
+    <div class="legrp">
+      <span class="lh">Requirement source</span>
+      <div class="legrow">
+        <span><i class="dot-rea"></i> REA kernel</span>
+        <span><i class="dot-internal"></i> Bylaws / member agreement</span>
+        <span><i class="dot-external"></i> IRC &sect;704</span>
+      </div>
+    </div>
+    <div class="legrp">
+      <span class="lh">Status (left border)</span>
+      <div class="legrow">
+        <span><i class="st-filed"></i> filed</span>
+        <span><i class="st-committed"></i> committed</span>
+        <span><i class="st-proposed"></i> proposed</span>
+        <span><i class="st-open"></i> open</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="leftcol">
+      <div class="modes">
+        <button class="mode active" data-mode="tiers" id="modeTiers">Tiers</button>
+        <button class="mode" data-mode="assumptions" id="modeAsm">Assumptions</button>
+      </div>
+      <div class="listwrap">
+        <div class="tower" id="tower"></div>
+        <div class="amaster" id="amaster" style="display:none"></div>
+      </div>
+      <div class="bedrock" id="bedrock" title="Open assumption A01">
+        <span class="bk-tag">Bedrock &middot; A01 &middot; filed</span>
+        <span class="bk-text">Taxed as a partnership under Subchapter K. Every tier inherits from this.</span>
+      </div>
+    </div>
+    <div class="detail" id="detail"></div>
+  </div>
+
+<script>
+  var ASSUMPTIONS = {
+    A01: { id: "A01", title: "Tax characterization is fixed", status: "filed",
+      statement: "The cooperative is taxed as a partnership under Subchapter K. No Subchapter T construct (entity-level deduction, patronage dividend, written notice) has a place in the model.",
+      implies: "the spine is partnership accounting, not cooperative-corporate accounting",
+      tiers: [], foundation: true },
+    A02: { id: "A02", title: "The event log is the single source of truth", status: "committed",
+      statement: "Balances are computed, never stored. Every capital account figure is a fold over a complete, ordered, append-only record of economic events. This is also what \u00a7704(b) wants of a capital account.",
+      implies: "no balance is ever written directly; corrections are new events, not edits",
+      tiers: [0, 1, 2] },
+    A03: { id: "A03", title: "One log, two projections", status: "committed",
+      statement: "From the same event stream the system derives two capital accounts: the 704(b) book account and the tax-basis account. They agree by default and diverge only at defined events.",
+      implies: "every capital_event carries a book delta and a tax delta, even when equal",
+      tiers: [4] },
+    A04: { id: "A04", title: "Unit of account and valuation discipline", status: "proposed",
+      statement: "The unit of account is the US dollar. Non-cash contributions of labor, IP, and material are valued at fair market value at the moment of contribution and are not re-marked except by an explicit, approved revaluation event.",
+      implies: "valuation is an attribute of the contribution event, with method and approver recorded",
+      tiers: [3] },
+    A05: { id: "A05", title: "Allocation is prospective and policy-bound", status: "committed",
+      statement: "The allocation formula is a versioned, effective-dated Agreement, never a constant in code. Each allocation binds to the policy version in force; there is no retroactive allocation. The 40/30/20/10 weighting itself is proposed, pending ratification.",
+      implies: "a period's allocation is reproducible from the policy version it referenced",
+      tiers: [5] },
+    A06: { id: "A06", title: "Conservation laws live in the database", status: "committed",
+      statement: "Capital account integrity, one share per member, vote arithmetic, and deficit prevention are enforced as constraints at the data layer, not the interface. The interface can be wrong; the ledger cannot.",
+      implies: "the allocation engine cannot post an event that violates an invariant",
+      tiers: [2] },
+    A07: { id: "A07", title: "No phantom tax is a mechanism, not a promise", status: "committed",
+      statement: "Because partners are taxed when income is allocated rather than distributed, each income allocation generates a paired distribution obligation sized to cover the tax on that allocation. The commitment is held by the engine.",
+      implies: "allocation and its covering distribution are modeled as linked events",
+      tiers: [7] },
+    A08: { id: "A08", title: "Liquidation follows capital, on demand", status: "committed",
+      statement: "Substantial economic effect rests on cash following positive book capital accounts at dissolution. The system can render who receives what on liquidation at any instant, as a pure function of the book projection.",
+      implies: "a standing derived view computes liquidation distribution from book balances",
+      tiers: [6, 9] },
+    A09: { id: "A09", title: "Scope boundary: inside view only", status: "proposed",
+      statement: "The system maintains the partnership's inside view of both capital accounts. It assists with, but does not own, each member's outside basis, which incorporates facts the entity cannot fully observe. To be declared.",
+      implies: "outside basis surfaces are advisory, labeled, and defer to the member's CPA",
+      tiers: [4] },
+    A10: { id: "A10", title: "Deferred elections, fields carried now", status: "open",
+      statement: "Four elections remain open: deficit restoration obligation versus qualified income offset, the \u00a7704(c) method, a possible \u00a7754 election, and the book-up trigger policy. The schema carries the fields; the engine defers the rule until ratified.",
+      implies: "build the structure to hold the answer before the answer is settled",
+      tiers: [3, 6] }
+  };
+  var ASM_ORDER = ["A01","A02","A03","A04","A05","A06","A07","A08","A09","A10"];
+
+  var LAYERS = [
+    { num: "00", name: "Agents and events", status: "committed", sources: ["rea"],
+      adds: "Identity, and an <b>append-only record</b> of what happened.",
+      reqs: [
+        { t: "Every record resolves to one of four primitives: Agent, Event, Resource, or Agreement.", s: "rea" },
+        { t: "Natural and legal persons are Agents; every economic act is an Event referencing the parties and resources it touches.", s: "rea" }
+      ],
+      asm: ["A02"],
+      builds: "Foundation. Rests only on the filed Subchapter K bedrock." },
+    { num: "01", name: "Contribution captured", status: "committed", sources: ["internal", "rea"],
+      adds: "A member's act of participation becomes a <b>valued event</b>.",
+      reqs: [
+        { t: "Recognized activities are labor, revenue generation, cash, community, and voluntary asset contribution.", s: "internal" },
+        { t: "Each contribution is an Event tied to the contributing Agent and the Resource it produces or consumes.", s: "rea" }
+      ],
+      asm: ["A02"],
+      builds: "Builds on <b>00</b>. A contribution is a typed event." },
+    { num: "02", name: "Capital account as a fold", status: "committed", sources: ["internal", "rea"],
+      adds: "A per-member <b>balance</b>, computed from the full history of events.",
+      reqs: [
+        { t: "Each member has a capital account with complete event history: contributions, allocations, distributions, adjustments.", s: "internal" },
+        { t: "The balance is a fold over capital_events; member view shows their own, administrator view shows all.", s: "rea" }
+      ],
+      asm: ["A02", "A06"],
+      builds: "Builds on <b>00, 01</b>. Events accumulate into a balance." },
+    { num: "03", name: "The labor system: valuation discipline", status: "proposed", sources: ["external", "internal"],
+      adds: "Non-cash contributions are <b>valued in dollars</b> at the moment they occur.",
+      reqs: [
+        { t: "Non-cash contributions are recorded at fair market value at the time of contribution.", s: "external" },
+        { t: "Labor is valued on a documented rate schedule, treated as a non-cash capital contribution with zero basis and no built-in gain.", s: "internal" },
+        { t: "Contributed IP, equipment, and property carry FMV, tax basis, and built-in gain or loss under \u00a7704(c).", s: "external" }
+      ],
+      asm: ["A04", "A10"],
+      builds: "Builds on <b>01, 02</b>. A contribution cannot enter a capital account until it is valued." },
+    { num: "04", name: "Dual ledger: book and tax", status: "proposed", sources: ["external"],
+      adds: "<b>Two projections</b> from one log: the 704(b) book account and the tax-basis account.",
+      reqs: [
+        { t: "Maintain a 704(b) book capital account per Treas. Reg. 1.704-1(b)(2)(iv) and a separate tax-basis account.", s: "external" },
+        { t: "Divergence occurs at non-cash FMV differing from basis, book-ups, \u00a7704(c) property, and share of liabilities.", s: "external" },
+        { t: "Every capital_event carries both a book delta and a tax delta, even when equal.", s: "external" }
+      ],
+      asm: ["A03", "A09"],
+      builds: "Builds on <b>02, 03</b>. Valued events now post to two ledgers." },
+    { num: "05", name: "Period close and allocation", status: "proposed", sources: ["internal", "external"],
+      adds: "Net result for the period is <b>allocated</b> to capital accounts by formula.",
+      reqs: [
+        { t: "At period close, compute net profit or loss, apply the formula, update capital accounts, prepare K-1 data.", s: "internal" },
+        { t: "The patronage weighting (proposed 40 / 30 / 20 / 10) translates contribution into capital account credits.", s: "internal" },
+        { t: "Allocation rests on relative contributions of capital and services, with economic substance beyond tax effect.", s: "external" }
+      ],
+      asm: ["A05"],
+      builds: "Builds on <b>04</b>. Allocation is a posted event bound to a policy version." },
+    { num: "06", name: "Substantial economic effect", status: "open", sources: ["external"],
+      adds: "The three guards that make the allocations <b>respected</b> by the IRS.",
+      reqs: [
+        { t: "Capital accounts are maintained per the regulations (satisfied by tier 04).", s: "external" },
+        { t: "On liquidation, distributions follow positive capital account balances.", s: "external" },
+        { t: "Deficit prevention is provided by either a deficit restoration obligation or a qualified income offset.", s: "external" }
+      ],
+      asm: ["A08", "A10"],
+      builds: "Wraps <b>05</b>. Without these guards the allocations can be disregarded." },
+    { num: "07", name: "Distribution, no phantom tax", status: "committed", sources: ["internal"],
+      adds: "Cash moves, and rides <b>alongside the allocation</b> that triggered the tax.",
+      reqs: [
+        { t: "Distribution cycle: board decision, distributable cash, reserves, withholding, payments, capital accounts adjusted.", s: "internal" },
+        { t: "Each income allocation generates a paired distribution sized to cover the tax on it.", s: "internal" }
+      ],
+      asm: ["A07"],
+      builds: "Builds on <b>05, 06</b>. A distribution is a capital account debit paired to an allocation." },
+    { num: "08", name: "Patronage governance constraints", status: "committed", sources: ["internal"],
+      adds: "The cooperative <b>floors</b> that bound who benefits and who decides.",
+      reqs: [
+        { t: "Patron members receive at least 51 percent of total economic benefit, computed annually before any investor dividend.", s: "internal" },
+        { t: "One member, one vote, regardless of capital account size.", s: "internal" },
+        { t: "The board may revise weighting and methodology by resolution, prospectively only.", s: "internal" }
+      ],
+      asm: [],
+      asmNote: "No accounting-spine assumption governs this tier directly. It expresses the cooperative governance floors set by the bylaws and the ULCAA, which constrain the tiers below rather than extend them.",
+      builds: "Constrains <b>05, 07</b>. Allocation and distribution run inside these floors." },
+    { num: "09", name: "Exit: withdrawal and redemption", status: "committed", sources: ["internal", "external"],
+      adds: "A member leaves, and is <b>made whole</b> on their accumulated stake.",
+      reqs: [
+        { t: "Withdrawal flow: fourteen-day notice, effective date, equity calculation, board decision on timing and form.", s: "internal" },
+        { t: "Exit returns the capital account balance, not the original share price, since the member was taxed on allocations along the way.", s: "external" },
+        { t: "Redemption may be scheduled over up to five years; stock transfers back under the one-per-member rule.", s: "internal" }
+      ],
+      asm: ["A08"],
+      builds: "Apex. Closes the lifecycle opened at <b>01</b>, settling against the balance from <b>02</b>." }
+  ];
+
+  var tower = document.getElementById('tower');
+  var amaster = document.getElementById('amaster');
+  var detail = document.getElementById('detail');
+  var bedrock = document.getElementById('bedrock');
+  var modeTiers = document.getElementById('modeTiers');
+  var modeAsm = document.getElementById('modeAsm');
+  var current = { mode: 'tiers', tier: 0, asm: null };
+
+  // build tier list
+  LAYERS.forEach(function(L, i) {
+    var b = document.createElement('button');
+    b.className = 'item lb-' + L.status;
+    b.setAttribute('data-i', i);
+    var dots = L.sources.map(function(s){ return '<i class="dot-' + s + '"></i>'; }).join('');
+    b.innerHTML = '<span class="num">' + L.num + '</span><span class="name">' + L.name + '</span><span class="srcdots">' + dots + '</span>';
+    b.addEventListener('click', function(){ selectTier(i); });
+    tower.appendChild(b);
+  });
+
+  // build assumption list
+  ASM_ORDER.forEach(function(id) {
+    var A = ASSUMPTIONS[id];
+    var b = document.createElement('button');
+    b.className = 'item lb-' + A.status;
+    b.setAttribute('data-id', id);
+    b.innerHTML = '<span class="num">' + A.id + '</span><span class="name">' + A.title + '</span><span class="ministatus">' + A.status + '</span>';
+    b.addEventListener('click', function(){ selectAssumption(id); });
+    amaster.appendChild(b);
+  });
+
+  function setMode(mode) {
+    current.mode = mode;
+    var isTiers = mode === 'tiers';
+    tower.style.display = isTiers ? 'flex' : 'none';
+    bedrock.style.display = isTiers ? 'flex' : 'none';
+    amaster.style.display = isTiers ? 'none' : 'flex';
+    modeTiers.classList.toggle('active', isTiers);
+    modeAsm.classList.toggle('active', !isTiers);
+  }
+
+  function highlightTier(i) {
+    document.querySelectorAll('#tower .item').forEach(function(t){
+      t.classList.toggle('active', +t.getAttribute('data-i') === i);
+    });
+  }
+  function highlightAsm(id) {
+    document.querySelectorAll('#amaster .item').forEach(function(t){
+      t.classList.toggle('active', t.getAttribute('data-id') === id);
+    });
+  }
+
+  function selectTier(i) {
+    if (current.mode !== 'tiers') setMode('tiers');
+    current.tier = i; current.asm = null;
+    highlightTier(i);
+    var L = LAYERS[i];
+    var reqHtml = L.reqs.map(function(r){
+      var label = r.s === 'rea' ? 'REA' : (r.s === 'internal' ? 'Bylaws / MA' : 'IRC \u00a7704');
+      return '<li><span class="rtext">' + r.t + '</span><span class="src-tag src-' + r.s + '">' + label + '</span></li>';
+    }).join('');
+
+    var asmHtml;
+    if (L.asm && L.asm.length) {
+      asmHtml = L.asm.map(function(id){
+        var A = ASSUMPTIONS[id];
+        return '<button class="asm-card lb-' + A.status + '" onclick="selectAssumption(\'' + id + '\')">' +
+          '<div class="asm-top"><span class="asm-id">' + A.id + ' &middot; ' + A.title +
+          '</span><span class="d-status ds-' + A.status + '">' + A.status + '</span></div>' +
+          '<div class="asm-text">' + A.statement + '</div>' +
+          '<div class="asm-link">open assumption &rarr;</div></button>';
+      }).join('');
+    } else {
+      asmHtml = '<div class="asm-none">' + (L.asmNote || '') + '</div>';
+    }
+
+    detail.innerHTML =
+      '<div class="d-head"><span class="d-num">TIER ' + L.num + '</span>' +
+        '<span class="d-status ds-' + L.status + '">' + L.status + '</span></div>' +
+      '<h2>' + L.name + '</h2>' +
+      '<p class="adds">Adds: ' + L.adds + '</p>' +
+      '<div class="sec-label">Requirements introduced</div>' +
+      '<ul class="reqs">' + reqHtml + '</ul>' +
+      '<div class="sec-label">Rests on these assumptions</div>' +
+      '<div class="asm">' + asmHtml + '</div>' +
+      '<div class="sec-label">Dependency</div>' +
+      '<div class="builds">' + L.builds + '</div>';
+    detail.scrollTop = 0;
+  }
+
+  function selectAssumption(id) {
+    if (current.mode !== 'assumptions') setMode('assumptions');
+    current.asm = id; current.tier = null;
+    highlightAsm(id);
+    var A = ASSUMPTIONS[id];
+
+    var govHtml;
+    if (A.foundation) {
+      govHtml = '<div class="asm-none">Foundation. Every tier in the stack inherits from this filed fact.</div>';
+    } else {
+      govHtml = '<div class="chips">' + A.tiers.map(function(i){
+        var L = LAYERS[i];
+        return '<button class="chip" onclick="selectTier(' + i + ')"><b>' + L.num + '</b> &nbsp;' + L.name + '</button>';
+      }).join('') + '</div>';
+    }
+
+    detail.innerHTML =
+      '<div class="d-head"><span class="d-num">ASSUMPTION ' + A.id + '</span>' +
+        '<span class="d-status ds-' + A.status + '">' + A.status + '</span></div>' +
+      '<h2>' + A.title + '</h2>' +
+      '<p class="statement">' + A.statement + '</p>' +
+      '<div class="implies">' + A.implies + '</div>' +
+      '<div class="sec-label">Governs these tiers</div>' +
+      govHtml;
+    detail.scrollTop = 0;
+  }
+  window.selectTier = selectTier;
+  window.selectAssumption = selectAssumption;
+
+  modeTiers.addEventListener('click', function(){ setMode('tiers'); selectTier(current.tier == null ? 0 : current.tier); });
+  modeAsm.addEventListener('click', function(){ setMode('assumptions'); selectAssumption(current.asm == null ? 'A01' : current.asm); });
+  bedrock.addEventListener('click', function(){ selectAssumption('A01'); });
+
+  setMode('tiers');
+  selectTier(0);
+
+  (function() {
+    var root = document.documentElement;
+    var btn = document.getElementById('themeToggle');
+    function setLabel() { btn.textContent = root.getAttribute('data-theme') === 'dark' ? 'Light' : 'Dark'; }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      root.setAttribute('data-theme', 'light');
+    }
+    setLabel();
+    btn.addEventListener('click', function() {
+      root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      setLabel();
+    });
+  })();
+</script>
+</body>
+</html>
