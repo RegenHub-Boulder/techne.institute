@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function() {
+      var s = localStorage.getItem('techne-theme');
+      if (s === 'light' || s === 'dark') document.documentElement.setAttribute('data-theme', s);
+      else document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Membership Agreement v.1 — RegenHub, LCA</title>
+  <meta name="description" content="RegenHub, LCA Membership Agreement — Original v.1 draft as received from attorney. Reference document for reconciling changes in v.2.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --serif: 'Libre Baskerville', Georgia, serif;
+      --mono:  'IBM Plex Mono', 'Courier New', monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg:         #08080a;
+      --surface:    #111114;
+      --raised:     #18181c;
+      --border:     rgba(196,149,106,0.12);
+      --border-dim: rgba(255,255,255,0.06);
+      --text:       #e0d8cc;
+      --text-warm:  #c8bca8;
+      --text-muted: rgba(200,188,168,0.55);
+      --text-dim:   rgba(200,188,168,0.28);
+      --gold:       #c4956a;
+      --moss:       #6a8a5e;
+      --rust:       #9a5a5a;
+      --sky:        #5a7a9a;
+    }
+
+    [data-theme="light"] {
+      --bg:         #f7f5f0;
+      --surface:    #ebe7df;
+      --raised:     #ffffff;
+      --border:     rgba(196,149,106,0.20);
+      --border-dim: rgba(0,0,0,0.08);
+      --text:       #2a2520;
+      --text-warm:  #3a3028;
+      --text-muted: rgba(60,48,36,0.60);
+      --text-dim:   rgba(60,48,36,0.30);
+      --gold:       #8a6a3a;
+      --moss:       #4a6a3a;
+      --rust:       #8a3a3a;
+      --sky:        #3a5a7a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 3rem 2rem 6rem;
+    }
+
+    /* -- VERSION BANNER -- */
+    .version-banner {
+      background: rgba(90,122,154,0.10);
+      border: 1px solid rgba(90,122,154,0.30);
+      padding: 0.6rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--sky);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    /* -- COMPARE BAR -- */
+    .compare-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .compare-bar-text {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--text-muted);
+    }
+
+    .compare-bar-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    .compare-link {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      text-decoration: none;
+      padding: 0.25rem 0.65rem;
+      border-radius: 2px;
+    }
+    .compare-link.v2 { color: var(--gold); border: 1px solid rgba(196,149,106,0.35); background: rgba(196,149,106,0.06); }
+    .compare-link.v2:hover { background: rgba(196,149,106,0.12); }
+    .compare-link.sec { color: var(--text-muted); border: 1px solid var(--border-dim); }
+    .compare-link.sec:hover { color: var(--text); }
+
+    /* -- DOCUMENT HEADER -- */
+    .doc-header {
+      border-top: 2px solid var(--sky);
+      padding-top: 2rem;
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .doc-header .org-name {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--sky);
+      margin-bottom: 0.75rem;
+    }
+
+    .doc-header h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+    }
+
+    .doc-header .doc-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .doc-meta-bar {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      padding: 0.9rem 0;
+      border-top: 1px solid var(--border-dim);
+      border-bottom: 1px solid var(--border-dim);
+      margin: 1.5rem 0 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .doc-meta-bar .m-item { text-align: center; }
+    .doc-meta-bar .m-label {
+      font-family: var(--mono);
+      font-size: 0.54rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      margin-bottom: 0.15rem;
+    }
+    .doc-meta-bar .m-val { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* -- RECITALS -- */
+    .recitals {
+      margin-bottom: 2.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--surface);
+      border-left: 3px solid var(--border);
+    }
+    .recitals-heading {
+      font-family: var(--mono);
+      font-size: 0.60rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-dim);
+      margin-bottom: 0.9rem;
+    }
+    .recitals p {
+      font-size: 0.86rem;
+      color: var(--text-warm);
+      margin-bottom: 0.75rem;
+      line-height: 1.7;
+    }
+    .recitals p:last-child { margin-bottom: 0; }
+
+    /* -- SECTIONS -- */
+    .section-group {
+      margin-bottom: 3rem;
+    }
+
+    .section-group-header {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      margin-bottom: 0.35rem;
+    }
+
+    .section-group h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    .section {
+      margin-bottom: 1.75rem;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      color: var(--sky);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.35rem;
+      display: block;
+    }
+
+    .section h3 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+
+    .section p {
+      font-size: 0.88rem;
+      color: var(--text-warm);
+      margin-bottom: 0.6rem;
+      line-height: 1.7;
+    }
+    .section p:last-child { margin-bottom: 0; }
+
+    .section ol, .section ul {
+      margin: 0.5rem 0 0.6rem 1.5rem;
+      font-size: 0.88rem;
+      color: var(--text-warm);
+    }
+    .section li { margin-bottom: 0.35rem; line-height: 1.6; }
+
+    .sub-label {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-right: 0.3rem;
+    }
+
+    /* -- CAPS block -- */
+    .caps-block {
+      font-size: 0.82rem;
+      color: var(--text-warm);
+      line-height: 1.7;
+      margin-bottom: 0.6rem;
+      font-family: var(--mono);
+      letter-spacing: 0.02em;
+    }
+
+    /* -- SIGNATURE BLOCK -- */
+    .sig-block {
+      margin-top: 3rem;
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+    }
+
+    .sig-block-heading {
+      font-family: var(--mono);
+      font-size: 0.60rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-dim);
+      margin-bottom: 1.25rem;
+    }
+
+    .sig-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .sig-col { display: flex; flex-direction: column; gap: 1rem; }
+    .sig-party {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .sig-line {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    .sig-line-rule {
+      border: none;
+      border-bottom: 1px solid var(--border-dim);
+      height: 1.5rem;
+      margin-bottom: 0.15rem;
+    }
+
+    /* -- FOOTER NAV -- */
+    .doc-footer {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-dim);
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .doc-footer a {
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      text-decoration: none;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+    .doc-footer a:hover { color: var(--gold); }
+
+    /* -- THEME TOGGLE -- */
+    .theme-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.4rem 0.75rem;
+      cursor: pointer;
+      border-radius: 2px;
+      z-index: 50;
+    }
+    .theme-toggle:hover { color: var(--gold); border-color: var(--border); }
+
+    @media (max-width: 600px) {
+      .wrap { padding: 2rem 1.25rem 5rem; }
+      .doc-meta-bar { gap: 1.5rem; }
+      .sig-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="version-banner">Version 1 — Original attorney draft · Reference document only · Not in effect</div>
+
+  <div class="compare-bar">
+    <span class="compare-bar-text">This is v.1 — the original draft as received from attorney counsel. Revised language appears in v.2.</span>
+    <div class="compare-bar-links">
+      <a class="compare-link v2" href="/legal/membership-agreement-v2/">View MA v.2 (revised) →</a>
+      <a class="compare-link sec" href="/legal/membership-agreement-modifications/">Legal analysis ↗</a>
+      <a class="compare-link sec" href="/legal/membership-agreement-modifications/changes/">Proposed changes ↗</a>
+    </div>
+  </div>
+
+  <div class="doc-header">
+    <div class="org-name">RegenHub, LCA · Membership Agreement Version 1</div>
+    <h1>Membership Agreement</h1>
+    <div class="doc-sub">Class A Patron Membership</div>
+  </div>
+
+  <div class="doc-meta-bar">
+    <div class="m-item">
+      <div class="m-label">Version</div>
+      <div class="m-val">v.1 (original)</div>
+    </div>
+    <div class="m-item">
+      <div class="m-label">Attorney</div>
+      <div class="m-val">Jeffrey Pote / Pote Law Firm</div>
+    </div>
+    <div class="m-item">
+      <div class="m-label">Effective Date</div>
+      <div class="m-val">[…] (placeholder)</div>
+    </div>
+    <div class="m-item">
+      <div class="m-label">Stock Price</div>
+      <div class="m-val">$100.00 USD</div>
+    </div>
+    <div class="m-item">
+      <div class="m-label">Status</div>
+      <div class="m-val">Superseded by v.2 draft</div>
+    </div>
+  </div>
+
+  <p style="font-family:var(--serif);font-size:0.88rem;color:var(--text-warm);line-height:1.7;margin-bottom:2rem;">
+    This Membership Agreement (<em>"Agreement"</em>) is made and entered into as of the Effective Date (as defined below) by and between the undersigned (hereinafter <em>"Applicant"</em>) whose address is set forth on the signature page hereto and RegenHub, LCA, a Colorado public benefit, limited cooperative association having its principal office at 1515 Walnut St #200, Boulder, CO 80302 (<em>"RegenHub"</em> or <em>"Cooperative"</em>), each a <em>"Party"</em> and collectively the <em>"Parties"</em>. Such Applicant has been approved by Cooperative's board of directors (<em>"Board"</em>) in accordance with the procedure set forth in Cooperative's bylaws (<em>"Bylaws"</em>), hereby incorporated by reference as if fully set forth herein. Capitalized terms not otherwise defined herein shall have the definitions set forth in the Bylaws.
+  </p>
+
+  <!-- RECITALS -->
+  <div class="recitals">
+    <div class="recitals-heading">Recitals</div>
+    <p><strong>WHEREAS</strong>, RegenHub is a cooperatively run coworking space and community venue in Boulder, Colorado, providing affordable workspace and event infrastructure for technologists, creators, and changemakers building towards regenerative futures;</p>
+    <p><strong>WHEREAS</strong>, Applicant is an individual or entity who meets the qualifications for membership in the Cooperative as set forth in the Bylaws and desires to become a Member to take advantage of the membership benefits of the Cooperative; and</p>
+    <p><strong>WHEREAS</strong>, the Cooperative desires to admit Applicant to Cooperative's membership as a Member, and Applicant desires to be admitted to Cooperative's membership as a Member, in each case in accordance with and subject to the terms and conditions of this Agreement.</p>
+  </div>
+
+  <p style="font-family:var(--mono);font-size:0.70rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1.5rem;">Agreement</p>
+  <p style="font-family:var(--serif);font-size:0.85rem;color:var(--text-muted);line-height:1.7;margin-bottom:2.5rem;">
+    NOW THEREFORE, in consideration of the foregoing recitals which are incorporated in this Agreement and the representations, warranties, and covenants set forth below, and for other good and valuable consideration, the receipt and sufficiency of which are hereby acknowledged by the Parties, the Parties, intending to be legally bound, agree as follows:
+  </p>
+
+  <!-- SECTION 1 -->
+  <div class="section-group" id="s1">
+    <div class="section-group-header">Section 1</div>
+    <h2>Membership, Stock Price, and Dues</h2>
+
+    <div class="section" id="s1-1">
+      <span class="section-label">§ 1.1</span>
+      <h3>Membership</h3>
+      <p>Applicant, following purchase of one (1) share of Class A voting common stock and upon execution of this Agreement and any other further documents required by the Board, will be entitled to be a full Member of the Cooperative.</p>
+    </div>
+
+    <div class="section" id="s1-2">
+      <span class="section-label">§ 1.2</span>
+      <h3>Incorporation of Governing Documents and Policies</h3>
+      <p>Applicant acknowledges receipt of copies of Cooperative's articles of organization and Bylaws (collectively, the <em>"Governing Documents"</em>) in effect as of the Effective Date of this Agreement. Applicants shall comply with and be bound by the terms of the Governing Documents, as modified from time to time in accordance with their terms. In accordance with the provisions of the Governing Documents, the officers and directors of Cooperative shall have management control over the activities of Cooperative and may, from time to time, modify, add, or delete Cooperative membership benefits upon notice to Applicant. Applicant further agrees to abide by any and all policies that are now in force or as may be adopted and/or amended from time to time by the Board (<em>"Policies"</em>). Applicant shall promptly notify the Cooperative of any changes that may result in noncompliance with this Agreement, the Governing Documents, or the Policies.</p>
+    </div>
+
+    <div class="section" id="s1-3">
+      <span class="section-label">§ 1.3</span>
+      <h3>Use and Services</h3>
+      <p>Subject to the Governing Documents, Applicant shall commence providing or purchasing, or continue to provide or purchase in a similar capacity as prior to membership (unless Cooperative otherwise agrees to modify such capacity), services to or from Cooperative.</p>
+    </div>
+
+    <div class="section" id="s1-4">
+      <span class="section-label">§ 1.4</span>
+      <h3>Stock Price</h3>
+      <p><span class="sub-label">1.4.1</span> <strong>Capital Stock.</strong> One (1) share of Class A voting common stock of Cooperative at a price of $100.00 USD due in lump-sum cash payment, by executing a promissory note, or some combination thereof (and where any such promissory note shall be secured by the purchasing Member's Stock until repaid in full), or in any other manner permitted or required by the Board.</p>
+      <p><span class="sub-label">1.4.2</span> <strong>Price per Share.</strong> Applicant acknowledges that the purchase price per share of common stock in Cooperative shall be as set forth in Schedule A of the Bylaws (<em>"Schedule A"</em>) or by a resolution of the Board, and may be increased or decreased from time to time by the Board and that, accordingly, the purchase price per share paid by Applicant may be different from the amount paid by any Member admitted to Cooperative before or after Applicant is admitted.</p>
+    </div>
+
+    <div class="section" id="s1-5">
+      <span class="section-label">§ 1.5</span>
+      <h3>Membership Dues</h3>
+      <p>Cooperative may charge annual membership dues, membership enrollment fees, monthly dues or fees, and other fees and expenses relating to Applicant's membership in Cooperative. The current Cooperative membership dues and fee structure are set forth in Schedule A. The Board, in its sole discretion, may amend Schedule A and, accordingly, may add, eliminate, increase or decrease from time to time the membership dues and other fees, and may otherwise modify the membership dues and fee structure (collectively, the <em>"Membership Dues Changes"</em>). Applicant hereby agrees to be bound by and timely pay any such Membership Dues Changes.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section-group" id="s2">
+    <div class="section-group-header">Section 2</div>
+    <h2>Applicant Requirements and Benefits</h2>
+
+    <div class="section" id="s2-1">
+      <span class="section-label">§ 2.1</span>
+      <h3>Accuracy of Information</h3>
+      <p>Applicant represents and warrants to, and covenants with, the Cooperative that all information provided by Applicant, including but not limited to any application documents completed by Applicant, financial statements made by Applicant, or supplemental documents and/or information provided by Applicant is complete, accurate, and truthful.</p>
+    </div>
+
+    <div class="section" id="s2-2">
+      <span class="section-label">§ 2.2</span>
+      <h3>Member Benefits Furnished by Cooperative</h3>
+      <p>The Cooperative intends to provide the following benefits to Applicant and other Members, in each case in accordance with and subject to the Governing Documents and Policies: (a) ownership of Cooperative as a Member in accordance with and subject to the terms and conditions of the Bylaws; (b) access to and use of the Cooperative's coworking space and community venue on those terms afforded to other Members, as modified from time to time by the Board; (c) participation in Cooperative's governance and decision making; (d) profit share, if any, with other Members, as established by the Board and modified from time to time by the Board in its sole discretion in accordance with the Bylaws; and (e) mentorship, guidance, and knowledge sharing with other Cooperative members.</p>
+    </div>
+
+    <div class="section" id="s2-3">
+      <span class="section-label">§ 2.3</span>
+      <h3>Profit Share</h3>
+      <p>Applicant may receive profit shares, refunds, rebates, or coupons in accordance with and subject to the Bylaws and Policies or resolutions of the Board. Subject to the Bylaws and applicable law, the Board will establish the formula for profit sharing and has the right to change the formula at its own discretion.</p>
+    </div>
+
+    <div class="section" id="s2-4">
+      <span class="section-label">§ 2.4</span>
+      <h3>Membership Obligations of Applicant</h3>
+      <p>Applicant agrees to become a Member of the Cooperative in accordance with and subject to the terms and conditions of its Articles of Organization, Bylaws, Policies, Board resolutions, and this Agreement.</p>
+    </div>
+
+    <div class="section" id="s2-5">
+      <span class="section-label">§ 2.5</span>
+      <h3>Reputation, Integrity &amp; Ethical Standards</h3>
+      <p>Applicant shall comply with all state, federal, and local laws, ordinances, rules and regulations, and shall act in an ethical, first-class and quality manner and according to the highest standards of integrity in connection with your business and affairs with the Cooperative. All information, reports, documents, etc. provided by Applicant to the Cooperative shall be accurate, complete, truthful and timely. If the Board determines, based on a good faith belief, that you, the Applicant, have inaccurately reported information, the Board may choose to terminate your membership, in its sole discretion, for a breach of this section by you.</p>
+    </div>
+
+    <div class="section" id="s2-6">
+      <span class="section-label">§ 2.6</span>
+      <h3>Consent to Tax Treatment</h3>
+      <p>Applicant, by becoming a Member of the Cooperative and having received a copy of this Agreement, consents that the amount of any allocations of net profits or losses (as defined by the Bylaws) shall be taken into account on Applicant's income tax return at their stated dollar amounts in the taxable year in which they were received by Applicant.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section-group" id="s3">
+    <div class="section-group-header">Section 3</div>
+    <h2>Intellectual Property</h2>
+
+    <div class="section" id="s3-1">
+      <span class="section-label">§ 3.1</span>
+      <h3>"Works Made for Hire;" Assignment</h3>
+      <p>The Parties agree, and Applicant acknowledges, that, except for previously developed Intellectual Property (as defined below) proprietary to Applicant (or which such person licenses from third-parties), which, in any case, do not encompass any Confidential Information (as defined below), Intellectual Property, and/or proprietary information belonging to the Cooperative (collectively, <em>"Applicant IP"</em>), the Cooperative shall have title to, ownership of, and all proprietary rights in and to any Intellectual Property, including all works-in-progress, developed or created within Applicant's scope of their service (if any) to the Cooperative, all of which shall be considered <em>"works made for hire,"</em> as defined by the copyright laws of the United States, including United States Code, "Copyrights," 17 U.S.C. §§ 101 and 201(b). If any Intellectual Property is not deemed to be a "work made for hire", Applicant shall, and hereby assigns and agrees to assign in the future, to the Cooperative all of its right, title, and interest in and to such material, including all copyrights and copyright registrations, and all renewals and extensions, worldwide and forever, together with all rights to sue and recover for infringement, reserving nothing to Applicant.</p>
+    </div>
+
+    <div class="section" id="s3-2">
+      <span class="section-label">§ 3.2</span>
+      <h3>Moral Rights Waiver</h3>
+      <p>Except to the extent that any Intellectual Property is or constitutes Applicant IP, Applicant hereby waives any and all moral rights arising under any federal or state law of the United States or any law of any other country in and to such Intellectual Property, and hereby agrees that the Cooperative shall have all rights flowing from this waiver including, without limitation, the right to modify the Intellectual Property for any and all uses now known or hereafter discovered.</p>
+    </div>
+
+    <div class="section" id="s3-3">
+      <span class="section-label">§ 3.3</span>
+      <h3>Applicant's Limited License</h3>
+      <p>Subject to the terms and conditions of any agreement between the Cooperative and any third party, the Cooperative grants to Applicant, upon Applicant's admission as a member of the Cooperative, a worldwide, perpetual, royalty-free, and non-exclusive limited license to access, display, reproduce, transmit, and use any Cooperative Intellectual Property created or developed (in whole or in part) by Applicant in and only in Applicant's portfolio of work or the marketing, advertising or promotion of Applicant's services; provided that (a) prior to any such use on each occasion Applicant shall inquire from the Cooperative whether any of the Cooperative's agreements restrict or limit Applicant's use of any such Intellectual Property and (b) Applicant shall not have any right to use any such Intellectual Property pursuant to this § 3.3 unless the Cooperative has informed the Applicant in writing that such use is permitted.</p>
+    </div>
+
+    <div class="section" id="s3-4">
+      <span class="section-label">§ 3.4</span>
+      <h3>Definition of Intellectual Property</h3>
+      <p><em>"Intellectual Property"</em> means (a) all inventions, improvements, patents, patent applications, and patent disclosures; (b) all trademarks, service marks, trade dress, logos, trade names, and corporate names; (c) all copyrightable works, all copyrights, and all applications, registrations, and renewals; (d) all mask works; (e) all trade secrets and confidential business information; (f) all computer software; (g) all other proprietary rights; and (h) all copies and tangible embodiments thereof.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section-group" id="s4">
+    <div class="section-group-header">Section 4</div>
+    <h2>Confidentiality</h2>
+
+    <div class="section" id="s4-1">
+      <span class="section-label">§ 4.1</span>
+      <p>Except as otherwise authorized by this Agreement, each Party agrees to hold information provided to it by the other party as secret and strictly confidential, whether in the form of reports, plans, member lists, or documents, including, but not limited to, drawings, writings, samples, know-how, marketing strategies, business operations and business systems, non-public financial information, the terms of any other agreements to which the Cooperative is a party, or any other proprietary or sensitive information or material (collectively, <em>"Confidential Information"</em>). Confidential Information provided from one Party to the other will remain the sole property of the disclosing Party.</p>
+    </div>
+
+    <div class="section" id="s4-2">
+      <span class="section-label">§ 4.2</span>
+      <p>Each Party agrees to use Confidential Information only to perform their respective obligations (a) under this Agreement, the Governing Documents, Policies, and any other agreement among the Parties, and (b) based on their duly authorized position or role in the Cooperative, and in each case in accordance with applicable law.</p>
+    </div>
+
+    <div class="section" id="s4-3">
+      <span class="section-label">§ 4.3</span>
+      <p>Each Party will use the same degree of care to protect the other Party's Confidential Information as it uses to safeguard its own Confidential Information but in no event less than a reasonable standard of care.</p>
+    </div>
+
+    <div class="section" id="s4-4">
+      <span class="section-label">§ 4.4</span>
+      <p>Confidential Information does not include information that (i) is or becomes available to the public through no wrongful action of the receiving Party, (ii) is already in the possession of the receiving Party and not subject to an existing agreement of confidentiality between the parties, (iii) is received from a third party with no obligation of confidentiality owed to the disclosing Party, or (iv) is independently developed by the receiving Party without access to or use of the other Party's Confidential Information.</p>
+    </div>
+
+    <div class="section" id="s4-5">
+      <span class="section-label">§ 4.5</span>
+      <p>The receiving party may disclose Confidential Information pursuant to an order from a court or government agency, on the condition that, unless prohibited by law or governmental order, the receiving Party provides written notice to the disclosing Party to allow the disclosing Party an opportunity to contest the release of the Confidential Information or otherwise protect or prevent its disclosure.</p>
+    </div>
+
+    <div class="section" id="s4-6">
+      <span class="section-label">§ 4.6</span>
+      <p>This Agreement will in no way be construed to grant any right, license, or authorization to either Party to use the other Party's Confidential Information except as permitted by the terms of this Agreement. Each Party will restrict access to the other Party's Confidential Information to receiving Party's employees, contractors, or other personnel with a need to know.</p>
+    </div>
+
+    <div class="section" id="s4-7">
+      <span class="section-label">§ 4.7</span>
+      <p>Upon the termination of Applicant's membership in the Cooperative, Applicant will securely destroy or, at the Cooperative's request and expense, return all Confidential Information belonging to the Cooperative. The obligations of the Parties under this Section 4 will survive the termination of this Agreement.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section-group" id="s5">
+    <div class="section-group-header">Section 5</div>
+    <h2>Termination</h2>
+
+    <div class="section">
+      <p>In addition to the termination rights set forth in the Bylaws, RegenHub may, upon written notice to Applicant, terminate Applicant's participation and/or membership in RegenHub upon occurrence of one or more of the following:</p>
+      <ol>
+        <li>Applicant fails to comply with any of the terms and provisions of this Agreement, the Bylaws, or the Policies of RegenHub;</li>
+        <li>Applicant fails to pay any obligation payable to RegenHub within thirty (30) days of Applicant's receipt of notice from the Cooperative that such obligation is owed;</li>
+        <li>Applicant makes a false statement concerning a representation or warranty made in this Agreement;</li>
+        <li>RegenHub, in its reasonable business judgment, determines that Applicant's conduct is detrimental to the operations and/or reputation of RegenHub;</li>
+        <li>RegenHub determines, based on a good faith belief, that Applicant has inaccurately reported information;</li>
+        <li>RegenHub determines, pursuant to the dispute resolution process defined in its Bylaws, that the Applicant's conduct is inhibiting or has inhibited the ability of other members or Applicants to participate in RegenHub.</li>
+      </ol>
+      <p>Termination of Applicant shall be carried out in accordance with RegenHub's Bylaws. Should Applicant be terminated, Applicant's obligations under this Agreement shall survive such termination and shall continue to be legally binding on the Applicant until fully and completely performed.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="section-group" id="s6">
+    <div class="section-group-header">Section 6</div>
+    <h2>Limitation of Liability</h2>
+
+    <div class="section">
+      <p class="caps-block">NEITHER REGENHUB NOR ITS LICENSORS, EMPLOYEES, CONSULTANTS, DIRECTORS, OFFICERS, MEMBERS, REPRESENTATIVES, OR AGENTS MAKE ANY WARRANTIES OR REPRESENTATIONS REGARDING THE PRODUCTS OR THE SERVICES PROVIDED TO APPLICANT, ANY AND ALL OF WHICH ARE EXPRESSLY PROVIDED "AS IS" AND "AS AVAILABLE." FURTHERMORE, REGENHUB AND ITS LICENSORS AND PROVIDERS HEREBY DISCLAIM ANY AND ALL WARRANTIES, EXPRESS AND/OR IMPLIED BY LAW OR OTHERWISE, REGARDING THE FITNESS OR USABILITY OF ANY OF ITS PRODUCTS OR SERVICES FOR ANY PARTICULAR USE OR PURPOSE.</p>
+      <p class="caps-block">UNDER NO CIRCUMSTANCES SHALL REGENHUB, AND/OR ITS OFFICERS, DIRECTORS, MEMBERS, MANAGERS, EMPLOYEES, LICENSORS, PROVIDERS, REPRESENTATIVES, OR AGENTS BE LIABLE TO APPLICANT OR ANY OTHER PERSON FOR ANY CONSEQUENTIAL DAMAGES, INCIDENTAL DAMAGES, INDIRECT DAMAGES, SPECIAL DAMAGES, LOSS OF PROFITS, LOSSES, EXPENSES, INTEREST, DEBTS, DUES, TAXES, FINES, INJURIES, LIABILITIES, ASSESSMENTS, COSTS, EVENTS, CLAIMS, ACTIONS, LAWSUITS, ATTORNEYS' FEES, OR ANY OTHER LOSS OR DAMAGE ARISING DIRECTLY OR INDIRECTLY FROM THE PRODUCTS OR SERVICES PROVIDED TO APPLICANT BY REGENHUB OR ITS LICENSORS, PROVIDERS, REPRESENTATIVES, OR AGENTS. IN NO EVENT WILL THE AGGREGATE LIABILITY OF REGENHUB TO APPLICANT EXCEED THE GREATER OF THE AMOUNT PAID OR PAYABLE BY APPLICANT TO REGENHUB FOR THE PREVIOUS SIX (6) MONTH PERIOD OR ONE THOUSAND DOLLARS ($1,000). THIS DIRECT DAMAGES LIMITATION ON LIABILITY SHALL NOT APPLY TO DAMAGES ARISING FROM OR RELATING TO (I) BREACHES OF CONFIDENTIALITY OR OWNERSHIP OR LICENSURE OF INTELLECTUAL PROPERTY OR (II) A PARTY'S WILLFUL MISCONDUCT.</p>
+      <p>The limitations set forth in this Section 6 are an essential part of the benefit of the bargain between the Parties and shall survive expiration or termination of this Agreement indefinitely.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="section-group" id="s7">
+    <div class="section-group-header">Section 7</div>
+    <h2>Indemnification</h2>
+
+    <div class="section">
+      <p>Applicant hereby releases, and agrees to indemnify, defend, and hold harmless, RegenHub and its licensors, directors, members, officers, managers, employees, agents, and representatives from and against any and all loss, cost, damages and/or expenses (including, but not limited to, court costs and attorney's fees) incurred by RegenHub and its licensors, directors, members, officers, managers, employees, agents, and representatives, whether or not legal proceedings are commenced, as a result of (a) any negligence or misconduct of Applicant, (b) any breach of or inaccuracy in Applicant's representations and warranties hereunder, (c) any breach of this Agreement, or any failure to perform any obligations hereunder, by Applicant, or (d) any termination of Applicant's rights under this Agreement due to its failure to comply with, observe and perform any of the terms and provisions of this Agreement, the Governing Documents, the Policies, or any resolution or determination of the Board.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="section-group" id="s8">
+    <div class="section-group-header">Section 8</div>
+    <h2>Representations and Warranties</h2>
+
+    <div class="section" id="s8-1">
+      <span class="section-label">§ 8.1</span>
+      <h3>Representations and Warranties of the Parties</h3>
+      <p>Each Party represents and warrants to the other that (a) such Party has the right and ability to enter into this Agreement and to grant the rights granted herein, and such Party is not a party to any agreement that would prohibit such Party from entering into this Agreement or fully performing its obligations hereunder and (b) there is no outstanding, or threatened, litigation, arbitrated matter or other dispute to which such Party is a party that would reasonably be expected to have a material adverse effect on such Party's ability to fulfill its obligations hereunder.</p>
+    </div>
+
+    <div class="section" id="s8-2">
+      <span class="section-label">§ 8.2</span>
+      <h3>Applicant's Additional Representations and Warranties</h3>
+      <p>Applicant further represents and warrants to, and covenants with, the Cooperative that: (a) any of Applicant's services for, and its duties and obligations to, the Cooperative will be performed in a professional, ethical, and efficient manner, using due care, skill, and diligence; (b) Applicant shall maintain any professional qualifications and/or certifications applicable to Applicant's services; (c) Applicant's services and any resulting Intellectual Property or other work product will not infringe any third party patent, copyright, trademark, trade secret or other proprietary rights; (d) Applicant will abide by all applicable laws, regulations, codes and rules in the course of performing any services for, or other duties or obligations to, the Cooperative; and (e) Applicant will maintain appropriate technical and physical safeguards to protect the security, confidentiality, and integrity of all Confidential Information in its possession.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="section-group" id="s9">
+    <div class="section-group-header">Section 9</div>
+    <h2>General Provisions</h2>
+
+    <div class="section" id="s9-1">
+      <span class="section-label">§ 9.1</span>
+      <h3>Assignment; Binding Effect</h3>
+      <p>No part of this Agreement may be assigned, subcontracted, sublicensed, pledged, or transferred by Applicant without having secured the prior written consent of the Cooperative. Any attempted assignment without the written consent of the Cooperative shall be null and void. The Cooperative may assign this Agreement and its rights and/or obligations hereunder as a part of a merger, conversion, equity sale, or sale of substantially all of its assets.</p>
+    </div>
+
+    <div class="section" id="s9-2">
+      <span class="section-label">§ 9.2</span>
+      <h3>Notices</h3>
+      <p>All notices and other communications given or made pursuant to this Agreement shall be in writing and shall be deemed effectively given: (a) upon personal delivery to the party to be notified, (b) when sent by confirmed electronic mail or facsimile if sent during normal business hours of the recipient, and if not so confirmed, then on the next business day, (c) five (5) days after having been sent by registered or certified mail, return receipt requested, postage prepaid, or (d) one (1) day after deposit with a nationally recognized overnight courier, specifying next day delivery, with written verification of receipt.</p>
+    </div>
+
+    <div class="section" id="s9-3">
+      <span class="section-label">§ 9.3</span>
+      <h3>Order of Priority</h3>
+      <p>If there is a conflict between a part of this Agreement and (i) any present or future law or regulation, (ii) the Governing Documents, or (iii) the Policies, the portion of this Agreement that is affected will be curtailed only to the extent necessary to bring it within the requirements of the law, regulation, Governing Document, or Policy, each as applicable.</p>
+    </div>
+
+    <div class="section" id="s9-4">
+      <span class="section-label">§ 9.4</span>
+      <h3>Status of Parties</h3>
+      <p>The relationship created by this Agreement shall not be construed as an agency, partnership (including a limited partnership), joint venture, franchise, employer-employee, or employment contract, and that no members of Cooperative be a partner or joint venturer of any other member by virtue of this Agreement.</p>
+    </div>
+
+    <div class="section" id="s9-5">
+      <span class="section-label">§ 9.5</span>
+      <h3>Payment Authorizations</h3>
+      <p>Applicant shall provide the Cooperative with any documents reasonably required or requested by the Cooperative as a condition precedent to payment by the Cooperative of any distributions, dividends, share of profits, or other amounts for the year in question.</p>
+    </div>
+
+    <div class="section" id="s9-6">
+      <span class="section-label">§ 9.6</span>
+      <h3>Forum Selection, Jurisdiction, and Governing Law</h3>
+      <p>Subject to the dispute resolution provision and procedure set forth in the Bylaws, any and all litigation or similar proceedings concerning any claim or dispute arising out of or in connection with this Agreement shall be filed and maintained only in a state or federal court sitting in the County of Denver, State of Colorado and shall be conducted WITHOUT A JURY. Each Party hereby irrevocably consents to the exclusive jurisdiction of such courts. This Agreement and the legal relationship of the Parties shall be interpreted, construed, enforced, and governed in all respects by the internal laws of the State of Colorado.</p>
+    </div>
+
+    <div class="section" id="s9-7">
+      <span class="section-label">§ 9.7</span>
+      <h3>Dispute Resolution</h3>
+      <p>The Applicant agrees and irrevocably consents to resolve any and all disputes or issues with, or claims or causes of action, in any way arising out of or related to this Agreement, the Governing Documents, or any Policies or resolution of the Board, against the Cooperative or any of its directors, officers, employees, agents, patrons, or other members in accordance with the terms and conditions of the dispute resolution provision(s) of the Bylaws.</p>
+    </div>
+
+    <div class="section" id="s9-8">
+      <span class="section-label">§ 9.8</span>
+      <h3>Equitable Relief</h3>
+      <p>Notwithstanding §§ 9.6 and 9.7, if any person (i) proposes to sell or otherwise transfer all or any part of such person's share in or stock of Cooperative in violation of the terms of this Agreement, the Governing Documents, Policies, or resolution of the Board or (ii) breaches, threatens to breach, or attempts to breach any of the provisions of Sections 3 or 4 hereof, then, in addition to any other remedies available at law, either Party may apply to any court of competent jurisdiction for an injunctive order or other equitable relief.</p>
+    </div>
+
+    <div class="section" id="s9-9">
+      <span class="section-label">§ 9.9</span>
+      <h3>Waiver of Jury Trial</h3>
+      <p class="caps-block">EACH PARTY, TO THE EXTENT PERMITTED BY LAW, KNOWINGLY, VOLUNTARILY, INTENTIONALLY, AND IRREVOCABLY WAIVES ITS RIGHT TO A TRIAL BY JURY IN ANY ACTION OR OTHER LEGAL PROCEEDING ARISING OUT OF OR RELATING TO THIS AGREEMENT AND THE TRANSACTIONS IT CONTEMPLATES. THIS WAIVER APPLIES TO ANY ACTION OR LEGAL PROCEEDING, WHETHER SOUNDING IN CONTRACT, TORT OR OTHERWISE.</p>
+    </div>
+
+    <div class="section" id="s9-10">
+      <span class="section-label">§ 9.10</span>
+      <h3>Remedies Cumulative</h3>
+      <p>The Parties agree that the rights and remedies herein provided in case of default or breach are cumulative and shall not affect in any manner any other remedies available to either Party.</p>
+    </div>
+
+    <div class="section" id="s9-11">
+      <span class="section-label">§ 9.11</span>
+      <h3>Attorney's Fees and Costs</h3>
+      <p>Should either Party retain counsel for the purpose of enforcing or preventing breach of any provision of this Agreement, if the matter is settled by arbitral or judicial determination, the prevailing party shall be entitled, in addition to such other relief as may be granted, to be reimbursed by the non-prevailing party for all costs and expenses incurred, including reasonable attorneys' fees and costs.</p>
+    </div>
+
+    <div class="section" id="s9-12">
+      <span class="section-label">§ 9.12</span>
+      <h3>Waivers and Omissions</h3>
+      <p>No course of dealing will be deemed to amend or discharge any provision of this Agreement. No delay in the exercise of any right will operate as a waiver of such right. No single or partial exercise of any right will preclude its further exercise.</p>
+    </div>
+
+    <div class="section" id="s9-13">
+      <span class="section-label">§ 9.13</span>
+      <h3>Descriptive Headings; Interpretation</h3>
+      <p>Headings are included for convenience of reference only and do not constitute a substantive part of the Agreement. Whenever the singular form of a term or word is used and when required by the context, the same shall include the plural and vice versa. The word "including" means "including without limitation" and "or" means "and/or".</p>
+    </div>
+
+    <div class="section" id="s9-14">
+      <span class="section-label">§ 9.14</span>
+      <h3>Severability</h3>
+      <p>It is the desire and intent of the Parties that the provisions of this Agreement be enforced to the fullest extent permissible under the laws and public policies applied in each jurisdiction in which enforcement is sought. If any particular provision of this Agreement shall be adjudicated to be invalid, prohibited, or unenforceable for any reason, such provision shall be ineffective, without invalidating the remaining provisions of this Agreement.</p>
+    </div>
+
+    <div class="section" id="s9-15">
+      <span class="section-label">§ 9.15</span>
+      <h3>Counterparts and Electronic Delivery</h3>
+      <p>This Agreement may be executed in counterparts, digitally or manually as allowed under the Uniform Electronic Transactions Act, each of which shall be deemed an original, but all of which together shall be deemed to be one and the same agreement. A signed copy delivered by email or other means of electronic transmission shall be deemed to have the same legal effect as delivery of an original signed copy.</p>
+    </div>
+
+    <div class="section" id="s9-16">
+      <span class="section-label">§ 9.16</span>
+      <h3>Entire Agreement and Modification</h3>
+      <p>This Agreement, along with any exhibits or attachments, constitutes a single, integrated written contract expressing the entire agreement and understanding of the Parties and it supersedes and preempts any prior understandings, agreements or representations by or among the Parties, written or oral, express or implied, which may have related to the subject matter hereof in any way. This Agreement may not be modified, altered, abridged, or changed unless adopted by a writing signed by Applicant and the Cooperative.</p>
+    </div>
+  </div>
+
+  <!-- SIGNATURE BLOCK -->
+  <div class="sig-block">
+    <div class="sig-block-heading">Signature Page</div>
+    <p style="font-family:var(--serif);font-size:0.84rem;color:var(--text-warm);margin-bottom:1.5rem;line-height:1.6;">IN WITNESS WHEREOF, the Parties, intending to be bound, have executed, or have caused to be executed, this Agreement effective as of <em>[…]</em> (the <em>"Effective Date"</em>).</p>
+    <div class="sig-grid">
+      <div class="sig-col">
+        <div class="sig-party">Applicant</div>
+        <div class="sig-line"><div class="sig-line-rule"></div>Signature</div>
+        <div class="sig-line"><div class="sig-line-rule"></div>Name</div>
+        <div class="sig-line"><div class="sig-line-rule"></div>Title (if entity member)</div>
+        <div class="sig-line"><div class="sig-line-rule"></div>Date</div>
+        <div class="sig-line"><div class="sig-line-rule"></div>Email</div>
+        <div class="sig-line"><div class="sig-line-rule"></div>Address</div>
+      </div>
+      <div class="sig-col">
+        <div class="sig-party">RegenHub, LCA</div>
+        <div class="sig-line"><div class="sig-line-rule"></div>Signature</div>
+        <div class="sig-line"><div class="sig-line-rule"></div>Name</div>
+        <div class="sig-line"><div class="sig-line-rule"></div>Title</div>
+        <div class="sig-line"><div class="sig-line-rule"></div>Date</div>
+        <div class="sig-line" style="color:var(--text-dim);font-size:0.65rem;">By and for RegenHub, LCA</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER NAV -->
+  <div class="doc-footer">
+    <a href="/legal/">← Legal documents</a>
+    <a href="/legal/membership-agreement-v2/">Membership Agreement v.2 (revised) →</a>
+    <a href="/legal/membership-agreement-modifications/">Legal analysis ↗</a>
+    <a href="/legal/membership-agreement-modifications/changes/">Proposed changes index ↗</a>
+  </div>
+
+</div><!-- /wrap -->
+
+<button class="theme-toggle" onclick="
+  var t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('techne-theme', t);
+">Toggle theme</button>
+
+</body>
+</html>
