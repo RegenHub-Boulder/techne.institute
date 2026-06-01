@@ -507,6 +507,33 @@
         <div class="module-chevron">›</div>
       </div>
     </div>
+    <div class="module-row" data-rea="cross"
+         onclick="window.location.href='/intranet/board/'"
+         role="link" tabindex="0"
+         onkeydown="if(event.key==='Enter')window.location.href='/intranet/board/'"
+         style="border-color:rgba(196,122,80,0.3);background:rgba(196,122,80,0.03);">
+      <div class="module-accent" style="background:#c47a50;"></div>
+      <div class="module-body">
+        <div class="module-top">
+          <span class="module-name" style="color:#d48a60;">Action Items &amp; Blockers</span>
+          <span class="module-rea" style="color:#c47a50;">Board · Open items</span>
+        </div>
+        <div class="module-desc">Open governance actions and blockers requiring board attention. Enrollment quorum, pending ratification votes, legal review items, and coordination blockers.</div>
+        <div class="module-links">
+          <a class="module-link" href="/intranet/board/" onclick="event.stopPropagation()" style="color:#d48a60;border-color:rgba(196,122,80,0.4);">Board HUD →</a>
+          <a class="module-link sec" href="/intranet/enroll/" onclick="event.stopPropagation()">Enrollment status ↗</a>
+          <a class="module-link sec" href="/legal/bylaws-analysis/changes/" onclick="event.stopPropagation()">Bylaws changes ↗</a>
+          <a class="module-link sec" href="/intranet/activity/" onclick="event.stopPropagation()">Activity feed ↗</a>
+        </div>
+      </div>
+      <div class="module-side">
+        <div class="module-status" style="color:#c47a50;">
+          <span class="pip" data-status="synth" data-tip="Open items pending board action"></span>
+          open
+        </div>
+        <div class="module-chevron">›</div>
+      </div>
+    </div>
   </div>
 
   <!-- Primary nav section -->
