@@ -370,14 +370,57 @@ const SEED_AGREEMENTS = [
   {
     id: 'seed-2',
     agreement_type: 'bylaws',
-    title: 'Bylaws — RegenHub, LCA',
+    title: 'Bylaws v.1 — RegenHub, LCA',
     version: '1.0',
-    status: 'active',
+    status: 'superseded',
     is_public: true,
-    effective_date: '2026-02-06',
+    effective_date: '2026-03-01',
     bylaw_anchor: null,
-    canonical_url: null,
-    description: 'Governing bylaws of RegenHub, LCA. Covers membership classes, patron-investor structure, capital accounts, board composition, and cooperative principles.',
+    canonical_url: '/legal/bylaws-v1/',
+    analysis_url: null,
+    description: 'Original attorney draft as received from Pote Law Firm. Reference document for reconciling changes. Superseded by v.2.',
+    _seed: true
+  },
+  {
+    id: 'seed-4',
+    agreement_type: 'bylaws',
+    title: 'Bylaws v.2 — RegenHub, LCA',
+    version: '2.0',
+    status: 'draft',
+    is_public: true,
+    effective_date: '2026-05-01',
+    bylaw_anchor: null,
+    canonical_url: '/legal/bylaws-v2/',
+    analysis_url: '/legal/bylaws-analysis/',
+    description: 'Revised bylaws draft — annotated changes from v.1 inline. 8 issues identified; 3 blocking. In organizer review; not yet ratified.',
+    _seed: true
+  },
+  {
+    id: 'seed-5',
+    agreement_type: 'membership_agreement',
+    title: 'Membership Agreement v.1 — Class A Patron',
+    version: '1.0',
+    status: 'superseded',
+    is_public: true,
+    effective_date: '2026-04-23',
+    bylaw_anchor: null,
+    canonical_url: '/legal/membership-agreement-v1/',
+    analysis_url: null,
+    description: 'Original attorney draft as received from Pote Law Firm (April 23, 2026). Reference document for reconciling changes. Superseded by v.2.',
+    _seed: true
+  },
+  {
+    id: 'seed-6',
+    agreement_type: 'membership_agreement',
+    title: 'Membership Agreement v.2 — Class A Patron',
+    version: '2.0',
+    status: 'draft',
+    is_public: true,
+    effective_date: '2026-05-11',
+    bylaw_anchor: null,
+    canonical_url: '/legal/membership-agreement-v2/',
+    analysis_url: '/legal/membership-agreement-modifications/',
+    description: 'Revised membership agreement — annotated changes from v.1 inline. 6 issues identified; 3 blocking (IP scope, withdrawal mechanics, patronage accounting). In organizer review; not yet executed.',
     _seed: true
   },
   {
@@ -390,6 +433,7 @@ const SEED_AGREEMENTS = [
     effective_date: '2026-02-01',
     bylaw_anchor: null,
     canonical_url: null,
+    analysis_url: null,
     description: 'Grant agreement for the Boulder Ethereum Community Hub. Defines KPI obligations, reporting milestones, and compliant use requirements.',
     _seed: true
   }
@@ -499,8 +543,11 @@ function renderAgreements(list) {
         </div>
         <div class="agreement-links">
           ${agr.canonical_url
-            ? `<a class="agr-link" href="${escHtml(agr.canonical_url)}" target="_blank" rel="noopener">View ↗</a>`
+            ? agr.canonical_url.startsWith('/')
+              ? `<a class="agr-link" href="${escHtml(agr.canonical_url)}">View →</a>`
+              : `<a class="agr-link" href="${escHtml(agr.canonical_url)}" target="_blank" rel="noopener">View ↗</a>`
             : `<span class="agr-link sec">Private</span>`}
+          ${agr.analysis_url ? `<a class="agr-link sec" href="${escHtml(agr.analysis_url)}">Analysis →</a>` : ''}
         </div>
       </div>`
     }
