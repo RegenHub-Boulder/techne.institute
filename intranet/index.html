@@ -9,10 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <script src="/intranet/nav.js"></script>
 <script>
-/* View-preference redirect: only redirect to advanced view when dev mode is active. */
+/* View-preference redirect: go to advanced view when user has it enabled in profile. */
 (function () {
-  // Skip redirect if in prod mode (default) — advanced view is dev-only
-  if (localStorage.getItem('cis-env') !== 'dev') return;
+  // Only redirect if advanced mode is enabled
+  if (localStorage.getItem('techne-advanced') !== '1') return;
 
   // Skip if coming back from advanced view
   var params = new URLSearchParams(window.location.search);
@@ -24,7 +24,7 @@
     checked = true;
     clearInterval(interval);
     var meta = window.cisUser.user_metadata || {};
-    if (meta.default_view === 'advanced') {
+    if (meta.advanced_mode) {
       window.location.replace('/intranet/a/');
     }
   }, 100);

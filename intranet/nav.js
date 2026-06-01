@@ -264,8 +264,9 @@
     document.documentElement.setAttribute('data-mode', 'light');
   }
 
-  /* Expose env mode globally so pages can read it before nav fully boots */
-  window.CIS_DEV_MODE = (localStorage.getItem('cis-env') === 'dev');
+  /* Expose advanced mode globally so pages can read it before nav fully boots */
+  window.CIS_ADVANCED = (localStorage.getItem('techne-advanced') === '1');
+  window.CIS_DEV_MODE = window.CIS_ADVANCED; // legacy alias
 
   /* ── Everything that touches <body> runs after DOMContentLoaded ── */
   function init() {
@@ -290,9 +291,12 @@
       { href: '/intranet/agreements/', label: 'Agreements' },
       { href: '/intranet/treasury/',   label: 'Treasury'   },
       { href: '/intranet/activity/',   label: 'Activity'   },
-      { href: '/intranet/board/',      label: 'Board'      },
       { href: '/intranet/enroll/',     label: 'Enroll'     },
     ];
+    // Board HUD and Advanced view only when user has enabled advanced mode in profile
+    if (localStorage.getItem('techne-advanced') === '1') {
+      links.push({ href: '/intranet/board/', label: 'Board' });
+    }
 
     /* ── Build nav ── */
     var nav = document.createElement('nav');
@@ -322,7 +326,6 @@
             '</button>' +
           '</div>' +
         '</div>' +
-        '<button class="cn-env" id="cn-env" title="Toggle dev / prod view">Prod</button>' +
         '<button class="cn-mode" id="cn-mode">Light</button>' +
       '</div>';
 
@@ -358,32 +361,27 @@
       applyTheme(next);
     });
 
-    /* ── Dev / Prod env toggle ── */
-    var envBtn  = document.getElementById('cn-env');
-    var _envMode = localStorage.getItem('cis-env') || 'prod';
+    /* ── Advanced mode — driven by profile switch, not a nav button ── */
+    var _isAdvanced = (localStorage.getItem('techne-advanced') === '1');
 
-    function applyEnv(env) {
-      _envMode = env;
-      window.CIS_DEV_MODE = (env === 'dev');
-      envBtn.textContent = env === 'dev' ? 'Dev' : 'Prod';
-      envBtn.classList.toggle('dev', env === 'dev');
+    function applyAdvanced(on) {
+      _isAdvanced = on;
+      window.CIS_ADVANCED = on;
+      window.CIS_DEV_MODE = on; // legacy alias
       // Show/hide all [data-dev-only] elements on the page
-      document.querySelectorAll('[data-dev-only]').forEach(function (el) {
-        el.style.display = (env === 'dev') ? '' : 'none';
-      });
-      // Dispatch so pages can react
-      window.dispatchEvent(new CustomEvent('cisenvchange', { detail: { env: env } }));
+      setTimeout(function () {
+        document.querySelectorAll('[data-dev-only]').forEach(function (el) {
+          el.style.display = on ? '' : 'none';
+        });
+      }, 0);
+      window.dispatchEvent(new CustomEvent('cisenvchange', { detail: { env: on ? 'dev' : 'prod' } }));
     }
 
-    // Init from saved pref (default: prod)
-    // Run after a tick so page elements exist
-    setTimeout(function () { applyEnv(_envMode); }, 0);
+    // Expose so profile page can call it after toggling
+    window.applyAdvanced = applyAdvanced;
 
-    envBtn.addEventListener('click', function () {
-      var next = _envMode === 'dev' ? 'prod' : 'dev';
-      localStorage.setItem('cis-env', next);
-      applyEnv(next);
-    });
+    // Init from saved pref
+    applyAdvanced(_isAdvanced);
 
     /* ── User menu toggle ── */
     var chip = document.getElementById('cn-chip');

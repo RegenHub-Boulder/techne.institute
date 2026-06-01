@@ -253,6 +253,55 @@
   }
   .info-val { font-size: 12px; color: var(--heading); text-align: right; word-break: break-all; }
   .info-val.muted { color: var(--muted); font-size: 11px; }
+
+  /* ── Advanced mode toggle ── */
+  .toggle-wrap {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .toggle-label { flex: 1; }
+  .toggle-label strong {
+    display: block;
+    font-size: 12px;
+    color: var(--heading);
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  .toggle-switch {
+    position: relative;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .toggle-switch input {
+    opacity: 0;
+    width: 0; height: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+  .toggle-track {
+    display: block;
+    width: 44px; height: 24px;
+    background: var(--border);
+    border-radius: 12px;
+    position: relative;
+    transition: background 200ms;
+  }
+  .toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 18px; height: 18px;
+    background: #888;
+    border-radius: 50%;
+    transition: transform 200ms, background 200ms;
+  }
+  .toggle-switch input:checked + .toggle-track { background: var(--terra); }
+  .toggle-switch input:checked + .toggle-track::after {
+    transform: translateX(20px);
+    background: #0f0f0f;
+  }
 </style>
 </head>
 <body data-auth-required>
@@ -306,21 +355,20 @@
 
     <div class="section">
       <div class="section-head">
-        <span class="section-title">Default View</span>
+        <span class="section-title">Advanced Mode</span>
       </div>
       <div class="section-body">
-        <div class="field">
-          <label for="f-default-view">Intranet default view</label>
-          <select id="f-default-view">
-            <option value="simple">Simple — /intranet/ (dashboard overview)</option>
-            <option value="advanced">Advanced — /intranet/a/ (full CIS portal)</option>
-          </select>
-          <span class="field-hint">When you visit /intranet/ you'll be redirected to your preferred view.</span>
+        <div class="toggle-wrap">
+          <div class="toggle-label">
+            <strong>Enable advanced view</strong>
+            <span class="field-hint">Unlocks the full CIS portal (/intranet/a/) and Board HUD in the nav. Stored to your profile and synced across devices.</span>
+          </div>
+          <label class="toggle-switch" aria-label="Toggle advanced mode">
+            <input type="checkbox" id="f-advanced-mode">
+            <span class="toggle-track"></span>
+          </label>
         </div>
-        <div class="actions">
-          <button class="btn-save" id="save-view-btn">Save view preference</button>
-          <span class="save-msg" id="save-view-msg"></span>
-        </div>
+        <span class="save-msg" id="save-adv-msg"></span>
       </div>
     </div>
 
@@ -401,13 +449,20 @@ whenReady(function() {
     var role = meta.role || '';
     var location = meta.location || '';
     var bio = meta.bio || '';
-    var defaultView = meta.default_view || 'simple';
+    var advancedMode = !!meta.advanced_mode;
 
     document.getElementById('f-name').value = name;
     document.getElementById('f-role').value = role;
     document.getElementById('f-location').value = location;
     document.getElementById('f-bio').value = bio;
-    document.getElementById('f-default-view').value = defaultView;
+    document.getElementById('f-advanced-mode').checked = advancedMode;
+
+    /* Sync localStorage to match what's stored in the profile */
+    if (advancedMode) {
+      localStorage.setItem('techne-advanced', '1');
+    } else {
+      localStorage.removeItem('techne-advanced');
+    }
 
     function updateAvatar() {
       var n = document.getElementById('f-name').value.trim() || user.email || '';
@@ -419,24 +474,41 @@ whenReady(function() {
     document.getElementById('page-sub').textContent = 'Update your display name, role, and bio.';
     document.getElementById('profile-content').style.display = '';
 
-    /* Save view preference */
-    var saveViewBtn = document.getElementById('save-view-btn');
-    var saveViewMsg = document.getElementById('save-view-msg');
-    saveViewBtn.addEventListener('click', function() {
-      saveViewBtn.disabled = true;
-      saveViewBtn.textContent = 'Saving…';
-      saveViewMsg.className = 'save-msg';
-      var view = document.getElementById('f-default-view').value;
-      sb.auth.updateUser({ data: { default_view: view } }).then(function(r) {
-        saveViewBtn.disabled = false;
-        saveViewBtn.textContent = 'Save view preference';
+    /* Advanced mode toggle — auto-saves on change */
+    var advToggle = document.getElementById('f-advanced-mode');
+    var saveAdvMsg = document.getElementById('save-adv-msg');
+
+    advToggle.addEventListener('change', function() {
+      var on = advToggle.checked;
+      saveAdvMsg.className = 'save-msg';
+      saveAdvMsg.textContent = '';
+
+      /* Update localStorage immediately so the guard scripts see the new state */
+      if (on) {
+        localStorage.setItem('techne-advanced', '1');
+      } else {
+        localStorage.removeItem('techne-advanced');
+      }
+
+      /* Apply to current nav (shows/hides Board link and data-dev-only elements) */
+      if (window.applyAdvanced) window.applyAdvanced(on);
+
+      sb.auth.updateUser({ data: { advanced_mode: on } }).then(function(r) {
         if (r.error) {
-          saveViewMsg.className = 'save-msg err';
-          saveViewMsg.textContent = r.error.message || 'Save failed.';
+          saveAdvMsg.className = 'save-msg err';
+          saveAdvMsg.textContent = r.error.message || 'Save failed.';
+          /* Revert on error */
+          advToggle.checked = !on;
+          if (!on) {
+            localStorage.setItem('techne-advanced', '1');
+          } else {
+            localStorage.removeItem('techne-advanced');
+          }
+          if (window.applyAdvanced) window.applyAdvanced(!on);
         } else {
-          saveViewMsg.className = 'save-msg ok';
-          saveViewMsg.textContent = 'Saved.';
-          setTimeout(function() { saveViewMsg.textContent = ''; saveViewMsg.className = 'save-msg'; }, 2000);
+          saveAdvMsg.className = 'save-msg ok';
+          saveAdvMsg.textContent = on ? 'Advanced mode enabled.' : 'Advanced mode disabled.';
+          setTimeout(function() { saveAdvMsg.textContent = ''; saveAdvMsg.className = 'save-msg'; }, 2500);
         }
       });
     });

@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Advanced View · CIS · Techne</title>
-<!-- Dev-mode guard: redirect to production view if not in dev mode -->
+<!-- Advanced-mode guard: only accessible when enabled in user profile -->
 <script>
-  if (localStorage.getItem('cis-env') !== 'dev') {
+  if (localStorage.getItem('techne-advanced') !== '1') {
     window.location.replace('/intranet/?from=advanced');
   }
 </script>
