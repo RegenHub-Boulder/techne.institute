@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>May 2026 Financial Statement — RegenHub, LCA</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="/intranet/nav.js"></script>
+<style>
+  :root {
+    --bg:          #0f0f0f;
+    --surface:     #1a1a1a;
+    --surface-2:   #141414;
+    --border:      #2e2e2e;
+    --border-med:  #3a3a3a;
+    --terra:       #c4956a;
+    --terra-text:  #c4956a;
+    --terra-dim:   rgba(196,149,106,0.10);
+    --heading:     #e8e0d8;
+    --text:        #d4d4d4;
+    --muted:       #888;
+    --faint:       #555;
+    --green:       #6ae89a;
+    --green-dim:   rgba(106,232,154,0.08);
+    --amber:       #e8c46a;
+    --amber-dim:   rgba(232,196,106,0.08);
+    --rust:        #e89090;
+    --rust-dim:    rgba(232,144,144,0.08);
+    --sky:         #6ab4e8;
+    --sky-dim:     rgba(106,180,232,0.08);
+  }
+  [data-mode="light"] {
+    --bg:          #faf7f2;
+    --surface:     #f3ede4;
+    --surface-2:   #efe8dc;
+    --border:      #ddd5c8;
+    --border-med:  #ccc4b8;
+    --terra:       #c4956a;
+    --terra-text:  #96704a;
+    --terra-dim:   rgba(196,149,106,0.10);
+    --heading:     #2d2620;
+    --text:        #3d342b;
+    --muted:       #7a6e62;
+    --faint:       #a89888;
+    --green:       #3a8a50;
+    --green-dim:   rgba(58,138,80,0.08);
+    --amber:       #a07820;
+    --amber-dim:   rgba(160,120,32,0.08);
+    --rust:        #b05050;
+    --rust-dim:    rgba(176,80,80,0.08);
+    --sky:         #3a6a9a;
+    --sky-dim:     rgba(58,106,154,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page-shell {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+  }
+
+  /* ── Header ── */
+  .stmt-eyebrow {
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra-text);
+    opacity: 0.8;
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--heading);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .stmt-meta {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+  .stmt-meta span { margin-right: 20px; }
+
+  /* ── Summary strip ── */
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 36px;
+  }
+  @media (max-width: 640px) { .summary-strip { grid-template-columns: 1fr 1fr; } }
+  .sum-cell {
+    background: var(--surface);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .sum-label {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sum-value {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--heading);
+    letter-spacing: -0.02em;
+  }
+  .sum-value.green { color: var(--green); }
+  .sum-value.amber { color: var(--amber); }
+  .sum-value.rust  { color: var(--rust); }
+  .sum-sub {
+    font-size: 9.5px;
+    color: var(--muted);
+  }
+
+  /* ── Section label ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0 16px;
+  }
+  .section-label .lbl {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--terra-text);
+    white-space: nowrap;
+    opacity: 0.85;
+  }
+  .section-label .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .card-head {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .card-badge {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .badge-green { background: var(--green-dim); color: var(--green); }
+  .badge-amber { background: var(--amber-dim); color: var(--amber); }
+  .badge-rust  { background: var(--rust-dim);  color: var(--rust);  }
+  .badge-sky   { background: var(--sky-dim);   color: var(--sky);   }
+  .badge-muted { background: var(--surface-2); color: var(--muted); }
+
+  /* ── Ledger table ── */
+  .ledger {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .ledger th {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--faint);
+    font-weight: 400;
+    padding: 10px 18px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .ledger th.right { text-align: right; }
+  .ledger td {
+    padding: 10px 18px;
+    font-size: 11.5px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .ledger tr:last-child td { border-bottom: none; }
+  .ledger td.right { text-align: right; font-variant-numeric: tabular-nums; }
+  .ledger td.mono  { font-size: 10.5px; color: var(--muted); }
+  .ledger .amount-in  { color: var(--green); }
+  .ledger .amount-out { color: var(--rust); }
+  .ledger .amount-fee { color: var(--faint); font-size: 10.5px; }
+
+  /* ── AR row states ── */
+  .ar-overdue-33 td:first-child { border-left: 3px solid var(--rust); }
+  .ar-overdue-19 td:first-child { border-left: 3px solid var(--amber); }
+
+  .days-pill {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .days-pill.rust  { background: var(--rust-dim);  color: var(--rust); }
+  .days-pill.amber { background: var(--amber-dim); color: var(--amber); }
+
+  /* ── Totals row ── */
+  .ledger .total-row td {
+    font-weight: 500;
+    color: var(--heading);
+    border-top: 1px solid var(--border-med);
+    border-bottom: none;
+    padding-top: 12px;
+  }
+
+  /* ── Two-column layout ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── Balance tile ── */
+  .balance-tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+  .balance-chain {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chain-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .chain-dot.mainnet { background: #627eea; }
+  .chain-dot.optimism { background: #ff0420; }
+
+  .balance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  .balance-row:last-child { border-bottom: none; }
+  .balance-token {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .balance-amount {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--heading);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .safe-flow {
+    display: flex;
+    gap: 16px;
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 10.5px;
+  }
+  .safe-flow span { color: var(--muted); }
+  .safe-flow .in  { color: var(--green); }
+  .safe-flow .out { color: var(--rust); }
+
+  /* ── Flag notice ── */
+  .flag-notice {
+    background: var(--rust-dim);
+    border: 1px solid rgba(232,144,144,0.2);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 10.5px;
+    color: var(--rust);
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+  .flag-notice strong { font-weight: 500; }
+
+  /* ── Recon notice ── */
+  .recon-notice {
+    background: var(--amber-dim);
+    border: 1px solid rgba(232,196,106,0.2);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 10.5px;
+    color: var(--amber);
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+
+  /* ── Footer ── */
+  .stmt-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 9.5px;
+    color: var(--faint);
+  }
+  .stmt-footer a {
+    color: var(--terra-text);
+    text-decoration: none;
+  }
+  .stmt-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body data-auth-required>
+
+<div class="page-shell">
+
+  <p class="stmt-eyebrow">RegenHub, LCA · Financial Statement</p>
+  <h1>May 2026</h1>
+  <p class="stmt-meta">
+    <span>Period: May 1 – May 31, 2026</span>
+    <span>Prepared: June 3, 2026</span>
+    <span>Status: Draft · Pending full reconciliation</span>
+  </p>
+
+  <!-- Summary strip -->
+  <div class="summary-strip">
+    <div class="sum-cell">
+      <span class="sum-label">Workspace Revenue</span>
+      <span class="sum-value green">$1,930.81</span>
+      <span class="sum-sub">net of Stripe fees</span>
+    </div>
+    <div class="sum-cell">
+      <span class="sum-label">AR Outstanding</span>
+      <span class="sum-value rust">$2,253.65</span>
+      <span class="sum-sub">7 invoices past due</span>
+    </div>
+    <div class="sum-cell">
+      <span class="sum-label">SAFE Holdings</span>
+      <span class="sum-value">~$10,037</span>
+      <span class="sum-sub">USDC across 2 chains</span>
+    </div>
+    <div class="sum-cell">
+      <span class="sum-label">Xero Balance</span>
+      <span class="sum-value">$20,598.31</span>
+      <span class="sum-sub">closing May 26</span>
+    </div>
+  </div>
+
+
+  <!-- ── A: Workspace Revenue ── -->
+  <div class="section-label">
+    <span class="lbl">A · Workspace Revenue</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Stripe payments received · May 2026</span>
+      <span class="card-badge badge-green">8 payments · $1,990.95 gross</span>
+    </div>
+    <table class="ledger">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Member</th>
+          <th>Invoice</th>
+          <th class="right">Amount</th>
+          <th class="right">Fee</th>
+          <th class="right">Net</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>May 2</td>
+          <td>Savannah Kruger</td>
+          <td class="mono">INV-0215</td>
+          <td class="right amount-in">$257.55</td>
+          <td class="right amount-fee">$7.77</td>
+          <td class="right">$249.78</td>
+        </tr>
+        <tr>
+          <td>May 2</td>
+          <td>Dawson Botsford</td>
+          <td class="mono">INV-0221</td>
+          <td class="right amount-in">$257.55</td>
+          <td class="right amount-fee">$7.77</td>
+          <td class="right">$249.78</td>
+        </tr>
+        <tr>
+          <td>May 5</td>
+          <td>Jon Bo</td>
+          <td class="mono">INV-0223</td>
+          <td class="right amount-in">$257.55</td>
+          <td class="right amount-fee">$7.77</td>
+          <td class="right">$249.78</td>
+        </tr>
+        <tr>
+          <td>May 11</td>
+          <td>Nuke</td>
+          <td class="mono">INV-0226</td>
+          <td class="right amount-in">$300.00</td>
+          <td class="right amount-fee">$9.00</td>
+          <td class="right">$291.00</td>
+        </tr>
+        <tr>
+          <td>May 14</td>
+          <td>Josie Siegel</td>
+          <td class="mono">INV-0229</td>
+          <td class="right amount-in">$103.20</td>
+          <td class="right amount-fee">$3.29</td>
+          <td class="right">$99.91</td>
+        </tr>
+        <tr>
+          <td>May 15</td>
+          <td>Duncan</td>
+          <td class="mono">INV-0228</td>
+          <td class="right amount-in">$257.55</td>
+          <td class="right amount-fee">$7.77</td>
+          <td class="right">$249.78</td>
+        </tr>
+        <tr>
+          <td>May 22</td>
+          <td>Josh Stein</td>
+          <td class="mono">INV-0225</td>
+          <td class="right amount-in">$300.00</td>
+          <td class="right amount-fee">$9.00</td>
+          <td class="right">$291.00</td>
+        </tr>
+        <tr>
+          <td>May 26</td>
+          <td>Scott Imig</td>
+          <td class="mono">INV-0237</td>
+          <td class="right amount-in">$257.55</td>
+          <td class="right amount-fee">$7.77</td>
+          <td class="right">$249.78</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="3">Total</td>
+          <td class="right amount-in">$1,990.95</td>
+          <td class="right amount-fee">$60.14</td>
+          <td class="right">$1,930.81</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="recon-notice">
+      All 8 payments are marked <strong>Unreconciled</strong> in Xero — Stripe charges cleared but have not yet been matched to invoices. Reconciliation required.
+    </div>
+  </div>
+
+
+  <!-- ── B: AR Health ── -->
+  <div class="section-label">
+    <span class="lbl">B · Accounts Receivable</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Outstanding invoices · as of June 3, 2026</span>
+      <span class="card-badge badge-rust">$2,253.65 past due</span>
+    </div>
+    <table class="ledger">
+      <thead>
+        <tr>
+          <th>Invoice</th>
+          <th>Member / Org</th>
+          <th>Issued</th>
+          <th>Due</th>
+          <th class="right">Amount</th>
+          <th class="right">Age</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="ar-overdue-33">
+          <td class="mono">INV-0214</td>
+          <td>Lucian Hymer</td>
+          <td>Apr 26</td>
+          <td>May 1</td>
+          <td class="right">$154.53</td>
+          <td class="right"><span class="days-pill rust">33 days</span></td>
+        </tr>
+        <tr class="ar-overdue-33">
+          <td class="mono">INV-0216</td>
+          <td>Aaron Gabriel Neyer</td>
+          <td>Apr 26</td>
+          <td>May 1</td>
+          <td class="right">$257.55</td>
+          <td class="right"><span class="days-pill rust">33 days</span></td>
+        </tr>
+        <tr class="ar-overdue-33">
+          <td class="mono">INV-0217</td>
+          <td>Benjamin Life</td>
+          <td>Apr 26</td>
+          <td>May 1</td>
+          <td class="right">$257.55</td>
+          <td class="right"><span class="days-pill rust">33 days</span></td>
+        </tr>
+        <tr class="ar-overdue-33">
+          <td class="mono">INV-0218</td>
+          <td>Michael Green</td>
+          <td>Apr 26</td>
+          <td>May 1</td>
+          <td class="right">$257.55</td>
+          <td class="right"><span class="days-pill rust">33 days</span></td>
+        </tr>
+        <tr class="ar-overdue-33">
+          <td class="mono">INV-0222</td>
+          <td>Ash</td>
+          <td>Apr 26</td>
+          <td>May 1</td>
+          <td class="right">$257.55</td>
+          <td class="right"><span class="days-pill rust">33 days</span></td>
+        </tr>
+        <tr class="ar-overdue-33">
+          <td class="mono">INV-0227</td>
+          <td>Ari</td>
+          <td>Apr 26</td>
+          <td>May 1</td>
+          <td class="right">$218.92</td>
+          <td class="right"><span class="days-pill rust">33 days</span></td>
+        </tr>
+        <tr class="ar-overdue-19">
+          <td class="mono">INV-0224</td>
+          <td>Rena O'Brien · Gitcoin Foundation</td>
+          <td>Apr 30</td>
+          <td>May 15</td>
+          <td class="right">$850.00</td>
+          <td class="right"><span class="days-pill amber">19 days</span></td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="4">Total outstanding</td>
+          <td class="right rust">$2,253.65</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ── C: Onchain Treasury ── -->
+  <div class="section-label">
+    <span class="lbl">C · Onchain Treasury · SAFE</span>
+    <div class="rule"></div>
+  </div>
+
+  <p style="font-size:10.5px;color:var(--muted);margin-bottom:14px;">
+    SAFE <span style="font-family:'IBM Plex Mono',monospace;color:var(--faint);">0xA594263e0449A28eAEf5BA6420E81cC1996b7782</span> —
+    pre-LCA workspace expense-sharing mechanism. Active on Ethereum Mainnet and Optimism.
+  </p>
+
+  <div class="two-col">
+
+    <div class="balance-tile">
+      <div class="balance-chain">
+        <span class="chain-dot mainnet"></span>
+        Ethereum Mainnet
+      </div>
+      <div class="balance-row">
+        <span class="balance-token">USDC</span>
+        <span class="balance-amount">7,497.17</span>
+      </div>
+      <div class="safe-flow">
+        <span>May flow:</span>
+        <span class="in">+1,000 USDC in</span>
+      </div>
+      <table class="ledger" style="margin-top:1px;">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>From</th>
+            <th class="right">USDC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>May 20</td>
+            <td class="mono" style="font-size:9.5px;">0xa6Cf44…c05468</td>
+            <td class="right amount-in">+150.00</td>
+          </tr>
+          <tr>
+            <td>May 20</td>
+            <td class="mono" style="font-size:9.5px;">0xA671AE…6755D</td>
+            <td class="right amount-in">+850.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="balance-tile">
+      <div class="balance-chain">
+        <span class="chain-dot optimism"></span>
+        Optimism
+      </div>
+      <div class="balance-row">
+        <span class="balance-token">USDC</span>
+        <span class="balance-amount">2,540.14</span>
+      </div>
+      <div class="balance-row">
+        <span class="balance-token">DAI</span>
+        <span class="balance-amount">1,000.00</span>
+      </div>
+      <div class="balance-row">
+        <span class="balance-token">ETH</span>
+        <span class="balance-amount">0.022</span>
+      </div>
+      <div class="safe-flow">
+        <span>May flow:</span>
+        <span class="in">+500 USDC</span>
+        <span class="out">−1,005 USDC</span>
+      </div>
+      <table class="ledger" style="margin-top:1px;">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Counterparty</th>
+            <th class="right">USDC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>May 2</td>
+            <td class="mono" style="font-size:9.5px;">0xaf5bB2…e47CB</td>
+            <td class="right amount-in">+250.00</td>
+          </tr>
+          <tr>
+            <td>May 21</td>
+            <td class="mono" style="font-size:9.5px;">0xd88732…7c46</td>
+            <td class="right amount-out">−5.00</td>
+          </tr>
+          <tr>
+            <td>May 27</td>
+            <td class="mono" style="font-size:9.5px;">0xaf5bB2…e47CB</td>
+            <td class="right amount-in">+250.00</td>
+          </tr>
+          <tr>
+            <td>May 27</td>
+            <td class="mono" style="font-size:9.5px;">0xd88732…7c46</td>
+            <td class="right amount-out">−1,000.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="flag-notice" style="margin-top:12px;">
+    <strong>Spam airdrop flagged:</strong> May 2, Optimism — 250 "ỤSDC" (lookalike token, untrusted contract
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;">0xC6203D…03d1</span>).
+    Zero value. Not included in balances or flow totals.
+  </div>
+
+  <div class="recon-notice" style="margin-top:10px;">
+    <strong>Counterparty labels pending:</strong> 4 wallet addresses across both chains are unidentified.
+    SAFE ownership and signatory mapping required for formal expense-sharing ledger.
+  </div>
+
+
+  <!-- ── Footer ── -->
+  <div class="stmt-footer">
+    <div>
+      RegenHub, LCA · #20261215588 · Boulder, CO<br>
+      Draft — pending Xero reconciliation and Mercury bank data
+    </div>
+    <div style="text-align:right;">
+      <a href="/intranet/treasury/">← Treasury</a> ·
+      <a href="/intranet/">Home</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
