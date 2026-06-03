@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Launch Package · Concept — RegenHub, LCA</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="/intranet/nav.js"></script>
+<style>
+  :root {
+    --bg:          #0f0f0f;
+    --surface:     #1a1a1a;
+    --surface-2:   #141414;
+    --border:      #2e2e2e;
+    --border-med:  #3a3a3a;
+    --terra:       #c4956a;
+    --terra-text:  #c4956a;
+    --terra-dim:   rgba(196,149,106,0.10);
+    --terra-glow:  rgba(196,149,106,0.05);
+    --heading:     #e8e0d8;
+    --text:        #d4d4d4;
+    --muted:       #888;
+    --faint:       #555;
+    --green:       #6ae89a;
+    --green-dim:   rgba(106,232,154,0.08);
+    --amber:       #e8c46a;
+    --amber-dim:   rgba(232,196,106,0.08);
+    --rust:        #e89090;
+    --rust-dim:    rgba(232,144,144,0.08);
+    --sky:         #6ab4e8;
+    --sky-dim:     rgba(106,180,232,0.08);
+    --violet:      #a78ee8;
+    --violet-dim:  rgba(167,142,232,0.08);
+  }
+  [data-mode="light"] {
+    --bg:          #faf7f2;
+    --surface:     #f3ede4;
+    --surface-2:   #efe8dc;
+    --border:      #ddd5c8;
+    --border-med:  #ccc4b8;
+    --terra:       #c4956a;
+    --terra-text:  #96704a;
+    --terra-dim:   rgba(196,149,106,0.10);
+    --heading:     #2d2620;
+    --text:        #3d342b;
+    --muted:       #7a6e62;
+    --faint:       #a89888;
+    --green:       #3a8a50;
+    --green-dim:   rgba(58,138,80,0.08);
+    --amber:       #a07820;
+    --amber-dim:   rgba(160,120,32,0.08);
+    --rust:        #b05050;
+    --rust-dim:    rgba(176,80,80,0.08);
+    --sky:         #3a6a9a;
+    --sky-dim:     rgba(58,106,154,0.08);
+    --violet:      #6a4ab0;
+    --violet-dim:  rgba(106,74,176,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page-shell {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+  }
+
+  /* ── Header ── */
+  .eyebrow {
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra-text);
+    opacity: 0.8;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 30px;
+    font-weight: 400;
+    color: var(--heading);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .page-deck {
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.65;
+    margin-bottom: 6px;
+  }
+  .page-meta {
+    font-size: 10px;
+    color: var(--faint);
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .status-pill {
+    display: inline-block;
+    font-size: 8.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: var(--amber-dim);
+    color: var(--amber);
+    border: 1px solid rgba(232,196,106,0.2);
+  }
+
+  /* ── Summary strip ── */
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  @media (max-width: 600px) { .summary-strip { grid-template-columns: 1fr; } }
+  .sum-cell {
+    background: var(--surface);
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sum-label {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sum-value {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--heading);
+    letter-spacing: -0.02em;
+  }
+  .sum-value.terra { color: var(--terra-text); }
+  .sum-sub { font-size: 9.5px; color: var(--muted); }
+
+  /* ── Section label ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 18px;
+  }
+  .section-label .lbl {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--terra-text);
+    white-space: nowrap;
+    opacity: 0.85;
+  }
+  .section-label .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Prose ── */
+  .prose {
+    max-width: 640px;
+    line-height: 1.75;
+    color: var(--text);
+    font-size: 12.5px;
+  }
+  .prose p { margin-bottom: 14px; }
+  .prose strong { color: var(--heading); font-weight: 500; }
+
+  /* ── Concept summary ── */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  @media (max-width: 640px) { .concept-grid { grid-template-columns: 1fr; } }
+  .concept-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+  .concept-card-label {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .concept-card-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 15px;
+    color: var(--heading);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .concept-card-body {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+  .concept-card-url {
+    margin-top: 10px;
+    font-size: 10px;
+    color: var(--terra-text);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Journey flow ── */
+  .journey-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .journey-step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 0 16px;
+    position: relative;
+  }
+
+  /* Connector line */
+  .journey-step:not(:last-child) .step-connector {
+    position: absolute;
+    left: 23px;
+    top: 48px;
+    bottom: -1px;
+    width: 1px;
+    background: var(--border);
+    z-index: 0;
+  }
+  .journey-step.fork-step .step-connector { display: none; }
+
+  .step-num-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 14px;
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border-med);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600;
+    color: var(--muted);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-num.terra  { border-color: rgba(196,149,106,0.4); color: var(--terra-text); background: var(--terra-dim); }
+  .step-num.green  { border-color: rgba(106,232,154,0.3); color: var(--green);      background: var(--green-dim); }
+  .step-num.amber  { border-color: rgba(232,196,106,0.3); color: var(--amber);      background: var(--amber-dim); }
+  .step-num.sky    { border-color: rgba(106,180,232,0.3); color: var(--sky);        background: var(--sky-dim); }
+  .step-num.rust   { border-color: rgba(232,144,144,0.3); color: var(--rust);       background: var(--rust-dim); }
+  .step-num.violet { border-color: rgba(167,142,232,0.3); color: var(--violet);     background: var(--violet-dim); }
+
+  .step-card-outer {
+    padding: 0 0 20px 0;
+  }
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .step-card-head {
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .step-phase {
+    font-size: 8.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .step-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 15px;
+    color: var(--heading);
+    font-weight: 400;
+  }
+  .step-source {
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border-med);
+    color: var(--faint);
+    background: var(--surface-2);
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+  .step-source a { color: inherit; text-decoration: none; }
+  .step-source a:hover { color: var(--terra-text); }
+  .step-card-body {
+    padding: 12px 16px;
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .step-card-body strong { color: var(--text); font-weight: 500; }
+  .step-scope {
+    display: inline-block;
+    font-size: 8.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-top: 8px;
+  }
+  .scope-all    { background: var(--terra-dim);  color: var(--terra-text); }
+  .scope-ws     { background: var(--green-dim);  color: var(--green); }
+  .scope-coop   { background: var(--amber-dim);  color: var(--amber); }
+
+  /* Fork block */
+  .fork-block {
+    margin-bottom: 20px;
+    margin-left: 64px;
+    position: relative;
+  }
+  .fork-label {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .fork-label::before, .fork-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .fork-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 620px) { .fork-cols { grid-template-columns: 1fr; } }
+  .fork-card {
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid;
+  }
+  .fork-card.ws {
+    background: var(--green-dim);
+    border-color: rgba(106,232,154,0.2);
+  }
+  .fork-card.coop {
+    background: var(--amber-dim);
+    border-color: rgba(232,196,106,0.2);
+  }
+  .fork-card-label {
+    font-size: 8.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .fork-card.ws   .fork-card-label { color: var(--green); }
+  .fork-card.coop .fork-card-label { color: var(--amber); }
+  .fork-card-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 14px;
+    color: var(--heading);
+    margin-bottom: 5px;
+  }
+  .fork-card-body {
+    font-size: 11px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+  .fork-card-source {
+    margin-top: 8px;
+    font-size: 9px;
+    color: var(--faint);
+    letter-spacing: 0.04em;
+  }
+
+  /* Fork connector */
+  .fork-connector {
+    margin-left: 64px;
+    margin-bottom: 0;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 8px;
+    gap: 0;
+    position: relative;
+  }
+  .fork-connector::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    height: 10px;
+    width: 1px;
+    background: var(--border);
+  }
+  .fork-connector::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 10px;
+    height: 10px;
+    width: 1px;
+    background: var(--border);
+  }
+
+  /* ── Architecture diagram ── */
+  .arch-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px 24px;
+    margin-bottom: 12px;
+  }
+  .arch-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .arch-node {
+    background: var(--surface-2);
+    border: 1px solid var(--border-med);
+    border-radius: 6px;
+    padding: 10px 16px;
+    text-align: center;
+    min-width: 140px;
+  }
+  .arch-node.primary {
+    border-color: rgba(196,149,106,0.4);
+    background: var(--terra-dim);
+  }
+  .arch-node.ws-node {
+    border-color: rgba(106,232,154,0.25);
+    background: var(--green-dim);
+  }
+  .arch-node.coop-node {
+    border-color: rgba(232,196,106,0.25);
+    background: var(--amber-dim);
+  }
+  .arch-node-label {
+    font-size: 8.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 3px;
+  }
+  .arch-node-url {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--heading);
+    letter-spacing: 0.02em;
+  }
+  .arch-node-sub {
+    font-size: 9.5px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .arch-arrow {
+    font-size: 14px;
+    color: var(--faint);
+    flex-shrink: 0;
+  }
+  .arch-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+  }
+  .arch-note {
+    font-size: 10.5px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.6;
+  }
+  .arch-note strong { color: var(--text); font-weight: 500; }
+
+  /* ── Source docs ── */
+  .source-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 600px) { .source-grid { grid-template-columns: 1fr; } }
+  .source-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .source-tag {
+    font-size: 8.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    display: inline-block;
+    align-self: flex-start;
+  }
+  .source-tag.legal   { background: var(--rust-dim);   color: var(--rust);   border: 1px solid rgba(232,144,144,0.2); }
+  .source-tag.benefit { background: var(--terra-dim);  color: var(--terra-text); border: 1px solid rgba(196,149,106,0.2); }
+  .source-tag.prd     { background: var(--sky-dim);    color: var(--sky);    border: 1px solid rgba(106,180,232,0.2); }
+  .source-tag.ops     { background: var(--green-dim);  color: var(--green);  border: 1px solid rgba(106,232,154,0.2); }
+  .source-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 14px;
+    color: var(--heading);
+    font-weight: 400;
+    line-height: 1.3;
+  }
+  .source-body {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+  .source-link {
+    font-size: 9.5px;
+    color: var(--terra-text);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+  .source-link:hover { text-decoration: underline; }
+  .source-steps {
+    font-size: 9px;
+    color: var(--faint);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── Scope checklist ── */
+  .scope-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 580px) { .scope-grid { grid-template-columns: 1fr; } }
+  .scope-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .scope-col-head {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .scope-col-head.in-scope  { color: var(--green); }
+  .scope-col-head.out-scope { color: var(--faint); }
+  .scope-item {
+    padding: 9px 16px;
+    font-size: 11.5px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .scope-item:last-child { border-bottom: none; }
+  .scope-check {
+    font-size: 11px;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+  .scope-check.in  { color: var(--green); }
+  .scope-check.out { color: var(--faint); }
+  .scope-item-sub {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── Footer ── */
+  .page-footer {
+    margin-top: 52px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 9.5px;
+    color: var(--faint);
+  }
+  .page-footer a { color: var(--terra-text); text-decoration: none; }
+  .page-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="page-shell">
+
+  <p class="eyebrow">Launch Package · Concept</p>
+  <h1>Co-op Entry Experience</h1>
+  <p class="page-deck">
+    A guided onboarding journey for all incoming RegenHub, LCA members —
+    informational, educational, and alignment-grounded.
+    Techne as a program of RegenHub. One entry, two destinations.
+  </p>
+  <p class="page-meta">
+    <span>Version 0.1 · June 3, 2026</span>
+    <span>Board Meeting · June 10, 2026</span>
+    <span class="status-pill">Prototype</span>
+  </p>
+
+  <!-- Summary strip -->
+  <div class="summary-strip">
+    <div class="sum-cell">
+      <span class="sum-label">Entry Points</span>
+      <span class="sum-value terra">2</span>
+      <span class="sum-sub">Workspace + Virtual CoP</span>
+    </div>
+    <div class="sum-cell">
+      <span class="sum-label">Journey Steps</span>
+      <span class="sum-value">7</span>
+      <span class="sum-sub">Shared + branched at Step 2</span>
+    </div>
+    <div class="sum-cell">
+      <span class="sum-label">Grounding Docs</span>
+      <span class="sum-value">4</span>
+      <span class="sum-sub">Legal · Benefit · CIS · Hub Ops</span>
+    </div>
+  </div>
+
+
+  <!-- ── The Concept ── -->
+  <div class="section-label" id="concept">
+    <span class="lbl">The Concept</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="prose" style="margin-bottom:20px;">
+    <p>
+      The cooperative has governing documents, a public benefit purpose, and an operating information system.
+      What it lacks is a coherent way for new members to encounter all three in sequence — and to understand
+      how they fit together before they sign anything.
+    </p>
+    <p>
+      The launch package is a <strong>co-op entry experience</strong>: a multi-step journey that orients
+      incoming members to what RegenHub, LCA is, what membership means, what tools they'll use, and what
+      they're agreeing to. It is the front door — shared across both the physical workspace and the virtual
+      community of practice.
+    </p>
+    <p>
+      Techne is a program of RegenHub. Members join either through the workspace (physical presence at 1515
+      Walnut) or through the virtual community of practice (Techne.coop). The journey is the same through
+      the first and third steps onward — it forks only at Step 2, where workspace context diverges from
+      virtual CoP context.
+    </p>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="concept-card-label">Entry Point A</div>
+      <div class="concept-card-title">Workspace Membership</div>
+      <div class="concept-card-body">
+        Physical coworking at 1515 Walnut. Stripe billing, access codes, monthly meetups,
+        Ethereum Hub grant obligations. Augments the existing RegenHub.xyz member portal.
+      </div>
+      <div class="concept-card-url">regenhub.xyz → /join</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-card-label">Entry Point B</div>
+      <div class="concept-card-title">Virtual Community of Practice</div>
+      <div class="concept-card-body">
+        Participation in the Techne cooperative without a physical desk. Governance,
+        patronage, ventures, and coordination — fully remote.
+      </div>
+      <div class="concept-card-url">techne.coop → /join</div>
+    </div>
+  </div>
+
+
+  <!-- ── The Journey ── -->
+  <div class="section-label" id="journey">
+    <span class="lbl">The Journey · 7 Steps</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="journey-wrap">
+
+    <!-- Step 1 -->
+    <div class="journey-step">
+      <div class="step-connector"></div>
+      <div class="step-num-col">
+        <div class="step-num terra">1</div>
+      </div>
+      <div class="step-card-outer">
+        <div class="step-card">
+          <div class="step-card-head">
+            <div>
+              <div class="step-phase">Foundation</div>
+              <div class="step-title">The Cooperative</div>
+            </div>
+            <span class="step-source"><a href="/public-benefit/" target="_blank">Public Benefit Statement</a></span>
+          </div>
+          <div class="step-card-body">
+            What RegenHub, LCA is — a Colorado Limited Cooperative Association with a legally-filed
+            public benefit purpose. <strong>Cultivating scenius</strong>: the collective intelligence
+            that emerges from sustained proximity of culturally aligned people. Why a cooperative,
+            not a company. What democratic control means in practice. The relationship between
+            RegenHub (the space) and Techne (the program).
+            <br><br>
+            <span class="step-scope scope-all">All Members</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 fork -->
+    <div class="journey-step fork-step">
+      <div class="step-num-col">
+        <div class="step-num amber">2</div>
+      </div>
+      <div class="step-card-outer" style="padding-bottom:0;">
+        <div style="padding-bottom:12px;">
+          <div class="step-phase">Context</div>
+          <div class="step-title" style="font-family:'Libre Baskerville',serif;font-size:15px;color:var(--heading);margin-bottom:4px;">Your Membership Context</div>
+          <div style="font-size:11px;color:var(--muted);">This step forks based on how you're joining the cooperative.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fork block -->
+    <div class="fork-block">
+      <div class="fork-label">Step 2 · Branching</div>
+      <div class="fork-cols">
+        <div class="fork-card ws">
+          <div class="fork-card-label">Workspace Branch</div>
+          <div class="fork-card-title">The Space</div>
+          <div class="fork-card-body">
+            The physical hub at 1515 Walnut, Boulder. The Ethereum Everywhere grant —
+            what it funds, what it requires, what that means for how the space operates.
+            Co-working access, monthly Ethereum meetups, the CROPS design intentions.
+            What workspace membership includes operationally.
+          </div>
+          <div class="fork-card-source">Source: Hub Operations PRD</div>
+        </div>
+        <div class="fork-card coop">
+          <div class="fork-card-label">Virtual CoP Branch</div>
+          <div class="fork-card-title">The Community</div>
+          <div class="fork-card-body">
+            Techne as program of RegenHub. What the virtual community of practice is —
+            how it differs from the workspace, what participation means without a desk.
+            The relationship to governance, patronage, and the tools that enable
+            distributed cooperation.
+          </div>
+          <div class="fork-card-source">Source: CIS PRD · Techne Program Model</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="journey-step">
+      <div class="step-connector"></div>
+      <div class="step-num-col">
+        <div class="step-num sky">3</div>
+      </div>
+      <div class="step-card-outer">
+        <div class="step-card">
+          <div class="step-card-head">
+            <div>
+              <div class="step-phase">Infrastructure</div>
+              <div class="step-title">The Common Information System</div>
+            </div>
+            <span class="step-source"><a href="/intranet/a/cis-module-14-labor-patronage.html" target="_blank">CIS PRD</a></span>
+          </div>
+          <div class="step-card-body">
+            The cooperative's information infrastructure — what it is, why it was built
+            rather than bought. An overview of the modules members will have access to:
+            people, agreements, treasury, roadmap, activity, patronage. The
+            <strong>patronage model</strong>: how labor, revenue, cash, and community
+            contributions translate into capital accounts and surplus allocation.
+            <br><br>
+            <span class="step-scope scope-all">All Members</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="journey-step">
+      <div class="step-connector"></div>
+      <div class="step-num-col">
+        <div class="step-num terra">4</div>
+      </div>
+      <div class="step-card-outer">
+        <div class="step-card">
+          <div class="step-card-head">
+            <div>
+              <div class="step-phase">Governance</div>
+              <div class="step-title">How Decisions Are Made</div>
+            </div>
+            <span class="step-source"><a href="/legal/bylaws-v2/" target="_blank">Bylaws v.2</a></span>
+          </div>
+          <div class="step-card-body">
+            Democratic member control — one member, one vote. The four membership classes
+            and what each holds. How the board relates to the member body. What members
+            decide versus what is delegated to stewards. The graduated decision threshold
+            structure: day-to-day → board resolutions → bylaws amendments → public
+            benefit. Link to the full bylaws v.2 for depth.
+            <br><br>
+            <span class="step-scope scope-all">All Members</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="journey-step">
+      <div class="step-connector"></div>
+      <div class="step-num-col">
+        <div class="step-num rust">5</div>
+      </div>
+      <div class="step-card-outer">
+        <div class="step-card">
+          <div class="step-card-head">
+            <div>
+              <div class="step-phase">Agreement</div>
+              <div class="step-title">The Member Agreement</div>
+            </div>
+            <span class="step-source"><a href="/legal/membership-agreement-v2/" target="_blank">Member Agreement v.2</a></span>
+          </div>
+          <div class="step-card-body">
+            Plain-language orientation to the member agreement — not legalese, but the
+            substance. IP scope: what members bring stays theirs, what the cooperative
+            builds together belongs to the cooperative. Withdrawal mechanics. Patronage
+            accounting and what it means for capital accounts. Three blocking issues
+            currently in organizer review. Alignment signal at end of step.
+            Full document linked throughout.
+            <br><br>
+            <span class="step-scope scope-all">All Members</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="journey-step">
+      <div class="step-connector"></div>
+      <div class="step-num-col">
+        <div class="step-num violet">6</div>
+      </div>
+      <div class="step-card-outer">
+        <div class="step-card">
+          <div class="step-card-head">
+            <div>
+              <div class="step-phase">Profile</div>
+              <div class="step-title">Your Identity</div>
+            </div>
+            <span class="step-source">CIS · auth.user_metadata</span>
+          </div>
+          <div class="step-card-body">
+            Name, role, location, bio. Membership type selection — workspace or virtual
+            CoP — which determines the CIS modules and communications you receive.
+            Persisted to Supabase user_metadata on completion. This is the existing
+            <code style="font-size:10.5px;color:var(--heading);">/enroll</code>
+            identity step, promoted to its proper place in the sequence.
+            <br><br>
+            <span class="step-scope scope-all">All Members</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="journey-step">
+      <div class="step-num-col">
+        <div class="step-num green">7</div>
+      </div>
+      <div class="step-card-outer">
+        <div class="step-card">
+          <div class="step-card-head">
+            <div>
+              <div class="step-phase">Completion</div>
+              <div class="step-title">Welcome</div>
+            </div>
+            <span class="step-source">CIS · /intranet</span>
+          </div>
+          <div class="step-card-body">
+            Confirmation of enrollment. Next steps specific to membership type — workspace
+            members see access code instructions and billing setup; virtual CoP members
+            see governance participation and patronage orientation. Links into the full
+            CIS. An acknowledgment that the cooperative is in formation and the member
+            is joining a living process, not a finished institution.
+            <br><br>
+            <span class="step-scope scope-ws">Workspace →&nbsp;regenhub.xyz/portal</span>&nbsp;
+            <span class="step-scope scope-coop">Virtual CoP →&nbsp;intranet</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /journey-wrap -->
+
+
+  <!-- ── Architecture ── -->
+  <div class="section-label" id="architecture">
+    <span class="lbl">Architecture</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="arch-diagram">
+    <!-- Entry points -->
+    <div class="arch-row">
+      <div class="arch-node ws-node">
+        <div class="arch-node-label">Workspace Entry</div>
+        <div class="arch-node-url">regenhub.xyz</div>
+        <div class="arch-node-sub">Existing Next.js portal</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node coop-node">
+        <div class="arch-node-label">Virtual CoP Entry</div>
+        <div class="arch-node-url">techne.coop</div>
+        <div class="arch-node-sub">New — stub landing</div>
+      </div>
+    </div>
+
+    <div class="arch-row" style="font-size:11px;color:var(--faint);gap:6px;">
+      <span>Both entry points route to</span>
+    </div>
+
+    <!-- Front door -->
+    <div class="arch-row">
+      <div class="arch-node primary" style="min-width:200px;">
+        <div class="arch-node-label">Front Door</div>
+        <div class="arch-node-url">techne.institute/join/</div>
+        <div class="arch-node-sub">7-step onboarding experience</div>
+      </div>
+    </div>
+
+    <div class="arch-divider"></div>
+
+    <!-- Auth model -->
+    <div class="arch-note">
+      <strong>Auth:</strong> Email signup → Supabase auth (hvbdpgkdcdskhpbdeeim) →
+      <code style="font-size:10px;">user_metadata</code> written on Step 6 completion ·
+      <strong>Session:</strong> Shared with CIS — same <code style="font-size:10px;">window.CIS_SESSION</code> as intranet/nav.js ·
+      <strong>Membership type</strong> stored in <code style="font-size:10px;">user_metadata.membership_type</code>
+      and gates module visibility in the CIS
+    </div>
+
+    <div class="arch-divider"></div>
+
+    <!-- Destinations -->
+    <div class="arch-row">
+      <div class="arch-node ws-node">
+        <div class="arch-node-label">After Enrollment</div>
+        <div class="arch-node-url">regenhub.xyz/portal</div>
+        <div class="arch-node-sub">Access codes, passes, billing</div>
+      </div>
+      <div class="arch-arrow">or</div>
+      <div class="arch-node coop-node">
+        <div class="arch-node-label">After Enrollment</div>
+        <div class="arch-node-url">techne.institute/intranet</div>
+        <div class="arch-node-sub">Governance, patronage, CIS</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ── Grounding Documents ── -->
+  <div class="section-label" id="sources">
+    <span class="lbl">Grounding Documents</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="source-grid">
+    <div class="source-card">
+      <span class="source-tag benefit">Public Benefit</span>
+      <div class="source-title">Public Benefit Statement</div>
+      <div class="source-body">
+        "Cultivating scenius." Filed in the Articles of Organization, Colorado SOS, February 2026.
+        Legally binding on the Board. Grounds Step 1.
+      </div>
+      <div class="source-steps">Grounds: Step 1</div>
+      <a class="source-link" href="/public-benefit/" target="_blank">techne.institute/public-benefit/ →</a>
+    </div>
+    <div class="source-card">
+      <span class="source-tag legal">Legal</span>
+      <div class="source-title">Bylaws v.2 + Member Agreement v.2</div>
+      <div class="source-body">
+        Revised governing documents in organizer review. 8 issues identified in bylaws (3 blocking);
+        6 in member agreement (3 blocking). Not yet ratified.
+      </div>
+      <div class="source-steps">Grounds: Steps 4, 5</div>
+      <a class="source-link" href="/legal/bylaws-v2/" target="_blank">Bylaws v.2 →</a> ·
+      <a class="source-link" href="/legal/membership-agreement-v2/" target="_blank">Member Agreement v.2 →</a>
+    </div>
+    <div class="source-card">
+      <span class="source-tag prd">CIS PRD</span>
+      <div class="source-title">Common Information System PRD</div>
+      <div class="source-body">
+        Product requirements for the cooperative's information infrastructure.
+        14 modules. Patronage accounting architecture. Labor as first-class capital.
+      </div>
+      <div class="source-steps">Grounds: Steps 3, 6</div>
+      <a class="source-link" href="/intranet/a/cis-module-14-labor-patronage.html" target="_blank">CIS Module 14 (Labor Patronage) →</a>
+    </div>
+    <div class="source-card">
+      <span class="source-tag ops">Hub Operations</span>
+      <div class="source-title">Hub Operations PRD</div>
+      <div class="source-body">
+        Augments the CIS for the Boulder Ethereum Community Hub. Ethereum Everywhere
+        grant obligations, CROPS design discipline, 8 operational modules.
+      </div>
+      <div class="source-steps">Grounds: Step 2 (Workspace Branch)</div>
+      <a class="source-link" href="/intranet/a/" target="_blank">Advanced view →</a>
+    </div>
+  </div>
+
+
+  <!-- ── June 10 Scope ── -->
+  <div class="section-label" id="scope">
+    <span class="lbl">June 10 · Board Meeting Scope</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="scope-grid">
+    <div class="scope-col">
+      <div class="scope-col-head in-scope">In scope · deliverable by June 10</div>
+      <div class="scope-item">
+        <span class="scope-check in">✓</span>
+        <div>
+          <div>This concept page</div>
+          <div class="scope-item-sub">techne.institute/launch/concept — presentable to board</div>
+        </div>
+      </div>
+      <div class="scope-item">
+        <span class="scope-check in">✓</span>
+        <div>
+          <div>Steps 1, 3, 6, 7 fully built</div>
+          <div class="scope-item-sub">Cooperative framing, CIS overview, identity, welcome</div>
+        </div>
+      </div>
+      <div class="scope-item">
+        <span class="scope-check in">✓</span>
+        <div>
+          <div>Steps 4, 5 as read + align</div>
+          <div class="scope-item-sub">Existing legal pages + alignment signal</div>
+        </div>
+      </div>
+      <div class="scope-item">
+        <span class="scope-check in">✓</span>
+        <div>
+          <div>Step 2 fork wired</div>
+          <div class="scope-item-sub">Workspace branch content-complete; CoP branch placeholder</div>
+        </div>
+      </div>
+      <div class="scope-item">
+        <span class="scope-check in">✓</span>
+        <div>
+          <div>techne.coop stub landing</div>
+          <div class="scope-item-sub">New repo, minimal page routing to /join</div>
+        </div>
+      </div>
+    </div>
+    <div class="scope-col">
+      <div class="scope-col-head out-scope">Post June 10 · future work</div>
+      <div class="scope-item">
+        <span class="scope-check out">○</span>
+        <div>
+          <div>Multi-tenant Supabase architecture</div>
+          <div class="scope-item-sub">tenant_id + RLS policies per deployment</div>
+        </div>
+      </div>
+      <div class="scope-item">
+        <span class="scope-check out">○</span>
+        <div>
+          <div>regenhub.xyz portal integration</div>
+          <div class="scope-item-sub">/portal/cooperative pages in Next.js app</div>
+        </div>
+      </div>
+      <div class="scope-item">
+        <span class="scope-check out">○</span>
+        <div>
+          <div>Physical access provisioning</div>
+          <div class="scope-item-sub">Access code issuance from enrollment completion</div>
+        </div>
+      </div>
+      <div class="scope-item">
+        <span class="scope-check out">○</span>
+        <div>
+          <div>Patronage accounting activation</div>
+          <div class="scope-item-sub">Capital account creation on member enrollment</div>
+        </div>
+      </div>
+      <div class="scope-item">
+        <span class="scope-check out">○</span>
+        <div>
+          <div>Electronic signature on agreement</div>
+          <div class="scope-item-sub">Alignment signal → formal execution</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+  <div class="page-footer">
+    <div>
+      RegenHub, LCA · #20261215588 · Boulder, CO<br>
+      Launch Package concept — prototype for June 10, 2026 board meeting
+    </div>
+    <div style="text-align:right;">
+      <a href="/intranet/">CIS Home</a> ·
+      <a href="/launch/">Launch</a> ·
+      <a href="/public-benefit/">Public Benefit</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
