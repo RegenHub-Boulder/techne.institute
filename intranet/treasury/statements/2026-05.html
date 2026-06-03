@@ -8,6 +8,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <script src="/intranet/nav.js"></script>
+<script src="/intranet/comments.js" defer></script>
 <style>
   :root {
     --bg:          #0f0f0f;
@@ -353,7 +354,7 @@
   .stmt-footer a:hover { text-decoration: underline; }
 </style>
 </head>
-<body data-auth-required>
+<body data-auth-required data-doc-path="/intranet/treasury/statements/2026-05/">
 
 <div class="page-shell">
 
@@ -391,7 +392,7 @@
 
 
   <!-- ── A: Workspace Revenue ── -->
-  <div class="section-label">
+  <div class="section-label" id="sec-revenue">
     <span class="lbl">A · Workspace Revenue</span>
     <div class="rule"></div>
   </div>
@@ -474,7 +475,7 @@
 
 
   <!-- ── B: AR Health ── -->
-  <div class="section-label">
+  <div class="section-label" id="sec-ar">
     <span class="lbl">B · Accounts Receivable</span>
     <div class="rule"></div>
   </div>
@@ -553,7 +554,7 @@
 
 
   <!-- ── C: Onchain Treasury ── -->
-  <div class="section-label">
+  <div class="section-label" id="sec-onchain">
     <span class="lbl">C · Onchain Treasury · SAFE</span>
     <div class="rule"></div>
   </div>
@@ -667,7 +668,7 @@
   </div>
 
   <!-- ── D: Bank Account ── -->
-  <div class="section-label" style="margin-top:32px;">
+  <div class="section-label" id="sec-bank" style="margin-top:32px;">
     <span class="lbl">D · Bank Account</span>
     <div class="rule"></div>
   </div>
