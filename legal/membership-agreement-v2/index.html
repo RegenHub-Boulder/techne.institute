@@ -405,6 +405,18 @@
 
     [data-theme="light"] #tt-body { color: rgba(60,48,36,0.70); }
 
+    #tt-reason {
+      font-family: var(--mono);
+      font-size: 0.67rem;
+      line-height: 1.5;
+      color: rgba(200,188,168,0.50);
+      margin-top: 0.55rem;
+      padding-top: 0.55rem;
+      border-top: 1px solid rgba(196,149,106,0.15);
+    }
+
+    [data-theme="light"] #tt-reason { color: rgba(60,48,36,0.45); }
+
     /* signature block */
     .sig-block {
       margin-top: 3rem;
@@ -496,6 +508,7 @@
   <div id="tt-inner">
     <div id="tt-kind"></div>
     <div id="tt-body"></div>
+    <div id="tt-reason"></div>
   </div>
 </div>
 
@@ -555,7 +568,7 @@
   <div class="recitals">
     <div class="rec-heading">Recitals</div>
     <p><span class="mark-revised"
-        data-original="RegenHub is a coworking space and community venue in Boulder, Colorado, providing affordable workspace and event infrastructure for technologies, creatives, and changemakers building towards regenerative futures."
+        data-original="RegenHub is a coworking space and community venue in Boulder, Colorado, providing affordable workspace and event infrastructure for technologies, creatives, and changemakers building towards regenerative futures." data-reason="v1 described RegenHub as a facilities operation — a coworking space. This framing does not capture the cooperative's legal structure or public benefit purpose. v2 replaces it with the mission statement (cultivating collective intelligence and scenius) and clarifies the Cooperative's scope across physical, digital, and programmatic dimensions."
       >RegenHub, LCA ("Cooperative") is a Colorado Public Benefit Limited Cooperative Association organized to cultivate collective intelligence and scenius — the intelligence that arises from communities of practice — through right relationship between tools and the people who use them. The Cooperative serves patron members who are practitioners, builders, and thinkers operating across Boulder, Colorado and aligned virtual and regional communities. The Cooperative may operate physical gathering space, digital infrastructure, programs, and services in furtherance of this public benefit purpose.</span></p>
     <p>Applicant desires to become a Class A patron member of the Cooperative and to enjoy the rights and assume the obligations of membership as set forth in this Agreement and the Governing Documents (as defined below).</p>
     <p>The Cooperative desires to admit Applicant as a patron member upon the terms set forth herein.</p>
@@ -574,13 +587,13 @@
     <div class="sec">
       <div class="new-section-band">New § 1.0 — no equivalent in v.1</div>
       <div class="sec-head"><span class="sec-num">1.0</span>Scope of Agreement</div>
-      <p><span class="mark-new" data-original="">This Agreement governs <span class="def-term">Class A patron membership</span> in RegenHub, LCA. It does not govern investor membership or any other membership class established by the Board after the date of this Agreement. To the extent the Cooperative establishes additional membership classes, membership in each such class shall be governed by a separate membership agreement or addendum specific to that class.</span></p>
+      <p><span class="mark-new" data-original="" data-reason="v1 had no scope clause, leaving ambiguity about whether this Agreement would govern future membership classes. v2 limits scope to Class A patron membership explicitly and signals that future classes require separate agreements or addenda. This prevents future membership classes from inadvertently falling under these terms.">This Agreement governs <span class="def-term">Class A patron membership</span> in RegenHub, LCA. It does not govern investor membership or any other membership class established by the Board after the date of this Agreement. To the extent the Cooperative establishes additional membership classes, membership in each such class shall be governed by a separate membership agreement or addendum specific to that class.</span></p>
     </div>
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">1.1</span>Class A Patron Membership</div>
       <p>Subject to the terms and conditions of this Agreement and the Governing Documents, upon Applicant's execution of this Agreement and payment of the Stock Price set forth in Section 1.4, the Cooperative shall issue to Applicant one (1) share of Class A voting common stock representing Applicant's membership interest in the Cooperative (<span class="def-term">"Membership Interest"</span>). Each patron member shall hold one (1) share of Class A common stock. The Cooperative shall not admit Applicant as a member until the Stock Price, or an acceptable promissory note, has been received.</p>
-      <p><span class="mark-new" data-original="">The Board may establish additional membership classes with different financial rights, governance rights, and stock prices. Membership in any such additional class shall be governed by a separate membership agreement or addendum specific to that class.</span></p>
+      <p><span class="mark-new" data-original="" data-reason="Mirrors the §1.0 scope clarification at the section level. Signals that the Cooperative may evolve to include other membership types (investor members, affiliate members, etc.) governed by separate instruments, without disturbing Class A patron member rights established by this Agreement.">The Board may establish additional membership classes with different financial rights, governance rights, and stock prices. Membership in any such additional class shall be governed by a separate membership agreement or addendum specific to that class.</span></p>
     </div>
 
     <div class="sec">
@@ -600,7 +613,7 @@
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">1.5</span>Membership Dues</div>
-      <p>The Board may, in its discretion, establish membership dues payable by patron members. The Board may change the amount, frequency, or structure of membership dues, <span class="mark-new" data-original="">provided that any increase in dues shall take effect no sooner than thirty (30) days after written notice to all affected patron members.</span></p>
+      <p>The Board may, in its discretion, establish membership dues payable by patron members. The Board may change the amount, frequency, or structure of membership dues, <span class="mark-new" data-original="" data-reason="v1 gave the Board unconstrained discretion to change dues at any time without notice. A sudden dues increase could effectively force members out. The 30-day notice requirement is a baseline fairness protection consistent with the Board's duty of good faith to members under the ULCAA.">provided that any increase in dues shall take effect no sooner than thirty (30) days after written notice to all affected patron members.</span></p>
     </div>
   </div>
 
@@ -627,14 +640,14 @@
     <div class="sec">
       <div class="sec-head"><span class="sec-num">2.3</span>Profit Share</div>
       <p><span class="mark-revised"
-          data-original="The Board establishes the formula for profit share and may change the formula at the Board's discretion."
+          data-original="The Board establishes the formula for profit share and may change the formula at the Board's discretion." data-reason="v1 gave the Board open-ended discretion to set and change the profit-sharing formula — allowing silent changes to the core economic bargain of membership. v2 ties allocation to the Patronage Plan and C.R.S. §7-58-1004, grounding it in statute and a member-approved plan that cannot be amended unilaterally by the Board."
         >Subject to the Patronage Plan adopted pursuant to Section 2.4 and C.R.S. § 7-58-1004, patron members shall receive allocations of net profits in proportion to their patronage of the Cooperative during each fiscal year, after the Board's establishment of any reserves, unallocated surplus, or other set-asides authorized by the Governing Documents. The Board shall establish the methodology for calculating patronage consistent with the Patronage Plan.</span></p>
     </div>
 
     <div class="sec">
       <div class="new-section-band">New § 2.4 — no equivalent in v.1</div>
       <div class="sec-head"><span class="sec-num">2.4</span>Patronage Plan</div>
-      <p><span class="mark-new" data-original="">The Board shall adopt a written <span class="def-term">Patronage Plan</span> within ninety (90) days of the Cooperative's admission of its first patron member. The Patronage Plan shall specify: (a) the method for calculating each patron member's patronage for each fiscal year; (b) the basis for allocating net margins among patron members in proportion to their patronage, consistent with C.R.S. § 7-58-1004; (c) the form and timing of patronage dividends, including the minimum percentage to be paid in cash; (d) the procedures for issuing written notices of allocation to each patron member; and (e) the procedures for maintaining and adjusting patron capital accounts. The Board may amend the Patronage Plan, provided that any amendment reducing the cash component of patronage dividends or changing the patronage allocation basis shall require approval by a majority of patron members entitled to vote at a duly noticed meeting.</span></p>
+      <p><span class="mark-new" data-original="" data-reason="v1 had no Patronage Plan requirement. For Subchapter T tax treatment to function correctly, the Cooperative needs a documented plan specifying how patronage is measured and allocations calculated. C.R.S. §7-58-1004 requires proportional allocation — the Plan operationalizes this. The 90-day adoption deadline prevents indefinite deferral of the core economic mechanism.">The Board shall adopt a written <span class="def-term">Patronage Plan</span> within ninety (90) days of the Cooperative's admission of its first patron member. The Patronage Plan shall specify: (a) the method for calculating each patron member's patronage for each fiscal year; (b) the basis for allocating net margins among patron members in proportion to their patronage, consistent with C.R.S. § 7-58-1004; (c) the form and timing of patronage dividends, including the minimum percentage to be paid in cash; (d) the procedures for issuing written notices of allocation to each patron member; and (e) the procedures for maintaining and adjusting patron capital accounts. The Board may amend the Patronage Plan, provided that any amendment reducing the cash component of patronage dividends or changing the patronage allocation basis shall require approval by a majority of patron members entitled to vote at a duly noticed meeting.</span></p>
     </div>
   </div>
 
@@ -661,31 +674,31 @@
     <div class="sec">
       <div class="sec-head"><span class="sec-num">3.3</span>Consent to Tax Treatment</div>
       <p>By becoming a member of the Cooperative and having received a copy of this Agreement, Applicant consents that the amount of any allocations of net profits or losses (as defined by the Bylaws and the Patronage Plan) shall be taken into account on Applicant's income tax return at their stated dollar amounts in the taxable year in which they were received by Applicant.</p>
-      <p><span class="mark-new" data-original="">Applicant further acknowledges that: (a) the Cooperative intends to maintain capital accounts for patron members in accordance with Treasury Regulation § 1.704-1(b)(2)(iv); (b) the Cooperative will provide Applicant with annual written notices of allocation reflecting Applicant's distributive share of net income or loss for each fiscal year; and (c) such allocations are intended to have substantial economic effect within the meaning of IRC § 704(b).</span></p>
+      <p><span class="mark-new" data-original="" data-reason="Members must acknowledge the tax treatment of their capital accounts for the allocation structure to have substantial economic effect under IRC §704(b). Treasury Regulation §1.704-1(b)(2)(ii)(b) requires documented member acknowledgment of capital account maintenance, annual allocation notices, and the substantial economic effect standard. This provision creates that record.">Applicant further acknowledges that: (a) the Cooperative intends to maintain capital accounts for patron members in accordance with Treasury Regulation § 1.704-1(b)(2)(iv); (b) the Cooperative will provide Applicant with annual written notices of allocation reflecting Applicant's distributive share of net income or loss for each fiscal year; and (c) such allocations are intended to have substantial economic effect within the meaning of IRC § 704(b).</span></p>
     </div>
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">3.4</span>Intellectual Property</div>
 
-      <p><strong>3.4.1 Definitions.</strong> <span class="mark-new" data-original="">For purposes of this Section 3.4:</span></p>
+      <p><strong>3.4.1 Definitions.</strong> <span class="mark-new" data-original="" data-reason="v1's IP section lacked defined terms, making the scope of the work-for-hire provision ambiguous. The definitions in §3.4.1 — Cooperative-Commissioned Work and Applicant IP — are the foundation for a member-protective IP framework that limits assignment to work explicitly commissioned and compensated by the Cooperative.">For purposes of this Section 3.4:</span></p>
 
-      <p><span class="mark-new" data-original=""><span class="def-term">"Cooperative-Commissioned Work"</span> means Intellectual Property developed by Applicant pursuant to a written task assignment, statement of work, or engagement letter executed by an authorized officer of the Cooperative, expressly identifying the deliverable as a work-made-for-hire for the Cooperative, and for which Applicant has received or is entitled to receive compensation from the Cooperative beyond the standard member share and any patronage allocation.</span></p>
+      <p><span class="mark-new" data-original="" data-reason="This definition narrows the work-for-hire scope to assignments that are: (a) in writing, (b) authorized by an officer, (c) expressly designated as work-for-hire, and (d) compensated beyond standard membership. Without this precision, the IP clause could inadvertently capture a member's independent professional work or general participation in cooperative activities."><span class="def-term">"Cooperative-Commissioned Work"</span> means Intellectual Property developed by Applicant pursuant to a written task assignment, statement of work, or engagement letter executed by an authorized officer of the Cooperative, expressly identifying the deliverable as a work-made-for-hire for the Cooperative, and for which Applicant has received or is entitled to receive compensation from the Cooperative beyond the standard member share and any patronage allocation.</span></p>
 
       <p><span class="def-term">"Intellectual Property"</span> means (a) all inventions (whether patentable or unpatentable), all improvements thereto, and all patents, patent applications, and patent disclosures; (b) all trademarks, service marks, trade dress, logos, and trade names, together with all goodwill associated therewith; (c) all copyrightable works, all copyrights, and all registrations and renewals in connection therewith; (d) all trade secrets and confidential business information; (e) all computer software, including data and related documentation; and (f) all other proprietary rights and copies and embodiments thereof.</p>
 
-      <p><span class="mark-new" data-original=""><span class="def-term">"Applicant IP"</span> means Intellectual Property (i) developed by Applicant prior to the Effective Date; (ii) developed by Applicant entirely outside the scope of any Cooperative-Commissioned Work and without use of Cooperative resources or Confidential Information; or (iii) developed as part of Applicant's independent professional practice unrelated to any Cooperative-Commissioned Work.</span></p>
+      <p><span class="mark-new" data-original="" data-reason="v1 referenced Applicant IP in the work-for-hire clause without defining it, creating uncertainty about what pre-existing or independent work is protected. v2 defines three protected categories explicitly: work predating the Agreement, work outside cooperative scope without cooperative resources, and independent professional practice. This is the member's primary IP ownership shield."><span class="def-term">"Applicant IP"</span> means Intellectual Property (i) developed by Applicant prior to the Effective Date; (ii) developed by Applicant entirely outside the scope of any Cooperative-Commissioned Work and without use of Cooperative resources or Confidential Information; or (iii) developed as part of Applicant's independent professional practice unrelated to any Cooperative-Commissioned Work.</span></p>
 
       <p style="margin-top:1rem;"><strong>3.4.2 Works Made for Hire; Assignment.</strong> <span class="mark-revised"
-          data-original="The Parties agree, and Applicant acknowledges, that, except for previously developed Intellectual Property proprietary to Applicant (Applicant IP), the Cooperative shall have title to, ownership of, and all proprietary rights in and to any Intellectual Property, including all works-in-progress, developed or created within Applicant's scope of their service (if any) to the Cooperative, all of which shall be considered 'works made for hire,' as defined by the copyright laws of the United States, including 17 U.S.C. §§ 101 and 201(b). Except to the extent that any such Intellectual Property is or constitutes Applicant IP, if any Intellectual Property is not deemed a 'work made for hire,' then Applicant shall assign all right, title, and interest in and to such material to the Cooperative, including all copyrights and copyright registrations worldwide."
+          data-original="The Parties agree, and Applicant acknowledges, that, except for previously developed Intellectual Property proprietary to Applicant (Applicant IP), the Cooperative shall have title to, ownership of, and all proprietary rights in and to any Intellectual Property, including all works-in-progress, developed or created within Applicant's scope of their service (if any) to the Cooperative, all of which shall be considered 'works made for hire,' as defined by the copyright laws of the United States, including 17 U.S.C. §§ 101 and 201(b). Except to the extent that any such Intellectual Property is or constitutes Applicant IP, if any Intellectual Property is not deemed a 'work made for hire,' then Applicant shall assign all right, title, and interest in and to such material to the Cooperative, including all copyrights and copyright registrations worldwide." data-reason="v1's version was overbroad — any IP developed within the member's service scope could be captured. v2 limits assignment to Cooperative-Commissioned Work only and adds an explicit statement that Applicant IP, independent work, open-source contributions, and prior work remain the member's property. This is the single most member-protective change in the IP section."
         >The Cooperative shall have title to, ownership of, and all proprietary rights in and to any Intellectual Property constituting <span class="def-term">Cooperative-Commissioned Work</span>. All such Cooperative-Commissioned Work shall be considered "works made for hire" as defined by 17 U.S.C. §§ 101 and 201(b). To the extent any Cooperative-Commissioned Work is not deemed a work made for hire, Applicant hereby assigns all right, title, and interest therein to the Cooperative, including all copyrights, patent rights, and other proprietary rights worldwide. <strong>Intellectual Property developed by Applicant that is not Cooperative-Commissioned Work — including Applicant IP, Applicant's independent professional practice, open-source contributions, and prior work — remains Applicant's property and is not affected by this Agreement.</strong></span></p>
       <p>At the Cooperative's request, Applicant shall execute all documents necessary to effectuate or demonstrate such assignment and to protect the Cooperative's rights in Cooperative-Commissioned Work.</p>
 
       <p style="margin-top:1rem;"><strong>3.4.3 Moral Rights Waiver.</strong> <span class="mark-revised"
-          data-original="Except to the extent that any Intellectual Property is or constitutes Applicant IP, Applicant hereby waives any and all moral rights arising under any federal or state law or the law of any other country in and to such Intellectual Property, and any contribution thereto."
+          data-original="Except to the extent that any Intellectual Property is or constitutes Applicant IP, Applicant hereby waives any and all moral rights arising under any federal or state law or the law of any other country in and to such Intellectual Property, and any contribution thereto." data-reason="v1's waiver applied to any IP not classified as Applicant IP — far broader than necessary and potentially capturing independent work. v2 limits the moral rights waiver to Cooperative-Commissioned Work only, consistent with the narrowed §3.4.2 scope. Members retain full moral rights in all independent work."
         >With respect to Cooperative-Commissioned Work only, Applicant hereby waives any and all moral rights arising under any federal or state law or the law of any other country in and to such Cooperative-Commissioned Work,</span> and agrees that the Cooperative shall have all rights flowing from this waiver. Applicant agrees to execute all documentation necessary to implement or reflect this waiver.</p>
 
       <p style="margin-top:1rem;"><strong>3.4.4 Portfolio License.</strong> <span class="mark-revised"
-          data-original="Subject to the terms and conditions of any agreement between the Cooperative and any third party, the Cooperative grants to Applicant a worldwide, perpetual, royalty-free, and non-exclusive limited license to access, display, reproduce, transmit, and use any Cooperative Intellectual Property created or developed (in whole or in part) by Applicant in and only in Applicant's portfolio of work or the marketing, advertising or promotion of Applicant's services; provided that (a) prior to any such use on each occasion Applicant shall inquire from the Cooperative, and the Cooperative shall timely respond to such inquiry, whether any of the Cooperative's agreements restrict or limit Applicant's use of any such Intellectual Property and (b) Applicant shall not have any right to use any such Intellectual Property pursuant to this Section unless the Cooperative has informed the Applicant in writing that such use is permitted."
+          data-original="Subject to the terms and conditions of any agreement between the Cooperative and any third party, the Cooperative grants to Applicant a worldwide, perpetual, royalty-free, and non-exclusive limited license to access, display, reproduce, transmit, and use any Cooperative Intellectual Property created or developed (in whole or in part) by Applicant in and only in Applicant's portfolio of work or the marketing, advertising or promotion of Applicant's services; provided that (a) prior to any such use on each occasion Applicant shall inquire from the Cooperative, and the Cooperative shall timely respond to such inquiry, whether any of the Cooperative's agreements restrict or limit Applicant's use of any such Intellectual Property and (b) Applicant shall not have any right to use any such Intellectual Property pursuant to this Section unless the Cooperative has informed the Applicant in writing that such use is permitted." data-reason="v1 required affirmative permission before each portfolio display, giving the Cooperative indefinite veto power over how members present their own work with no deadline for response. v2 flips the default: member gives written notice, Cooperative has 10 business days to object on specific confidentiality grounds only. Silence means consent. This respects member professional autonomy."
         >The Cooperative grants Applicant a perpetual, royalty-free, non-exclusive license to display Cooperative-Commissioned Work in Applicant's professional portfolio and in the marketing, advertising, or promotion of Applicant's services. Before any such display on each occasion, Applicant shall provide the Cooperative written notice identifying the specific work and proposed use. The Cooperative may, within <strong>ten (10) business days</strong> of receipt of such notice, provide written objection based solely on a specific, then-existing client confidentiality obligation binding on the Cooperative. Absent a timely written objection, Applicant may proceed with the proposed display.</span></p>
     </div>
   </div>
@@ -759,10 +772,10 @@
         <li><span class="sub-label">(b)</span>Applicant fails to pay any obligation payable to the Cooperative within thirty (30) days of Applicant's receipt of written notice that such obligation is owed;</li>
         <li><span class="sub-label">(c)</span>Applicant makes a false statement concerning a representation or warranty made in this Agreement;</li>
         <li><span class="sub-label">(d)</span><span class="mark-revised"
-            data-original="RegenHub, in its reasonable business judgment, determines that Applicant's conduct is detrimental to the operations and/or reputation of RegenHub"
+            data-original="RegenHub, in its reasonable business judgment, determines that Applicant's conduct is detrimental to the operations and/or reputation of RegenHub" data-reason="v1's standard was vague enough to be applied pretextually — any conduct deemed detrimental could trigger termination. v2 adds two constraints: the judgment must be based on specific, articulable facts and the detriment must be material. These requirements reduce the risk of termination being used arbitrarily against disfavored members."
           >the Cooperative, in its reasonable business judgment based on specific, articulable facts, determines that Applicant's conduct is <strong>materially</strong> detrimental to the operations and/or reputation of the Cooperative</span>;</li>
         <li><span class="sub-label">(e)</span><span class="mark-revised"
-            data-original="RegenHub determines, based on a good faith belief, that Applicant has inaccurately reported information"
+            data-original="RegenHub determines, based on a good faith belief, that Applicant has inaccurately reported information" data-reason="v1's good faith belief standard gave the Board broad discretion to terminate based on any misstatement. v2 requires the belief to be supported by specific facts and the inaccuracy to be material to membership or patronage. Minor or incidental errors cannot be a termination ground."
           >the Cooperative determines, based on a good faith belief <strong>supported by specific facts</strong>, that Applicant has inaccurately reported information <strong>material to Applicant's membership or patronage</strong></span>; or</li>
         <li><span class="sub-label">(f)</span>the Cooperative determines, pursuant to the dispute resolution process defined in the Bylaws, that Applicant's conduct has materially inhibited the ability of other members or applicants to participate in the Cooperative.</li>
       </ul>
@@ -771,7 +784,7 @@
     <div class="sec">
       <div class="new-section-band">New § 5.2 — no equivalent in v.1</div>
       <div class="sec-head"><span class="sec-num">5.2</span>Notice and Cure</div>
-      <p><span class="mark-new" data-original="">Before exercising any termination right under Section 5.1 (other than Section 5.1(b) [non-payment] or Section 5.1(c) [false statement], which may proceed directly following the specified period or occurrence), the Cooperative shall: (a) provide Applicant with written notice specifying the ground(s) for the proposed termination and identifying the conduct or omission at issue; and (b) afford Applicant a period of thirty (30) days to cure the breach, where the breach is reasonably capable of cure. Prior to any final termination determination, Applicant shall have the right to submit a written response to the Board or its designated committee. Termination shall be carried out in accordance with the dispute resolution procedures in the Bylaws.</span></p>
+      <p><span class="mark-new" data-original="" data-reason="v1 had no cure period before termination for conduct grounds. A termination process with no opportunity to remedy the situation is vulnerable to challenge under the implied covenant of good faith and fair dealing. v2's 30-day cure period (where breach is capable of cure) provides a procedurally defensible termination process and reduces litigation risk.">Before exercising any termination right under Section 5.1 (other than Section 5.1(b) [non-payment] or Section 5.1(c) [false statement], which may proceed directly following the specified period or occurrence), the Cooperative shall: (a) provide Applicant with written notice specifying the ground(s) for the proposed termination and identifying the conduct or omission at issue; and (b) afford Applicant a period of thirty (30) days to cure the breach, where the breach is reasonably capable of cure. Prior to any final termination determination, Applicant shall have the right to submit a written response to the Board or its designated committee. Termination shall be carried out in accordance with the dispute resolution procedures in the Bylaws.</span></p>
     </div>
 
     <div class="sec">
@@ -782,8 +795,8 @@
     <div class="sec">
       <div class="new-section-band">New § 5.4 — no equivalent in v.1</div>
       <div class="sec-head"><span class="sec-num">5.4</span>Voluntary Withdrawal</div>
-      <p><span class="mark-new" data-original="">Applicant may voluntarily withdraw from membership at any time by providing written notice to the Cooperative, consistent with Applicant's statutory right of dissociation under C.R.S. § 7-58-1101(1). Withdrawal is effective upon the date the Cooperative receives such notice, unless Applicant specifies a later effective date.</span></p>
-      <p><span class="mark-new" data-original="">Upon the effective withdrawal date: (a) Applicant's right to access Cooperative services, participate in governance, and receive future profit allocations shall terminate; and (b) the Cooperative shall redeem Applicant's Class A stock at its original purchase price ($100.00 per share) within ninety (90) days of the effective date, subject to (i) the limitations on distributions under C.R.S. § 7-58-1007, (ii) any outstanding financial obligations of Applicant to the Cooperative as of the withdrawal date, and (iii) Board authorization as required by C.R.S. § 7-58-1006. Any patronage credits formally noticed and allocated to Applicant's capital account but not yet distributed as of the withdrawal date shall be redeemed in accordance with the Cooperative's then-current patronage redemption schedule. Applicant's obligations under Sections 3.4, 4, 6, 7, and 9 survive voluntary withdrawal.</span></p>
+      <p><span class="mark-new" data-original="" data-reason="v1 had no voluntary withdrawal provision — a significant gap, since C.R.S. §7-58-1101 gives members a statutory dissociation right that this Agreement cannot eliminate. v2 makes the withdrawal right explicit, ties it to the statute, and clarifies the effective date. Silence on this point in v1 created unnecessary ambiguity.">Applicant may voluntarily withdraw from membership at any time by providing written notice to the Cooperative, consistent with Applicant's statutory right of dissociation under C.R.S. § 7-58-1101(1). Withdrawal is effective upon the date the Cooperative receives such notice, unless Applicant specifies a later effective date.</span></p>
+      <p><span class="mark-new" data-original="" data-reason="Details the economic consequences of voluntary withdrawal: 90-day stock redemption, treatment of accrued patronage credits, survival of key obligations (IP, confidentiality, indemnification), and the statutory limitations on distributions (C.R.S. §7-58-1007). Without these mechanics, both members and the Cooperative would have no clear framework for winding down the relationship.">Upon the effective withdrawal date: (a) Applicant's right to access Cooperative services, participate in governance, and receive future profit allocations shall terminate; and (b) the Cooperative shall redeem Applicant's Class A stock at its original purchase price ($100.00 per share) within ninety (90) days of the effective date, subject to (i) the limitations on distributions under C.R.S. § 7-58-1007, (ii) any outstanding financial obligations of Applicant to the Cooperative as of the withdrawal date, and (iii) Board authorization as required by C.R.S. § 7-58-1006. Any patronage credits formally noticed and allocated to Applicant's capital account but not yet distributed as of the withdrawal date shall be redeemed in accordance with the Cooperative's then-current patronage redemption schedule. Applicant's obligations under Sections 3.4, 4, 6, 7, and 9 survive voluntary withdrawal.</span></p>
     </div>
   </div>
 
@@ -867,7 +880,7 @@
 
     <div class="sec">
       <div class="sec-head"><span class="sec-num">9.4</span>Status of Parties</div>
-      <p>The relationship created by this Agreement shall not be construed as an agency, partnership (including a limited partnership), joint venture, franchise, employer-employee, or employment contract, and no member of the Cooperative shall be a partner or joint venturer of any other member by virtue of this Agreement. <span class="mark-new" data-original="">Applicant is an owner-member of the Cooperative with the rights and obligations set forth in this Agreement and the Governing Documents.</span></p>
+      <p>The relationship created by this Agreement shall not be construed as an agency, partnership (including a limited partnership), joint venture, franchise, employer-employee, or employment contract, and no member of the Cooperative shall be a partner or joint venturer of any other member by virtue of this Agreement. <span class="mark-new" data-original="" data-reason="v1's relationship disclaimer said only what Applicant is not (not an employee, not a partner). This left an interpretive gap about what Applicant actually is. v2 adds a positive statement: Applicant is an owner-member with the rights and obligations set forth in this Agreement and the Governing Documents. This clarification matters for how courts interpret member rights.">Applicant is an owner-member of the Cooperative with the rights and obligations set forth in this Agreement and the Governing Documents.</span></p>
     </div>
 
     <div class="sec">
@@ -969,21 +982,25 @@
 <!-- TOOLTIP SCRIPT -->
 <script>
 (function() {
-  var tt     = document.getElementById('tt');
-  var ttKind = document.getElementById('tt-kind');
-  var ttBody = document.getElementById('tt-body');
-  var PAD    = 14;
-  var current = null;
+  var tt       = document.getElementById('tt');
+  var ttKind   = document.getElementById('tt-kind');
+  var ttBody   = document.getElementById('tt-body');
+  var ttReason = document.getElementById('tt-reason');
+  var PAD      = 14;
+  var current  = null;
 
   function show(el, e) {
     var isRevised = el.classList.contains('mark-revised');
-    var orig = el.getAttribute('data-original') || '';
+    var orig   = el.getAttribute('data-original') || '';
+    var reason = el.getAttribute('data-reason')   || '';
 
     ttKind.className = isRevised ? 'revised' : 'new';
     ttKind.textContent = isRevised ? 'Original (v.1):' : 'New in v.2 — no prior text:';
     ttBody.textContent = isRevised
       ? (orig || '(no original text recorded)')
       : 'This passage was added in v.2. There is no corresponding text in v.1 of the agreement.';
+    ttReason.textContent = reason;
+    ttReason.style.display = reason ? '' : 'none';
 
     tt.classList.add('visible');
     position(e);
