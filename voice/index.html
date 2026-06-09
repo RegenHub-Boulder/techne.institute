@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<title>Techne · The Common Language</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="/assets/nav.js" defer></script>
+<script src="/intranet/comments.js" defer></script>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#0f0f0f;--surface:#1a1a1a;--surface-raised:#232220;
+  --border:#333;--border-strong:#4a4a4a;
+  --terra:#c4956a;--terra-text:#c4956a;
+  --terra-dim:rgba(196,149,106,.12);--terra-glow:rgba(196,149,106,.06);
+  --heading:#e8e0d8;--text:#d4d4d4;--muted:#999;--faint:#666;
+  --ok:#94ae84;--ok-dim:rgba(148,174,132,.14);
+  --info:#8da3b5;--info-dim:rgba(141,163,181,.14);
+  --warn:#c0705c;--warn-dim:rgba(192,112,92,.14);
+  --shadow-1:none;
+  --dur-mode:400ms;--dur-micro:160ms;--ease:cubic-bezier(.4,0,.2,1);
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-mode="dark"]){
+    color-scheme:light;
+    --bg:#faf8f5;--surface:#fff;--surface-raised:#fff;
+    --border:#e2ddd5;--border-strong:#c9c2b8;
+    --terra:#c4956a;--terra-text:#96704a;
+    --terra-dim:rgba(196,149,106,.14);--terra-glow:rgba(196,149,106,.08);
+    --heading:#2a2520;--text:#3d3833;--muted:#6e675f;--faint:#a39b90;
+    --ok:#5f7a52;--ok-dim:rgba(95,122,82,.12);
+    --info:#5b7286;--info-dim:rgba(91,114,134,.12);
+    --warn:#9e4f3d;--warn-dim:rgba(158,79,61,.12);
+    --shadow-1:0 1px 3px rgba(42,37,32,.08);
+  }
+}
+[data-mode="light"]{
+  color-scheme:light;
+  --bg:#faf8f5;--surface:#fff;--surface-raised:#fff;
+  --border:#e2ddd5;--border-strong:#c9c2b8;
+  --terra:#c4956a;--terra-text:#96704a;
+  --terra-dim:rgba(196,149,106,.14);--terra-glow:rgba(196,149,106,.08);
+  --heading:#2a2520;--text:#3d3833;--muted:#6e675f;--faint:#a39b90;
+  --ok:#5f7a52;--ok-dim:rgba(95,122,82,.12);
+  --info:#5b7286;--info-dim:rgba(91,114,134,.12);
+  --warn:#9e4f3d;--warn-dim:rgba(158,79,61,.12);
+  --shadow-1:0 1px 3px rgba(42,37,32,.08);
+}
+[data-mode="dark"]{color-scheme:dark}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--bg)}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Libre Baskerville',Georgia,serif;
+  font-size:16px;line-height:1.85;
+  transition:background-color var(--dur-mode) var(--ease),color var(--dur-mode) var(--ease);
+}
+.page{max-width:760px;margin:0 auto;padding:var(--s7) var(--s5)}
+em{color:var(--heading)}
+
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s4);margin-bottom:var(--s6)}
+.kicker{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:600;letter-spacing:.18em;color:var(--terra-text);text-transform:uppercase;margin-bottom:var(--s2)}
+h1{font-size:38px;font-weight:700;color:var(--heading);letter-spacing:-.4px;line-height:1.2}
+.docmeta{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;color:var(--muted);margin-top:var(--s2);letter-spacing:.05em;line-height:1.8}
+.mode-toggle{
+  font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;color:var(--muted);
+  background:var(--surface);border:1px solid var(--border);border-radius:999px;
+  padding:6px 14px;cursor:pointer;display:flex;align-items:center;gap:var(--s2);flex-shrink:0;
+  transition:border-color var(--dur-micro) var(--ease),color var(--dur-micro) var(--ease);
+}
+.mode-toggle:hover{border-color:var(--terra);color:var(--terra-text)}
+.mode-toggle:focus-visible{outline:2px solid var(--terra);outline-offset:2px}
+.mode-toggle svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+.lede{font-size:18.5px;line-height:1.78;margin-bottom:var(--s6);max-width:62ch}
+section{margin-bottom:var(--s7)}
+.label{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--terra-text);margin-bottom:var(--s2)}
+.rule{height:1px;background:linear-gradient(to right,var(--border-strong),transparent);margin-bottom:var(--s4)}
+p{margin-bottom:var(--s4)}
+p:last-child{margin-bottom:0}
+
+.pillar{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:var(--s4) var(--s5);margin-bottom:var(--s3);box-shadow:var(--shadow-1)}
+.pillar h3{font-size:16px;color:var(--heading);margin-bottom:var(--s1)}
+.pillar p{font-size:14px;line-height:1.7;margin:0}
+.pillar .pn{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.16em;color:var(--faint)}
+
+table{width:100%;border-collapse:collapse;font-size:14px;margin:var(--s3) 0 var(--s4)}
+th{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra-text);text-align:left;padding:8px 10px;border-bottom:1px solid var(--border-strong)}
+td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.65}
+td.w{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12.5px;color:var(--heading);white-space:nowrap}
+td.no{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12.5px;color:var(--warn);white-space:nowrap}
+td.yes{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12.5px;color:var(--ok);white-space:nowrap}
+
+.demo{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:var(--s3)}
+.demo .dh{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;padding:7px var(--s4);border-bottom:1px solid var(--border)}
+.demo.bad .dh{background:var(--warn-dim);color:var(--warn)}
+.demo.mid .dh{background:var(--info-dim);color:var(--info)}
+.demo.good .dh{background:var(--ok-dim);color:var(--ok)}
+.demo .db{padding:var(--s4) var(--s5);font-size:14.5px;line-height:1.75;background:var(--surface)}
+.demo .why{padding:var(--s2) var(--s5) var(--s3);font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;color:var(--faint);letter-spacing:.04em;background:var(--surface);line-height:1.7}
+
+.callout{
+  border:1px solid var(--border);border-left:3px solid var(--terra);border-radius:0 10px 10px 0;
+  background:var(--terra-glow);padding:var(--s4) var(--s5);margin:var(--s4) 0;
+}
+.callout p{font-size:14px;line-height:1.7}
+footer{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;color:var(--faint);border-top:1px solid var(--border);padding-top:var(--s4);margin-top:var(--s7);line-height:2}
+@media (max-width:560px){h1{font-size:30px}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{transition-duration:0ms!important;animation:none!important}}
+</style>
+</head>
+<body data-doc-path="/voice/">
+<div class="page">
+
+<header>
+  <div>
+    <div class="kicker">Techne · Brand Concept and Voice</div>
+    <h1>The Common Language</h1>
+    <div class="docmeta">VOCABULARY, GRAMMAR, AND REGISTER FOR EVERYTHING TECHNE SAYS · JUNE 2026<br>STATUS: WORKING DRAFT · FOR MEMBER COMMENT ALONGSIDE THE GOVERNING DOCUMENTS</div>
+  </div>
+  <button class="mode-toggle" id="modeToggle" aria-label="Toggle color mode">
+    <svg id="modeIcon" viewBox="0 0 24 24" aria-hidden="true"></svg><span id="modeLabel">dark</span>
+  </button>
+</header>
+
+<p class="lede">A cooperative whose thesis is that the maker and the made are one thing cannot speak carelessly, because its speech is also one of its products. This document holds the common language: the small vocabulary Techne keeps, the grammar its sentences follow, and the registers it moves between. It is written in the voice it describes, which is the only honest way to write a voice guide. Like the entity itself, it is a draft until the members say otherwise.</p>
+
+<section>
+  <div class="label">The Telos, in One Sentence</div>
+  <div class="rule"></div>
+  <p><em>Integral technology: technology held as a living practice, in common, by the people who make it and the people who want it to exist.</em> Every choice below serves that sentence. When a word or a construction does not serve it, the word goes, however familiar it feels. The brand is not a layer applied to the cooperative; it is the cooperative, audible.</p>
+</section>
+
+<section>
+  <div class="label">Five Pillars of the Voice</div>
+  <div class="rule"></div>
+  <div class="pillar"><span class="pn">PILLAR 1</span><h3>Unhurried</h3><p>The voice describes and waits. It never sells, never counts down, never manufactures scarcity. A door is open or it is not; urgency is the grammar of extraction, and Techne does not borrow the grammar of what it is built against. The aim is an invitation a person can decline without friction and return to without shame.</p></div>
+  <div class="pillar"><span class="pn">PILLAR 2</span><h3>Plain about money and law</h3><p>Candor is the brand's most distinctive asset because it is the rarest. Money sentences state what is given, what is kept, and what is not promised: your hundred dollars is gone the day you give it. Legal sentences name their own status: proposed, unratified, awaiting counsel. Where our precedent is candid, we are plainer still.</p></div>
+  <div class="pillar"><span class="pn">PILLAR 3</span><h3>Material and etymological</h3><p>Words are tools, and the voice treats them the way a craftsperson treats tools: knowing where they came from and what they were made to do. Technē is traced to the potter and the shipwright. The voice prefers words with hands: craft, practice, gathering, threshold, work. Abstractions earn their place or lose it.</p></div>
+  <div class="pillar"><span class="pn">PILLAR 4</span><h3>Grounded in living systems, honestly</h3><p>The ecological register is native, not decorative: seed, cross-pollination, keystone, membrane, habitat. It is used because information systems were built in reflection of living ones, through pattern recognition and biomimicry, and the voice says so rather than borrowing the metaphor silently. The place is real too: the voice knows it lives in Boulder, at the foot of real mountains, in real seasons.</p></div>
+  <div class="pillar"><span class="pn">PILLAR 5</span><h3>Status-honest</h3><p>Every artifact says what it is: verified, proposed, or an open question for counsel. The status chip is brand furniture, as characteristic as the typeface. Open questions are named as open in the headline, not the footnote, because a cooperative that learns must be able to say what it does not yet know.</p></div>
+</section>
+
+<section>
+  <div class="label">The Lexicon · Words We Keep</div>
+  <div class="rule"></div>
+  <table>
+    <thead><tr><th>Word</th><th>What it carries, and how it is used</th></tr></thead>
+    <tbody>
+      <tr><td class="w">techne</td><td>The practice itself: art, craft, skill, technique, undivided. Lowercase when meaning the idea, capitalized when naming the cooperative. The brand name precedes the legal name; the legal alignment comes later, when there is clarity.</td></tr>
+      <tr><td class="w">practice</td><td>What members do, and the basis of patronage. Replaces engagement, activity, and usage in every member-facing sentence.</td></tr>
+      <tr><td class="w">standing</td><td>What enrollment buys: a vote among equals, a number, a name in the registry. Never equity, never a stake, never a share of anything.</td></tr>
+      <tr><td class="w">threshold</td><td>The crossing into deeper belonging, always an assertion of trust made on a person's behalf. Thresholds are crossed, never converted.</td></tr>
+      <tr><td class="w">membrane</td><td>The supporter body: the cooperative's living outer layer, complete in itself, never a pipeline and never an audience.</td></tr>
+      <tr><td class="w">gathering</td><td>Any time members are together: the meetup, the class, the rooftop. Warmer than event, truer than meeting.</td></tr>
+      <tr><td class="w">the book</td><td>The member guide: a living document with an occasional printed stable state. Always lowercase, always definite, the way a town says the library.</td></tr>
+      <tr><td class="w">gate</td><td>A condition that must be true before the next phase begins. Gates replace deadlines everywhere. The calendar can slip; the gates cannot be skipped.</td></tr>
+      <tr><td class="w">sibling</td><td>The relation between Techne and RegenHub: two entities, deliberately different, bound by agreement. Never parent and child, never brand and sub-brand.</td></tr>
+      <tr><td class="w">steward</td><td>A person holding responsibility on the cooperative's behalf. Preferred over manager, lead, or head wherever the bylaws permit.</td></tr>
+      <tr><td class="w">scenius</td><td>Brian Eno's word for the genius of a scene: intelligence held communally rather than individually. Always attributed to Eno on first use, because conserving attribution is itself part of the telos.</td></tr>
+      <tr><td class="w">rightness</td><td>The background condition the work returns toward: a human, grounded, earth-systems relationship. Used sparingly, so it keeps its weight.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <div class="label">The Lexicon · Words We Set Down</div>
+  <div class="rule"></div>
+  <table>
+    <thead><tr><th>Set down</th><th>Take up</th><th>Because</th></tr></thead>
+    <tbody>
+      <tr><td class="no">users</td><td class="yes">members, people</td><td>A user is someone a system acts upon. Techne has no one in that position, by design.</td></tr>
+      <tr><td class="no">audience</td><td class="yes">supporters, the membrane</td><td>An audience watches. Supporters hold standing and a vote.</td></tr>
+      <tr><td class="no">content</td><td class="yes">work, writing, the body of work</td><td>Content is what fills a container for extraction. Work is what a practice produces.</td></tr>
+      <tr><td class="no">engagement</td><td class="yes">practice, presence</td><td>Engagement is a metric watched from above. Practice is a life seen from within.</td></tr>
+      <tr><td class="no">funnel, conversion</td><td class="yes">the ladder, crossing</td><td>A funnel narrows toward a transaction. The ladder holds weight at every rung, and most people rightly never climb.</td></tr>
+      <tr><td class="no">deadline</td><td class="yes">gate, aim</td><td>August is an aim. The gates govern. A deadline that overrides a gate is how thin launches happen.</td></tr>
+      <tr><td class="no">investment, stake</td><td class="yes">enrollment, standing</td><td>For supporters, the money is a contribution to existence, not a position. Saying otherwise is both untrue and a securities problem.</td></tr>
+      <tr><td class="no">scale, leverage, disrupt</td><td class="yes">grow, tend, build</td><td>Borrowed from the extraction economy's self-description. Growth here is sized honestly: hundreds first, and anything beyond treated as weather.</td></tr>
+      <tr><td class="no">exclusive</td><td class="yes">members-only, held in trust</td><td>Access at Techne is graduated by trust, not scarcity. The door-code is a trust decision, not a luxury good.</td></tr>
+      <tr><td class="no">free</td><td class="yes">open, given</td><td>Free describes a price. Open describes a door. The tea ceremony is not free; it is given.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <div class="label">The Grammar · How Sentences Behave</div>
+  <div class="rule"></div>
+  <p><em>The unformed speaks in the conditional, honestly.</em> Until ratification, Techne, LCA <em>would be</em> and <em>intends to</em>; it never <em>is</em>. The false present tense is the first lie a brand tells, and this one does not tell it. After ratification the documents switch tense in a single visible edit, which is itself a small ceremony.</p>
+  <p><em>Conditions, not dates.</em> Sentences anchor to gates: when counsel signs, when the floor is reached, when the members ratify. Dates appear as aims and are always subordinated in the same sentence that states them.</p>
+  <p><em>Short declaratives for the things that matter most.</em> One member, one vote. The money is gone the day you give it. The threshold is an assertion of trust. The voice earns its longer, unhurried sentences by spending its shortest ones on the load-bearing facts.</p>
+  <p><em>Attribution is conserved.</em> Borrowed ideas arrive with their makers' names: Eno's scenius, Subvert's pattern, Engelbart's augmentation. A community of practice that absorbed its sources silently would be practicing extraction at the level of ideas.</p>
+  <p><em>House marks.</em> No exclamation points outside quoted speech. No emoji anywhere; where iconography is needed, the stroke icon system carries it. Key terms take italics on first use. Lists are written into prose where prose can hold them. The pause is made with a comma, a colon, or a parenthesis, and sentences are built so the long interruption is not needed.</p>
+</section>
+
+<section>
+  <div class="label">Registers · One Voice, Three Distances</div>
+  <div class="rule"></div>
+  <p>The voice does not change character between rooms, but it changes distance. In the <em>public register</em>, facing supporters and the curious, the working word is <em>cooperation</em>: warm, concrete, plain about money, generous with etymology. In the <em>working register</em>, facing members and the board, the working word is <em>coordination</em>: the same candor with more machinery showing, gates and registers and counsel questions by name. In the <em>legal register</em>, the documents themselves, plain-language explainers stand beside the operative text, because the legal craft is itself technē and a member should be able to read what they are joining.</p>
+  <div class="callout">
+    <p><em>The quarantine is a brand rule, not only a tax rule.</em> Techne's documents speak Subchapter T: patronage refunds, notices of allocation, income when received. RegenHub's speak Subchapter K: distributive shares, capital accounts, income when allocated. No sentence mixes them, no matter how convenient the mixture, because the cooperative's deepest editorial principle is that each thing says truly what it is. The grammar quarantine is where brand voice and legal integrity turn out to be the same discipline.</p>
+  </div>
+</section>
+
+<section>
+  <div class="label">Naming, Held Steady</div>
+  <div class="rule"></div>
+  <table>
+    <thead><tr><th>Name</th><th>Names</th></tr></thead>
+    <tbody>
+      <tr><td class="w">Techne</td><td>The brand and the idea, usable today. The proposed sibling entity is Techne, LCA, and is always marked proposed until ratified.</td></tr>
+      <tr><td class="w">RegenHub, LCA</td><td>The working cooperative, the legal entity in effect, currently doing business as Techne. The legal name question is deferred on purpose: branding alignment first, the legal name later, once there is clarity.</td></tr>
+      <tr><td class="w">the Hub</td><td>The place in Boulder: the workspace, the roof, the rooms where the gatherings happen.</td></tr>
+      <tr><td class="w">the pathway</td><td>The gated route by which Techne, LCA comes to be. Its phases are numbered, its gates are capitalized as Gate 0 through Gate 4.</td></tr>
+      <tr><td class="w">the registry</td><td>Where members' names are held, beginning with the founding cohort, recorded permanently as the people who existed before the entity was certain.</td></tr>
+      <tr><td class="w">Parachute</td><td>A habitat within the shared body of work, named as itself, neither product nor feature.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <div class="label">Demonstration · The Same Announcement, Three Ways</div>
+  <div class="rule"></div>
+  <div class="demo bad">
+    <div class="dh">NOT THE VOICE</div>
+    <div class="db">Don't miss out! Founding memberships are LIVE. Join 100+ early believers and lock in lifetime access to exclusive content, events, and ownership in the future of tech community. Spots are limited.</div>
+    <div class="why">URGENCY MANUFACTURED · OWNERSHIP OVERSTATED (A SECURITIES PROBLEM, NOT JUST A TASTE PROBLEM) · CONTENT, EXCLUSIVE, ACCESS · COUNTS PEOPLE AS SOCIAL PROOF</div>
+  </div>
+  <div class="demo mid">
+    <div class="dh">CLOSE, BUT NOT YET</div>
+    <div class="db">Founding membership in Techne is now open. For $100 you become a lifetime member-owner with voting rights, the member book, and access to our community. Join us in building something different.</div>
+    <div class="why">CALM, BUT THE FALSE PRESENT (THE ENTITY IS UNFORMED) · MEMBER-OWNER OVERPROMISES WHAT A CREDENTIAL UNIT HOLDS · ACCESS AND COMMUNITY DOING VAGUE WORK</div>
+  </div>
+  <div class="demo good">
+    <div class="dh">THE VOICE</div>
+    <div class="db">When the gate opens, founding enrollment in Techne will be one hundred dollars, once, for life. The money is gone the day you give it, the way money given to a library is gone. What you hold afterward is standing: one vote among equals, a member number, the book, and a place in the registry of the people who made this exist. If too few of us want it, the money returns and we pause honestly. Enroll because you want this to exist, or not at all.</div>
+    <div class="why">CONDITIONAL UNTIL RATIFIED · MONEY SENTENCE PLAIN · STANDING, NOT EQUITY · THE FLOOR AND THE RETURN NAMED · THE INVITATION DECLINABLE</div>
+  </div>
+</section>
+
+<section>
+  <div class="label">The Visual Voice, Briefly</div>
+  <div class="rule"></div>
+  <p>The visual system already exists and this document defers to it: the co-op.us system, dark-first and adaptive, Libre Baskerville carrying the prose and IBM Plex Mono carrying the labels, terracotta spent sparingly so it keeps its warmth, stroke icons and never emoji, motion at four hundred milliseconds and stilled entirely for those who prefer reduced motion. Two notes belong here because they are voice as much as design. The status chip is part of the brand's face: verified, proposed, and counsel marks appear wherever claims appear, including in public. And the serif-for-prose, mono-for-machinery pairing is the visual form of the registers above: the warm voice and the honest instrument, always together, never confused.</p>
+</section>
+
+<section>
+  <div class="label">Standing of This Document</div>
+  <div class="rule"></div>
+  <p>A working draft, prepared by organizer research with AI assistance from the introduction, the blueprint, the pathway, and the working conversation on the guidebook. It binds no one. Like the bylaws it will sit beside, it is published for member comment, and the members who ratify the entity inherit the language too, to keep or to change. A common language belongs to the people who speak it, which means the last word here is deliberately not the last word.</p>
+</section>
+
+<footer>
+  TECHNE · THE COMMON LANGUAGE · WORKING DRAFT · BOULDER, COLORADO AND DISTRIBUTED · JUNE 2026<br>
+  COMPANIONS: AN INTRODUCTION · THE SUPPORTER BLUEPRINT · THE TECHNE PATHWAY · SYSTEM: CO-OP.US V2
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var btn=document.getElementById('modeToggle');
+  var label=document.getElementById('modeLabel');
+  var icon=document.getElementById('modeIcon');
+  var moon='<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>';
+  var sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>';
+  function apply(m){root.setAttribute('data-mode',m);label.textContent=m;icon.innerHTML=m==='dark'?moon:sun;}
+  var pl=window.matchMedia('(prefers-color-scheme: light)');
+  apply(pl.matches?'light':'dark');
+  pl.addEventListener('change',function(e){apply(e.matches?'light':'dark');});
+  btn.addEventListener('click',function(){apply(root.getAttribute('data-mode')==='dark'?'light':'dark');});
+})();
+</script>
+</body>
+</html>
