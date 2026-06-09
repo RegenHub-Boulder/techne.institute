@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <script>
+    (function() {
+      var s = localStorage.getItem('techne-theme');
+      if (s === 'light' || s === 'dark') document.documentElement.setAttribute('data-theme', s);
+      else document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counsel Memo — v.2 Revisions · RegenHub, LCA</title>
+  <meta name="description" content="Memorandum to Jeff Pote, Pote Law Firm, explaining the reasoning behind proposed v.1 to v.2 revisions to the RegenHub, LCA Bylaws and Class A Patron Member Membership Agreement.">
+  <link rel="stylesheet" href="/assets/tokens.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="/assets/nav.js" defer></script>
+  <script src="/intranet/comments.js" defer></script>
+  <style>
+    :root {
+      --serif: 'Libre Baskerville', Georgia, serif;
+      --mono:  'IBM Plex Mono', 'Courier New', monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg:         #08080a;
+      --surface:    #111114;
+      --raised:     #18181c;
+      --border:     rgba(196,149,106,0.12);
+      --border-dim: rgba(255,255,255,0.06);
+      --text:       #e0d8cc;
+      --text-warm:  #c8bca8;
+      --text-muted: rgba(200,188,168,0.55);
+      --text-dim:   rgba(200,188,168,0.28);
+      --gold:       #c4956a;
+      --moss:       #6a8a5e;
+      --rust:       #9a5a5a;
+      --sky:        #5a7a9a;
+    }
+
+    [data-theme="light"] {
+      --bg:         #f7f5f0;
+      --surface:    #ebe7df;
+      --raised:     #ffffff;
+      --border:     rgba(196,149,106,0.20);
+      --border-dim: rgba(0,0,0,0.08);
+      --text:       #2a2520;
+      --text-warm:  #3a3028;
+      --text-muted: rgba(60,48,36,0.60);
+      --text-dim:   rgba(60,48,36,0.30);
+      --gold:       #8a6a3a;
+      --moss:       #4a6a3a;
+      --rust:       #8a3a3a;
+      --sky:        #3a5a7a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 3rem 2rem 6rem;
+    }
+
+    /* ── MEMO HEADER ── */
+    .memo-header {
+      border-top: 2px solid var(--gold);
+      padding-top: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .memo-label {
+      font-family: var(--mono);
+      font-size: 0.60rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .memo-fields {
+      display: grid;
+      grid-template-columns: 5rem 1fr;
+      gap: 0.55rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .memo-field-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      color: var(--text-dim);
+      padding-top: 0.1rem;
+    }
+
+    .memo-field-val {
+      font-size: 0.88rem;
+      color: var(--text-warm);
+    }
+
+    .memo-subject {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+    }
+
+    .memo-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+
+    /* ── BODY PROSE ── */
+    .prose p {
+      font-size: 0.92rem;
+      color: var(--text-warm);
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
+    }
+
+    .prose p:last-child { margin-bottom: 0; }
+
+    /* ── SECTION ── */
+    .memo-section {
+      margin: 3rem 0;
+    }
+
+    .memo-section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.75rem;
+    }
+
+    .memo-section-num {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .memo-section-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── CHANGE ITEM ── */
+    .change-item {
+      margin-bottom: 2.25rem;
+      padding-left: 1.25rem;
+      border-left: 2px solid var(--border-dim);
+    }
+
+    .change-item:last-child { margin-bottom: 0; }
+
+    .change-ref {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      color: var(--text-dim);
+      margin-bottom: 0.3rem;
+    }
+
+    .change-ref a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .change-ref a:hover { text-decoration: underline; }
+
+    .change-heading {
+      font-size: 0.90rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+
+    .change-body {
+      font-size: 0.87rem;
+      color: var(--text-warm);
+      line-height: 1.78;
+    }
+
+    .change-body p { margin-bottom: 0.75rem; }
+    .change-body p:last-child { margin-bottom: 0; }
+
+    /* ── INLINE CODE ── */
+    code {
+      font-family: var(--mono);
+      font-size: 0.80em;
+      color: var(--text-muted);
+      background: var(--surface);
+      padding: 0.1em 0.35em;
+      border-radius: 2px;
+    }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      margin-top: 5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-dim);
+      font-family: var(--mono);
+      font-size: 0.60rem;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      color: var(--text-dim);
+      text-align: center;
+      line-height: 1.9;
+    }
+
+    a { color: var(--gold); }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body data-doc-path="/legal/counsel-memo-v2/">
+<div class="wrap">
+
+  <!-- Memo header -->
+  <div class="memo-header">
+    <div class="memo-label">Memorandum</div>
+    <div class="memo-fields">
+      <div class="memo-field-label">To</div>
+      <div class="memo-field-val">Jeff Pote, Pote Law Firm</div>
+
+      <div class="memo-field-label">From</div>
+      <div class="memo-field-val">Todd Youngblood, Ventures &amp; Operations Steward<br>RegenHub, LCA</div>
+
+      <div class="memo-field-label">Date</div>
+      <div class="memo-field-val">June 2026</div>
+
+      <div class="memo-field-label">Re</div>
+      <div class="memo-field-val memo-subject">Proposed Revisions to Bylaws v.1 and Class A Patron Member Membership Agreement v.1 — Organizer Rationale for v.2 Drafts</div>
+    </div>
+    <hr class="memo-divider">
+  </div>
+
+  <!-- Intro -->
+  <div class="prose">
+    <p>
+      Jeff — following our work on the initial formation documents, the organizers undertook
+      a careful review of the Bylaws and Membership Agreement drafts against the Colorado Uniform
+      Limited Cooperative Association Act (ULCAA), C.R.S. §§ 7-58-101 et seq., standard cooperative
+      practice, and the Cooperative's specific operational context. This memo summarizes the
+      revisions we've incorporated into the v.2 drafts and the reasoning behind each.
+    </p>
+    <p>
+      We are not presenting these as final positions. We recognize that several of these changes
+      involve judgment calls where your counsel is essential, and we welcome your response on each
+      point. The v.2 documents are published as annotated drafts at
+      <a href="/legal/bylaws-v2/">techne.institute/legal/bylaws-v2/</a> and
+      <a href="/legal/membership-agreement-v2/">techne.institute/legal/membership-agreement-v2/</a>,
+      with each change highlighted and the rationale surfaced inline. The serialized change index
+      for each document is at <a href="/legal/bylaws-analysis/changes/">the Bylaws changes page</a>
+      and <a href="/legal/membership-agreement-modifications/changes/">the Membership Agreement
+      changes page</a>.
+    </p>
+  </div>
+
+  <!-- Part I: Bylaws -->
+  <div class="memo-section">
+    <div class="memo-section-head">
+      <span class="memo-section-num">Part I</span>
+      <span class="memo-section-title">Bylaws Revisions</span>
+    </div>
+
+    <!-- 1. Statutory authority -->
+    <div class="change-item">
+      <div class="change-ref">BL-08 · Preamble, First WHEREAS · <a href="/legal/bylaws-analysis/changes/#bl-08">see change card</a></div>
+      <div class="change-heading">Statutory Citation Correction — PBCA to ULCAA § 7-58-104</div>
+      <div class="change-body">
+        <p>
+          The first WHEREAS clause cited the Public Benefit Corporation Act of Colorado (PBCA),
+          C.R.S. Title 7, Article 101, Part 5, as the governing authority for RegenHub's public
+          benefit purpose. The PBCA governs benefit corporations organized under Title 7, Article
+          101 — it has no jurisdiction over a Limited Cooperative Association organized under
+          Title 7, Article 58. RegenHub's public benefit authority is ULCAA § 7-58-104, the
+          LCA-specific public benefit provision.
+        </p>
+        <p>
+          We have replaced the PBCA citation with a reference to ULCAA § 7-58-104 throughout
+          the Preamble. This is not a change in intent — it is a correction to ensure the
+          Cooperative's governing documents cite the statute that actually applies.
+        </p>
+      </div>
+    </div>
+
+    <!-- 2. Conflict hierarchy -->
+    <div class="change-item">
+      <div class="change-ref">BL-01 · Preamble, Fourth WHEREAS · <a href="/legal/bylaws-analysis/changes/#bl-01">see change card</a></div>
+      <div class="change-heading">Document Hierarchy — Mandatory ULCAA Provisions Above Articles</div>
+      <div class="change-body">
+        <p>
+          The v.1 conflict resolution hierarchy placed the Articles of Organization above the
+          ULCAA, and retained the PBCA as a final fallback. Colorado law does not permit an
+          organizational document to subordinate mandatory, non-waivable statutory provisions.
+          Under C.R.S. § 7-58-111, certain ULCAA requirements cannot be overridden by any
+          organizational document.
+        </p>
+        <p>
+          We have corrected the hierarchy to: mandatory ULCAA provisions first, then Articles
+          of Organization, then Bylaws, then remaining ULCAA provisions. The PBCA reference
+          has been removed. This change does not restrict any right the Cooperative or its
+          organizers wished to preserve — it simply reflects the legally correct order.
+        </p>
+      </div>
+    </div>
+
+    <!-- 3. Suspension procedure -->
+    <div class="change-item">
+      <div class="change-ref">BL-02 · § 1.8.1 · <a href="/legal/bylaws-analysis/changes/#bl-02">see change card</a></div>
+      <div class="change-heading">Suspension — Notice and Hearing Before Effect</div>
+      <div class="change-body">
+        <p>
+          The v.1 suspension provision permitted the Board to suspend a member immediately upon
+          a majority vote, without prior notice or opportunity to respond — except where criminal
+          conduct was alleged. Courts in Colorado and nationally have repeatedly invalidated
+          immediate-effect suspension procedures in cooperative and nonprofit bylaws as arbitrary
+          and inconsistent with the implied covenant of good faith and fair dealing.
+        </p>
+        <p>
+          We have added: (1) written notice of the conduct at issue before suspension takes
+          effect (except in cases of criminal conduct, where immediate suspension remains
+          available); (2) a five-business-day window for the member to submit a written response;
+          (3) a mandatory Board hearing within thirty days; and (4) a written determination within
+          ten business days of the hearing. These procedural safeguards protect members from
+          arbitrary action and significantly reduce the Cooperative's exposure in the event of
+          a legal challenge to a suspension.
+        </p>
+      </div>
+    </div>
+
+    <!-- 4. Redemption timeline -->
+    <div class="change-item">
+      <div class="change-ref">BL-03, BL-A02 · §§ 1.7.3, 1.8.2 · <a href="/legal/bylaws-analysis/changes/#bl-03">see change card</a></div>
+      <div class="change-heading">Equity Redemption Timeline — Five Years to Twelve Months</div>
+      <div class="change-body">
+        <p>
+          Both the voluntary withdrawal provision (§ 1.7.3) and the involuntary termination
+          provision (§ 1.8.2) permitted the Board to delay redemption of a departing member's
+          equity for up to five years. A five-year redemption window is commercially unreasonable
+          and, in our view, risks constituting an impermissible restraint on the statutory
+          dissociation right under C.R.S. § 7-58-1101. Members who contributed capital at the
+          outset of the Cooperative's formation would have no practical path to recovery of their
+          investment within a reasonable time horizon.
+        </p>
+        <p>
+          We have shortened the maximum redemption period to twelve months, consistent with
+          standard cooperative practice. The Board retains discretion over method (cash,
+          promissory note, or combination) — only the maximum timeline is changed.
+        </p>
+      </div>
+    </div>
+
+    <!-- 5. Electronic meeting quorum -->
+    <div class="change-item">
+      <div class="change-ref">BL-A03 · § 2.2 · <a href="/legal/bylaws-analysis/changes/#bl-a03">see change card</a></div>
+      <div class="change-heading">Quorum — Electronic Participants Count</div>
+      <div class="change-body">
+        <p>
+          The v.1 quorum provision required a quorum to be determined by physical presence,
+          while § 2.1 authorized electronic meetings. Members participating electronically
+          could not count toward quorum under the v.1 standard, making valid virtual meetings
+          structurally impossible for a Cooperative whose membership is partly distributed.
+          We have aligned the quorum standard with the electronic meeting authorization.
+        </p>
+      </div>
+    </div>
+
+    <!-- 6. Director compensation -->
+    <div class="change-item">
+      <div class="change-ref">BL-A04 · § 3.16 · <a href="/legal/bylaws-analysis/changes/#bl-a04">see change card</a></div>
+      <div class="change-heading">Director Compensation — Guaranteed Payment Carveout</div>
+      <div class="change-body">
+        <p>
+          The v.1 prohibition on director compensation inadvertently barred IRC § 707(c)
+          guaranteed payments — the standard mechanism under Subchapter K for compensating
+          member-directors for services to a partnership-taxed entity like an LCA. Without this
+          carveout, the Cooperative has no clean path to compensate working organizers for
+          their labor through the cooperative structure. We have added an express carveout
+          consistent with §§ 707(a) and 707(c) of the Internal Revenue Code.
+        </p>
+      </div>
+    </div>
+
+    <!-- 7. Profit allocation governance -->
+    <div class="change-item">
+      <div class="change-ref">BL-A05 · § 5.2 · <a href="/legal/bylaws-analysis/changes/#bl-a05">see change card</a></div>
+      <div class="change-heading">Patronage Allocation — Board Cannot Amend Methodology Unilaterally</div>
+      <div class="change-body">
+        <p>
+          The v.1 profit allocation provision gave the Board unconstrained authority to change
+          the allocation methodology at any time, without member approval. This effectively
+          allows silent changes to the core economic bargain of membership — the ratio between
+          labor patronage, revenue patronage, and community contribution that determines each
+          member's capital account. We have routed methodology changes through the Patronage
+          Plan amendment process, which requires majority patron member approval, consistent
+          with democratic member control under the ULCAA.
+        </p>
+      </div>
+    </div>
+
+    <!-- 8. QIO -->
+    <div class="change-item">
+      <div class="change-ref">BL-A06 · § 5.1 · <a href="/legal/bylaws-analysis/changes/#bl-a06">see change card</a></div>
+      <div class="change-heading">Qualified Income Offset — IRC § 704(b) Compliance</div>
+      <div class="change-body">
+        <p>
+          Treasury Regulation § 1.704-1(b)(2)(ii)(d) requires a qualified income offset (QIO)
+          provision for capital accounts to have substantial economic effect under IRC § 704(b).
+          Without the QIO, the IRS may reallocate items of income and loss inconsistently with
+          the Cooperative's patronage accounting structure, defeating the Subchapter T benefits
+          the Cooperative intends to use. We have added the QIO provision and a corresponding
+          member acknowledgment of capital account maintenance standards.
+        </p>
+      </div>
+    </div>
+
+    <!-- 9. Confidentiality -->
+    <div class="change-item">
+      <div class="change-ref">BL-05 · § 12 · <a href="/legal/bylaws-analysis/changes/#bl-05">see change card</a></div>
+      <div class="change-heading">Confidentiality — Scope Narrowed to Genuinely Non-Public Information</div>
+      <div class="change-body">
+        <p>
+          The v.1 confidentiality clause covered "any and all information received by or through
+          the Cooperative, pertaining to the records of the Cooperative, its Members, and the
+          operations, activities or transactions of the same." Courts routinely decline to enforce
+          overbroad confidentiality clauses of this type, particularly when they would capture
+          publicly available information or members' own professional activities. The breadth
+          also creates practical problems: members could not describe their own membership without
+          risking breach.
+        </p>
+        <p>
+          We have narrowed the obligation to genuinely non-public information designated as
+          confidential or that a reasonable person would understand to be confidential given the
+          circumstances. Standard carveouts have been added: public domain information, prior
+          knowledge, independent development, and legally required disclosure. Members may
+          describe the existence of their membership and the general nature of the Cooperative's
+          activities in professional contexts.
+        </p>
+      </div>
+    </div>
+
+    <!-- 10. Schedule -->
+    <div class="change-item">
+      <div class="change-ref">BL-07 · Schedule A-1 through A-4 · <a href="/legal/bylaws-analysis/changes/#bl-07">see change card</a></div>
+      <div class="change-heading">Membership Schedule — Placeholder Entries</div>
+      <div class="change-body">
+        <p>
+          The membership schedule rows for each class contained only placeholder text.
+          We have added structured placeholder rows identifying where share prices and dues
+          will be formally populated by Board resolution. The share price and dues amounts
+          remain subject to Board determination — the schedule structure provides the
+          framework for that adoption.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Part II: Membership Agreement -->
+  <div class="memo-section">
+    <div class="memo-section-head">
+      <span class="memo-section-num">Part II</span>
+      <span class="memo-section-title">Membership Agreement Revisions</span>
+    </div>
+
+    <!-- MA-01: Mission statement -->
+    <div class="change-item">
+      <div class="change-ref">MA-01 · § 1 · <a href="/legal/membership-agreement-modifications/changes/#ma-01">see change card</a></div>
+      <div class="change-heading">Mission Statement — Cooperative Purpose, Not Facilities Description</div>
+      <div class="change-body">
+        <p>
+          The v.1 opening described RegenHub as "a coworking space and community venue in
+          Boulder, Colorado, providing affordable workspace and event infrastructure." This framing
+          omits the Cooperative's legal structure, public benefit purpose, and the multi-dimensional
+          scope of its operations. For a document whose opening recital defines what the member
+          is joining, this description understates the nature of the relationship.
+        </p>
+        <p>
+          We have replaced it with language drawn from the Cooperative's Articles of Organization
+          and public benefit filing: organized to cultivate collective intelligence and scenius
+          through right relationship between tools and the people who use them, operating across
+          physical, digital, and programmatic dimensions. This accurately describes what the member
+          is becoming part of.
+        </p>
+      </div>
+    </div>
+
+    <!-- MA-06: Class scope -->
+    <div class="change-item">
+      <div class="change-ref">MA-06 · §§ 1, 1.1, 1.5 · <a href="/legal/membership-agreement-modifications/changes/#ma-06">see change card</a></div>
+      <div class="change-heading">Class Scope — Agreement Identified as Class A Patron Membership</div>
+      <div class="change-body">
+        <p>
+          The Agreement did not identify itself as governing Class A patron membership specifically.
+          With a Techne co-op agreement anticipated and additional membership classes possible,
+          this ambiguity creates a risk that future classes inadvertently fall under these terms.
+          We have added a scope statement limiting the Agreement to Class A patron membership and
+          signaling that additional classes require separate instruments.
+        </p>
+        <p>
+          We have also added a thirty-day advance notice requirement for dues increases to § 1.5.
+          The v.1 provision gave the Board unconstrained discretion to change dues at any time
+          without notice. An unannounced dues increase could effectively force members out. The
+          notice requirement is a baseline fairness protection consistent with the Board's
+          good-faith duty to members under the ULCAA.
+        </p>
+      </div>
+    </div>
+
+    <!-- MA-02 / MA-03: IP -->
+    <div class="change-item">
+      <div class="change-ref">MA-02, MA-03 · §§ 3.4.1–3.4.4 · <a href="/legal/membership-agreement-modifications/changes/#ma-02">see change card</a></div>
+      <div class="change-heading">IP Framework — Defined Terms and Member Ownership Protections</div>
+      <div class="change-body">
+        <p>
+          The v.1 IP section used work-for-hire and IP assignment language without defined terms,
+          leaving the scope of any assignment ambiguous. In a cooperative whose members are
+          practitioners and builders, the risk of inadvertently capturing a member's independent
+          professional work is material — and a deterrent to membership.
+        </p>
+        <p>
+          We have added definitions for "Cooperative-Commissioned Work" (the category subject
+          to assignment: work that is authorized by an officer in writing, expressly designated
+          as work-for-hire, and compensated beyond standard membership) and "Applicant IP"
+          (the protected category: work predating the Agreement, work outside cooperative scope
+          without cooperative resources, and independent professional practice). The assignment
+          scope has been narrowed to Cooperative-Commissioned Work only. The moral rights waiver
+          has been similarly narrowed. Portfolio display rights have been adjusted to a
+          notice-and-silence-as-consent model rather than requiring affirmative permission.
+        </p>
+      </div>
+    </div>
+
+    <!-- MA-04: Patronage plan -->
+    <div class="change-item">
+      <div class="change-ref">MA-04 · §§ 2.1–2.3 · <a href="/legal/membership-agreement-modifications/changes/#ma-04">see change card</a></div>
+      <div class="change-heading">Patronage Plan — Statutory Grounding and Member Acknowledgment</div>
+      <div class="change-body">
+        <p>
+          The v.1 profit-sharing provision gave the Board discretion to set and change the
+          allocation formula unilaterally. We have tied allocation to the Patronage Plan required
+          by C.R.S. § 7-58-1004 and added a 90-day adoption deadline to prevent indefinite
+          deferral of the Cooperative's core economic mechanism. A member acknowledgment of
+          capital account maintenance standards has been added to meet the Treasury Regulation
+          § 1.704-1(b)(2)(ii)(b) documentation requirement for substantial economic effect.
+        </p>
+      </div>
+    </div>
+
+    <!-- MA-05: Termination grounds -->
+    <div class="change-item">
+      <div class="change-ref">MA-05 · § 5.1(d)(e) · <a href="/legal/membership-agreement-modifications/changes/#ma-05">see change card</a></div>
+      <div class="change-heading">Termination Grounds — Articulable Facts and Materiality Requirements</div>
+      <div class="change-body">
+        <p>
+          The "detrimental conduct" and "misrepresentation" termination grounds in v.1 were
+          broad enough to be applied pretextually. We have added two constraints: the Board's
+          judgment must be based on specific, articulable facts (not general impressions), and
+          the detriment or inaccuracy must be material to membership or patronage. A thirty-day
+          cure period has been added for breaches capable of cure, before termination may take
+          effect. These changes produce a procedurally defensible termination process and reduce
+          the risk of a successful challenge.
+        </p>
+      </div>
+    </div>
+
+    <!-- MA-07: Status of parties -->
+    <div class="change-item">
+      <div class="change-ref">MA-07 · § 9.4 · <a href="/legal/membership-agreement-modifications/changes/#ma-07">see change card</a></div>
+      <div class="change-heading">Status of Parties — Positive Owner-Member Characterization</div>
+      <div class="change-body">
+        <p>
+          The v.1 § 9.4 defined the parties' relationship exclusively through negative disclaimers:
+          Applicant is not an employee, not an independent contractor, not a partner. While
+          accurate, the provision said nothing about what Applicant is. If a court or third party
+          looks to the Agreement to characterize the relationship and finds only a list of what
+          it is not, the most analogous established category becomes the interpretive default —
+          which may not be what was intended.
+        </p>
+        <p>
+          We have added a positive opening statement: "Applicant is an owner-member of the
+          Cooperative with the rights and obligations set forth in this Agreement and the
+          Governing Documents." The term "owner-member" is legally significant under the ULCAA —
+          it signals equity ownership (membership stock) and democratic participation (voting
+          rights), distinguishing the relationship from all the categories the disclaimers negate.
+        </p>
+      </div>
+    </div>
+
+    <!-- MA: Withdrawal -->
+    <div class="change-item">
+      <div class="change-ref">MA-A01, MA-A02 · §§ 4.1–4.3 · <a href="/legal/membership-agreement-modifications/changes/#ma-a01">see change card</a></div>
+      <div class="change-heading">Voluntary Withdrawal — Explicit Provision Added</div>
+      <div class="change-body">
+        <p>
+          The v.1 Agreement had no voluntary withdrawal provision, despite C.R.S. § 7-58-1101
+          giving members a statutory dissociation right that this Agreement cannot eliminate.
+          Silence on this point creates unnecessary ambiguity about the mechanics of departure
+          and the economic consequences. We have added an explicit withdrawal provision with
+          a ninety-day stock redemption timeline, treatment of accrued patronage credits,
+          survival of key obligations (IP, confidentiality, indemnification), and a reference
+          to the statutory limitations on distributions under C.R.S. § 7-58-1007.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Closing -->
+  <div class="prose" style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border-dim);">
+    <p>
+      We have also published the v.2 documents with inline annotations on every changed passage,
+      showing the v.1 original text and the reasoning for each revision. These are accessible at
+      the links above and are intended to make your review as efficient as possible — you can
+      hover any highlighted change to see both what changed and why.
+    </p>
+    <p>
+      We anticipate your questions primarily around the items with substantive legal judgment
+      involved: the redemption timeline change, the QIO provision, the IP framework architecture,
+      and the patronage plan grounding. On the statutory citation issues (PBCA/ULCAA, hierarchy,
+      quorum) we believe the v.2 positions are simply correct, but welcome your view.
+    </p>
+    <p>
+      Please respond at your convenience. We are targeting final governing documents ahead of
+      our August launch and pitch day, and would like to have your feedback incorporated
+      before then.
+    </p>
+    <p>
+      Thank you for your work on the formation documents, and for your continued engagement
+      with the Cooperative.
+    </p>
+    <p style="margin-top:1.5rem;color:var(--text-muted);font-size:0.86rem;">
+      Todd Youngblood<br>
+      Ventures &amp; Operations Steward, RegenHub, LCA<br>
+      Boulder, Colorado
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div class="page-footer">
+    Counsel Memo · Proposed v.1 → v.2 Revisions · RegenHub, LCA · #20261215588<br>
+    June 2026 · Draft for organizer review — not legal advice
+  </div>
+
+</div>
+</body>
+</html>
