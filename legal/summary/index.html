@@ -21,6 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="/assets/nav.js" defer></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <style>
     :root {
       --serif: 'Libre Baskerville', Georgia, serif;
@@ -346,7 +347,7 @@
     }
 
     .resolution-body li::before {
-      content: '→';
+      content: '›';
       flex-shrink: 0;
       margin-top: 0.05rem;
     }
@@ -428,8 +429,14 @@
     }
 
     .resolution-item-determined::before {
-      content: '✓' !important;
-      color: var(--moss) !important;
+      content: '' !important;
+      display: inline-block !important;
+      width: 7px !important;
+      height: 7px !important;
+      background: var(--moss) !important;
+      border-radius: 1px !important;
+      margin-top: 0.45rem !important;
+      flex-shrink: 0 !important;
     }
 
     .resolution-item-decision {
@@ -437,8 +444,14 @@
     }
 
     .resolution-item-decision::before {
-      content: '◆' !important;
-      color: var(--gold) !important;
+      content: '' !important;
+      display: inline-block !important;
+      width: 6px !important;
+      height: 6px !important;
+      background: var(--gold) !important;
+      transform: rotate(45deg) !important;
+      margin-top: 0.5rem !important;
+      flex-shrink: 0 !important;
     }
 
     /* ── CONFLICT TABLE ── */
@@ -573,8 +586,14 @@
     }
 
     .decisions-list li.is-determined::before {
-      content: '✓';
-      color: var(--moss);
+      content: '';
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: var(--moss);
+      border-radius: 1px;
+      margin-top: 0.45rem;
+      flex-shrink: 0;
     }
 
     .decisions-list li.is-decision {
@@ -583,8 +602,14 @@
     }
 
     .decisions-list li.is-decision::before {
-      content: '◆';
-      color: var(--gold);
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      margin-top: 0.5rem;
+      flex-shrink: 0;
     }
 
     /* ── COUNTING NOTE ── */
@@ -596,6 +621,17 @@
       margin-top: 0.5rem;
       padding: 0.65rem 0.9rem;
       border-left: 2px solid var(--border-dim);
+    }
+
+    /* ── LUCIDE ICON SIZING ── */
+    .res-icon {
+      width: 12px;
+      height: 12px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 0.3em;
+      margin-top: -2px;
+      stroke-width: 2.5;
     }
 
     /* ── HIGHLIGHT BOX ── */
@@ -875,7 +911,7 @@
           </div>
         </div>
         <div class="resolution type-legal">
-          <div class="resolution-header">✓ Legally determined — no board decision required</div>
+          <div class="resolution-header"><i data-lucide="check-circle" class="res-icon"></i> Legally determined — no board decision required</div>
           <div class="resolution-body">
             The v.2 revision already drafts the correct answer. ULCAA defaults to proportional-to-patronage and IRC § 704(b) requires a determinate method — this is not a policy choice the board gets to make. The v.2 language is the required implementation. Pathway: submit to formation counsel and tax counsel for confirmation. No further deliberation needed.
           </div>
@@ -892,7 +928,7 @@
           </div>
         </div>
         <div class="resolution type-draft">
-          <div class="resolution-header">✎ Drafting fix — one sentence, no policy question</div>
+          <div class="resolution-header"><i data-lucide="pencil" class="res-icon"></i> Drafting fix — one sentence, no policy question</div>
           <div class="resolution-body">
             Add "or participating electronically" to § 2.7.1. This tracks ULCAA § 7-58-202 and standard Colorado LCA practice for hybrid meetings. No deliberation required — it is a correction of a drafting defect that would otherwise invalidate every meeting held with remote attendees.
           </div>
@@ -973,7 +1009,7 @@
           </div>
         </div>
         <div class="resolution type-draft">
-          <div class="resolution-header">✎ Drafting fix — strike the contradictory paragraph</div>
+          <div class="resolution-header"><i data-lucide="pencil" class="res-icon"></i> Drafting fix — strike the contradictory paragraph</div>
           <div class="resolution-body">
             IRC § 707(c) is the correct treatment for member-services compensation in a Subchapter K entity. The conflicting second paragraph either treats this as employment wages or leaves ambiguity. Pathway: strike the second paragraph, or add a conforming sentence that aligns it with the guaranteed payment framing. No policy decision — the tax treatment dictates the drafting.
           </div>
@@ -989,7 +1025,7 @@
           </div>
         </div>
         <div class="resolution type-legal">
-          <div class="resolution-header">✓ Legally grounded recommendation — public benefit redirect</div>
+          <div class="resolution-header"><i data-lucide="check-circle" class="res-icon"></i> Legally grounded recommendation — public benefit redirect</div>
           <div class="resolution-body">
             The Subchapter K-clean path: redirect any residual after capital account satisfaction to a designated public benefit organization. This eliminates the tax mismatch entirely — members are taxed on one basis and paid on the same basis — and is consistent with the cooperative's Public Benefit LCA status. The Community Supporter Agreement template already establishes infrastructure for this orientation. Pathway: strike the equal-distribution tier; add a single sentence redirecting residual to a public benefit organization designated by the Board at dissolution. No ongoing governance implication.
           </div>
@@ -1040,7 +1076,7 @@
           </div>
         </div>
         <div class="resolution type-legal">
-          <div class="resolution-header">✓ Legally grounded recommendation — non-member participant</div>
+          <div class="resolution-header"><i data-lucide="check-circle" class="res-icon"></i> Legally grounded recommendation — non-member participant</div>
           <div class="resolution-body">
             A Community Participant holding no equity, no patronage rights, and no voting rights does not meet the ULCAA definition of a member in either category. The correct instrument already exists: the Community Supporter Agreement template establishes a non-member access and contribution structure under ULCAA § 7-58-104. Pathway: remove "Community Participant" as a membership class from the Bylaws; add a single reference to the cooperative's community access program operating under a separate agreement. No new document needed — the template is already built.
           </div>
@@ -1079,7 +1115,7 @@
           </div>
         </div>
         <div class="resolution type-draft">
-          <div class="resolution-header">✎ Drafting fix — two additions close the residuals</div>
+          <div class="resolution-header"><i data-lucide="pencil" class="res-icon"></i> Drafting fix — two additions close the residuals</div>
           <div class="resolution-body">
             The v.2 revision is materially complete. Two targeted additions close what remains:
             <ul>
@@ -1101,7 +1137,7 @@
           </div>
         </div>
         <div class="resolution type-resolved">
-          <div class="resolution-header">✓ Resolved in v.2.1</div>
+          <div class="resolution-header"><i data-lucide="check-circle" class="res-icon"></i> Resolved in v.2.1</div>
           <div class="resolution-body">
             MA § 5.4 now states the capital account balance rule and cross-references Bylaws §§ 1.7.3–1.7.4 (ninety-day target, three-year outer limit) rather than restating figures. Effective date conformed to Bylaws § 1.7.1: fourteen days after notice, not on receipt. The $100 par value and capital account balance are the same number before any allocations occur; the rule unifies them.
           </div>
@@ -1118,7 +1154,7 @@
           </div>
         </div>
         <div class="resolution type-resolved">
-          <div class="resolution-header">✓ Resolved in v.2.1 — grammar table applied</div>
+          <div class="resolution-header"><i data-lucide="check-circle" class="res-icon"></i> Resolved in v.2.1 — grammar table applied</div>
           <div class="resolution-body">
             Seven substitutions executed across MA §§ 2.4, 3.3, 5.4, 9.5:
             <ul>
@@ -1306,6 +1342,13 @@
   </nav>
 
 </div><!-- /wrap -->
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  else document.addEventListener('DOMContentLoaded', function() {
+    if (window.lucide) lucide.createIcons();
+  });
+</script>
 
 </body>
 </html>
