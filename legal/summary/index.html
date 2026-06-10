@@ -11,9 +11,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Governing Documents: Summary of Changes — RegenHub, LCA</title>
-  <meta name="description" content="Summary of governing document changes for RegenHub, LCA — Articles of Organization, Bylaws v.2, and Membership Agreement v.2. Prepared for the board and member body.">
+  <meta name="description" content="Summary of governing document changes for RegenHub, LCA — Articles of Organization, Bylaws v.2.1, and Membership Agreement v.2.1. Prepared for the board and member body.">
   <meta property="og:title" content="Governing Documents: Summary of Changes — RegenHub, LCA">
-  <meta property="og:description" content="Summary of v.1 → v.2 changes to the Bylaws and Membership Agreement. Prepared for the June 2026 operations meeting.">
+  <meta property="og:description" content="Summary of v.1 → v.2.1 changes to the Bylaws and Membership Agreement. Prepared for the June 2026 board ratification process.">
   <meta property="og:url" content="https://techne.institute/legal/summary/">
   <meta property="og:site_name" content="Techne Institute">
   <link rel="canonical" href="https://techne.institute/legal/summary/">
@@ -666,6 +666,108 @@
       margin: 3.5rem 0;
     }
 
+    /* ── TL;DR CARD ── */
+    .tldr-card {
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      border-radius: 0 0 6px 6px;
+      background: var(--surface);
+      padding: 1.6rem 2rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .tldr-kicker {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--gold);
+      margin-bottom: 0.9rem;
+    }
+
+    .tldr-card > p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 0.85rem;
+      max-width: 72ch;
+    }
+
+    .tldr-card > p strong {
+      color: var(--text-warm);
+    }
+
+    .tldr-row {
+      display: flex;
+      gap: 1px;
+      background: var(--border-dim);
+      border: 1px solid var(--border-dim);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1.1rem 0 1rem;
+    }
+
+    .tldr-stat {
+      flex: 1;
+      background: var(--raised);
+      padding: 0.8rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .tldr-num {
+      font-family: var(--mono);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--rust);
+      line-height: 1;
+    }
+
+    .tldr-num-decision {
+      color: var(--gold);
+    }
+
+    .tldr-stat .tldr-label {
+      font-family: var(--mono);
+      font-size: 0.54rem;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    .tldr-note {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      font-style: italic;
+      line-height: 1.65;
+      max-width: 68ch;
+      margin-bottom: 0;
+    }
+
+    /* ── RESOLVED TAG ── */
+    .tag-resolved {
+      background: rgba(106,138,94,0.10);
+      color: var(--moss);
+      border: 1px solid rgba(106,138,94,0.25);
+    }
+
+    .resolution.type-resolved {
+      background: rgba(106,138,94,0.05);
+      border: 1px solid rgba(106,138,94,0.15);
+    }
+
+    .resolution.type-resolved .resolution-header {
+      background: rgba(106,138,94,0.08);
+      color: var(--moss);
+    }
+
+    .resolution.type-resolved .resolution-body {
+      color: rgba(130,170,115,0.70);
+      font-style: italic;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 640px) {
       .status-bar { grid-template-columns: 1fr; }
@@ -689,6 +791,34 @@
     <p class="subhead">For the Board and Member Body &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; Prepared from <a href="/legal/" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(196,149,106,0.3);">techne.institute/legal</a></p>
   </header>
 
+  <!-- ── TL;DR CARD ── -->
+  <div class="tldr-card">
+    <div class="tldr-kicker">The 30-second version</div>
+    <p>RegenHub, LCA is a Colorado Public Benefit Limited Cooperative Association. The Articles of Organization are in legal effect since February 6, 2026. The Bylaws and Membership Agreement are v.2.1 drafts — not yet ratified, not yet binding on any member.</p>
+    <p>The cooperative is taxed as a partnership under <strong>Subchapter K</strong>, not as a traditional cooperative under Subchapter T. This distinction is load-bearing: member allocations are taxable when <em>allocated</em>, tracked through capital accounts under IRC § 704(b), and reported on Schedule K-1. The governing documents must say exactly that — and as of v.2.1, they do.</p>
+    <div class="tldr-row">
+      <div class="tldr-stat">
+        <span class="tldr-num">3</span>
+        <span class="tldr-label">Bylaws items<br>blocking ratification</span>
+      </div>
+      <div class="tldr-stat">
+        <span class="tldr-num">1</span>
+        <span class="tldr-label">MA item<br>blocking ratification</span>
+      </div>
+      <div class="tldr-stat">
+        <span class="tldr-num tldr-num-decision">1</span>
+        <span class="tldr-label">Genuine decision<br>required of you</span>
+      </div>
+    </div>
+    <p class="tldr-note">The one decision is the annual dues amount for Schedule A. Every other blocking item is a conformity failure with a legally determined answer — the ULCAA, the Subchapter K classification, or the documents' own priority clauses decide. Nothing left for a board vote except the number.</p>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1.25rem;padding-top:1.1rem;border-top:1px solid var(--border-dim);">
+      <a href="/legal/bylaws-v2/" style="font-family:var(--mono);font-size:0.62rem;text-decoration:none;color:var(--gold);border:1px solid rgba(196,149,106,0.30);background:rgba(196,149,106,0.06);padding:0.3rem 0.75rem;border-radius:3px;letter-spacing:0.05em;">Bylaws v.2.1 ↗</a>
+      <a href="/legal/membership-agreement-v2/" style="font-family:var(--mono);font-size:0.62rem;text-decoration:none;color:var(--gold);border:1px solid rgba(196,149,106,0.30);background:rgba(196,149,106,0.06);padding:0.3rem 0.75rem;border-radius:3px;letter-spacing:0.05em;">Membership Agreement v.2.1 ↗</a>
+      <a href="/legal/counsel-memo-v2/" style="font-family:var(--mono);font-size:0.62rem;text-decoration:none;color:var(--text-dim);border:1px solid var(--border-dim);padding:0.3rem 0.75rem;border-radius:3px;letter-spacing:0.05em;">Counsel memo ↗</a>
+      <a href="/legal/bylaws-analysis/changes/" style="font-family:var(--mono);font-size:0.62rem;text-decoration:none;color:var(--text-dim);border:1px solid var(--border-dim);padding:0.3rem 0.75rem;border-radius:3px;letter-spacing:0.05em;">Changes index ↗</a>
+    </div>
+  </div>
+
   <!-- ── STATUS BAR ── -->
   <div class="status-bar">
     <div class="status-cell">
@@ -699,22 +829,22 @@
     </div>
     <div class="status-cell">
       <div class="status-pill pill-draft">Draft · organizer review</div>
-      <div class="status-cell-label">Bylaws v.2</div>
+      <div class="status-cell-label">Bylaws v.2.1</div>
       <div class="status-cell-title">18 articles · 15 change items</div>
-      <div class="status-cell-detail">May 11, 2026 · 3 blocking before ratification · Jeffrey Pote / Pote Law Firm</div>
+      <div class="status-cell-detail">June 10, 2026 · 3 blocking before ratification · Jeffrey Pote / Pote Law Firm</div>
     </div>
     <div class="status-cell">
       <div class="status-pill pill-draft">Draft · organizer review</div>
-      <div class="status-cell-label">Membership Agreement v.2</div>
-      <div class="status-cell-title">Class A Patron · 11 change items</div>
-      <div class="status-cell-detail">May 11, 2026 · 3 blocking before ratification · Jeffrey Pote / Pote Law Firm</div>
+      <div class="status-cell-label">Membership Agreement v.2.1</div>
+      <div class="status-cell-title">Cooperative Member · 11 change items</div>
+      <div class="status-cell-detail">June 10, 2026 · 1 blocking before ratification · Jeffrey Pote / Pote Law Firm</div>
     </div>
   </div>
 
   <!-- ── WHERE THE DOCUMENTS STAND ── -->
   <section class="prose-section">
     <p class="section-label">Where the Documents Stand</p>
-    <p>The Articles are the only instrument currently in legal effect. The Bylaws and Membership Agreement each exist in two versions: v.1, the original drafts from formation counsel (Jeffrey Pote, Pote Law Firm), and v.2, revised drafts dated May 11, 2026 incorporating an organizer-conducted, AI-assisted legal research analysis and its May 2026 addendum, both performed independently of formation counsel. The proposed changes have not yet been reviewed by an attorney.</p>
+    <p>The Articles are the only instrument currently in legal effect. The Bylaws and Membership Agreement each exist in two versions: v.1, the original drafts from formation counsel (Jeffrey Pote, Pote Law Firm), and v.2.1, revised drafts incorporating an organizer-conducted, AI-assisted legal research analysis (May 2026) and conformity fixes (June 2026), performed independently of formation counsel. The proposed changes have not yet been reviewed by an attorney.</p>
     <p>Both v.2 documents are working drafts in organizer review; nothing in them binds any member until the board votes to ratify. They are published openly in the interest of transparency with prospective members and supporters.</p>
   </section>
 
@@ -965,15 +1095,15 @@
       <div class="change-item">
         <div class="change-item-header">
           <span class="change-ref">MA-02</span>
-          <span class="change-tag tag-blocking">Blocking</span>
+          <span class="change-tag tag-resolved">Resolved · v.2.1</span>
           <div class="change-body">
-            <strong>Voluntary withdrawal (new § 5.6).</strong> The original was silent on resignation despite members' unconditional statutory right to dissociate. The new section permits withdrawal by written notice with share redemption within ninety days. One open question: does redemption return $100 par value or the member's positive capital account balance?
+            <strong>Voluntary withdrawal (§ 5.4).</strong> The original was silent on resignation despite members' unconditional statutory right to dissociate. The new section permits withdrawal by written notice with capital account settlement. Previously open question — $100 par or capital account balance? — resolved in v.2.1.
           </div>
         </div>
-        <div class="resolution type-legal">
-          <div class="resolution-header">✓ Legally determined — Subchapter K dictates the answer</div>
+        <div class="resolution type-resolved">
+          <div class="resolution-header">✓ Resolved in v.2.1</div>
           <div class="resolution-body">
-            Under Subchapter K, a member pays tax each year on their allocated share of income whether or not it is distributed. Returning only $100 par value on withdrawal means the member paid tax on value they never received. The equitable and legally consistent answer is the <strong>positive capital account balance</strong>. Pathway: state this in § 5.6 and cross-reference the Bylaws for the redemption timeline (three years as outer limit, Board discretion to redeem sooner). This resolves the cross-document conflict simultaneously — no separate reconciliation needed.
+            MA § 5.4 now states the capital account balance rule and cross-references Bylaws §§ 1.7.3–1.7.4 (ninety-day target, three-year outer limit) rather than restating figures. Effective date conformed to Bylaws § 1.7.1: fourteen days after notice, not on receipt. The $100 par value and capital account balance are the same number before any allocations occur; the rule unifies them.
           </div>
         </div>
       </div>
@@ -982,22 +1112,24 @@
       <div class="change-item">
         <div class="change-item-header">
           <span class="change-ref">MA-03 / A02</span>
-          <span class="change-tag tag-blocking">Blocking</span>
+          <span class="change-tag tag-resolved">Resolved · v.2.1</span>
           <div class="change-body">
-            <strong>Patronage and tax vocabulary (§§ 2.3–2.4).</strong> Unconstrained board discretion over the profit formula is replaced by a required written Patronage Plan, amendable only with member approval for material changes. The agreement's Subchapter T vocabulary is conformed to Subchapter K throughout.
+            <strong>Patronage and tax vocabulary (§§ 2.4, 3.3, 9.5).</strong> Unconstrained board discretion over the profit formula is replaced by a required written Patronage Plan. The agreement's Subchapter T vocabulary is conformed to Subchapter K throughout.
           </div>
         </div>
-        <div class="resolution type-draft">
-          <div class="resolution-header">✎ Drafting fix — mechanical vocabulary substitution</div>
+        <div class="resolution type-resolved">
+          <div class="resolution-header">✓ Resolved in v.2.1 — grammar table applied</div>
           <div class="resolution-body">
-            Four substitutions conform the agreement to the entity's actual tax treatment:
+            Seven substitutions executed across MA §§ 2.4, 3.3, 5.4, 9.5:
             <ul>
-              <li><em>net margins</em> → net income</li>
-              <li><em>patronage dividends</em> → distributive share</li>
-              <li><em>written notices of allocation</em> → Schedule K-1</li>
-              <li>tax year of receipt → tax year of allocation</li>
+              <li><em>net margins</em> → Net Profits (Bylaws § 5.3.1)</li>
+              <li><em>patronage dividends</em> → distributions of distributive share (IRC § 731)</li>
+              <li><em>written notices of allocation</em> → Schedule K-1 (IRC § 702)</li>
+              <li>taxable when received → taxable when allocated (§§ 3.3, 702)</li>
+              <li><em>patronage credits formally noticed</em> → amounts allocated to capital account</li>
+              <li><em>patronage redemption schedule</em> → capital account settlement (Bylaws § 1.7.4)</li>
+              <li><em>dividends</em> → distributions (§ 9.5)</li>
             </ul>
-            No policy question. The entity is taxed as a partnership; the documents should say what the entity is.
           </div>
         </div>
       </div>
@@ -1032,7 +1164,7 @@
           <span class="change-ref">MA-06</span>
           <span class="change-tag tag-advisable">Advisable</span>
           <div class="change-body">
-            <strong>Class scope and dues.</strong> Scopes the agreement explicitly to Class A patron membership and requires thirty days' advance notice before any dues increase. The original lacked both the class scoping and the notice requirement.
+            <strong>Class scope and dues.</strong> Scopes the agreement explicitly to Cooperative Member patron membership (the Bylaws' canonical class name) and requires thirty days' advance notice before any dues increase. The original lacked both the class scoping and the notice requirement.
           </div>
         </div>
       </div>
@@ -1074,34 +1206,34 @@
       </div>
       <div class="conflict-row">
         <div class="conflict-cell issue">Redemption window</div>
-        <div class="conflict-cell tension">Bylaws: up to three years · MA: ninety days</div>
+        <div class="conflict-cell tension" style="color:var(--moss);">Resolved · v.2.1</div>
         <div class="conflict-cell resolution-cell">
-          <span class="resolution-label">Legally grounded</span>
-          Three years as outer limit (already in Bylaws v.2). MA § 5.6 cross-references the Bylaws timeline. Board retains discretion to redeem sooner. Single rule, one document controls.
+          <span class="resolution-label">Done</span>
+          MA § 5.4 cross-references Bylaws §§ 1.7.3–1.7.4: ninety-day target, three-year outer limit. Board retains discretion to redeem sooner. Single rule, Bylaws control.
         </div>
       </div>
       <div class="conflict-row">
         <div class="conflict-cell issue">Share price</div>
         <div class="conflict-cell tension">Bylaws Schedule A: placeholder · MA: hard-coded $100</div>
         <div class="conflict-cell resolution-cell">
-          <span class="resolution-label">Determined</span>
+          <span class="resolution-label">Determined — Schedule A pending</span>
           Set $100 par value in Bylaws Schedule A (consistent with what MA already states). MA cross-references Schedule A rather than restating. Both documents agree once Schedule A is completed.
         </div>
       </div>
       <div class="conflict-row">
         <div class="conflict-cell issue">Withdrawal amount</div>
-        <div class="conflict-cell tension">Three competing answers: book value, par plus patronage credits, board discretion</div>
+        <div class="conflict-cell tension" style="color:var(--moss);">Resolved · v.2.1</div>
         <div class="conflict-cell resolution-cell">
-          <span class="resolution-label">Legally determined</span>
-          Positive capital account balance. Under Subchapter K the member pays tax each year on allocated income; returning only par value creates a tax-on-phantom-income result. State this rule once in the Bylaws; MA cross-references.
+          <span class="resolution-label">Done</span>
+          MA § 5.4 states settlement at positive capital account balance per Bylaws § 1.7.4. Pre-allocation the balance is $100; it grows with retained allocations. Par-only refund would confiscate amounts already taxed.
         </div>
       </div>
       <div class="conflict-row">
         <div class="conflict-cell issue">Tax vocabulary</div>
-        <div class="conflict-cell tension">MA uses Subchapter T terms; Bylaws use Subchapter K terms</div>
+        <div class="conflict-cell tension" style="color:var(--moss);">Resolved · v.2.1</div>
         <div class="conflict-cell resolution-cell">
-          <span class="resolution-label">Drafting fix</span>
-          Conform MA to Subchapter K vocabulary per MA-03 / A02. Four word-for-word substitutions. No policy question — the entity's actual tax treatment dictates the vocabulary.
+          <span class="resolution-label">Done</span>
+          Seven substitutions applied per MA-03. Subchapter T instruments retired throughout MA §§ 2.4, 3.3, 5.4, 9.5. Schedule K-1 is now the stated notice instrument; allocation timing is correct.
         </div>
       </div>
     </div>
