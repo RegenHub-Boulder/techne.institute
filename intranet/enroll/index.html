@@ -879,6 +879,21 @@ function submitOrientation() {
   STATE.complete   = true;
   STATE.completedAt= new Date().toISOString();
   save(STATE);
+
+  // Sync enrollment completion to Supabase user_metadata so People directory
+  // can show the enrolled badge once Phase 01 schema is deployed.
+  try {
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+      window.supabase.createClient(AUTH_URL, AUTH_KEY).auth.updateUser({
+        data: {
+          enrolled_at:  STATE.completedAt,
+          bylaws_vote:  STATE.bylawsVote,
+          ma_vote:      STATE.maVote,
+        }
+      }).catch(function() {});
+    }
+  } catch (_) {}
+
   render();
 }
 

@@ -481,7 +481,7 @@
     <span class="label muted" style="flex-shrink:0;">Ratification &amp; enrollment</span>
   </div>
 
-  <div class="module-list" style="margin-bottom:28px;">
+  <div id="enroll-module-list" class="module-list" style="margin-bottom:28px;">
     <div class="module-row" data-rea="agreement"
          onclick="window.location.href='/intranet/enroll/'"
          role="link" tabindex="0"
@@ -508,6 +508,54 @@
       </div>
     </div>
   </div>
+
+  <script>
+  (function () {
+    try {
+      var raw = localStorage.getItem('techne-enroll-v1');
+      if (!raw) return;
+      var s = JSON.parse(raw);
+      if (!s.complete) return;
+
+      var voteLabel = { consent: 'Consent', standAside: 'Stand aside', object: 'Object' };
+      var bv = voteLabel[s.bylawsVote] || s.bylawsVote || '—';
+      var mv = voteLabel[s.maVote]     || s.maVote     || '—';
+      var when = s.completedAt
+        ? new Date(s.completedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        : '';
+
+      var wrap = document.getElementById('enroll-module-list');
+      if (!wrap) return;
+      wrap.innerHTML =
+        '<div class="module-row" data-rea="agreement"' +
+        '     onclick="window.location.href=\'/intranet/enroll/\'"' +
+        '     role="link" tabindex="0"' +
+        '     onkeydown="if(event.key===\'Enter\')window.location.href=\'/intranet/enroll/\'"' +
+        '     style="border-color:rgba(74,222,128,0.22);background:rgba(74,222,128,0.03);">' +
+        '  <div class="module-accent" style="background:var(--live);"></div>' +
+        '  <div class="module-body">' +
+        '    <div class="module-top">' +
+        '      <span class="module-name" style="color:var(--live);font-size:0.85rem;">Enrolled' +
+               (s.name ? ' · ' + s.name : '') + '</span>' +
+        '      <span class="module-rea">Board · Governance act</span>' +
+        '    </div>' +
+        '    <div style="font-family:var(--mono);font-size:0.68rem;color:var(--muted);margin-top:3px;line-height:1.6;">' +
+        '      Bylaws: <span style="color:var(--live);">' + bv + '</span>' +
+        '      &ensp;·&ensp;MA: <span style="color:var(--live);">' + mv + '</span>' +
+               (when ? '&ensp;·&ensp;' + when : '') +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="module-side">' +
+        '    <div class="module-status">' +
+        '      <span class="pip" data-status="live" data-tip="Enrollment complete"></span>' +
+        '      done' +
+        '    </div>' +
+        '    <div class="module-chevron">›</div>' +
+        '  </div>' +
+        '</div>';
+    } catch (_) {}
+  })();
+  </script>
 
   <!-- Primary nav section -->
   <div class="section-label">
