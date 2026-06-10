@@ -223,14 +223,18 @@
 
     /* ── CHANGE ITEM ── */
     .change-item {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1.4rem;
-      align-items: flex-start;
+      margin-bottom: 2rem;
     }
 
     .change-item:last-child {
       margin-bottom: 0;
+    }
+
+    .change-item-header {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 0.65rem;
     }
 
     .change-tag {
@@ -303,6 +307,140 @@
       min-width: 4.5rem;
     }
 
+    /* ── RESOLUTION PATHWAY ── */
+    .resolution {
+      margin-top: 0.7rem;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .resolution-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.5rem 0.85rem;
+      font-family: var(--mono);
+      font-size: 0.56rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .resolution-body {
+      padding: 0.7rem 0.85rem 0.85rem;
+      font-size: 0.83rem;
+      line-height: 1.7;
+    }
+
+    .resolution-body ul {
+      margin-top: 0.5rem;
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .resolution-body li {
+      display: flex;
+      gap: 0.55rem;
+    }
+
+    .resolution-body li::before {
+      content: '→';
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+
+    /* Draft fix — moss */
+    .resolution.type-draft {
+      background: rgba(106,138,94,0.07);
+      border: 1px solid rgba(106,138,94,0.18);
+    }
+
+    .resolution.type-draft .resolution-header {
+      background: rgba(106,138,94,0.10);
+      color: var(--moss);
+    }
+
+    .resolution.type-draft .resolution-body {
+      color: rgba(150,185,135,0.80);
+    }
+
+    .resolution.type-draft li::before {
+      color: var(--moss);
+    }
+
+    /* Legally determined — sky */
+    .resolution.type-legal {
+      background: rgba(90,122,154,0.07);
+      border: 1px solid rgba(90,122,154,0.18);
+    }
+
+    .resolution.type-legal .resolution-header {
+      background: rgba(90,122,154,0.10);
+      color: var(--sky);
+    }
+
+    .resolution.type-legal .resolution-body {
+      color: rgba(130,165,200,0.80);
+    }
+
+    .resolution.type-legal li::before {
+      color: var(--sky);
+    }
+
+    /* Decision required — gold */
+    .resolution.type-decision {
+      background: rgba(196,149,106,0.07);
+      border: 1px solid rgba(196,149,106,0.18);
+    }
+
+    .resolution.type-decision .resolution-header {
+      background: rgba(196,149,106,0.10);
+      color: var(--gold);
+    }
+
+    .resolution.type-decision .resolution-body {
+      color: rgba(196,149,106,0.80);
+    }
+
+    .resolution.type-decision li::before {
+      color: var(--gold);
+    }
+
+    /* Mixed — uses type-decision outer, internal items differentiated */
+    .resolution.type-mixed {
+      background: rgba(196,149,106,0.05);
+      border: 1px solid rgba(196,149,106,0.15);
+    }
+
+    .resolution.type-mixed .resolution-header {
+      background: rgba(196,149,106,0.09);
+      color: var(--gold);
+    }
+
+    .resolution.type-mixed .resolution-body {
+      color: var(--text-muted);
+    }
+
+    .resolution-item-determined {
+      color: rgba(130,165,200,0.85) !important;
+    }
+
+    .resolution-item-determined::before {
+      content: '✓' !important;
+      color: var(--moss) !important;
+    }
+
+    .resolution-item-decision {
+      color: rgba(196,149,106,0.85) !important;
+    }
+
+    .resolution-item-decision::before {
+      content: '◆' !important;
+      color: var(--gold) !important;
+    }
+
     /* ── CONFLICT TABLE ── */
     .conflict-list {
       display: flex;
@@ -316,7 +454,7 @@
 
     .conflict-row {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1.1fr 1.2fr 1.5fr;
       gap: 0;
       border-bottom: 1px solid var(--border-dim);
     }
@@ -330,7 +468,7 @@
     }
 
     .conflict-cell {
-      padding: 0.75rem 1rem;
+      padding: 0.8rem 1rem;
       font-size: 0.82rem;
       color: var(--text-muted);
       line-height: 1.55;
@@ -357,6 +495,21 @@
 
     .conflict-cell.tension {
       color: var(--rust);
+    }
+
+    .conflict-cell.resolution-cell {
+      color: rgba(130,165,200,0.85);
+      font-size: 0.82rem;
+    }
+
+    .resolution-label {
+      font-family: var(--mono);
+      font-size: 0.52rem;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      color: var(--moss);
+      display: block;
+      margin-bottom: 0.3rem;
     }
 
     /* ── DECISIONS BOX ── */
@@ -415,6 +568,25 @@
       margin-top: 0.05rem;
     }
 
+    .decisions-list li.is-determined {
+      color: rgba(130,165,200,0.75);
+    }
+
+    .decisions-list li.is-determined::before {
+      content: '✓';
+      color: var(--moss);
+    }
+
+    .decisions-list li.is-decision {
+      color: rgba(196,149,106,0.85);
+      font-weight: 700;
+    }
+
+    .decisions-list li.is-decision::before {
+      content: '◆';
+      color: var(--gold);
+    }
+
     /* ── COUNTING NOTE ── */
     .counting-note {
       font-size: 0.78rem;
@@ -424,6 +596,23 @@
       margin-top: 0.5rem;
       padding: 0.65rem 0.9rem;
       border-left: 2px solid var(--border-dim);
+    }
+
+    /* ── HIGHLIGHT BOX ── */
+    .highlight-box {
+      background: rgba(106,138,94,0.06);
+      border: 1px solid rgba(106,138,94,0.18);
+      border-radius: 6px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2.5rem;
+      font-size: 0.88rem;
+      color: rgba(150,185,135,0.80);
+      line-height: 1.72;
+    }
+
+    .highlight-box strong {
+      color: var(--moss);
+      font-weight: 700;
     }
 
     /* ── FOOTER NOTE ── */
@@ -479,21 +668,11 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 640px) {
-      .status-bar {
-        grid-template-columns: 1fr;
-      }
-      .conflict-row {
-        grid-template-columns: 1fr;
-      }
-      .conflict-cell.header {
-        display: none;
-      }
-      .change-item {
-        flex-wrap: wrap;
-      }
-      .wrap {
-        padding: 2rem 1.25rem 5rem;
-      }
+      .status-bar { grid-template-columns: 1fr; }
+      .conflict-row { grid-template-columns: 1fr; }
+      .conflict-cell.header { display: none; }
+      .change-item-header { flex-wrap: wrap; }
+      .wrap { padding: 2rem 1.25rem 5rem; }
     }
   </style>
 </head>
@@ -556,27 +735,60 @@
     <div class="change-group">
       <div class="group-heading blocking">Blocking before ratification</div>
 
+      <!-- BL-01 -->
       <div class="change-item">
-        <span class="change-ref">BL-01 / A01</span>
-        <span class="change-tag tag-blocking">Blocking</span>
-        <div class="change-body">
-          <strong>Allocation (§ 5.3.2).</strong> The draft let the board choose between equal and proportional profit allocation at its discretion; the statute defaults to proportional-to-patronage and § 704(b) requires a determinate method. The revision allocates in proportion to patronage under an adopted Patronage Plan, with equal allocation as a binding default (<em>shall</em>, not <em>may</em>) only before a plan exists.
+        <div class="change-item-header">
+          <span class="change-ref">BL-01 / A01</span>
+          <span class="change-tag tag-blocking">Blocking</span>
+          <div class="change-body">
+            <strong>Allocation (§ 5.3.2).</strong> The draft let the board choose between equal and proportional profit allocation at its discretion; the statute defaults to proportional-to-patronage and § 704(b) requires a determinate method. The revision allocates in proportion to patronage under an adopted Patronage Plan, with equal allocation as a binding default (<em>shall</em>, not <em>may</em>) only before a plan exists.
+          </div>
+        </div>
+        <div class="resolution type-legal">
+          <div class="resolution-header">✓ Legally determined — no board decision required</div>
+          <div class="resolution-body">
+            The v.2 revision already drafts the correct answer. ULCAA defaults to proportional-to-patronage and IRC § 704(b) requires a determinate method — this is not a policy choice the board gets to make. The v.2 language is the required implementation. Pathway: submit to formation counsel and tax counsel for confirmation. No further deliberation needed.
+          </div>
         </div>
       </div>
 
+      <!-- BL-03 -->
       <div class="change-item">
-        <span class="change-ref">BL-03</span>
-        <span class="change-tag tag-blocking">Blocking</span>
-        <div class="change-body">
-          <strong>Quorum (§ 2.7.1).</strong> "Present and in person" would make every hybrid meeting fail quorum; the revision counts electronic attendees as present. This is a structural defect that must be corrected before any valid vote can occur.
+        <div class="change-item-header">
+          <span class="change-ref">BL-03</span>
+          <span class="change-tag tag-blocking">Blocking</span>
+          <div class="change-body">
+            <strong>Quorum (§ 2.7.1).</strong> "Present and in person" would make every hybrid meeting fail quorum; the revision counts electronic attendees as present. This is a structural defect that must be corrected before any valid vote can occur.
+          </div>
+        </div>
+        <div class="resolution type-draft">
+          <div class="resolution-header">✎ Drafting fix — one sentence, no policy question</div>
+          <div class="resolution-body">
+            Add "or participating electronically" to § 2.7.1. This tracks ULCAA § 7-58-202 and standard Colorado LCA practice for hybrid meetings. No deliberation required — it is a correction of a drafting defect that would otherwise invalidate every meeting held with remote attendees.
+          </div>
         </div>
       </div>
 
+      <!-- BL-04 -->
       <div class="change-item">
-        <span class="change-ref">BL-04</span>
-        <span class="change-tag tag-blocking">Blocking</span>
-        <div class="change-body">
-          <strong>Schedule A.</strong> Share price, dues, effective date, initial board composition, and the Secretary's signature are all unfilled placeholders. The Bylaws cannot be ratified until these values are agreed and inserted.
+        <div class="change-item-header">
+          <span class="change-ref">BL-04</span>
+          <span class="change-tag tag-blocking">Blocking</span>
+          <div class="change-body">
+            <strong>Schedule A.</strong> Share price, dues, effective date, initial board composition, and the Secretary's signature are all unfilled placeholders. The Bylaws cannot be ratified without them.
+          </div>
+        </div>
+        <div class="resolution type-mixed">
+          <div class="resolution-header">Four items determined · One decision required</div>
+          <div class="resolution-body">
+            <ul>
+              <li class="resolution-item-determined"><strong>Share price:</strong> $100 par value — already stated in the Membership Agreement. Confirm in Schedule A and cross-reference.</li>
+              <li class="resolution-item-determined"><strong>Effective date:</strong> "The date of ratification by the Board of Directors" — a standard formulation requiring no prior decision.</li>
+              <li class="resolution-item-determined"><strong>Initial board:</strong> The eight organizers named in Article IV of the Articles of Organization are the initial board by operation of the formation documents.</li>
+              <li class="resolution-item-determined"><strong>Secretary's signature:</strong> Administrative; assigned at the ratification meeting.</li>
+              <li class="resolution-item-decision"><strong>Annual dues amount:</strong> The one genuine decision. Organizers set the number; it goes into Schedule A and the Bylaws are ratifiable.</li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -588,26 +800,32 @@
       <div class="group-heading protected">Member protections</div>
 
       <div class="change-item">
-        <span class="change-ref">BL-02</span>
-        <span class="change-tag tag-member">Protection</span>
-        <div class="change-body">
-          <strong>Suspension (§ 1.10.1)</strong> gains written notice, five business days to respond before taking effect (except criminal conduct), a hearing within thirty days, and a written determination. The original allowed summary action with no process.
+        <div class="change-item-header">
+          <span class="change-ref">BL-02</span>
+          <span class="change-tag tag-member">Protection</span>
+          <div class="change-body">
+            <strong>Suspension (§ 1.10.1)</strong> gains written notice, five business days to respond before taking effect (except criminal conduct), a hearing within thirty days, and a written determination. The original allowed summary action with no process.
+          </div>
         </div>
       </div>
 
       <div class="change-item">
-        <span class="change-ref">BL-07</span>
-        <span class="change-tag tag-member">Protection</span>
-        <div class="change-body">
-          <strong>Confidentiality (§ 18.2)</strong> gains the standard exceptions the original lacked: public domain, prior knowledge, independent development, required disclosure, professional contexts, and counsel advice.
+        <div class="change-item-header">
+          <span class="change-ref">BL-07</span>
+          <span class="change-tag tag-member">Protection</span>
+          <div class="change-body">
+            <strong>Confidentiality (§ 18.2)</strong> gains the standard exceptions the original lacked: public domain, prior knowledge, independent development, required disclosure, professional contexts, and counsel advice.
+          </div>
         </div>
       </div>
 
       <div class="change-item">
-        <span class="change-ref">BL-A05</span>
-        <span class="change-tag tag-member">Protection</span>
-        <div class="change-body">
-          <strong>Disputes (§ 11.5).</strong> The original waived all court access, leaving the board as judge in its own disputes. The proposal narrows this to a jury waiver plus neutral arbitration, external whenever the board is the adverse party. We believe the original broad waiver may be vulnerable to challenge.
+        <div class="change-item-header">
+          <span class="change-ref">BL-A05</span>
+          <span class="change-tag tag-member">Protection</span>
+          <div class="change-body">
+            <strong>Disputes (§ 11.5).</strong> The original waived all court access, leaving the board as judge in its own disputes. The proposal narrows this to a jury waiver plus neutral arbitration, external whenever the board is the adverse party. We believe the original broad waiver may be vulnerable to challenge.
+          </div>
         </div>
       </div>
     </div>
@@ -617,26 +835,44 @@
       <div class="group-heading tax">The partnership tax spine</div>
 
       <div class="change-item">
-        <span class="change-ref">BL-05 / A02</span>
-        <span class="change-tag tag-tax">Tax</span>
-        <div class="change-body">
-          <strong>Compensation (§ 4.8)</strong> routes member pay through guaranteed payments under IRC § 707(c) rather than wages. A contradictory second paragraph in the original is to be struck or conformed to this framing before ratification.
+        <div class="change-item-header">
+          <span class="change-ref">BL-05 / A02</span>
+          <span class="change-tag tag-tax">Tax</span>
+          <div class="change-body">
+            <strong>Compensation (§ 4.8)</strong> routes member pay through guaranteed payments under IRC § 707(c) rather than wages. A contradictory second paragraph in the original is to be struck or conformed to this framing before ratification.
+          </div>
+        </div>
+        <div class="resolution type-draft">
+          <div class="resolution-header">✎ Drafting fix — strike the contradictory paragraph</div>
+          <div class="resolution-body">
+            IRC § 707(c) is the correct treatment for member-services compensation in a Subchapter K entity. The conflicting second paragraph either treats this as employment wages or leaves ambiguity. Pathway: strike the second paragraph, or add a conforming sentence that aligns it with the guaranteed payment framing. No policy decision — the tax treatment dictates the drafting.
+          </div>
         </div>
       </div>
 
       <div class="change-item">
-        <span class="change-ref">BL-A03</span>
-        <span class="change-tag tag-tax">Tax</span>
-        <div class="change-body">
-          <strong>Liquidation.</strong> The dissolution waterfall has two endings: one following capital accounts (correct under Subchapter K), and a second distributing residual assets equally, which would tax members on one basis and pay them on another. The board must choose: remove the equal-distribution tier, or redirect the residual to a public benefit assignment.
+        <div class="change-item-header">
+          <span class="change-ref">BL-A03</span>
+          <span class="change-tag tag-tax">Tax</span>
+          <div class="change-body">
+            <strong>Liquidation.</strong> The dissolution waterfall has two endings: one following capital accounts (correct under Subchapter K), and a second distributing residual assets equally, which would tax members on one basis and pay them on another. The board must choose: remove the equal-distribution tier, or redirect the residual to a public benefit assignment.
+          </div>
+        </div>
+        <div class="resolution type-legal">
+          <div class="resolution-header">✓ Legally grounded recommendation — public benefit redirect</div>
+          <div class="resolution-body">
+            The Subchapter K-clean path: redirect any residual after capital account satisfaction to a designated public benefit organization. This eliminates the tax mismatch entirely — members are taxed on one basis and paid on the same basis — and is consistent with the cooperative's Public Benefit LCA status. The Community Supporter Agreement template already establishes infrastructure for this orientation. Pathway: strike the equal-distribution tier; add a single sentence redirecting residual to a public benefit organization designated by the Board at dissolution. No ongoing governance implication.
+          </div>
         </div>
       </div>
 
       <div class="change-item">
-        <span class="change-ref">BL-A07</span>
-        <span class="change-tag tag-tax">Tax</span>
-        <div class="change-body">
-          <strong>Capital accounts.</strong> The core capital account machinery — qualified income offset, no-deficit-restoration pairing, and Subchapter K consents — is affirmed as solid. No changes required; confirmed as correctly drafted.
+        <div class="change-item-header">
+          <span class="change-ref">BL-A07</span>
+          <span class="change-tag tag-tax">Tax</span>
+          <div class="change-body">
+            <strong>Capital accounts.</strong> The core capital account machinery — qualified income offset, no-deficit-restoration pairing, and Subchapter K consents — is affirmed as solid. No changes required; confirmed as correctly drafted.
+          </div>
         </div>
       </div>
     </div>
@@ -646,34 +882,48 @@
       <div class="group-heading structure">Structure and housekeeping</div>
 
       <div class="change-item">
-        <span class="change-ref">BL-06</span>
-        <span class="change-tag tag-structure">Housekeeping</span>
-        <div class="change-body">
-          <strong>Redemption window.</strong> Shortens the outer limit for redeeming a withdrawing member's equity from five years to <strong>three years</strong>, with Board discretion to redeem sooner. Three years is a more pragmatic outer limit that preserves flexibility without trapping member capital indefinitely.
+        <div class="change-item-header">
+          <span class="change-ref">BL-06</span>
+          <span class="change-tag tag-structure">Housekeeping</span>
+          <div class="change-body">
+            <strong>Redemption window.</strong> Shortens the outer limit for redeeming a withdrawing member's equity from five years to <strong>three years</strong>, with Board discretion to redeem sooner. Three years is a more pragmatic outer limit that preserves flexibility without trapping member capital indefinitely.
+          </div>
         </div>
       </div>
 
       <div class="change-item">
-        <span class="change-ref">BL-08</span>
-        <span class="change-tag tag-structure">Housekeeping</span>
-        <div class="change-body">
-          <strong>Conflict hierarchy.</strong> Puts non-waivable provisions of the Colorado cooperative statute (ULCAA) first in the document hierarchy and replaces an inapplicable Public Benefit Corporation Act citation with the ULCAA's own public benefit provision (C.R.S. § 7-58-104). Note: the Articles of Organization themselves cite both ULCAA and PBCA; the proposed bylaw change is a clarification for counsel's review.
+        <div class="change-item-header">
+          <span class="change-ref">BL-08</span>
+          <span class="change-tag tag-structure">Housekeeping</span>
+          <div class="change-body">
+            <strong>Conflict hierarchy.</strong> Puts non-waivable provisions of the Colorado cooperative statute (ULCAA) first in the document hierarchy and replaces an inapplicable Public Benefit Corporation Act citation with the ULCAA's own public benefit provision (C.R.S. § 7-58-104). Note: the Articles of Organization themselves cite both ULCAA and PBCA; the proposed bylaw change is a clarification for counsel's review.
+          </div>
         </div>
       </div>
 
       <div class="change-item">
-        <span class="change-ref">BL-A04</span>
-        <span class="change-tag tag-structure">Housekeeping</span>
-        <div class="change-body">
-          <strong>Community Participant class.</strong> The current class fits neither statutory member category. It needs deliberate placement before ratification: patron sub-type, investor member, or non-member participant under a separate access agreement. Decision required — see below.
+        <div class="change-item-header">
+          <span class="change-ref">BL-A04</span>
+          <span class="change-tag tag-structure">Housekeeping</span>
+          <div class="change-body">
+            <strong>Community Participant class.</strong> The current class fits neither statutory member category under ULCAA (patron member or investor member). It needs deliberate placement: patron sub-type, investor member, or non-member participant under a separate access agreement.
+          </div>
+        </div>
+        <div class="resolution type-legal">
+          <div class="resolution-header">✓ Legally grounded recommendation — non-member participant</div>
+          <div class="resolution-body">
+            A Community Participant holding no equity, no patronage rights, and no voting rights does not meet the ULCAA definition of a member in either category. The correct instrument already exists: the Community Supporter Agreement template establishes a non-member access and contribution structure under ULCAA § 7-58-104. Pathway: remove "Community Participant" as a membership class from the Bylaws; add a single reference to the cooperative's community access program operating under a separate agreement. No new document needed — the template is already built.
+          </div>
         </div>
       </div>
 
       <div class="change-item">
-        <span class="change-ref">BL-A06</span>
-        <span class="change-tag tag-structure">Housekeeping</span>
-        <div class="change-body">
-          <strong>Amendment thresholds.</strong> Clarifies that the Article XII supermajority thresholds govern bylaw amendments only, not other board actions. No structural change required; annotation to confirm scope.
+        <div class="change-item-header">
+          <span class="change-ref">BL-A06</span>
+          <span class="change-tag tag-structure">Housekeeping</span>
+          <div class="change-body">
+            <strong>Amendment thresholds.</strong> Clarifies that the Article XII supermajority thresholds govern bylaw amendments only, not other board actions. No structural change required; annotation to confirm scope.
+          </div>
         </div>
       </div>
     </div>
@@ -689,27 +939,66 @@
     <div class="change-group">
       <div class="group-heading blocking">Blocking before ratification</div>
 
+      <!-- MA-01 -->
       <div class="change-item">
-        <span class="change-ref">MA-01</span>
-        <span class="change-tag tag-blocking">Blocking</span>
-        <div class="change-body">
-          <strong>Intellectual property (§ 3.3).</strong> The original assigned all IP within an undefined "scope of service," broad enough to capture a member's independent practice, prior work, and open-source contributions. The revision defines <em>Cooperative-Commissioned Work</em> — written assignment, executed by an officer, separately compensated — as the only IP the cooperative owns, and replaces the per-occasion portfolio permission with notice and a narrow ten-day objection right. The May 2026 addendum finds the v.2 section materially improved with two residuals: confirm assignment as fallback where the work-made-for-hire label fails, and exclude venture IP absent a separate agreement.
+        <div class="change-item-header">
+          <span class="change-ref">MA-01</span>
+          <span class="change-tag tag-blocking">Blocking</span>
+          <div class="change-body">
+            <strong>Intellectual property (§ 3.3).</strong> The original assigned all IP within an undefined "scope of service," broad enough to capture a member's independent practice, prior work, and open-source contributions. The revision defines <em>Cooperative-Commissioned Work</em> — written assignment, executed by an officer, separately compensated — as the only IP the cooperative owns, and replaces the per-occasion portfolio permission with notice and a narrow ten-day objection right. The May 2026 addendum finds the v.2 section materially improved with two residuals.
+          </div>
+        </div>
+        <div class="resolution type-draft">
+          <div class="resolution-header">✎ Drafting fix — two additions close the residuals</div>
+          <div class="resolution-body">
+            The v.2 revision is materially complete. Two targeted additions close what remains:
+            <ul>
+              <li><strong>Assignment fallback:</strong> Add to § 3.3(c): "and if such work does not qualify as work made for hire under 17 U.S.C. § 101, Member hereby assigns all right, title, and interest to the Cooperative." Standard belt-and-suspenders IP provision.</li>
+              <li><strong>Venture IP carve-out:</strong> Add to § 3.3(d): "Cooperative-Commissioned Work does not include intellectual property developed in connection with a venture investment or portfolio company absent a separate written agreement executed by an officer of the Cooperative."</li>
+            </ul>
+            No policy choices — both additions close gaps where existing language could be contested.
+          </div>
         </div>
       </div>
 
+      <!-- MA-02 -->
       <div class="change-item">
-        <span class="change-ref">MA-02</span>
-        <span class="change-tag tag-blocking">Blocking</span>
-        <div class="change-body">
-          <strong>Voluntary withdrawal (new § 5.6).</strong> The original was silent on resignation despite members' unconditional statutory right to dissociate. The new section permits withdrawal by written notice with share redemption within ninety days. One open question stated honestly: does redemption return $100 par value or the member's positive capital account balance? The Subchapter K answer — and the equitable one — is the positive capital account balance. This must be resolved as a cross-document pair with the Bylaws redemption window.
+        <div class="change-item-header">
+          <span class="change-ref">MA-02</span>
+          <span class="change-tag tag-blocking">Blocking</span>
+          <div class="change-body">
+            <strong>Voluntary withdrawal (new § 5.6).</strong> The original was silent on resignation despite members' unconditional statutory right to dissociate. The new section permits withdrawal by written notice with share redemption within ninety days. One open question: does redemption return $100 par value or the member's positive capital account balance?
+          </div>
+        </div>
+        <div class="resolution type-legal">
+          <div class="resolution-header">✓ Legally determined — Subchapter K dictates the answer</div>
+          <div class="resolution-body">
+            Under Subchapter K, a member pays tax each year on their allocated share of income whether or not it is distributed. Returning only $100 par value on withdrawal means the member paid tax on value they never received. The equitable and legally consistent answer is the <strong>positive capital account balance</strong>. Pathway: state this in § 5.6 and cross-reference the Bylaws for the redemption timeline (three years as outer limit, Board discretion to redeem sooner). This resolves the cross-document conflict simultaneously — no separate reconciliation needed.
+          </div>
         </div>
       </div>
 
+      <!-- MA-03 -->
       <div class="change-item">
-        <span class="change-ref">MA-03 / A02</span>
-        <span class="change-tag tag-blocking">Blocking</span>
-        <div class="change-body">
-          <strong>Patronage and tax vocabulary (§§ 2.3–2.4).</strong> Unconstrained board discretion over the profit formula is replaced by a required written Patronage Plan, amendable only with member approval for material changes. The agreement's Subchapter T vocabulary is conformed to Subchapter K: <em>net margins</em> becomes net income; <em>patronage dividends</em> becomes distributive share; <em>written notices of allocation</em> becomes Schedule K-1; and tax falls in the year allocated, not the year received.
+        <div class="change-item-header">
+          <span class="change-ref">MA-03 / A02</span>
+          <span class="change-tag tag-blocking">Blocking</span>
+          <div class="change-body">
+            <strong>Patronage and tax vocabulary (§§ 2.3–2.4).</strong> Unconstrained board discretion over the profit formula is replaced by a required written Patronage Plan, amendable only with member approval for material changes. The agreement's Subchapter T vocabulary is conformed to Subchapter K throughout.
+          </div>
+        </div>
+        <div class="resolution type-draft">
+          <div class="resolution-header">✎ Drafting fix — mechanical vocabulary substitution</div>
+          <div class="resolution-body">
+            Four substitutions conform the agreement to the entity's actual tax treatment:
+            <ul>
+              <li><em>net margins</em> → net income</li>
+              <li><em>patronage dividends</em> → distributive share</li>
+              <li><em>written notices of allocation</em> → Schedule K-1</li>
+              <li>tax year of receipt → tax year of allocation</li>
+            </ul>
+            No policy question. The entity is taxed as a partnership; the documents should say what the entity is.
+          </div>
         </div>
       </div>
     </div>
@@ -719,42 +1008,52 @@
       <div class="group-heading advisable">Advisable and clarifying</div>
 
       <div class="change-item">
-        <span class="change-ref">MA-04</span>
-        <span class="change-tag tag-advisable">Advisable</span>
-        <div class="change-body">
-          <strong>Recital.</strong> Rewrites the recital from a coworking facilities description to the entity's actual character: a Public Benefit LCA organized to cultivate <em>scenius</em> through a cooperative of practice, physical and distributed. Draws on the scenius language in Article V § 5.2 of the Articles.
+        <div class="change-item-header">
+          <span class="change-ref">MA-04</span>
+          <span class="change-tag tag-advisable">Advisable</span>
+          <div class="change-body">
+            <strong>Recital.</strong> Rewrites the recital from a coworking facilities description to the entity's actual character: a Public Benefit LCA organized to cultivate <em>scenius</em> through a cooperative of practice, physical and distributed. Draws on the scenius language in Article V § 5.2 of the Articles.
+          </div>
         </div>
       </div>
 
       <div class="change-item">
-        <span class="change-ref">MA-05</span>
-        <span class="change-tag tag-advisable">Advisable</span>
-        <div class="change-body">
-          <strong>Termination.</strong> Tightens termination grounds with materiality and specific-facts standards and adds thirty-day notice and cure for curable breaches. The original termination clause was broad and lacked procedural protection.
+        <div class="change-item-header">
+          <span class="change-ref">MA-05</span>
+          <span class="change-tag tag-advisable">Advisable</span>
+          <div class="change-body">
+            <strong>Termination.</strong> Tightens termination grounds with materiality and specific-facts standards and adds thirty-day notice and cure for curable breaches. The original termination clause was broad and lacked procedural protection.
+          </div>
         </div>
       </div>
 
       <div class="change-item">
-        <span class="change-ref">MA-06</span>
-        <span class="change-tag tag-advisable">Advisable</span>
-        <div class="change-body">
-          <strong>Class scope and dues.</strong> Scopes the agreement explicitly to Class A patron membership and requires thirty days' advance notice before any dues increase. The original lacked both the class scoping and the notice requirement.
+        <div class="change-item-header">
+          <span class="change-ref">MA-06</span>
+          <span class="change-tag tag-advisable">Advisable</span>
+          <div class="change-body">
+            <strong>Class scope and dues.</strong> Scopes the agreement explicitly to Class A patron membership and requires thirty days' advance notice before any dues increase. The original lacked both the class scoping and the notice requirement.
+          </div>
         </div>
       </div>
 
       <div class="change-item">
-        <span class="change-ref">MA-07</span>
-        <span class="change-tag tag-advisable">Advisable</span>
-        <div class="change-body">
-          <strong>Owner-member framing.</strong> Adds a positive characterization at the opening of the agreement: the applicant is an <em>owner-member</em>, before the customary disclaimers. Already incorporated in v.2.
+        <div class="change-item-header">
+          <span class="change-ref">MA-07</span>
+          <span class="change-tag tag-advisable">Advisable</span>
+          <div class="change-body">
+            <strong>Owner-member framing.</strong> Adds a positive characterization at the opening of the agreement: the applicant is an <em>owner-member</em>, before the customary disclaimers. Already incorporated in v.2.
+          </div>
         </div>
       </div>
 
       <div class="change-item">
-        <span class="change-ref">MA-A01</span>
-        <span class="change-tag tag-advisable">Advisable</span>
-        <div class="change-body">
-          <strong>Schedule A cross-reference.</strong> Makes Bylaws Schedule A the single source of truth for share price, cross-referenced in the membership agreement rather than hard-coded. Eliminates the synchronization problem between the two documents.
+        <div class="change-item-header">
+          <span class="change-ref">MA-A01</span>
+          <span class="change-tag tag-advisable">Advisable</span>
+          <div class="change-body">
+            <strong>Schedule A cross-reference.</strong> Makes Bylaws Schedule A the single source of truth for share price, cross-referenced in the membership agreement rather than hard-coded. Eliminates the synchronization problem between the two documents.
+          </div>
         </div>
       </div>
     </div>
@@ -765,33 +1064,45 @@
   <!-- ── WHERE THE TWO DOCUMENTS CONFLICT ── -->
   <section class="prose-section">
     <p class="section-label">Where the Two Documents Conflict</p>
-    <p>Four conflicts must be resolved as pairs — not within either document alone. Each requires a single rule that both documents adopt, with the Bylaws controlling and the Membership Agreement cross-referencing.</p>
+    <p>Four conflicts must be resolved as pairs — not within either document alone. Each has a legally grounded resolution path. The Bylaws control; the Membership Agreement cross-references.</p>
 
     <div class="conflict-list">
       <div class="conflict-row header-row">
         <div class="conflict-cell header">Conflict</div>
         <div class="conflict-cell header">Current tension</div>
-        <div class="conflict-cell header">Recommended resolution</div>
+        <div class="conflict-cell header">Resolution path</div>
       </div>
       <div class="conflict-row">
         <div class="conflict-cell issue">Redemption window</div>
-        <div class="conflict-cell tension">Bylaws allow up to three years; Membership Agreement proposes ninety days</div>
-        <div class="conflict-cell">One stated timeline in the Bylaws, cross-referenced in the agreement. Board to decide the number.</div>
+        <div class="conflict-cell tension">Bylaws: up to three years · MA: ninety days</div>
+        <div class="conflict-cell resolution-cell">
+          <span class="resolution-label">Legally grounded</span>
+          Three years as outer limit (already in Bylaws v.2). MA § 5.6 cross-references the Bylaws timeline. Board retains discretion to redeem sooner. Single rule, one document controls.
+        </div>
       </div>
       <div class="conflict-row">
         <div class="conflict-cell issue">Share price</div>
-        <div class="conflict-cell tension">Bylaws Schedule A is a placeholder; agreement hard-codes $100 par value</div>
-        <div class="conflict-cell">Set Schedule A values in the Bylaws; agreement cross-references rather than restates.</div>
+        <div class="conflict-cell tension">Bylaws Schedule A: placeholder · MA: hard-coded $100</div>
+        <div class="conflict-cell resolution-cell">
+          <span class="resolution-label">Determined</span>
+          Set $100 par value in Bylaws Schedule A (consistent with what MA already states). MA cross-references Schedule A rather than restating. Both documents agree once Schedule A is completed.
+        </div>
       </div>
       <div class="conflict-row">
         <div class="conflict-cell issue">Withdrawal amount</div>
-        <div class="conflict-cell tension">Three answers across the documents: book value, par plus patronage credits, board discretion</div>
-        <div class="conflict-cell">Under Subchapter K the correct answer is positive capital account balance — member has already paid tax on allocated income each year. A member who withdraws for only $100 after years of allocated (taxed) income has paid tax on value never received.</div>
+        <div class="conflict-cell tension">Three competing answers: book value, par plus patronage credits, board discretion</div>
+        <div class="conflict-cell resolution-cell">
+          <span class="resolution-label">Legally determined</span>
+          Positive capital account balance. Under Subchapter K the member pays tax each year on allocated income; returning only par value creates a tax-on-phantom-income result. State this rule once in the Bylaws; MA cross-references.
+        </div>
       </div>
       <div class="conflict-row">
         <div class="conflict-cell issue">Tax vocabulary</div>
-        <div class="conflict-cell tension">Membership Agreement uses Subchapter T terms; Bylaws use Subchapter K terms</div>
-        <div class="conflict-cell">Conform the Membership Agreement to Subchapter K vocabulary as proposed in MA-03 / A02.</div>
+        <div class="conflict-cell tension">MA uses Subchapter T terms; Bylaws use Subchapter K terms</div>
+        <div class="conflict-cell resolution-cell">
+          <span class="resolution-label">Drafting fix</span>
+          Conform MA to Subchapter K vocabulary per MA-03 / A02. Four word-for-word substitutions. No policy question — the entity's actual tax treatment dictates the vocabulary.
+        </div>
       </div>
     </div>
   </section>
@@ -802,35 +1113,45 @@
   <section>
     <p class="section-label">What Ratification Requires</p>
 
+    <div class="highlight-box">
+      <strong>Most blockers have a legally determined answer.</strong> Reviewing the six blocking items and four cross-document conflicts above: five of the six blockers resolve through drafting fixes or legally required positions — the statute, the tax code, or the entity's own formation documents determine the correct answer. The cross-document conflicts resolve the same way. This reduces the genuine decision set to a single item plus counsel review.
+    </div>
+
     <div class="decisions-box">
-      <div class="db-heading">Decisions for the board</div>
+      <div class="db-heading">The minimal decision set</div>
 
       <div class="decisions-block">
-        <div class="db-sub">Structural decisions (must be made before Schedule A can be completed)</div>
+        <div class="db-sub">The one genuine decision</div>
         <ul class="decisions-list">
-          <li>Placement of the Community Participant class: patron sub-type, investor member, or non-member participant under a separate access agreement</li>
-          <li>Liquidation residual: follow capital accounts throughout, or redirect residual to a public benefit assignment</li>
-          <li>Single withdrawal rule: what amount is paid on exit, and on what timeline — Bylaws to control, agreement to cross-reference</li>
-          <li>Redemption window: one number, stated in the Bylaws (current proposal: three years as outer limit)</li>
+          <li class="is-decision">Annual dues amount — the one Schedule A value that requires an organizer decision. Everything else in Schedule A is determined (share price = $100, effective date = date of ratification, initial board = the eight Articles organizers, Secretary = administrative).</li>
         </ul>
       </div>
 
       <div class="decisions-block">
-        <div class="db-sub">Schedule A values (blocking; Bylaws cannot be ratified without them)</div>
+        <div class="db-sub">Items determined by law or existing structure (no decision required)</div>
         <ul class="decisions-list">
-          <li>Share price (currently a placeholder; Membership Agreement hard-codes $100)</li>
-          <li>Annual dues amount and class structure</li>
-          <li>Bylaws effective date</li>
-          <li>Initial board composition and names</li>
-          <li>Secretary's signature</li>
+          <li class="is-determined">Allocation method (BL-01): required by ULCAA and IRC § 704(b) — v.2 already correct</li>
+          <li class="is-determined">Quorum fix (BL-03): one sentence added to § 2.7.1 per ULCAA § 7-58-202</li>
+          <li class="is-determined">Schedule A share price: $100 par (already in MA; confirm in Bylaws)</li>
+          <li class="is-determined">Schedule A effective date: date of ratification — standard formulation</li>
+          <li class="is-determined">Schedule A initial board: the eight organizers named in the Articles of Organization</li>
+          <li class="is-determined">Compensation treatment (BL-05): IRC § 707(c) — contradictory paragraph to be struck</li>
+          <li class="is-determined">Liquidation residual (BL-A03): redirect to public benefit organization — tax-clean and mission-consistent</li>
+          <li class="is-determined">Community Participant class (BL-A04): non-member access program under Community Supporter Agreement — document already exists</li>
+          <li class="is-determined">IP residuals (MA-01): two standard drafting additions — assignment fallback and venture IP carve-out</li>
+          <li class="is-determined">Withdrawal amount (MA-02): positive capital account balance — Subchapter K dictates this</li>
+          <li class="is-determined">Tax vocabulary (MA-03): four mechanical word substitutions — Subchapter K terms throughout</li>
+          <li class="is-determined">Redemption window conflict: Bylaws control at three years; MA cross-references</li>
+          <li class="is-determined">Withdrawal amount conflict: capital account balance, stated once in Bylaws</li>
+          <li class="is-determined">Tax vocabulary conflict: conform MA to Subchapter K per MA-03/A02</li>
         </ul>
       </div>
 
       <div class="decisions-block">
-        <div class="db-sub">Sequencing</div>
+        <div class="db-sub">Sequencing and counsel review</div>
         <ul class="decisions-list">
-          <li>Blocking items resolve first; cross-document conflicts resolve as pairs</li>
-          <li>All proposed v.2 changes originated in organizer research, not attorney advice; both formation counsel (Jeff Pote, Pote Law Firm) and tax counsel must review before execution — the open tax questions in particular are theirs to settle</li>
+          <li>All proposed v.2 changes originated in organizer research, not attorney advice; formation counsel (Jeff Pote, Pote Law Firm) and tax counsel must review before execution — the open tax questions are theirs to settle</li>
+          <li>Drafting fixes can be incorporated before the counsel review is complete; this shortens the back-and-forth by presenting counsel with a complete rather than partial draft</li>
           <li>Until the ratification vote, the v.2 drafts remain statements of intent and bind no member</li>
         </ul>
       </div>
