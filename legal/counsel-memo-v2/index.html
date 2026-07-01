@@ -210,6 +210,13 @@
       margin-bottom: 2.25rem;
       padding-left: 1.25rem;
       border-left: 2px solid var(--border-dim);
+      scroll-margin-top: 2rem;
+      transition: border-left-color 0.15s;
+    }
+
+    .change-item:target,
+    .change-item.cmt-anchor-highlighted {
+      border-left-color: var(--gold);
     }
 
     .change-item:last-child { margin-bottom: 0; }
@@ -343,6 +350,11 @@
   <div class="status-banner">
     <strong>First Submission to Counsel · July 1, 2026</strong>
     Both Bylaws v.2.1 and Membership Agreement v.2.3 received verbal ratification at the June 2026 board meeting, pending your feedback before execution. This memo covers the full change set the organizers made to the formation documents — indexed with materiality tags so you can triage your response efficiently. A summary of items requiring your direct reply is at the end.
+    <span style="display:block;margin-top:0.6rem;padding-top:0.6rem;border-top:1px solid rgba(196,149,106,0.15);">
+      <strong style="color:var(--gold);font-family:var(--mono);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.10em;">Inline comments</strong> —
+      You can sign in to leave comments on any item in this memo. Select text on a specific item to attach a note, or click the chat icon at the bottom right to open the comments panel.
+      <a href="/intranet/login/?redirect=/legal/counsel-memo-v2/" style="white-space:nowrap;">Sign in →</a>
+    </span>
   </div>
 
   <!-- Memo header -->
@@ -403,12 +415,12 @@
 
   <!-- Part I: Bylaws -->
   <div class="memo-section">
-    <div class="memo-section-head">
+    <div class="memo-section-head" id="part-i">
       <span class="memo-section-num">Part I</span>
       <span class="memo-section-title">Bylaws Revisions</span>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-08">
       <div class="change-ref">BL-08 · Preamble, First WHEREAS · <a href="/legal/bylaws-analysis/changes/#bl-08">see change card</a></div>
       <div class="change-heading">Statutory Citation — Grounding Public Benefit Authority in ULCAA § 7-58-104 <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -418,7 +430,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-01">
       <div class="change-ref">BL-01 · Preamble, Fourth WHEREAS · <a href="/legal/bylaws-analysis/changes/#bl-01">see change card</a></div>
       <div class="change-heading">Document Hierarchy — Mandatory ULCAA Provisions Above Articles <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -427,7 +439,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-a01">
       <div class="change-ref">BL-A01 · § 5.2 (extends BL-01) · <a href="/legal/bylaws-analysis/changes/#bl-a01">see change card</a></div>
       <div class="change-heading">Patronage Allocation Fallback — "Shall" Not "May" <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
@@ -436,7 +448,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-02">
       <div class="change-ref">BL-02 · § 1.8.1 · <a href="/legal/bylaws-analysis/changes/#bl-02">see change card</a></div>
       <div class="change-heading">Suspension — Notice and Hearing Before Effect <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -445,7 +457,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-03">
       <div class="change-ref">BL-03 · §§ 1.7.3, 1.8.2 · <a href="/legal/bylaws-analysis/changes/#bl-03">see change card</a></div>
       <div class="change-heading">Equity Redemption Timeline — Five Years to Three Years <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -454,7 +466,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-a02">
       <div class="change-ref">BL-A02 · § 4.8 · <a href="/legal/bylaws-analysis/changes/#bl-a02">see change card</a></div>
       <div class="change-heading">§ 4.8 Compensation — Contradictory Second Paragraph <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -463,7 +475,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-a03">
       <div class="change-ref">BL-A03 · § 2.2 · <a href="/legal/bylaws-analysis/changes/#bl-a03">see change card</a></div>
       <div class="change-heading">Quorum — Electronic Participants Count <span class="badge badge-blocking">Blocking</span></div>
       <div class="change-body">
@@ -472,7 +484,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-a03-liq">
       <div class="change-ref">BL-A03 · Article XIV § 14.3 · <a href="/legal/bylaws-analysis/changes/#bl-a03-liq">see change card</a></div>
       <div class="change-heading">Liquidation Waterfall — Equal Distribution Tier Breaks § 704(b) Chain <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -482,7 +494,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-a04">
       <div class="change-ref">BL-A04 · § 3.16 (Compensation) · <a href="/legal/bylaws-analysis/changes/#bl-a04">see change card</a></div>
       <div class="change-heading">Director Compensation — Guaranteed Payment Carveout <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
@@ -492,7 +504,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-a04-cp">
       <div class="change-ref">BL-A04 · § 1.1(c) (Community Participants) · <a href="/legal/bylaws-analysis/changes/#bl-a04-cp">see change card</a></div>
       <div class="change-heading">Community Participants — ULCAA Recategorization Needed <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -501,7 +513,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-a05">
       <div class="change-ref">BL-A05 · § 5.2 · <a href="/legal/bylaws-analysis/changes/#bl-a05">see change card</a></div>
       <div class="change-heading">Patronage Allocation — Board Cannot Amend Methodology Unilaterally <span class="badge badge-blocking">Blocking</span></div>
       <div class="change-body">
@@ -509,7 +521,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-a05-dr">
       <div class="change-ref">BL-A05 · § 11.5 (Dispute Resolution) · <a href="/legal/bylaws-analysis/changes/#bl-a05-dr">see change card</a></div>
       <div class="change-heading">§ 11.5 — Full Court-Access Waiver vs. Jury Waiver Only <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -518,7 +530,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-a06">
       <div class="change-ref">BL-A06 · § 5.1 · <a href="/legal/bylaws-analysis/changes/#bl-a06">see change card</a></div>
       <div class="change-heading">Qualified Income Offset — IRC § 704(b) Compliance <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
@@ -527,7 +539,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-a06-xii">
       <div class="change-ref">BL-A06 · Article XII · <a href="/legal/bylaws-analysis/changes/#bl-a06-xii">see change card</a></div>
       <div class="change-heading">Article XII Voting Thresholds — Scope Limited to Bylaw Amendments <span class="badge badge-clarifying">Clarifying</span></div>
       <div class="change-body">
@@ -535,7 +547,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-a07">
       <div class="change-ref">BL-A07 · Capital Account Rules · <a href="/legal/bylaws-analysis/changes/#bl-a07">see change card</a></div>
       <div class="change-heading">Capital Account Mechanics — Affirmed <span class="badge badge-resolved">Resolved</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
@@ -543,7 +555,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-05">
       <div class="change-ref">BL-05 · § 12 · <a href="/legal/bylaws-analysis/changes/#bl-05">see change card</a></div>
       <div class="change-heading">Confidentiality — Scope Narrowed to Genuinely Non-Public Information <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -551,7 +563,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="bl-07">
       <div class="change-ref">BL-07 · Schedule A · <a href="/legal/bylaws-analysis/changes/#bl-07">see change card</a></div>
       <div class="change-heading">Schedule A — Must Be Completed Before Execution <span class="badge badge-blocking">Blocking</span></div>
       <div class="change-body">
@@ -563,12 +575,12 @@
 
   <!-- Part II: Membership Agreement -->
   <div class="memo-section">
-    <div class="memo-section-head">
+    <div class="memo-section-head" id="part-ii">
       <span class="memo-section-num">Part II</span>
       <span class="memo-section-title">Membership Agreement Revisions</span>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="ma-01">
       <div class="change-ref">MA-01 · § 3.4 · <a href="/legal/membership-agreement-modifications/changes/#ma-01">see change card</a></div>
       <div class="change-heading">IP Assignment — Cooperative-Commissioned Work Defined <span class="badge badge-resolved">Resolved</span></div>
       <div class="change-body">
@@ -576,7 +588,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="ma-a01">
       <div class="change-ref">MA-A01 · § 1.4 and Bylaws Schedule A · <a href="/legal/membership-agreement-modifications/changes/#ma-a01">see change card</a></div>
       <div class="change-heading">Schedule A — Single Source of Truth Required <span class="badge badge-blocking">Blocking</span></div>
       <div class="change-body">
@@ -585,7 +597,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="ma-a02">
       <div class="change-ref">MA-A02 · §§ 2.3, 2.4, 3.3 · <a href="/legal/membership-agreement-modifications/changes/#ma-a02">see change card</a></div>
       <div class="change-heading">Subchapter T Vocabulary in a Subchapter K Entity <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
@@ -595,7 +607,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="ma-02">
       <div class="change-ref">MA-02, MA-A03 · §§ 5.4–5.6 · <a href="/legal/membership-agreement-modifications/changes/#ma-02">see change card</a></div>
       <div class="change-heading">Voluntary Withdrawal and Withdrawal Amount — Three-Way Conflict <span class="badge badge-blocking">Blocking</span></div>
       <div class="change-body">
@@ -606,7 +618,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="ma-03">
       <div class="change-ref">MA-03 · §§ 2.3–2.4 · <a href="/legal/membership-agreement-modifications/changes/#ma-03">see change card</a></div>
       <div class="change-heading">Patronage Plan — 90-Day Adoption Deadline <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
@@ -615,7 +627,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="ma-04">
       <div class="change-ref">MA-04 · Preamble · <a href="/legal/membership-agreement-modifications/changes/#ma-04">see change card</a></div>
       <div class="change-heading">Recital — Cooperative Purpose, Not Facilities Description <span class="badge badge-clarifying">Clarifying</span></div>
       <div class="change-body">
@@ -624,7 +636,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="ma-05">
       <div class="change-ref">MA-05 · § 5.1(d)(e) · <a href="/legal/membership-agreement-modifications/changes/#ma-05">see change card</a></div>
       <div class="change-heading">Termination Grounds — Articulable Facts and Cure Period <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -632,7 +644,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="ma-06">
       <div class="change-ref">MA-06 · §§ 1–1.1, 1.5 · <a href="/legal/membership-agreement-modifications/changes/#ma-06">see change card</a></div>
       <div class="change-heading">Class Scope — Agreement Scoped to Cooperative Member Patron Membership <span class="badge badge-clarifying">Clarifying</span></div>
       <div class="change-body">
@@ -640,7 +652,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="ma-07">
       <div class="change-ref">MA-07 · § 9.4 · <a href="/legal/membership-agreement-modifications/changes/#ma-07">see change card</a></div>
       <div class="change-heading">Status of Parties — Positive Owner-Member Characterization <span class="badge badge-clarifying">Clarifying</span></div>
       <div class="change-body">
@@ -648,7 +660,7 @@
       </div>
     </div>
 
-    <div class="change-item">
+    <div class="change-item" id="ma-a04">
       <div class="change-ref">MA-A04 · §§ 3.4.1–3.4.4 · <a href="/legal/membership-agreement-modifications/changes/#ma-a04">see change card</a></div>
       <div class="change-heading">IP Section — Two Residuals After v.2 Improvements <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -661,7 +673,7 @@
   </div>
 
   <!-- Summary -->
-  <div class="summary-section">
+  <div class="summary-section" id="summary">
     <h3>Summary — Items Requiring Direct Response</h3>
 
     <div class="summary-group">
