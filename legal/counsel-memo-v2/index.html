@@ -37,6 +37,7 @@
       --moss:       #6a8a5e;
       --rust:       #9a5a5a;
       --sky:        #5a7a9a;
+      --plum:       #9a7aba;
     }
 
     [data-theme="light"] {
@@ -53,6 +54,7 @@
       --moss:       #4a6a3a;
       --rust:       #8a3a3a;
       --sky:        #3a5a7a;
+      --plum:       #6a4a8a;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -110,6 +112,7 @@
     .badge-advisable { background: rgba(196,149,106,0.12); color: var(--gold); border: 1px solid rgba(196,149,106,0.25); }
     .badge-clarifying{ background: rgba(90,122,154,0.12);  color: var(--sky);  border: 1px solid rgba(90,122,154,0.25); }
     .badge-resolved  { background: rgba(106,138,94,0.12);  color: var(--moss); border: 1px solid rgba(106,138,94,0.25); }
+    .badge-tax       { background: rgba(122,90,154,0.12);  color: #9a7aba;     border: 1px solid rgba(122,90,154,0.25); }
 
     /* ── MEMO HEADER ── */
     .memo-header {
@@ -294,6 +297,7 @@
     .summary-group-label.blocking  { color: var(--rust); }
     .summary-group-label.advisable { color: var(--gold); }
     .summary-group-label.gap       { color: var(--sky); }
+    .summary-group-label.tax       { color: var(--plum); }
 
     .summary-list {
       list-style: none;
@@ -381,6 +385,12 @@
       only your confirmation.
     </p>
     <p>
+      Several items involve partnership tax analysis under Subchapter K and the Treasury Regulations — territory
+      that falls outside co-op formation counsel and will require a separate tax counsel engagement. Those items
+      are marked <span class="badge badge-tax">Tax Counsel</span> and are grouped separately in the summary.
+      We flag them here so you have the full picture; we are not asking you to opine on the tax questions.
+    </p>
+    <p>
       The v.2 documents are published as annotated drafts at
       <a href="/legal/bylaws-v2/">techne.institute/legal/bylaws-v2/</a> and
       <a href="/legal/membership-agreement-v2/">techne.institute/legal/membership-agreement-v2/</a>,
@@ -419,10 +429,10 @@
 
     <div class="change-item">
       <div class="change-ref">BL-A01 · § 5.2 (extends BL-01) · <a href="/legal/bylaws-analysis/changes/#bl-a01">see change card</a></div>
-      <div class="change-heading">Patronage Allocation Fallback — "Shall" Not "May" <span class="badge badge-blocking">Blocking</span></div>
+      <div class="change-heading">Patronage Allocation Fallback — "Shall" Not "May" <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
         <p>IRC § 704(b) requires deterministic allocation methods. The equal-allocation fallback (used before the Patronage Plan is adopted) uses "may" rather than "shall," failing the substantial economic effect safe harbor. A permissive fallback cannot satisfy § 704(b)'s determinism requirement.</p>
-        <div class="open-q"><span class="open-q-label">Action required</span>Confirm that the fallback allocation language uses "shall" and that this conforms with § 704(b) before execution.</div>
+        <div class="open-q"><span class="open-q-label">Tax counsel — separate engagement</span>Confirm that the revised fallback allocation language uses "shall" and that this satisfies § 704(b)'s substantial economic effect safe harbor. This determination requires partnership tax counsel; we are flagging the issue here for your awareness.</div>
       </div>
     </div>
 
@@ -474,11 +484,11 @@
 
     <div class="change-item">
       <div class="change-ref">BL-A04 · § 3.16 (Compensation) · <a href="/legal/bylaws-analysis/changes/#bl-a04">see change card</a></div>
-      <div class="change-heading">Director Compensation — Guaranteed Payment Carveout <span class="badge badge-blocking">Blocking</span></div>
+      <div class="change-heading">Director Compensation — Guaranteed Payment Carveout <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
         <p>The v.1 compensation prohibition inadvertently barred IRC § 707(c) guaranteed payments — the standard mechanism for compensating member-directors in a Subchapter K entity. Without this carveout, the Cooperative has no clear path to compensate working organizers for their labor through the cooperative structure.</p>
         <p>We have added an express carveout consistent with §§ 707(a) and 707(c) of the Internal Revenue Code.</p>
-        <div class="open-q"><span class="open-q-label">Open question for Jeff</span>Does the v.2 carveout achieve the intended effect?</div>
+        <div class="open-q"><span class="open-q-label">Tax counsel — separate engagement</span>Whether the v.2 carveout correctly achieves the §§ 707(a)/(c) guaranteed payment treatment is a partnership tax question. We flag it here for completeness; your review of the bylaws language as drafted (does it create the carveout cleanly?) is the co-op counsel question.</div>
       </div>
     </div>
 
@@ -510,10 +520,10 @@
 
     <div class="change-item">
       <div class="change-ref">BL-A06 · § 5.1 · <a href="/legal/bylaws-analysis/changes/#bl-a06">see change card</a></div>
-      <div class="change-heading">Qualified Income Offset — IRC § 704(b) Compliance <span class="badge badge-blocking">Blocking</span></div>
+      <div class="change-heading">Qualified Income Offset — IRC § 704(b) Compliance <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
         <p>Treasury Regulation § 1.704-1(b)(2)(ii)(d) requires a qualified income offset (QIO) provision for capital accounts to have substantial economic effect. Without the QIO, the IRS may reallocate items of income and loss inconsistently with the Cooperative's patronage accounting structure. We have added the QIO provision and a corresponding member acknowledgment of capital account maintenance standards.</p>
-        <div class="open-q"><span class="open-q-label">Open question for Jeff</span>Is the v.2 QIO approach technically sound?</div>
+        <div class="open-q"><span class="open-q-label">Tax counsel — separate engagement</span>Whether the v.2 QIO provision satisfies Treas. Reg. § 1.704-1(b)(2)(ii)(d) is a partnership tax question. We flag it here for your awareness; we are not asking you to opine on the tax analysis.</div>
       </div>
     </div>
 
@@ -527,9 +537,9 @@
 
     <div class="change-item">
       <div class="change-ref">BL-A07 · Capital Account Rules · <a href="/legal/bylaws-analysis/changes/#bl-a07">see change card</a></div>
-      <div class="change-heading">Capital Account Mechanics — Affirmed <span class="badge badge-resolved">Resolved</span></div>
+      <div class="change-heading">Capital Account Mechanics — Affirmed <span class="badge badge-resolved">Resolved</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
-        <p>The addendum research reviewed and affirmed the following provisions as sound: capital account rules, qualified income offset, deficit restoration waiver, guaranteed payment structure, and partnership tax-consent provisions. No substantive revision required. Incorporated in v.2. Your confirmation that our reading is correct is all that is needed here.</p>
+        <p>The addendum research reviewed and affirmed the following provisions as sound: capital account rules, qualified income offset, deficit restoration waiver, guaranteed payment structure, and partnership tax-consent provisions. No substantive revision required. Incorporated in v.2. Confirmation that our reading is correct will come from tax counsel, not co-op formation counsel — flagged here for completeness only.</p>
       </div>
     </div>
 
@@ -577,11 +587,11 @@
 
     <div class="change-item">
       <div class="change-ref">MA-A02 · §§ 2.3, 2.4, 3.3 · <a href="/legal/membership-agreement-modifications/changes/#ma-a02">see change card</a></div>
-      <div class="change-heading">Subchapter T Vocabulary in a Subchapter K Entity <span class="badge badge-blocking">Blocking</span></div>
+      <div class="change-heading">Subchapter T Vocabulary in a Subchapter K Entity <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
         <p>The Agreement uses Subchapter T vocabulary throughout: "net margins," "patronage dividends," "written notices of allocation," "in year received." The Cooperative is taxed as a partnership under Subchapter K. Under Subchapter K, members include their distributive share in taxable income for the year the Cooperative's taxable year ends — not the year they receive a distribution. The vocabulary mismatch will mislead members about when their tax obligation arises.</p>
         <p>Recommended conformance: "net margins" → "net income"; "patronage dividends" → "distributive share"; "written notices of allocation" → "Schedule K-1"; "in year received" → "in the taxable year of the Cooperative in which allocated, as reported on Schedule K-1." The state-law proportional distribution hook (C.R.S. § 7-58-1004) may remain as a cooperative-purpose provision governing the calculation basis.</p>
-        <div class="open-q"><span class="open-q-label">Open question for Jeff</span>Is this vocabulary conformance sufficient, or are there additional Subchapter K alignment issues we should address?</div>
+        <div class="open-q"><span class="open-q-label">Tax counsel — separate engagement</span>Whether this vocabulary conformance is sufficient to avoid Subchapter T/K confusion in a member's hands is a partnership tax question. We flag it here for awareness and ask that you implement the vocabulary changes in the Agreement language; confirmation of adequacy will come from tax counsel.</div>
       </div>
     </div>
 
@@ -598,9 +608,9 @@
 
     <div class="change-item">
       <div class="change-ref">MA-03 · §§ 2.3–2.4 · <a href="/legal/membership-agreement-modifications/changes/#ma-03">see change card</a></div>
-      <div class="change-heading">Patronage Plan — 90-Day Adoption Deadline <span class="badge badge-blocking">Blocking</span></div>
+      <div class="change-heading">Patronage Plan — 90-Day Adoption Deadline <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
-        <p>The Board's unconstrained discretion to set and change the profit-share formula undermines IRC § 704(b)'s substantial economic effect safe harbor. We have added § 2.4 requiring the Board to adopt a written Patronage Plan within 90 days of admitting the first patron member. The plan must specify: patronage calculation method, allocation basis, distribution form and timing, Schedule K-1 procedures, and capital account maintenance procedures.</p>
+        <p>The Board's unconstrained discretion to set and change the profit-share formula undermines IRC § 704(b)'s substantial economic effect safe harbor. We have added § 2.4 requiring the Board to adopt a written Patronage Plan within 90 days of admitting the first patron member. The plan must specify: patronage calculation method, allocation basis, distribution form and timing, Schedule K-1 procedures, and capital account maintenance procedures. The 90-day deadline and plan requirements are your co-op counsel question; whether the plan's required contents satisfy § 704(b) will be a question for tax counsel at the time of adoption.</p>
         <p><strong>Status as of July 1, 2026:</strong> The Patronage Plan has not been discussed or adopted. The 90-day clock starts at first Membership Agreement execution. This is time-sensitive once signing begins.</p>
       </div>
     </div>
@@ -652,41 +662,49 @@
 
   <!-- Summary -->
   <div class="summary-section">
-    <h3>Summary — Items Requiring Your Direct Response</h3>
+    <h3>Summary — Items Requiring Direct Response</h3>
 
     <div class="summary-group">
-      <div class="summary-group-label blocking">Blocking — Resolve Before Execution</div>
+      <div class="summary-group-label blocking">For Jeff — Blocking Before Execution</div>
       <ul class="summary-list">
-        <li>BL-A01: Confirm "shall" not "may" for fallback allocation rule (§ 704(b) determinism)</li>
-        <li>BL-A03: Confirm quorum fix approach — genuine conflict or interpretable in v.1?</li>
-        <li>BL-A04: Confirm § 707(c) guaranteed payment carveout achieves intended effect</li>
-        <li>BL-A06/QIO: Confirm QIO provision is technically sound under Treas. Reg. § 1.704-1(b)(2)(ii)(d)</li>
+        <li>BL-A03/Quorum: Confirm quorum fix approach — genuine conflict or interpretable in v.1?</li>
         <li>BL-07/Schedule A: Provide effective date; then Secretary can sign</li>
         <li>MA-A01: Confirm Schedule A single-source approach — reference rather than hard-code share price in MA</li>
-        <li>MA-A02: Confirm Subchapter K vocabulary conformance is sufficient</li>
         <li>MA-02/MA-A03: Confirm capital-account balance is the correct withdrawal amount; confirm which document controls timing</li>
       </ul>
     </div>
 
     <div class="summary-group">
-      <div class="summary-group-label advisable">Advisable — Address Before Launch</div>
+      <div class="summary-group-label advisable">For Jeff — Advisable Before Launch</div>
       <ul class="summary-list">
         <li>BL-08: Does the Articles' PBCA citation create any substantive PBCA reporting obligations?</li>
         <li>BL-A02/§ 4.8: Provide unified compensation language — one paragraph, not two conflicting ones</li>
-        <li>BL-A03/Liquidation: Article XIV equal-distribution tier — eliminate, or recharacterize as public benefit?</li>
+        <li>BL-A03/Liquidation: Article XIV equal-distribution tier — eliminate, or recharacterize as public benefit under C.R.S. § 7-58-104?</li>
         <li>BL-A04/Community Participants: Correct ULCAA classification for Class Three?</li>
         <li>BL-A05/§ 11.5: Is the full court-access waiver enforceable, or should it be jury-only?</li>
+        <li>MA-04: Does the revised recital adequately ground the Agreement in the entity's actual legal character?</li>
         <li>MA-A04: Confirm two IP residuals (assignment mechanism; venture IP exclusion)</li>
       </ul>
     </div>
 
     <div class="summary-group">
-      <div class="summary-group-label gap">Structural Gaps — New Documents Needed</div>
+      <div class="summary-group-label gap">For Jeff — New Documents Needed</div>
       <ul class="summary-list">
-        <li>Investor Agreement (Class Four) — terms TBD; preferred share model requested from Jeff</li>
+        <li>Investor Agreement (Class Four) — preferred share model TBD; your guidance on structure requested</li>
         <li>Hub Membership Agreement (Classes Two and Three) — not yet drafted</li>
-        <li>Patronage Plan — not yet adopted; 90-day clock starts at first MA execution</li>
-        <li>Tax Distribution Policy — board resolution required before MA § 3.3 is operative</li>
+        <li>Patronage Plan — 90-day contractual deadline after first MA execution; your review of plan requirements</li>
+      </ul>
+    </div>
+
+    <div class="summary-group">
+      <div class="summary-group-label tax">For Tax Counsel — Separate Engagement</div>
+      <ul class="summary-list">
+        <li>BL-A01: Does the revised fallback allocation language satisfy IRC § 704(b)'s substantial economic effect safe harbor?</li>
+        <li>BL-A04/§ 707(c): Does the guaranteed payment carveout correctly achieve §§ 707(a)/(c) treatment?</li>
+        <li>BL-A06/QIO: Is the qualified income offset provision sound under Treas. Reg. § 1.704-1(b)(2)(ii)(d)?</li>
+        <li>BL-A07: Confirm capital account rules, deficit restoration waiver, and partnership tax-consent provisions as incorporated in v.2</li>
+        <li>MA-A02: Is the Subchapter K vocabulary conformance sufficient, and are there additional Subchapter K alignment issues?</li>
+        <li>MA-03/Patronage Plan: Does the required plan content satisfy § 704(b) at the time of adoption? (Tax distribution policy — board resolution required before MA § 3.3 is operative)</li>
       </ul>
     </div>
   </div>
