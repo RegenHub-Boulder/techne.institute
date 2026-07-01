@@ -857,11 +857,17 @@
 
   /* ── Click anchors to open panel ── */
   function wireAnchors() {
-    // Any element with an id in the legal body can receive comments on click+option/alt
-    // Simpler: clicking on section headings opens the compose panel focused on that section
-    var headings = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], .sec-head[id], [id^="art-"], [id^="sec-"], [id^="sub-"]');
-    headings.forEach(function (el) {
-      el.style.cursor = 'pointer';
+    // Headings, standard section prefixes, and .change-item elements with IDs
+    var anchored = document.querySelectorAll(
+      'h1[id], h2[id], h3[id], h4[id], ' +
+      '.sec-head[id], ' +
+      '[id^="art-"], [id^="sec-"], [id^="sub-"], ' +
+      '.change-item[id]'
+    );
+    anchored.forEach(function (el) {
+      // Only apply click-to-comment cursor for authenticated users
+      // (applied after session resolves — set via data attribute now, style in CSS)
+      el.dataset.cmtAnchor = el.id;
       el.addEventListener('click', function (e) {
         // Only if no text is selected
         var sel = window.getSelection();
@@ -871,6 +877,13 @@
         setComposeAnchor(el.id, el.textContent.trim().slice(0, 60), null);
         _textarea.focus();
       });
+    });
+  }
+
+  function markAnchorsAuthenticated() {
+    // Once session is resolved, add pointer cursor to all wired anchors
+    document.querySelectorAll('[data-cmt-anchor]').forEach(function (el) {
+      el.style.cursor = 'pointer';
     });
   }
 
@@ -909,6 +922,7 @@
         document.getElementById('cmt-textarea').style.display = '';
         document.getElementById('cmt-submit').style.display = '';
         document.getElementById('cmt-not-auth').style.display = 'none';
+        markAnchorsAuthenticated();
       }
 
       reload().then(wireAnchors);
