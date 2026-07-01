@@ -325,6 +325,86 @@
       border-radius: 2px;
     }
 
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border-dim);
+      padding: 0.65rem 0;
+      margin: 0 -2rem 2rem;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-bar-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      margin-right: 0.3rem;
+      flex-shrink: 0;
+    }
+
+    .filter-sep {
+      flex: 1;
+    }
+
+    .mat-btn {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      padding: 0.2em 0.7em;
+      border-radius: 3px;
+      border: 1px solid var(--border-dim);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.12s;
+      white-space: nowrap;
+    }
+    .mat-btn:hover { border-color: var(--border); color: var(--text-warm); }
+
+    .mat-btn.active[data-filter="all"]        { background: rgba(200,188,168,0.10); border-color: rgba(200,188,168,0.3); color: var(--text-warm); }
+    .mat-btn.active[data-filter="blocking"]   { background: rgba(154,90,90,0.15);   border-color: rgba(154,90,90,0.4);   color: var(--rust); }
+    .mat-btn.active[data-filter="advisable"]  { background: rgba(196,149,106,0.12); border-color: rgba(196,149,106,0.35); color: var(--gold); }
+    .mat-btn.active[data-filter="clarifying"] { background: rgba(90,122,154,0.12);  border-color: rgba(90,122,154,0.35); color: var(--sky); }
+    .mat-btn.active[data-filter="resolved"]   { background: rgba(106,138,94,0.12);  border-color: rgba(106,138,94,0.35); color: var(--moss); }
+    .mat-btn.active[data-filter="tax"]        { background: rgba(122,90,154,0.12);  border-color: rgba(122,90,154,0.35); color: var(--plum); }
+    .mat-btn.active[data-filter="sort"]       { background: rgba(200,188,168,0.10); border-color: rgba(200,188,168,0.3); color: var(--text-warm); }
+
+    .filter-count {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      color: var(--text-dim);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Sorted view section label */
+    .sort-group-label {
+      font-family: var(--mono);
+      font-size: 0.60rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 0.4rem 0 0.5rem;
+      border-bottom: 1px solid var(--border-dim);
+      margin-bottom: 1.5rem;
+      margin-top: 2rem;
+    }
+    .sort-group-label:first-child { margin-top: 0; }
+    .sort-group-label.blocking  { color: var(--rust); }
+    .sort-group-label.advisable { color: var(--gold); }
+    .sort-group-label.clarifying{ color: var(--sky); }
+    .sort-group-label.resolved  { color: var(--moss); }
+
     /* ── FOOTER ── */
     .page-footer {
       margin-top: 5rem;
@@ -413,6 +493,23 @@
     </p>
   </div>
 
+  <!-- Filter / sort bar -->
+  <div class="filter-bar" id="filter-bar">
+    <span class="filter-bar-label">Filter</span>
+    <button class="mat-btn active" data-filter="all">All</button>
+    <button class="mat-btn" data-filter="blocking">Blocking</button>
+    <button class="mat-btn" data-filter="advisable">Advisable</button>
+    <button class="mat-btn" data-filter="clarifying">Clarifying</button>
+    <button class="mat-btn" data-filter="resolved">Resolved</button>
+    <button class="mat-btn" data-filter="tax">Tax Counsel</button>
+    <span class="filter-sep"></span>
+    <span class="filter-count" id="filter-count"></span>
+    <button class="mat-btn" data-filter="sort" id="sort-btn">Sort by priority</button>
+  </div>
+
+  <!-- Sorted view (populated by JS when sort is active) -->
+  <div id="sorted-view" style="display:none"></div>
+
   <!-- Part I: Bylaws -->
   <div class="memo-section">
     <div class="memo-section-head" id="part-i">
@@ -420,7 +517,7 @@
       <span class="memo-section-title">Bylaws Revisions</span>
     </div>
 
-    <div class="change-item" id="bl-08">
+    <div class="change-item" id="bl-08" data-materiality="advisable">
       <div class="change-ref">BL-08 · Preamble, First WHEREAS · <a href="/legal/bylaws-analysis/changes/#bl-08">see change card</a></div>
       <div class="change-heading">Statutory Citation — Grounding Public Benefit Authority in ULCAA § 7-58-104 <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -430,7 +527,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-01">
+    <div class="change-item" id="bl-01" data-materiality="advisable">
       <div class="change-ref">BL-01 · Preamble, Fourth WHEREAS · <a href="/legal/bylaws-analysis/changes/#bl-01">see change card</a></div>
       <div class="change-heading">Document Hierarchy — Mandatory ULCAA Provisions Above Articles <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -439,7 +536,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-a01">
+    <div class="change-item" id="bl-a01" data-materiality="blocking tax">
       <div class="change-ref">BL-A01 · § 5.2 (extends BL-01) · <a href="/legal/bylaws-analysis/changes/#bl-a01">see change card</a></div>
       <div class="change-heading">Patronage Allocation Fallback — "Shall" Not "May" <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
@@ -448,7 +545,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-02">
+    <div class="change-item" id="bl-02" data-materiality="advisable">
       <div class="change-ref">BL-02 · § 1.8.1 · <a href="/legal/bylaws-analysis/changes/#bl-02">see change card</a></div>
       <div class="change-heading">Suspension — Notice and Hearing Before Effect <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -457,7 +554,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-03">
+    <div class="change-item" id="bl-03" data-materiality="advisable">
       <div class="change-ref">BL-03 · §§ 1.7.3, 1.8.2 · <a href="/legal/bylaws-analysis/changes/#bl-03">see change card</a></div>
       <div class="change-heading">Equity Redemption Timeline — Five Years to Three Years <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -466,7 +563,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-a02">
+    <div class="change-item" id="bl-a02" data-materiality="advisable">
       <div class="change-ref">BL-A02 · § 4.8 · <a href="/legal/bylaws-analysis/changes/#bl-a02">see change card</a></div>
       <div class="change-heading">§ 4.8 Compensation — Contradictory Second Paragraph <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -475,7 +572,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-a03">
+    <div class="change-item" id="bl-a03" data-materiality="blocking">
       <div class="change-ref">BL-A03 · § 2.2 · <a href="/legal/bylaws-analysis/changes/#bl-a03">see change card</a></div>
       <div class="change-heading">Quorum — Electronic Participants Count <span class="badge badge-blocking">Blocking</span></div>
       <div class="change-body">
@@ -484,7 +581,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-a03-liq">
+    <div class="change-item" id="bl-a03-liq" data-materiality="advisable">
       <div class="change-ref">BL-A03 · Article XIV § 14.3 · <a href="/legal/bylaws-analysis/changes/#bl-a03-liq">see change card</a></div>
       <div class="change-heading">Liquidation Waterfall — Equal Distribution Tier Breaks § 704(b) Chain <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -494,7 +591,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-a04">
+    <div class="change-item" id="bl-a04" data-materiality="blocking tax">
       <div class="change-ref">BL-A04 · § 3.16 (Compensation) · <a href="/legal/bylaws-analysis/changes/#bl-a04">see change card</a></div>
       <div class="change-heading">Director Compensation — Guaranteed Payment Carveout <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
@@ -504,7 +601,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-a04-cp">
+    <div class="change-item" id="bl-a04-cp" data-materiality="advisable">
       <div class="change-ref">BL-A04 · § 1.1(c) (Community Participants) · <a href="/legal/bylaws-analysis/changes/#bl-a04-cp">see change card</a></div>
       <div class="change-heading">Community Participants — ULCAA Recategorization Needed <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -513,7 +610,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-a05">
+    <div class="change-item" id="bl-a05" data-materiality="blocking">
       <div class="change-ref">BL-A05 · § 5.2 · <a href="/legal/bylaws-analysis/changes/#bl-a05">see change card</a></div>
       <div class="change-heading">Patronage Allocation — Board Cannot Amend Methodology Unilaterally <span class="badge badge-blocking">Blocking</span></div>
       <div class="change-body">
@@ -521,7 +618,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-a05-dr">
+    <div class="change-item" id="bl-a05-dr" data-materiality="advisable">
       <div class="change-ref">BL-A05 · § 11.5 (Dispute Resolution) · <a href="/legal/bylaws-analysis/changes/#bl-a05-dr">see change card</a></div>
       <div class="change-heading">§ 11.5 — Full Court-Access Waiver vs. Jury Waiver Only <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -530,7 +627,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-a06">
+    <div class="change-item" id="bl-a06" data-materiality="blocking tax">
       <div class="change-ref">BL-A06 · § 5.1 · <a href="/legal/bylaws-analysis/changes/#bl-a06">see change card</a></div>
       <div class="change-heading">Qualified Income Offset — IRC § 704(b) Compliance <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
@@ -539,7 +636,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-a06-xii">
+    <div class="change-item" id="bl-a06-xii" data-materiality="clarifying">
       <div class="change-ref">BL-A06 · Article XII · <a href="/legal/bylaws-analysis/changes/#bl-a06-xii">see change card</a></div>
       <div class="change-heading">Article XII Voting Thresholds — Scope Limited to Bylaw Amendments <span class="badge badge-clarifying">Clarifying</span></div>
       <div class="change-body">
@@ -547,7 +644,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-a07">
+    <div class="change-item" id="bl-a07" data-materiality="resolved tax">
       <div class="change-ref">BL-A07 · Capital Account Rules · <a href="/legal/bylaws-analysis/changes/#bl-a07">see change card</a></div>
       <div class="change-heading">Capital Account Mechanics — Affirmed <span class="badge badge-resolved">Resolved</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
@@ -555,7 +652,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-05">
+    <div class="change-item" id="bl-05" data-materiality="advisable">
       <div class="change-ref">BL-05 · § 12 · <a href="/legal/bylaws-analysis/changes/#bl-05">see change card</a></div>
       <div class="change-heading">Confidentiality — Scope Narrowed to Genuinely Non-Public Information <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -563,7 +660,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="bl-07">
+    <div class="change-item" id="bl-07" data-materiality="blocking">
       <div class="change-ref">BL-07 · Schedule A · <a href="/legal/bylaws-analysis/changes/#bl-07">see change card</a></div>
       <div class="change-heading">Schedule A — Must Be Completed Before Execution <span class="badge badge-blocking">Blocking</span></div>
       <div class="change-body">
@@ -580,7 +677,7 @@
       <span class="memo-section-title">Membership Agreement Revisions</span>
     </div>
 
-    <div class="change-item" id="ma-01">
+    <div class="change-item" id="ma-01" data-materiality="resolved">
       <div class="change-ref">MA-01 · § 3.4 · <a href="/legal/membership-agreement-modifications/changes/#ma-01">see change card</a></div>
       <div class="change-heading">IP Assignment — Cooperative-Commissioned Work Defined <span class="badge badge-resolved">Resolved</span></div>
       <div class="change-body">
@@ -588,7 +685,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="ma-a01">
+    <div class="change-item" id="ma-a01" data-materiality="blocking">
       <div class="change-ref">MA-A01 · § 1.4 and Bylaws Schedule A · <a href="/legal/membership-agreement-modifications/changes/#ma-a01">see change card</a></div>
       <div class="change-heading">Schedule A — Single Source of Truth Required <span class="badge badge-blocking">Blocking</span></div>
       <div class="change-body">
@@ -597,7 +694,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="ma-a02">
+    <div class="change-item" id="ma-a02" data-materiality="blocking tax">
       <div class="change-ref">MA-A02 · §§ 2.3, 2.4, 3.3 · <a href="/legal/membership-agreement-modifications/changes/#ma-a02">see change card</a></div>
       <div class="change-heading">Subchapter T Vocabulary in a Subchapter K Entity <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
@@ -607,7 +704,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="ma-02">
+    <div class="change-item" id="ma-02" data-materiality="blocking">
       <div class="change-ref">MA-02, MA-A03 · §§ 5.4–5.6 · <a href="/legal/membership-agreement-modifications/changes/#ma-02">see change card</a></div>
       <div class="change-heading">Voluntary Withdrawal and Withdrawal Amount — Three-Way Conflict <span class="badge badge-blocking">Blocking</span></div>
       <div class="change-body">
@@ -618,7 +715,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="ma-03">
+    <div class="change-item" id="ma-03" data-materiality="blocking tax">
       <div class="change-ref">MA-03 · §§ 2.3–2.4 · <a href="/legal/membership-agreement-modifications/changes/#ma-03">see change card</a></div>
       <div class="change-heading">Patronage Plan — 90-Day Adoption Deadline <span class="badge badge-blocking">Blocking</span> <span class="badge badge-tax">Tax Counsel</span></div>
       <div class="change-body">
@@ -627,7 +724,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="ma-04">
+    <div class="change-item" id="ma-04" data-materiality="clarifying">
       <div class="change-ref">MA-04 · Preamble · <a href="/legal/membership-agreement-modifications/changes/#ma-04">see change card</a></div>
       <div class="change-heading">Recital — Cooperative Purpose, Not Facilities Description <span class="badge badge-clarifying">Clarifying</span></div>
       <div class="change-body">
@@ -636,7 +733,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="ma-05">
+    <div class="change-item" id="ma-05" data-materiality="advisable">
       <div class="change-ref">MA-05 · § 5.1(d)(e) · <a href="/legal/membership-agreement-modifications/changes/#ma-05">see change card</a></div>
       <div class="change-heading">Termination Grounds — Articulable Facts and Cure Period <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -644,7 +741,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="ma-06">
+    <div class="change-item" id="ma-06" data-materiality="clarifying">
       <div class="change-ref">MA-06 · §§ 1–1.1, 1.5 · <a href="/legal/membership-agreement-modifications/changes/#ma-06">see change card</a></div>
       <div class="change-heading">Class Scope — Agreement Scoped to Cooperative Member Patron Membership <span class="badge badge-clarifying">Clarifying</span></div>
       <div class="change-body">
@@ -652,7 +749,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="ma-07">
+    <div class="change-item" id="ma-07" data-materiality="clarifying">
       <div class="change-ref">MA-07 · § 9.4 · <a href="/legal/membership-agreement-modifications/changes/#ma-07">see change card</a></div>
       <div class="change-heading">Status of Parties — Positive Owner-Member Characterization <span class="badge badge-clarifying">Clarifying</span></div>
       <div class="change-body">
@@ -660,7 +757,7 @@
       </div>
     </div>
 
-    <div class="change-item" id="ma-a04">
+    <div class="change-item" id="ma-a04" data-materiality="advisable">
       <div class="change-ref">MA-A04 · §§ 3.4.1–3.4.4 · <a href="/legal/membership-agreement-modifications/changes/#ma-a04">see change card</a></div>
       <div class="change-heading">IP Section — Two Residuals After v.2 Improvements <span class="badge badge-advisable">Advisable</span></div>
       <div class="change-body">
@@ -747,5 +844,145 @@
   </div>
 
 </div>
+
+<script>
+(function () {
+  var PRIORITY = { blocking: 0, advisable: 1, clarifying: 2, resolved: 3 };
+  var LABELS   = { blocking: 'Blocking', advisable: 'Advisable', clarifying: 'Clarifying', resolved: 'Resolved' };
+
+  var items     = Array.from(document.querySelectorAll('.change-item[data-materiality]'));
+  var sections  = Array.from(document.querySelectorAll('.memo-section'));
+  var sortedView = document.getElementById('sorted-view');
+  var countEl   = document.getElementById('filter-count');
+
+  // Snapshot original positions before any DOM moves
+  var originals = items.map(function (item) {
+    return { item: item, parent: item.parentNode, next: item.nextSibling };
+  });
+
+  var activeFilters = new Set();
+  var sortActive    = false;
+
+  function tags(item) {
+    return new Set((item.dataset.materiality || '').split(' ').filter(Boolean));
+  }
+
+  function primaryTag(item) {
+    var t = tags(item);
+    var order = ['blocking', 'advisable', 'clarifying', 'resolved'];
+    for (var i = 0; i < order.length; i++) { if (t.has(order[i])) return order[i]; }
+    return 'advisable';
+  }
+
+  function priority(item) {
+    return PRIORITY[primaryTag(item)] !== undefined ? PRIORITY[primaryTag(item)] : 99;
+  }
+
+  function isVisible(item) {
+    if (activeFilters.size === 0) return true;
+    var t = tags(item);
+    return Array.from(activeFilters).some(function (f) { return t.has(f); });
+  }
+
+  function restore() {
+    // Put every item back in its original position
+    originals.forEach(function (o) {
+      if (o.next) {
+        o.parent.insertBefore(o.item, o.next);
+      } else {
+        o.parent.appendChild(o.item);
+      }
+    });
+  }
+
+  function apply() {
+    restore();
+
+    var visible = items.filter(isVisible);
+    var hidden  = items.filter(function (i) { return !isVisible(i); });
+
+    hidden.forEach(function (i) { i.hidden = true; });
+    visible.forEach(function (i) { i.hidden = false; });
+
+    if (sortActive) {
+      // Sort visible items by priority, group them with labels
+      var sorted = visible.slice().sort(function (a, b) { return priority(a) - priority(b); });
+
+      sortedView.innerHTML = '';
+      var currentTag = null;
+      sorted.forEach(function (item) {
+        var pt = primaryTag(item);
+        if (pt !== currentTag) {
+          currentTag = pt;
+          var lbl = document.createElement('div');
+          lbl.className = 'sort-group-label ' + pt;
+          lbl.textContent = LABELS[pt] || pt;
+          sortedView.appendChild(lbl);
+        }
+        sortedView.appendChild(item);
+      });
+
+      sections.forEach(function (s) { s.style.display = 'none'; });
+      sortedView.style.display = '';
+    } else {
+      sortedView.style.display = 'none';
+      // Show/hide sections based on whether they have visible children
+      sections.forEach(function (s) {
+        var hasVisible = s.querySelector('.change-item:not([hidden])');
+        s.style.display = hasVisible ? '' : 'none';
+      });
+    }
+
+    // Update count
+    var total = items.length;
+    countEl.textContent = visible.length < total
+      ? visible.length + ' of ' + total + ' items'
+      : '';
+  }
+
+  // Filter buttons
+  document.querySelectorAll('.mat-btn[data-filter]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var f = btn.dataset.filter;
+
+      if (f === 'sort') {
+        sortActive = !sortActive;
+        btn.classList.toggle('active', sortActive);
+        btn.textContent = sortActive ? 'Document order' : 'Sort by priority';
+        apply();
+        return;
+      }
+
+      if (f === 'all') {
+        activeFilters.clear();
+        document.querySelectorAll('.mat-btn[data-filter]:not([data-filter="sort"])').forEach(function (b) {
+          b.classList.remove('active');
+        });
+        btn.classList.add('active');
+      } else {
+        document.querySelector('.mat-btn[data-filter="all"]').classList.remove('active');
+        if (activeFilters.has(f)) {
+          activeFilters.delete(f);
+          btn.classList.remove('active');
+        } else {
+          activeFilters.add(f);
+          btn.classList.add('active');
+        }
+        if (activeFilters.size === 0) {
+          document.querySelector('.mat-btn[data-filter="all"]').classList.add('active');
+        }
+      }
+      apply();
+    });
+  });
+
+  // Deep-link support: if URL has a hash matching a filter name, activate it
+  var hash = window.location.hash.replace('#filter-', '');
+  if (PRIORITY[hash] !== undefined || hash === 'tax') {
+    var btn = document.querySelector('.mat-btn[data-filter="' + hash + '"]');
+    if (btn) btn.click();
+  }
+})();
+</script>
 </body>
 </html>
