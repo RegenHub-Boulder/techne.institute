@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>June 2026 Financial Statement — RegenHub, LCA</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="/intranet/nav.js"></script>
+<script src="/intranet/comments.js" defer></script>
+<style>
+  :root {
+    --bg:          #0f0f0f;
+    --surface:     #1a1a1a;
+    --surface-2:   #141414;
+    --border:      #2e2e2e;
+    --border-med:  #3a3a3a;
+    --terra:       #c4956a;
+    --terra-text:  #c4956a;
+    --terra-dim:   rgba(196,149,106,0.10);
+    --heading:     #e8e0d8;
+    --text:        #d4d4d4;
+    --muted:       #888;
+    --faint:       #555;
+    --green:       #6ae89a;
+    --green-dim:   rgba(106,232,154,0.08);
+    --amber:       #e8c46a;
+    --amber-dim:   rgba(232,196,106,0.08);
+    --rust:        #e89090;
+    --rust-dim:    rgba(232,144,144,0.08);
+    --sky:         #6ab4e8;
+    --sky-dim:     rgba(106,180,232,0.08);
+  }
+  [data-mode="light"] {
+    --bg:          #faf7f2;
+    --surface:     #f3ede4;
+    --surface-2:   #efe8dc;
+    --border:      #ddd5c8;
+    --border-med:  #ccc4b8;
+    --terra:       #c4956a;
+    --terra-text:  #96704a;
+    --terra-dim:   rgba(196,149,106,0.10);
+    --heading:     #2d2620;
+    --text:        #3d342b;
+    --muted:       #7a6e62;
+    --faint:       #a89888;
+    --green:       #3a8a50;
+    --green-dim:   rgba(58,138,80,0.08);
+    --amber:       #a07820;
+    --amber-dim:   rgba(160,120,32,0.08);
+    --rust:        #b05050;
+    --rust-dim:    rgba(176,80,80,0.08);
+    --sky:         #3a6a9a;
+    --sky-dim:     rgba(58,106,154,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page-shell {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+  }
+
+  /* ── Header ── */
+  .stmt-eyebrow {
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra-text);
+    opacity: 0.8;
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--heading);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .stmt-meta {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+  .stmt-meta span { margin-right: 20px; }
+
+  /* ── Summary strip ── */
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 36px;
+  }
+  @media (max-width: 640px) { .summary-strip { grid-template-columns: 1fr 1fr; } }
+  .sum-cell {
+    background: var(--surface);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .sum-label {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sum-value {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--heading);
+    letter-spacing: -0.02em;
+  }
+  .sum-value.green { color: var(--green); }
+  .sum-value.amber { color: var(--amber); }
+  .sum-value.rust  { color: var(--rust); }
+  .sum-sub {
+    font-size: 9.5px;
+    color: var(--muted);
+  }
+
+  /* ── Section label ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0 16px;
+  }
+  .section-label .lbl {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--terra-text);
+    white-space: nowrap;
+    opacity: 0.85;
+  }
+  .section-label .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .card-head {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .card-title {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .card-badge {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .badge-green { background: var(--green-dim); color: var(--green); }
+  .badge-amber { background: var(--amber-dim); color: var(--amber); }
+  .badge-rust  { background: var(--rust-dim);  color: var(--rust);  }
+  .badge-sky   { background: var(--sky-dim);   color: var(--sky);   }
+  .badge-muted { background: var(--surface-2); color: var(--muted); }
+
+  /* ── Ledger table ── */
+  .ledger {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .ledger th {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--faint);
+    font-weight: 400;
+    padding: 10px 18px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .ledger th.right { text-align: right; }
+  .ledger td {
+    padding: 10px 18px;
+    font-size: 11.5px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .ledger tr:last-child td { border-bottom: none; }
+  .ledger td.right { text-align: right; font-variant-numeric: tabular-nums; }
+  .ledger td.mono  { font-size: 10.5px; color: var(--muted); }
+  .ledger .amount-in  { color: var(--green); }
+  .ledger .amount-out { color: var(--rust); }
+  .ledger .amount-fee { color: var(--faint); font-size: 10.5px; }
+
+  /* ── Totals row ── */
+  .ledger .total-row td {
+    font-weight: 500;
+    color: var(--heading);
+    border-top: 1px solid var(--border-med);
+    border-bottom: none;
+    padding-top: 12px;
+  }
+
+  /* ── Two-column layout ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── Balance tile ── */
+  .balance-tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+  .balance-chain {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chain-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .chain-dot.mainnet  { background: #627eea; }
+  .chain-dot.optimism { background: #ff0420; }
+
+  .balance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  .balance-row:last-child { border-bottom: none; }
+  .balance-token {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .balance-amount {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--heading);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Flag notice ── */
+  .flag-notice {
+    background: var(--rust-dim);
+    border: 1px solid rgba(232,144,144,0.2);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 10.5px;
+    color: var(--rust);
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+  .flag-notice strong { font-weight: 500; }
+
+  /* ── Recon notice ── */
+  .recon-notice {
+    background: var(--amber-dim);
+    border: 1px solid rgba(232,196,106,0.2);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 10.5px;
+    color: var(--amber);
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+
+  /* ── Info notice ── */
+  .info-notice {
+    background: var(--sky-dim);
+    border: 1px solid rgba(106,180,232,0.2);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 10.5px;
+    color: var(--sky);
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+
+  /* ── Footer ── */
+  .stmt-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 9.5px;
+    color: var(--faint);
+  }
+  .stmt-footer a {
+    color: var(--terra-text);
+    text-decoration: none;
+  }
+  .stmt-footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body data-auth-required data-doc-path="/intranet/treasury/statements/2026-06/">
+
+<div class="page-shell">
+
+  <p class="stmt-eyebrow">RegenHub, LCA · Financial Statement</p>
+  <h1>June 2026</h1>
+  <p class="stmt-meta">
+    <span>Period: June 1 – June 30, 2026</span>
+    <span>Prepared: July 10, 2026</span>
+    <span>Status: Draft · Stripe detail and AR pending</span>
+  </p>
+
+  <!-- Summary strip -->
+  <div class="summary-strip">
+    <div class="sum-cell">
+      <span class="sum-label">Stripe Payouts</span>
+      <span class="sum-value green">$625.97</span>
+      <span class="sum-sub">2 transfers to Mercury</span>
+    </div>
+    <div class="sum-cell">
+      <span class="sum-label">Other Inflows</span>
+      <span class="sum-value green">$997.50</span>
+      <span class="sum-sub">Bridge Building split</span>
+    </div>
+    <div class="sum-cell">
+      <span class="sum-label">Operating Expenses</span>
+      <span class="sum-value rust">$212.57</span>
+      <span class="sum-sub">7 transactions</span>
+    </div>
+    <div class="sum-cell">
+      <span class="sum-label">Bank Balance</span>
+      <span class="sum-value">$1,496.16</span>
+      <span class="sum-sub">closing Jun 30</span>
+    </div>
+  </div>
+
+
+  <!-- ── A: Stripe Revenue ── -->
+  <div class="section-label" id="sec-revenue">
+    <span class="lbl">A · Stripe Revenue</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Stripe payouts received · June 2026</span>
+      <span class="card-badge badge-green">2 payouts · $625.97 net</span>
+    </div>
+    <table class="ledger">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th class="right">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Jun 4</td>
+          <td>STRIPE; TRANSFER; REGENHUB LCA</td>
+          <td class="right amount-in">$481.26</td>
+        </tr>
+        <tr>
+          <td>Jun 11</td>
+          <td>STRIPE; TRANSFER; REGENHUB LCA</td>
+          <td class="right amount-in">$144.71</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="2">Total payouts received</td>
+          <td class="right amount-in">$625.97</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="recon-notice">
+    <strong>Stripe API key not configured</strong> — payout totals sourced from Mercury bank feed. Individual charge detail, gross revenue, and per-transaction fees are unavailable until a Stripe restricted key is added to secrets. Add key at console.stripe.com → Developers → API keys.
+  </div>
+
+
+  <!-- ── B: Other Inflows ── -->
+  <div class="section-label" id="sec-other">
+    <span class="lbl">B · Other Inflows</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Non-Stripe deposits · June 2026</span>
+      <span class="card-badge badge-sky">1 deposit · $997.50</span>
+    </div>
+    <table class="ledger">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Counterparty</th>
+          <th>Memo</th>
+          <th class="right">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Jun 2</td>
+          <td>BRIDGE BUILDING</td>
+          <td class="mono">BR*SPLITS · RegenHub, LCA &amp; Todd Y</td>
+          <td class="right amount-in">$997.50</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="3">Total other inflows</td>
+          <td class="right amount-in">$997.50</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="recon-notice">
+    <strong>Bridge Building deposit requires classification:</strong> Mercury categorizes this as "Capital Contribution" but memo indicates a workspace cost-split with Todd Youngblood. Confirm whether this is member revenue, cost reimbursement, or capital — and update Xero accordingly.
+  </div>
+
+
+  <!-- ── C: AR Health ── -->
+  <div class="section-label" id="sec-ar">
+    <span class="lbl">C · Accounts Receivable</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Outstanding invoices · as of July 10, 2026</span>
+      <span class="card-badge badge-amber">Xero auth required</span>
+    </div>
+    <div style="padding: 20px 18px; font-size: 11px; color: var(--muted); line-height: 1.8;">
+      AR data unavailable — Xero OAuth token is not configured.<br>
+      Run <span style="font-family:'IBM Plex Mono',monospace;color:var(--terra-text);">python3 scripts/xero-oauth-setup.py</span> to authorize and store a refresh token.
+    </div>
+  </div>
+  <div class="recon-notice">
+    <strong>Carry-forward from May:</strong> $1,403.65 in outstanding invoices (INV-0214, 0216, 0217, 0218, 0222, 0227) were past due as of June 3. Status unknown until Xero is re-authorized. May also still require reconciliation of Stripe payments to invoices.
+  </div>
+
+
+  <!-- ── D: Bank Account ── -->
+  <div class="section-label" id="sec-bank">
+    <span class="lbl">D · Bank Account · Mercury Checking ••1253</span>
+    <div class="rule"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">Operating account · June 2026 · full transaction history</span>
+      <span class="card-badge badge-green">10 transactions · +$1,410.90 net</span>
+    </div>
+    <table class="ledger">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th class="right">Amount</th>
+          <th class="right">Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="4" style="color:var(--faint);font-size:10px;padding:10px 18px 8px;">Opening balance (Jun 1)</td>
+          <td class="right" style="color:var(--muted);padding:10px 18px 8px;">$85.26</td>
+        </tr>
+        <tr>
+          <td>Jun 2</td>
+          <td>BRIDGE BUILDING · BR*SPLITS</td>
+          <td class="mono">Capital Contribution</td>
+          <td class="right amount-in">+$997.50</td>
+          <td class="right">$1,082.76</td>
+        </tr>
+        <tr>
+          <td>Jun 4</td>
+          <td>STRIPE; TRANSFER</td>
+          <td class="mono">—</td>
+          <td class="right amount-in">+$481.26</td>
+          <td class="right">$1,564.02</td>
+        </tr>
+        <tr>
+          <td>Jun 4</td>
+          <td>GitHub, Inc.</td>
+          <td class="mono">Software &amp; Subscriptions</td>
+          <td class="right amount-out">−$20.77</td>
+          <td class="right">$1,543.25</td>
+        </tr>
+        <tr>
+          <td>Jun 8</td>
+          <td>Amazon Marketplace</td>
+          <td class="mono">Retail</td>
+          <td class="right amount-out">−$75.45</td>
+          <td class="right">$1,467.80</td>
+        </tr>
+        <tr>
+          <td>Jun 9</td>
+          <td>Amazon Marketplace</td>
+          <td class="mono">Retail</td>
+          <td class="right amount-out">−$17.62</td>
+          <td class="right">$1,450.18</td>
+        </tr>
+        <tr>
+          <td>Jun 9</td>
+          <td>Amazon Marketplace</td>
+          <td class="mono">Retail</td>
+          <td class="right amount-out">−$32.75</td>
+          <td class="right">$1,417.43</td>
+        </tr>
+        <tr>
+          <td>Jun 10</td>
+          <td>The Home Depot #1546</td>
+          <td class="mono">Depreciation</td>
+          <td class="right amount-out">−$38.10</td>
+          <td class="right">$1,379.33</td>
+        </tr>
+        <tr>
+          <td>Jun 10</td>
+          <td>Amazon Marketplace</td>
+          <td class="mono">Retail</td>
+          <td class="right amount-out">−$7.15</td>
+          <td class="right">$1,372.18</td>
+        </tr>
+        <tr>
+          <td>Jun 11</td>
+          <td>STRIPE; TRANSFER</td>
+          <td class="mono">—</td>
+          <td class="right amount-in">+$144.71</td>
+          <td class="right">$1,516.89</td>
+        </tr>
+        <tr>
+          <td>Jun 25</td>
+          <td>Amazon Marketplace</td>
+          <td class="mono">Retail</td>
+          <td class="right amount-out">−$20.73</td>
+          <td class="right">$1,496.16</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="3">Closing balance (Jun 30)</td>
+          <td class="right amount-in">+$1,410.90 net</td>
+          <td class="right">$1,496.16</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="recon-notice" style="margin-top:10px;">
+    <strong>Amazon purchases require receipts and purpose classification:</strong> 5 separate Amazon debit card transactions totaling $153.70 lack business purpose documentation. Home Depot ($38.10) is GL-coded "Depreciation" — confirm asset purchase details.
+  </div>
+
+
+  <!-- ── E: Onchain Treasury ── -->
+  <div class="section-label" id="sec-onchain">
+    <span class="lbl">E · Onchain Treasury · SAFE</span>
+    <div class="rule"></div>
+  </div>
+
+  <p style="font-size:10.5px;color:var(--muted);margin-bottom:14px;">
+    SAFE <span style="font-family:'IBM Plex Mono',monospace;color:var(--faint);">0xA594263e0449A28eAEf5BA6420E81cC1996b7782</span> —
+    pre-LCA workspace expense-sharing mechanism. Active on Ethereum Mainnet and Optimism.
+  </p>
+
+  <div class="two-col">
+
+    <div class="balance-tile">
+      <div class="balance-chain">
+        <span class="chain-dot mainnet"></span>
+        Ethereum Mainnet
+      </div>
+      <div class="balance-row">
+        <span class="balance-token">USDC</span>
+        <span class="balance-amount" style="color:var(--muted);">—</span>
+      </div>
+      <div style="padding: 10px 0 0; font-size: 10px; color: var(--faint); line-height: 1.6;">
+        Balance unavailable — public RPC access blocked from agent sandbox.<br>
+        Last known (May close): <strong style="color:var(--muted);">7,497.17 USDC</strong>
+      </div>
+    </div>
+
+    <div class="balance-tile">
+      <div class="balance-chain">
+        <span class="chain-dot optimism"></span>
+        Optimism
+      </div>
+      <div class="balance-row">
+        <span class="balance-token">USDC</span>
+        <span class="balance-amount">3,543.49</span>
+      </div>
+      <div style="padding: 8px 0 0; font-size: 9.5px; color: var(--faint);">
+        As of Jul 10, 2026 · change from May close (+$1,003.35) includes June and July activity
+      </div>
+    </div>
+
+  </div>
+
+  <div class="info-notice" style="margin-top:10px;">
+    <strong>SAFE data gap:</strong> Onchain transaction history for June requires an Etherscan API key or archival RPC access to query historical balances at block height. Current figures reflect live state, not June 30 snapshot. Recommend adding <span style="font-family:'IBM Plex Mono',monospace;">etherscan-api-key</span> to secrets for future statements.
+  </div>
+
+
+  <!-- ── Footer ── -->
+  <div class="stmt-footer">
+    <div>
+      RegenHub, LCA · #20261163853 · Boulder, CO<br>
+      Draft — Stripe charges, AR (Xero), and SAFE June snapshot pending
+    </div>
+    <div style="text-align:right;">
+      <a href="/intranet/treasury/statements/2026-05.html">← May 2026</a> ·
+      <a href="/intranet/treasury/">Treasury</a> ·
+      <a href="/intranet/">Home</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
