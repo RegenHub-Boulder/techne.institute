@@ -1,5 +1,11 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { Layers, Sprout, Server, Cloud, Cpu, Network, Hash, FileText, Users, Wrench, Info } from 'lucide-react';
+import React, { useState, useMemo, useEffect, useContext, createContext } from 'react';
+import { Layers, Sprout, Server, Cloud, Cpu, Network, Hash, FileText, Users, Wrench, Info, SlidersHorizontal, Receipt } from 'lucide-react';
+
+// ============================================================
+// Breakpoint. Below this the three-panel HUD becomes a single
+// pane with bottom navigation; above it the desk layout stands.
+// ============================================================
+const MOBILE_MAX = 899;
 
 // ============================================================
 // Global styles: HUD layout, no page scroll
@@ -11,13 +17,68 @@ const CSS = `
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
   ::-webkit-scrollbar-thumb:hover { background: #444; }
-  input[type=range] { accent-color: #c4956a; cursor: pointer; }
+  input[type=range] { accent-color: #c4956a; cursor: pointer; width: 100%; }
   input[type=range]::-webkit-slider-runnable-track { height: 3px; background: #2a2a2a; border-radius: 2px; }
   input[type=range]::-webkit-slider-thumb { width: 14px; height: 14px; margin-top: -5.5px; border-radius: 50%; background: #c4956a; }
-  input[type=text] { background: rgba(0,0,0,0.25); border: 1px solid #2a2a2a; border-radius: 6px; padding: 8px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #c8c8c8; width: 100%; outline: none; transition: border-color 0.2s; }
-  input[type=text]:focus { border-color: rgba(196,149,106,0.4); }
-  input[type=text]::placeholder { color: #444; }
+  input[type=text], input[type=email] { background: rgba(0,0,0,0.25); border: 1px solid #2a2a2a; border-radius: 6px; padding: 8px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #c8c8c8; width: 100%; outline: none; transition: border-color 0.2s; }
+  input[type=text]:focus, input[type=email]:focus { border-color: rgba(196,149,106,0.4); }
+  input[type=text]::placeholder, input[type=email]::placeholder { color: #7c7c7c; }
+
+  /* Keyboard focus is visible everywhere. The pickers and tabs are
+     real buttons, so this is the only ring they need. */
+  :focus-visible { outline: 2px solid #c4956a; outline-offset: 2px; border-radius: 4px; }
+
+  /* dvh tracks the collapsing browser chrome on mobile; the vh
+     declaration stays as the fallback for older engines. */
+  .hud { height: 100vh; height: 100dvh; }
+
+  /* Screen-reader-only: gives the panes real headings without
+     changing the visual design. */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  @media (max-width: ${MOBILE_MAX}px) {
+    /* 16px prevents iOS Safari from zooming the viewport on focus. */
+    input[type=text], input[type=email] { font-size: 16px; padding: 11px 12px; }
+    /* Larger hit area on the range thumb for touch. */
+    input[type=range] { height: 28px; }
+    input[type=range]::-webkit-slider-thumb { width: 20px; height: 20px; margin-top: -8.5px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
 `;
+
+// ============================================================
+// Viewport observation. Drives the layout switch.
+// ============================================================
+function useIsMobile() {
+  const query = `(max-width: ${MOBILE_MAX}px)`;
+  const [mobile, setMobile] = useState(
+    () => (typeof window !== 'undefined' ? window.matchMedia(query).matches : false)
+  );
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    const onChange = (e) => setMobile(e.matches);
+    mql.addEventListener('change', onChange);
+    setMobile(mql.matches);
+    return () => mql.removeEventListener('change', onChange);
+  }, [query]);
+  return mobile;
+}
+
+// Sub-components read the viewport from here rather than taking
+// a prop through every call site.
+const UI = createContext(false);
+const useMobile = () => useContext(UI);
+
+// Type scale. Desktop sizes are left exactly as designed; on a
+// phone everything is bumped proportionally with an 11px floor,
+// since the desk scale bottoms out at 9.5px.
+const sz = (mobile, n) => (mobile ? Math.max(Math.round(n * 1.15 * 2) / 2, 11) : n);
 
 // ============================================================
 // Design tokens from the co-op.us design system
@@ -33,8 +94,12 @@ const t = {
   terraBorder: 'rgba(196,149,106,0.22)',
   white: '#e8e0d8',
   text: '#c8c8c8',
-  muted: '#888888',
-  faint: '#555555',
+  // muted and faint were #888888 (5.4:1) and #555555 (2.6:1) against
+  // the #0f0f0f ground. faint failed WCAG AA badly and carried real
+  // content — hints, table headers, infra prices. Both lifted so the
+  // three-step hierarchy survives and every step clears 4.5:1.
+  muted: '#9a9a9a',
+  faint: '#7c7c7c',
   green: '#7fb56a',
   amber: '#c4956a',
   red: '#b56a6a',
@@ -171,22 +236,28 @@ const truncateHash = (h) => (h ? `${h.slice(0, 6)}\u2026` : '');
 // ============================================================
 
 function PanelHeader({ children }) {
+  const m = useMobile();
   return (
-    <div style={{ padding: '10px 14px 9px', borderBottom: `1px solid ${t.border}`, fontFamily: t.mono, fontSize: 9.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: t.faint, flexShrink: 0 }}>
+    <div style={{ padding: '10px 14px 9px', borderBottom: `1px solid ${t.border}`, fontFamily: t.mono, fontSize: sz(m, 9.5), letterSpacing: '0.16em', textTransform: 'uppercase', color: t.faint, flexShrink: 0 }}>
       {children}
     </div>
   );
 }
 
 function SectionLabel({ children }) {
+  const m = useMobile();
   return (
-    <div style={{ fontFamily: t.mono, fontSize: 9.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: t.terra, opacity: 0.7, marginBottom: 6, marginTop: 2 }}>
+    <h3 style={{ fontFamily: t.mono, fontSize: sz(m, 9.5), fontWeight: 400, letterSpacing: '0.16em', textTransform: 'uppercase', color: t.terra, opacity: 0.7, marginBottom: 6, marginTop: 2 }}>
       {children}
-    </div>
+    </h3>
   );
 }
 
 function TableHeader({ cols }) {
+  const m = useMobile();
+  // The four-column header has nowhere to go on a phone; the rows
+  // below restate rate and hours inline instead.
+  if (m) return null;
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 56px 52px 80px', gap: 8, padding: '0 12px 4px', marginBottom: 2 }}>
       {cols.map((c, i) => (
@@ -197,62 +268,142 @@ function TableHeader({ cols }) {
 }
 
 function SliderField({ label, value, onChange, min, max, step, display, hint }) {
+  const m = useMobile();
+  const id = `slider-${label.toLowerCase().replace(/[^a-z]/g, '')}`;
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 }}>
-        <span style={{ fontFamily: t.serif, fontSize: 12, fontWeight: 700, color: t.text }}>{label}</span>
-        <span style={{ fontFamily: t.mono, fontSize: 12, color: t.terra }}>{display}</span>
+        <label htmlFor={id} style={{ fontFamily: t.serif, fontSize: sz(m, 12), fontWeight: 700, color: t.text }}>{label}</label>
+        <span style={{ fontFamily: t.mono, fontSize: sz(m, 12), color: t.terra }}>{display}</span>
       </div>
-      <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange(parseFloat(e.target.value))} style={{ width: '100%' }} />
-      <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, marginTop: 3 }}>{hint}</div>
+      <input
+        id={id}
+        type="range"
+        min={min} max={max} step={step} value={value}
+        aria-valuetext={String(display)}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        style={{ width: '100%' }}
+      />
+      <div style={{ fontFamily: t.mono, fontSize: sz(m, 9.5), color: t.faint, marginTop: 3, lineHeight: 1.5 }}>{hint}</div>
     </div>
   );
 }
 
 function StatLine({ label, value }) {
+  const m = useMobile();
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-      <span style={{ fontFamily: t.mono, fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: t.muted }}>{label}</span>
-      <span style={{ fontFamily: t.mono, fontSize: 13, color: t.terra }}>{value}</span>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12 }}>
+      <span style={{ fontFamily: t.mono, fontSize: sz(m, 10), letterSpacing: '0.1em', textTransform: 'uppercase', color: t.muted }}>{label}</span>
+      <span style={{ fontFamily: t.mono, fontSize: sz(m, 13), color: t.terra, whiteSpace: 'nowrap' }}>{value}</span>
     </div>
   );
 }
 
 function StatCard({ label, value }) {
+  const m = useMobile();
   return (
     <div style={{ background: t.surface, border: `1px solid ${t.border}`, borderRadius: 7, padding: '8px 10px' }}>
-      <div style={{ fontFamily: t.mono, fontSize: 9.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: t.faint, marginBottom: 4 }}>{label}</div>
-      <div style={{ fontFamily: t.mono, fontSize: 14, color: t.white }}>{value}</div>
+      <div style={{ fontFamily: t.mono, fontSize: sz(m, 9.5), letterSpacing: '0.1em', textTransform: 'uppercase', color: t.faint, marginBottom: 4 }}>{label}</div>
+      <div style={{ fontFamily: t.mono, fontSize: sz(m, 14), color: t.white }}>{value}</div>
     </div>
   );
 }
 
 function InvoiceLine({ label, value, em }) {
+  const m = useMobile();
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-      <span style={{ fontFamily: t.serif, fontSize: em ? 13 : 11.5, color: em ? t.white : t.text, fontWeight: em ? 700 : 400 }}>{label}</span>
-      <span style={{ fontFamily: t.mono, fontSize: em ? 14 : 12, color: t.terra, fontWeight: em ? 700 : 400 }}>{value}</span>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12 }}>
+      <span style={{ fontFamily: t.serif, fontSize: sz(m, em ? 13 : 11.5), color: em ? t.white : t.text, fontWeight: em ? 700 : 400 }}>{label}</span>
+      <span style={{ fontFamily: t.mono, fontSize: sz(m, em ? 14 : 12), color: t.terra, fontWeight: em ? 700 : 400, whiteSpace: 'nowrap' }}>{value}</span>
     </div>
   );
 }
 
 function PaymentOption({ label, detail, active, onClick }) {
+  const m = useMobile();
   return (
-    <button onClick={onClick} style={{ padding: '10px 12px', textAlign: 'left', cursor: 'pointer', background: active ? t.terraDim : t.surfaceDeep, border: `1px solid ${active ? t.terraBorder : t.border}`, borderRadius: 7, fontFamily: t.serif, color: t.text }}>
-      <div style={{ fontFamily: t.serif, fontSize: 12, fontWeight: 700, color: t.white, marginBottom: 2 }}>{label}</div>
-      <div style={{ fontFamily: t.mono, fontSize: 10, color: t.faint }}>{detail}</div>
+    <button
+      onClick={onClick}
+      aria-pressed={active}
+      style={{ padding: m ? '13px 12px' : '10px 12px', minHeight: m ? 48 : undefined, textAlign: 'left', cursor: 'pointer', background: active ? t.terraDim : t.surfaceDeep, border: `1px solid ${active ? t.terraBorder : t.border}`, borderRadius: 7, fontFamily: t.serif, color: t.text }}
+    >
+      <div style={{ fontFamily: t.serif, fontSize: sz(m, 12), fontWeight: 700, color: t.white, marginBottom: 2 }}>{label}</div>
+      <div style={{ fontFamily: t.mono, fontSize: sz(m, 10), color: t.faint }}>{detail}</div>
     </button>
   );
 }
 
 function EconLine({ label, note, value, accent, footer }) {
+  const m = useMobile();
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: footer ? 'none' : `1px solid ${t.border}`, gap: 12 }}>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontFamily: t.serif, fontSize: footer ? 13 : 12, color: footer ? t.white : t.text, fontWeight: footer ? 700 : 400 }}>{label}</div>
-        {note && <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, marginTop: 2, lineHeight: 1.5 }}>{note}</div>}
+        <div style={{ fontFamily: t.serif, fontSize: sz(m, footer ? 13 : 12), color: footer ? t.white : t.text, fontWeight: footer ? 700 : 400 }}>{label}</div>
+        {note && <div style={{ fontFamily: t.mono, fontSize: sz(m, 9.5), color: t.faint, marginTop: 2, lineHeight: 1.5 }}>{note}</div>}
       </div>
-      <div style={{ fontFamily: t.mono, fontSize: footer ? 14 : 12, color: accent || t.terra, whiteSpace: 'nowrap', fontWeight: footer ? 700 : 400, flexShrink: 0 }}>{value}</div>
+      <div style={{ fontFamily: t.mono, fontSize: sz(m, footer ? 14 : 12), color: accent || t.terra, whiteSpace: 'nowrap', fontWeight: footer ? 700 : 400, flexShrink: 0 }}>{value}</div>
+    </div>
+  );
+}
+
+// ============================================================
+// Tab bar. Shared by the desk layout's two panel headers and by
+// the mobile pane, so the tab semantics live in one place.
+// ============================================================
+function TabBar({ tabs, active, onSelect, label }) {
+  const m = useMobile();
+  return (
+    <div role="tablist" aria-label={label} style={{ display: 'flex', borderBottom: `1px solid ${t.border}`, flexShrink: 0 }}>
+      {tabs.map(([id, text]) => {
+        const on = active === id;
+        return (
+          <button
+            key={id}
+            role="tab"
+            aria-selected={on}
+            onClick={() => onSelect(id)}
+            style={{ flex: 1, padding: m ? '14px 4px' : '12px 0', minHeight: m ? 46 : undefined, fontFamily: t.mono, fontSize: sz(m, 9.5), letterSpacing: '0.12em', textTransform: 'uppercase', color: on ? t.terra : t.faint, background: 'transparent', border: 'none', cursor: 'pointer', borderBottom: on ? `1px solid ${t.terra}` : '1px solid transparent', marginBottom: -1, transition: 'color 0.15s' }}
+          >
+            {text}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// ============================================================
+// Project identity fields. In the desk layout they sit in the top
+// bar; on a phone there is no room, so they move into the Totals
+// pane directly above the button that consumes them.
+// ============================================================
+function ProjectFields({ stacked, projectName, setProjectName, orgName, setOrgName, email, setEmail }) {
+  const m = useMobile();
+  const fields = [
+    { id: 'f-project', label: 'Project name', placeholder: 'Project name', value: projectName, set: setProjectName, type: 'text', width: 180 },
+    { id: 'f-org', label: 'Organization', placeholder: 'Organization', value: orgName, set: setOrgName, type: 'text', width: 160 },
+    { id: 'f-email', label: 'Email (for invoice)', placeholder: 'Email (for invoice)', value: email, set: setEmail, type: 'email', width: 200 },
+  ];
+  return (
+    <div style={{ display: 'flex', flexDirection: stacked ? 'column' : 'row', gap: stacked ? 10 : 8, alignItems: stacked ? 'stretch' : 'center' }}>
+      {fields.map((f) => (
+        <div key={f.id} style={{ flexShrink: 0 }}>
+          {stacked && (
+            <label htmlFor={f.id} style={{ display: 'block', fontFamily: t.mono, fontSize: sz(m, 9.5), letterSpacing: '0.12em', textTransform: 'uppercase', color: t.faint, marginBottom: 4 }}>
+              {f.label}
+            </label>
+          )}
+          <input
+            id={f.id}
+            type={f.type}
+            aria-label={f.label}
+            placeholder={stacked ? '' : f.placeholder}
+            value={f.value}
+            onChange={(e) => f.set(e.target.value)}
+            style={stacked ? { width: '100%' } : { width: f.width }}
+          />
+        </div>
+      ))}
     </div>
   );
 }
@@ -274,6 +425,10 @@ export default function ScenarioEngine() {
   const [payMethod, setPayMethod]     = useState('stripe');
   const [rightTab, setRightTab]       = useState('results');
   const [midTab, setMidTab]           = useState('breakdown');
+
+  // Which of the three panes is showing on a phone. Ignored on the desk.
+  const mobile = useIsMobile();
+  const [mobilePane, setMobilePane]   = useState('configure');
 
   const pattern = PATTERNS[patternId];
   const tier    = TIERS.find((x) => x.id === tierId);
@@ -454,6 +609,7 @@ export default function ScenarioEngine() {
     setChain((prev) => [...prev, { ...event, prior, hash, payload }].slice(-8));
     setInvoiceRequested(true);
     setRightTab('invoice');
+    setMobilePane('totals');
   };
 
   const invoiceRef = useMemo(() => {
@@ -465,357 +621,519 @@ export default function ScenarioEngine() {
   // Render
   // --------------------------------------------------------
   return (
-    <>
+    <UI.Provider value={mobile}>
       <style>{CSS}</style>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet" />
 
-      <div style={{ display: 'grid', gridTemplateRows: '48px 1fr', height: '100vh', background: t.bg, fontFamily: t.serif, color: t.text, fontSize: 14, lineHeight: 1.65, overflow: 'hidden' }}>
+      <div className="hud" style={{ display: 'grid', gridTemplateRows: mobile ? 'auto 1fr auto auto' : '48px 1fr', background: t.bg, fontFamily: t.serif, color: t.text, fontSize: sz(mobile, 14), lineHeight: 1.65, overflow: 'hidden' }}>
 
-        {/* ── Top bar ── */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 0, borderBottom: `1px solid ${t.border}`, padding: '0 0 0 20px', overflow: 'hidden' }}>
-          <div style={{ fontFamily: t.mono, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: t.terra, opacity: 0.7, flexShrink: 0 }}>techne.institute / build</div>
-          <div style={{ width: 1, height: 20, background: t.border, margin: '0 16px', flexShrink: 0 }} />
-          <div style={{ fontFamily: t.serif, fontSize: 13, fontWeight: 700, color: t.white, flexShrink: 0 }}>Scenario Engine</div>
-          <div style={{ flex: 1 }} />
-          <div style={{ display: 'flex', gap: 8, padding: '0 16px', alignItems: 'center', borderLeft: `1px solid ${t.border}` }}>
-            <input type="text" placeholder="Project name"       value={projectName} onChange={(e) => setProjectName(e.target.value)} style={{ width: 180 }} />
-            <input type="text" placeholder="Organization"       value={orgName}     onChange={(e) => setOrgName(e.target.value)}     style={{ width: 160 }} />
-            <input type="text" placeholder="Email (for invoice)" value={email}      onChange={(e) => setEmail(e.target.value)}        style={{ width: 200 }} />
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 20px', borderLeft: `1px solid ${t.border}`, flexShrink: 0 }}>
-            <div style={{ width: 7, height: 7, borderRadius: '50%', background: availability.color, boxShadow: `0 0 8px ${availability.color}` }} />
-            <span style={{ fontFamily: t.mono, fontSize: 10.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: t.muted }}>{availability.label}</span>
-          </div>
-        </div>
-
-        {/* ── Three-panel grid ── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr 340px', overflow: 'hidden' }}>
-
-          {/* ── Left: Configure ── */}
-          <div style={{ borderRight: `1px solid ${t.border}`, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-            <PanelHeader>Configure</PanelHeader>
-            <div style={{ flex: 1, overflowY: 'auto', padding: '12px 14px 16px' }}>
-
-              <SectionLabel>Pattern</SectionLabel>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 16 }}>
-                {Object.values(PATTERNS).map((p) => {
-                  const active = p.id === patternId;
-                  const Icon   = p.icon;
-                  return (
-                    <button key={p.id} onClick={() => setPatternId(p.id)} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 10px', background: active ? t.terraDim : 'transparent', border: `1px solid ${active ? t.terraBorder : 'transparent'}`, borderRadius: 7, cursor: 'pointer', textAlign: 'left', width: '100%', transition: 'background 0.15s, border-color 0.15s' }}>
-                      <div style={{ padding: 5, borderRadius: 5, background: active ? 'rgba(196,149,106,0.18)' : t.surface, color: active ? t.terra : t.muted, display: 'flex', flexShrink: 0 }}>
-                        <Icon size={13} strokeWidth={1.5} />
-                      </div>
-                      <div style={{ minWidth: 0 }}>
-                        <div style={{ fontFamily: t.serif, fontSize: 12.5, fontWeight: 700, color: active ? t.white : t.text, lineHeight: 1.3, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
-                        <div style={{ fontFamily: t.mono, fontSize: 9.5, color: active ? t.terra : t.faint, opacity: active ? 0.8 : 1, letterSpacing: '0.04em' }}>{p.complexity}</div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-
-              <SectionLabel>Infrastructure</SectionLabel>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 16 }}>
-                {TIERS.map((tier) => {
-                  const active = tier.id === tierId;
-                  return (
-                    <button key={tier.id} onClick={() => setTierId(tier.id)} style={{ padding: '8px 10px', textAlign: 'left', width: '100%', cursor: 'pointer', background: active ? t.terraDim : 'transparent', border: `1px solid ${active ? t.terraBorder : 'transparent'}`, borderRadius: 7, transition: 'background 0.15s' }}>
-                      <div style={{ fontFamily: t.mono, fontSize: 10.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: active ? t.terra : t.muted, marginBottom: 2 }}>{tier.name}</div>
-                      <div style={{ fontFamily: t.mono, fontSize: 10, color: t.faint, lineHeight: 1.5 }}>{tier.desc}</div>
-                    </button>
-                  );
-                })}
-              </div>
-
-              <SectionLabel>Calibration</SectionLabel>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <SliderField label="Complexity"  value={complexity} onChange={setComplexity}              min={0.8} max={1.5} step={0.05} display={`${complexity.toFixed(2)}\u00d7`} hint="0.8 = simpler \u00b7 1.5 = more involved" />
-                <SliderField label="Horizon"     value={horizon}    onChange={(v) => setHorizon(parseInt(v))} min={6}   max={36} step={3}    display={`${horizon} mo`}                hint="Months of ongoing costs quoted" />
-                <SliderField label="Maintenance" value={maintPct}   onChange={(v) => setMaintPct(parseInt(v))} min={4}   max={20} step={1}    display={`${maintPct}%`}                 hint="Annual maint. as % of build labor" />
-              </div>
+        {/* ══ Top bar ══ */}
+        {mobile ? (
+          <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, borderBottom: `1px solid ${t.border}`, padding: '10px 14px', flexShrink: 0 }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontFamily: t.mono, fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: t.terra, opacity: 0.7 }}>techne.institute / build</div>
+              <h1 style={{ fontFamily: t.serif, fontSize: 15, fontWeight: 700, color: t.white, lineHeight: 1.3, margin: 0 }}>Scenario Engine</h1>
             </div>
-          </div>
-
-          {/* ── Middle: Breakdown / Members ── */}
-          <div style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column', borderRight: `1px solid ${t.border}` }}>
-            {/* Middle tab bar */}
-            <div style={{ display: 'flex', borderBottom: `1px solid ${t.border}`, flexShrink: 0 }}>
-              {[['breakdown', 'Breakdown'], ['members', 'Members']].map(([id, label]) => (
-                <button key={id} onClick={() => setMidTab(id)} style={{ flex: 1, padding: '12px 0', fontFamily: t.mono, fontSize: 9.5, letterSpacing: '0.12em', textTransform: 'uppercase', color: midTab === id ? t.terra : t.faint, background: 'transparent', border: 'none', cursor: 'pointer', borderBottom: midTab === id ? `1px solid ${t.terra}` : '1px solid transparent', marginBottom: -1, transition: 'color 0.15s' }}>
-                  {label}
-                </button>
-              ))}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: availability.color, boxShadow: `0 0 8px ${availability.color}` }} />
+              <span className="sr-only">{availability.label}</span>
             </div>
+          </header>
+        ) : (
+          <header style={{ display: 'flex', alignItems: 'center', gap: 0, borderBottom: `1px solid ${t.border}`, padding: '0 0 0 20px', overflow: 'hidden' }}>
+            <div style={{ fontFamily: t.mono, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: t.terra, opacity: 0.7, flexShrink: 0 }}>techne.institute / build</div>
+            <div style={{ width: 1, height: 20, background: t.border, margin: '0 16px', flexShrink: 0 }} />
+            <h1 style={{ fontFamily: t.serif, fontSize: 13, fontWeight: 700, color: t.white, flexShrink: 0, margin: 0 }}>Scenario Engine</h1>
+            <div style={{ flex: 1 }} />
+            <div style={{ display: 'flex', gap: 8, padding: '0 16px', alignItems: 'center', borderLeft: `1px solid ${t.border}` }}>
+              <ProjectFields
+                stacked={false}
+                projectName={projectName} setProjectName={setProjectName}
+                orgName={orgName} setOrgName={setOrgName}
+                email={email} setEmail={setEmail}
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 20px', borderLeft: `1px solid ${t.border}`, flexShrink: 0 }}>
+              <div style={{ width: 7, height: 7, borderRadius: '50%', background: availability.color, boxShadow: `0 0 8px ${availability.color}` }} />
+              <span style={{ fontFamily: t.mono, fontSize: 10.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: t.muted }}>{availability.label}</span>
+            </div>
+          </header>
+        )}
 
-            <div style={{ flex: 1, overflowY: 'auto', padding: '12px 16px 16px' }}>
+        {/* ══ Panels ══
+            Desk: three columns side by side.
+            Phone: one pane at a time, chosen by the bottom bar. */}
+        <div style={{ display: mobile ? 'block' : 'grid', gridTemplateColumns: mobile ? undefined : '280px 1fr 340px', overflow: 'hidden', minHeight: 0 }}>
 
-              {/* ── Breakdown tab ── */}
-              {midTab === 'breakdown' && (
-                <>
-                  <div style={{ background: t.surface, border: `1px solid ${t.border}`, borderRadius: 8, padding: '10px 14px', marginBottom: 12 }}>
-                    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 4 }}>
-                      <span style={{ fontFamily: t.serif, fontSize: 13.5, fontWeight: 700, color: t.white }}>{pattern.name}</span>
-                      <span style={{ fontFamily: t.mono, fontSize: 9.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: t.terra, opacity: 0.7 }}>{pattern.complexity}</span>
-                    </div>
-                    <div style={{ fontFamily: t.serif, fontStyle: 'italic', fontSize: 12, color: t.muted }}>{pattern.tagline}</div>
-                  </div>
+          {/* ── Configure ── */}
+          {(!mobile || mobilePane === 'configure') && (
+            <section
+              aria-label="Configure"
+              style={{ borderRight: mobile ? 'none' : `1px solid ${t.border}`, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}
+            >
+              {!mobile && <PanelHeader>Configure</PanelHeader>}
+              <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: mobile ? '14px 16px 20px' : '12px 14px 16px' }}>
 
-                  <TableHeader cols={['Role', 'Rate', 'Hours', 'Subtotal']} />
-                  <div style={{ border: `1px solid ${t.border}`, borderRadius: 8, overflow: 'hidden', marginBottom: 12 }}>
-                    {computation.roleRows.map((row, i) => (
-                      <div key={row.key} style={{ display: 'grid', gridTemplateColumns: '1fr 56px 52px 80px', borderBottom: i < computation.roleRows.length - 1 ? `1px solid ${t.border}` : 'none', padding: '8px 12px', gap: 8, alignItems: 'start' }}>
-                        <div>
-                          <div style={{ fontFamily: t.serif, fontSize: 12.5, color: t.white }}>{row.role}</div>
-                          <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, lineHeight: 1.5, marginTop: 1 }}>{row.blurb}</div>
+                <SectionLabel>Pattern</SectionLabel>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: mobile ? 6 : 4, marginBottom: 18 }}>
+                  {Object.values(PATTERNS).map((p) => {
+                    const active = p.id === patternId;
+                    const Icon   = p.icon;
+                    return (
+                      <button
+                        key={p.id}
+                        onClick={() => setPatternId(p.id)}
+                        aria-pressed={active}
+                        style={{ display: 'flex', alignItems: 'center', gap: 10, padding: mobile ? '12px 12px' : '9px 10px', minHeight: mobile ? 52 : undefined, background: active ? t.terraDim : 'transparent', border: `1px solid ${active ? t.terraBorder : 'transparent'}`, borderRadius: 7, cursor: 'pointer', textAlign: 'left', width: '100%', transition: 'background 0.15s, border-color 0.15s' }}
+                      >
+                        <div style={{ padding: mobile ? 7 : 5, borderRadius: 5, background: active ? 'rgba(196,149,106,0.18)' : t.surface, color: active ? t.terra : t.muted, display: 'flex', flexShrink: 0 }}>
+                          <Icon size={mobile ? 16 : 13} strokeWidth={1.5} />
                         </div>
-                        <div style={{ fontFamily: t.mono, fontSize: 11, color: t.muted, textAlign: 'right', paddingTop: 1 }}>${row.rate}</div>
-                        <div style={{ fontFamily: t.mono, fontSize: 11, color: t.text, textAlign: 'right', paddingTop: 1 }}>{fmtHours(row.hours)}</div>
-                        <div style={{ fontFamily: t.mono, fontSize: 11, color: t.terra, textAlign: 'right', paddingTop: 1 }}>{fmtCurrency(row.subtotal)}</div>
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontFamily: t.serif, fontSize: sz(mobile, 12.5), fontWeight: 700, color: active ? t.white : t.text, lineHeight: 1.3, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
+                          <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), color: active ? t.terra : t.faint, opacity: active ? 0.8 : 1, letterSpacing: '0.04em' }}>{p.complexity}</div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <SectionLabel>Infrastructure</SectionLabel>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: mobile ? 6 : 4, marginBottom: 18 }}>
+                  {TIERS.map((tr) => {
+                    const active = tr.id === tierId;
+                    return (
+                      <button
+                        key={tr.id}
+                        onClick={() => setTierId(tr.id)}
+                        aria-pressed={active}
+                        style={{ padding: mobile ? '12px 12px' : '8px 10px', minHeight: mobile ? 52 : undefined, textAlign: 'left', width: '100%', cursor: 'pointer', background: active ? t.terraDim : 'transparent', border: `1px solid ${active ? t.terraBorder : 'transparent'}`, borderRadius: 7, transition: 'background 0.15s' }}
+                      >
+                        <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 10.5), letterSpacing: '0.1em', textTransform: 'uppercase', color: active ? t.terra : t.muted, marginBottom: 2 }}>{tr.name}</div>
+                        <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 10), color: t.faint, lineHeight: 1.5 }}>{tr.desc}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <SectionLabel>Calibration</SectionLabel>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: mobile ? 20 : 14 }}>
+                  <SliderField label="Complexity"  value={complexity} onChange={setComplexity}                min={0.8} max={1.5} step={0.05} display={`${complexity.toFixed(2)}×`} hint={'0.8 = simpler · 1.5 = more involved'} />
+                  <SliderField label="Horizon"     value={horizon}    onChange={(v) => setHorizon(parseInt(v))}  min={6}   max={36} step={3}    display={`${horizon} mo`}                hint="Months of ongoing costs quoted" />
+                  <SliderField label="Maintenance" value={maintPct}   onChange={(v) => setMaintPct(parseInt(v))} min={4}   max={20} step={1}    display={`${maintPct}%`}                 hint="Annual maint. as % of build labor" />
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* ── Breakdown / Members ── */}
+          {(!mobile || mobilePane === 'detail') && (
+            <section
+              aria-label="Scenario detail"
+              style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column', borderRight: mobile ? 'none' : `1px solid ${t.border}`, height: '100%' }}
+            >
+              <TabBar
+                label="Scenario detail"
+                tabs={[['breakdown', 'Breakdown'], ['members', 'Members']]}
+                active={midTab}
+                onSelect={setMidTab}
+              />
+
+              <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: mobile ? '14px 16px 20px' : '12px 16px 16px' }}>
+
+                {/* ── Breakdown tab ── */}
+                {midTab === 'breakdown' && (
+                  <>
+                    <div style={{ background: t.surface, border: `1px solid ${t.border}`, borderRadius: 8, padding: '10px 14px', marginBottom: 12 }}>
+                      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, marginBottom: 4 }}>
+                        <span style={{ fontFamily: t.serif, fontSize: sz(mobile, 13.5), fontWeight: 700, color: t.white }}>{pattern.name}</span>
+                        <span style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), letterSpacing: '0.1em', textTransform: 'uppercase', color: t.terra, opacity: 0.7, whiteSpace: 'nowrap' }}>{pattern.complexity}</span>
                       </div>
-                    ))}
-                  </div>
-
-                  <SectionLabel>Infrastructure</SectionLabel>
-                  <div style={{ border: `1px solid ${t.border}`, borderRadius: 8, overflow: 'hidden', marginBottom: 12 }}>
-                    {computation.infraItems.map((item, i) => (
-                      <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 12px', borderBottom: i < computation.infraItems.length - 1 ? `1px solid ${t.border}` : 'none' }}>
-                        <span style={{ fontFamily: t.mono, fontSize: 11, color: t.text }}>{item.name}</span>
-                        <span style={{ fontFamily: t.mono, fontSize: 11, color: item.monthly === 0 ? t.faint : t.muted }}>
-                          {item.monthly === 0 ? 'free' : `${fmtCurrency(item.monthly)}/mo`}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, lineHeight: 1.7, padding: '10px 12px', background: t.surface, borderRadius: 8, border: `1px solid ${t.border}` }}>
-                    Complexity multiplier is applied to labor only. Infrastructure runs{' '}
-                    <em style={{ color: t.text }}>kept alive</em>. Move the complexity slider to see how scope changes the total.
-                  </div>
-                </>
-              )}
-
-              {/* ── Members tab ── */}
-              {midTab === 'members' && (
-                <>
-                  {/* Indicative notice */}
-                  <div style={{ display: 'flex', alignItems: 'start', gap: 8, padding: '10px 12px', background: t.surfaceDeep, border: `1px solid ${t.border}`, borderRadius: 8, marginBottom: 14 }}>
-                    <Info size={12} strokeWidth={1.5} style={{ color: t.terra, flexShrink: 0, marginTop: 2 }} />
-                    <div style={{ fontFamily: t.mono, fontSize: 10, color: t.faint, lineHeight: 1.6 }}>
-                      The same scenario read from the cooperative's side. Figures are{' '}
-                      <em style={{ color: t.muted }}>indicative</em>{' '}
-                      pending a ratified compensation policy.
+                      <div style={{ fontFamily: t.serif, fontStyle: 'italic', fontSize: sz(mobile, 12), color: t.muted }}>{pattern.tagline}</div>
                     </div>
-                  </div>
 
-                  {/* Coverage */}
-                  <SectionLabel>Coverage</SectionLabel>
-                  <div style={{ background: t.surface, border: `1px solid ${t.border}`, borderRadius: 8, padding: '10px 14px', marginBottom: 14 }}>
-                    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 6 }}>
-                      <span style={{ fontFamily: t.serif, fontSize: 13, color: t.white }}>
-                        {fmtHours(memberView.coveredHours)} covered of {fmtHours(computation.totalHours)}
-                      </span>
-                      <span style={{ fontFamily: t.mono, fontSize: 13, color: memberView.coveragePct >= 1 ? t.green : memberView.coveragePct >= 0.6 ? t.amber : t.red, fontWeight: 700 }}>
-                        {Math.round(memberView.coveragePct * 100)}%
-                      </span>
+                    <TableHeader cols={['Role', 'Rate', 'Hours', 'Subtotal']} />
+                    <div style={{ border: `1px solid ${t.border}`, borderRadius: 8, overflow: 'hidden', marginBottom: 12 }}>
+                      {computation.roleRows.map((row, i) => {
+                        const divider = i < computation.roleRows.length - 1 ? `1px solid ${t.border}` : 'none';
+                        // On a phone the four-column row is unreadable, so
+                        // rate and hours drop to a meta line under the role
+                        // and the subtotal stays right-aligned.
+                        if (mobile) {
+                          return (
+                            <div key={row.key} style={{ borderBottom: divider, padding: '11px 12px' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 10 }}>
+                                <span style={{ fontFamily: t.serif, fontSize: sz(mobile, 12.5), color: t.white }}>{row.role}</span>
+                                <span style={{ fontFamily: t.mono, fontSize: sz(mobile, 11), color: t.terra, whiteSpace: 'nowrap' }}>{fmtCurrency(row.subtotal)}</span>
+                              </div>
+                              <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 10), color: t.muted, marginTop: 3 }}>
+                                ${row.rate}/h &middot; {fmtHours(row.hours)}
+                              </div>
+                              <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), color: t.faint, lineHeight: 1.5, marginTop: 3 }}>{row.blurb}</div>
+                            </div>
+                          );
+                        }
+                        return (
+                          <div key={row.key} style={{ display: 'grid', gridTemplateColumns: '1fr 56px 52px 80px', borderBottom: divider, padding: '8px 12px', gap: 8, alignItems: 'start' }}>
+                            <div>
+                              <div style={{ fontFamily: t.serif, fontSize: 12.5, color: t.white }}>{row.role}</div>
+                              <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, lineHeight: 1.5, marginTop: 1 }}>{row.blurb}</div>
+                            </div>
+                            <div style={{ fontFamily: t.mono, fontSize: 11, color: t.muted, textAlign: 'right', paddingTop: 1 }}>${row.rate}</div>
+                            <div style={{ fontFamily: t.mono, fontSize: 11, color: t.text, textAlign: 'right', paddingTop: 1 }}>{fmtHours(row.hours)}</div>
+                            <div style={{ fontFamily: t.mono, fontSize: 11, color: t.terra, textAlign: 'right', paddingTop: 1 }}>{fmtCurrency(row.subtotal)}</div>
+                          </div>
+                        );
+                      })}
                     </div>
-                    {memberView.uncoveredHours > 0.5 && (
-                      <div style={{ fontFamily: t.mono, fontSize: 10, color: t.red, lineHeight: 1.5 }}>
-                        {fmtHours(memberView.uncoveredHours)} uncovered &mdash; contractor fill or staged start required.
-                      </div>
-                    )}
-                  </div>
 
-                  {/* Allocation table */}
-                  <SectionLabel>Allocation</SectionLabel>
-                  <div style={{ border: `1px solid ${t.border}`, borderRadius: 8, overflow: 'hidden', marginBottom: 14 }}>
-                    {/* Header */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 80px 70px 80px', gap: 8, padding: '6px 12px', borderBottom: `1px solid ${t.border}`, background: t.surfaceDeep }}>
-                      {['Member', 'Roles', 'Hours', 'Labor value'].map((col, i) => (
-                        <span key={col} style={{ fontFamily: t.mono, fontSize: 9.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: t.faint, textAlign: i > 0 ? 'right' : 'left' }}>{col}</span>
+                    <SectionLabel>Infrastructure</SectionLabel>
+                    <div style={{ border: `1px solid ${t.border}`, borderRadius: 8, overflow: 'hidden', marginBottom: 12 }}>
+                      {computation.infraItems.map((item, i) => (
+                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, padding: mobile ? '10px 12px' : '7px 12px', borderBottom: i < computation.infraItems.length - 1 ? `1px solid ${t.border}` : 'none' }}>
+                          <span style={{ fontFamily: t.mono, fontSize: sz(mobile, 11), color: t.text }}>{item.name}</span>
+                          <span style={{ fontFamily: t.mono, fontSize: sz(mobile, 11), color: item.monthly === 0 ? t.faint : t.muted, whiteSpace: 'nowrap' }}>
+                            {item.monthly === 0 ? 'free' : `${fmtCurrency(item.monthly)}/mo`}
+                          </span>
+                        </div>
                       ))}
                     </div>
-                    {memberView.perMember.length === 0 ? (
-                      <div style={{ padding: '16px 12px', fontFamily: t.mono, fontSize: 11, color: t.faint, textAlign: 'center' }}>No roster members match this scenario's roles.</div>
-                    ) : (
-                      memberView.perMember.map((m, i) => (
-                        <div key={m.id} style={{ display: 'grid', gridTemplateColumns: '1fr 80px 70px 80px', gap: 8, padding: '8px 12px', borderBottom: i < memberView.perMember.length - 1 ? `1px solid ${t.border}` : 'none', alignItems: 'start' }}>
-                          <div>
-                            <div style={{ fontFamily: t.serif, fontSize: 12, color: t.white }}>{m.name}</div>
-                            <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, marginTop: 1 }}>{Math.round(m.laborWeightShare * 100)}% labor weight</div>
-                          </div>
-                          <div style={{ fontFamily: t.mono, fontSize: 10, color: t.muted, textAlign: 'right', paddingTop: 1, lineHeight: 1.5 }}>{m.rolesEngaged.map((r) => ROLES[r]?.name || r).join(', ')}</div>
-                          <div style={{ fontFamily: t.mono, fontSize: 11, color: t.text, textAlign: 'right', paddingTop: 1 }}>{fmtHours(m.hours)}</div>
-                          <div style={{ fontFamily: t.mono, fontSize: 11, color: t.terra, textAlign: 'right', paddingTop: 1 }}>{fmtCurrency(m.laborValue)}</div>
-                        </div>
-                      ))
-                    )}
-                    {/* Footer */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 80px 70px 80px', gap: 8, padding: '8px 12px', borderTop: `1px solid ${t.border}`, background: t.surfaceDeep }}>
-                      <span style={{ fontFamily: t.mono, fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: t.muted }}>Total covered</span>
-                      <span />
-                      <span style={{ fontFamily: t.mono, fontSize: 11, color: t.text, textAlign: 'right' }}>{fmtHours(memberView.coveredHours)}</span>
-                      <span style={{ fontFamily: t.mono, fontSize: 11, color: t.white, fontWeight: 700, textAlign: 'right' }}>{fmtCurrency(memberView.memberLaborValueTotal)}</span>
+
+                    <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), color: t.faint, lineHeight: 1.7, padding: '10px 12px', background: t.surface, borderRadius: 8, border: `1px solid ${t.border}` }}>
+                      Complexity multiplier is applied to labor only. Infrastructure runs{' '}
+                      <em style={{ color: t.text }}>kept alive</em>. Move the complexity slider to see how scope changes the total.
                     </div>
-                  </div>
+                  </>
+                )}
 
-                  {/* Where the value goes */}
-                  <SectionLabel>Where the value goes</SectionLabel>
-                  <div style={{ background: t.surface, border: `1px solid ${t.border}`, borderRadius: 8, padding: '10px 14px', marginBottom: 8 }}>
-                    <EconLine label="Current cash draw to members" note={`${DRAW_PCT}% of covered labor value`}          value={fmtCurrency(memberView.currentDraw)}    accent={t.green} />
-                    <EconLine label="Medium-term member credit held"  note="Held until balance distribution"              value={fmtCurrency(memberView.heldCredit)} />
-                    <EconLine label="Infrastructure cost over horizon" note={`${horizon} months`}                         value={fmtCurrency(memberView.infraCost)} />
-                    {memberView.contractorCost > 0 && (
-                      <EconLine label="Contractor fill (uncovered work)" note={`${fmtHours(memberView.uncoveredHours)} at blended rate`} value={fmtCurrency(memberView.contractorCost)} accent={t.red} />
-                    )}
-                    <EconLine label="Retained cooperative surplus" footer value={fmtCurrency(memberView.retainedSurplus)} accent={memberView.retainedSurplus >= 0 ? t.terra : t.red} />
-                  </div>
-                  <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, lineHeight: 1.7, padding: '8px 12px', background: t.surfaceDeep, borderRadius: 7, border: `1px solid ${t.border}` }}>
-                    <em style={{ color: t.muted }}>Indicative.</em> Patronage formula proposes a labor weight of {PROPOSED_LABOR_WEIGHT}%. Not yet ratified by the board.
-                  </div>
-                </>
-              )}
-
-            </div>
-          </div>
-
-          {/* ── Right: Totals / Invoice / Audit ── */}
-          <div style={{ borderLeft: `1px solid ${t.border}`, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', borderBottom: `1px solid ${t.border}`, flexShrink: 0 }}>
-              {[['results', 'Totals'], ['invoice', 'Invoice'], ['chain', 'Audit']].map(([id, label]) => (
-                <button key={id} onClick={() => setRightTab(id)} style={{ flex: 1, padding: '12px 0', fontFamily: t.mono, fontSize: 9.5, letterSpacing: '0.12em', textTransform: 'uppercase', color: rightTab === id ? t.terra : t.faint, background: 'transparent', border: 'none', cursor: 'pointer', borderBottom: rightTab === id ? `1px solid ${t.terra}` : '1px solid transparent', marginBottom: -1, transition: 'color 0.15s' }}>
-                  {label}
-                </button>
-              ))}
-            </div>
-
-            <div style={{ flex: 1, overflowY: 'auto', padding: '14px 16px 16px' }}>
-
-              {/* ── Totals tab ── */}
-              {rightTab === 'results' && (
-                <>
-                  <div style={{ background: `linear-gradient(135deg, ${t.surface}, ${t.terraGlow})`, border: `1px solid ${t.terraBorder}`, borderRadius: 10, padding: '16px 16px 14px', marginBottom: 12 }}>
-                    <StatLine label="One-time build"    value={fmtCurrency(computation.laborCost)} />
-                    <div style={{ height: 1, background: t.border, margin: '10px 0' }} />
-                    <StatLine label="Monthly ongoing"   value={`${fmtCurrency(computation.monthlyOngoing)}/mo`} />
-                    <StatLine label={`Over ${horizon} months`} value={fmtCurrency(computation.ongoingTotal)} />
-                    <div style={{ height: 1, background: t.terraBorder, margin: '10px 0' }} />
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                      <div style={{ fontFamily: t.mono, fontSize: 9.5, letterSpacing: '0.12em', textTransform: 'uppercase', color: t.muted }}>Grand total</div>
-                      <div style={{ fontFamily: t.serif, fontSize: 22, fontWeight: 700, color: t.terra, lineHeight: 1.2 }}>{fmtCurrency(computation.grandTotal)}</div>
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'start', gap: 10, padding: '12px 14px', background: t.surface, border: `1px solid ${t.border}`, borderRadius: 8, marginBottom: 12 }}>
-                    <div style={{ width: 7, height: 7, borderRadius: '50%', background: availability.color, boxShadow: `0 0 8px ${availability.color}`, marginTop: 4, flexShrink: 0 }} />
-                    <div>
-                      <div style={{ fontFamily: t.mono, fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: availability.color, marginBottom: 3 }}>{availability.label}</div>
-                      <div style={{ fontFamily: t.mono, fontSize: 10.5, color: t.muted, lineHeight: 1.6 }}>{availability.detail}</div>
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
-                    <StatCard label="Total hours"   value={fmtHours(computation.totalHours)} />
-                    <StatCard label="Roles engaged" value={`${computation.roleRows.length}`} />
-                    <StatCard label="Infra items"   value={`${computation.infraItems.length}`} />
-                    <StatCard label="Pattern"       value={pattern.name.split(' ')[0]} />
-                  </div>
-
-                  <button onClick={requestInvoice} disabled={!projectName || !email} style={{ width: '100%', padding: '12px 16px', background: !projectName || !email ? t.surfaceDeep : t.terra, color: !projectName || !email ? t.faint : t.bg, border: `1px solid ${!projectName || !email ? t.border : t.terra}`, borderRadius: 8, fontFamily: t.mono, fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, cursor: !projectName || !email ? 'not-allowed' : 'pointer', transition: 'background 0.2s, color 0.2s' }}>
-                    {invoiceRequested ? 'Invoice requested \u2713' : 'Request pre-authorized invoice'}
-                  </button>
-                  {(!projectName || !email) && (
-                    <div style={{ fontFamily: t.mono, fontSize: 10, color: t.faint, marginTop: 8, textAlign: 'center', letterSpacing: '0.04em' }}>Add project name and email above</div>
-                  )}
-                </>
-              )}
-
-              {/* ── Invoice tab ── */}
-              {rightTab === 'invoice' && (
-                <>
-                  {invoiceRequested ? (
-                    <div>
-                      <div style={{ background: t.surface, border: `1px solid ${t.terraBorder}`, borderRadius: 10, padding: '16px', marginBottom: 12 }}>
-                        <div style={{ fontFamily: t.mono, fontSize: 9.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: t.terra, marginBottom: 4 }}>Pre-authorized invoice</div>
-                        <div style={{ fontFamily: t.serif, fontSize: 18, fontWeight: 700, color: t.white, marginBottom: 12 }}>{invoiceRef}</div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12, paddingBottom: 12, borderBottom: `1px solid ${t.border}` }}>
-                          <div>
-                            <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 3 }}>Bill to</div>
-                            <div style={{ fontFamily: t.serif, fontSize: 12.5, color: t.white }}>{orgName || projectName}</div>
-                            <div style={{ fontFamily: t.mono, fontSize: 10.5, color: t.text }}>{email}</div>
-                          </div>
-                          <div>
-                            <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 3 }}>Scope</div>
-                            <div style={{ fontFamily: t.serif, fontSize: 12.5, color: t.white }}>{pattern.name}</div>
-                            <div style={{ fontFamily: t.mono, fontSize: 10.5, color: t.text }}>{tier.name} &middot; {horizon} mo</div>
-                          </div>
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 12 }}>
-                          <InvoiceLine label="Build labor"                      value={fmtCurrency(computation.laborCost)} />
-                          <InvoiceLine label={`Infra + maintenance, ${horizon} mo`} value={fmtCurrency(computation.ongoingTotal)} />
-                          <div style={{ height: 1, background: t.terraBorder, margin: '4px 0' }} />
-                          <InvoiceLine label="Total due on kickoff"             value={fmtCurrency(computation.grandTotal)} em />
-                        </div>
-                        <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Payment method</div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
-                          <PaymentOption id="stripe"  label="Stripe"      detail="Card. 3% absorbed."  active={payMethod === 'stripe'}  onClick={() => setPayMethod('stripe')} />
-                          <PaymentOption id="mercury" label="Mercury ACH" detail="Direct. No fee."     active={payMethod === 'mercury'} onClick={() => setPayMethod('mercury')} />
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'start', gap: 8, padding: '10px 12px', background: t.surfaceDeep, border: `1px solid ${t.border}`, borderRadius: 7, fontFamily: t.mono, fontSize: 10.5, color: t.muted, lineHeight: 1.6 }}>
-                          <Wrench size={13} strokeWidth={2} style={{ color: t.terra, flexShrink: 0, marginTop: 1 }} />
-                          <div>Pending countersignature. Confirmation + payment link within two business days at <span style={{ color: t.text }}>{email}</span>.</div>
-                        </div>
+                {/* ── Members tab ── */}
+                {midTab === 'members' && (
+                  <>
+                    {/* Indicative notice */}
+                    <div style={{ display: 'flex', alignItems: 'start', gap: 8, padding: '10px 12px', background: t.surfaceDeep, border: `1px solid ${t.border}`, borderRadius: 8, marginBottom: 14 }}>
+                      <Info size={12} strokeWidth={1.5} style={{ color: t.terra, flexShrink: 0, marginTop: 2 }} />
+                      <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 10), color: t.faint, lineHeight: 1.6 }}>
+                        The same scenario read from the cooperative's side. Figures are{' '}
+                        <em style={{ color: t.muted }}>indicative</em>{' '}
+                        pending a ratified compensation policy.
                       </div>
-                      <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, textAlign: 'center' }}>RegenHub, LCA &middot; Boulder, Colorado &middot; Pricing locked 14 days</div>
                     </div>
-                  ) : (
-                    <div style={{ textAlign: 'center', padding: '32px 16px' }}>
-                      <div style={{ fontFamily: t.mono, fontSize: 11, color: t.faint, marginBottom: 20, lineHeight: 1.7 }}>Configure your scenario and fill in the project fields, then request a pre-authorized invoice.</div>
-                      <button onClick={requestInvoice} disabled={!projectName || !email} style={{ padding: '11px 20px', background: !projectName || !email ? t.surfaceDeep : t.terra, color: !projectName || !email ? t.faint : t.bg, border: `1px solid ${!projectName || !email ? t.border : t.terra}`, borderRadius: 8, fontFamily: t.mono, fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, cursor: !projectName || !email ? 'not-allowed' : 'pointer' }}>
-                        Request invoice
-                      </button>
-                    </div>
-                  )}
-                </>
-              )}
 
-              {/* ── Audit / Chain tab ── */}
-              {rightTab === 'chain' && (
-                <>
-                  <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, letterSpacing: '0.06em', lineHeight: 1.7, marginBottom: 12 }}>
-                    Each configuration change writes a hash record chained to the prior. The chain cannot be silently revised. Root hashes are periodically published to Base.
-                  </div>
-                  <div style={{ border: `1px solid ${t.border}`, borderRadius: 8, overflow: 'hidden' }}>
-                    {chain.length === 0 ? (
-                      <div style={{ padding: '20px', textAlign: 'center', fontFamily: t.mono, fontSize: 11, color: t.faint }}>Awaiting configuration.</div>
-                    ) : (
-                      [...chain].reverse().map((entry, i) => (
-                        <div key={i} style={{ padding: '10px 12px', borderBottom: i < chain.length - 1 ? `1px solid ${t.border}` : 'none', display: 'flex', alignItems: 'start', gap: 10 }}>
-                          <div style={{ padding: 4, borderRadius: 5, background: t.terraDim, color: t.terra, display: 'flex', flexShrink: 0, marginTop: 1 }}>
-                            <Hash size={11} strokeWidth={1.5} />
+                    {/* Coverage */}
+                    <SectionLabel>Coverage</SectionLabel>
+                    <div style={{ background: t.surface, border: `1px solid ${t.border}`, borderRadius: 8, padding: '10px 14px', marginBottom: 14 }}>
+                      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, marginBottom: 6 }}>
+                        <span style={{ fontFamily: t.serif, fontSize: sz(mobile, 13), color: t.white }}>
+                          {fmtHours(memberView.coveredHours)} covered of {fmtHours(computation.totalHours)}
+                        </span>
+                        <span style={{ fontFamily: t.mono, fontSize: sz(mobile, 13), color: memberView.coveragePct >= 1 ? t.green : memberView.coveragePct >= 0.6 ? t.amber : t.red, fontWeight: 700 }}>
+                          {Math.round(memberView.coveragePct * 100)}%
+                        </span>
+                      </div>
+                      {memberView.uncoveredHours > 0.5 && (
+                        <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 10), color: t.red, lineHeight: 1.5 }}>
+                          {fmtHours(memberView.uncoveredHours)} uncovered &mdash; contractor fill or staged start required.
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Allocation */}
+                    <SectionLabel>Allocation</SectionLabel>
+                    <div style={{ border: `1px solid ${t.border}`, borderRadius: 8, overflow: 'hidden', marginBottom: 14 }}>
+                      {!mobile && (
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 80px 70px 80px', gap: 8, padding: '6px 12px', borderBottom: `1px solid ${t.border}`, background: t.surfaceDeep }}>
+                          {['Member', 'Roles', 'Hours', 'Labor value'].map((col, i) => (
+                            <span key={col} style={{ fontFamily: t.mono, fontSize: 9.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: t.faint, textAlign: i > 0 ? 'right' : 'left' }}>{col}</span>
+                          ))}
+                        </div>
+                      )}
+                      {memberView.perMember.length === 0 ? (
+                        <div style={{ padding: '16px 12px', fontFamily: t.mono, fontSize: sz(mobile, 11), color: t.faint, textAlign: 'center' }}>No roster members match this scenario's roles.</div>
+                      ) : (
+                        memberView.perMember.map((m, i) => {
+                          const divider = i < memberView.perMember.length - 1 ? `1px solid ${t.border}` : 'none';
+                          if (mobile) {
+                            return (
+                              <div key={m.id} style={{ borderBottom: divider, padding: '11px 12px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 10 }}>
+                                  <span style={{ fontFamily: t.serif, fontSize: sz(mobile, 12), color: t.white }}>{m.name}</span>
+                                  <span style={{ fontFamily: t.mono, fontSize: sz(mobile, 11), color: t.terra, whiteSpace: 'nowrap' }}>{fmtCurrency(m.laborValue)}</span>
+                                </div>
+                                <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 10), color: t.muted, marginTop: 3 }}>
+                                  {fmtHours(m.hours)} &middot; {Math.round(m.laborWeightShare * 100)}% labor weight
+                                </div>
+                                <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), color: t.faint, lineHeight: 1.5, marginTop: 3 }}>
+                                  {m.rolesEngaged.map((r) => ROLES[r]?.name || r).join(', ')}
+                                </div>
+                              </div>
+                            );
+                          }
+                          return (
+                            <div key={m.id} style={{ display: 'grid', gridTemplateColumns: '1fr 80px 70px 80px', gap: 8, padding: '8px 12px', borderBottom: divider, alignItems: 'start' }}>
+                              <div>
+                                <div style={{ fontFamily: t.serif, fontSize: 12, color: t.white }}>{m.name}</div>
+                                <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, marginTop: 1 }}>{Math.round(m.laborWeightShare * 100)}% labor weight</div>
+                              </div>
+                              <div style={{ fontFamily: t.mono, fontSize: 10, color: t.muted, textAlign: 'right', paddingTop: 1, lineHeight: 1.5 }}>{m.rolesEngaged.map((r) => ROLES[r]?.name || r).join(', ')}</div>
+                              <div style={{ fontFamily: t.mono, fontSize: 11, color: t.text, textAlign: 'right', paddingTop: 1 }}>{fmtHours(m.hours)}</div>
+                              <div style={{ fontFamily: t.mono, fontSize: 11, color: t.terra, textAlign: 'right', paddingTop: 1 }}>{fmtCurrency(m.laborValue)}</div>
+                            </div>
+                          );
+                        })
+                      )}
+                      {/* Footer */}
+                      <div style={{ display: mobile ? 'flex' : 'grid', justifyContent: mobile ? 'space-between' : undefined, gridTemplateColumns: mobile ? undefined : '1fr 80px 70px 80px', gap: 8, padding: '10px 12px', borderTop: `1px solid ${t.border}`, background: t.surfaceDeep }}>
+                        <span style={{ fontFamily: t.mono, fontSize: sz(mobile, 10), letterSpacing: '0.08em', textTransform: 'uppercase', color: t.muted }}>Total covered</span>
+                        {!mobile && <span />}
+                        <span style={{ fontFamily: t.mono, fontSize: sz(mobile, 11), color: t.text, textAlign: 'right' }}>{fmtHours(memberView.coveredHours)}</span>
+                        <span style={{ fontFamily: t.mono, fontSize: sz(mobile, 11), color: t.white, fontWeight: 700, textAlign: 'right' }}>{fmtCurrency(memberView.memberLaborValueTotal)}</span>
+                      </div>
+                    </div>
+
+                    {/* Where the value goes */}
+                    <SectionLabel>Where the value goes</SectionLabel>
+                    <div style={{ background: t.surface, border: `1px solid ${t.border}`, borderRadius: 8, padding: '10px 14px', marginBottom: 8 }}>
+                      <EconLine label="Current cash draw to members" note={`${DRAW_PCT}% of covered labor value`}          value={fmtCurrency(memberView.currentDraw)}    accent={t.green} />
+                      <EconLine label="Medium-term member credit held"  note="Held until balance distribution"              value={fmtCurrency(memberView.heldCredit)} />
+                      <EconLine label="Infrastructure cost over horizon" note={`${horizon} months`}                         value={fmtCurrency(memberView.infraCost)} />
+                      {memberView.contractorCost > 0 && (
+                        <EconLine label="Contractor fill (uncovered work)" note={`${fmtHours(memberView.uncoveredHours)} at blended rate`} value={fmtCurrency(memberView.contractorCost)} accent={t.red} />
+                      )}
+                      <EconLine label="Retained cooperative surplus" footer value={fmtCurrency(memberView.retainedSurplus)} accent={memberView.retainedSurplus >= 0 ? t.terra : t.red} />
+                    </div>
+                    <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), color: t.faint, lineHeight: 1.7, padding: '8px 12px', background: t.surfaceDeep, borderRadius: 7, border: `1px solid ${t.border}` }}>
+                      <em style={{ color: t.muted }}>Indicative.</em> Patronage formula proposes a labor weight of {PROPOSED_LABOR_WEIGHT}%. Not yet ratified by the board.
+                    </div>
+                  </>
+                )}
+
+              </div>
+            </section>
+          )}
+
+          {/* ── Totals / Invoice / Audit ── */}
+          {(!mobile || mobilePane === 'totals') && (
+            <section
+              aria-label="Totals and invoice"
+              style={{ borderLeft: mobile ? 'none' : `1px solid ${t.border}`, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}
+            >
+              <TabBar
+                label="Totals, invoice and audit"
+                tabs={[['results', 'Totals'], ['invoice', 'Invoice'], ['chain', 'Audit']]}
+                active={rightTab}
+                onSelect={setRightTab}
+              />
+
+              <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: mobile ? '14px 16px 20px' : '14px 16px 16px' }}>
+
+                {/* ── Totals tab ── */}
+                {rightTab === 'results' && (
+                  <>
+                    <div style={{ background: `linear-gradient(135deg, ${t.surface}, ${t.terraGlow})`, border: `1px solid ${t.terraBorder}`, borderRadius: 10, padding: '16px 16px 14px', marginBottom: 12 }}>
+                      <StatLine label="One-time build"    value={fmtCurrency(computation.laborCost)} />
+                      <div style={{ height: 1, background: t.border, margin: '10px 0' }} />
+                      <StatLine label="Monthly ongoing"   value={`${fmtCurrency(computation.monthlyOngoing)}/mo`} />
+                      <StatLine label={`Over ${horizon} months`} value={fmtCurrency(computation.ongoingTotal)} />
+                      <div style={{ height: 1, background: t.terraBorder, margin: '10px 0' }} />
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 10 }}>
+                        <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), letterSpacing: '0.12em', textTransform: 'uppercase', color: t.muted }}>Grand total</div>
+                        <div style={{ fontFamily: t.serif, fontSize: sz(mobile, 22), fontWeight: 700, color: t.terra, lineHeight: 1.2 }}>{fmtCurrency(computation.grandTotal)}</div>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'start', gap: 10, padding: '12px 14px', background: t.surface, border: `1px solid ${t.border}`, borderRadius: 8, marginBottom: 12 }}>
+                      <div style={{ width: 7, height: 7, borderRadius: '50%', background: availability.color, boxShadow: `0 0 8px ${availability.color}`, marginTop: 4, flexShrink: 0 }} />
+                      <div>
+                        <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 10), letterSpacing: '0.1em', textTransform: 'uppercase', color: availability.color, marginBottom: 3 }}>{availability.label}</div>
+                        <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 10.5), color: t.muted, lineHeight: 1.6 }}>{availability.detail}</div>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 14 }}>
+                      <StatCard label="Total hours"   value={fmtHours(computation.totalHours)} />
+                      <StatCard label="Roles engaged" value={`${computation.roleRows.length}`} />
+                      <StatCard label="Infra items"   value={`${computation.infraItems.length}`} />
+                      <StatCard label="Pattern"       value={pattern.name.split(' ')[0]} />
+                    </div>
+
+                    {/* On a phone the identity fields have no top bar to
+                        live in, so they sit with the button that needs them. */}
+                    {mobile && (
+                      <div style={{ marginBottom: 14 }}>
+                        <SectionLabel>Project</SectionLabel>
+                        <ProjectFields
+                          stacked
+                          projectName={projectName} setProjectName={setProjectName}
+                          orgName={orgName} setOrgName={setOrgName}
+                          email={email} setEmail={setEmail}
+                        />
+                      </div>
+                    )}
+
+                    <button
+                      onClick={requestInvoice}
+                      disabled={!projectName || !email}
+                      style={{ width: '100%', padding: mobile ? '15px 16px' : '12px 16px', minHeight: mobile ? 50 : undefined, background: !projectName || !email ? t.surfaceDeep : t.terra, color: !projectName || !email ? t.faint : t.bg, border: `1px solid ${!projectName || !email ? t.border : t.terra}`, borderRadius: 8, fontFamily: t.mono, fontSize: sz(mobile, 11), letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, cursor: !projectName || !email ? 'not-allowed' : 'pointer', transition: 'background 0.2s, color 0.2s' }}
+                    >
+                      {invoiceRequested ? 'Invoice requested ✓' : 'Request pre-authorized invoice'}
+                    </button>
+                    {(!projectName || !email) && (
+                      <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 10), color: t.faint, marginTop: 8, textAlign: 'center', letterSpacing: '0.04em' }}>
+                        {mobile ? 'Add project name and email above' : 'Add project name and email in the top bar'}
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* ── Invoice tab ── */}
+                {rightTab === 'invoice' && (
+                  <>
+                    {invoiceRequested ? (
+                      <div>
+                        <div style={{ background: t.surface, border: `1px solid ${t.terraBorder}`, borderRadius: 10, padding: '16px', marginBottom: 12 }}>
+                          <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), letterSpacing: '0.14em', textTransform: 'uppercase', color: t.terra, marginBottom: 4 }}>Pre-authorized invoice</div>
+                          <div style={{ fontFamily: t.serif, fontSize: sz(mobile, 18), fontWeight: 700, color: t.white, marginBottom: 12 }}>{invoiceRef}</div>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12, paddingBottom: 12, borderBottom: `1px solid ${t.border}` }}>
+                            <div style={{ minWidth: 0 }}>
+                              <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), color: t.faint, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 3 }}>Bill to</div>
+                              <div style={{ fontFamily: t.serif, fontSize: sz(mobile, 12.5), color: t.white }}>{orgName || projectName}</div>
+                              <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 10.5), color: t.text, wordBreak: 'break-word' }}>{email}</div>
+                            </div>
+                            <div style={{ minWidth: 0 }}>
+                              <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), color: t.faint, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 3 }}>Scope</div>
+                              <div style={{ fontFamily: t.serif, fontSize: sz(mobile, 12.5), color: t.white }}>{pattern.name}</div>
+                              <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 10.5), color: t.text }}>{tier.name} &middot; {horizon} mo</div>
+                            </div>
                           </div>
-                          <div style={{ minWidth: 0 }}>
-                            <div style={{ fontFamily: t.mono, fontSize: 9.5, letterSpacing: '0.08em', color: t.terra, textTransform: 'uppercase', marginBottom: 2 }}>{entry.event.replace(/_/g, ' ')}</div>
-                            <div style={{ fontFamily: t.mono, fontSize: 10, color: t.text, wordBreak: 'break-all', lineHeight: 1.4 }}>{entry.hash}</div>
-                            <div style={{ fontFamily: t.mono, fontSize: 9.5, color: t.faint, marginTop: 2 }}>prior: {entry.prior === 'genesis' ? 'genesis' : truncateHash(entry.prior)} &middot; {new Date(entry.timestamp).toLocaleTimeString()}</div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 12 }}>
+                            <InvoiceLine label="Build labor"                      value={fmtCurrency(computation.laborCost)} />
+                            <InvoiceLine label={`Infra + maintenance, ${horizon} mo`} value={fmtCurrency(computation.ongoingTotal)} />
+                            <div style={{ height: 1, background: t.terraBorder, margin: '4px 0' }} />
+                            <InvoiceLine label="Total due on kickoff"             value={fmtCurrency(computation.grandTotal)} em />
+                          </div>
+                          <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), color: t.faint, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Payment method</div>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
+                            <PaymentOption label="Stripe"      detail="Card. 3% absorbed."  active={payMethod === 'stripe'}  onClick={() => setPayMethod('stripe')} />
+                            <PaymentOption label="Mercury ACH" detail="Direct. No fee."     active={payMethod === 'mercury'} onClick={() => setPayMethod('mercury')} />
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'start', gap: 8, padding: '10px 12px', background: t.surfaceDeep, border: `1px solid ${t.border}`, borderRadius: 7, fontFamily: t.mono, fontSize: sz(mobile, 10.5), color: t.muted, lineHeight: 1.6 }}>
+                            <Wrench size={13} strokeWidth={2} style={{ color: t.terra, flexShrink: 0, marginTop: 1 }} />
+                            <div>Pending countersignature. Confirmation + payment link within two business days at <span style={{ color: t.text, wordBreak: 'break-word' }}>{email}</span>.</div>
                           </div>
                         </div>
-                      ))
+                        <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), color: t.faint, textAlign: 'center', lineHeight: 1.6 }}>RegenHub, LCA &middot; Boulder, Colorado &middot; Pricing locked 14 days</div>
+                      </div>
+                    ) : (
+                      <div style={{ textAlign: 'center', padding: mobile ? '20px 4px' : '32px 16px' }}>
+                        <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 11), color: t.faint, marginBottom: 20, lineHeight: 1.7 }}>Configure your scenario and fill in the project fields, then request a pre-authorized invoice.</div>
+                        {mobile && (
+                          <div style={{ textAlign: 'left', marginBottom: 18 }}>
+                            <ProjectFields
+                              stacked
+                              projectName={projectName} setProjectName={setProjectName}
+                              orgName={orgName} setOrgName={setOrgName}
+                              email={email} setEmail={setEmail}
+                            />
+                          </div>
+                        )}
+                        <button
+                          onClick={requestInvoice}
+                          disabled={!projectName || !email}
+                          style={{ width: mobile ? '100%' : undefined, padding: mobile ? '15px 20px' : '11px 20px', minHeight: mobile ? 50 : undefined, background: !projectName || !email ? t.surfaceDeep : t.terra, color: !projectName || !email ? t.faint : t.bg, border: `1px solid ${!projectName || !email ? t.border : t.terra}`, borderRadius: 8, fontFamily: t.mono, fontSize: sz(mobile, 11), letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 700, cursor: !projectName || !email ? 'not-allowed' : 'pointer' }}
+                        >
+                          Request invoice
+                        </button>
+                      </div>
                     )}
-                  </div>
-                </>
-              )}
+                  </>
+                )}
 
-            </div>
-            <div style={{ borderTop: `1px solid ${t.border}`, padding: '8px 16px', fontFamily: t.mono, fontSize: 9.5, color: t.faint, letterSpacing: '0.06em' }}>
-              RegenHub, LCA &middot; Boulder &middot; 2026 &middot; Numbers are indicative
-            </div>
-          </div>
+                {/* ── Audit / Chain tab ── */}
+                {rightTab === 'chain' && (
+                  <>
+                    <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), color: t.faint, letterSpacing: '0.06em', lineHeight: 1.7, marginBottom: 12 }}>
+                      Each configuration change writes a hash record chained to the prior. The chain cannot be silently revised. Root hashes are periodically published to Base.
+                    </div>
+                    <div style={{ border: `1px solid ${t.border}`, borderRadius: 8, overflow: 'hidden' }}>
+                      {chain.length === 0 ? (
+                        <div style={{ padding: '20px', textAlign: 'center', fontFamily: t.mono, fontSize: sz(mobile, 11), color: t.faint }}>Awaiting configuration.</div>
+                      ) : (
+                        [...chain].reverse().map((entry, i) => (
+                          <div key={i} style={{ padding: '10px 12px', borderBottom: i < chain.length - 1 ? `1px solid ${t.border}` : 'none', display: 'flex', alignItems: 'start', gap: 10 }}>
+                            <div style={{ padding: 4, borderRadius: 5, background: t.terraDim, color: t.terra, display: 'flex', flexShrink: 0, marginTop: 1 }}>
+                              <Hash size={11} strokeWidth={1.5} />
+                            </div>
+                            <div style={{ minWidth: 0 }}>
+                              <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), letterSpacing: '0.08em', color: t.terra, textTransform: 'uppercase', marginBottom: 2 }}>{entry.event.replace(/_/g, ' ')}</div>
+                              <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 10), color: t.text, wordBreak: 'break-all', lineHeight: 1.4 }}>{entry.hash}</div>
+                              <div style={{ fontFamily: t.mono, fontSize: sz(mobile, 9.5), color: t.faint, marginTop: 2 }}>prior: {entry.prior === 'genesis' ? 'genesis' : truncateHash(entry.prior)} &middot; {new Date(entry.timestamp).toLocaleTimeString()}</div>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </>
+                )}
+
+              </div>
+
+              {!mobile && (
+                <div style={{ borderTop: `1px solid ${t.border}`, padding: '8px 16px', fontFamily: t.mono, fontSize: 9.5, color: t.faint, letterSpacing: '0.06em' }}>
+                  RegenHub, LCA &middot; Boulder &middot; 2026 &middot; Numbers are indicative
+                </div>
+              )}
+            </section>
+          )}
 
         </div>
+
+        {/* ══ Running total. The number a phone visitor came for, kept
+               on screen whichever pane they are in. ══ */}
+        {mobile && (
+          <button
+            onClick={() => { setMobilePane('totals'); setRightTab('results'); }}
+            aria-label={`Grand total ${fmtCurrency(computation.grandTotal)}. Open totals.`}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, width: '100%', padding: '10px 16px', background: t.surface, borderTop: `1px solid ${t.terraBorder}`, borderLeft: 'none', borderRight: 'none', borderBottom: 'none', cursor: 'pointer', textAlign: 'left' }}
+          >
+            <span style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: availability.color, boxShadow: `0 0 8px ${availability.color}`, flexShrink: 0 }} />
+              <span style={{ fontFamily: t.mono, fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: t.muted }}>Grand total</span>
+            </span>
+            <span style={{ fontFamily: t.serif, fontSize: 19, fontWeight: 700, color: t.terra, whiteSpace: 'nowrap' }}>{fmtCurrency(computation.grandTotal)}</span>
+          </button>
+        )}
+
+        {/* ══ Bottom navigation. The three panes of the desk layout,
+               reachable one at a time. ══ */}
+        {mobile && (
+          <nav
+            aria-label="Panes"
+            style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', borderTop: `1px solid ${t.border}`, background: t.bg, paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+          >
+            {[
+              ['configure', 'Configure', SlidersHorizontal],
+              ['detail', 'Breakdown', FileText],
+              ['totals', 'Totals', Receipt],
+            ].map(([id, label, Icon]) => {
+              const on = mobilePane === id;
+              return (
+                <button
+                  key={id}
+                  onClick={() => setMobilePane(id)}
+                  aria-current={on ? 'page' : undefined}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4, minHeight: 58, padding: '8px 4px', background: on ? t.terraDim : 'transparent', border: 'none', borderTop: `2px solid ${on ? t.terra : 'transparent'}`, color: on ? t.terra : t.faint, cursor: 'pointer', transition: 'color 0.15s, background 0.15s' }}
+                >
+                  <Icon size={18} strokeWidth={1.6} />
+                  <span style={{ fontFamily: t.mono, fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</span>
+                </button>
+              );
+            })}
+          </nav>
+        )}
+
       </div>
-    </>
+    </UI.Provider>
   );
 }
