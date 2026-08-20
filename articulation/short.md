@@ -30,7 +30,7 @@ We want to grow a beautiful and connected scene in Boulder, with growing influen
 
 **How:** Ventures within the cooperative voluntarily commit equity. **Parachute** will start by offering 10% (targeting a friends-and-family round at $3M valuation, then $10M by end of 2026 — putting Techne's holdings at ~$1M illiquid pre-seed value). **Postage** has agreed in principle, **Gitcoin** is in conversation, and more may follow. This is the same "give first" principle that has shaped Boulder's tech culture through TechStars. Patronage is the unified accounting unit: $50k of capital and $50k of time produce the same patronage credit. From time to time the cooperative sells equity in held ventures, and patrons can redeem their patronage credit for that equity.
 
-**Wider membership:** As we grow, we offer membership to people in **partner communities** — Boulder Startup Week, Boulder New Tech, Women in AI, Neighborhood Village Project, Climatique — so their scene-building work counts as patronage too.
+**Wider membership:** As we grow, we offer membership to people in **partner communities** — Boulder Startup Week, Boulder New Tech, Women in AI, Climatique — so their scene-building work counts as patronage too.
 
 **The school:** We're running our second Learn Vibe Build cohort. I see this in the context of a larger school — **Techne Institute** — in alignment with our seminars on Technology & The Human Future. The Institute generates revenue through educational programs and grows the next generation of people building ventures.
 
