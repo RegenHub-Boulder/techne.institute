@@ -1,0 +1,60 @@
+# techne.institute — publication scope
+#
+# The site is between drafts. Only the placeholder and the working applications
+# are served; everything else remains in the repository as an archive of what was
+# thought at the time, and is not published.
+#
+# To republish a section, remove its line from `exclude` below. To republish the
+# whole site, delete this file and restore the previous index.html, 404.html and
+# sitemap.xml from git history.
+#
+# Served: index.html, 404.html, CNAME, robots.txt, sitemap.xml, favicon.svg,
+#         assets/, app/, data-room/, intranet/, xero-callback/
+
+exclude:
+  - README.md
+  - about
+  - amplification
+  - articulation
+  - board
+  - build
+  - build-src
+  - bylaws
+  - cis
+  - cloud
+  - cooperative
+  - coordination-games
+  - corpus
+  - design-system
+  - engine
+  - formation
+  - games
+  - games-coop
+  - hud
+  - intranet-src
+  - introduction
+  - journal
+  - launch
+  - learn
+  - legal
+  - letters
+  - live
+  - lunch-presentation
+  - membership
+  - operations
+  - operations-src
+  - pre-read
+  - public
+  - public-benefit
+  - seminars
+  - supabase
+  - techne-coop-brief
+  - terminal
+  - tree
+  - ventures
+  - vision
+  - voice
+  - work
+  - workshop
+  - workshop-src
+  - writing
