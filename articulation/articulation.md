@@ -38,7 +38,7 @@ We want to grow a beautiful and connected scene in Boulder. We want to help ensu
 
 ## Membership extends to partner communities
 
-As the cooperative grows, we begin to offer membership to people in our wider community — **partner communities** — so activities such as volunteering to organize Boulder Startup Week, Boulder New Tech, or Women in AI; or running Neighborhood Village Project or Climatique; can all be seen as patronage activities. This helps set the foundation for a cooperative that is truly able to introduce novel ideas to rewarding various good works in the community. Some of this takes time to grow into; it's worth naming the potential early.
+As the cooperative grows, we begin to offer membership to people in our wider community — **partner communities** — so activities such as volunteering to organize Boulder Startup Week, Boulder New Tech, or Women in AI; or running Climatique; can all be seen as patronage activities. This helps set the foundation for a cooperative that is truly able to introduce novel ideas to rewarding various good works in the community. Some of this takes time to grow into; it's worth naming the potential early.
 
 ## Techne Institute — the school
 
